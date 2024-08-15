@@ -21,6 +21,9 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
     public const string INVITATION_CODE = "invitationCode";                                 //邀請碼
     public const string BOUND_INVITER_ID = "boundInviterId";                                //綁定的邀請者Id
     public const string LINE_TOKEN = "lineToken";                                           //Line Token
+    public const string U_CHIPS = "UChips";                                                 //U幣
+    public const string A_CHIPS = "AChips";                                                 //A幣
+    public const string GOLD = "gold";                                                      //黃金
 
     [Header("遊戲房間資料內容路徑名稱")]
     public const string ROBOT_ID = "robot";                                                 //機器人ID
@@ -156,6 +159,9 @@ public class AccountData
     public string invitationCode;           //邀請碼
     public string boundInviterId;           //綁定的邀請者Id
     public string lineToken;                //Line Token
+    public double UChips;                   //U幣
+    public double AChips;                   //A幣
+    public double gold;                     //黃金
 }
 
 #endregion

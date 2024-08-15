@@ -34,14 +34,14 @@ public static class TexasHoldemUtil
         float maxValue = 0;
         switch (tableTypeEnum)
         {
-            //加密貨幣桌
+            //現金桌
             case TableTypeEnum.Cash:
-                maxValue = (float)DataManager.UserCryptoChips;
+                maxValue = (float)DataManager.UserUChips;
                 break;
 
             //虛擬貨幣桌
             case TableTypeEnum.VCTable:
-                maxValue = (float)DataManager.UserVCChips;
+                maxValue = (float)DataManager.UserAChips;
                 break;
         }
 

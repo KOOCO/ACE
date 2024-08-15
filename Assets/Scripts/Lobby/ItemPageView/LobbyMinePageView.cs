@@ -510,8 +510,8 @@ public class LobbyMinePageView : MonoBehaviour
         Viewport.enabled = true;
 
         UpdatetAccountBalance(string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 ETH" : DataManager.UserWalletBalance,
-                              DataManager.UserVCChips,
-                              DataManager.UserGoldChips,
+                              DataManager.UserAChips,
+                              DataManager.UserGold,
                               DataManager.UserStamina,
                               DataManager.UserOTProps);
 
@@ -570,14 +570,14 @@ public class LobbyMinePageView : MonoBehaviour
     private void UpdatetAccountBalance(string crypto, double vc, double gold, int Stamina, int ot)
     {
         DataManager.UserWalletBalance = crypto.ToString();
-        DataManager.UserVCChips = vc;
-        DataManager.UserGoldChips = gold;
+        DataManager.UserAChips = vc;
+        DataManager.UserGold = gold;
         DataManager.UserStamina = Stamina;
         DataManager.UserOTProps = ot;
 
         CryptoTableValue_Txt.text = string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 ETH" : DataManager.UserWalletBalance;
-        VCTableValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserVCChips);
-        GoldValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserGoldChips);
+        VCTableValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserAChips);
+        GoldValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserGold);
         StaminaValue_Txt.text = $"{DataManager.UserStamina}/{DataManager.MaxStaminaValue}";
         OTPropsValue_Txt.text = $"{DataManager.UserOTProps}";
 

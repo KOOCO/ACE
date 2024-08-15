@@ -124,10 +124,10 @@ public class BuyChipsView : MonoBehaviour
         string maxBuyChipsStr = "";
         switch (tableTypeEnum)
         {
-            //加密貨幣桌
+            //現金桌
             case TableTypeEnum.Cash:
                 titleStr = "CRYPTO TABLE";
-                maxBuyChipsStr = $"{StringUtils.SetChipsUnit(DataManager.UserCryptoChips)}";
+                maxBuyChipsStr = $"{StringUtils.SetChipsUnit(DataManager.UserUChips)}";
                 SB_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.CurrencyAlbum).album[0];
                 BB_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.CurrencyAlbum).album[0];
                 break;
@@ -135,7 +135,7 @@ public class BuyChipsView : MonoBehaviour
             //虛擬貨幣桌
             case TableTypeEnum.VCTable:
                 titleStr = "VIRTUAL CURRENCY TABLE";
-                maxBuyChipsStr = $"{StringUtils.SetChipsUnit(DataManager.UserVCChips)}";
+                maxBuyChipsStr = $"{StringUtils.SetChipsUnit(DataManager.UserAChips)}";
                 SB_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.CurrencyAlbum).album[1];
                 BB_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.CurrencyAlbum).album[1];
                 break;

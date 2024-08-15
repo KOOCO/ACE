@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using UnityEngine.Events;
 
 public class GameControl : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class GameControl : MonoBehaviour
 
     GameRoomData gameRoomData = new();                          //房間資料
     Coroutine cdCoroutine;                                      //倒數Coroutine
+    public double leastChips { get; set; }                      //最少所需籌碼
 
     int prePlayerCount { get; set; }                            //上個紀錄的遊戲人數
     bool isWaitingCreateRobot { get; set; }                     //是否等待產生機器人
@@ -26,7 +28,7 @@ public class GameControl : MonoBehaviour
     GameFlowEnum preLocalGameFlow { get; set; }                 //上個本地遊戲流程
     string preBetActionerId { get; set; }                       //上個下注玩家
     int preCD { get; set; }                                     //當前行動倒數時間
-    bool isCloseAllCdInfo { get; set; }                            //是否關閉倒數訊息
+    bool isCloseAllCdInfo { get; set; }                         //是否關閉倒數訊息
 
     private void Start()
     {
@@ -130,6 +132,8 @@ public class GameControl : MonoBehaviour
         Debug.Log($"Read Game Room Data Callback:{jsonData}");
         var data = FirebaseManager.Instance.OnFirebaseDataRead<GameRoomData>(jsonData);
         gameRoomData = data;
+
+        leastChips = gameRoomData.smallBlind * 2;
 
         //更新房間玩家訊息
         gameView.UpdateGameRoomInfo(gameRoomData);
@@ -860,6 +864,16 @@ public class GameControl : MonoBehaviour
             //發牌
             case GameFlowEnum.Licensing:
 
+                //本地玩家資料
+                GameRoomPlayerData playerData = gameRoomData.playerDataDic.Where(x => x.Value.userId == DataManager.UserId)
+                                                                          .FirstOrDefault()
+                                                                          .Value;
+                //籌碼不足
+                if (playerData.carryChips < leastChips)
+                {
+                    gameView.OnInsufficientChips();
+                }
+
                 gameView.UpdateGameRoomInfo(gameRoomData);
                 gameView.OnLicensingFlow(gameRoomData);
 
@@ -1246,7 +1260,9 @@ public class GameControl : MonoBehaviour
         List<string> playingPlayersId = new();
         foreach (var player in gameRoomData.playerDataDic)
         {
-            if (player.Value.isSitOut == false)
+            //離座 / 籌碼不足 不添加
+            if (player.Value.isSitOut == false ||
+                player.Value.carryChips >= leastChips)
             {
                 playingPlayersId.Add(player.Key);
             }
@@ -1280,10 +1296,23 @@ public class GameControl : MonoBehaviour
     /// </summary>
     /// <param name="id">玩家ID</param>
     /// <param name="dataDic">更新資料</param>
-    public void UpdataPlayerData(string id, Dictionary<string, object> dataDic)
+    /// <param name="callback">回傳執行</param>
+    public void UpdataPlayerData(string id, Dictionary<string, object> dataDic, UnityAction<string> callback = null)
     {
-        JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{id}",
-                                                        dataDic);
+        if (callback == null)
+        {
+            JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{id}",
+                                                dataDic);
+        }
+        else
+        {
+            Debug.Log($"更新玩家個人資料::{callback.Method.Name}");
+            JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{id}",
+                                                dataDic,
+                                                gameObject.name,
+                                                callback.Method.Name);
+        }
+
     }
 
     /// <summary>
@@ -1374,6 +1403,12 @@ public class GameControl : MonoBehaviour
         //該流程是否已下注
         bool isBet = true;
 
+        //更新用戶籌碼資料
+        if (id == DataManager.UserId)
+        {
+            UpdateLocalChips(-difference);
+        }
+
         //更新玩家資料
         var playerData = new Dictionary<string, object>()
         {
@@ -1416,6 +1451,81 @@ public class GameControl : MonoBehaviour
             { FirebaseManager.ACTIONP_PLAYER_COUNT, actionPlayerCount },             //當前流程行動玩家次數
         };
         UpdateGameRoomData(data);
+    }
+
+    #endregion
+
+    #region 用戶籌碼更新
+
+    /// <summary>
+    /// 更新用戶籌碼資料
+    /// </summary>
+    /// <param name="changeValue">籌碼增減值</param>
+    public void UpdateLocalChips(double changeValue)
+    {
+        LobbyView lobbyView = GameObject.FindAnyObjectByType<LobbyView>();
+        var data = new Dictionary<string, object>();
+
+        //更新用戶籌碼
+        double newChips = 0;
+        if (RoomType == TableTypeEnum.Cash)
+        {
+            //現金房
+            newChips = DataManager.UserUChips + changeValue;
+            data = new Dictionary<string, object>()
+            {
+                { FirebaseManager.U_CHIPS, Math.Round(newChips) },
+            };
+        }
+        else
+        {
+            //虛擬房
+            newChips = DataManager.UserAChips + changeValue;
+            data = new Dictionary<string, object>()
+            {
+                { FirebaseManager.A_CHIPS, Math.Round(newChips) },
+            };
+        }
+        JSBridgeManager.Instance.UpdateDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
+                                                        data,
+                                                        nameof(lobbyView.gameObject.name),
+                                                        nameof(lobbyView.UpdateUserData));
+    }
+
+    /// <summary>
+    /// 更新攜帶籌碼(購買籌碼)
+    /// </summary>
+    /// <param name="buyChipsValue">購買籌碼值</param>
+    public void UpdateCarryChips(double buyChipsValue)
+    {
+        LobbyView lobbyView = GameObject.FindAnyObjectByType<LobbyView>();
+        var data = new Dictionary<string, object>();
+
+        //更新用戶籌碼資料
+        UpdateLocalChips(-buyChipsValue);
+
+        //更新房間籌碼
+        GameRoomPlayerData playerData = gameRoomData.playerDataDic.Where(x => x.Value.userId == DataManager.UserId)
+                                                                  .FirstOrDefault()
+                                                                  .Value;
+        double newCarryChips = playerData.carryChips + buyChipsValue;
+        data = new Dictionary<string, object>()
+        {
+            { FirebaseManager.CARRY_CHIPS, newCarryChips},     //攜帶籌碼
+        };
+        UpdataPlayerData(playerData.userId,
+                         data,
+                         UpdateCarryChipsCallback);
+    }
+
+    /// <summary>
+    /// 更新攜帶籌碼(購買籌碼)回傳
+    /// </summary>
+    /// <param name="isSuccess"></param>
+    public void UpdateCarryChipsCallback(string isSuccess)
+    {
+        Debug.Log($"更新攜帶籌碼(購買籌碼)回傳:{isSuccess}");
+        gameView.BuyChipsGoBack();
     }
 
     #endregion

@@ -302,7 +302,7 @@ public class LobbyShopView : MonoBehaviour
         Confirm.onClick.AddListener(() =>
         {
 
-            if (DataManager.UserVCChips < shopData.BuffAmount)
+            if (DataManager.UserAChips < shopData.BuffAmount)
             {
                 shopSample.InsufficientBalance(iconSprite, MallMsgInfo);
                 //Debug.Log("餘額不足");
@@ -318,7 +318,7 @@ public class LobbyShopView : MonoBehaviour
                         DataManager.UserStamina += shopData.BuffAmount;
                         break;
                     case "Gold":
-                        DataManager.UserGoldChips += shopData.BuffAmount;
+                        DataManager.UserGold += shopData.BuffAmount;
                         break;
                     case "Extra Time":
                         DataManager.UserOTProps += shopData.BuffAmount;
@@ -326,7 +326,7 @@ public class LobbyShopView : MonoBehaviour
                 }
 
                 //Debug.Log($"您已購買 {itemName} {shopData.BuffAmount}");
-                DataManager.UserVCChips -= shopData.BuffAmount;
+                DataManager.UserAChips -= shopData.BuffAmount;
                 //Debug.Log($"餘額 {DataManager.UserVCChips}");
             }
 

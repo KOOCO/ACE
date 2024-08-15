@@ -62,7 +62,8 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
             //請求錯誤
-            Debug.LogError(request.error);
+            string errorJson = request.downloadHandler.text;
+            Debug.LogError($"Error: {request.error}\nError Details: {errorJson}");
             errCallback?.Invoke();
         }
         else

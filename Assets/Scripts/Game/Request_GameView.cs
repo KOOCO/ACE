@@ -63,12 +63,12 @@ public class Request_GameView : BaseRequest
 
             //籌碼不足
             case ActionCode.Request_InsufficientChips:
-                thisView.OnInsufficientChips(pack);
+               // thisView.OnInsufficientChips(pack);
                 break;
 
             //購買籌碼
             case ActionCode.Request_BuyChips:
-                thisView.BuyChipsGoBack(pack);
+                //thisView.BuyChipsGoBack(pack);
                 break;
         }
     }

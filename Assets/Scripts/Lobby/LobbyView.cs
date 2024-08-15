@@ -184,6 +184,21 @@ public class LobbyView : MonoBehaviour
 
 #endif
 
+        #region 測試
+
+        //寫入資料
+        Dictionary<string, object> dataDic = new()
+        {
+            { FirebaseManager.U_CHIPS, Math.Round(DataManager.InitGiveUChips) },
+            { FirebaseManager.A_CHIPS, Math.Round(DataManager.InitGiveAChips) },
+            { FirebaseManager.GOLD, Math.Round(DataManager.InitGiveGold) },
+        };
+        JSBridgeManager.Instance.UpdateDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
+                                                        dataDic);
+
+        #endregion
+
+
         ViewManager.Instance.OpenWaitingView(transform);
         DataManager.ReciveRankData();
 
@@ -191,7 +206,9 @@ public class LobbyView : MonoBehaviour
         JSBridgeManager.Instance.StartListeningForDataChanges($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
                                                                gameObject.name,
                                                                nameof(GetDataCallback));
-        //UpdateUserData();
+
+        //刷新用戶資料
+        InvokeRepeating(nameof(UpdateUserData), 30, 30);
     }
 
     private void Update()
@@ -228,6 +245,7 @@ public class LobbyView : MonoBehaviour
 
 #endif
 
+        //讀取用戶資料
         JSBridgeManager.Instance.ReadDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
                                                       gameObject.name,
                                                       nameof(GetDataCallback));
@@ -249,6 +267,9 @@ public class LobbyView : MonoBehaviour
         DataManager.UserInvitationCode = loginData.invitationCode;
         DataManager.UserBoundInviterId = loginData.boundInviterId;
         DataManager.UserLineToken = loginData.lineToken;
+        DataManager.UserUChips = loginData.UChips;
+        DataManager.UserAChips = loginData.AChips;
+        DataManager.UserGold = loginData.gold;
 
         //開啟設置暱稱
         if (isFirstIn &&
@@ -315,8 +336,8 @@ public class LobbyView : MonoBehaviour
 
         //資源列表
         Assets_CryptoChipsValue_Txt.text = string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 ETH" : DataManager.UserWalletBalance;
-        Assets_VCValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserVCChips);
-        Assets_GoldValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserGoldChips);
+        Assets_VCValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserAChips);
+        Assets_GoldValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserGold);
         Assets_StaminaValue_Txt.text = $"{DataManager.UserStamina}/{DataManager.MaxStaminaValue}";
         Assets_OTPropsValue_Txt.text = $"{DataManager.UserOTProps}";
     }

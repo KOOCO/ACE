@@ -1227,11 +1227,14 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         //寫入資料
         Dictionary<string, object> dataDic = new()
         {
-            { FirebaseManager.PHONE_NUMBER, currVerifyPhoneNumber},
-            { FirebaseManager.PASSWORD, currVerifyPsw },
-            { FirebaseManager.INVITATION_CODE, currInviteCode },
-            { FirebaseManager.USER_ID, currUserId },
-            { FirebaseManager.AVATAR_INDEX, 0 },
+            { FirebaseManager.PHONE_NUMBER, currVerifyPhoneNumber},                     //手機號
+            { FirebaseManager.PASSWORD, currVerifyPsw },                                //密碼
+            { FirebaseManager.INVITATION_CODE, currInviteCode },                        //邀請碼
+            { FirebaseManager.USER_ID, currUserId },                                    //UserID
+            { FirebaseManager.AVATAR_INDEX, 0 },                                        //頭像編號
+            { FirebaseManager.U_CHIPS, Math.Round(DataManager.InitGiveUChips) },        //初始給予U幣
+            { FirebaseManager.A_CHIPS, Math.Round(DataManager.InitGiveAChips) },        //初始給予A幣
+            { FirebaseManager.GOLD, Math.Round(DataManager.InitGiveGold) },             //初始給予黃金
         };
         JSBridgeManager.Instance.WriteDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH }{LoginType.phoneUser}/{currVerifyPhoneNumber}",
                                                         dataDic);
@@ -1759,10 +1762,13 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         //寫入資料
         Dictionary<string, object> dataDic = new()
         {
-            { FirebaseManager.PHONE_NUMBER,currVerifyPhoneNumber},
-            { FirebaseManager.INVITATION_CODE, currInviteCode },
-            { FirebaseManager.USER_ID, currUserId },
-            { FirebaseManager.AVATAR_INDEX, 0},
+            { FirebaseManager.PHONE_NUMBER,currVerifyPhoneNumber},                      //手機號
+            { FirebaseManager.INVITATION_CODE, currInviteCode },                        //邀請碼
+            { FirebaseManager.USER_ID, currUserId },                                    //UserID
+            { FirebaseManager.AVATAR_INDEX, 0},                                         //頭像編號
+            { FirebaseManager.U_CHIPS, Math.Round(DataManager.InitGiveUChips) },        //初始給予U幣
+            { FirebaseManager.A_CHIPS, Math.Round(DataManager.InitGiveAChips) },        //初始給予A幣
+            { FirebaseManager.GOLD, Math.Round(DataManager.InitGiveGold) },             //初始給予黃金
         };
         JSBridgeManager.Instance.WriteDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{LoginType.walletUser}/{currVerifyPhoneNumber}",
                                                         dataDic,

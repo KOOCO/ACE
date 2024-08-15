@@ -372,7 +372,7 @@ public class GameView : MonoBehaviour
                                              thisData.SmallBlindValue,
                                              transform.name,
                                              RoomType,
-                                             SendRequest_BuyChips);
+                                             BuyChips);
         });
 
         //離開/回到座位
@@ -1779,6 +1779,14 @@ public class GameView : MonoBehaviour
         //贏家效果
         foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
         {
+            //本地玩家
+            if (potWinnerId == DataManager.UserId)
+            {
+                //更新用戶籌碼資料
+                double changeValue = gameRoomData.potWinData.potWinChips / gameRoomData.potWinData.potWinnersId.Count();
+                gameControl.UpdateLocalChips(changeValue);
+            }
+
             CloseAllPokerEffect();
 
             GameRoomPlayerData playerData = gameRoomData.playerDataDic.Where(x => x.Value.userId == potWinnerId)
@@ -1894,6 +1902,14 @@ public class GameView : MonoBehaviour
         thisData.SideWinnerList = new List<string>();
         foreach (var sideWinnerId in gameRoomData.sideWinData.sideWinnersId)
         {
+            //本地玩家
+            if (sideWinnerId == DataManager.UserId)
+            {
+                //更新用戶籌碼資料
+                double changeValue = gameRoomData.potWinData.potWinChips / gameRoomData.sideWinData.sideWinnersId.Count();
+                gameControl.UpdateLocalChips(changeValue);
+            }
+
             CloseAllPokerEffect();
 
             GameRoomPlayerData playerData = gameRoomData.playerDataDic.Where(x => x.Value.userId == sideWinnerId)
@@ -1938,9 +1954,16 @@ public class GameView : MonoBehaviour
         thisData.BackChipsDic = new Dictionary<int, double>();
         foreach (var backChipsData in gameRoomData.sideWinData.backChipsData)
         {
-            Debug.Log($"顯示退回籌碼:{backChipsData.Key}/{backChipsData.Value.backChipsValue}");
             if (backChipsData.Value.backChipsValue > 0)
             {
+                //本地玩家
+                if (backChipsData.Value.backUserId == DataManager.UserId)
+                {
+                    //更新用戶籌碼資料
+                    double changeValue = backChipsData.Value.backChipsValue;
+                    gameControl.UpdateLocalChips(changeValue);
+                }
+
                 GamePlayerInfo player = GetPlayer(backChipsData.Value.backUserId);
                 player.SetBackChips = backChipsData.Value.backChipsValue;
                 thisData.BackChipsDic.Add(player.SeatIndex, backChipsData.Value.backChipsValue);
@@ -2112,7 +2135,7 @@ public class GameView : MonoBehaviour
     /// 籌碼不足
     /// </summary>
     /// <param name="pack"></param>
-    public void OnInsufficientChips(MainPack pack)
+    public void OnInsufficientChips()
     {
         thisData.IsPlaying = false;
 
@@ -2134,10 +2157,10 @@ public class GameView : MonoBehaviour
         {
             buyChipsView.gameObject.SetActive(true);
             buyChipsView.SetBuyChipsViewInfo(false,
-                                             pack.InsufficientChipsPack.SmallBlind,
+                                             gameRoomData.smallBlind,
                                              transform.name,
                                              RoomType,
-                                             SendRequest_BuyChips);
+                                             BuyChips);
             thisData.LocalGamePlayerInfo.Init();
         }
         else if (RoomType == TableTypeEnum.IntegralTable)
@@ -2147,25 +2170,29 @@ public class GameView : MonoBehaviour
     }
 
     /// <summary>
-    /// 發送購買籌碼
+    /// 購買籌碼
     /// </summary>
     /// <param name="buyValue"></param>
-    public void SendRequest_BuyChips(double buyValue)
+    public void BuyChips(double buyValue)
     {
-        string id = Entry.TestInfoData.LocalUserId;
-        baseRequest.SendRequest_BuyChips(id, buyValue);
+        ViewManager.Instance.OpenWaitingView(transform);
+        gameControl.UpdateCarryChips(buyValue);
     }
 
     /// <summary>
     /// 購買籌碼回到遊戲
     /// </summary>
     /// <param name="pack"></param>
-    public void BuyChipsGoBack(MainPack pack)
+    public void BuyChipsGoBack()
     {
+        ViewManager.Instance.CloseWaitingView(transform);
         CloseMenu();
-
         buyChipsView.gameObject.SetActive(false);
-        double newChips = pack.BuyChipsPack.BuyChipsValue;
+
+        double newChips = gameRoomData.playerDataDic.Where(x => x.Value.userId == DataManager.UserId)
+                                                    .FirstOrDefault()
+                                                    .Value
+                                                    .carryChips;
         thisData.LocalGamePlayerInfo.PlayerRoomChips = newChips;
     }
 

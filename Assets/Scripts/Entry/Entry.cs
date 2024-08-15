@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.Networking;
+using UnityEngine.Events;
 
 public class Entry : UnitySingleton<Entry>
 {
@@ -58,14 +59,6 @@ public class Entry : UnitySingleton<Entry>
         AudioManager.Instance.StartLoadAudioAssets();
 
         LoadSceneManager.Instance.LoadScene(SceneEnum.Login);
-
-
-        #region 測試
-
-        DataManager.UserCryptoChips = 100000;
-        DataManager.UserVCChips = 100000;
-
-        #endregion
     }
 
     private void Update()
@@ -86,8 +79,32 @@ public class Entry : UnitySingleton<Entry>
             {
                 HandHistoryManager.Instance.OnDeleteHistoryData();
             }
+
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                Reigster reigster = new Reigster()
+                {
+                    phoneNumber = "+886987654321",
+                    userName = "JimmyT5",
+                    password = "#Aa123456",
+                    confirmPassword = "#Aa123456",
+                };
+                SwaggerAPIManager.Instance.SendPostAPI<Reigster, callback>("/api/app/ace-accounts/register", reigster);
+            }
         }
         #endregion
+    }
+
+    public class Reigster
+    {
+        public string phoneNumber;
+        public string userName;
+        public string password;
+        public string confirmPassword;
+    }
+    public class callback
+    {
+
     }
 
     #region Instagram登入

@@ -256,12 +256,12 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
 
             //現金桌
             case TableTypeEnum.Cash:
-                str = "Cash";
+                str = "U";
                 break;
 
             //虛擬桌
             case TableTypeEnum.VCTable:
-                str = "VC";
+                str = "A";
                 break;
         }
 
@@ -329,19 +329,33 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
                                         seatIndex);
         }
 
-        /*
-        //假Server
-        GameServer gameServer = room.GetComponent<GameServer>();
-        gameServer.SmallBlind = smallBlind;
-        gameServer.RoomType = roomType;
-        gameServer.QueryRoomPath = queryRoomPath;
-        gameServer.ServerStart(roomType);
-        gameServer.Request_PlayerInOutRoom(pack);*/
-
-        //房間腳本
-        //GameView gameView = room.GetComponent<GameView>();
-        //gameView.RoomType = roomType;
-        //gameView.SendRequest_UpdateRoomInfo();
+        //扣除用戶資源
+        LobbyView lobbyView = GameObject.FindAnyObjectByType<LobbyView>();
+        var data = new Dictionary<string, object>();
+        if (roomType == TableTypeEnum.Cash)
+        {
+            double newUChips = DataManager.UserUChips - carryChips;
+            data = new Dictionary<string, object>()
+            {
+                { FirebaseManager.U_CHIPS, Math.Round(newUChips)},
+            };
+            JSBridgeManager.Instance.UpdateDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
+                                                        data,
+                                                        nameof(lobbyView.gameObject.name),
+                                                        nameof(lobbyView.UpdateUserData));
+        }
+        else
+        {
+            double newAChips = DataManager.UserAChips - carryChips;
+            data = new Dictionary<string, object>()
+            {
+                { FirebaseManager.A_CHIPS, newAChips},
+            };
+            JSBridgeManager.Instance.UpdateDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
+                                                            data,
+                                                            nameof(lobbyView.gameObject.name),
+                                                            nameof(lobbyView.UpdateUserData));
+        }
 
         //關閉其他切換房間按鈕框
         CloseAllBtnFrame();
