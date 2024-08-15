@@ -79,32 +79,8 @@ public class Entry : UnitySingleton<Entry>
             {
                 HandHistoryManager.Instance.OnDeleteHistoryData();
             }
-
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                Reigster reigster = new Reigster()
-                {
-                    phoneNumber = "+886987654321",
-                    userName = "JimmyT5",
-                    password = "#Aa123456",
-                    confirmPassword = "#Aa123456",
-                };
-                SwaggerAPIManager.Instance.SendPostAPI<Reigster, callback>("/api/app/ace-accounts/register", reigster);
-            }
         }
         #endregion
-    }
-
-    public class Reigster
-    {
-        public string phoneNumber;
-        public string userName;
-        public string password;
-        public string confirmPassword;
-    }
-    public class callback
-    {
-
     }
 
     #region Instagram登入

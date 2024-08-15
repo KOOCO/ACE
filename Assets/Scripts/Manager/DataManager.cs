@@ -339,6 +339,7 @@ public static class DataManager
     public static int MaxVideoSaveCount { get { return 20; } }                        //最大紀錄影片數量
     public static int StartCountDownTime{get{ return 20; }}                           //行動倒數時間(秒)
     public static int RobotActionTime { get { return 19; } }                          //機器人行動時間(秒)
+    public static int BuyChipsCountDown { get { return 120;} }                        //購買籌碼離開遊戲倒數時間
 
     #endregion
 }

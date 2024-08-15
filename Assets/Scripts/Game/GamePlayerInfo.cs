@@ -20,9 +20,11 @@ public class GamePlayerInfo : MonoBehaviour
 
     [Header("手牌")]
     [SerializeField]
-    RectTransform HandPoker_Tr;
+    RectTransform HandPoker_Tr, ShowHandPoker_Tr;
     [SerializeField]
     Poker[] HandPokers;
+    [SerializeField]
+    Poker[] ShowHandPokers;
 
     [Header("下注籌碼")]
     [SerializeField]
@@ -144,6 +146,7 @@ public class GamePlayerInfo : MonoBehaviour
         Winner_Obj.SetActive(false);
         SetBackChips = 0;
         SetPokerShapeTxtStr = "";
+        ShowHandPoker_Tr.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -336,6 +339,51 @@ public class GamePlayerInfo : MonoBehaviour
         HandPokers[1].PokerNum = hand1;
 
         IsOpenInfoMask = false;
+    }
+
+    /// <summary>
+    /// 設定棄牌顯示手牌
+    /// </summary>
+    /// <param name="isShow"></param>
+    /// <param name="pokerNum"></param>
+    public void SetShowHandPoker(bool isShow, List<int> pokerNum = null)
+    {
+        ShowHandPoker_Tr.gameObject.SetActive(isShow);
+
+        if (pokerNum != null)
+        {
+            Debug.Log($"設定棄牌顯示手牌:{pokerNum[0]}/{pokerNum[1]}");
+
+            ShowHandPokers[0].gameObject.SetActive(isShow);
+            ShowHandPokers[1].gameObject.SetActive(isShow);
+            ShowHandPokers[0].PokerNum = pokerNum[0];
+            ShowHandPokers[1].PokerNum = pokerNum[1];
+        }
+    }
+
+    /// <summary>
+    /// 顯示棄牌顯示手牌
+    /// </summary>
+    /// <param name="isShow"></param>
+    public void SwitchShoHandPoker(List<int> showPoker)
+    {
+        ShowHandPoker_Tr.gameObject.SetActive(showPoker.Any(x => x >= 0));
+        ShowHandPokers[0].gameObject.SetActive(showPoker[0] >= 0);
+        ShowHandPokers[1].gameObject.SetActive(showPoker[1] >= 0);
+        ShowHandPokers[0].PokerNum = showPoker[0];
+        ShowHandPokers[1].PokerNum = showPoker[1];
+    }
+
+    /// <summary>
+    /// 開啟本地棄牌顯示手牌
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="num"></param>
+    public void OpenLocalShowHandPoker(int index, int num)
+    {
+        ShowHandPoker_Tr.gameObject.SetActive(true);
+        ShowHandPokers[index].gameObject.SetActive(true);
+        ShowHandPokers[index].PokerNum = num;
     }
 
     /// <summary>

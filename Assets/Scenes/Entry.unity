@@ -784,7 +784,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4486474359657938648, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
       propertyPath: version
-      value: V1.0.1
+      value: V1.0.8
       objectReference: {fileID: 0}
     - target: {fileID: 4486474359657938648, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
       propertyPath: ReporterObj
@@ -792,7 +792,7 @@ PrefabInstance:
       objectReference: {fileID: 2076772826}
     - target: {fileID: 4486474359657938648, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
       propertyPath: releaseType
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4486474359657938648, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
       propertyPath: numSimulations
@@ -808,7 +808,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4486474359657938648, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
       propertyPath: isUsingTestRedirectUri
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7169451929337079534, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
       propertyPath: m_Name

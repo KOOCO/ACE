@@ -17,16 +17,20 @@ public class BuyChipsView : MonoBehaviour
     TextMeshProUGUI Title_Txt, BlindsTitle_Txt,
                     SB_Txt, BB_Txt, PreBuyChips_Txt, 
                     MinBuyChips_Txt, MaxBuyChips_Txt,
-                    CancelBtn_Txt, BuyBtn_Txt;
+                    CancelBtn_Txt, BuyBtn_Txt,
+                    CountDownTip_Txt;
 
     private ThisData thisData;
     public class ThisData
     {
+        public GameControl gameControl;
         public bool IsJustBuyChips;                           //一般購買籌碼/籌碼不足須購買
         public string RoomName;                               //掛載的房間名
         public double SmallBlind;                             //小盲值
         public UnityAction<double> SendBuyChipsCallback;      //發送購買籌碼回傳
     }
+
+    int cdTime;                             //倒數時間
 
     /// <summary>
     /// 更新文本翻譯
@@ -88,6 +92,7 @@ public class BuyChipsView : MonoBehaviour
         //購買按鈕
         Buy_Btn.onClick.AddListener(() =>
         {
+            CancelInvoke(nameof(SetCountDownTip));
             double buyChipsValue = BuyChips_Sli.value;
             thisData.SendBuyChipsCallback(buyChipsValue);
         });
@@ -106,6 +111,22 @@ public class BuyChipsView : MonoBehaviour
     }
 
     /// <summary>
+    /// 設定倒數提示
+    /// </summary>
+    private void SetCountDownTip()
+    {
+        cdTime--;
+        CountDownTip_Txt.text = $"<color=#F43535>{cdTime}</color>\n" +
+                                $"{LanguageManager.Instance.GetText("Exit the game after the countdown ends.")}";
+
+        if (cdTime <= 0)
+        {
+            CancelInvoke(nameof(SetCountDownTip));
+            thisData.gameControl.ExitGame();
+        }
+    }
+
+    /// <summary>
     /// 設定購買介面
     /// </summary>
     /// <param name="isJustBuyChips">一般購買籌碼/籌碼不足須購買</param>
@@ -113,12 +134,21 @@ public class BuyChipsView : MonoBehaviour
     /// <param name="roomName">房間名</param>
     /// <param name="tableTypeEnum">遊戲房間類型</param>
     /// <param name="sendBuyCallback">購買結果回傳</param>
-    public void SetBuyChipsViewInfo(bool isJustBuyChips, double smallBlind, string roomName, TableTypeEnum tableTypeEnum, UnityAction<double> sendBuyCallback)
+    public void SetBuyChipsViewInfo(GameControl gameControl, bool isJustBuyChips, double smallBlind, string roomName, TableTypeEnum tableTypeEnum, UnityAction<double> sendBuyCallback)
     {
+        thisData.gameControl = gameControl;
         thisData.IsJustBuyChips = isJustBuyChips;
         thisData.RoomName = roomName;
         thisData.SmallBlind = smallBlind;
         thisData.SendBuyChipsCallback = sendBuyCallback;
+
+        CountDownTip_Txt.text = "";
+        if (isJustBuyChips == false)
+        {
+            cdTime = DataManager.BuyChipsCountDown;
+            InvokeRepeating(nameof(SetCountDownTip), 1, 1);
+        }
+
 
         string titleStr = "";
         string maxBuyChipsStr = "";

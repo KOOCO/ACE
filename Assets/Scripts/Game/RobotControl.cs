@@ -31,7 +31,7 @@ public class RobotControl : MonoBehaviour
         //首位加注玩家
         bool isFirst = gameRoomData.actionPlayerCount == 0;
 
-        if (foldRate > 10)
+        if (foldRate >= 0)
         {
             action = BetActingEnum.Call;
 

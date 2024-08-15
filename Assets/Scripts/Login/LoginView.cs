@@ -1014,39 +1014,47 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         {
             if (loginData.password == currVerifyPsw)
             {
-                //登入成功
-                if (RememberMe_Tog.isOn)
+                //帳號已登入
+                if (loginData.online == true)
                 {
-                    recodePhoneNumber = SignInNumber_If.text;
-                    recodePassword = SignInPassword_If.text;
-                    recodeCountryCodeIndex = SignInNumber_Dd.value;
-
-                    //有勾選記住帳號密碼
-                    LocalDataSave();
-
-                    //  後台帳號登入
-                    /*
-                    string LoginUrl =  "/api/app/ace-accounts/login";
-
-                    Login Data = new Login()
-                    {
-                        userNameOrEmailAddress = currUserId,
-                        password = currVerifyPsw,
-                    };
-
-                    SwaggerAPIManager.Instance.SendPostAPI<Login, Respon>(LoginUrl, Data);
-                    */
+                    SignInNumberError_Txt.text = LanguageManager.Instance.GetText("Duplicate Login.");
                 }
                 else
                 {
-                    //沒勾選清空資料
-                    PlayerPrefs.SetInt(LocalCountryCodeIndex, 0);
-                    PlayerPrefs.SetString(LocalPhoneNumber, "");
-                    PlayerPrefs.SetString(LocalPaswword, "");
-                }
+                    //登入成功
+                    if (RememberMe_Tog.isOn)
+                    {
+                        recodePhoneNumber = SignInNumber_If.text;
+                        recodePassword = SignInPassword_If.text;
+                        recodeCountryCodeIndex = SignInNumber_Dd.value;
 
-                DataManager.UserLoginType = LoginType.phoneUser;
-                OnIntoLobby();
+                        //有勾選記住帳號密碼
+                        LocalDataSave();
+
+                        //  後台帳號登入
+                        /*
+                        string LoginUrl =  "/api/app/ace-accounts/login";
+
+                        Login Data = new Login()
+                        {
+                            userNameOrEmailAddress = currUserId,
+                            password = currVerifyPsw,
+                        };
+
+                        SwaggerAPIManager.Instance.SendPostAPI<Login, Respon>(LoginUrl, Data);
+                        */
+                    }
+                    else
+                    {
+                        //沒勾選清空資料
+                        PlayerPrefs.SetInt(LocalCountryCodeIndex, 0);
+                        PlayerPrefs.SetString(LocalPhoneNumber, "");
+                        PlayerPrefs.SetString(LocalPaswword, "");
+                    }
+
+                    DataManager.UserLoginType = LoginType.phoneUser;
+                    OnIntoLobby();
+                }
             }
             else
             {
