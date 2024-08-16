@@ -29,6 +29,7 @@ public class GameControl : MonoBehaviour
     string preBetActionerId { get; set; }                       //上個下注玩家
     int preCD { get; set; }                                     //當前行動倒數時間
     bool isCloseAllCdInfo { get; set; }                         //是否關閉倒數訊息
+    List<int> localHand { get; set; }                           //本地玩家手牌
 
     private void Start()
     {
@@ -102,7 +103,8 @@ public class GameControl : MonoBehaviour
         {
             //初始遊戲開始
             if (isGameStart == false &&
-                gameRoomData.playerDataDic.Count >= 2)
+                gameRoomData.playerDataDic.Count >= 2 &&
+                gameRoomData.hostId == DataManager.UserId)
             {
                 isGameStart = true;
                 StartCoroutine(IStartGameFlow(GameFlowEnum.Licensing));
@@ -166,7 +168,9 @@ public class GameControl : MonoBehaviour
     /// </summary>
     /// <param name="carryChips">攜帶籌碼</param>
     /// <param name="seatIndex">遊戲座位</param>
-    public void CreateFirstPlayer(double carryChips, int seatIndex)
+    /// <param name="pairPlayerId">積分被配對上的玩家ID</param>
+    /// <param name="integralRoomName">積分房間名稱</param>
+    public void CreateFirstPlayer(double carryChips, int seatIndex, string pairPlayerId = null, string integralRoomName = null)
     {
         if (RoomType != TableTypeEnum.IntegralTable)
         {
@@ -184,6 +188,22 @@ public class GameControl : MonoBehaviour
         };
         UpdataPlayerData(DataManager.UserId,
                          data);
+
+
+        //積分配對上的玩家
+        if (!string.IsNullOrEmpty(pairPlayerId) && 
+            !string.IsNullOrEmpty(integralRoomName))
+        {
+            //更新被配對玩家資料
+            data = new Dictionary<string, object>()
+            {
+                { FirebaseManager.PAIR_ROOM_NAME, integralRoomName},
+            };
+            JSBridgeManager.Instance.UpdateDataFromFirebase(
+                $"{Entry.Instance.releaseType}/{TableTypeEnum.IntegralTable}/{FirebaseManager.INTEGRAL_EAIT_DATA}/{pairPlayerId}",
+                data);
+        }
+
 
         RoomStart();
     }
@@ -817,9 +837,6 @@ public class GameControl : MonoBehaviour
         var data = FirebaseManager.Instance.OnFirebaseDataRead<GameRoomData>(jsonData);
         gameRoomData = data;
 
-        //遊戲介面更新房間資料
-        gameView.UpdateGameRoomData(gameRoomData);
-
         //判斷房主
         JudgeHost();
 
@@ -849,8 +866,17 @@ public class GameControl : MonoBehaviour
         if ((GameFlowEnum)gameRoomData.currGameFlow == GameFlowEnum.PotResult ||
             (GameFlowEnum)gameRoomData.currGameFlow == GameFlowEnum.SideResult)
         {
-            gameView.ShowFoldPoker();
+            GameRoomPlayerData playerData = gameRoomData.playerDataDic.Where(x => x.Value.userId == DataManager.UserId)
+                                                                      .FirstOrDefault()
+                                                                      .Value;
+            if (playerData.handPoker.SequenceEqual(localHand) )
+            {
+                gameView.ShowFoldPoker();
+            }                                    
         }
+
+        //遊戲介面更新房間資料
+        gameView.UpdateGameRoomData(gameRoomData);
     }
 
     /// <summary>
@@ -901,6 +927,8 @@ public class GameControl : MonoBehaviour
                 {
                     yield return IStartGameFlow(GameFlowEnum.SetBlind);
                 }
+
+                localHand = playerData.handPoker;
                 break;
 
             //大小盲
@@ -1086,11 +1114,10 @@ public class GameControl : MonoBehaviour
 
             Debug.Log("Local Player Start Action!!!");
             player.InitCountDown();
-
-            if (player.UserId == DataManager.UserId)
-            {
-                gameView.LocalPlayerRound(gameRoomData);
-            }
+        }
+        if (player.UserId == DataManager.UserId)
+        {
+            gameView.LocalPlayerRound(gameRoomData);
         }
 
         if (gameRoomData.actionCD < 0 ||
@@ -1328,6 +1355,7 @@ public class GameControl : MonoBehaviour
             { FirebaseManager.POT_CHIPS, 0},                                        //底池
             { FirebaseManager.PLAYING_PLAYER_ID, playingPlayersId},                 //遊戲中玩家ID
             { FirebaseManager.COMMUNITY_POKER, SetPoker()},                         //公共牌
+            { FirebaseManager.CURR_COMMUNITY_POKER, new List<int>()},               //當前公共牌座位
             { FirebaseManager.BUTTON_SEAT, newButtonSeat},                          //Button座位
         };
         UpdateGameRoomData(data);

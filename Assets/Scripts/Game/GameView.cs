@@ -1065,12 +1065,21 @@ public class GameView : MonoBehaviour
     {
         foreach (var player in gameRoomData.playerDataDic.Values)
         {
+            GamePlayerInfo gamePlayerInfo = GetPlayer(player.userId);
+
+            //贏家不蓋牌
+            if (gameRoomData.potWinData.potWinnersId.Contains(player.userId) ||
+                gameRoomData.sideWinData.sideWinnersId.Contains(player.userId))
+            {
+                gamePlayerInfo.SetShowHandPoker(false);
+                continue;
+            }
+
             if ((PlayerStateEnum)player.gameState != PlayerStateEnum.Waiting)
             {
                 if (player.userId != DataManager.UserId)
                 {
-                    List<int> showPoker = player.showHandPoker;
-                    GamePlayerInfo gamePlayerInfo = GetPlayer(player.userId);
+                    List<int> showPoker = player.showHandPoker;                    
                     gamePlayerInfo.SetShowHandPoker(true, showPoker);
                 }
             }
@@ -2551,6 +2560,17 @@ public class GameView : MonoBehaviour
         this.gameRoomData = gameRoomData;
 
         SetTotalPot = gameRoomData.potChips;
+
+        if (gameRoomData.currGameFlow < (int)GameFlowEnum.Flop)
+        {
+            //公共牌
+            List<int> currCommunityPoker = gameRoomData.currCommunityPoker;
+            for (int i = 0; i < currCommunityPoker.Count; i++)
+            {
+                CommunityPokerList[i].gameObject.SetActive(true);
+                CommunityPokerList[i].PokerNum = currCommunityPoker[i];
+            }
+        }
     }
 
     /// <summary>
@@ -2607,6 +2627,7 @@ public class GameView : MonoBehaviour
             }
         }
 
+        //設置Button座位
         GameRoomPlayerData buttonPlayerData = gameRoomData.playerDataDic.Where(x => x.Value.gameSeat == gameRoomData.buttonSeat)
                                                                         .FirstOrDefault()
                                                                         .Value;
@@ -2616,8 +2637,6 @@ public class GameView : MonoBehaviour
                                                                              .Where(x => (PlayerStateEnum)x.Value.gameState == PlayerStateEnum.Playing)
                                                                              .Select(x => x.Value)
                                                                              .ToList();
-
-        //設置Button座位
         var dataDic = new Dictionary<string, object>()
         {
             { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.Button},
@@ -2625,28 +2644,64 @@ public class GameView : MonoBehaviour
         gameControl.UpdataPlayerData(buttonPlayer.UserId,
                                      dataDic);
 
-
-        //設置SB座位
-        GameRoomPlayerData sbPlayerData = playerOrderSeat[(gameRoomData.buttonSeat + 1) % playerOrderSeat.Count()];
-        GamePlayerInfo sbPlayer = GetPlayer(sbPlayerData.userId);
-        sbPlayer.SetSeatCharacter(SeatCharacterEnum.SB);
-        dataDic = new Dictionary<string, object>()
+        GameRoomPlayerData sbPlayerData;
+        GamePlayerInfo sbPlayer;
+        GameRoomPlayerData bbPlayerData;
+        GamePlayerInfo bbPlayer;
+        if (gameRoomData.playingPlayersIdList.Count == 2)
         {
-            { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.SB},
-        };
-        gameControl.UpdataPlayerData(sbPlayer.UserId,
-                                     dataDic);
+            //只有2人
 
-        //設置BB座位
-        GameRoomPlayerData bbPlayerData = playerOrderSeat[(gameRoomData.buttonSeat + 2) % playerOrderSeat.Count()];
-        GamePlayerInfo bbPlayer = GetPlayer(bbPlayerData.userId);
-        bbPlayer.SetSeatCharacter(SeatCharacterEnum.BB);
-        dataDic = new Dictionary<string, object>()
+            //設置SB座位
+            sbPlayerData = playerOrderSeat[gameRoomData.buttonSeat];
+            sbPlayer = GetPlayer(sbPlayerData.userId);
+            sbPlayer.SetSeatCharacter(SeatCharacterEnum.SB);
+            dataDic = new Dictionary<string, object>()
+            {
+                { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.SB},
+            };
+            gameControl.UpdataPlayerData(sbPlayer.UserId,
+                                         dataDic);
+
+            //設置BB座位
+            bbPlayerData = playerOrderSeat[(gameRoomData.buttonSeat + 1) % playerOrderSeat.Count()];
+            bbPlayer = GetPlayer(bbPlayerData.userId);
+            bbPlayer.SetSeatCharacter(SeatCharacterEnum.BB);
+            dataDic = new Dictionary<string, object>()
+            {
+                { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.BB},
+            };
+            gameControl.UpdataPlayerData(bbPlayer.UserId,
+                                         dataDic);
+        }
+        else
         {
-            { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.BB},
-        };
-        gameControl.UpdataPlayerData(bbPlayer.UserId,
-                                     dataDic);
+            //3人以上玩家
+
+            //設置SB座位
+            sbPlayerData = playerOrderSeat[(gameRoomData.buttonSeat + 1) % playerOrderSeat.Count()];
+            sbPlayer = GetPlayer(sbPlayerData.userId);
+            sbPlayer.SetSeatCharacter(SeatCharacterEnum.SB);
+            dataDic = new Dictionary<string, object>()
+            {
+                { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.SB},
+            };
+            gameControl.UpdataPlayerData(sbPlayer.UserId,
+                                         dataDic);
+
+            //設置BB座位
+            bbPlayerData = playerOrderSeat[(gameRoomData.buttonSeat + 2) % playerOrderSeat.Count()];
+            bbPlayer = GetPlayer(bbPlayerData.userId);
+            bbPlayer.SetSeatCharacter(SeatCharacterEnum.BB);
+            dataDic = new Dictionary<string, object>()
+            {
+                { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.BB},
+            };
+            gameControl.UpdataPlayerData(bbPlayer.UserId,
+                                         dataDic);
+        }
+
+        
 
         //更新當前行動玩家
         var data = new Dictionary<string, object>()

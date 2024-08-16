@@ -77,6 +77,12 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
     public const string BACK_USER_ID = "backUserId";                                         //退回籌碼用戶ID
     public const string BACK_CHIPS_VALUE = "backChipsValue";                                 //退回籌碼值
 
+    [Header("積分房")]
+    public const string INTEGRAL_ROOM = "integralRoom";                                      //積分房房間路徑
+    public const string INTEGRAL_EAIT_DATA = "integralWaitData";                             //積分房等待資料路徑
+    public const string PAIR_ROOM_NAME = "pairRoomName";                                     //配對成功房間名稱
+    public const string PAIRED = "paired";                                                   //是否已被選上配對
+
     public override void Awake()
     {
         base.Awake();
@@ -101,7 +107,6 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
             return data;
         }
     }
-
 
     /// <summary>
     /// 移除資料
@@ -130,6 +135,30 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
         }
     }
 }
+
+#region 積分
+
+/// <summary>
+/// 積分等待資料
+/// </summary>
+[SerializeField]
+public class IntegralWaitData
+{
+    public Dictionary<string, IntefralWaitUserData> integralWaitData;           //積分等待資料
+}
+
+/// <summary>
+/// 積分等待用戶資料
+/// </summary>
+[SerializeField]
+public class IntefralWaitUserData
+{
+    public string userId;                        //等待玩家ID
+    public string pairRoomName;                  //配對成功房間名稱
+    public bool paired;                          //是否已被選上配對
+}
+
+#endregion
 
 #region 用戶
 

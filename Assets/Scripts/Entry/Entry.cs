@@ -221,6 +221,8 @@ public class Entry : UnitySingleton<Entry>
     /// </summary>
     public void OnWindowFocus()
     {
+        GameRoomManager.Instance.OnUpdateGame();
+
         //跳轉到下載錢包頁面回來
         if (DataManager.IsOpenDownloadWallet)
         {

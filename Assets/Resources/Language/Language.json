@@ -370,6 +370,11 @@
     "zh_TW": "帳號已登入。"
   },
   {
+    "ID": "Not enough chips.",
+    "English": "Not enough chips.",
+    "zh_TW": "籌碼不足。"
+  },
+  {
     "ID": "登入(LoginView)",
     "English": null,
     "zh_TW": null
