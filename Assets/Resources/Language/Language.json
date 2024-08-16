@@ -365,11 +365,6 @@
     "zh_TW": "錯誤的邀請碼。"
   },
   {
-    "ID": "Duplicate Login.",
-    "English": "Duplicate Login.",
-    "zh_TW": "帳號已登入。"
-  },
-  {
     "ID": "登入(LoginView)",
     "English": null,
     "zh_TW": null
@@ -771,7 +766,7 @@
   },
   {
     "ID": "LINK NOW",
-    "English": "LINK NOW",
+    "English": "Link Now",
     "zh_TW": "立即連結"
   },
   {
@@ -785,9 +780,14 @@
     "zh_TW": "尚未連結"
   },
   {
-    "ID": "Invitation Code",
-    "English": "Invitation Code",
+    "ID": "InviteCode",
+    "English": "INVITE CODE",
     "zh_TW": "邀請碼"
+  },
+  {
+    "ID": "Invite Friends",
+    "English": "Invite Friends",
+    "zh_TW": "邀請朋友"
   },
   {
     "ID": "Bound Inviter",
@@ -813,6 +813,26 @@
     "ID": "Binding Successful",
     "English": "Binding Successful",
     "zh_TW": "綁定成功"
+  },
+  {
+    "ID": "Copy",
+    "English": "Copy",
+    "zh_TW": "複製"
+  },
+  {
+    "ID": "Share QR Code",
+    "English": "Share QR Code!",
+    "zh_TW": "分享QRcode!"
+  },
+  {
+    "ID": "Bring Friends",
+    "English": "Bring Friends, Play Texas Hold'em, Win Rewards!",
+    "zh_TW": "帶上朋友，玩德州撲克，贏取獎勵！"
+  },
+  {
+    "ID": "Please Enter Code",
+    "English": "Please Enter Code",
+    "zh_TW": "請輸入邀請碼"
   },
   {
     "ID": "手牌紀錄",

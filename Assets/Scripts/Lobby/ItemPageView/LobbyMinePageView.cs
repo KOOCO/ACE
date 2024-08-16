@@ -87,7 +87,7 @@ public class LobbyMinePageView : MonoBehaviour
     TextMeshProUGUI InvitationCodeTitle_Txt, InvitationCodeShareBtn_Txt, MyInvitationCode_Txt,
                     InvitationCode_Txt, CopiedInvitationCode_Txt,
                     BoundInviterTitle_Txt, BoundInviterIdf_Placeholder, InviationCodeSubmitBtn_Txt,
-                    InviationCodeError_Txt,BringFriends_Text,InviteCodeTitle_Text;
+                    InviationCodeError_Txt,BringFriends_Text,InviteCodeTitle_Text,Copy_Text;
 
     [Header("交易紀錄")]
     [SerializeField]
@@ -187,6 +187,7 @@ public class LobbyMinePageView : MonoBehaviour
         BringFriends_Text.text = LanguageManager.Instance.GetText("Bring Friends");
         //BoundInviterTitle_Txt.text = LanguageManager.Instance.GetText("InviteCode");
         InviteCodeTitle_Text.text = LanguageManager.Instance.GetText("InviteCode");
+        Copy_Text.text = LanguageManager.Instance.GetText("Copy");
 
         #endregion
 

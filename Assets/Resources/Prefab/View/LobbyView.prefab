@@ -4545,6 +4545,7 @@ MonoBehaviour:
   LobbyMinePageView: {fileID: 6752597787101536108, guid: b33876997bb0a6a40962eea04ef1b32b, type: 3}
   LobbyRankingView: {fileID: 7532165618673014345, guid: 5b90ffcffb6e64a4d80acdef6b16c56f, type: 3}
   LobbyShopView: {fileID: 7532165618673014345, guid: 23d8bfa511521f544a6be501ad3cbe39, type: 3}
+  LobbyActivityView: {fileID: 7532165618673014345, guid: fcb47a270d8332942938cc4fa9ccaf07, type: 3}
   MineBtn_Txt: {fileID: 3518349737872176522}
   ShopBtn_Txt: {fileID: 3819655656664424585}
   ActivityBtn_Txt: {fileID: 3699860969951470928}
