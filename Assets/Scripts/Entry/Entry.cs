@@ -74,15 +74,36 @@ public class Entry : UnitySingleton<Entry>
                 NFTManager.Instance.UpdateNFT();
             }
 
-            //移除手牌紀錄
-            if (Input.GetKeyDown(KeyCode.F8))
-            {
-                HandHistoryManager.Instance.OnDeleteHistoryData();
-            }
+           
+
         }
-        #endregion
+        //if (Input.GetKeyDown(KeyCode.F))
+        //    {
+        //        Debug.Log("123");
+        //        Reigster reigster = new Reigster()
+        //        {
+        //            //RegisterNumber_If, RegisterOTP_If, RegisterPassword_If, RegisterAccountName_If;
+        //            phoneNumber = "+886" ,//把 RegisterNumber物件的匯入
+        //            userName = "Wei123",
+        //            password = "#Aa123456",
+        //            confirmPassword = "#Aa123456",
+        //        };
+        //        SwaggerAPIManager.Instance.SendPostAPI<Reigster, callback>("/api/app/ace-accounts/register", reigster);
+        //    }
+        
     }
 
+    public class Reigster
+    {
+        public string phoneNumber;
+        public string userName;
+        public string password;
+        public string confirmPassword;
+    }
+    public class callback
+    {
+
+    }
     #region Instagram登入
 
     /// <summary>
@@ -266,3 +287,4 @@ public class Entry : UnitySingleton<Entry>
 
     #endregion
 }
+#endregion

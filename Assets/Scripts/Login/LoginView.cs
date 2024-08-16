@@ -17,6 +17,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using NBitcoin;
 using Org.BouncyCastle.Asn1.Ocsp;
+using System.Text.RegularExpressions;
 
 public class LoginView : MonoBehaviour, IPointerClickHandler
 {
@@ -99,7 +100,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
     [SerializeField]
     Button RegisterOTPSend_Btn, RegisterPasswordEye_Btn, RegisterSubmit_Btn, RegisterSuccSignin_Btn, RegisterSuccessfulCancel_Btn;
     [SerializeField]
-    TMP_InputField RegisterNumber_If, RegisterOTP_If, RegisterPassword_If;
+    TMP_InputField RegisterNumber_If, RegisterOTP_If, RegisterPassword_If, RegisterAccountName_If;
     [SerializeField]
     TMP_Dropdown RegisterNumber_Dd;
     [SerializeField]
@@ -110,7 +111,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
     TextMeshProUGUI RegisterNumber_Txt, RegisterNumberIf_Placeholder,
                     RegisterCode_Txt, RegisterOTPIf_Placeholder, RegisterOTPSendBtn_Txt,
                     RegisterPassword_Txt, RegisterPasswordIf_Placeholder,
-                    RegisterSubmitBtn_Txt;
+                    RegisterSubmitBtn_Txt ;
 
     [Header("手機注冊密碼檢查")]
     [SerializeField]
@@ -179,6 +180,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
 
     Coroutine connectionEffectCoroutine;                                        //連接錢包效果
     DateTime startConnectTime;                                                  //開始連接錢包時間
+    bool isRegisterAccountNameCorrect;                                        //帳號是否正確
     bool isShowPassword;                                                        //是否顯示密碼
     bool isClickSignUpHere;                                                     //是否點擊註冊
     bool isRegisterPasswordCorrect;                                             //是否手機注冊密碼正確
@@ -242,7 +244,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         public string WalletProviderStr;
         public WalletEnum TheWalletEnum;
     }
-
+    
     /// <summary>
     /// 更新文本翻譯
     /// </summary>
@@ -535,7 +537,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
             bool check1 = GameUtils.CnahgeCheckIcon(StringUtils.CheckSpecialCharacter(RegisterPassword_If.text), RegisterCheckPassword1_Img);
             bool check2 = GameUtils.CnahgeCheckIcon(StringUtils.CheckUppercaseAndLowercase(RegisterPassword_If.text), RegisterCheckPassword2_Img);
             bool check3 = GameUtils.CnahgeCheckIcon(RegisterPassword_If.text.Length >= 8, RegisterCheckPassword3_Img);
-            isRegisterPasswordCorrect = check1 && check2 && check3;
+            isRegisterPasswordCorrect = check1 && check2 && check3 && isRegisterAccountNameCorrect;
         });
 
         //手機注冊密碼顯示
@@ -548,6 +550,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         //手機注冊提交
         RegisterSubmit_Btn.onClick.AddListener(() =>
         {
+            Debug.Log("我是按鈕");
             MobileRegisterSubmit();
         });
 
@@ -673,6 +676,18 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Reigster reigster = new Reigster()
+            {
+                //RegisterNumber_If, RegisterOTP_If, RegisterPassword_If, RegisterAccountName_If;
+                phoneNumber = RegisterNumber_If.text,//把 RegisterNumber物件的匯入
+                userName = RegisterAccountName_If.text,
+                password = RegisterPassword_If.text,
+                confirmPassword = RegisterPassword_If.text,
+            };
+            SwaggerAPIManager.Instance.SendPostAPI<Reigster, callback>("/api/app/ace-accounts/register", reigster);
+        }
         //發送OTP倒數
         float codeTime = (float)(DateTime.Now - codeStartTime).TotalSeconds;
         LostPswOTPSend_Btn.interactable = codeTime > codeCountDownTime;
@@ -1097,6 +1112,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
             RegisterNumber_If.Select();
             currIfList = new List<TMP_InputField>()
             {
+                RegisterAccountName_If,//新增帳號
                 RegisterNumber_If,
                 RegisterOTP_If,
                 RegisterPassword_If,
@@ -1104,12 +1120,14 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
             KybordEnterAction = MobileRegisterSubmit;
         }
     }
+    
 
     /// <summary>
     /// 手機註冊提交
     /// </summary>
-    private void MobileRegisterSubmit()
+    public void MobileRegisterSubmit()
     {
+       
         RegisterNumberError_Txt.text = "";
         RegisterCodeError_Txt.text = "";
         RegisterPasswordError_Txt.text = "";
@@ -1117,8 +1135,24 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         string phoneNumber = StringUtils.GetPhoneAddCode(RegisterNumber_Dd, RegisterNumber_If.text);
         string code = RegisterOTP_If.text;
         string psw = RegisterPassword_If.text;
-
+        string AccountName = RegisterAccountName_If.text;
         bool isCorrect = true;
+
+        if (IsValidAccountName(AccountName))
+        {
+            Debug.Log(RegisterAccountName_If.text);
+            //布林在這邊設置
+            isRegisterAccountNameCorrect = true;
+            Debug.Log("成功設置");
+        }
+        else
+        {
+            isRegisterAccountNameCorrect = false;
+            Debug.LogError("失敗");
+
+            return;
+        }
+
         if (!StringUtils.CheckPhoneNumber(RegisterNumber_If.text))
         {
             //手機號格式錯誤
@@ -1138,6 +1172,18 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
             //密碼錯誤
             isCorrect = false;
             RegisterPasswordError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
+        }
+        else
+        {
+            //Reigster reigster = new Reigster()
+            //    {
+            //        //RegisterNumber_If, RegisterOTP_If, RegisterPassword_If, RegisterAccountName_If;
+            //        phoneNumber = RegisterNumber_If.text,//把 RegisterNumber物件的匯入
+            //        userName = RegisterAccountName_If.text,
+            //        password = RegisterPassword_If.text,
+            //        confirmPassword = RegisterPassword_If.text,
+            //    };
+            //    SwaggerAPIManager.Instance.SendPostAPI<Reigster, callback>("/api/app/ace-accounts/register", reigster);
         }
 
         if (!Privacy_Tog.isOn)
@@ -1171,12 +1217,23 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
                             LoginType.phoneUser.ToString());
         }
     }
+   
+    public class Reigster
+{
+    public string phoneNumber;
+    public string userName;
+    public string password;
+    public string confirmPassword;
+}
+public class callback
+{
 
-    /// <summary>
-    /// 手機註冊OTP驗證
-    /// </summary>
-    /// <param name="jsonData">回傳資料</param>
-    private void RegisterVerifyCode(string jsonData)
+}
+/// <summary>
+/// 手機註冊OTP驗證
+/// </summary>
+/// <param name="jsonData">回傳資料</param>
+private void RegisterVerifyCode(string jsonData)
     {
         AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
 
@@ -1860,6 +1917,22 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         }
 
         isGetUserId = true;
+    }
+    /// <summary>
+    /// 帳號規則檢查
+    /// </summary>
+    /// <param name="jsonData">回傳結果(true/false)</param>
+    bool IsValidAccountName(string AccountName)
+    {
+        if (AccountName.Length < 7)
+            return false;
+
+        // 需要同時有英文跟數字
+        bool hasLetter = Regex.IsMatch(AccountName, "[A-Za-z]");
+        bool hasDigit = Regex.IsMatch(AccountName, "[0-9]");
+
+        // 檢查字元
+        return Regex.IsMatch(AccountName, "^[A-Za-z0-9]+$") && hasLetter && hasDigit;
     }
 
     #endregion
