@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.Networking;
 using UnityEngine.Events;
+using System.Linq;
 
 public class Entry : UnitySingleton<Entry>
 {

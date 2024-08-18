@@ -8,6 +8,10 @@ using TMPro;
 
 public class LobbyMainPageView : MonoBehaviour
 {
+    [Header("背景")]
+    [SerializeField]
+    Image Bg_Img;
+
     [Header("廣告刊版")]
     [SerializeField]
     GameObject BillboardSample, PointSample;
@@ -58,6 +62,17 @@ public class LobbyMainPageView : MonoBehaviour
 
     string dataRoomName;                                    //查詢資料的房間名稱
     string pairPlayerUserId;                                //被配對上的玩家ID
+
+    /// <summary>
+    /// 背景開關
+    /// </summary>
+    public bool SwitchBg
+    {
+        set
+        {
+            Bg_Img.gameObject.SetActive(value);
+        }
+    }
 
     /// <summary>
     /// 積分房資料
@@ -124,7 +139,7 @@ public class LobbyMainPageView : MonoBehaviour
                         integralData.isPairing = true;
                         integralData.startPairTime = DateTime.Now;
 
-                        JSBridgeManager.Instance.ReadDataFromFirebase($"{Entry.Instance.releaseType}/{TableTypeEnum.IntegralTable}/{FirebaseManager.INTEGRAL_EAIT_DATA}",
+                        JSBridgeManager.Instance.ReadDataFromFirebase($"{Entry.Instance.releaseType}/{TableTypeEnum.IntegralTable}",
                                                                       gameObject.name,
                                                                       nameof(QueryCallback));
                     }
@@ -147,6 +162,7 @@ public class LobbyMainPageView : MonoBehaviour
     private void Start()
     {
         lobbyView = GameObject.FindAnyObjectByType<LobbyView>();
+        SwitchBg = false;
 
         InitBillBoard();
         CreateRoomBtn();
@@ -224,12 +240,6 @@ public class LobbyMainPageView : MonoBehaviour
             //配對中房間已達上限
             if (GameRoomManager.Instance.GetRoomCount >= GameRoomManager.Instance.maxRoomCount)
             {
-                IntegralEndPair();
-            }
-
-            if (waitingTime.Seconds >= 3)
-            {
-                lobbyView.baseRequest.SendRequest_InBattleRoom();
                 IntegralEndPair();
             }
         }
@@ -414,30 +424,34 @@ public class LobbyMainPageView : MonoBehaviour
     /// <param name="jsonData">回傳資料</param>
     public void QueryCallback(string jsonData)
     {
-        var gameRoomData = FirebaseManager.Instance.OnFirebaseDataRead<IntegralWaitData>(jsonData);
-
+        var gameRoomData = FirebaseManager.Instance.OnFirebaseDataRead<IntegralTable>(jsonData);
+        Debug.Log($"查詢積分房房間回傳人數:{gameRoomData.integralWaitData.Count}");
         //尋找未配對玩家
+        var data = new Dictionary<string, object>();
         foreach (var waitPlayer in gameRoomData.integralWaitData)
         {
+            Debug.Log($"配對ID:{waitPlayer.Value.userId}");
+            Debug.Log($"配對:{(waitPlayer.Value.paired == false)}");
+            Debug.Log($"配對3:{string.IsNullOrEmpty(waitPlayer.Value.pairRoomName)}");
+            //配對到玩家
             if (waitPlayer.Value.paired == false &&
                 string.IsNullOrEmpty(waitPlayer.Value.pairRoomName))
             {
-                pairPlayerUserId = waitPlayer.Key;
-
                 //更新被配對玩家資料
-                var data = new Dictionary<string, object>()
+                data = new Dictionary<string, object>()
                 {
-                    { FirebaseManager.PAIRED, true},
+                    { FirebaseManager.PAIRED, true},        //是否已被選上配對
                 };
                 JSBridgeManager.Instance.UpdateDataFromFirebase(
-                    $"{Entry.Instance.releaseType}/{TableTypeEnum.IntegralTable}/{FirebaseManager.INTEGRAL_EAIT_DATA}/{waitPlayer.Key}",
+                    $"{Entry.Instance.releaseType}/{TableTypeEnum.IntegralTable}/{FirebaseManager.INTEGRAL_WAIT_DATA}/{waitPlayer.Key}",
                     data);
 
                 string roomToken = StringUtils.GenerateRandomString(DataManager.RoomTokenLength);
                 dataRoomName = $"{FirebaseManager.INTEGRAL_ROOM}_{roomToken}";
+                pairPlayerUserId = waitPlayer.Key;
 
                 //創建房間
-                var dataDic = new Dictionary<string, object>()
+                data = new Dictionary<string, object>()
                 {
                     { FirebaseManager.SMALL_BLIND, DataManager.IntegralSmallBlind},         //小盲值
                     { FirebaseManager.ROOM_HOST_ID, DataManager.UserId},                    //房主ID
@@ -445,11 +459,31 @@ public class LobbyMainPageView : MonoBehaviour
                 };
                 JSBridgeManager.Instance.WriteDataFromFirebase(
                     $"{Entry.Instance.releaseType}/{TableTypeEnum.IntegralTable}/{FirebaseManager.INTEGRAL_ROOM}/{dataRoomName}",
-                    dataDic,
+                    data,
                     gameObject.name,
                     nameof(CreateIntegralRommCallback));
+
+                return;
             }
         }
+
+        Debug.Log($"加入配對列表:{DataManager.UserId}");
+        //加入配對列表
+        data = new Dictionary<string, object>()
+        {
+            { FirebaseManager.USER_ID, DataManager.UserId},             //等待玩家ID
+            { FirebaseManager.PAIR_ROOM_NAME, ""},                      //配對成功房間名稱
+            { FirebaseManager.PAIRED, false},                           //是否已被選上配對
+        };
+        JSBridgeManager.Instance.UpdateDataFromFirebase(
+            $"{Entry.Instance.releaseType}/{TableTypeEnum.IntegralTable}/{FirebaseManager.INTEGRAL_WAIT_DATA}/{DataManager.UserId}",
+            data);
+
+        //開始監聽配對
+        JSBridgeManager.Instance.StartListeningForDataChanges(
+            $"{Entry.Instance.releaseType}/{TableTypeEnum.IntegralTable}/{FirebaseManager.INTEGRAL_WAIT_DATA}/{DataManager.UserId}",
+            gameObject.name,
+            nameof(ListenerPairCallback));
     }
 
     /// <summary>
@@ -470,7 +504,7 @@ public class LobbyMainPageView : MonoBehaviour
 
         GameRoomManager.Instance.CreateGameRoom(TableTypeEnum.IntegralTable,
                                                 DataManager.IntegralSmallBlind,
-                                                $"{Entry.Instance.releaseType}/{TableTypeEnum.IntegralTable}{FirebaseManager.INTEGRAL_ROOM}/{dataRoomName}",
+                                                $"{Entry.Instance.releaseType}/{TableTypeEnum.IntegralTable}/{FirebaseManager.INTEGRAL_ROOM}/{dataRoomName}",
                                                 true,
                                                 DataManager.IntegralNeedChips,
                                                 0,
@@ -479,13 +513,50 @@ public class LobbyMainPageView : MonoBehaviour
     }
 
     /// <summary>
+    /// 監聽配對回傳
+    /// </summary>
+    /// <param name="jsonData"></param>
+    public void ListenerPairCallback(string jsonData)
+    {
+        var loginData = FirebaseManager.Instance.OnFirebaseDataRead<IntefralWaitUserData>(jsonData);
+
+        //被配對到
+        if (!string.IsNullOrEmpty(loginData.pairRoomName))
+        {
+            IntegralEndPair();
+
+            //移除監聽
+            JSBridgeManager.Instance.StopListeningForDataChanges(
+                $"{Entry.Instance.releaseType}/{TableTypeEnum.IntegralTable}/{FirebaseManager.INTEGRAL_WAIT_DATA}/{DataManager.UserId}");
+
+            //加入房間
+            dataRoomName = loginData.pairRoomName;
+            GameRoomManager.Instance.CreateGameRoom(TableTypeEnum.IntegralTable,
+                                                    DataManager.IntegralSmallBlind,
+                                                    $"{Entry.Instance.releaseType}/{TableTypeEnum.IntegralTable}/{FirebaseManager.INTEGRAL_ROOM}/{dataRoomName}",
+                                                    false,
+                                                    DataManager.IntegralNeedChips,
+                                                    3,
+                                                    null,
+                                                    loginData.pairRoomName);
+        }
+    }
+
+    /// <summary>
     /// 積分房結束配對
     /// </summary>
     private void IntegralEndPair()
     {
-        pairPlayerUserId = "";
         IntegralBtn_Txt.text = LanguageManager.Instance.GetText("INTEGRAL");
         integralData.isPairing = false;
+
+        //移除監聽
+        JSBridgeManager.Instance.StopListeningForDataChanges(
+            $"{Entry.Instance.releaseType}/{TableTypeEnum.IntegralTable}/{FirebaseManager.INTEGRAL_WAIT_DATA}/{DataManager.UserId}");
+
+        //從配對中移除
+        JSBridgeManager.Instance.RemoveDataFromFirebase(
+                $"{Entry.Instance.releaseType}/{TableTypeEnum.IntegralTable}/{FirebaseManager.INTEGRAL_WAIT_DATA}/{DataManager.UserId}");
     }
 
     #endregion

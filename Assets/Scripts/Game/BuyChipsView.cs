@@ -74,7 +74,7 @@ public class BuyChipsView : MonoBehaviour
             else
             {
                 //籌碼不足須購買
-                GameRoomManager.Instance.RemoveGameRoom(thisData.RoomName);
+                thisData.gameControl.ExitGame();
             }            
         });
 

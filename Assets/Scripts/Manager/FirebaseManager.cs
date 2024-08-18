@@ -32,7 +32,7 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
     public const string BET_ACTION_DATA = "betActionDataDic";                               //下注行為資料路徑
     public const string POT_WIN_DATA = "potWinData";                                        //底池獲勝資料路徑
     public const string SIDE_WIN_DATA = "sideWinData";                                      //邊池獲勝資料路徑
-    public const string BACK_CHIPS_DATA = "backChipsData";                                  //頹回醜馬資料路徑
+    public const string BACK_CHIPS_DATA = "backChipsData";                                  //退回籌碼資料路徑
     public const string SMALL_BLIND = "smallBlind";                                         //小盲值
     public const string ROBOT_INDEX = "robotIndex";                                         //機器人編號
     public const string ROOM_HOST_ID = "hostId";                                            //房主ID
@@ -79,7 +79,7 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
 
     [Header("積分房")]
     public const string INTEGRAL_ROOM = "integralRoom";                                      //積分房房間路徑
-    public const string INTEGRAL_EAIT_DATA = "integralWaitData";                             //積分房等待資料路徑
+    public const string INTEGRAL_WAIT_DATA = "integralWaitData";                             //積分房等待資料路徑
     public const string PAIR_ROOM_NAME = "pairRoomName";                                     //配對成功房間名稱
     public const string PAIRED = "paired";                                                   //是否已被選上配對
 
@@ -103,7 +103,7 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
         }
         else
         {
-            Debug.Log("Firebase data read: " + JsonUtility.ToJson(data, true));
+            //Debug.Log("Firebase data read: " + JsonUtility.ToJson(data, true));
             return data;
         }
     }
@@ -142,7 +142,7 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
 /// 積分等待資料
 /// </summary>
 [SerializeField]
-public class IntegralWaitData
+public class IntegralTable
 {
     public Dictionary<string, IntefralWaitUserData> integralWaitData;           //積分等待資料
 }

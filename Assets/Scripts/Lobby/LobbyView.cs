@@ -370,8 +370,16 @@ public class LobbyView : MonoBehaviour
     /// <param name="itemType"></param>
     private void OpenItemPage(ItemType itemType)
     {
+        LobbyMainPageView mainPageView = null;
         for (int i = 0; i < Floor3.childCount; i++)
         {
+            if (Floor3.GetChild(i).GetComponent<LobbyMainPageView>() != null)
+            {
+                mainPageView = Floor3.GetChild(i).GetComponent<LobbyMainPageView>();
+                mainPageView.SwitchBg = true;
+                continue;
+            }
+
             Destroy(Floor3.GetChild(i).gameObject);
         }
 
@@ -380,7 +388,14 @@ public class LobbyView : MonoBehaviour
         {
             //主頁
             case ItemType.Main:
-                itemObj = LobbyMainPageView;
+                if (mainPageView == null)
+                {
+                    itemObj = LobbyMainPageView;
+                }
+                else
+                {
+                    mainPageView.SwitchBg = false;
+                }
                 break;
 
             //用戶訊息
