@@ -5,6 +5,7 @@ using System;
 using UnityEngine.Networking;
 using UnityEngine.Events;
 using System.Linq;
+using Proyecto26;
 
 public class Entry : UnitySingleton<Entry>
 {

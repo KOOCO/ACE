@@ -1241,6 +1241,11 @@ public class GameControl : MonoBehaviour
     /// </summary>
     public void ShowBetAction()
     {
+        Debug.Log("下注行為演出");
+        Debug.Log($"下注行為演出betActionerId:{gameRoomData.betActionDataDic.betActionerId}");
+        Debug.Log($"下注行為演出preBetActionerId:{preBetActionerId}");
+        Debug.Log($"下注行為演出betAction:{gameRoomData.betActionDataDic.betAction}");
+
         if (string.IsNullOrEmpty(gameRoomData.betActionDataDic.betActionerId) ||
             preBetActionerId == gameRoomData.betActionDataDic.betActionerId)
         {

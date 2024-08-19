@@ -1352,6 +1352,7 @@ public class GameView : MonoBehaviour
             float multiple = (int)Mathf.Ceil((float)thisData.LocalPlayerChips / (float)(thisData.SmallBlindValue * 2));
             Raise_Sli.maxValue = (float)(thisData.SmallBlindValue * 2) * multiple;
             Raise_Sli.minValue = 0;
+            Raise_Sli.value = 0;
             Raise_Sli.value = (float)thisData.MinRaiseValue;
 
             //加注值
