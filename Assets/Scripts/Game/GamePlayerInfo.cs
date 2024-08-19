@@ -513,6 +513,8 @@ public class GamePlayerInfo : MonoBehaviour
     {
         Action_Img.gameObject.SetActive(isShow);
 
+        Debug.Log($"顯示行動:{isShow}/{betActionEnum}");
+
         switch (betActionEnum)
         {
             case BetActionEnum.Fold:
@@ -524,6 +526,10 @@ public class GamePlayerInfo : MonoBehaviour
                 break;
 
             case BetActionEnum.Raise:
+                Action_Img.color = raiseColor;
+                break;
+
+            case BetActionEnum.Bet:
                 Action_Img.color = raiseColor;
                 break;
 
@@ -543,6 +549,7 @@ public class GamePlayerInfo : MonoBehaviour
         if (betActionEnum == BetActionEnum.Blinds ||
             betActionEnum == BetActionEnum.Call ||
             betActionEnum == BetActionEnum.Raise ||
+            betActionEnum == BetActionEnum.Bet ||
             betActionEnum == BetActionEnum.AllIn)
         {
             if (isEffect)
@@ -611,6 +618,11 @@ public class GamePlayerInfo : MonoBehaviour
 
             //加注
             case BetActingEnum.Raise:
+                PlayerBet(betValue, chips);
+                break;
+
+            //下注
+            case BetActingEnum.Bet:
                 PlayerBet(betValue, chips);
                 break;
 

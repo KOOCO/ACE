@@ -527,6 +527,15 @@ public class GameControl : MonoBehaviour
                 //遊戲資料初始化
                  GameDataInit();
 
+                //積分房只剩下玩家1名
+                if (RoomType == TableTypeEnum.IntegralTable && 
+                    gameRoomData.playingPlayersIdList.Count() == 1)
+                {
+                    //顯示積分結果
+                    gameView.SetBattleResult(true);
+                    yield break;
+                }
+
                 yield return new WaitForSeconds(1);
 
                 //更新遊戲流程
@@ -1052,6 +1061,14 @@ public class GameControl : MonoBehaviour
                 {
                     yield return new WaitForSeconds(2);
 
+                    //積分房對手離開/斷線
+                    if (RoomType == TableTypeEnum.IntegralTable &&
+                        gameRoomData.playingPlayersIdList.Count() == 1)
+                    {
+                        //顯示積分結果
+                        gameView.SetBattleResult(GetLocalPlayer().carryChips >= leastChips);
+                    }
+
                     //重新遊戲流程
                     yield return IStartGameFlow(GameFlowEnum.Licensing);
                 }
@@ -1119,7 +1136,7 @@ public class GameControl : MonoBehaviour
             yield break;
         }
 
-        //找不到玩家
+        //找不到玩家(玩家離開/斷線)
         if (!gameRoomData.playerDataDic.ContainsKey(gameRoomData.currActionerId))
         {
             yield return new WaitForSeconds(1);
@@ -1260,10 +1277,28 @@ public class GameControl : MonoBehaviour
             List<GameRoomPlayerData> foldPlayers = GetFoldPlayer();
             List<GameRoomPlayerData> playingPlayers = GetPlayingPlayer();
 
+            Debug.Log($"canActionPlayers:{canActionPlayers.Count()}");
+            Debug.Log($"allInPlayers:{allInPlayers.Count()}");
+            Debug.Log($"foldPlayers:{foldPlayers.Count()}");
+            Debug.Log($"playingPlayers:{playingPlayers.Count()}");
+            Debug.Log($"playingPlayersIdList:{gameRoomData.playingPlayersIdList.Count()}");
+
             //所有玩家已下注
-            bool isAllBet = canActionPlayers.All(x => x.isBet == true);
+            bool isAllBet = true;
+            if (canActionPlayers.Count() > 0)
+            {
+                isAllBet = canActionPlayers.All(x => x.isBet == true);
+            }
+            Debug.Log("所有玩家已下注");    
+
             //下注籌碼一致
-            bool isBetValueEqual = playingPlayers.All(x => x.currAllBetChips == canActionPlayers[0].currAllBetChips);
+            bool isBetValueEqual = true;
+            if (playingPlayers.Count() > 0 &&
+                canActionPlayers.Count() > 0)
+            {
+                isBetValueEqual = playingPlayers.All(x => x.currAllBetChips == canActionPlayers[0].currAllBetChips);
+            }
+            Debug.Log("下注籌碼一致");
 
             //剩下一名玩家可行動，其他玩家棄牌/離開
             if (foldPlayers.Count() == gameRoomData.playingPlayersIdList.Count() - 1)
@@ -1271,13 +1306,16 @@ public class GameControl : MonoBehaviour
                 yield return IStartGameFlow(GameFlowEnum.OnePlayerLeftResult);
                 yield break;
             }
+            Debug.Log("剩下一名玩家可行動，其他玩家棄牌/離開");
 
             //所有玩家AllIn/Fold
-            if (canActionPlayers.Count() == 0)
+            if (canActionPlayers.Count() == 0 ||
+                allInPlayers.Count() == gameRoomData.playingPlayersIdList.Count())
             {
                 yield return IStartGameFlow(GameFlowEnum.PotResult);
                 yield break;
             }
+            Debug.Log("所有玩家AllIn/Fold");
 
             //剩下一名玩家可行動，其他玩家棄牌/離開，下注值>=當前跟注值
             if (isAllBet &&
@@ -1288,6 +1326,7 @@ public class GameControl : MonoBehaviour
                 yield return IStartGameFlow(GameFlowEnum.PotResult);
                 yield break;
             }
+            Debug.Log("剩下一名玩家可行動，其他玩家棄牌/離開，下注值>=當前跟注值");
 
             //所有玩家已下注 & 下注籌碼一致
             if (isAllBet == true &&
@@ -1298,6 +1337,7 @@ public class GameControl : MonoBehaviour
                 yield return IStartGameFlow(nextFlow);                
                 yield break;
             }
+            Debug.Log("所有玩家已下注 & 下注籌碼一致");
 
             //設置下位行動玩家
             UpdateNextPlayer();
@@ -1456,7 +1496,6 @@ public class GameControl : MonoBehaviour
         List<GameRoomPlayerData> players = new List<GameRoomPlayerData>();
         foreach (var item in gameRoomData.playingPlayersIdList)
         {
-            Debug.Log($"設置行動玩家item:{item}");
             GameRoomPlayerData player = gameRoomData.playerDataDic.Where(x => x.Value.userId == item)
                                                                   .FirstOrDefault()
                                                                   .Value;

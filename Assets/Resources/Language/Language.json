@@ -890,6 +890,11 @@
     "zh_TW": "加注"
   },
   {
+    "ID": "Bet",
+    "English": "Bet",
+    "zh_TW": "下注"
+  },
+  {
     "ID": "Call",
     "English": "Call",
     "zh_TW": "跟注"
@@ -908,6 +913,11 @@
     "ID": "RaiseTo",
     "English": "RaiseTo",
     "zh_TW": "加注至"
+  },
+  {
+    "ID": "BetTo",
+    "English": "BetTo",
+    "zh_TW": "下注至"
   },
   {
     "ID": "CheckOrFold",

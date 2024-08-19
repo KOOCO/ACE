@@ -139,6 +139,14 @@ public class LobbyMainPageView : MonoBehaviour
                         integralData.isPairing = true;
                         integralData.startPairTime = DateTime.Now;
 
+                        //移除未使用積分房
+                        JSBridgeManager.Instance.JoinRoomQueryData($"{Entry.Instance.releaseType}/{TableTypeEnum.IntegralTable}",
+                                            $"{2}",
+                                            $"{DataManager.UserId}",
+                                            gameObject.name,
+                                            nameof(CheckRoomCallback));
+
+                        //讀取積分房訊息
                         JSBridgeManager.Instance.ReadDataFromFirebase($"{Entry.Instance.releaseType}/{TableTypeEnum.IntegralTable}",
                                                                       gameObject.name,
                                                                       nameof(QueryCallback));
@@ -417,6 +425,11 @@ public class LobbyMainPageView : MonoBehaviour
     #endregion
 
     #region 積分房
+
+    public void CheckRoomCallback(string jsonData)
+    {
+
+    }
 
     /// <summary>
     /// 查詢積分房房間回傳
