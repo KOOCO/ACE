@@ -889,8 +889,7 @@ public class GameControl : MonoBehaviour
             GameRoomPlayerData playerData = gameRoomData.playerDataDic.Where(x => x.Value.userId == DataManager.UserId)
                                                                       .FirstOrDefault()
                                                                       .Value;
-            if (playerData.gameState == (int)PlayerStateEnum.Fold &&
-                playerData.handPoker != null &&
+            if (playerData.handPoker != null &&
                 playerData.handPoker.SequenceEqual(localHand))
             {
                 gameView.ShowFoldPoker();
