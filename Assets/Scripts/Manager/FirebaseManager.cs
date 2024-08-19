@@ -32,7 +32,7 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
     public const string BET_ACTION_DATA = "betActionDataDic";                               //下注行為資料路徑
     public const string POT_WIN_DATA = "potWinData";                                        //底池獲勝資料路徑
     public const string SIDE_WIN_DATA = "sideWinData";                                      //邊池獲勝資料路徑
-    public const string BACK_CHIPS_DATA = "backChipsData";                                  //頹回醜馬資料路徑
+    public const string BACK_CHIPS_DATA = "backChipsData";                                  //退回籌碼資料路徑
     public const string SMALL_BLIND = "smallBlind";                                         //小盲值
     public const string ROBOT_INDEX = "robotIndex";                                         //機器人編號
     public const string ROOM_HOST_ID = "hostId";                                            //房主ID
@@ -77,6 +77,12 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
     public const string BACK_USER_ID = "backUserId";                                         //退回籌碼用戶ID
     public const string BACK_CHIPS_VALUE = "backChipsValue";                                 //退回籌碼值
 
+    [Header("積分房")]
+    public const string INTEGRAL_ROOM = "integralRoom";                                      //積分房房間路徑
+    public const string INTEGRAL_WAIT_DATA = "integralWaitData";                             //積分房等待資料路徑
+    public const string PAIR_ROOM_NAME = "pairRoomName";                                     //配對成功房間名稱
+    public const string PAIRED = "paired";                                                   //是否已被選上配對
+
     public override void Awake()
     {
         base.Awake();
@@ -97,11 +103,10 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
         }
         else
         {
-            Debug.Log("Firebase data read: " + JsonUtility.ToJson(data, true));
+            //Debug.Log("Firebase data read: " + JsonUtility.ToJson(data, true));
             return data;
         }
     }
-
 
     /// <summary>
     /// 移除資料
@@ -130,6 +135,30 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
         }
     }
 }
+
+#region 積分
+
+/// <summary>
+/// 積分等待資料
+/// </summary>
+[SerializeField]
+public class IntegralTable
+{
+    public Dictionary<string, IntefralWaitUserData> integralWaitData;           //積分等待資料
+}
+
+/// <summary>
+/// 積分等待用戶資料
+/// </summary>
+[SerializeField]
+public class IntefralWaitUserData
+{
+    public string userId;                        //等待玩家ID
+    public string pairRoomName;                  //配對成功房間名稱
+    public bool paired;                          //是否已被選上配對
+}
+
+#endregion
 
 #region 用戶
 

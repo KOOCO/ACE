@@ -22,8 +22,6 @@ public class JoinRoomView : MonoBehaviour
                     MinBuyChips_Txt, MaxBuyChips_Txt,
                     CancelBtn_Txt, BuyBtn_Txt;
 
-    const int RoomTokenLength = 10;      //房間段碼長度
-
     string dataRoomName;                 //查詢資料的房間名稱
     double smallBlind;                   //小盲值
     TableTypeEnum tableType;             //房間類型
@@ -155,7 +153,7 @@ public class JoinRoomView : MonoBehaviour
         {
             //沒有找到房間
             Debug.Log($"沒有找到房間:{queryRoom.roomCount}");
-            string roomToken = StringUtils.GenerateRandomString(RoomTokenLength);
+            string roomToken = StringUtils.GenerateRandomString(DataManager.RoomTokenLength);
             dataRoomName = $"{FirebaseManager.ROOM_NAME}{queryRoom.roomCount + 1}_{roomToken}";
 
             //創新房間資料
@@ -208,11 +206,11 @@ public class JoinRoomView : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
 
         GameRoomManager.Instance.CreateGameRoom(tableType,
-                                        smallBlind,
-                                        $"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}/{dataRoomName}",
-                                        true,
-                                        BuyChips_Sli.value,
-                                        0);
+                                                smallBlind,
+                                                $"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}/{dataRoomName}",
+                                                true,
+                                                BuyChips_Sli.value,
+                                                0);
 
         ViewManager.Instance.CloseWaitingView(transform);
         gameObject.SetActive(false);

@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.Networking;
 using UnityEngine.Events;
+using System.Linq;
 
 public class Entry : UnitySingleton<Entry>
 {
@@ -242,6 +243,8 @@ public class Entry : UnitySingleton<Entry>
     /// </summary>
     public void OnWindowFocus()
     {
+        GameRoomManager.Instance.OnUpdateGame();
+
         //跳轉到下載錢包頁面回來
         if (DataManager.IsOpenDownloadWallet)
         {

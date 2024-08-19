@@ -14,6 +14,7 @@ public class BattleResultView : MonoBehaviour
     private ThidData thidData;
     public class ThidData
     {
+        public GameControl gameControl;
         public string RoomName;
     }
 
@@ -31,7 +32,7 @@ public class BattleResultView : MonoBehaviour
         //確認
         confirm_Btn.onClick.AddListener(() =>
         {
-            GameRoomManager.Instance.RemoveGameRoom(thidData.RoomName);
+            thidData.gameControl.ExitGame();
         });
     }
 
@@ -40,8 +41,10 @@ public class BattleResultView : MonoBehaviour
     /// </summary>
     /// <param name="isWin"></param>
     /// <param name="roomName"></param>
-    public void OnSetBattleResult(bool isWin, string roomName)
+    /// <param name="gameControl"></param>
+    public void OnSetBattleResult(bool isWin, string roomName, GameControl gameControl)
     {
+        thidData.gameControl = gameControl;
         thidData.RoomName = roomName;
         string resultStr = isWin ?
                            LanguageManager.Instance.GetText("Win") :

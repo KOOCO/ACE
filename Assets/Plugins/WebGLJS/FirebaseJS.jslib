@@ -276,8 +276,6 @@ mergeInto(LibraryManager.library, {
 
                         for (let playerKey in room.playerDataDic) {
                             const player = room.playerDataDic[playerKey];
-                            console.log("房間重複1!!!" + player.userId);
-                            console.log("房間重複3!!!" + id);
                             if (player.userId == id) {
                                 playerFound = true;
                                 break;

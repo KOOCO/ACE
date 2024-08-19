@@ -278,7 +278,10 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
     /// <param name="isNewRoom">是否是新房間</param>
     /// <param name="carryChips">攜帶籌碼</param>
     /// <param name="seatIndex">座位</param>
-    public void CreateGameRoom(TableTypeEnum roomType, double smallBlind, string queryRoomPath, bool isNewRoom, double carryChips, int seatIndex)
+    /// <param name="pairPlayerId">積分被配對上的玩家ID</param>
+    /// <param name="integralRoomName">積分房間名稱</param>
+    public void CreateGameRoom(TableTypeEnum roomType, double smallBlind, string queryRoomPath, bool isNewRoom, double carryChips, int seatIndex, 
+        string pairPlayerId = null, string integralRoomName = null)
     {
         IsShowGameRoom = true;
         thisData.RoomNameIndex++;
@@ -320,41 +323,15 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
         if (isNewRoom)
         {
             gameControl.CreateFirstPlayer(carryChips,
-                                          seatIndex);
+                                          seatIndex,
+                                          pairPlayerId,
+                                          integralRoomName);
 
         }
         else
         {
             gameControl.NewPlayerInRoom(carryChips, 
                                         seatIndex);
-        }
-
-        //扣除用戶資源
-        LobbyView lobbyView = GameObject.FindAnyObjectByType<LobbyView>();
-        var data = new Dictionary<string, object>();
-        if (roomType == TableTypeEnum.Cash)
-        {
-            double newUChips = DataManager.UserUChips - carryChips;
-            data = new Dictionary<string, object>()
-            {
-                { FirebaseManager.U_CHIPS, Math.Round(newUChips)},
-            };
-            JSBridgeManager.Instance.UpdateDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
-                                                        data,
-                                                        nameof(lobbyView.gameObject.name),
-                                                        nameof(lobbyView.UpdateUserData));
-        }
-        else
-        {
-            double newAChips = DataManager.UserAChips - carryChips;
-            data = new Dictionary<string, object>()
-            {
-                { FirebaseManager.A_CHIPS, newAChips},
-            };
-            JSBridgeManager.Instance.UpdateDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
-                                                            data,
-                                                            nameof(lobbyView.gameObject.name),
-                                                            nameof(lobbyView.UpdateUserData));
         }
 
         //關閉其他切換房間按鈕框

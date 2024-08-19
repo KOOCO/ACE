@@ -101,8 +101,6 @@ window.callbacks = window.callbacks || {};
 // id = 監測ID
 // roomPathPtr = 監測房間資料路徑
 function initializePresence(path, id) {
-    console.log("Start Listener Connection State:" + id);
-
     var userStatusDatabaseRef = firebase.database().ref(path);
     var connectedRef = firebase.database().ref(".info/connected");
 

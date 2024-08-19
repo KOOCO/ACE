@@ -6,6 +6,7 @@ using System;
 using Thirdweb;
 using System.Threading.Tasks;
 using TMPro;
+using Unity.VisualScripting;
 
 public class LobbyView : MonoBehaviour
 {
@@ -34,7 +35,7 @@ public class LobbyView : MonoBehaviour
     [SerializeField]
     Button Mine_Btn, Shop_Btn, Main_Btn, Activity_Btn, Ranking_Btn;
     [SerializeField]
-    GameObject LobbyMainPageView, LobbyMinePageView, LobbyRankingView, LobbyShopView;
+    GameObject LobbyMainPageView, LobbyMinePageView, LobbyRankingView, LobbyShopView,LobbyActivityView;
     [SerializeField]
     TextMeshProUGUI MineBtn_Txt, ShopBtn_Txt, ActivityBtn_Txt, RankingBtn_Txt;
 
@@ -156,6 +157,12 @@ public class LobbyView : MonoBehaviour
             OpenItemPage(ItemType.Shop);
         });
 
+        //活動
+        Activity_Btn.onClick.AddListener(() =>
+        {
+            OpenItemPage(ItemType.Activity);
+        });
+
         #endregion
 
         Transfers_Btn.onClick.AddListener(() =>
@@ -213,11 +220,6 @@ public class LobbyView : MonoBehaviour
 
     private void Update()
     {
-        //  任務生成測試
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            DisplayFloor4UI(QuestView);
-        }
 
         #region 測試
 
@@ -368,8 +370,16 @@ public class LobbyView : MonoBehaviour
     /// <param name="itemType"></param>
     private void OpenItemPage(ItemType itemType)
     {
+        LobbyMainPageView mainPageView = null;
         for (int i = 0; i < Floor3.childCount; i++)
         {
+            if (Floor3.GetChild(i).GetComponent<LobbyMainPageView>() != null)
+            {
+                mainPageView = Floor3.GetChild(i).GetComponent<LobbyMainPageView>();
+                mainPageView.SwitchBg = true;
+                continue;
+            }
+
             Destroy(Floor3.GetChild(i).gameObject);
         }
 
@@ -378,7 +388,14 @@ public class LobbyView : MonoBehaviour
         {
             //主頁
             case ItemType.Main:
-                itemObj = LobbyMainPageView;
+                if (mainPageView == null)
+                {
+                    itemObj = LobbyMainPageView;
+                }
+                else
+                {
+                    mainPageView.SwitchBg = false;
+                }
                 break;
 
             //用戶訊息
@@ -394,6 +411,11 @@ public class LobbyView : MonoBehaviour
             //商店
             case ItemType.Shop:
                 itemObj = LobbyShopView;
+                break;
+            
+            //活動
+            case ItemType.Activity:
+                itemObj = LobbyActivityView;
                 break;
         }
 

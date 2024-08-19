@@ -143,6 +143,7 @@ public class GameView : MonoBehaviour
 
     GameRoomData gameRoomData;                                  //房間資料
 
+    AudioPool audioPool;
     ObjPool objPool;
     List<GamePlayerInfo> gamePlayerInfoList = new();            //玩家資料
 
@@ -278,6 +279,7 @@ public class GameView : MonoBehaviour
     public void Awake()
     {
         objPool = new ObjPool(transform, MaxChatCount);
+        audioPool = new AudioPool(transform);
 
         ListenerEvent();
 
@@ -712,6 +714,15 @@ public class GameView : MonoBehaviour
     }
 
     /// <summary>
+    /// 播放音效
+    /// </summary>
+    /// <param name="soundName"></param>
+    public void PlaySound(string soundName)
+    {
+        audioPool.PlaySound(soundName);
+    }
+
+    /// <summary>
     /// 遊戲暫停
     /// </summary>
     public bool GamePause
@@ -1065,12 +1076,13 @@ public class GameView : MonoBehaviour
     {
         foreach (var player in gameRoomData.playerDataDic.Values)
         {
-            if ((PlayerStateEnum)player.gameState != PlayerStateEnum.Waiting)
+            GamePlayerInfo gamePlayerInfo = GetPlayer(player.userId);
+
+            if ((PlayerStateEnum)player.gameState == PlayerStateEnum.Fold)
             {
                 if (player.userId != DataManager.UserId)
                 {
-                    List<int> showPoker = player.showHandPoker;
-                    GamePlayerInfo gamePlayerInfo = GetPlayer(player.userId);
+                    List<int> showPoker = player.showHandPoker;                    
                     gamePlayerInfo.SetShowHandPoker(true, showPoker);
                 }
             }
@@ -1107,11 +1119,19 @@ public class GameView : MonoBehaviour
                           ((float)(gameRoomData.smallBlind * 2) * PotBbRate[btnIndex]) :
                           ((float)gameRoomData.potChips * (PotPercentRate[btnIndex] / 100));
 
-        Debug.Log($"底池百分比加注1:{isBlindFirst}");
-        Debug.Log($"底池百分比加注2:{gameRoomData.smallBlind * 2} * {PotBbRate[btnIndex]} = {(gameRoomData.smallBlind * 2) * PotBbRate[btnIndex]}");
-        Debug.Log($"底池百分比加注3:{btnIndex}/{gameRoomData.smallBlind}/{gameRoomData.potChips}/{raiseValue}");
-        Debug.Log($"底池百分比加注4:{thisData.LocalPlayerChips}");
         Raise_Sli.value = (int)raiseValue;
+    }
+
+    /// <summary>
+    /// 輪到本地玩家檢查下注區域狀態
+    /// </summary>
+    public void CheckActionArea(GameRoomData gameRoomData)
+    {
+        //顯示異常
+        if (FoldBtn_Txt.text == "CheckOrFold")
+        {
+            LocalPlayerRound(gameRoomData);
+        }
     }
 
     /// <summary>
@@ -1471,7 +1491,11 @@ public class GameView : MonoBehaviour
         
 
         gamePlayerInfo.gameObject.SetActive(true);
-        Debug.Log($"添加玩家:{playerData.userId}/{playerData.carryChips}");
+        if (playerData.gameSeat == gameRoomData.buttonSeat)
+        {
+            gamePlayerInfo.SetSeatCharacter(SeatCharacterEnum.Button);
+        }
+        gamePlayerInfo.SetSeatCharacter((SeatCharacterEnum)playerData.seatCharacter);
         gamePlayerInfo.SetInitPlayerInfo(seatIndex,
                                          playerData.userId,
                                          playerData.nickname,
@@ -1527,6 +1551,29 @@ public class GameView : MonoBehaviour
         double betValue = gameRoomData.betActionDataDic.betActionValue;
         double chips = gameRoomData.betActionDataDic.updateCarryChips;
         bool isLocalPlayer = id == DataManager.UserId;
+
+        //音效播放
+        switch (actionEnum)
+        {
+            case BetActingEnum.Blind:
+                PlaySound("SoundBet");
+                break;
+            case BetActingEnum.Fold:
+                PlaySound("SoundFold");
+                break;
+            case BetActingEnum.Check:
+                PlaySound("SoundCheck");
+                break;
+            case BetActingEnum.Raise:
+                PlaySound("SoundRaise");
+                break;
+            case BetActingEnum.Call:
+                PlaySound("SoundCall");
+                break;
+            case BetActingEnum.AllIn:
+                PlaySound("SoundGatherChips");
+                break;
+        }
 
         //本地玩家
         if (isLocalPlayer)
@@ -1725,6 +1772,7 @@ public class GameView : MonoBehaviour
         {
             if (CommunityPokerList[i].gameObject.activeSelf == false)
             {
+                PlaySound("SoundShowCard");
                 CommunityPokerList[i].gameObject.SetActive(true);
                 CommunityPokerList[i].PokerNum = currCommunityPoker[i];
                 StartCoroutine(CommunityPokerList[i].IHorizontalFlopEffect(currCommunityPoker[i]));
@@ -1760,29 +1808,34 @@ public class GameView : MonoBehaviour
             judgePoker.Add(poker.PokerNum);
         }
 
-        //公共牌
-        judgePoker = judgePoker.Concat(thisData.CurrCommunityPoker).ToList();
-
-        List<Poker> pokers = CommunityPokerList.Concat(handPoker.ToList()).ToList();
-
-        //關閉公共牌撲克效果
-        foreach (var poker in pokers)
+        if (judgePoker != null &&
+            thisData.CurrCommunityPoker != null &&
+            handPoker != null)
         {
-            poker.PokerEffectEnable = false;
-        }
+            //公共牌
+            judgePoker = judgePoker.Concat(thisData.CurrCommunityPoker).ToList();
 
-        //判斷牌型
-        PokerShape.JudgePokerShape(judgePoker, (resultIndex, matchPokerList) =>
-        {
-            player.SetPokerShapeStr(resultIndex);
+            List<Poker> pokers = CommunityPokerList.Concat(handPoker.ToList()).ToList();
 
-            if (isOpenMatchPokerFrame && resultIndex < 10)
+            //關閉公共牌撲克效果
+            foreach (var poker in pokers)
             {
-                PokerShape.OpenMatchPokerFrame(pokers,
-                                               matchPokerList,
-                                               isWinEffect);
+                poker.PokerEffectEnable = false;
             }
-        });
+
+            //判斷牌型
+            PokerShape.JudgePokerShape(judgePoker, (resultIndex, matchPokerList) =>
+            {
+                player.SetPokerShapeStr(resultIndex);
+
+                if (isOpenMatchPokerFrame && resultIndex < 10)
+                {
+                    PokerShape.OpenMatchPokerFrame(pokers,
+                                                   matchPokerList,
+                                                   isWinEffect);
+                }
+            });
+        }
     }
 
     /// <summary>
@@ -1799,20 +1852,26 @@ public class GameView : MonoBehaviour
         yield return IConcentrateBetChips();
         yield return IFlopCommunityPoker(gameRoomData.currCommunityPoker);
 
-        //顯示手牌牌型
-        foreach (var playerId in gameRoomData.playingPlayersIdList)
-        {
-            GameRoomPlayerData playerData = gameRoomData.playerDataDic.Where(x => x.Value.userId == playerId)
-                                                                      .FirstOrDefault()
-                                                                      .Value;
-            if ((PlayerStateEnum)playerData.gameState != PlayerStateEnum.Waiting &&
-                (PlayerStateEnum)playerData.gameState != PlayerStateEnum.Fold)
-            {
-                GamePlayerInfo player = GetPlayer(playerId);
-                player.SetHandPoker(playerData.handPoker[0],
-                                    playerData.handPoker[0]);
+        //是否所有人都棄牌
+        bool isOnePlayerLeft = gameRoomData.playingPlayersIdList.Count() - gameControl.GetFoldPlayer().Count() == 1;
 
-                JudgePokerShape(player, false);
+        if (isOnePlayerLeft == false)
+        {
+            //顯示手牌牌型
+            foreach (var playerId in gameRoomData.playingPlayersIdList)
+            {
+                GameRoomPlayerData playerData = gameRoomData.playerDataDic.Where(x => x.Value.userId == playerId)
+                                                                          .FirstOrDefault()
+                                                                          .Value;
+                if ((PlayerStateEnum)playerData.gameState != PlayerStateEnum.Waiting &&
+                    (PlayerStateEnum)playerData.gameState != PlayerStateEnum.Fold)
+                {
+                    GamePlayerInfo player = GetPlayer(playerId);
+                    player.SetHandPoker(playerData.handPoker[0],
+                                        playerData.handPoker[0]);
+
+                    JudgePokerShape(player, false);
+                }
             }
         }
 
@@ -1865,6 +1924,7 @@ public class GameView : MonoBehaviour
             ObjMoveUtils.ObjMoveToTarget(rt, winnerSeatPos, 0.5f,
                                         () =>
                                         {
+                                            PlaySound("SoundWinPot");
                                             player.PlayerRoomChips = playerData.carryChips;
                                             Destroy(rt.gameObject);
                                         });
@@ -1987,6 +2047,7 @@ public class GameView : MonoBehaviour
             ObjMoveUtils.ObjMoveToTarget(rt, winnerSeatPos, 0.5f,
                                         () =>
                                         {
+                                            PlaySound("SoundWinPot");
                                             player.PlayerRoomChips = playerData.carryChips;
                                             Destroy(rt.gameObject);
                                         });
@@ -1995,10 +2056,14 @@ public class GameView : MonoBehaviour
 
             //關閉撲克外框
             Poker[] handPoker = player.GetHandPoker;
-            List<Poker> pokerList = CommunityPokerList.Concat(handPoker.ToList()).ToList();
-            foreach (var poker in pokerList)
+            if (CommunityPokerList != null &&
+                handPoker != null)
             {
-                poker.PokerEffectEnable = false;
+                List<Poker> pokerList = CommunityPokerList.Concat(handPoker.ToList()).ToList();
+                foreach (var poker in pokerList)
+                {
+                    poker.PokerEffectEnable = false;
+                }
             }
         }
 
@@ -2259,7 +2324,7 @@ public class GameView : MonoBehaviour
     {
         BattleResultView.gameObject.SetActive(true);
         BattleResultView battleResult = BattleResultView.GetComponent<BattleResultView>();
-        battleResult.OnSetBattleResult(isWin, transform.name);
+        battleResult.OnSetBattleResult(isWin, transform.name, gameControl);
     }
 
     #region 聊天
@@ -2524,6 +2589,11 @@ public class GameView : MonoBehaviour
     /// <param name="id">排除的ID</param>
     public void CloseCDInfo(string id)
     {
+        if (gameRoomData.playerDataDic == null)
+        {
+            return;
+        }
+
         foreach (var player in gameRoomData.playerDataDic.Values)
         {
             GamePlayerInfo playerInfo = gamePlayerInfoList.Where(x => x.UserId == player.userId)
@@ -2551,6 +2621,15 @@ public class GameView : MonoBehaviour
         this.gameRoomData = gameRoomData;
 
         SetTotalPot = gameRoomData.potChips;
+
+        if (gameRoomData.currGameFlow < (int)GameFlowEnum.Flop)
+        {
+            //公共牌
+            for (int i = 0; i < CommunityPokerList.Count(); i++)
+            {
+                CommunityPokerList[i].gameObject.SetActive(false);
+            }
+        }
     }
 
     /// <summary>
@@ -2607,53 +2686,88 @@ public class GameView : MonoBehaviour
             }
         }
 
-        GameRoomPlayerData buttonPlayerData = gameRoomData.playerDataDic.Where(x => x.Value.gameSeat == gameRoomData.buttonSeat)
-                                                                        .FirstOrDefault()
-                                                                        .Value;
-        GamePlayerInfo buttonPlayer = GetPlayer(buttonPlayerData.userId);
-        buttonPlayer.SetSeatCharacter(SeatCharacterEnum.Button);
-        List<GameRoomPlayerData> playerOrderSeat = gameRoomData.playerDataDic.OrderBy(x => x.Value.gameSeat)
-                                                                             .Where(x => (PlayerStateEnum)x.Value.gameState == PlayerStateEnum.Playing)
-                                                                             .Select(x => x.Value)
-                                                                             .ToList();
-
-        //設置Button座位
-        var dataDic = new Dictionary<string, object>()
+        //房主執行
+        if (gameRoomData.hostId == DataManager.UserId)
         {
-            { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.Button},
-        };
-        gameControl.UpdataPlayerData(buttonPlayer.UserId,
-                                     dataDic);
+            //設置Button座位
+            GameRoomPlayerData buttonPlayerData = gameRoomData.playerDataDic.Where(x => x.Value.gameSeat == gameRoomData.buttonSeat)
+                                                                            .FirstOrDefault()
+                                                                            .Value;
+            var dataDic = new Dictionary<string, object>()
+            {
+                { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.Button},
+            };
+            gameControl.UpdataPlayerData(buttonPlayerData.userId,
+                                         dataDic);
+            Debug.Log($"設置Button座位:{buttonPlayerData.nickname}/{buttonPlayerData.userId}");
 
+            List<GameRoomPlayerData> playerOrderSeat = gameRoomData.playerDataDic.OrderBy(x => x.Value.gameSeat)
+                                                                                 .Where(x => (PlayerStateEnum)x.Value.gameState == PlayerStateEnum.Playing &&
+                                                                                        x.Value.isSitOut == false)
+                                                                                 .Select(x => x.Value)
+                                                                                 .ToList();
 
-        //設置SB座位
-        GameRoomPlayerData sbPlayerData = playerOrderSeat[(gameRoomData.buttonSeat + 1) % playerOrderSeat.Count()];
-        GamePlayerInfo sbPlayer = GetPlayer(sbPlayerData.userId);
-        sbPlayer.SetSeatCharacter(SeatCharacterEnum.SB);
-        dataDic = new Dictionary<string, object>()
-        {
-            { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.SB},
-        };
-        gameControl.UpdataPlayerData(sbPlayer.UserId,
-                                     dataDic);
+            foreach (var item in playerOrderSeat)
+            {
+                Debug.Log($"有再遊戲玩家:{item.nickname}");
+            }
 
-        //設置BB座位
-        GameRoomPlayerData bbPlayerData = playerOrderSeat[(gameRoomData.buttonSeat + 2) % playerOrderSeat.Count()];
-        GamePlayerInfo bbPlayer = GetPlayer(bbPlayerData.userId);
-        bbPlayer.SetSeatCharacter(SeatCharacterEnum.BB);
-        dataDic = new Dictionary<string, object>()
-        {
-            { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.BB},
-        };
-        gameControl.UpdataPlayerData(bbPlayer.UserId,
-                                     dataDic);
+            GameRoomPlayerData sbPlayerData;
+            GameRoomPlayerData bbPlayerData;
+            if (gameRoomData.playingPlayersIdList.Count == 2)
+            {
+                //只有2人
 
-        //更新當前行動玩家
-        var data = new Dictionary<string, object>()
-        {
-            { FirebaseManager.CURR_ACTIONER_ID, bbPlayerData.userId},        //當前行動玩家Id
-        };
-        gameControl.UpdateGameRoomData(data);
+                //設置SB座位
+                sbPlayerData = buttonPlayerData;
+                dataDic = new Dictionary<string, object>()
+                {
+                    { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.SB},
+                };
+                gameControl.UpdataPlayerData(sbPlayerData.userId,
+                                             dataDic);
+                //設置BB座位
+                bbPlayerData = gameControl.GetNextPlayer(gameRoomData.buttonSeat);
+                dataDic = new Dictionary<string, object>()
+                {
+                    { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.BB},
+                };
+                gameControl.UpdataPlayerData(bbPlayerData.userId,
+                                             dataDic);
+            }
+            else
+            {
+                //3人以上玩家
+
+                //設置SB座位
+                sbPlayerData = gameControl.GetNextPlayer(gameRoomData.buttonSeat);
+                dataDic = new Dictionary<string, object>()
+                {
+                    { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.SB},
+                };
+                gameControl.UpdataPlayerData(sbPlayerData.userId,
+                                             dataDic);
+                Debug.Log($"設置SB座位:{sbPlayerData.nickname}");
+
+                //設置BB座位
+                bbPlayerData = gameControl.GetNextPlayer(sbPlayerData.gameSeat);
+                dataDic = new Dictionary<string, object>()
+                {
+                    { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.BB},
+                };
+                gameControl.UpdataPlayerData(bbPlayerData.userId,
+                                             dataDic);
+                Debug.Log($"設置BB座位:{bbPlayerData.nickname}");
+            }
+
+            Debug.Log($"更新當前行動玩家:{bbPlayerData.nickname}/{bbPlayerData.userId}");
+            //更新當前行動玩家
+            var data = new Dictionary<string, object>()
+            {
+                { FirebaseManager.CURR_ACTIONER_ID, bbPlayerData.userId},        //當前行動玩家Id
+            };
+            gameControl.UpdateGameRoomData(data);
+        }
     }
 
     /// <summary>
@@ -2662,24 +2776,44 @@ public class GameView : MonoBehaviour
     /// <param name="gameRoomData"></param>
     public void OnBlindFlow(GameRoomData gameRoomData)
     {
+        Debug.Log($"盲注流程");
+
+        //Button座位
+        GameRoomPlayerData buttonPlayerData = gameRoomData.playerDataDic.Where(x => x.Value.gameSeat == gameRoomData.buttonSeat)
+                                                                        .FirstOrDefault()
+                                                                        .Value;
+        GamePlayerInfo buttonPlayer = GetPlayer(buttonPlayerData.userId);
+        buttonPlayer.SetSeatCharacter(SeatCharacterEnum.Button);
+        Debug.Log($"盲注流程D:{buttonPlayerData.nickname}");
+
         //SB下注
         GameRoomPlayerData sbPlayerData = gameRoomData.playerDataDic.Where(x => (SeatCharacterEnum)x.Value.seatCharacter == SeatCharacterEnum.SB)
-                                                                     .FirstOrDefault()
-                                                                     .Value;
+                                                                    .FirstOrDefault()
+                                                                    .Value;
         GamePlayerInfo sbPlayer = GetPlayer(sbPlayerData.userId);
+        sbPlayer.SetSeatCharacter(SeatCharacterEnum.SB);
         sbPlayer.PlayerAction(BetActingEnum.Blind,
                               gameRoomData.smallBlind,
                               sbPlayerData.carryChips - gameRoomData.smallBlind);
-
+        if (DataManager.UserId == sbPlayerData.userId)
+        {
+            gameControl.UpdateLocalChips(-gameRoomData.smallBlind);
+        }
+        Debug.Log($"盲注流程SB:{sbPlayerData.nickname}");
         //BB下注
         GameRoomPlayerData bbPlayerData = gameRoomData.playerDataDic.Where(x => (SeatCharacterEnum)x.Value.seatCharacter == SeatCharacterEnum.BB)
-                                                                     .FirstOrDefault()
-                                                                     .Value;
+                                                                    .FirstOrDefault()
+                                                                    .Value;
         GamePlayerInfo bbPlayer = GetPlayer(bbPlayerData.userId);
+        bbPlayer.SetSeatCharacter(SeatCharacterEnum.BB);
         bbPlayer.PlayerAction(BetActingEnum.Blind,
                               gameRoomData.smallBlind * 2,
                               bbPlayerData.carryChips - (gameRoomData.smallBlind * 2));
-
+        if (DataManager.UserId == sbPlayerData.userId)
+        {
+            gameControl.UpdateLocalChips(-gameRoomData.smallBlind * 2);
+        }
+        Debug.Log($"盲注流程BB:{bbPlayerData.nickname}");
         //房主執行
         if (gameRoomData.hostId == DataManager.UserId)
         {
