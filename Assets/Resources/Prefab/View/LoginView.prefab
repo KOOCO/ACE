@@ -2780,7 +2780,8 @@ MonoBehaviour:
   SignIn_Btn: {fileID: 2515489785118592204}
   Register_Btn: {fileID: 2975921117361687394}
   SignInPasswordEye_Btn: {fileID: 6330505932250569827}
-  SingInAccount_If: {fileID: 8983416456485558780}
+  SignInNumber_Dd: {fileID: 0}
+  SingInAccount_If: {fileID: 0}
   SignInNumber_If: {fileID: 8983416456485558780}
   SignInPassword_If: {fileID: 5611663867376361854}
   RememberMe_Tog: {fileID: 390574770454923304}
@@ -10011,14 +10012,14 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 4
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 1
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
   m_HideSoftKeyboard: 0
-  m_CharacterValidation: 4
+  m_CharacterValidation: 2
   m_RegexValue: 
   m_GlobalPointSize: 14
   m_CharacterLimit: 15
