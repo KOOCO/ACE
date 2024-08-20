@@ -76,15 +76,23 @@ public class Entry : UnitySingleton<Entry>
                 NFTManager.Instance.UpdateNFT();
             }
 
-            //移除手牌紀錄
-            if (Input.GetKeyDown(KeyCode.F8))
-            {
-                HandHistoryManager.Instance.OnDeleteHistoryData();
-            }
+           
+
         }
-        #endregion
+        
     }
 
+    public class Reigster
+    {
+        public string phoneNumber;
+        public string userName;
+        public string password;
+        public string confirmPassword;
+    }
+    public class callback
+    {
+
+    }
     #region Instagram登入
 
     /// <summary>
@@ -270,3 +278,4 @@ public class Entry : UnitySingleton<Entry>
 
     #endregion
 }
+#endregion
