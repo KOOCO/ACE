@@ -31,8 +31,25 @@ public class GameControl : MonoBehaviour
     bool isCloseAllCdInfo { get; set; }                         //是否關閉倒數訊息
     List<int> localHand { get; set; }                           //本地玩家手牌
 
+    private void OnDestroy()
+    {
+#if UNITY_EDITOR
+
+        JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}");
+
+#endif
+
+    }
+
     private void Start()
     {
+
+#if UNITY_EDITOR
+
+        InvokeRepeating(nameof(EditorReadRoomData), 0, 1f);
+        return;
+#endif
+
         //判斷玩家在線狀態
         InvokeRepeating(nameof(JudgePlayersOnline), 5, 5);
     }
@@ -119,9 +136,9 @@ public class GameControl : MonoBehaviour
     #region 起始
 
     /// <summary>
-    /// 房間啟動
+    /// 遊戲開始
     /// </summary>
-    public void RoomStart()
+    public void GameStart()
     {
         //讀取房間資料
         JSBridgeManager.Instance.ReadDataFromFirebase($"{QueryRoomPath}",
@@ -130,12 +147,22 @@ public class GameControl : MonoBehaviour
     }
 
     /// <summary>
+    /// 編輯器讀取房間資料
+    /// </summary>
+    public void EditorReadRoomData()
+    {
+        //讀取房間資料
+        JSBridgeManager.Instance.ReadDataFromFirebase($"{QueryRoomPath}",
+                                                      gameObject.name,
+                                                      nameof(GameRoomDataCallback));
+    }
+
+    /// <summary>
     /// 讀取房間資料回傳
     /// </summary>
     /// <param name="jsonData"></param>
     public void ReadGameRoomDataCallback(string jsonData)
     {
-        Debug.Log($"Read Game Room Data Callback:{jsonData}");
         var data = FirebaseManager.Instance.OnFirebaseDataRead<GameRoomData>(jsonData);
         gameRoomData = data;
 
@@ -143,6 +170,18 @@ public class GameControl : MonoBehaviour
 
         //更新房間玩家訊息
         gameView.UpdateGameRoomInfo(gameRoomData);
+
+#if UNITY_EDITOR
+
+        //產生機器人
+        if (isWaitingCreateRobot)
+        {
+            isWaitingCreateRobot = false;
+            CreateRobot();
+        }
+
+        return;
+#endif
 
         //開始監聽遊戲房間資料
         JSBridgeManager.Instance.StartListeningForDataChanges($"{QueryRoomPath}",
@@ -206,7 +245,7 @@ public class GameControl : MonoBehaviour
         }
 
 
-        RoomStart();
+        GameStart();
     }
 
     /// <summary>
@@ -229,7 +268,7 @@ public class GameControl : MonoBehaviour
         UpdataPlayerData(DataManager.UserId,
                          dataDic);
 
-        RoomStart();
+        GameStart();
     }
 
     /// <summary>
@@ -391,6 +430,10 @@ public class GameControl : MonoBehaviour
     /// </summary>
     private void JudgeHost()
     {
+#if UNITY_EDITOR
+        return;
+#endif
+
         if (gameRoomData.playerDataDic == null)
         {
             return;
@@ -856,6 +899,9 @@ public class GameControl : MonoBehaviour
         //判斷房主
         JudgeHost();
 
+        //聊天訊息
+        ChatMessage();
+
         //遊戲流程回傳
         LocalGameFlowBehavior();
 
@@ -1204,9 +1250,9 @@ public class GameControl : MonoBehaviour
         if (gameRoomData.hostId == DataManager.UserId)
         {
             //時間減少
-            gameRoomData.actionCD -= 1;
+            int currActionCD =  gameRoomData.actionCD - 1;
 
-            if (gameRoomData.actionCD < 0)
+            if (currActionCD < 0)
             {
                 //超過時間棄牌
                 string id = gameRoomData.currActionerId;
@@ -1226,9 +1272,10 @@ public class GameControl : MonoBehaviour
                 }
 
                 //更新倒數
+                Debug.Log($"更新倒數:{gameRoomData.actionCD}");
                 var data = new Dictionary<string, object>()
                 {
-                    { FirebaseManager.ACTION_CD, gameRoomData.actionCD},              //行動倒數時間
+                    { FirebaseManager.ACTION_CD, gameRoomData.actionCD - 1},              //行動倒數時間
                 };
                 UpdateGameRoomData(data);
             }
@@ -1240,6 +1287,11 @@ public class GameControl : MonoBehaviour
     /// </summary>
     public void ShowBetAction()
     {
+        if (gameRoomData.betActionDataDic == null)
+        {
+            return;
+        }
+
         Debug.Log("下注行為演出");
         Debug.Log($"下注行為演出betActionerId:{gameRoomData.betActionDataDic.betActionerId}");
         Debug.Log($"下注行為演出preBetActionerId:{preBetActionerId}");
@@ -1619,7 +1671,7 @@ public class GameControl : MonoBehaviour
         //更新底池
         double totalPot = gameRoomData.potChips + difference;
         double currCallValue = Math.Max(betValue, gameRoomData.currCallValue);
-        double actionPlayerCount = gameRoomData.actionPlayerCount + 1;
+        int actionPlayerCount = gameRoomData.actionPlayerCount + 1;
         if (gameRoomData.actionPlayerCount == 0 &&
             betActing == BetActingEnum.Check)
         {
@@ -1647,6 +1699,10 @@ public class GameControl : MonoBehaviour
     /// <param name="changeValue">籌碼增減值</param>
     public void UpdateLocalChips(double changeValue)
     {
+#if UNITY_EDITOR
+        return;
+#endif
+
         LobbyView lobbyView = GameObject.FindAnyObjectByType<LobbyView>();
         var data = new Dictionary<string, object>();
 
@@ -1670,10 +1726,11 @@ public class GameControl : MonoBehaviour
                 { FirebaseManager.A_CHIPS, Math.Round(newChips) },
             };
         }
-        JSBridgeManager.Instance.UpdateDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
-                                                        data,
-                                                        nameof(lobbyView.gameObject.name),
-                                                        nameof(lobbyView.UpdateUserData));
+        JSBridgeManager.Instance.UpdateDataFromFirebase(
+            $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
+            data,
+            nameof(lobbyView.gameObject.name),
+            nameof(lobbyView.UpdateUserData));
     }
 
     /// <summary>
@@ -1791,7 +1848,7 @@ public class GameControl : MonoBehaviour
 
         // 如果没有玩家符合条件，直接返回 -1 或者其他表示无效的值
         if (playerOrderSeat.Count == 0)
-            return -1;
+            return 0;
 
         do
         {
@@ -2088,6 +2145,51 @@ public class GameControl : MonoBehaviour
 
         Debug.Log($"獲取邊池籌碼值:{sideChipsValue}");
         return sideChipsValue;
+    }
+
+    #endregion
+
+    #region 聊天
+
+    /// <summary>
+    /// 更新聊天訊息
+    /// </summary>
+    /// <param name="msg"></param>
+    public void UpdateChatMsg(string msg)
+    {
+        Debug.Log($"更新聊天訊息:{msg}");
+
+        //更新聊天資料
+        var data = new Dictionary<string, object>()
+        {
+            { FirebaseManager.USER_ID, DataManager.UserId },                    //用戶ID
+            { FirebaseManager.NICKNAME, DataManager.UserNickname },             //暱稱
+            { FirebaseManager.AVATAR_INDEX, DataManager.UserAvatarIndex },      //頭像編號
+            { FirebaseManager.CHAT_MSG, msg },                                  //聊天訊息
+        };
+        JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.CHAT_DATA}",
+                                                        data);
+    }
+
+    /// <summary>
+    /// 聊天訊息
+    /// </summary>
+    private void ChatMessage()
+    {
+        if (gameRoomData.chatData != null && 
+            !string.IsNullOrEmpty(gameRoomData.chatData.chatMsg))
+        {
+            gameView.ReciveChat(gameRoomData.chatData);
+
+            //重製聊天資料
+            gameRoomData.chatData.chatMsg = "";
+            var data = new Dictionary<string, object>()
+            {
+                { FirebaseManager.CHAT_MSG, "" },                                  //聊天訊息
+            };
+            JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.CHAT_DATA}",
+                                                            data);
+        }
     }
 
     #endregion

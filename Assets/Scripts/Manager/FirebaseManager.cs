@@ -33,6 +33,7 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
     public const string POT_WIN_DATA = "potWinData";                                        //底池獲勝資料路徑
     public const string SIDE_WIN_DATA = "sideWinData";                                      //邊池獲勝資料路徑
     public const string BACK_CHIPS_DATA = "backChipsData";                                  //退回籌碼資料路徑
+    public const string CHAT_DATA = "chatData";                                             //聊天資料路徑
     public const string SMALL_BLIND = "smallBlind";                                         //小盲值
     public const string ROBOT_INDEX = "robotIndex";                                         //機器人編號
     public const string ROOM_HOST_ID = "hostId";                                            //房主ID
@@ -82,6 +83,9 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
     public const string INTEGRAL_WAIT_DATA = "integralWaitData";                             //積分房等待資料路徑
     public const string PAIR_ROOM_NAME = "pairRoomName";                                     //配對成功房間名稱
     public const string PAIRED = "paired";                                                   //是否已被選上配對
+
+    [Header("聊天")]
+    public const string CHAT_MSG = "chatMsg";                                                //聊天訊息
 
     public override void Awake()
     {
@@ -220,6 +224,7 @@ public class GameRoomData
     public BetActionData betActionDataDic;                              //下注行為資料
     public PotWinData potWinData;                                       //底池獲勝資料
     public SideWinData sideWinData;                                     //邊池獲勝資料
+    public ChatData chatData;                                           //聊天資料
     public int currGameFlow;                                            //(GameFlowEnum)當前遊戲流程(發牌/盲注/翻牌/轉牌/河牌/遊戲結果(主池/邊池))
     public double smallBlind;                                           //小盲值
     public string hostId;                                               //房主ID
@@ -299,6 +304,17 @@ public class BackChipsData
 {
     public string backUserId;                                           //用戶ID
     public double backChipsValue;                                       //退回籌碼值
+}
+
+/// <summary>
+/// 聊天資料
+/// </summary>
+public class ChatData
+{
+    public string userId;                       //用戶ID
+    public string nickname;                     //暱稱
+    public string chatMsg;                      //聊天訊息
+    public int avatarIndex;                     //頭像編號
 }
 
 #endregion

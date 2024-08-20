@@ -859,6 +859,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
     private void JudgeDateExists(string callBackFunName, string childNode)
     {        
         ViewManager.Instance.OpenWaitingView(transform);
+
         JSBridgeManager.Instance.ReadDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{childNode}/{currVerifyPhoneNumber}",
                                                        gameObject.name,
                                                        callBackFunName);
@@ -975,14 +976,6 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
     /// </summary>
     private void MobileSignInSubmit()
     {
-#if UNITY_EDITOR
-
-        LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
-        return;
-
-#endif
-
-
         MobileSignInError_Txt.text = "";
         SignInNumberError_Txt.text = "";
 
@@ -1007,6 +1000,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
     /// <param name="jsonData">判斷資料回傳</param>
     private void JudgeMobileSignIn(string jsonData)
     {
+        Debug.LogWarning(jsonData);
         ViewManager.Instance.CloseWaitingView(transform);
 
         AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);

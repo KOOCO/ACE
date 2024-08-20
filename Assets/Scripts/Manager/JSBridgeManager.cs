@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json;
+using Proyecto26;
 
 public class JSBridgeManager : UnitySingleton<JSBridgeManager>
 {
@@ -135,6 +136,24 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
     public void WriteDataFromFirebase(string refPathPtr, Dictionary<string, object> data, string objNamePtr = null, string callbackFunPtr = null)
     {
         string jsonData = JsonConvert.SerializeObject(data);
+
+#if UNITY_EDITOR
+
+        RestClient.Post($"{DataManager.DatabaseUrl}{refPathPtr}.json", jsonData).Then(response =>
+        {
+            if (!string.IsNullOrEmpty(objNamePtr) && !string.IsNullOrEmpty(callbackFunPtr))
+            {
+                GameObject obj = GameObject.Find(objNamePtr);
+                obj.SendMessage(callbackFunPtr, response.Text);
+            }
+        }).Catch(error =>
+        {
+            Debug.LogError("Write Data Error: " + error);
+        });
+
+        return;
+#endif
+
         JS_WriteDataFromFirebase(refPathPtr,
                                  jsonData,
                                  objNamePtr,
@@ -151,6 +170,28 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
     public void UpdateDataFromFirebase(string refPathPtr, Dictionary<string, object> data, string objNamePtr = null, string callbackFunPtr = null)
     {
         string jsonData = JsonConvert.SerializeObject(data);
+
+#if UNITY_EDITOR
+
+        RestClient.Patch($"{DataManager.DatabaseUrl}{refPathPtr}.json", jsonData).Then(response =>
+        {
+            Debug.Log("Data patched successfully!");
+
+            if (!string.IsNullOrEmpty(objNamePtr) && !string.IsNullOrEmpty(callbackFunPtr))
+            {
+                GameObject obj = GameObject.Find(objNamePtr);
+                obj.SendMessage(callbackFunPtr, response.Text);
+            }
+        }).Catch(error =>
+        {
+            Debug.LogError(jsonData);
+            Debug.LogError($"{refPathPtr}/{objNamePtr}/{callbackFunPtr}");
+            Debug.LogError("Update Data Error: " + error);
+        });
+
+        return;
+#endif
+
         JS_UpdateDataFromFirebase(refPathPtr,
                                   jsonData,
                                   objNamePtr,
@@ -167,6 +208,22 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
     /// <param name="callbackFunPtr">回傳方法名</param>
     public void ReadDataFromFirebase(string refPathPtr, string objNamePtr, string callbackFunPtr)
     {
+
+#if UNITY_EDITOR
+
+        RestClient.Get($"{DataManager.DatabaseUrl}{refPathPtr}.json").Then(response =>
+        {           
+            GameObject obj = GameObject.Find(objNamePtr);
+            obj.SendMessage(callbackFunPtr, response.Text);
+
+        }).Catch(error =>
+        {
+            Debug.LogError("Read Data Error: " + error);
+        });
+
+        return;
+#endif
+
         JS_ReadDataFromFirebase(refPathPtr,
                                 objNamePtr,
                                 callbackFunPtr);
@@ -189,6 +246,16 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
         string callbackFun = string.IsNullOrEmpty(callbackFunPtr) ?
                             "OnRemoveDataCallback" :
                             callbackFunPtr;
+
+#if UNITY_EDITOR
+
+        RestClient.Delete($"{DataManager.DatabaseUrl}{refPathPtr}.json").Catch(error =>
+        {
+            Debug.LogError("Remove Data Error: " + error);
+        }); ;
+
+        return;
+#endif
 
         JS_RemoveDataFromFirebase(refPathPtr,
                                   objName,

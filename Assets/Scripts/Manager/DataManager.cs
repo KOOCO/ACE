@@ -36,6 +36,12 @@ public static class DataManager
 
     #endregion
 
+    #region Database
+
+    public static string DatabaseUrl{ get{ return "https://asia-poker-5959b-default-rtdb.firebaseio.com/"; }}   //Database資料庫URL
+
+    #endregion
+
     #region 公用
 
     public static string RedirectUri { get { return "https://kooco.github.io/ACEdemo/demo.asiapoker/index.html"; } }                        //重定向Url

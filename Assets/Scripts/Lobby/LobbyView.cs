@@ -183,14 +183,6 @@ public class LobbyView : MonoBehaviour
 
     private void Start()
     {
-
-#if UNITY_EDITOR
-
-        Instantiate(SetNicknameViewObj, transform);
-        return;
-
-#endif
-
         #region 測試
 
         //寫入資料
@@ -200,19 +192,30 @@ public class LobbyView : MonoBehaviour
             { FirebaseManager.A_CHIPS, Math.Round(DataManager.InitGiveAChips) },
             { FirebaseManager.GOLD, Math.Round(DataManager.InitGiveGold) },
         };
-        JSBridgeManager.Instance.UpdateDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
-                                                        dataDic);
+        JSBridgeManager.Instance.UpdateDataFromFirebase(
+            $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
+            dataDic);
 
         #endregion
-
 
         ViewManager.Instance.OpenWaitingView(transform);
         DataManager.ReciveRankData();
 
-        JSBridgeManager.Instance.StartListenerConnectState($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}");
-        JSBridgeManager.Instance.StartListeningForDataChanges($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
-                                                               gameObject.name,
-                                                               nameof(GetDataCallback));
+#if UNITY_EDITOR
+
+        //刷新用戶資料
+        InvokeRepeating(nameof(UpdateUserData), 1, 30);
+
+        return;
+#endif
+
+
+        JSBridgeManager.Instance.StartListenerConnectState(
+            $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}");
+        JSBridgeManager.Instance.StartListeningForDataChanges(
+            $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
+            gameObject.name,
+            nameof(GetDataCallback));
 
         //刷新用戶資料
         InvokeRepeating(nameof(UpdateUserData), 30, 30);
@@ -241,16 +244,11 @@ public class LobbyView : MonoBehaviour
     /// </summary>
     public void UpdateUserData()
     {
-#if UNITY_EDITOR
-        UpdateUserInfo();
-        return;
-
-#endif
-
         //讀取用戶資料
-        JSBridgeManager.Instance.ReadDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
-                                                      gameObject.name,
-                                                      nameof(GetDataCallback));
+        JSBridgeManager.Instance.ReadDataFromFirebase(
+            $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
+            gameObject.name,
+            nameof(GetDataCallback));
     }
 
     /// <summary>

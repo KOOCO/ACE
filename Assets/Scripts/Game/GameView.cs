@@ -1415,7 +1415,7 @@ public class GameView : MonoBehaviour
         //更新玩家訊息
         foreach (var player in gameRoomData.playerDataDic.Values)
         {
-            GamePlayerInfo gamePlayerInfo = AddPlayer(player);
+            GamePlayerInfo gamePlayerInfo = AddPlayer(player, gameRoomData);
 
             if (player.userId != DataManager.UserId &&
                 gameRoomData.playingPlayersIdList.Contains(player.userId))
@@ -1467,10 +1467,13 @@ public class GameView : MonoBehaviour
 
         //公共牌
         List<int> currCommunityPoker = gameRoomData.currCommunityPoker;
-        for (int i = 0; i < currCommunityPoker.Count; i++)
+        if (currCommunityPoker != null)
         {
-            CommunityPokerList[i].gameObject.SetActive(true);
-            CommunityPokerList[i].PokerNum = currCommunityPoker[i];
+            for (int i = 0; i < currCommunityPoker.Count; i++)
+            {
+                CommunityPokerList[i].gameObject.SetActive(true);
+                CommunityPokerList[i].PokerNum = currCommunityPoker[i];
+            }
         }
     }
 
@@ -1478,7 +1481,9 @@ public class GameView : MonoBehaviour
     /// 添加玩家
     /// </summary>
     /// <param name="playerData"></param>
-    public GamePlayerInfo AddPlayer(GameRoomPlayerData playerData)
+    /// <param name="gameRoomData"></param>
+    /// <returns></returns>
+    public GamePlayerInfo AddPlayer(GameRoomPlayerData playerData, GameRoomData gameRoomData)
     {       
         GamePlayerInfo gamePlayerInfo = null;
         int seatIndex = 0;//座位(本地玩家 = 0)
@@ -2227,10 +2232,10 @@ public class GameView : MonoBehaviour
                 SetActingButtonEnable = thisData.IsPlaying;
 
                /* SetTotalPot = pack.GameRoomInfoPack.TotalPot;
-                SetBlind(pack.BlindStagePack);
+                SetBlind(pack.BlindStagePack);*/
 
                 gameInitHistoryData = HandHistoryManager.Instance.SetGameInitData(gamePlayerInfoList,
-                                                                                  thisData.TotalPot);*/
+                                                                                  thisData.TotalPot);
                 break;
 
             //翻牌
@@ -2458,11 +2463,12 @@ public class GameView : MonoBehaviour
             return;
         }
 
-        baseRequest.SendRequestRequest_Chat(Chat_If.text);
+        gameControl.UpdateChatMsg(Chat_If.text);
+       /* baseRequest.SendRequestRequest_Chat(Chat_If.text);
         CreateChatContent(DataManager.UserAvatarIndex,
                           DataManager.UserNickname,
                           Chat_If.text,
-                          true);
+                          true);*/
 
         Chat_If.text = "";
 
@@ -2477,13 +2483,16 @@ public class GameView : MonoBehaviour
     /// <summary>
     /// 接收聊天訊息
     /// </summary>
-    /// <param name="pack"></param>
-    public void ReciveChat(MainPack pack)
+    /// <param name="chatData"></param>
+    public void ReciveChat(ChatData chatData)
     {
-        string id = pack.ChatPack.Id;
-        string nickname = pack.ChatPack.Nickname;
-        string content = pack.ChatPack.Content;
-        int avatar = pack.ChatPack.Avatar;
+        string id = chatData.userId;
+        string nickname = chatData.nickname;
+        string content = chatData.chatMsg;
+        int avatar = chatData.avatarIndex;
+        bool isLocal = id == DataManager.UserId;
+
+        Debug.Log($"接收聊天訊息:{nickname}:{content}");
 
         //判斷是否在最新訊息位置
         bool isBottom = IsChatOnBottom();
@@ -2499,7 +2508,7 @@ public class GameView : MonoBehaviour
         CreateChatContent(avatar,
                           nickname,
                           content,
-                          false);
+                          isLocal);
 
         if (isBottom)
         {
@@ -2526,6 +2535,8 @@ public class GameView : MonoBehaviour
     /// <param name="isLocal">是否為本地玩家</param>
     private void CreateChatContent(int avatar, string nickname, string content, bool isLocal)
     {
+        Debug.Log($"產生聊天內容:{nickname}:{content}");
+
         GameObject sample = isLocal ?
                             LocalChatSample :
                             OtherChatSample;
@@ -2610,7 +2621,8 @@ public class GameView : MonoBehaviour
     /// <param name="id">排除的ID</param>
     public void CloseCDInfo(string id)
     {
-        if (gameRoomData.playerDataDic == null)
+        if (gameRoomData == null ||
+            gameRoomData.playerDataDic == null)
         {
             return;
         }
@@ -2722,17 +2734,6 @@ public class GameView : MonoBehaviour
                                          dataDic);
             Debug.Log($"設置Button座位:{buttonPlayerData.nickname}/{buttonPlayerData.userId}");
 
-            List<GameRoomPlayerData> playerOrderSeat = gameRoomData.playerDataDic.OrderBy(x => x.Value.gameSeat)
-                                                                                 .Where(x => (PlayerStateEnum)x.Value.gameState == PlayerStateEnum.Playing &&
-                                                                                        x.Value.isSitOut == false)
-                                                                                 .Select(x => x.Value)
-                                                                                 .ToList();
-
-            foreach (var item in playerOrderSeat)
-            {
-                Debug.Log($"有再遊戲玩家:{item.nickname}");
-            }
-
             GameRoomPlayerData sbPlayerData;
             GameRoomPlayerData bbPlayerData;
             if (gameRoomData.playingPlayersIdList.Count == 2)
@@ -2768,7 +2769,6 @@ public class GameView : MonoBehaviour
                 };
                 gameControl.UpdataPlayerData(sbPlayerData.userId,
                                              dataDic);
-                Debug.Log($"設置SB座位:{sbPlayerData.nickname}");
 
                 //設置BB座位
                 bbPlayerData = gameControl.GetNextPlayer(sbPlayerData.gameSeat);
@@ -2778,7 +2778,6 @@ public class GameView : MonoBehaviour
                 };
                 gameControl.UpdataPlayerData(bbPlayerData.userId,
                                              dataDic);
-                Debug.Log($"設置BB座位:{bbPlayerData.nickname}");
             }
 
             Debug.Log($"更新當前行動玩家:{bbPlayerData.nickname}/{bbPlayerData.userId}");
@@ -2835,6 +2834,7 @@ public class GameView : MonoBehaviour
             gameControl.UpdateLocalChips(-gameRoomData.smallBlind * 2);
         }
         Debug.Log($"盲注流程BB:{bbPlayerData.nickname}");
+
         //房主執行
         if (gameRoomData.hostId == DataManager.UserId)
         {

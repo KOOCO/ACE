@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using TMPro;
+using Proyecto26;
 using System.Threading.Tasks;
 
 public class JoinRoomView : MonoBehaviour
@@ -63,6 +64,26 @@ public class JoinRoomView : MonoBehaviour
         Buy_Btn.onClick.AddListener(() =>
         {
             ViewManager.Instance.OpenWaitingView(transform);
+
+#if UNITY_EDITOR
+
+            dataRoomName = "EditorRoom";
+            //創新房間資料
+            var dataDic = new Dictionary<string, object>()
+            {
+                { FirebaseManager.SMALL_BLIND, smallBlind},                         //小盲值
+                { FirebaseManager.ROOM_HOST_ID, DataManager.UserId},                //房主ID
+                { FirebaseManager.POT_CHIPS, 0},                                    //底池總籌碼
+            };
+            JSBridgeManager.Instance.UpdateDataFromFirebase(
+                $"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}/{dataRoomName}",
+                dataDic,
+                gameObject.name,
+                nameof(CreateNewRoomCallback));
+
+            return;
+#endif
+
             JSBridgeManager.Instance.JoinRoomQueryData($"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}",
                                                         $"{DataManager.MaxPlayerCount}",
                                                         $"{DataManager.UserId}",
