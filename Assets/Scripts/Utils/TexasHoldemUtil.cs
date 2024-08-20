@@ -60,15 +60,15 @@ public static class TexasHoldemUtil
     /// <param name="maxValue">最大值</param>
     /// <param name="sliderClickDetection">Slider點擊判斷</param>
     /// <returns></returns>
-    public static float SliderValueChange(Slider sli, float currValue, float stepSize, float minValue, float maxValue, SliderClickDetection sliderClickDetection = null)
+    public static double SliderValueChange(Slider sli, double currValue, double stepSize, double minValue, double maxValue, SliderClickDetection sliderClickDetection = null)
     {
-        float newRaiseValue = sliderClickDetection != null && sliderClickDetection.GetSkiderClicked ? 
-                              Mathf.Round(currValue / stepSize) * stepSize : 
+        double newRaiseValue = sliderClickDetection != null && sliderClickDetection.GetSkiderClicked ?
+                              System.Math.Round(currValue / stepSize) * stepSize : 
                               currValue;
 
         if (sli.value <= minValue)
         {
-            sli.value = minValue;
+            sli.value = (float)minValue;
             return minValue;
         }
 

@@ -1000,7 +1000,6 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
     /// <param name="jsonData">判斷資料回傳</param>
     private void JudgeMobileSignIn(string jsonData)
     {
-        Debug.LogWarning(jsonData);
         ViewManager.Instance.CloseWaitingView(transform);
 
         AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);

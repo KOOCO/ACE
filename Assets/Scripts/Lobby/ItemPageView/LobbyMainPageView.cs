@@ -563,6 +563,10 @@ public class LobbyMainPageView : MonoBehaviour
         IntegralBtn_Txt.text = LanguageManager.Instance.GetText("INTEGRAL");
         integralData.isPairing = false;
 
+#if UNITY_EDITOR
+        return;
+#endif
+
         //移除監聽
         JSBridgeManager.Instance.StopListeningForDataChanges(
             $"{Entry.Instance.releaseType}/{TableTypeEnum.IntegralTable}/{FirebaseManager.INTEGRAL_WAIT_DATA}/{DataManager.UserId}");

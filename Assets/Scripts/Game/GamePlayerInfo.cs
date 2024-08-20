@@ -120,6 +120,7 @@ public class GamePlayerInfo : MonoBehaviour
         InitCountDown();
         Chat_Obj.SetActive(false);
         IsOpenInfoMask = true;
+        PokerShape_Txt.gameObject.SetActive(false);
 
         Init();
     }
@@ -156,6 +157,7 @@ public class GamePlayerInfo : MonoBehaviour
     {
         set
         {
+            PokerShape_Txt.gameObject.SetActive(true);
             PokerShape_Txt.text = value;
         }
     }
@@ -311,10 +313,22 @@ public class GamePlayerInfo : MonoBehaviour
     /// <summary>
     /// 關閉聊訊息
     /// </summary>
+    public void CloseChatInfo()
+    {
+        if (chatCoroutine != null)
+        {
+            StopCoroutine(chatCoroutine);
+        }
+        Chat_Obj.SetActive(false);
+    }
+
+    /// <summary>
+    /// 延遲關閉聊訊息
+    /// </summary>
     /// <returns></returns>
     private IEnumerator IYieldCloseChatInfo()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(1);
         Chat_Obj.SetActive(false);
     }
 
@@ -645,6 +659,7 @@ public class GamePlayerInfo : MonoBehaviour
     /// <param name="shapeIndex"></param>
     public void SetPokerShapeStr(int shapeIndex)
     {
+
         pokerShapeIndex = shapeIndex;
         SetPokerShapeTxtStr = LanguageManager.Instance.GetText(PokerShape.shapeStr[pokerShapeIndex]);
     }

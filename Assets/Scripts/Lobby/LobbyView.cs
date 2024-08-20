@@ -209,7 +209,6 @@ public class LobbyView : MonoBehaviour
         return;
 #endif
 
-
         JSBridgeManager.Instance.StartListenerConnectState(
             $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}");
         JSBridgeManager.Instance.StartListeningForDataChanges(
@@ -320,6 +319,15 @@ public class LobbyView : MonoBehaviour
         }
 
         UpdateUserInfo();
+
+        #region 測試
+
+        if (isFirstIn)
+        {
+            HandHistoryManager.Instance.OnDeleteHistoryData();
+        }
+
+        #endregion
 
         isFirstIn = false;
     }

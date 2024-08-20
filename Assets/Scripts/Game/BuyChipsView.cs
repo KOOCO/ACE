@@ -81,9 +81,9 @@ public class BuyChipsView : MonoBehaviour
         //購買Slider單位設定
         BuyChips_Sli.onValueChanged.AddListener((value) =>
         {
-            float newRaiseValue = TexasHoldemUtil.SliderValueChange(BuyChips_Sli,
+            double newRaiseValue = TexasHoldemUtil.SliderValueChange(BuyChips_Sli,
                                                                     value,
-                                                                    (float)thisData.SmallBlind * 2,
+                                                                    thisData.SmallBlind * 2,
                                                                     BuyChips_Sli.minValue,
                                                                     BuyChips_Sli.maxValue);
             PreBuyChips_Txt.text = StringUtils.SetChipsUnit(newRaiseValue);
