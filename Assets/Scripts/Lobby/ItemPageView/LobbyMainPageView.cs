@@ -50,7 +50,7 @@ public class LobbyMainPageView : MonoBehaviour
     LobbyView lobbyView;
 
     List<RectTransform> billboardList;                      //廣告刊版
-    List<Image> billboardImgList;                           //廣告刊版圖片
+    public List<Image> billboardImgList;                           //廣告刊版圖片
     List<Image> billboardPointList;                         //廣告刊版點
     List<int> billboardDisplayIndexList;                    //廣告刊版顯示
 
@@ -170,6 +170,8 @@ public class LobbyMainPageView : MonoBehaviour
 
     private void Update()
     {
+        //檢查目前廣告畫面
+        print("目前廣告" + DataManager.CurrBillboardIndex);
         #region 廣告刊版切換
 
         if (!GameRoomManager.Instance.IsShow &&

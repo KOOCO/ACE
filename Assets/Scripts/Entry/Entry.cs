@@ -78,19 +78,6 @@ public class Entry : UnitySingleton<Entry>
            
 
         }
-        //if (Input.GetKeyDown(KeyCode.F))
-        //    {
-        //        Debug.Log("123");
-        //        Reigster reigster = new Reigster()
-        //        {
-        //            //RegisterNumber_If, RegisterOTP_If, RegisterPassword_If, RegisterAccountName_If;
-        //            phoneNumber = "+886" ,//把 RegisterNumber物件的匯入
-        //            userName = "Wei123",
-        //            password = "#Aa123456",
-        //            confirmPassword = "#Aa123456",
-        //        };
-        //        SwaggerAPIManager.Instance.SendPostAPI<Reigster, callback>("/api/app/ace-accounts/register", reigster);
-        //    }
         
     }
 
