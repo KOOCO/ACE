@@ -80,10 +80,10 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
     GameObject MobileSignIn_Obj, MobileSiginPage_Obj;
     [SerializeField]
     Button SignIn_Btn, Register_Btn, SignInPasswordEye_Btn;
+    //[SerializeField]
+    //TMP_Dropdown SignInNumber_Dd;
     [SerializeField]
-    TMP_Dropdown SignInNumber_Dd;
-    [SerializeField]
-    TMP_InputField SingInAccount_If, SignInNumber_If, SignInPassword_If;
+    public TMP_InputField SingInAccount_If, SignInNumber_If, SignInPassword_If;
     [SerializeField]
     Toggle RememberMe_Tog;
     [SerializeField]
@@ -485,7 +485,20 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         //手機登入提交
         SignIn_Btn.onClick.AddListener(() =>
         {
-            MobileSignInSubmit();
+            Debug.Log("123");
+            Debug.Log(22);
+            Debug.Log("123");
+            Debug.Log("123");
+            LoginRequest login = new LoginRequest()
+            {
+                userNameOrEmailAddress = SingInAccount_If.text, //SingInAccount_If
+                password = SignInPassword_If.text,
+                ipAddress = localIP,
+                machineCode = "",
+            };
+            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login);
+            //MobileSignInSubmit();
+
         });
 
         //手機登入密碼顯示
@@ -631,7 +644,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         Debug.Log("本機 IP 地址: " + localIP);
         //下拉式選單添加國碼
         Utils.SetOptionsToDropdown(SMSMobileNumber_Dd, DataManager.CountryCode);
-        Utils.SetOptionsToDropdown(SignInNumber_Dd, DataManager.CountryCode);
+        //Utils.SetOptionsToDropdown(SignInNumber_Dd, DataManager.CountryCode);
         Utils.SetOptionsToDropdown(RegisterNumber_Dd, DataManager.CountryCode);
         Utils.SetOptionsToDropdown(LostPswNumber_Dd, DataManager.CountryCode);
 
@@ -676,11 +689,11 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         
         if (Input.GetKeyDown(KeyCode.F))
         {
-            
+
             LoginRequest login = new LoginRequest()
             {
-                userNameOrEmailAddress = "WeiTest03", //SingInAccount_If
-                password = "Wei123456789*",
+                userNameOrEmailAddress = SingInAccount_If.text, //SingInAccount_If
+                password = SignInPassword_If.text,
                 ipAddress = localIP,
                 machineCode = "",
             };
@@ -952,7 +965,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         await ThirdwebManager.Instance.SDK.Wallet.Disconnect(true);
 
         //紀錄的國碼/手機/密碼
-        SignInNumber_Dd.value = recodeCountryCodeIndex;
+        //SignInNumber_Dd.value = recodeCountryCodeIndex;
         SignInNumber_If.text = !string.IsNullOrEmpty(recodePhoneNumber) ?
                                recodePhoneNumber :
                                "";
@@ -1014,7 +1027,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
             //    machineCode ="123",
             //};
             //SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login);
-            currVerifyPhoneNumber = StringUtils.GetPhoneAddCode(SignInNumber_Dd, SignInNumber_If.text);
+            //currVerifyPhoneNumber = StringUtils.GetPhoneAddCode(SignInNumber_Dd, SignInNumber_If.text);
             currVerifyPsw = SignInPassword_If.text;
             Debug.Log($"Mobile Sign In = Phone:{currVerifyPhoneNumber} / Password = {currVerifyPsw}");
 
@@ -1048,7 +1061,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
                     {
                         recodePhoneNumber = SignInNumber_If.text;
                         recodePassword = SignInPassword_If.text;
-                        recodeCountryCodeIndex = SignInNumber_Dd.value;
+                        //recodeCountryCodeIndex = SignInNumber_Dd.value;
 
                         //有勾選記住帳號密碼
                         LocalDataSave();
@@ -1349,7 +1362,7 @@ private void RegisterVerifyCode(string jsonData)
     private void RegisterSuccessSignIn()
     {
         DataManager.UserLoginType = LoginType.phoneUser;
-        OnIntoLobby();
+        //OnIntoLobby();
     }
 
     #endregion
