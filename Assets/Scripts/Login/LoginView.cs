@@ -485,13 +485,9 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         //手機登入提交
         SignIn_Btn.onClick.AddListener(() =>
         {
-            Debug.Log("123");
-            Debug.Log(22);
-            Debug.Log("123");
-            Debug.Log("123");
             LoginRequest login = new LoginRequest()
             {
-                userNameOrEmailAddress = SingInAccount_If.text, //SingInAccount_If
+                userNameOrEmailAddress = SingInAccount_If.text, 
                 password = SignInPassword_If.text,
                 ipAddress = localIP,
                 machineCode = "",
