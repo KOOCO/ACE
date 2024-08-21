@@ -485,6 +485,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         //手機登入提交
         SignIn_Btn.onClick.AddListener(() =>
         {
+            currVerifyPhoneNumber = SingInAccount_If.text;
             LoginRequest login = new LoginRequest()
             {
                 userNameOrEmailAddress = SingInAccount_If.text, 
@@ -492,7 +493,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
                 ipAddress = localIP,
                 machineCode = "123456789",
             };
-            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login);
+            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login, OnIntoLobby);
             //MobileSignInSubmit();
 
         });
@@ -943,8 +944,8 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
     private void LocalDataSave() 
     {
         PlayerPrefs.SetInt(LocalCountryCodeIndex, recodeCountryCodeIndex);
-        PlayerPrefs.SetString(LocalPhoneNumber, recodePhoneNumber);
-        PlayerPrefs.SetString(LocalPaswword, recodePassword);
+        PlayerPrefs.SetString(LocalPhoneNumber, SingInAccount_If.text);
+        PlayerPrefs.SetString(LocalPaswword, SignInPassword_If.text);
     }
 
 #endregion
@@ -1079,7 +1080,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
                     }
 
                     DataManager.UserLoginType = LoginType.phoneUser;
-                    OnIntoLobby();
+                    //OnIntoLobby();
                 }
             }
             else
@@ -2003,10 +2004,13 @@ private void RegisterVerifyCode(string jsonData)
     /// <summary>
     /// 進入大廳
     /// </summary>
-    private void OnIntoLobby()
+    private void OnIntoLobby(callback callbackData = null)
     {
         ViewManager.Instance.CloseWaitingView(transform);
 
+        LocalDataSave();
+
+        DataManager.UserNickname = SingInAccount_If.text;
         DataManager.UserLoginPhoneNumber = currVerifyPhoneNumber;
         DataManager.UserLoginPassword = currVerifyPsw;
 
