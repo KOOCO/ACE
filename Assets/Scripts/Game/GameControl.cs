@@ -1821,11 +1821,11 @@ public class GameControl : MonoBehaviour
                 { FirebaseManager.A_CHIPS, Math.Round(newChips) },
             };
         }
-        JSBridgeManager.Instance.UpdateDataFromFirebase(
+        /*JSBridgeManager.Instance.UpdateDataFromFirebase(
             $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
             data,
             nameof(lobbyView.gameObject.name),
-            nameof(lobbyView.UpdateUserData));
+            nameof(lobbyView.UpdateUserData));*/
     }
 
     /// <summary>

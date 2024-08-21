@@ -200,11 +200,13 @@ public class LobbyView : MonoBehaviour
 
         ViewManager.Instance.OpenWaitingView(transform);
         DataManager.ReciveRankData();
+        UpdateUserData();
 
+        /*
 #if UNITY_EDITOR
 
         //刷新用戶資料
-        InvokeRepeating(nameof(UpdateUserData), 1, 30);
+        //InvokeRepeating(nameof(UpdateUserData), 1, 30);
 
         return;
 #endif
@@ -217,7 +219,7 @@ public class LobbyView : MonoBehaviour
             nameof(GetDataCallback));
 
         //刷新用戶資料
-        InvokeRepeating(nameof(UpdateUserData), 30, 30);
+        //InvokeRepeating(nameof(UpdateUserData), 30, 30);*/
     }
 
     private void Update()
