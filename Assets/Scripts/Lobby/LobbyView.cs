@@ -382,7 +382,7 @@ public class LobbyView : MonoBehaviour
     {
         set
         {
-            AssetList_Obj.SetActive(value);
+          ///  AssetList_Obj.SetActive(value);
         }
     }
 

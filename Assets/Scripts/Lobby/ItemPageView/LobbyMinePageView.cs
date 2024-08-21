@@ -279,7 +279,7 @@ public class LobbyMinePageView : MonoBehaviour
         //開啟更換頭像
         EditorAvatar_Btn.onClick.AddListener(() =>
         {
-            UserPorfile_Obj.SetActive(false);
+            //UserPorfile_Obj.SetActive(false);
             ChangeAvatar_Tr.gameObject.SetActive(true);
         });
 

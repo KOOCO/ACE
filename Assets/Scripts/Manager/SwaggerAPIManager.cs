@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System.Text;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
 {
@@ -22,8 +23,8 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     /// <param name="data">傳遞的資料</param>
     /// <param name="callback">結果回傳</param>
     /// <param name="errCallback"></param>
-    public void SendPostAPI<T1, T2>(string apiUrl, T1 data, UnityAction<T2> callback = null, UnityAction errCallback = null) 
-        where T1 : class 
+    public void SendPostAPI<T1, T2>(string apiUrl, T1 data, UnityAction<T2> callback = null, UnityAction errCallback = null)
+        where T1 : class
         where T2 : class
     {
         StartCoroutine(ISendPOSTRequest(apiUrl,
@@ -40,8 +41,8 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     /// <param name="callback"></param>
     /// <param name="errCallback"></param>
     /// <returns></returns>
-    private IEnumerator ISendPOSTRequest<T1, T2>(string apiUrl, T1 data, UnityAction<T2> callback = null, UnityAction errCallback = null) 
-        where T1 : class 
+    private IEnumerator ISendPOSTRequest<T1, T2>(string apiUrl, T1 data, UnityAction<T2> callback = null, UnityAction errCallback = null)
+        where T1 : class
         where T2 : class
     {
         string fullUrl = BASE_URL + apiUrl;
@@ -80,7 +81,22 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
                     T2 response = JsonUtility.FromJson<T2>(request.downloadHandler.text);
                     callback?.Invoke(response);
                 }
-            }            
+            }
         }
     }
+
+    /// <summary>
+    /// 下載圖片並應用到目標物體
+    /// </summary>
+    /// <param name"imageUrl">圖片的URL</param>
+    /// <param name="targetRenderer">目標物體的Renderer</param>
+    #region 圖片載入
+    public void DownloadImage(string imageUrl, Image targetImage, UnityAction<Sprite> callback = null, UnityAction errCallback = null)
+    {
+        //StartCoroutine(IDownloadImage(imageUrl, targetImage, callback, errCallback));
+    }
 }
+
+    
+#endregion
+

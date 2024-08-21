@@ -50,7 +50,7 @@ public class LobbyMainPageView : MonoBehaviour
     LobbyView lobbyView;
 
     List<RectTransform> billboardList;                      //廣告刊版
-    public List<Image> billboardImgList;                           //廣告刊版圖片
+    public List<Image> billboardImgList;                    //廣告刊版圖片
     List<Image> billboardPointList;                         //廣告刊版點
     List<int> billboardDisplayIndexList;                    //廣告刊版顯示
 
@@ -89,7 +89,7 @@ public class LobbyMainPageView : MonoBehaviour
     /// </summary>
     private void UpdateLanguage()
     {
-        IntegralBtn_Txt.text = LanguageManager.Instance.GetText("INTEGRAL");
+        IntegralBtn_Txt.text = LanguageManager.Instance.GetText("GO TO INTEGRAL");
         CryptoTableTital_Txt.text = LanguageManager.Instance.GetText("CRYPTO TABLE");
         VCTableTital_Txt.text = LanguageManager.Instance.GetText("VIRTUAL CURRENCY TABLE");
     }

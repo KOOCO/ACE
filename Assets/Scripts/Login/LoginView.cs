@@ -184,7 +184,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
 
     Coroutine connectionEffectCoroutine;                                        //連接錢包效果
     DateTime startConnectTime;                                                  //開始連接錢包時間
-    bool isRegisterAccountNameCorrect;                                          //帳號是否正確
+    bool isRegisterAccountNameCorrect;                                   //帳號是否正確
     bool isShowPassword;                                                        //是否顯示密碼
     bool isClickSignUpHere;                                                     //是否點擊註冊
     bool isRegisterPasswordCorrect;                                             //是否手機注冊密碼正確
@@ -277,8 +277,8 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
 
         #region 手機登入
 
-        SignInMobileNumber_Txt.text = LanguageManager.Instance.GetText("MobileNumber");
-        SignInNumberIf_Placeholder.text = LanguageManager.Instance.GetText("Your Phone Number");
+        SignInMobileNumber_Txt.text = LanguageManager.Instance.GetText("帳戶");
+        SignInNumberIf_Placeholder.text = LanguageManager.Instance.GetText("你的帳戶");
         SignInPassword_Txt.text = LanguageManager.Instance.GetText("Password");
         SignInPasswordIf_Placeholder.text = LanguageManager.Instance.GetText("Please Enter Here");
         RememberMeTog_Txt.text = LanguageManager.Instance.GetText("Remember Me");
@@ -554,7 +554,6 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         //手機注冊提交
         RegisterSubmit_Btn.onClick.AddListener(() =>
         {
-            Debug.Log("我是按鈕");
             MobileRegisterSubmit();
         });
 
@@ -683,20 +682,37 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
 
     private void Update()
     {
-        
+        string AccountName = RegisterAccountName_If.text;
         if (Input.GetKeyDown(KeyCode.F))
         {
-
-            Register register = new Register()
+            if (IsValidAccountName(AccountName))
             {
-                //RegisterNumber_If, RegisterOTP_If, RegisterPassword_If, RegisterAccountName_If;
-                inviteCode ="123456789",
-                phoneNumber = RegisterNumber_If.text,//把 RegisterNumber物件的匯入
-                userName = RegisterAccountName_If.text,
-                password = RegisterPassword_If.text,
-                confirmPassword = RegisterPassword_If.text,
-            };
-            SwaggerAPIManager.Instance.SendPostAPI<Register, callback>("/api/app/ace-accounts/register", register);
+                isRegisterAccountNameCorrect = true;
+            }
+            else
+            {
+                Debug.Log("檢查帳號規則");
+                isRegisterAccountNameCorrect = false;
+                return;
+            }
+            if (!isRegisterAccountNameCorrect)
+            {
+                Debug.Log("檢查帳號規則");
+            }
+            else
+            {
+                Register register = new Register()
+                {
+                    //RegisterNumber_If, RegisterOTP_If, RegisterPassword_If, RegisterAccountName_If;
+                    inviteCode = "123456789",
+                    phoneNumber = RegisterNumber_If.text,//把 RegisterNumber物件的匯入
+                    userName = RegisterAccountName_If.text,
+                    password = RegisterPassword_If.text,
+                    confirmPassword = RegisterPassword_If.text,
+                };
+                
+                SwaggerAPIManager.Instance.SendPostAPI<Register, callback>("/api/app/ace-accounts/register", register);
+            }
         }
         //發送OTP倒數
         float codeTime = (float)(DateTime.Now - codeStartTime).TotalSeconds;
@@ -769,6 +785,9 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
 
 #endif
     }
+
+
+
 
     #region 工具類
 
