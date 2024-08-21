@@ -352,7 +352,10 @@ public class GamePlayerInfo : MonoBehaviour
         HandPokers[0].PokerNum = hand0;
         HandPokers[1].PokerNum = hand1;
 
-        IsOpenInfoMask = false;
+        if (CurrBetAction != BetActionEnum.Fold)
+        {
+            IsOpenInfoMask = false;
+        }
     }
 
     /// <summary>

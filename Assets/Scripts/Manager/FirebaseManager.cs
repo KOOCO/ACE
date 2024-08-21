@@ -73,19 +73,19 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
     public const string IS_HAVE_SIDE = "isHaveSide";                                        //是否有邊池
 
     [Header("邊池獲勝資料")]
-    public const string SIDE_WIN_CHIPS = "sideWinChips";                                     //邊池獲得籌碼
-    public const string SIDE_WINNERS_ID = "sideWinnersId";                                   //邊池贏家ID
-    public const string BACK_USER_ID = "backUserId";                                         //退回籌碼用戶ID
-    public const string BACK_CHIPS_VALUE = "backChipsValue";                                 //退回籌碼值
+    public const string SIDE_WIN_CHIPS = "sideWinChips";                                    //邊池獲得籌碼
+    public const string SIDE_WINNERS_ID = "sideWinnersId";                                  //邊池贏家ID
+    public const string BACK_USER_ID = "backUserId";                                        //退回籌碼用戶ID
+    public const string BACK_CHIPS_VALUE = "backChipsValue";                                //退回籌碼值
 
     [Header("積分房")]
-    public const string INTEGRAL_ROOM = "integralRoom";                                      //積分房房間路徑
-    public const string INTEGRAL_WAIT_DATA = "integralWaitData";                             //積分房等待資料路徑
-    public const string PAIR_ROOM_NAME = "pairRoomName";                                     //配對成功房間名稱
-    public const string PAIRED = "paired";                                                   //是否已被選上配對
+    public const string INTEGRAL_ROOM = "integralRoom";                                     //積分房房間路徑
+    public const string INTEGRAL_WAIT_DATA = "integralWaitData";                            //積分房等待資料路徑
+    public const string PAIR_ROOM_NAME = "pairRoomName";                                    //配對成功房間名稱
+    public const string PAIRED = "paired";                                                  //是否已被選上配對
 
     [Header("聊天")]
-    public const string CHAT_MSG = "chatMsg";                                                //聊天訊息
+    public const string CHAT_MSG = "chatMsg";                                               //聊天訊息
 
     public override void Awake()
     {

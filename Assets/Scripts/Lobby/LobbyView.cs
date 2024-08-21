@@ -261,16 +261,19 @@ public class LobbyView : MonoBehaviour
         ViewManager.Instance.CloseWaitingView(transform);
         AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
 
-        DataManager.UserId = loginData.userId;
-        DataManager.UserLoginPhoneNumber = loginData.phoneNumber;
+        //DataManager.UserId = loginData.userId;
+        //DataManager.UserLoginPhoneNumber = loginData.phoneNumber;
         //DataManager.UserNickname = loginData.nickname;
-        DataManager.UserAvatarIndex = loginData.avatarIndex;
-        DataManager.UserInvitationCode = loginData.invitationCode;
-        DataManager.UserBoundInviterId = loginData.boundInviterId;
-        DataManager.UserLineToken = loginData.lineToken;
+        //DataManager.UserAvatarIndex = loginData.avatarIndex;
+        //DataManager.UserInvitationCode = loginData.invitationCode;
+        //DataManager.UserBoundInviterId = loginData.boundInviterId;
+        //DataManager.UserLineToken = loginData.lineToken;
         DataManager.UserUChips = Math.Round(DataManager.InitGiveUChips);
         DataManager.UserAChips = Math.Round(DataManager.InitGiveAChips);
         DataManager.UserGold = Math.Round(DataManager.InitGiveGold);
+
+
+        DataManager.UserAvatarIndex = 0;
 
         if (string.IsNullOrEmpty(DataManager.UserId))
         {

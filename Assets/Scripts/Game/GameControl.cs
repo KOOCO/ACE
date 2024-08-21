@@ -58,9 +58,9 @@ public class GameControl : MonoBehaviour
 
     private void Update()
     {
-        #region 測試
+#if UNITY_EDITOR
 
-        if (Entry.Instance.releaseType == ReleaseEnvironmentEnum.Test)
+        if (Entry.Instance.releaseType == ReleaseEnvironmentEnum.JimmyTest)
         {
             if (Input.GetKeyDown(KeyCode.Z))
             {
@@ -116,7 +116,7 @@ public class GameControl : MonoBehaviour
             }
         }
 
-        #endregion
+#endif
 
         if (gameRoomData != null &&
             gameRoomData.playerDataDic != null)
@@ -138,9 +138,9 @@ public class GameControl : MonoBehaviour
     #region 起始
 
     /// <summary>
-    /// 遊戲開始
+    /// 讀取遊戲資料
     /// </summary>
-    public void GameStart()
+    public void ReadGameData()
     {
         //讀取房間資料
         JSBridgeManager.Instance.ReadDataFromFirebase($"{QueryRoomPath}",
@@ -214,10 +214,7 @@ public class GameControl : MonoBehaviour
     /// <param name="integralRoomName">積分房間名稱</param>
     public void CreateFirstPlayer(double carryChips, int seatIndex, string pairPlayerId = null, string integralRoomName = null)
     {
-        if (RoomType != TableTypeEnum.IntegralTable)
-        {
-            isWaitingCreateRobot = true;
-        }
+
 
         var data = new Dictionary<string, object>()
         {
@@ -229,7 +226,8 @@ public class GameControl : MonoBehaviour
             { FirebaseManager.GAME_STATE, (int)PlayerStateEnum.Waiting},            //遊戲狀態(等待下局/遊戲中/All In/棄牌)
         };
         UpdataPlayerData(DataManager.UserId,
-                         data);
+                         data,
+                         GameStart);
 
         //積分配對上的玩家
         if (RoomType == TableTypeEnum.IntegralTable &&
@@ -245,9 +243,19 @@ public class GameControl : MonoBehaviour
                 $"{Entry.Instance.releaseType}/{TableTypeEnum.IntegralTable}/{FirebaseManager.INTEGRAL_WAIT_DATA}/{pairPlayerId}",
                 data);
         }
+    }
 
+    /// <summary>
+    /// 遊戲開始
+    /// </summary>
+    public void GameStart(string isSuccess)
+    {
+        if (RoomType != TableTypeEnum.IntegralTable)
+        {
+            isWaitingCreateRobot = true;
+        }
 
-        GameStart();
+        ReadGameData();
     }
 
     /// <summary>
@@ -270,7 +278,7 @@ public class GameControl : MonoBehaviour
         UpdataPlayerData(DataManager.UserId,
                          dataDic);
 
-        GameStart();
+        ReadGameData();
     }
 
     /// <summary>
@@ -383,7 +391,7 @@ public class GameControl : MonoBehaviour
         int robotAvatar = UnityEngine.Random.Range(0, avatarLength);
 
         //機器人攜帶籌碼
-        double robotCarryChips = UnityEngine.Random.Range((int)(SmallBlind * 2) * 20, (int)(SmallBlind * 2) * 80);
+        double robotCarryChips = (int)(SmallBlind * 2) * 20;
 
         //機器人ID
         string robotId = $"{FirebaseManager.ROBOT_ID}{gameRoomData.robotIndex + 1}";
@@ -635,32 +643,20 @@ public class GameControl : MonoBehaviour
                 //遊戲中玩家
                 playingPlayers = GetPlayingPlayer().OrderBy(x => x.allBetChips)
                                                    .ToList();
-                //是否有邊池
-                bool IsHaveSide = playingPlayers.Count() >= 2 &&
-                                  playingPlayers.Any(x => x.allBetChips != playingPlayers[0].allBetChips);
-                //底池贏得籌碼
-                double potWinChips = IsHaveSide ?
-                                     gameRoomData.potChips - GetSideChipsValue() :
-                                     gameRoomData.potChips;
 
                 //底池獲勝玩家
-                List<GameRoomPlayerData> potWinners = JudgeWinner(GetPlayingPlayer());
+                List<GameRoomPlayerData> potWinners = JudgeWinner(playingPlayers).OrderBy(x => x.allBetChips).ToList();
 
-                potWinChips = potWinChips / potWinners.Count();
+                //底池贏得籌碼
+                double potMin = playingPlayers[0].allBetChips;
+                double potWinChips = potMin * playingPlayers.Count();
 
-                //更新遊戲流程
-                data = new Dictionary<string, object>()
-                {
-                    { FirebaseManager.CURR_COMMUNITY_POKER, gameRoomData.communityPoker.Take(5)},      //當前顯示公共牌
-                };
-                UpdateGameRoomData(data);
-
-                //更新玩家籌碼
+                //更新底池贏家玩家籌碼
                 List<string> potWinnerIdList = new List<string>();
                 foreach (var potWinner in potWinners)
                 {
                     potWinnerIdList.Add(potWinner.userId);
-                    newCarryChips = potWinner.carryChips + potWinChips;
+                    newCarryChips = (potWinner.carryChips + potWinChips) / potWinners.Count;
                     data = new Dictionary<string, object>()
                     {
                         { FirebaseManager.CARRY_CHIPS, newCarryChips},   //攜帶籌碼
@@ -669,13 +665,23 @@ public class GameControl : MonoBehaviour
                                      data);
                 }
 
+                //是否有邊池
+                bool IsHaveSide = gameRoomData.potChips - potWinChips > 0;
+
+                //更新遊戲流程
+                data = new Dictionary<string, object>()
+                {
+                    { FirebaseManager.CURR_COMMUNITY_POKER, gameRoomData.communityPoker.Take(5)},      //當前顯示公共牌
+                };
+                UpdateGameRoomData(data);
+
                 //更新底池獲勝資料
                 List<string> potWinnersId = potWinners.Select(x => x.userId).ToList();
                 data = new Dictionary<string, object>()
                 {
-                    { FirebaseManager.POT_WIN_CHIPS, potWinChips},             //底池獲得籌碼
-                    { FirebaseManager.POT_WINNERS_ID, potWinnerIdList},        //底池獲得贏家ID
-                    { FirebaseManager.IS_HAVE_SIDE, IsHaveSide},               //是否有邊池
+                    { FirebaseManager.POT_WIN_CHIPS, potWinChips},                      //底池獲得籌碼
+                    { FirebaseManager.POT_WINNERS_ID, potWinnerIdList},                 //底池獲得贏家ID
+                    { FirebaseManager.IS_HAVE_SIDE, IsHaveSide},                        //是否有邊池
                 };
                 JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.POT_WIN_DATA}",
                                                                 data,
@@ -697,85 +703,63 @@ public class GameControl : MonoBehaviour
                 playingPlayers = GetPlayingPlayer().OrderBy(x => x.allBetChips)
                                                    .ToList();
 
-                List<GameRoomPlayerData> JudgeSidePlayers = playingPlayers;
-
-                //移除主持贏家
-                for (int i = 0; i < JudgeSidePlayers.Count; i++)
-                {
-                    Debug.Log($"主池贏家:{gameRoomData.potWinData.potWinnersId}");
-                    if (gameRoomData.potWinData.potWinnersId.Contains(JudgeSidePlayers[i].userId))
-                    {
-                        Debug.Log($"移除主持贏家:{JudgeSidePlayers[i].userId}");
-                        JudgeSidePlayers.Remove(JudgeSidePlayers[i]);
-                    }
-                }
-
                 //邊池贏家
-                List<GameRoomPlayerData> sideWinners = JudgeWinner(JudgeSidePlayers);
+                List<GameRoomPlayerData> sideWinners = JudgeWinner(playingPlayers).OrderBy(x => x.allBetChips)
+                                                                                  .ToList();
 
-                //移除邊池贏家
-                List<GameRoomPlayerData> otherPlayer = JudgeSidePlayers;
-                for (int i = 0; i < otherPlayer.Count; i++)
+                //底池贏家總下注籌碼
+                double potMInChips = Math.Floor(gameRoomData.potWinData.potWinChips / playingPlayers.Count());
+
+                //邊池最小玩家下注籌碼
+                double getChips = sideWinners[0].allBetChips - potMInChips;
+
+                //退回籌碼與邊池總籌碼
+                double sideWinValue = 0;
+                foreach (var player in playingPlayers)
                 {
-                    if (otherPlayer[i].userId == sideWinners[i].userId)
+                    double backChips = 0;
+                    double chips = player.allBetChips - potMInChips - getChips;
+                    if (chips <= 0)
                     {
-                        Debug.Log($"移除邊池贏家:{sideWinners[i].userId}");
-                        JudgeSidePlayers.Remove(otherPlayer[i]);
+                        //增加邊池籌碼
+                        sideWinValue += getChips;
                     }
-                }
-
-                //邊池贏得籌碼
-                double sideWinValue = GetSideChipsValue();
-
-                if (otherPlayer.Count() >= 2)
-                {
-                    //最小玩家下注籌碼
-                    double min = JudgeSidePlayers[0].allBetChips;
-
-                    //退回籌碼
-                    foreach (var backChipsPlayer in playingPlayers)
+                    else
                     {
-                        double backChips = Mathf.Max(0, (float)(backChipsPlayer.allBetChips - min)); ;
+                        //退回籌碼
+                        backChips = chips;
 
                         //更新玩家籌碼
-                        newCarryChips = backChipsPlayer.carryChips + backChips;
+                        newCarryChips = player.carryChips + backChips;
                         data = new Dictionary<string, object>()
                         {
                             { FirebaseManager.CARRY_CHIPS, newCarryChips},   //攜帶籌碼
                         };
-                        UpdataPlayerData(backChipsPlayer.userId,
+                        UpdataPlayerData(player.userId,
                                          data);
 
                         //更新退回籌碼資料
                         data = new Dictionary<string, object>()
                         {
-                            { FirebaseManager.BACK_USER_ID, backChipsPlayer.userId},        //用戶ID
-                            { FirebaseManager.BACK_CHIPS_VALUE, backChips},                 //退回籌碼值
+                            { FirebaseManager.BACK_USER_ID, player.userId},        //用戶ID
+                            { FirebaseManager.BACK_CHIPS_VALUE, backChips},        //退回籌碼值
                         };
                         JSBridgeManager.Instance.UpdateDataFromFirebase(
-                            $"{QueryRoomPath}/{FirebaseManager.SIDE_WIN_DATA}/{FirebaseManager.BACK_CHIPS_DATA}/{backChipsPlayer.userId}",
+                            $"{QueryRoomPath}/{FirebaseManager.SIDE_WIN_DATA}/{FirebaseManager.BACK_CHIPS_DATA}/{player.userId}",
                             data);
 
-
-                        //贏得籌碼減少
-                        sideWinValue -= backChips;
-
-                        GetPlayerData(backChipsPlayer.userId).carryChips = newCarryChips;
-                        Debug.Log($"退回籌碼:{backChipsPlayer.nickname}:{newCarryChips}");
+                        GetPlayerData(player.userId).carryChips = newCarryChips;
                     }
                 }
 
-                //贏得籌碼
-                double sidewinChips = sideWinValue / sideWinners.Count;
-
-                //邊池贏家
+                //更新邊池贏家籌碼
                 List<string> sideWinnerIdList = new List<string>();
                 foreach (var sidewinner in sideWinners)
                 {
                     sideWinnerIdList.Add(sidewinner.userId);
 
                     //更新玩家籌碼
-                    newCarryChips = sidewinner.carryChips + sidewinChips;
+                    newCarryChips = (sidewinner.carryChips + sideWinValue) / sideWinners.Count();
                     data = new Dictionary<string, object>()
                     {
                         { FirebaseManager.CARRY_CHIPS, newCarryChips},   //攜帶籌碼
@@ -784,10 +768,7 @@ public class GameControl : MonoBehaviour
                                      data);
                 }
 
-                yield return new WaitForSeconds(2);
-
                 //更新邊池資料
-                Debug.Log($"邊池贏得籌碼:{sideWinValue}");
                 data = new Dictionary<string, object>()
                 {
                     { FirebaseManager.SIDE_WIN_CHIPS, sideWinValue},             //邊池獲得籌碼
@@ -1018,10 +999,12 @@ public class GameControl : MonoBehaviour
                 //房主執行
                 if (gameRoomData.hostId == DataManager.UserId)
                 {
+                    yield return new WaitForSeconds(1);
                     yield return IStartGameFlow(GameFlowEnum.SetBlind);
                 }
 
                 localHand = playerData.handPoker;
+
                 break;
 
             //大小盲
@@ -1089,6 +1072,8 @@ public class GameControl : MonoBehaviour
                 //房主執行
                 if (gameRoomData.hostId == DataManager.UserId)
                 {
+                    yield return new WaitForSeconds(2);
+
                     if (gameRoomData.potWinData.isHaveSide == true)
                     {
                         //有邊池贏家
@@ -1098,8 +1083,6 @@ public class GameControl : MonoBehaviour
                     }
                     else
                     {
-                        yield return new WaitForSeconds(2);
-
                         //積分房
                         if (RoomType == TableTypeEnum.IntegralTable)
                         {
@@ -1131,26 +1114,17 @@ public class GameControl : MonoBehaviour
                 }
 
                 //添加退回籌碼
-                foreach (var backPlayer in gameRoomData.sideWinData.backChipsData.Values)
+                if (gameRoomData.sideWinData.backChipsData != null)
                 {
-                    double currCarryChips = gameRoomData.playerDataDic[backPlayer.backUserId].carryChips;
-                    gameRoomData.playerDataDic[backPlayer.backUserId].carryChips = currCarryChips + backPlayer.backChipsValue;
-                    Debug.Log($"退回籌碼_邊池:{backPlayer.backUserId}:{backPlayer.backChipsValue}");
+                    foreach (var backPlayer in gameRoomData.sideWinData.backChipsData.Values)
+                    {
+                        double currCarryChips = gameRoomData.playerDataDic[backPlayer.backUserId].carryChips;
+                        gameRoomData.playerDataDic[backPlayer.backUserId].carryChips = currCarryChips + backPlayer.backChipsValue;
+                    }
                 }
 
                 //是否有玩家籌碼不足
                 bool isSideIntegralResult = gameRoomData.playerDataDic.Any(x => x.Value.carryChips < leastChips);
-
-                Debug.Log($"是否有玩家籌碼不足:{isSideIntegralResult}/leastChips:{leastChips}");
-                foreach (var item in gameRoomData.playerDataDic.Values)
-                {
-                    Debug.Log($"當前籌碼:{item.nickname}:{item.carryChips}");
-                }
-                List<GameRoomPlayerData> p = gameRoomData.playerDataDic.Values.Where(x => x.carryChips < leastChips).ToList();
-                foreach (var item in p)
-                {
-                    Debug.Log($"籌碼不足玩家:{item.nickname}:{item.carryChips}/");
-                }
 
                 //顯示積分結果
                 if (RoomType == TableTypeEnum.IntegralTable &&
@@ -1329,6 +1303,12 @@ public class GameControl : MonoBehaviour
             }
         }
 
+        //非本地玩家更新房間資料
+        if (player.UserId != DataManager.UserId)
+        {
+            gameView.UpdateGameRoomInfo(gameRoomData);
+        }
+
         Debug.Log($"Action Countdown:{gameRoomData.actionCD}");
 
         yield return new WaitForSeconds(1);
@@ -1440,14 +1420,21 @@ public class GameControl : MonoBehaviour
             }
             Debug.Log("所有玩家已下注");    
 
-            //下注籌碼一致
+            //所有玩家下注籌碼一致
+            bool isAllPlayerBetValueEqual = true;
+            if (playingPlayers.Count() > 0 &&
+                canActionPlayers.Count() > 0)
+            {
+                isAllPlayerBetValueEqual = playingPlayers.All(x => x.currAllBetChips == canActionPlayers[0].currAllBetChips);
+            }
+
+            //可下注玩家籌碼一致
             bool isBetValueEqual = true;
             if (playingPlayers.Count() > 0 &&
                 canActionPlayers.Count() > 0)
             {
-                isBetValueEqual = playingPlayers.All(x => x.currAllBetChips == canActionPlayers[0].currAllBetChips);
+                isBetValueEqual = canActionPlayers.All(x => x.currAllBetChips == canActionPlayers[0].currAllBetChips);
             }
-            Debug.Log("下注籌碼一致");
 
             //剩下一名玩家可行動，其他玩家棄牌/離開
             if (foldPlayers.Count() == gameRoomData.playingPlayersIdList.Count() - 1)
@@ -1455,7 +1442,6 @@ public class GameControl : MonoBehaviour
                 yield return IStartGameFlow(GameFlowEnum.OnePlayerLeftResult);
                 yield break;
             }
-            Debug.Log("剩下一名玩家可行動，其他玩家棄牌/離開");
 
             //所有玩家AllIn/Fold
             if (canActionPlayers.Count() == 0 ||
@@ -1464,7 +1450,6 @@ public class GameControl : MonoBehaviour
                 yield return IStartGameFlow(GameFlowEnum.PotResult);
                 yield break;
             }
-            Debug.Log("所有玩家AllIn/Fold");
 
             //剩下一名玩家可行動，其他玩家棄牌/離開，下注值>=當前跟注值
             if (isAllBet &&
@@ -1475,18 +1460,26 @@ public class GameControl : MonoBehaviour
                 yield return IStartGameFlow(GameFlowEnum.PotResult);
                 yield break;
             }
-            Debug.Log("剩下一名玩家可行動，其他玩家棄牌/離開，下注值>=當前跟注值");
 
             //所有玩家已下注 & 下注籌碼一致
             if (isAllBet == true &&
-                isBetValueEqual == true)
+                isAllPlayerBetValueEqual == true)
             {
                 int nextFlowIndex = (gameRoomData.currGameFlow + 1) % Enum.GetValues(typeof(GameFlowEnum)).Length;
                 GameFlowEnum nextFlow = (GameFlowEnum)Mathf.Max(1, nextFlowIndex);
                 yield return IStartGameFlow(nextFlow);                
                 yield break;
             }
-            Debug.Log("所有玩家已下注 & 下注籌碼一致");
+
+            //所有可下注玩家已下注 & 下注籌碼一致
+            if (isAllBet == true &&
+                isBetValueEqual == true)
+            {
+                int nextFlowIndex = (gameRoomData.currGameFlow + 1) % Enum.GetValues(typeof(GameFlowEnum)).Length;
+                GameFlowEnum nextFlow = (GameFlowEnum)Mathf.Max(1, nextFlowIndex);
+                yield return IStartGameFlow(nextFlow);
+                yield break;
+            }
 
             //設置下位行動玩家
             UpdateNextPlayer();
@@ -2238,26 +2231,6 @@ public class GameControl : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 獲取邊池籌碼值
-    /// </summary>
-    /// <returns></returns>
-    private double GetSideChipsValue()
-    {
-        List<GameRoomPlayerData> playingPlayers = GetPlayingPlayer().OrderBy(x => x.allBetChips)
-                                                                    .ToList();
-
-        double sideChipsValue = 0;
-        foreach (var player in playingPlayers)
-        {
-            double addValue = player.allBetChips - playingPlayers[0].allBetChips;
-            sideChipsValue += addValue;
-            Debug.Log($"邊池值增加:{player.userId}:{player.allBetChips}-{playingPlayers[0].allBetChips}={addValue}");
-        }
-
-        Debug.Log($"獲取邊池籌碼值:{sideChipsValue}");
-        return sideChipsValue;
-    }
 
     #endregion
 

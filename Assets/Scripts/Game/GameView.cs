@@ -823,14 +823,32 @@ public class GameView : MonoBehaviour
                     FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
                     if (gameControl.GetLocalPlayer() != null &&
                         gameControl.GetLocalPlayer().currAllBetChips < gameRoomData.smallBlind * 2 &&
+                        gameRoomData != null &&
+                        gameRoomData.currCallValue <= gameRoomData.smallBlind * 2 &&
                         (gameRoomData.currGameFlow == (int)GameFlowEnum.Licensing || gameRoomData.currGameFlow == (int)GameFlowEnum.SetBlind))
                     {
-
-                        GameRoomPlayerData p = gameControl.GetLocalPlayer();
-
-                        strData.CallStr = "Call";
-                        strData.CallValueStr = gameRoomData.smallBlind.ToString();
-                        CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
+                        GameRoomPlayerData local = gameControl.GetLocalPlayer();
+                        if (local != null)
+                        {
+                            switch ((SeatCharacterEnum)local.seatCharacter)
+                            {
+                                case SeatCharacterEnum.SB:
+                                    strData.CallStr = "Call";
+                                    strData.CallValueStr = gameRoomData.smallBlind.ToString();
+                                    CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
+                                    break;
+                                case SeatCharacterEnum.BB:
+                                    strData.CallStr = "Check";
+                                    strData.CallValueStr = "";
+                                    CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
+                                    break;
+                                default:
+                                    strData.CallStr = "Call";
+                                    strData.CallValueStr = (gameRoomData.smallBlind * 2).ToString();
+                                    CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
+                                    break;
+                            }
+                        }
                     }
                     else
                     {
@@ -1258,6 +1276,7 @@ public class GameView : MonoBehaviour
                         OnCallAndCheck();
                     }
                     else if (thisData.LocalPlayerCurrBetValue < thisData.SmallBlindValue * 2 &&
+                             gameRoomData.currCallValue <= thisData.SmallBlindValue * 2 &&
                              gameRoomData.currGameFlow == (int)GameFlowEnum.SetBlind)
                     {
                         OnCallAndCheck();
@@ -1643,9 +1662,9 @@ public class GameView : MonoBehaviour
         }
 
         //本地玩家
+        SetActionButton = isLocalPlayer;
         if (isLocalPlayer)
         {
-            SetActionButton = false;
             Debug.Log($"設置行動按鈕");
             switch (actionEnum)
             {
@@ -2007,7 +2026,7 @@ public class GameView : MonoBehaviour
                                         });
             
             yield return new WaitForSeconds(2);
-        }
+        }        
 
         //記錄存檔
         int winIndex = 0;
@@ -2129,17 +2148,20 @@ public class GameView : MonoBehaviour
                 Vector2 winnerSeatPos = player.gameObject.transform.position;
                 JudgePokerShape(player, true, true);
 
-                //獲勝籌碼物件
-                RectTransform rt = Instantiate(WinChipsObj, Pot_Img.transform).GetComponent<RectTransform>();
-                rt.anchoredPosition = Vector2.zero;
-                yield return new WaitForSeconds(0.5f);
-                ObjMoveUtils.ObjMoveToTarget(rt, winnerSeatPos, 0.5f,
-                                            () =>
-                                            {
-                                                PlaySound("SoundWinPot");
-                                                player.PlayerRoomChips = playerData.carryChips;
-                                                Destroy(rt.gameObject);
-                                            });
+                if (player.PlayerRoomChips != playerData.carryChips)
+                {
+                    //獲勝籌碼物件
+                    RectTransform rt = Instantiate(WinChipsObj, Pot_Img.transform).GetComponent<RectTransform>();
+                    rt.anchoredPosition = Vector2.zero;
+                    yield return new WaitForSeconds(0.5f);
+                    ObjMoveUtils.ObjMoveToTarget(rt, winnerSeatPos, 0.5f,
+                                                () =>
+                                                {
+                                                    PlaySound("SoundWinPot");
+                                                    player.PlayerRoomChips = playerData.carryChips;
+                                                    Destroy(rt.gameObject);
+                                                });
+                }
 
                 yield return new WaitForSeconds(2);
 
@@ -2161,33 +2183,36 @@ public class GameView : MonoBehaviour
 
         //顯示退回籌碼
         thisData.BackChipsDic = new Dictionary<int, double>();
-        foreach (var backChipsData in gameRoomData.sideWinData.backChipsData.Values)
+        if (gameRoomData.sideWinData.backChipsData != null)
         {
-            if (backChipsData.backChipsValue > 0)
+            foreach (var backChipsData in gameRoomData.sideWinData.backChipsData.Values)
             {
-                //本地玩家
-                if (backChipsData.backUserId == DataManager.UserId)
+                if (backChipsData.backChipsValue > 0)
                 {
-                    //更新用戶籌碼資料
-                    double changeValue = backChipsData.backChipsValue;
-                    gameControl.UpdateLocalChips(changeValue);
+                    //本地玩家
+                    if (backChipsData.backUserId == DataManager.UserId)
+                    {
+                        //更新用戶籌碼資料
+                        double changeValue = backChipsData.backChipsValue;
+                        gameControl.UpdateLocalChips(changeValue);
+                    }
+
+                    GamePlayerInfo player = GetPlayer(backChipsData.backUserId);
+                    player.PlayerRoomChips = player.PlayerRoomChips + backChipsData.backChipsValue;
+                    player.SetBackChips = backChipsData.backChipsValue;
+                    thisData.BackChipsDic.Add(player.SeatIndex, backChipsData.backChipsValue);
+
+                    GameRoomPlayerData playerData = gameRoomData.playerDataDic.Where(x => x.Value.userId == backChipsData.backUserId)
+                                                                              .FirstOrDefault()
+                                                                              .Value;
+
+                    if (playerData != null)
+                    {
+                        player.PlayerRoomChips = playerData.carryChips;
+                    }
+
+                    Debug.Log($"退回籌碼_顯示:{backChipsData.backUserId}:{backChipsData.backChipsValue}");
                 }
-
-                GamePlayerInfo player = GetPlayer(backChipsData.backUserId);
-                player.PlayerRoomChips = player.PlayerRoomChips + backChipsData.backChipsValue;
-                player.SetBackChips = backChipsData.backChipsValue;
-                thisData.BackChipsDic.Add(player.SeatIndex, backChipsData.backChipsValue);
-
-                GameRoomPlayerData playerData = gameRoomData.playerDataDic.Where(x => x.Value.userId == backChipsData.backUserId)
-                                                                          .FirstOrDefault()
-                                                                          .Value;
-
-                if (playerData != null)
-                {
-                    player.PlayerRoomChips = playerData.carryChips;
-                }
-
-                Debug.Log($"退回籌碼_顯示:{backChipsData.backUserId}:{backChipsData.backChipsValue}");
             }
         }
 
@@ -2807,7 +2832,26 @@ public class GameView : MonoBehaviour
 
             GameRoomPlayerData sbPlayerData;
             GameRoomPlayerData bbPlayerData;
-            if (gameRoomData.playingPlayersIdList.Count <= 2)
+            if (gameRoomData.playingPlayersIdList.Count == 1)
+            {
+                sbPlayerData = buttonPlayerData;
+                dataDic = new Dictionary<string, object>()
+                {
+                    { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.SB},
+                };
+                gameControl.UpdataPlayerData(sbPlayerData.userId,
+                                             dataDic);
+
+                //設置BB座位
+                bbPlayerData = buttonPlayerData;
+                dataDic = new Dictionary<string, object>()
+                {
+                    { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.BB},
+                };
+                gameControl.UpdataPlayerData(bbPlayerData.userId,
+                                             dataDic);
+            }
+            else if (gameRoomData.playingPlayersIdList.Count == 2)
             {
                 //只有2人
 
@@ -2888,6 +2932,11 @@ public class GameView : MonoBehaviour
                                                                     .FirstOrDefault()
                                                                     .Value;
 
+        if (sbPlayerData == null)
+        {
+            sbPlayerData = buttonPlayerData;
+        }
+
         GamePlayerInfo sbPlayer = GetPlayer(sbPlayerData.userId);
         sbPlayer.SetSeatCharacter(SeatCharacterEnum.SB);
         sbPlayer.PlayerAction(BetActingEnum.Blind,
@@ -2898,10 +2947,15 @@ public class GameView : MonoBehaviour
             gameControl.UpdateLocalChips(-gameRoomData.smallBlind);
         }
         Debug.Log($"盲注流程SB:{sbPlayerData.nickname}");
+
         //BB下注
         GameRoomPlayerData bbPlayerData = gameRoomData.playerDataDic.Where(x => (SeatCharacterEnum)x.Value.seatCharacter == SeatCharacterEnum.BB)
                                                                     .FirstOrDefault()
                                                                     .Value;
+        if (bbPlayerData == null)
+        {
+            bbPlayerData = buttonPlayerData;
+        }
         GamePlayerInfo bbPlayer = GetPlayer(bbPlayerData.userId);
         bbPlayer.SetSeatCharacter(SeatCharacterEnum.BB);
         bbPlayer.PlayerAction(BetActingEnum.Blind,
