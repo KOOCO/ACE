@@ -179,7 +179,6 @@ public class LobbyMainPageView : MonoBehaviour
     private void Update()
     {
         //檢查目前廣告畫面
-        print("目前廣告" + DataManager.CurrBillboardIndex);
         #region 廣告刊版切換
 
         if (!GameRoomManager.Instance.IsShow &&
