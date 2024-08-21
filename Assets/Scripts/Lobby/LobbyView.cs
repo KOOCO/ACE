@@ -185,7 +185,7 @@ public class LobbyView : MonoBehaviour
     {
         #region 測試
 
-        //寫入資料
+        /*//寫入資料
         Dictionary<string, object> dataDic = new()
         {
             { FirebaseManager.U_CHIPS, Math.Round(DataManager.InitGiveUChips) },
@@ -194,7 +194,7 @@ public class LobbyView : MonoBehaviour
         };
         JSBridgeManager.Instance.UpdateDataFromFirebase(
             $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
-            dataDic);
+            dataDic);*/
 
         #endregion
 
@@ -261,18 +261,29 @@ public class LobbyView : MonoBehaviour
 
         DataManager.UserId = loginData.userId;
         DataManager.UserLoginPhoneNumber = loginData.phoneNumber;
-        DataManager.UserNickname = loginData.nickname;
+        //DataManager.UserNickname = loginData.nickname;
         DataManager.UserAvatarIndex = loginData.avatarIndex;
         DataManager.UserInvitationCode = loginData.invitationCode;
         DataManager.UserBoundInviterId = loginData.boundInviterId;
         DataManager.UserLineToken = loginData.lineToken;
-        DataManager.UserUChips = loginData.UChips;
-        DataManager.UserAChips = loginData.AChips;
-        DataManager.UserGold = loginData.gold;
+        DataManager.UserUChips = Math.Round(DataManager.InitGiveUChips);
+        DataManager.UserAChips = Math.Round(DataManager.InitGiveAChips);
+        DataManager.UserGold = Math.Round(DataManager.InitGiveGold);
+
+        if (string.IsNullOrEmpty(DataManager.UserId))
+        {
+            DataManager.UserId = StringUtils.GenerateRandomString(15);
+        }
+        DataManager.UserLoginPhoneNumber = DataManager.UserId;
+
+        if (string.IsNullOrEmpty(DataManager.UserInvitationCode))
+        {
+            DataManager.UserInvitationCode = StringUtils.GenerateRandomString(15);
+        }
 
         //開啟設置暱稱
         if (isFirstIn &&
-            string.IsNullOrEmpty(loginData.nickname))
+            string.IsNullOrEmpty(DataManager.UserNickname))
         {
             Instantiate(SetNicknameViewObj, transform);
         }

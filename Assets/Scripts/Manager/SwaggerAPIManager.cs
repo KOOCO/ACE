@@ -72,14 +72,15 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
             Debug.Log("Response: " + request.downloadHandler.text);
             if (request.downloadHandler.text.Length > 1000)
             {
-                LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
-            }
-            //Callback執行
-            if (callback != null)
-            {
-                T2 response = JsonUtility.FromJson<T2>(request.downloadHandler.text);
-                callback?.Invoke(response);
-            }
+                // LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
+
+                //Callback執行
+                if (callback != null)
+                {
+                    T2 response = JsonUtility.FromJson<T2>(request.downloadHandler.text);
+                    callback?.Invoke(response);
+                }
+            }            
         }
     }
 }
