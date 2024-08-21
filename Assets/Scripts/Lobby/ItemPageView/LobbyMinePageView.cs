@@ -531,9 +531,14 @@ public class LobbyMinePageView : MonoBehaviour
         //暱稱
         Nickname_Txt.text = $"@{DataManager.UserNickname}";
 
-        //錢包地址
-        StringUtils.StrExceedSize(DataManager.UserWalletAddress, WalletAddress_Txt);
-        WalletAddressBg_Obj.SetActive(!string.IsNullOrEmpty(WalletAddress_Txt.text));
+        //錢包地址 /*先呈現畫面之後再寫回來*/
+        WalletAddress_Txt.text = "TTerwE2220ba3fffba745R...";
+
+        //StringUtils.StrExceedSize(DataManager.UserWalletAddress, WalletAddress_Txt);
+
+        
+        WalletAddressBg_Obj.SetActive(true);
+        //WalletAddressBg_Obj.SetActive(!string.IsNullOrEmpty(WalletAddress_Txt.text));
 
         //IG連接
         IGNotYetLinked_Obj.SetActive(string.IsNullOrEmpty(DataManager.IGIUserIdAndName));
