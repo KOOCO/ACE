@@ -686,20 +686,6 @@ public class GameControl : MonoBehaviour
             //邊池結果
             case GameFlowEnum.SideResult:
 
-                //遊戲中玩家
-                playingPlayers = GetPlayingPlayer().OrderBy(x => x.allBetChips)
-                                                   .ToList();
-
-                List<GameRoomPlayerData> JudgeSidePlayers = playingPlayers;
-
-                //最小玩家下注籌碼
-                double min = JudgeSidePlayers[0].allBetChips;
-
-                //邊池贏得籌碼
-                double sideWinValue = playingPlayers.Count() == 2 ?
-                                      0 :
-                                      GetSideChipsValue();
-
                 //更新遊戲流程
                 data = new Dictionary<string, object>()
                 {
@@ -707,34 +693,11 @@ public class GameControl : MonoBehaviour
                 };
                 UpdateGameRoomData(data);
 
-                //退回籌碼
-                List<GameRoomPlayerData> playerData = GetAllInPlayer();
-                foreach (var backChipsPlayer in playingPlayers)
-                {
-                    double backChips = Mathf.Max(0, (float)(backChipsPlayer.allBetChips - min)); ;
+                //遊戲中玩家
+                playingPlayers = GetPlayingPlayer().OrderBy(x => x.allBetChips)
+                                                   .ToList();
 
-                    //更新玩家籌碼
-                    newCarryChips = backChipsPlayer.carryChips + backChips;
-                    data = new Dictionary<string, object>()
-                    {
-                        { FirebaseManager.CARRY_CHIPS, newCarryChips},   //攜帶籌碼
-                    };
-                    UpdataPlayerData(backChipsPlayer.userId,
-                                     data);
-
-                    //更新退回籌碼資料
-                    data = new Dictionary<string, object>()
-                    {
-                        { FirebaseManager.BACK_USER_ID, backChipsPlayer.userId},        //用戶ID
-                        { FirebaseManager.BACK_CHIPS_VALUE, backChips},                 //退回籌碼值
-                    };
-                    JSBridgeManager.Instance.UpdateDataFromFirebase(
-                        $"{QueryRoomPath}/{FirebaseManager.SIDE_WIN_DATA}/{FirebaseManager.BACK_CHIPS_DATA}/{backChipsPlayer.userId}",
-                        data);
-
-                    GetPlayerData(backChipsPlayer.userId).carryChips = newCarryChips;
-                    Debug.Log($"退回籌碼:{backChipsPlayer.nickname}:{newCarryChips}");
-                }
+                List<GameRoomPlayerData> JudgeSidePlayers = playingPlayers;
 
                 //移除主持贏家
                 for (int i = 0; i < JudgeSidePlayers.Count; i++)
@@ -749,6 +712,58 @@ public class GameControl : MonoBehaviour
 
                 //邊池贏家
                 List<GameRoomPlayerData> sideWinners = JudgeWinner(JudgeSidePlayers);
+
+                //移除邊池贏家
+                List<GameRoomPlayerData> otherPlayer = JudgeSidePlayers;
+                for (int i = 0; i < otherPlayer.Count; i++)
+                {
+                    if (otherPlayer[i].userId == sideWinners[i].userId)
+                    {
+                        Debug.Log($"移除邊池贏家:{sideWinners[i].userId}");
+                        JudgeSidePlayers.Remove(otherPlayer[i]);
+                    }
+                }
+
+                //邊池贏得籌碼
+                double sideWinValue = GetSideChipsValue();
+
+                if (otherPlayer.Count() >= 2)
+                {
+                    //最小玩家下注籌碼
+                    double min = JudgeSidePlayers[0].allBetChips;
+
+                    //退回籌碼
+                    foreach (var backChipsPlayer in playingPlayers)
+                    {
+                        double backChips = Mathf.Max(0, (float)(backChipsPlayer.allBetChips - min)); ;
+
+                        //更新玩家籌碼
+                        newCarryChips = backChipsPlayer.carryChips + backChips;
+                        data = new Dictionary<string, object>()
+                        {
+                            { FirebaseManager.CARRY_CHIPS, newCarryChips},   //攜帶籌碼
+                        };
+                        UpdataPlayerData(backChipsPlayer.userId,
+                                         data);
+
+                        //更新退回籌碼資料
+                        data = new Dictionary<string, object>()
+                        {
+                            { FirebaseManager.BACK_USER_ID, backChipsPlayer.userId},        //用戶ID
+                            { FirebaseManager.BACK_CHIPS_VALUE, backChips},                 //退回籌碼值
+                        };
+                        JSBridgeManager.Instance.UpdateDataFromFirebase(
+                            $"{QueryRoomPath}/{FirebaseManager.SIDE_WIN_DATA}/{FirebaseManager.BACK_CHIPS_DATA}/{backChipsPlayer.userId}",
+                            data);
+
+
+                        //贏得籌碼減少
+                        sideWinValue -= backChips;
+
+                        GetPlayerData(backChipsPlayer.userId).carryChips = newCarryChips;
+                        Debug.Log($"退回籌碼:{backChipsPlayer.nickname}:{newCarryChips}");
+                    }
+                }
 
                 //贏得籌碼
                 double sidewinChips = sideWinValue / sideWinners.Count;
@@ -768,6 +783,8 @@ public class GameControl : MonoBehaviour
                     UpdataPlayerData(sidewinner.userId,
                                      data);
                 }
+
+                yield return new WaitForSeconds(2);
 
                 //更新邊池資料
                 Debug.Log($"邊池贏得籌碼:{sideWinValue}");
