@@ -490,7 +490,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
                 userNameOrEmailAddress = SingInAccount_If.text, 
                 password = SignInPassword_If.text,
                 ipAddress = localIP,
-                machineCode = "",
+                machineCode = "123456789",
             };
             SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login);
             //MobileSignInSubmit();
@@ -686,14 +686,16 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         if (Input.GetKeyDown(KeyCode.F))
         {
 
-            LoginRequest login = new LoginRequest()
+            Register register = new Register()
             {
-                userNameOrEmailAddress = SingInAccount_If.text, //SingInAccount_If
-                password = SignInPassword_If.text,
-                ipAddress = localIP,
-                machineCode = "",
+                //RegisterNumber_If, RegisterOTP_If, RegisterPassword_If, RegisterAccountName_If;
+                inviteCode ="123456789",
+                phoneNumber = RegisterNumber_If.text,//把 RegisterNumber物件的匯入
+                userName = RegisterAccountName_If.text,
+                password = RegisterPassword_If.text,
+                confirmPassword = RegisterPassword_If.text,
             };
-            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login);
+            SwaggerAPIManager.Instance.SendPostAPI<Register, callback>("/api/app/ace-accounts/register", register);
         }
         //發送OTP倒數
         float codeTime = (float)(DateTime.Now - codeStartTime).TotalSeconds;
@@ -881,6 +883,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
     private void JudgeDateExists(string callBackFunName, string childNode)
     {        
         ViewManager.Instance.OpenWaitingView(transform);
+
         JSBridgeManager.Instance.ReadDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{childNode}/{currVerifyPhoneNumber}",
                                                        gameObject.name,
                                                        callBackFunName);
@@ -997,14 +1000,6 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
     /// </summary>
     private void MobileSignInSubmit()
     {
-#if UNITY_EDITOR
-
-        LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
-        return;
-
-#endif
-
-
         MobileSignInError_Txt.text = "";
         SignInNumberError_Txt.text = "";
 
@@ -1121,7 +1116,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
 
         isShowPassword = false;
         PasswordDisplayControl(isShowPassword);
-        Reigster reigster = new Reigster()
+        Register reigster = new Register()
         {
             //RegisterNumber_If, RegisterOTP_If, RegisterPassword_If, RegisterAccountName_If;
             phoneNumber = RegisterNumber_If.text,//把 RegisterNumber物件的匯入
@@ -1240,8 +1235,9 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         }
     }
    
-    public class Reigster
-   {
+    public class Register
+    {
+    public string inviteCode;
     public string phoneNumber;
     public string userName;
     public string password;
