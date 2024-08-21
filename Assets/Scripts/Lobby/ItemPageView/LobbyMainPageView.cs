@@ -50,7 +50,7 @@ public class LobbyMainPageView : MonoBehaviour
     LobbyView lobbyView;
 
     List<RectTransform> billboardList;                      //廣告刊版
-    public List<Image> billboardImgList;                           //廣告刊版圖片
+    public List<Image> billboardImgList;                    //廣告刊版圖片
     List<Image> billboardPointList;                         //廣告刊版點
     List<int> billboardDisplayIndexList;                    //廣告刊版顯示
 
