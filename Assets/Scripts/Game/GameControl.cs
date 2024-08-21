@@ -60,60 +60,57 @@ public class GameControl : MonoBehaviour
     {
 #if UNITY_EDITOR
 
-        if (Entry.Instance.releaseType == ReleaseEnvironmentEnum.JimmyTest)
+        if (Input.GetKeyDown(KeyCode.Z))
         {
-            if (Input.GetKeyDown(KeyCode.Z))
-            {
-                CreateRobot();
-            }
+            CreateRobot();
+        }
 
-            if (Input.GetKeyDown(KeyCode.X))
-            {
-                RemoveRobot();
-            }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            RemoveRobot();
+        }
 
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                string id = gameRoomData.currActionerId;
-                UpdateBetAction(id,
-                                BetActingEnum.Call,
-                                gameRoomData.currCallValue);
-            }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            string id = gameRoomData.currActionerId;
+            UpdateBetAction(id,
+                            BetActingEnum.Call,
+                            gameRoomData.currCallValue);
+        }
 
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                string id = gameRoomData.currActionerId;
-                UpdateBetAction(id,
-                                BetActingEnum.Check,
-                                0);
-            }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            string id = gameRoomData.currActionerId;
+            UpdateBetAction(id,
+                            BetActingEnum.Check,
+                            0);
+        }
 
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-                string id = gameRoomData.currActionerId;
-                UpdateBetAction(id,
-                                BetActingEnum.Raise,
-                                gameRoomData.currCallValue + gameRoomData.smallBlind);
-            }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            string id = gameRoomData.currActionerId;
+            UpdateBetAction(id,
+                            BetActingEnum.Raise,
+                            gameRoomData.currCallValue + gameRoomData.smallBlind);
+        }
 
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                string id = gameRoomData.currActionerId;
-                UpdateBetAction(id,
-                                BetActingEnum.Fold,
-                                0);
-            }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            string id = gameRoomData.currActionerId;
+            UpdateBetAction(id,
+                            BetActingEnum.Fold,
+                            0);
+        }
 
-            if (Input.GetKeyDown(KeyCode.G))
-            {
-                string id = gameRoomData.currActionerId;
-                GameRoomPlayerData p = gameRoomData.playerDataDic.Where(x => x.Value.userId == id)
-                                                                 .FirstOrDefault()
-                                                                 .Value;
-                UpdateBetAction(id,
-                                BetActingEnum.AllIn,
-                                p.carryChips);
-            }
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            string id = gameRoomData.currActionerId;
+            GameRoomPlayerData p = gameRoomData.playerDataDic.Where(x => x.Value.userId == id)
+                                                             .FirstOrDefault()
+                                                             .Value;
+            UpdateBetAction(id,
+                            BetActingEnum.AllIn,
+                            p.carryChips);
         }
 
 #endif
@@ -719,12 +716,19 @@ public class GameControl : MonoBehaviour
                 {
                     double backChips = 0;
                     double chips = player.allBetChips - potMInChips - getChips;
-                    if (chips <= 0)
+                    if (playingPlayers.Count() >= 3 &&
+                        chips <= 0)
+                    {
+                        sideWinValue += getChips;
+                        continue;
+                    }
+                    else if (playingPlayers.Count() == 2 &&
+                             chips == 0)
                     {
                         //增加邊池籌碼
                         sideWinValue += getChips;
                     }
-                    else
+                    else if(chips > 0)
                     {
                         //退回籌碼
                         backChips = chips;
@@ -860,8 +864,6 @@ public class GameControl : MonoBehaviour
     {
         //首位行動玩家=小盲座位
         int nextSeat = (gameRoomData.buttonSeat + 1) % DataManager.MaxPlayerCount;
-        Debug.Log($"ButtonSeat:{gameRoomData.buttonSeat}");
-        Debug.Log($"NextSeat:{nextSeat}");
         List<GameRoomPlayerData> players = GetCanActionPlayer().OrderBy(x => x.gameSeat)
                                                                .ToList();
         string nextPlayerId = players.Where(x => x.gameSeat == nextSeat)
@@ -1055,7 +1057,6 @@ public class GameControl : MonoBehaviour
                 {
                     double currCarryChips = gameRoomData.playerDataDic[sideWinnerId].carryChips;
                     gameRoomData.playerDataDic[sideWinnerId].carryChips = currCarryChips + potWinChips;
-                    Debug.Log($"底池贏家籌碼:{sideWinnerId}:{currCarryChips + potWinChips}");
                 }
 
                 //是否有玩家籌碼不足
@@ -1110,7 +1111,6 @@ public class GameControl : MonoBehaviour
                 {
                     double currCarryChips = gameRoomData.playerDataDic[sideWinnerId].carryChips;
                     gameRoomData.playerDataDic[sideWinnerId].carryChips = currCarryChips + sideWinChips;
-                    Debug.Log($"邊池贏家籌碼:{sideWinnerId}:{currCarryChips + sideWinChips}");
                 }
 
                 //添加退回籌碼
@@ -1309,8 +1309,6 @@ public class GameControl : MonoBehaviour
             gameView.UpdateGameRoomInfo(gameRoomData);
         }
 
-        Debug.Log($"Action Countdown:{gameRoomData.actionCD}");
-
         yield return new WaitForSeconds(1);
 
         if (gameRoomData.actionCD < 0 ||
@@ -1345,7 +1343,6 @@ public class GameControl : MonoBehaviour
                 }
 
                 //更新倒數
-                Debug.Log($"更新倒數:{gameRoomData.actionCD}");
                 var data = new Dictionary<string, object>()
                 {
                     { FirebaseManager.ACTION_CD, gameRoomData.actionCD - 1},              //行動倒數時間
@@ -1378,10 +1375,6 @@ public class GameControl : MonoBehaviour
             return;
         }
 
-        Debug.Log($"下注行為演出betActionerId:{gameRoomData.betActionDataDic.betActionerId}");
-        Debug.Log($"下注行為演出preBetActionerId:{preBetActionerId}");
-        Debug.Log($"下注行為演出betAction:{gameRoomData.betActionDataDic.betAction}");
-
         gameView.GetPlayerAction(gameRoomData);
         if (cdCoroutine != null) StopCoroutine(cdCoroutine);
 
@@ -1401,24 +1394,17 @@ public class GameControl : MonoBehaviour
         {
             yield return new WaitForSeconds(1);
 
-            List<GameRoomPlayerData> canActionPlayers = GetCanActionPlayer();
-            List<GameRoomPlayerData> allInPlayers = GetAllInPlayer();
-            List<GameRoomPlayerData> foldPlayers = GetFoldPlayer();
-            List<GameRoomPlayerData> playingPlayers = GetPlayingPlayer();
-
-            Debug.Log($"canActionPlayers:{canActionPlayers.Count()}");
-            Debug.Log($"allInPlayers:{allInPlayers.Count()}");
-            Debug.Log($"foldPlayers:{foldPlayers.Count()}");
-            Debug.Log($"playingPlayers:{playingPlayers.Count()}");
-            Debug.Log($"playingPlayersIdList:{gameRoomData.playingPlayersIdList.Count()}");
+            List<GameRoomPlayerData> canActionPlayers = GetCanActionPlayer().OrderBy(x => x.currAllBetChips).ToList();
+            List<GameRoomPlayerData> allInPlayers = GetAllInPlayer().OrderBy(x => x.currAllBetChips).ToList();
+            List<GameRoomPlayerData> foldPlayers = GetFoldPlayer().OrderBy(x => x.currAllBetChips).ToList();
+            List<GameRoomPlayerData> playingPlayers = GetPlayingPlayer().OrderBy(x => x.currAllBetChips).ToList();
 
             //所有玩家已下注
             bool isAllBet = true;
             if (canActionPlayers.Count() > 0)
             {
                 isAllBet = canActionPlayers.All(x => x.isBet == true);
-            }
-            Debug.Log("所有玩家已下注");    
+            }  
 
             //所有玩家下注籌碼一致
             bool isAllPlayerBetValueEqual = true;
@@ -1455,7 +1441,7 @@ public class GameControl : MonoBehaviour
             if (isAllBet &&
                 gameRoomData.playingPlayersIdList.Count() - (allInPlayers.Count() + foldPlayers.Count()) == 1 &&
                 canActionPlayers.Count() == 1 &&
-                canActionPlayers[0].allBetChips >= gameRoomData.currCallValue)
+                canActionPlayers[0].currAllBetChips >= gameRoomData.currCallValue)
             {
                 yield return IStartGameFlow(GameFlowEnum.PotResult);
                 yield break;
@@ -1468,16 +1454,6 @@ public class GameControl : MonoBehaviour
                 int nextFlowIndex = (gameRoomData.currGameFlow + 1) % Enum.GetValues(typeof(GameFlowEnum)).Length;
                 GameFlowEnum nextFlow = (GameFlowEnum)Mathf.Max(1, nextFlowIndex);
                 yield return IStartGameFlow(nextFlow);                
-                yield break;
-            }
-
-            //所有可下注玩家已下注 & 下注籌碼一致
-            if (isAllBet == true &&
-                isBetValueEqual == true)
-            {
-                int nextFlowIndex = (gameRoomData.currGameFlow + 1) % Enum.GetValues(typeof(GameFlowEnum)).Length;
-                GameFlowEnum nextFlow = (GameFlowEnum)Mathf.Max(1, nextFlowIndex);
-                yield return IStartGameFlow(nextFlow);
                 yield break;
             }
 
@@ -1611,7 +1587,6 @@ public class GameControl : MonoBehaviour
         }
         else
         {
-            Debug.Log($"更新玩家個人資料::{callback.Method.Name}");
             JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{id}",
                                                 dataDic,
                                                 gameObject.name,
@@ -1635,15 +1610,12 @@ public class GameControl : MonoBehaviour
     /// </summary>
     private void UpdateNextPlayer()
     {
-        Debug.Log("設置下位行動玩家");
-
         List<GameRoomPlayerData> players = new List<GameRoomPlayerData>();
         foreach (var item in gameRoomData.playingPlayersIdList)
         {
             GameRoomPlayerData player = gameRoomData.playerDataDic.Where(x => x.Value.userId == item)
                                                                   .FirstOrDefault()
                                                                   .Value;
-            Debug.Log($"設置行動玩家添加:{player.userId}/{player.nickname}");
             players.Add(player);
         }
         players = players.OrderBy(x => x.gameSeat)
@@ -1673,7 +1645,7 @@ public class GameControl : MonoBehaviour
         {
             preBetActionerId = "";
         }
-        Debug.Log($"設置下位行動玩家:{nextPlayerId}");
+
         //更新資料
         if (cdCoroutine != null) StopCoroutine(cdCoroutine);
         var data = new Dictionary<string, object>()
@@ -1693,7 +1665,6 @@ public class GameControl : MonoBehaviour
     /// <param name="betValue">下注值</param>
     public void UpdateBetAction(string id, BetActingEnum betActing, double betValue)
     {
-        Debug.Log($"Update Bet Action:{id}_{betActing}:{betValue}");
         if (cdCoroutine != null) StopCoroutine(cdCoroutine);
 
         GameRoomPlayerData roomPlayerData = gameRoomData.playerDataDic[id];
@@ -1853,7 +1824,6 @@ public class GameControl : MonoBehaviour
     /// <param name="isSuccess"></param>
     public void UpdateCarryChipsCallback(string isSuccess)
     {
-        Debug.Log($"更新攜帶籌碼(購買籌碼)回傳:{isSuccess}");
         gameView.BuyChipsGoBack();
     }
 

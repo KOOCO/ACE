@@ -479,6 +479,7 @@ public class GameView : MonoBehaviour
                                   AutoActingEnum.None :
                                   AutoActingEnum.CheckAndFold;
             }
+            Raise_Tr.gameObject.SetActive(false);
         });
 
         //跟注/過牌
@@ -494,6 +495,7 @@ public class GameView : MonoBehaviour
                              AutoActingEnum.None :
                              AutoActingEnum.Check;
             }
+            Raise_Tr.gameObject.SetActive(false);
         });
 
         //加注/All In
@@ -1483,7 +1485,8 @@ public class GameView : MonoBehaviour
 
                 //沒有離座/非等待
                 if (player.isSitOut == false &&
-                   (PlayerStateEnum)player.gameState != PlayerStateEnum.Waiting)
+                   (PlayerStateEnum)player.gameState != PlayerStateEnum.Waiting &&
+                   (PlayerStateEnum)player.gameState != PlayerStateEnum.Fold)
                 {
                     thisData.IsPlaying = true;
 
@@ -1500,10 +1503,10 @@ public class GameView : MonoBehaviour
                     }
                 }
             }
-            if (player.currAllBetChips > 0)
+            /*if (player.currAllBetChips > 0)
             {
                 gamePlayerInfo.PlayerBet(player.currAllBetChips, player.carryChips);
-            }
+            }*/
 
             if (player.userId == gameRoomData.currActionerId)
             {
@@ -1517,12 +1520,8 @@ public class GameView : MonoBehaviour
         if (gameRoomData.currGameFlow != (int)GameFlowEnum.PotResult &&
             gameRoomData.currGameFlow != (int)GameFlowEnum.SideResult)
         {
-            SetTotalPot = gameRoomData.potChips;
-        }
-
-        if ((int)gameRoomData.currGameFlow >= 2)
-        {
-            //SetPotActive = true;
+            StringUtils.ChipsChangeEffect(TotalPot_Txt, gameRoomData.potChips);
+            thisData.TotalPot = gameRoomData.potChips;
         }
 
         //公共牌
@@ -1570,7 +1569,12 @@ public class GameView : MonoBehaviour
             gamePlayerInfo = SeatGamePlayerInfoList[0];
             thisData.LocalGamePlayerInfo = gamePlayerInfo;
         }
-        
+
+        if (playerData.gameState == (int)PlayerStateEnum.Waiting ||
+            playerData.gameState == (int)PlayerStateEnum.Fold)
+        {
+            gamePlayerInfo.IsOpenInfoMask = true;
+        }
 
         gamePlayerInfo.gameObject.SetActive(true);
         if (playerData.gameSeat == gameRoomData.buttonSeat)
