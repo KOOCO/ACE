@@ -89,7 +89,7 @@ public class LobbyMainPageView : MonoBehaviour
     /// </summary>
     private void UpdateLanguage()
     {
-        IntegralBtn_Txt.text = LanguageManager.Instance.GetText("GO TO INTEGRAL");
+        IntegralBtn_Txt.text = LanguageManager.Instance.GetText("INTEGRAL");
         CryptoTableTital_Txt.text = LanguageManager.Instance.GetText("CRYPTO TABLE");
         VCTableTital_Txt.text = LanguageManager.Instance.GetText("VIRTUAL CURRENCY TABLE");
     }
@@ -174,6 +174,7 @@ public class LobbyMainPageView : MonoBehaviour
 
         InitBillBoard();
         CreateRoomBtn();
+
     }
 
     private void Update()
