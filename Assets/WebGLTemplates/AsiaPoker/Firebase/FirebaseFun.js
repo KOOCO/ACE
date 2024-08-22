@@ -2,13 +2,14 @@
 function initializeFirebase() {
     // Firebase 配置
     const firebaseConfig = {
-        apiKey: "AIzaSyDbgc-2YxTTzwZdmKCG57Fz6dFK9LCPAxY",
-        authDomain: "asia-poker-5959b.firebaseapp.com",
-        databaseURL: "https://asia-poker-5959b-default-rtdb.firebaseio.com",
-        projectId: "asia-poker-5959b",
-        storageBucket: "asia-poker-5959b.appspot.com",
-        messagingSenderId: "320309465715",
-        appId: "1:320309465715:web:20b2b12ee48ffb7929d006"
+        apiKey: "AIzaSyCMscT-pnhqg4CTqjyGJ7GsSzxF57cKO_k",
+        authDomain: "ace2024-e8b4a.firebaseapp.com",
+        databaseURL: "https://ace2024-e8b4a-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "ace2024-e8b4a",
+        storageBucket: "ace2024-e8b4a.appspot.com",
+        messagingSenderId: "787364137649",
+        appId: "1:787364137649:web:a1e12878a62885be95b090",
+        measurementId: "G-6T5CC88QCJ"
     };
 
     // 初始化 Firebase
