@@ -120,19 +120,19 @@
     "zh_TW": "少於 10 個字元。"
   },
   {
-    "ID": "INTEGRAL",
-    "English": "INTEGRAL",
+    "ID": "GO TO INTEGRAL",
+    "English": "GO TO INTEGRAL",
     "zh_TW": "積分"
   },
   {
-    "ID": "CRYPTO TABLE",
-    "English": "CRYPTO TABLE",
-    "zh_TW": "加密貨幣桌"
+    "ID": "Classic Battle",
+    "English": "Classic Battle",
+    "zh_TW": "經典對戰"
   },
   {
-    "ID": "VIRTUAL CURRENCY TABLE",
-    "English": "VIRTUAL CURRENCY TABLE",
-    "zh_TW": "虛擬貨幣桌"
+    "ID": "High Roller Battleground",
+    "English": "High Roller Battleground",
+    "zh_TW": "賭豪戰場"
   },
   {
     "ID": "CRYPTO",
@@ -1103,5 +1103,15 @@
     "ID": "Please proceed with collateralization",
     "English": "Please proceed with collateralization.",
     "zh_TW": "請繼續抵押"
+  },
+  {
+    "ID": "Account",
+    "English": "Account",
+    "zh_TW": "帳號"
+  },
+  {
+    "ID": "Your UserName",
+    "English": "Your UserName",
+    "zh_TW": "你的帳號"
   }
 ]

@@ -247,7 +247,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         #region 錢包連接頁面
 
         WalletTog_Txt.text = LanguageManager.Instance.GetText("Wallet");
-        MobileTog_Txt.text = LanguageManager.Instance.GetText("Mobile");
+        MobileTog_Txt.text = LanguageManager.Instance.GetText("Account");
         SelectWalletTitle_Txt.text = LanguageManager.Instance.GetText("SIGN IN");
         SelectWalletTip_Txt.text = LanguageManager.Instance.GetText("Please, Sign In With Your Wallet.");
         foreach (var item in ConnectTip_TxtList)
@@ -277,8 +277,8 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
 
         #region 手機登入
 
-        SignInMobileNumber_Txt.text = LanguageManager.Instance.GetText("帳戶");
-        SignInNumberIf_Placeholder.text = LanguageManager.Instance.GetText("你的帳戶");
+        SignInMobileNumber_Txt.text = LanguageManager.Instance.GetText("Account");
+        SignInNumberIf_Placeholder.text = LanguageManager.Instance.GetText("Your UserName");
         SignInPassword_Txt.text = LanguageManager.Instance.GetText("Password");
         SignInPasswordIf_Placeholder.text = LanguageManager.Instance.GetText("Please Enter Here");
         RememberMeTog_Txt.text = LanguageManager.Instance.GetText("Remember Me");

@@ -510,7 +510,7 @@ public class LobbyMinePageView : MonoBehaviour
 
         Viewport.enabled = true;
 
-        UpdatetAccountBalance(string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 ETH" : DataManager.UserWalletBalance,
+        UpdatetAccountBalance(string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 " : DataManager.UserWalletBalance,
                               DataManager.UserAChips,
                               DataManager.UserGold,
                               DataManager.UserStamina,
@@ -532,13 +532,13 @@ public class LobbyMinePageView : MonoBehaviour
         Nickname_Txt.text = $"@{DataManager.UserNickname}";
 
         //錢包地址 /*先呈現畫面之後再寫回來*/
-        WalletAddress_Txt.text = "TTerwE2220ba3fffba745R...";
+        //WalletAddress_Txt.text = "TTerwE2220ba3fffba745R...";
 
-        //StringUtils.StrExceedSize(DataManager.UserWalletAddress, WalletAddress_Txt);
+        StringUtils.StrExceedSize(DataManager.UserWalletAddress, WalletAddress_Txt);
 
         
-        WalletAddressBg_Obj.SetActive(true);
-        //WalletAddressBg_Obj.SetActive(!string.IsNullOrEmpty(WalletAddress_Txt.text));
+        //WalletAddressBg_Obj.SetActive(true);
+        WalletAddressBg_Obj.SetActive(!string.IsNullOrEmpty(WalletAddress_Txt.text));
 
         //IG連接
         IGNotYetLinked_Obj.SetActive(string.IsNullOrEmpty(DataManager.IGIUserIdAndName));
@@ -581,7 +581,7 @@ public class LobbyMinePageView : MonoBehaviour
         DataManager.UserStamina = Stamina;
         DataManager.UserOTProps = ot;
 
-        CryptoTableValue_Txt.text = string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 ETH" : DataManager.UserWalletBalance;
+        CryptoTableValue_Txt.text = string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 " : DataManager.UserWalletBalance;
         VCTableValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserAChips);
         GoldValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserGold);
         StaminaValue_Txt.text = $"{DataManager.UserStamina}/{DataManager.MaxStaminaValue}";
