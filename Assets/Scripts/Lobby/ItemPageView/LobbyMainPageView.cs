@@ -89,9 +89,11 @@ public class LobbyMainPageView : MonoBehaviour
     /// </summary>
     private void UpdateLanguage()
     {
+
         IntegralBtn_Txt.text = LanguageManager.Instance.GetText("GO TO INTEGRAL");
-        CryptoTableTital_Txt.text = LanguageManager.Instance.GetText("CRYPTO TABLE");
-        VCTableTital_Txt.text = LanguageManager.Instance.GetText("VIRTUAL CURRENCY TABLE");
+        CryptoTableTital_Txt.text = LanguageManager.Instance.GetText("Classic Battle");
+        VCTableTital_Txt.text = LanguageManager.Instance.GetText("High Roller Battleground");
+
     }
 
     private void OnDestroy()
@@ -174,6 +176,7 @@ public class LobbyMainPageView : MonoBehaviour
 
         InitBillBoard();
         CreateRoomBtn();
+
     }
 
     private void Update()

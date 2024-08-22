@@ -356,10 +356,10 @@ public class LobbyView : MonoBehaviour
         Nickname_Txt.text = $"@{DataManager.UserNickname}";
         Avatar_Btn.image.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[DataManager.UserAvatarIndex];
         Stamina_Txt.text = $"{DataManager.UserStamina}/{DataManager.MaxStaminaValue}";
-        CryptoChips_Txt.text = string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 ETH" : DataManager.UserWalletBalance;
+        CryptoChips_Txt.text = string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 " : DataManager.UserWalletBalance;
 
         //資源列表
-        Assets_CryptoChipsValue_Txt.text = string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 ETH" : DataManager.UserWalletBalance;
+        Assets_CryptoChipsValue_Txt.text = string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 " : DataManager.UserWalletBalance;
         Assets_VCValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserAChips);
         Assets_GoldValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserGold);
         Assets_StaminaValue_Txt.text = $"{DataManager.UserStamina}/{DataManager.MaxStaminaValue}";

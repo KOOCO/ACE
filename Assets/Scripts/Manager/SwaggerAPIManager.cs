@@ -65,23 +65,21 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
             //請求錯誤
             string errorJson = request.downloadHandler.text;
             Debug.LogError($"Error: {request.error}\nError Details: {errorJson}");
+
             errCallback?.Invoke();
         }
         else
         {
             //回傳結果
             Debug.Log("Response: " + request.downloadHandler.text);
-            if (request.downloadHandler.text.Length > 1000)
-            {
-                // LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
-
+            
                 //Callback執行
                 if (callback != null)
                 {
                     T2 response = JsonUtility.FromJson<T2>(request.downloadHandler.text);
                     callback?.Invoke(response);
                 }
-            }
+            
         }
     }
 

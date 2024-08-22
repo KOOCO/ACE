@@ -21,6 +21,7 @@ using NBitcoin;
 using Org.BouncyCastle.Asn1.Ocsp;
 using System.Text.RegularExpressions;
 using UnityEngine.SocialPlatforms;
+using Newtonsoft.Json;
 
 public class LoginView : MonoBehaviour, IPointerClickHandler
 {
@@ -114,7 +115,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
     TextMeshProUGUI RegisterNumber_Txt, RegisterNumberIf_Placeholder,
                     RegisterCode_Txt, RegisterOTPIf_Placeholder, RegisterOTPSendBtn_Txt,
                     RegisterPassword_Txt, RegisterPasswordIf_Placeholder,
-                    RegisterSubmitBtn_Txt ;
+                    RegisterSubmitBtn_Txt, AccountIf_Placeholder;
 
     [Header("手機注冊密碼檢查")]
     [SerializeField]
@@ -247,7 +248,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         #region 錢包連接頁面
 
         WalletTog_Txt.text = LanguageManager.Instance.GetText("Wallet");
-        MobileTog_Txt.text = LanguageManager.Instance.GetText("Mobile");
+        MobileTog_Txt.text = LanguageManager.Instance.GetText("Account");
         SelectWalletTitle_Txt.text = LanguageManager.Instance.GetText("SIGN IN");
         SelectWalletTip_Txt.text = LanguageManager.Instance.GetText("Please, Sign In With Your Wallet.");
         foreach (var item in ConnectTip_TxtList)
@@ -277,8 +278,8 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
 
         #region 手機登入
 
-        SignInMobileNumber_Txt.text = LanguageManager.Instance.GetText("帳戶");
-        SignInNumberIf_Placeholder.text = LanguageManager.Instance.GetText("你的帳戶");
+        SignInMobileNumber_Txt.text = LanguageManager.Instance.GetText("Account");
+        SignInNumberIf_Placeholder.text = LanguageManager.Instance.GetText("Your UserName");
         SignInPassword_Txt.text = LanguageManager.Instance.GetText("Password");
         SignInPasswordIf_Placeholder.text = LanguageManager.Instance.GetText("Please Enter Here");
         RememberMeTog_Txt.text = LanguageManager.Instance.GetText("Remember Me");
@@ -682,6 +683,14 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
 
     private void Update()
     {
+        if (RegisterAccountName_If.text.Length > 0)
+        {
+            AccountIf_Placeholder.gameObject.SetActive(false);
+        }
+        else
+        {
+            AccountIf_Placeholder.gameObject.SetActive(true);
+        }
         string AccountName = RegisterAccountName_If.text;
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -713,6 +722,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
                 
                 SwaggerAPIManager.Instance.SendPostAPI<Register, callback>("/api/app/ace-accounts/register", register);
             }
+            
         }
         //發送OTP倒數
         float codeTime = (float)(DateTime.Now - codeStartTime).TotalSeconds;
@@ -1185,7 +1195,8 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         else
         {
             isRegisterAccountNameCorrect = false;
-
+            isCorrect = false;
+            Debug.Log("檢查帳號");
             return;
         }
 
@@ -1209,19 +1220,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
             isCorrect = false;
             RegisterPasswordError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
         }
-        else
-        {
-            //送出註冊內容
-            //Reigster reigster = new Reigster()
-            //    {
-            //        //RegisterNumber_If, RegisterOTP_If, RegisterPassword_If, RegisterAccountName_If;
-            //        phoneNumber = RegisterNumber_If.text,//把 RegisterNumber物件的匯入
-            //        userName = RegisterAccountName_If.text,
-            //        password = RegisterPassword_If.text,
-            //        confirmPassword = RegisterPassword_If.text,
-            //    };
-            //    SwaggerAPIManager.Instance.SendPostAPI<Reigster, callback>("/api/app/ace-accounts/register", reigster);
-        }
+  
 
         if (!Privacy_Tog.isOn)
         {
@@ -1252,6 +1251,18 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
             //讀取資料判斷是否已有資料
             JudgeDateExists(nameof(RegisterVerifyCode),
                             LoginType.phoneUser.ToString());
+            //送出註冊內容
+            Register register = new Register()
+            {
+                //RegisterNumber_If, RegisterOTP_If, RegisterPassword_If, RegisterAccountName_If;
+                phoneNumber = RegisterNumber_If.text,//把 RegisterNumber物件的匯入
+                userName = RegisterAccountName_If.text,
+                password = RegisterPassword_If.text,
+                confirmPassword = RegisterPassword_If.text,
+
+            };
+            Debug.Log("使用按鈕送出");
+            SwaggerAPIManager.Instance.SendPostAPI<Register, callback>("/api/app/ace-accounts/register", register);
         }
     }
    
@@ -2006,7 +2017,7 @@ private void RegisterVerifyCode(string jsonData)
     
     bool IsValidAccountName(string AccountName)
     {
-        if (AccountName.Length < 7)
+        if (AccountName.Length < 6)
             return false;
 
         // 需要同時有英文跟數字
