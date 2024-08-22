@@ -729,17 +729,17 @@ public class GameControl : MonoBehaviour
                     if (player.allBetChips <= sideWinners[0].allBetChips)
                     {
                         sideWinValue += potDifference;
-                        Debug.LogError($"籌碼增加:{player.userId}:{potDifference}");
+                        Debug.Log($"籌碼增加:{player.nickname}:{potDifference}");
                     }
                     else
                     {
                         double lose = (player.allBetChips - potMInChips) - (sideWinners[0].allBetChips - potMInChips) - potDifference;
                         sideWinValue += lose;
-                        Debug.LogError($"籌碼增加_大於:{player.userId}:{potDifference}");
+                        Debug.Log($"籌碼增加_:{player.nickname}:{lose}");
 
                         //退回籌碼
                         backChips = potDifference - lose;
-                        Debug.LogError($"退回籌碼 = {player.userId}:{backChips}");
+                        Debug.Log($"退回籌碼 = {player.nickname}:{backChips}");
 
                         //更新玩家籌碼
                         newCarryChips = player.carryChips + backChips;
@@ -771,7 +771,8 @@ public class GameControl : MonoBehaviour
                     sideWinnerIdList.Add(sidewinner.userId);
 
                     //更新玩家籌碼
-                    newCarryChips = (sidewinner.carryChips + sideWinValue) / sideWinners.Count();
+                    newCarryChips = sidewinner.carryChips + (sideWinValue / sideWinners.Count());
+                    Debug.Log($"更新邊池贏家籌碼:{sidewinner.nickname}={sidewinner.carryChips}+{(sideWinValue / sideWinners.Count())}={newCarryChips}");
                     data = new Dictionary<string, object>()
                     {
                         { FirebaseManager.CARRY_CHIPS, newCarryChips},   //攜帶籌碼
@@ -1466,6 +1467,17 @@ public class GameControl : MonoBehaviour
                 yield break;
             }
 
+            //所有可下注玩家已下注 & 下注籌碼一致
+            if (isAllBet == true &&
+                isBetValueEqual == true &&
+                canActionPlayers.All(x => x.currAllBetChips >= gameRoomData.currCallValue))
+            {
+                int nextFlowIndex = (gameRoomData.currGameFlow + 1) % Enum.GetValues(typeof(GameFlowEnum)).Length;
+                GameFlowEnum nextFlow = (GameFlowEnum)Mathf.Max(1, nextFlowIndex);
+                yield return IStartGameFlow(nextFlow);
+                yield break;
+            }            
+
             //設置下位行動玩家
             UpdateNextPlayer();
         }
@@ -1559,7 +1571,7 @@ public class GameControl : MonoBehaviour
 
         //設置Button座位
         int newButtonSeat = SetButtonSeat();
-        Debug.Log($"Update Button Seat:{newButtonSeat}");
+        Debug.Log($"Button座位:{newButtonSeat}");
 
         //更新房間資料
         data = new Dictionary<string, object>()

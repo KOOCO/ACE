@@ -966,7 +966,10 @@ public class GameView : MonoBehaviour
     {
         set
         {
-            StringUtils.ChipsChangeEffect(TotalPot_Txt, value);
+            if (TotalPot_Txt.text != StringUtils.SetChipsUnit(value))
+            {
+                StringUtils.ChipsChangeEffect(TotalPot_Txt, Math.Floor(value));
+            }
             thisData.TotalPot = value;
         }
     }
@@ -1518,7 +1521,7 @@ public class GameView : MonoBehaviour
         if (gameRoomData.currGameFlow != (int)GameFlowEnum.PotResult &&
             gameRoomData.currGameFlow != (int)GameFlowEnum.SideResult)
         {
-            StringUtils.ChipsChangeEffect(TotalPot_Txt, gameRoomData.potChips);
+            TotalPot_Txt.text = StringUtils.SetChipsUnit(Math.Floor(gameRoomData.potChips));
             thisData.TotalPot = gameRoomData.potChips;
         }
 
@@ -2762,7 +2765,10 @@ public class GameView : MonoBehaviour
         if (gameRoomData.currGameFlow != (int)GameFlowEnum.PotResult &&
             gameRoomData.currGameFlow != (int)GameFlowEnum.SideResult)
         {
-            SetTotalPot = gameRoomData.potChips;
+            if (TotalPot_Txt.text != StringUtils.SetChipsUnit(Math.Floor(gameRoomData.potChips)))
+            {
+                StringUtils.ChipsChangeEffect(TotalPot_Txt, Math.Floor(gameRoomData.potChips));
+            }
         }
 
         if (gameRoomData.currGameFlow < (int)GameFlowEnum.Flop)
