@@ -1864,7 +1864,7 @@ public class GameControl : MonoBehaviour
         {
             pokerList.Add(i);
         }
-
+        
         //公共牌
         List<int> community = new();
         for (int i = 0; i < 5; i++)
@@ -1872,7 +1872,7 @@ public class GameControl : MonoBehaviour
             poker = Licensing();
             community.Add(poker);
         }
-
+        
         //玩家手牌
         foreach (var player in gameRoomData.playerDataDic)
         {
@@ -2132,7 +2132,27 @@ public class GameControl : MonoBehaviour
             int maxValue = int.MinValue;
             foreach (var pair in pairPlayer)
             {
-                int max = pair.Value.Max();
+                int max = 0;
+
+                //順子判斷
+                if (maxResult == 1 || maxResult == 6)
+                {
+                    //最小順子判斷
+                    if ((pair.Value.Contains(14) && pair.Value.Contains(1) &&
+                        pair.Value.Contains(2) && pair.Value.Contains(3) && pair.Value.Contains(4)))
+                    {
+                        max = 4;
+                    }
+                    else
+                    {
+                        max = pair.Value.Max();
+                    }
+                }
+                else
+                {
+                    max = pair.Value.Max();
+                }
+
                 if (max > maxValue)
                 {
                     maxValue = max;

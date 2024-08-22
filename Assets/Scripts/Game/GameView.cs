@@ -836,7 +836,7 @@ public class GameView : MonoBehaviour
                             {
                                 case SeatCharacterEnum.SB:
                                     strData.CallStr = "Call";
-                                    strData.CallValueStr = gameRoomData.smallBlind.ToString();
+                                    strData.CallValueStr = $"\n{gameRoomData.smallBlind.ToString()}";
                                     CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
                                     break;
                                 case SeatCharacterEnum.BB:
@@ -846,7 +846,7 @@ public class GameView : MonoBehaviour
                                     break;
                                 default:
                                     strData.CallStr = "Call";
-                                    strData.CallValueStr = (gameRoomData.smallBlind * 2).ToString();
+                                    strData.CallValueStr = $"\n{(gameRoomData.smallBlind * 2).ToString()}" ;
                                     CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
                                     break;
                             }
