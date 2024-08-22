@@ -89,15 +89,11 @@ public class LobbyMainPageView : MonoBehaviour
     /// </summary>
     private void UpdateLanguage()
     {
-<<<<<<< HEAD
+
         IntegralBtn_Txt.text = LanguageManager.Instance.GetText("GO TO INTEGRAL");
         CryptoTableTital_Txt.text = LanguageManager.Instance.GetText("Classic Battle");
         VCTableTital_Txt.text = LanguageManager.Instance.GetText("High Roller Battleground");
-=======
-        IntegralBtn_Txt.text = LanguageManager.Instance.GetText("INTEGRAL");
-        CryptoTableTital_Txt.text = LanguageManager.Instance.GetText("CRYPTO TABLE");
-        VCTableTital_Txt.text = LanguageManager.Instance.GetText("VIRTUAL CURRENCY TABLE");
->>>>>>> a385bb55d81262744a3da257d53113d67b96c966
+
     }
 
     private void OnDestroy()
