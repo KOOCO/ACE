@@ -182,8 +182,6 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
 
         RestClient.Patch($"{DataManager.DatabaseUrl}{refPathPtr}.json", jsonData).Then(response =>
         {
-            Debug.Log("Data patched successfully!");
-
             if (!string.IsNullOrEmpty(objNamePtr) && !string.IsNullOrEmpty(callbackFunPtr))
             {
                 GameObject obj = GameObject.Find(objNamePtr);

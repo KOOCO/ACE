@@ -250,6 +250,17 @@ public class GamePlayerInfo : MonoBehaviour
     }
 
     /// <summary>
+    /// 注物件激活開關
+    /// </summary>
+    public bool SwitchBetChipsActive
+    {
+        set
+        {
+            BetChips_Tr.gameObject.SetActive(value);
+        }
+    }
+
+    /// <summary>
     /// 開訊息遮罩
     /// </summary>
     public bool IsOpenInfoMask
@@ -369,8 +380,6 @@ public class GamePlayerInfo : MonoBehaviour
 
         if (pokerNum != null)
         {
-            Debug.Log($"設定棄牌顯示手牌:{pokerNum[0]}/{pokerNum[1]}");
-
             ShowHandPokers[0].gameObject.SetActive(isShow);
             ShowHandPokers[1].gameObject.SetActive(isShow);
             ShowHandPokers[0].PokerNum = pokerNum[0];
@@ -448,7 +457,10 @@ public class GamePlayerInfo : MonoBehaviour
     /// <param name="cd">倒數</param>
     public void CountDown(int cdTime, int cd)
     {
-        cdCoroutine = StartCoroutine(ICountDown(cdTime, cd));
+        if (gameObject.activeSelf)
+        {
+            cdCoroutine = StartCoroutine(ICountDown(cdTime, cd));
+        }
     }
 
     /// <summary>
@@ -492,9 +504,6 @@ public class GamePlayerInfo : MonoBehaviour
     /// <param name="chips">玩家籌碼</param>
     public void PlayerBet(double betValue, double chips)
     {
-        Debug.Log($"Player Bet:{betValue}");
-        Debug.Log($"Player Carry Chips:{chips}");
-
         BetChips_Tr.gameObject.SetActive(true);
         PlayerRoomChips = chips;
         CurrBetValue = betValue;
@@ -529,8 +538,6 @@ public class GamePlayerInfo : MonoBehaviour
     public void DisplayBetAction(bool isShow, double betValue = 0, BetActionEnum betActionEnum = BetActionEnum.None, bool isEffect = true)
     {
         Action_Img.gameObject.SetActive(isShow);
-
-        Debug.Log($"顯示行動:{isShow}/{betActionEnum}");
 
         switch (betActionEnum)
         {

@@ -1445,8 +1445,6 @@ public class GameView : MonoBehaviour
     /// <param name="gameRoomData">遊戲房間資料</param>
     public void UpdateGameRoomInfo(GameRoomData gameRoomData)
     {
-        Debug.Log("更新遊戲房間訊息");
-
         //清除座位上玩家
         for (int i = 1; i < SeatGamePlayerInfoList.Count; i++)
         {
@@ -1577,6 +1575,20 @@ public class GameView : MonoBehaviour
         }
 
         gamePlayerInfo.gameObject.SetActive(true);
+        gamePlayerInfo.ActionFrame = false;
+ 
+        gamePlayerInfo.GetHandPoker[0].gameObject.SetActive(playerData.gameState == (int)PlayerStateEnum.Playing ||
+                                                            playerData.gameState == (int)PlayerStateEnum.AllIn);
+        gamePlayerInfo.GetHandPoker[1].gameObject.SetActive(playerData.gameState == (int)PlayerStateEnum.Playing ||
+                                                            playerData.gameState == (int)PlayerStateEnum.AllIn);
+
+
+        gamePlayerInfo.SwitchBetChipsActive = playerData.currAllBetChips > 0;
+        if (playerData.gameState == (int)PlayerStateEnum.Waiting)
+        {
+            gamePlayerInfo.DisplayBetAction(false);
+        }
+
         if (playerData.gameSeat == gameRoomData.buttonSeat)
         {
             gamePlayerInfo.SetSeatCharacter(SeatCharacterEnum.Button);
@@ -1606,7 +1618,7 @@ public class GameView : MonoBehaviour
 
         exitPlayerSeatList.Add(exitPlayer.SeatIndex);
 
-        Destroy(exitPlayer.gameObject);
+        exitPlayer.gameObject.SetActive(false);
 
         if (RoomType == TableTypeEnum.IntegralTable)
         {
@@ -1638,7 +1650,6 @@ public class GameView : MonoBehaviour
         double chips = gameRoomData.betActionDataDic.updateCarryChips;
         bool isLocalPlayer = id == DataManager.UserId;
 
-        Debug.Log($"接收玩家行動:{actionEnum}");
         //音效播放
         switch (actionEnum)
         {
@@ -1669,7 +1680,6 @@ public class GameView : MonoBehaviour
         SetActionButton = isLocalPlayer;
         if (isLocalPlayer)
         {
-            Debug.Log($"設置行動按鈕");
             switch (actionEnum)
             {
                 //棄牌
@@ -2902,7 +2912,6 @@ public class GameView : MonoBehaviour
             gameRoomData.playerDataDic[sbPlayerData.userId].currAllBetChips = gameRoomData.smallBlind;
             gameRoomData.playerDataDic[bbPlayerData.userId].currAllBetChips = gameRoomData.smallBlind * 2;
 
-            Debug.Log($"更新當前行動玩家:{bbPlayerData.nickname}/{bbPlayerData.userId}");
             //更新當前行動玩家
             var data = new Dictionary<string, object>()
             {
@@ -2918,8 +2927,6 @@ public class GameView : MonoBehaviour
     /// <param name="gameRoomData"></param>
     public void OnBlindFlow(GameRoomData gameRoomData)
     {
-        Debug.Log($"盲注流程");
-
         gameInitHistoryData = HandHistoryManager.Instance.SetGameInitData(gamePlayerInfoList,
                                                                           thisData.TotalPot);
 
@@ -2929,7 +2936,6 @@ public class GameView : MonoBehaviour
                                                                         .Value;
         GamePlayerInfo buttonPlayer = GetPlayer(buttonPlayerData.userId);
         buttonPlayer.SetSeatCharacter(SeatCharacterEnum.Button);
-        Debug.Log($"盲注流程D:{buttonPlayerData.nickname}");
 
         //SB下注
         GameRoomPlayerData sbPlayerData = gameRoomData.playerDataDic.Where(x => (SeatCharacterEnum)x.Value.seatCharacter == SeatCharacterEnum.SB)
@@ -2950,7 +2956,6 @@ public class GameView : MonoBehaviour
         {
             gameControl.UpdateLocalChips(-gameRoomData.smallBlind);
         }
-        Debug.Log($"盲注流程SB:{sbPlayerData.nickname}");
 
         //BB下注
         GameRoomPlayerData bbPlayerData = gameRoomData.playerDataDic.Where(x => (SeatCharacterEnum)x.Value.seatCharacter == SeatCharacterEnum.BB)
@@ -2969,7 +2974,6 @@ public class GameView : MonoBehaviour
         {
             gameControl.UpdateLocalChips(-gameRoomData.smallBlind * 2);
         }
-        Debug.Log($"盲注流程BB:{bbPlayerData.nickname}");
 
         gameRoomData.playerDataDic[sbPlayerData.userId].currAllBetChips = gameRoomData.smallBlind;
         gameRoomData.playerDataDic[bbPlayerData.userId].currAllBetChips = gameRoomData.smallBlind * 2;

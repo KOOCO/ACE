@@ -113,6 +113,11 @@ public class GameControl : MonoBehaviour
                             p.carryChips);
         }
 
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            gameView.UpdateGameRoomInfo(gameRoomData);
+        }
+
 #endif
 
         if (gameRoomData != null &&
@@ -211,8 +216,6 @@ public class GameControl : MonoBehaviour
     /// <param name="integralRoomName">積分房間名稱</param>
     public void CreateFirstPlayer(double carryChips, int seatIndex, string pairPlayerId = null, string integralRoomName = null)
     {
-
-
         var data = new Dictionary<string, object>()
         {
             { FirebaseManager.USER_ID, DataManager.UserId},                         //用戶ID
@@ -262,6 +265,8 @@ public class GameControl : MonoBehaviour
     /// <param name="seatIndex">遊戲座位</param>
     public void NewPlayerInRoom(double carryChips, int seatIndex)
     {
+        isGameStart = true;
+
         //添加新玩家
         var dataDic = new Dictionary<string, object>()
         {
@@ -465,7 +470,7 @@ public class GameControl : MonoBehaviour
                     player.online == true)
                 {
                     newHostID = player.userId;
-                    Debug.Log($"Change Host:{player.userId}");
+                    Debug.Log($"更換新Host:{player.userId}");
                     break;
                 }
             }
@@ -473,7 +478,7 @@ public class GameControl : MonoBehaviour
             //尋找新房主錯誤
             if (string.IsNullOrEmpty(newHostID))
             {
-                Debug.LogError("New Host Is Null");
+                Debug.LogError("尋找新房主失敗!");
                 return;
             }
 
@@ -707,31 +712,34 @@ public class GameControl : MonoBehaviour
                 //底池贏家總下注籌碼
                 double potMInChips = Math.Floor(gameRoomData.potWinData.potWinChips / playingPlayers.Count());
 
-                //邊池最小玩家下注籌碼
-                double getChips = sideWinners[0].allBetChips - potMInChips;
-
                 //退回籌碼與邊池總籌碼
                 double sideWinValue = 0;
                 foreach (var player in playingPlayers)
                 {
-                    double backChips = 0;
-                    double chips = player.allBetChips - potMInChips - getChips;
-                    if (playingPlayers.Count() >= 3 &&
-                        chips <= 0)
+                    //與底池差額
+                    double potDifference = player.allBetChips - potMInChips;
+
+                    if (potDifference == 0)
                     {
-                        sideWinValue += getChips;
                         continue;
                     }
-                    else if (playingPlayers.Count() == 2 &&
-                             chips == 0)
+
+                    double backChips = 0;
+                    double chips = (sideWinners[0].allBetChips - potMInChips) - (player.allBetChips - potMInChips);
+                    if (player.allBetChips <= sideWinners[0].allBetChips)
                     {
-                        //增加邊池籌碼
-                        sideWinValue += getChips;
+                        sideWinValue += potDifference;
+                        Debug.LogError($"籌碼增加:{player.userId}:{potDifference}");
                     }
-                    else if(chips > 0)
+                    else
                     {
+                        double lose = (player.allBetChips - potMInChips) - (sideWinners[0].allBetChips - potMInChips) - potDifference;
+                        sideWinValue += lose;
+                        Debug.LogError($"籌碼增加_大於:{player.userId}:{potDifference}");
+
                         //退回籌碼
-                        backChips = chips;
+                        backChips = potDifference - lose;
+                        Debug.LogError($"退回籌碼 = {player.userId}:{backChips}");
 
                         //更新玩家籌碼
                         newCarryChips = player.carryChips + backChips;
@@ -972,7 +980,6 @@ public class GameControl : MonoBehaviour
     private IEnumerator ILocalGameFlowBehavior()
     {
         preLocalGameFlow = (GameFlowEnum)gameRoomData.currGameFlow;
-        Debug.Log($"Game Flow Callback:{preLocalGameFlow}");
 
         yield return gameView.IGameStage(gameRoomData,
                                          SmallBlind);
@@ -1260,7 +1267,6 @@ public class GameControl : MonoBehaviour
                 yield break;
             }
 
-            Debug.Log("Local Player Start Action!!!");
             player.InitCountDown();
 
             if (player.UserId == DataManager.UserId)
@@ -1298,8 +1304,11 @@ public class GameControl : MonoBehaviour
             if (item.userId != player.UserId)
             {
                 GamePlayerInfo other = gameView.GetPlayer(item.userId);
-                other.ActionFrame = false;
-                other.InitCountDown();
+                if (other != null)
+                {
+                    other.ActionFrame = false;
+                    other.InitCountDown();
+                }
             }
         }
 
@@ -1932,11 +1941,6 @@ public class GameControl : MonoBehaviour
             .Select(x => x.Value)
             .ToList();
 
-        foreach (var item in playerOrderSeat)
-        {
-            Debug.Log($"獲取下一位玩家:{item.nickname}");
-        }
-
         // 如果没有玩家符合条件，直接返回null
         if (playerOrderSeat.Count == 0)
             return null;
@@ -1951,7 +1955,6 @@ public class GameControl : MonoBehaviour
             if (!playerOrderSeat[nextIndex].isSitOut &&
                 (PlayerStateEnum)playerOrderSeat[nextIndex].gameState == PlayerStateEnum.Playing)
             {
-                Debug.Log($"獲取下一位玩家~~~:{playerOrderSeat[nextIndex].nickname}");
                 return playerOrderSeat[nextIndex];
             }
         }
