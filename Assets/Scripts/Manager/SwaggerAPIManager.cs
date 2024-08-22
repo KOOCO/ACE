@@ -65,6 +65,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
             //請求錯誤
             string errorJson = request.downloadHandler.text;
             Debug.LogError($"Error: {request.error}\nError Details: {errorJson}");
+
             errCallback?.Invoke();
         }
         else
