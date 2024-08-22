@@ -265,27 +265,28 @@ public static class StringUtils
     /// <param name="chips"></param>
     /// <returns></returns>
     public static string SetChipsUnit(double chips)
-    {
+    { 
         if (chips / 10000 < 1)
         {
-            return $"${SetChipsComma(chips.ToString("F0"))}";
+            return $"{SetChipsComma(chips.ToString("F0"))}";
         }
         else if (chips / 10000 < 1000)
         {
             //萬
-            return $"${((double)chips / 1000):f2}K";
+            return $"{((double)chips / 1000):f2}K";
         }
         else if (chips / 10000000 < 1000)
         {
             //億
-            return $"${((double)chips / 10000000):f2}B";
+            return $"{((double)chips / 10000000):f2}B";
         }
         else if (chips / 100000000 < 1000)
         {
             //兆
-            return $"${((double)chips / 100000000):f2}T";
+            return $"{((double)chips / 100000000):f2}T";
         }
-        return $"${chips:f0}";
+        
+        return $"{chips:f0}";
     }
 
     /// <summary>
@@ -305,7 +306,7 @@ public static class StringUtils
             count++;
             if (count == 3 && i != 0)
             {
-                sb.Insert(0, ",");
+               // sb.Insert(0, ",");
                 count = 0;
             }
         }

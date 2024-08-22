@@ -2814,6 +2814,7 @@ MonoBehaviour:
   Privacy_Tog: {fileID: 8081879110934646028}
   Privacy_TmpTxt: {fileID: 5269490962170560975}
   RegisterNumber_Txt: {fileID: 4648574193853998952}
+  Account_Txt: {fileID: 5003503543747815742}
   RegisterNumberIf_Placeholder: {fileID: 1717033763345309066}
   RegisterCode_Txt: {fileID: 2329443882100811190}
   RegisterOTPIf_Placeholder: {fileID: 33651895813261071}
@@ -19623,7 +19624,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Please Enter Account
+  m_text: Your Phone Number
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
   m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
@@ -19729,7 +19730,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7667961083813465258
 RectTransform:
   m_ObjectHideFlags: 0

@@ -112,7 +112,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
     [SerializeField]
     TMP_Text Privacy_TmpTxt;
     [SerializeField]
-    TextMeshProUGUI RegisterNumber_Txt, RegisterNumberIf_Placeholder,
+    TextMeshProUGUI RegisterNumber_Txt, Account_Txt, RegisterNumberIf_Placeholder,
                     RegisterCode_Txt, RegisterOTPIf_Placeholder, RegisterOTPSendBtn_Txt,
                     RegisterPassword_Txt, RegisterPasswordIf_Placeholder,
                     RegisterSubmitBtn_Txt, AccountIf_Placeholder;
@@ -290,7 +290,8 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         #endregion
 
         #region 手機註冊
-
+        Account_Txt.text = LanguageManager.Instance.GetText("Account");
+        AccountIf_Placeholder.text = LanguageManager.Instance.GetText("Your Account");
         RegisterNumber_Txt.text = LanguageManager.Instance.GetText("MobileNumber");
         RegisterNumberIf_Placeholder.text = LanguageManager.Instance.GetText("Your Phone Number");
         RegisterCode_Txt.text = LanguageManager.Instance.GetText("OTP Code");
@@ -683,6 +684,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
 
     private void Update()
     {
+        
         if (RegisterAccountName_If.text.Length > 0)
         {
             AccountIf_Placeholder.gameObject.SetActive(false);
@@ -691,7 +693,9 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         {
             AccountIf_Placeholder.gameObject.SetActive(true);
         }
+        
         string AccountName = RegisterAccountName_If.text;
+
         if (Input.GetKeyDown(KeyCode.F))
         {
             if (IsValidAccountName(AccountName))

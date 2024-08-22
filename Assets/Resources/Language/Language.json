@@ -1113,5 +1113,10 @@
     "ID": "Your UserName",
     "English": "Your UserName",
     "zh_TW": "你的帳號"
+  },
+  {
+    "ID": "Your Account",
+    "English": "Your Account",
+    "zh_TW": "您的帳號"
   }
 ]
