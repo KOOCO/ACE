@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using Newtonsoft.Json;
 using System.Text;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Microsoft.AspNet.SignalR.Client.Http;
 
 public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
 {
@@ -32,6 +34,25 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
                                         callback,
                                         errCallback));
     }
+
+    public class LoginResponse
+    {
+        public string accessToken { get; set; }
+        public string memberId { get; set; }
+        public string memberStatus { get; set; }
+        public int promotionCoin { get; set; }
+        public int gold { get; set; }
+        public int timer { get; set; }
+        public int currentEnergy { get; set; }
+        public int maxEnergy { get; set; }
+        public decimal WalletAmount { get; set; }
+
+    }
+    public class ErrorResponse
+    {
+        public string error { get; set; }
+        public string message { get; set; }
+    }
     /// <summary>
     /// 發送POST請求
     /// </summary>
@@ -46,7 +67,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         where T2 : class
     {
         string fullUrl = BASE_URL + apiUrl;
-        Debug.Log($"Send POST:{fullUrl}");
+        //Debug.Log($"Send POST:{fullUrl}");
 
         //發送的Json
         string jsonData = JsonUtility.ToJson(data);
@@ -65,16 +86,27 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
             //請求錯誤
             string errorJson = request.downloadHandler.text;
             Debug.LogError($"Error: {request.error}\nError Details: {errorJson}");
-
+            Debug.LogError(errorJson);
+            if(errorJson== "Invalid username or password!")
+            {
+                //Debug.Log("登入失敗");
+            }
             errCallback?.Invoke();
         }
         else
         {
+            string Response = request.downloadHandler.text;
+            //Debug.Log("Response: " + Response);
             //回傳結果
-            Debug.Log("Response: " + request.downloadHandler.text);
+            //Debug.Log("Response: " + request.downloadHandler.text);
+            LoginResponse loginResponse = JsonConvert.DeserializeObject<LoginResponse>(Response);
+            //Debug.Log("AccessToken: " + loginResponse.accessToken);
+            //Debug.Log("MemberId: " + loginResponse.memberId);
+            //Debug.Log("MemberStatus: " + loginResponse.memberStatus);
+            //Debug.Log("WalletAmount: " + loginResponse.WalletAmount);
             
-                //Callback執行
-                if (callback != null)
+            //Callback執行
+            if (callback != null)
                 {
                     T2 response = JsonUtility.FromJson<T2>(request.downloadHandler.text);
                     callback?.Invoke(response);
