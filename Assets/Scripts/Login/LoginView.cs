@@ -639,6 +639,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
 
     private void Start()
     {
+      
         localIP = GetLocalIPAddress();
         //下拉式選單添加國碼
         Utils.SetOptionsToDropdown(SMSMobileNumber_Dd, DataManager.CountryCode);
@@ -1240,7 +1241,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         if (isCorrect=true)
         {
             //資料正確    
-            Debug.Log($"Register Submit = Phone:{phoneNumber} / Code:{code} / Password:{psw}");
+            //Debug.Log($"Register Submit = Phone:{phoneNumber} / Code:{code} / Password:{psw}");
 
             currVerifyPsw = psw;
             currVerifyCode = code;
