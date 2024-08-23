@@ -620,19 +620,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2393589969454604811, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2393589969454604811, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2393589969454604811, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 95
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2393589969454604811, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -30
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2532252652223830062, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       propertyPath: GoLobby_Btn
@@ -692,19 +692,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6689726745126147366, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6689726745126147366, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6689726745126147366, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 30
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6689726745126147366, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -30
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7570268491373483007, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       propertyPath: m_Name
@@ -784,7 +784,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4486474359657938648, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
       propertyPath: version
-      value: V1.1.1
+      value: V1.1.3
       objectReference: {fileID: 0}
     - target: {fileID: 4486474359657938648, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
       propertyPath: ReporterObj
