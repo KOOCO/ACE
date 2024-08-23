@@ -67,7 +67,9 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         where T2 : class
     {
         string fullUrl = BASE_URL + apiUrl;
+
         //Debug.Log($"Send POST:{fullUrl}");
+
 
         //發送的Json
         string jsonData = JsonUtility.ToJson(data);
@@ -96,6 +98,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         else
         {
             string Response = request.downloadHandler.text;
+
             //Debug.Log("Response: " + Response);
             //回傳結果
             //Debug.Log("Response: " + request.downloadHandler.text);
