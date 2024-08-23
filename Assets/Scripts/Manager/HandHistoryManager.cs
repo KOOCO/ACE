@@ -186,8 +186,6 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
     /// <returns></returns>
     public GameInitHistoryData SetGameInitData(List<GamePlayerInfo> gamePlayerInfos, double totalPot)
     {
-        Debug.Log($"紀錄_設置初始遊戲資料:{gamePlayerInfos.Count}/{totalPot}");
-
         GameInitHistoryData gameInitHistoryData = new GameInitHistoryData();
         gameInitHistoryData.SeatList = new List<int>();
         gameInitHistoryData.UserIdList = new List<string>();

@@ -198,7 +198,7 @@ public class LobbyView : MonoBehaviour
 
         #endregion
 
-        ViewManager.Instance.OpenWaitingView(transform);
+        //ViewManager.Instance.OpenWaitingView(transform);
         DataManager.ReciveRankData();
         UpdateUserData();
 
@@ -259,7 +259,7 @@ public class LobbyView : MonoBehaviour
     public void GetDataCallback(string jsonData)
     {
         ViewManager.Instance.CloseWaitingView(transform);
-        AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
+        //AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
 
         //DataManager.UserId = loginData.userId;
         //DataManager.UserLoginPhoneNumber = loginData.phoneNumber;

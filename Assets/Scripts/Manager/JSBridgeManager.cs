@@ -104,6 +104,10 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
     /// <param name="id">監測ID</param>
     public void RemoveListenerConnectState(string IdPtr)
     {
+#if UNITY_EDITOR
+        return;
+#endif
+
         JS_RemoveListenerConnectState(IdPtr);
     }
 
@@ -130,6 +134,9 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
     /// <param name="pathPtr">資料路徑</param>
     public void StopListeningForDataChanges(string pathPtr)
     {
+#if UNITY_EDITOR
+        return;
+#endif
         JS_StopListeningForDataChanges(pathPtr);
     }
 
@@ -182,8 +189,6 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
 
         RestClient.Patch($"{DataManager.DatabaseUrl}{refPathPtr}.json", jsonData).Then(response =>
         {
-            Debug.Log("Data patched successfully!");
-
             if (!string.IsNullOrEmpty(objNamePtr) && !string.IsNullOrEmpty(callbackFunPtr))
             {
                 GameObject obj = GameObject.Find(objNamePtr);
