@@ -463,7 +463,6 @@ public class GameControl : MonoBehaviour
                     player.online == true)
                 {
                     newHostID = player.userId;
-                    Debug.Log($"更換新Host:{player.userId}");
                     break;
                 }
             }
@@ -471,7 +470,6 @@ public class GameControl : MonoBehaviour
             //尋找新房主錯誤
             if (string.IsNullOrEmpty(newHostID))
             {
-                Debug.LogError("尋找新房主失敗!");
                 return;
             }
 
@@ -531,7 +529,6 @@ public class GameControl : MonoBehaviour
             yield break;
         }
         preUpdateGameFlow = gameFlow;
-        Debug.Log($"Start Game Flow:{gameFlow}");
 
         //重製房間資料
         var roomData = new Dictionary<string, object>()
@@ -791,7 +788,6 @@ public class GameControl : MonoBehaviour
                 potWinners = GetPlayingPlayer();
                 if (potWinners.Count() > 1)
                 {
-                    Debug.Log("One Player Left Result Error!!!");
                     yield break;
                 }
 
@@ -1555,7 +1551,6 @@ public class GameControl : MonoBehaviour
 
         //設置Button座位
         int newButtonSeat = SetButtonSeat();
-        Debug.Log($"Button座位:{newButtonSeat}");
 
         //更新房間資料
         data = new Dictionary<string, object>()
@@ -1573,8 +1568,6 @@ public class GameControl : MonoBehaviour
 
         //移除邊池結果資料
         JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.SIDE_WIN_DATA}");
-
-        Debug.Log("Game Data Init Finish!");
     }
 
     /// <summary>
@@ -2056,8 +2049,6 @@ public class GameControl : MonoBehaviour
             return new List<GameRoomPlayerData>();
         }
 
-        Debug.Log("Start Judge Winner");
-
         //判斷結果(牌型結果,符合的牌)
         Dictionary<GameRoomPlayerData, (int, List<int>)> shapeDic = new Dictionary<GameRoomPlayerData, (int, List<int>)>();
         //玩家的牌(牌型結果,(公牌+手牌))
@@ -2077,8 +2068,6 @@ public class GameControl : MonoBehaviour
                 //判定牌型
                 PokerShape.JudgePokerShape(judgePoker, (result, matchPoker) =>
                 {
-                    Debug.Log($"Judge Poker Shape:{player.userId}:{result}");
-
                     shapeDic.Add(player, (result, matchPoker));
                     clientPokerDic.Add(player, (result, judgePoker));
                 });

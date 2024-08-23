@@ -102,12 +102,10 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
 
         if (data == null)
         {
-            Debug.LogError("Firebase read error or data is null.");
             return default;
         }
         else
         {
-            //Debug.Log("Firebase data read: " + JsonUtility.ToJson(data, true));
             return data;
         }
     }
@@ -128,15 +126,6 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
     public void OnRemoveDataCallback(string jsonData)
     {
         var data = JsonUtility.FromJson<RemoveData>(jsonData);
-
-        if (data.error != null)
-        {
-            Debug.LogError("Firebase delete error: " + data.error);
-        }
-        else
-        {
-            Debug.Log("Firebase data deleted successfully.");
-        }
     }
 }
 

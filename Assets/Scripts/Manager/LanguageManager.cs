@@ -130,7 +130,7 @@ public class LanguageManager
 
             if (languageDic.ContainsKey(serchName))
             {
-                Debug.LogError($"Add Language Same Key:{serchName}");
+                //Debug.LogError($"Add Language Same Key:{serchName}");
                 continue;
             }
             languageDic.Add(serchName, lang);
@@ -155,7 +155,11 @@ public class LanguageManager
         }
         else
         {
+<<<<<<< HEAD
           //  Debug.LogError($"{id}:翻譯文本不存在");
+=======
+            //Debug.LogError($"{id}:翻譯文本不存在");
+>>>>>>> origin/jimmy
             return id;
         }
     }
@@ -183,7 +187,7 @@ public class LanguageManager
         }
         else
         {
-            Debug.LogError("未找到移除更新語言方法!!!");
+            //Debug.LogError("未找到移除更新語言方法!!!");
         }    
     }
 
@@ -192,7 +196,11 @@ public class LanguageManager
     /// </summary>
     private void UpdateLanguage()
     {
+<<<<<<< HEAD
      //   Debug.Log($"Change Language:{languageId[thisData.CurrLanguageIndex]}");
+=======
+        //Debug.Log($"Change Language:{languageId[thisData.CurrLanguageIndex]}");
+>>>>>>> origin/jimmy
 
         foreach (var func in updateLanguageFuncDic)
         {
@@ -202,7 +210,7 @@ public class LanguageManager
             }
             else
             {
-                Debug.LogError($"Update Language Error : {func.Value.name}");
+                //Debug.LogError($"Update Language Error : {func.Value.name}");
             }
         }
     }
@@ -216,7 +224,7 @@ public class LanguageManager
         if (index >= languageId.Length || 
             index < 0)
         {
-            Debug.LogError($"Change Language Index:{index}:Error!!!");
+            //Debug.LogError($"Change Language Index:{index}:Error!!!");
             return;
         }
 
