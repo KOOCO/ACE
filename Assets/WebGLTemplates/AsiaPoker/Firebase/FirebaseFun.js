@@ -2,14 +2,23 @@
 function initializeFirebase() {
     // Firebase 配置
     const firebaseConfig = {
+
         apiKey: "AIzaSyCMscT-pnhqg4CTqjyGJ7GsSzxF57cKO_k",
+
         authDomain: "ace2024-e8b4a.firebaseapp.com",
+
         databaseURL: "https://ace2024-e8b4a-default-rtdb.asia-southeast1.firebasedatabase.app",
+
         projectId: "ace2024-e8b4a",
+
         storageBucket: "ace2024-e8b4a.appspot.com",
+
         messagingSenderId: "787364137649",
-        appId: "1:787364137649:web:a1e12878a62885be95b090",
-        measurementId: "G-6T5CC88QCJ"
+
+        appId: "1:787364137649:web:a2a4b47b61a22d0195b090",
+
+        measurementId: "G-XRQ05KCWT7"
+
     };
 
     // 初始化 Firebase
