@@ -160,6 +160,21 @@
     "zh_TW": "虛擬貨幣桌"
   },
   {
+    "ID": "GO TO INTEGRAL",
+    "English": "GO TO INTEGRAL",
+    "zh_TW": "積分"
+  },
+  {
+    "ID": "Classic Battle",
+    "English": "Classic Battle",
+    "zh_TW": "經典對戰"
+  },
+  {
+    "ID": "High Roller Battleground",
+    "English": "High Roller Battleground",
+    "zh_TW": "賭豪戰場"
+  },
+  {
     "ID": "Gold",
     "English": "Gold",
     "zh_TW": "黃金"
@@ -232,7 +247,7 @@
   {
     "ID": "Points",
     "English": "Points",
-    "zh_TW": "點"
+    "zh_TW": "黃金"
   },
   {
     "ID": "Golden",
@@ -463,6 +478,21 @@
     "ID": "Remember Me",
     "English": "Remember Me",
     "zh_TW": "記住帳號密碼"
+  },
+  {
+    "ID": "Account",
+    "English": "Account",
+    "zh_TW": "帳號"
+  },
+  {
+    "ID": "Your UserName",
+    "English": "Your UserName",
+    "zh_TW": "你的使用者名稱"
+  },
+  {
+    "ID": "Your Account",
+    "English": "Your Account",
+    "zh_TW": "您的帳號"
   },
   {
     "ID": "錢包連接頁面",
