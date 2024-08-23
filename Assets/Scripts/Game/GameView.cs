@@ -2705,7 +2705,7 @@ public class GameView : MonoBehaviour
             processStepHistoryData.BetActionEnumIndex.Add(Convert.ToInt32(player.CurrBetAction));
         }
         processStepHistoryData.CommunityPoker = thisData.CurrCommunityPoker;
-        processStepHistoryData.TotalPot = thisData.TotalPot;
+        processStepHistoryData.TotalPot = gameRoomData.potChips;
         processStepHistoryData.ExitPlayerSeatList = exitPlayerSeatList;
         return processStepHistoryData;
     }
@@ -2915,9 +2915,6 @@ public class GameView : MonoBehaviour
     /// <param name="gameRoomData"></param>
     public void OnBlindFlow(GameRoomData gameRoomData)
     {
-        gameInitHistoryData = HandHistoryManager.Instance.SetGameInitData(gamePlayerInfoList,
-                                                                          thisData.TotalPot);
-
         //Button座位
         GameRoomPlayerData buttonPlayerData = gameRoomData.playerDataDic.Where(x => x.Value.gameSeat == gameRoomData.buttonSeat)
                                                                         .FirstOrDefault()
@@ -2966,6 +2963,12 @@ public class GameView : MonoBehaviour
         gameRoomData.playerDataDic[sbPlayerData.userId].currAllBetChips = gameRoomData.smallBlind;
         gameRoomData.playerDataDic[bbPlayerData.userId].currAllBetChips = gameRoomData.smallBlind * 2;
         SetActionButton = false;
+
+        thisData.TotalPot = gameRoomData.smallBlind + (gameRoomData.smallBlind * 2);
+
+        //遊戲紀錄
+        gameInitHistoryData = HandHistoryManager.Instance.SetGameInitData(gamePlayerInfoList,
+                                                                          thisData.TotalPot);
 
         //房主執行
         if (gameRoomData.hostId == DataManager.UserId)

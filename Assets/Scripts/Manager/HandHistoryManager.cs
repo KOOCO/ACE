@@ -204,6 +204,10 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
             if (player.SeatCharacter == SeatCharacterEnum.Button)
             {
                 gameInitHistoryData.ButtonSeat = player.SeatIndex;
+                if (gamePlayerInfos.Count == 2)
+                {
+                    gameInitHistoryData.SBSeat = player.SeatIndex;
+                }
             }
             else if (player.SeatCharacter == SeatCharacterEnum.SB)
             {

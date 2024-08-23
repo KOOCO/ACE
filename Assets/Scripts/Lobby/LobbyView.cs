@@ -57,7 +57,7 @@ public class LobbyView : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI TransfersBtn_Txt;
 
-    bool isFirstIn;                         //是否首次登入
+    bool isFirstIn;
 
     /// <summary>
     /// 項目按鈕類型
@@ -335,15 +335,6 @@ public class LobbyView : MonoBehaviour
         }
 
         UpdateUserInfo();
-
-        #region 測試
-
-        if (isFirstIn)
-        {
-            HandHistoryManager.Instance.OnDeleteHistoryData();
-        }
-
-        #endregion
 
         isFirstIn = false;
     }

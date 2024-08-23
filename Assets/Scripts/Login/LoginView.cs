@@ -1557,7 +1557,7 @@ private void RegisterVerifyCode(string jsonData)
 
                 DataManager.UserWalletAddress = add;
                 DataManager.UserWalletBalance = balStr;
-
+                
                 CancelInvoke(nameof(TryBinanceConnect));
                 LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
             }
