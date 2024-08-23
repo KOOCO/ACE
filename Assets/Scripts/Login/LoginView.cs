@@ -639,7 +639,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
 
     private void Start()
     {
-        Debug.Log("995");
+      
         localIP = GetLocalIPAddress();
         //下拉式選單添加國碼
         Utils.SetOptionsToDropdown(SMSMobileNumber_Dd, DataManager.CountryCode);
