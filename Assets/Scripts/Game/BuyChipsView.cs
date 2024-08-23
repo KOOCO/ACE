@@ -158,7 +158,7 @@ public class BuyChipsView : MonoBehaviour
         {
             //現金桌
             case TableTypeEnum.Cash:
-                titleStr = "CRYPTO TABLE";
+                titleStr = "Classic Battle";
                 maxBuyChipsStr = $"{StringUtils.SetChipsUnit(DataManager.UserUChips)}";
                 SB_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.CurrencyAlbum).album[0];
                 BB_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.CurrencyAlbum).album[0];
@@ -166,7 +166,7 @@ public class BuyChipsView : MonoBehaviour
 
             //虛擬貨幣桌
             case TableTypeEnum.VCTable:
-                titleStr = "VIRTUAL CURRENCY TABLE";
+                titleStr = "High Roller Battleground";
                 maxBuyChipsStr = $"{StringUtils.SetChipsUnit(DataManager.UserAChips)}";
                 SB_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.CurrencyAlbum).album[1];
                 BB_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.CurrencyAlbum).album[1];
