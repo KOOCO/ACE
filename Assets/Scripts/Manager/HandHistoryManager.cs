@@ -290,8 +290,6 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
         string json = JsonConvert.SerializeObject(processHistoryDataList);
         PlayerPrefs.SetString(ProcessHistoryPlayerPrefsKey, json);
         PlayerPrefs.Save();
-
-        Debug.Log("Video Data Saved!!!");
     }
 
     #endregion
