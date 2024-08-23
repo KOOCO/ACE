@@ -169,12 +169,12 @@ public class GamePlayerInfo : MonoBehaviour
     {
         get
         {
-            return CurrRoomChips;
+            return Math.Floor(CurrRoomChips);
         }
         set
         {
             CurrRoomChips = value;
-            StringUtils.ChipsChangeEffect(Chips_Txt, CurrRoomChips);
+            StringUtils.ChipsChangeEffect(Chips_Txt, Math.Floor(CurrRoomChips));
         }
     }
 
@@ -250,7 +250,7 @@ public class GamePlayerInfo : MonoBehaviour
     }
 
     /// <summary>
-    /// 注物件激活開關
+    /// 下注物件激活開關
     /// </summary>
     public bool SwitchBetChipsActive
     {
@@ -278,7 +278,7 @@ public class GamePlayerInfo : MonoBehaviour
     {
         set
         {
-            Chips_Txt.text = StringUtils.SetChipsUnit(value);
+            Chips_Txt.text = StringUtils.SetChipsUnit(Math.Floor(value));
         }
     }
 
@@ -302,7 +302,7 @@ public class GamePlayerInfo : MonoBehaviour
         CurrRoomChips = initChips;
         Avatar_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[avatar];
         Nickname_Txt.text = $"@{nickName}";
-        Chips_Txt.text = $"{StringUtils.SetChipsUnit(initChips)}";
+        Chips_Txt.text = $"{StringUtils.SetChipsUnit(Math.Floor(initChips))}";
     }
 
     /// <summary>

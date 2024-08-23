@@ -480,6 +480,7 @@ public class GameView : MonoBehaviour
                                   AutoActingEnum.CheckAndFold;
             }
             Raise_Tr.gameObject.SetActive(false);
+            SetActionButton = false;
         });
 
         //跟注/過牌
@@ -496,6 +497,7 @@ public class GameView : MonoBehaviour
                              AutoActingEnum.Check;
             }
             Raise_Tr.gameObject.SetActive(false);
+            SetActionButton = false;
         });
 
         //加注/All In
@@ -545,6 +547,7 @@ public class GameView : MonoBehaviour
                                   AutoActingEnum.None :
                                   AutoActingEnum.CallAny;
             }
+            SetActionButton = false;
         });
 
         #endregion
@@ -1509,7 +1512,8 @@ public class GameView : MonoBehaviour
                 gamePlayerInfo.PlayerBet(player.currAllBetChips, player.carryChips);
             }*/
 
-            if (player.userId == gameRoomData.currActionerId)
+            if (player.userId == gameRoomData.currActionerId &&
+                gameRoomData.currGameFlow > (int)GameFlowEnum.Licensing)
             {
                 gamePlayerInfo.ActionFrame = true;
                 gamePlayerInfo.CountDown(DataManager.StartCountDownTime,
@@ -1680,7 +1684,7 @@ public class GameView : MonoBehaviour
         }
 
         //本地玩家
-        SetActionButton = isLocalPlayer;
+       // SetActionButton = isLocalPlayer;
         if (isLocalPlayer)
         {
             switch (actionEnum)
@@ -2129,8 +2133,6 @@ public class GameView : MonoBehaviour
             player.IsWinnerActive = false;
         }
 
-        Debug.Log($"邊池結果:{gameRoomData.sideWinData.sideWinChips}");
-
         //邊池贏家效果
         thisData.SideWinnerList = new List<string>();
 
@@ -2227,8 +2229,6 @@ public class GameView : MonoBehaviour
                     {
                         player.PlayerRoomChips = playerData.carryChips;
                     }
-
-                    Debug.Log($"退回籌碼_顯示:{backChipsData.backUserId}:{backChipsData.backChipsValue}");
                 }
             }
         }
@@ -2600,8 +2600,6 @@ public class GameView : MonoBehaviour
         int avatar = chatData.avatarIndex;
         bool isLocal = id == DataManager.UserId;
 
-        Debug.Log($"接收聊天訊息:{nickname}:{content}");
-
         //判斷是否在最新訊息位置
         bool isBottom = IsChatOnBottom();
         if (ChatPage_Tr.gameObject.activeSelf)
@@ -2643,8 +2641,6 @@ public class GameView : MonoBehaviour
     /// <param name="isLocal">是否為本地玩家</param>
     private void CreateChatContent(int avatar, string nickname, string content, bool isLocal)
     {
-        Debug.Log($"產生聊天內容:{nickname}:{content}");
-
         GameObject sample = isLocal ?
                             LocalChatSample :
                             OtherChatSample;
@@ -2787,7 +2783,6 @@ public class GameView : MonoBehaviour
     /// <param name="gameRoomData"></param>
     public void OnLicensingFlow(GameRoomData gameRoomData)
     {
-        Debug.Log("進入發牌流程");
         Init();
         GameInit();
 
@@ -2848,7 +2843,6 @@ public class GameView : MonoBehaviour
             };
             gameControl.UpdataPlayerData(buttonPlayerData.userId,
                                          dataDic);
-            Debug.Log($"設置Button座位:{buttonPlayerData.nickname}/{buttonPlayerData.userId}");
 
             GameRoomPlayerData sbPlayerData;
             GameRoomPlayerData bbPlayerData;
@@ -2917,13 +2911,6 @@ public class GameView : MonoBehaviour
 
             gameRoomData.playerDataDic[sbPlayerData.userId].currAllBetChips = gameRoomData.smallBlind;
             gameRoomData.playerDataDic[bbPlayerData.userId].currAllBetChips = gameRoomData.smallBlind * 2;
-
-            //更新當前行動玩家
-            var data = new Dictionary<string, object>()
-            {
-                { FirebaseManager.CURR_ACTIONER_ID, bbPlayerData.userId},        //當前行動玩家Id
-            };
-            gameControl.UpdateGameRoomData(data);
         }
     }
 

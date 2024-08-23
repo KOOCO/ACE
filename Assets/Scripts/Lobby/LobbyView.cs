@@ -198,7 +198,7 @@ public class LobbyView : MonoBehaviour
 
         #endregion
 
-        ViewManager.Instance.OpenWaitingView(transform);
+        //ViewManager.Instance.OpenWaitingView(transform);
         DataManager.ReciveRankData();
         UpdateUserData();
 
