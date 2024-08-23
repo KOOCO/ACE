@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using Newtonsoft.Json;
 using System.Text;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -31,6 +32,11 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
                                         data,
                                         callback,
                                         errCallback));
+    }
+
+    public class Chenk
+    {
+        public string Response {  get; set; }
     }
     /// <summary>
     /// 發送POST請求
@@ -65,14 +71,16 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
             //請求錯誤
             string errorJson = request.downloadHandler.text;
             Debug.LogError($"Error: {request.error}\nError Details: {errorJson}");
-
+            //if(errorJson)
             errCallback?.Invoke();
         }
         else
         {
+            string Response = request.downloadHandler.text;
             //回傳結果
             Debug.Log("Response: " + request.downloadHandler.text);
             
+
                 //Callback執行
                 if (callback != null)
                 {
