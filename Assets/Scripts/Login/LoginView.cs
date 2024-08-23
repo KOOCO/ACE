@@ -1240,7 +1240,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         if (isCorrect=true)
         {
             //資料正確    
-            Debug.Log($"Register Submit = Phone:{phoneNumber} / Code:{code} / Password:{psw}");
+            //Debug.Log($"Register Submit = Phone:{phoneNumber} / Code:{code} / Password:{psw}");
 
             currVerifyPsw = psw;
             currVerifyCode = code;

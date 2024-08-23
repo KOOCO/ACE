@@ -67,7 +67,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         where T2 : class
     {
         string fullUrl = BASE_URL + apiUrl;
-        Debug.Log($"Send POST:{fullUrl}");
+        //Debug.Log($"Send POST:{fullUrl}");
 
         //發送的Json
         string jsonData = JsonUtility.ToJson(data);
@@ -89,21 +89,21 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
             Debug.LogError(errorJson);
             if(errorJson== "Invalid username or password!")
             {
-                Debug.Log("登入失敗");
+                //Debug.Log("登入失敗");
             }
             errCallback?.Invoke();
         }
         else
         {
             string Response = request.downloadHandler.text;
-            Debug.Log("Response: " + Response);
+            //Debug.Log("Response: " + Response);
             //回傳結果
             //Debug.Log("Response: " + request.downloadHandler.text);
             LoginResponse loginResponse = JsonConvert.DeserializeObject<LoginResponse>(Response);
-            Debug.Log("AccessToken: " + loginResponse.accessToken);
-            Debug.Log("MemberId: " + loginResponse.memberId);
-            Debug.Log("MemberStatus: " + loginResponse.memberStatus);
-            Debug.Log("WalletAmount: " + loginResponse.WalletAmount);
+            //Debug.Log("AccessToken: " + loginResponse.accessToken);
+            //Debug.Log("MemberId: " + loginResponse.memberId);
+            //Debug.Log("MemberStatus: " + loginResponse.memberStatus);
+            //Debug.Log("WalletAmount: " + loginResponse.WalletAmount);
             
             //Callback執行
             if (callback != null)
