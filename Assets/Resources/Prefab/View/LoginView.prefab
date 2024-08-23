@@ -2882,7 +2882,7 @@ MonoBehaviour:
   RegisterPasswordEye_Btn: {fileID: 2391369624630454629}
   RegisterSubmit_Btn: {fileID: 4099841943491871233}
   RegisterSuccSignin_Btn: {fileID: 4445961932518928332}
-  RegisterSuccessfulCancel_Btn: {fileID: 1811422973006211998}
+  RegisterSuccessfulCancel_Btn: {fileID: 4445961932518928332}
   RegisterNumber_If: {fileID: 8807284016663548093}
   RegisterOTP_If: {fileID: 2267895472428880555}
   RegisterPassword_If: {fileID: 1587846338423454546}
@@ -3090,7 +3090,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &720359484208024900
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20077,7 +20077,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7667961083813465258
 RectTransform:
   m_ObjectHideFlags: 0

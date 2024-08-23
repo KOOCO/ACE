@@ -156,7 +156,8 @@ public class LanguageManager
         else
         {
 
-            //Debug.LogError($"{id}:翻譯文本不存在");
+
+          //  Debug.LogError($"{id}:翻譯文本不存在");
 
             return id;
         }
@@ -195,7 +196,7 @@ public class LanguageManager
     private void UpdateLanguage()
     {
 
-        //Debug.Log($"Change Language:{languageId[thisData.CurrLanguageIndex]}");
+        Debug.Log($"Change Language:{languageId[thisData.CurrLanguageIndex]}");
 
 
         foreach (var func in updateLanguageFuncDic)

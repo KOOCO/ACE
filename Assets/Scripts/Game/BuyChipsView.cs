@@ -14,7 +14,7 @@ public class BuyChipsView : MonoBehaviour
     [SerializeField]
     Button Cancel_Btn, Buy_Btn, BuyPlus_Btn, BuyMinus_Btn;
     [SerializeField]
-    TextMeshProUGUI Title_Txt, BlindsTitle_Txt,
+    TextMeshProUGUI Title_Txt, BuyChipsTip_Txt, BlindsTitle_Txt,
                     SB_Txt, BB_Txt, PreBuyChips_Txt, 
                     MinBuyChips_Txt, MaxBuyChips_Txt,
                     CancelBtn_Txt, BuyBtn_Txt,
@@ -40,6 +40,7 @@ public class BuyChipsView : MonoBehaviour
         BlindsTitle_Txt.text = LanguageManager.Instance.GetText("Blinds");
         CancelBtn_Txt.text = LanguageManager.Instance.GetText("Cancel");
         BuyBtn_Txt.text = LanguageManager.Instance.GetText("Buy");
+        BuyChipsTip_Txt.text = LanguageManager.Instance.GetText("Start replenishing chips for the next hand");
     }
 
     private void OnDestroy()
@@ -142,6 +143,8 @@ public class BuyChipsView : MonoBehaviour
         thisData.SmallBlind = smallBlind;
         thisData.SendBuyChipsCallback = sendBuyCallback;
 
+        BuyChipsTip_Txt.gameObject.SetActive(isJustBuyChips);
+
         CountDownTip_Txt.text = "";
         if (isJustBuyChips == false)
         {
@@ -149,14 +152,13 @@ public class BuyChipsView : MonoBehaviour
             InvokeRepeating(nameof(SetCountDownTip), 1, 1);
         }
 
-
         string titleStr = "";
         string maxBuyChipsStr = "";
         switch (tableTypeEnum)
         {
             //現金桌
             case TableTypeEnum.Cash:
-                titleStr = "CRYPTO TABLE";
+                titleStr = "Classic Battle";
                 maxBuyChipsStr = $"{StringUtils.SetChipsUnit(DataManager.UserUChips)}";
                 SB_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.CurrencyAlbum).album[0];
                 BB_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.CurrencyAlbum).album[0];
@@ -164,7 +166,7 @@ public class BuyChipsView : MonoBehaviour
 
             //虛擬貨幣桌
             case TableTypeEnum.VCTable:
-                titleStr = "VIRTUAL CURRENCY TABLE";
+                titleStr = "High Roller Battleground";
                 maxBuyChipsStr = $"{StringUtils.SetChipsUnit(DataManager.UserAChips)}";
                 SB_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.CurrencyAlbum).album[1];
                 BB_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.CurrencyAlbum).album[1];
@@ -177,8 +179,8 @@ public class BuyChipsView : MonoBehaviour
 
         thisData.SmallBlind = smallBlind;
 
-        TexasHoldemUtil.SetBuySlider(thisData.SmallBlind, BuyChips_Sli, tableTypeEnum);
-        MinBuyChips_Txt.text = $"{StringUtils.SetChipsUnit(thisData.SmallBlind * DataManager.MinMagnification)}";
+        TexasHoldemUtil.SetBuySlider(thisData.SmallBlind, BuyChips_Sli, tableTypeEnum, gameControl.PreBuyChipsValue);
+        MinBuyChips_Txt.text = $"{StringUtils.SetChipsUnit((thisData.SmallBlind * DataManager.MinMagnification) + gameControl.PreBuyChipsValue)}";
         MaxBuyChips_Txt.text = maxBuyChipsStr;
     }
 }

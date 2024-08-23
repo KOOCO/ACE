@@ -16,6 +16,7 @@ public class GameControl : MonoBehaviour
     public double SmallBlind { get; set; }                      //小盲值
     public TableTypeEnum RoomType { get; set; }                 //房間類型
     public int MaxRoomPeople { get; set; }                      //房間最大人數
+    public double PreBuyChipsValue { get; set; }                //下一手購買籌碼值
 
     GameRoomData gameRoomData;                                  //房間資料
     Coroutine cdCoroutine;                                      //倒數Coroutine
@@ -31,6 +32,8 @@ public class GameControl : MonoBehaviour
     bool isCloseAllCdInfo { get; set; }                         //是否關閉倒數訊息
     List<int> localHand { get; set; }                           //本地玩家手牌
     int cdSound { get; set; }                                   //倒數聲音計時器
+
+    
 
     private void OnDestroy()
     {
@@ -1047,6 +1050,14 @@ public class GameControl : MonoBehaviour
 
                 isCloseAllCdInfo = true;
                 yield return gameView.IPotResult(gameRoomData);
+
+                //購買籌碼
+                if (PreBuyChipsValue > 0 &&
+                    !gameRoomData.potWinData.isHaveSide)
+                {
+                    UpdateCarryChips();
+                }
+
                 yield return new WaitForSeconds(2);
 
                /* double potWinChips = gameRoomData.potWinData.potWinChips / gameRoomData.potWinData.potWinnersId.Count();
@@ -1100,6 +1111,13 @@ public class GameControl : MonoBehaviour
             case GameFlowEnum.SideResult:
 
                 yield return gameView.SideResult(gameRoomData);
+
+                //購買籌碼
+                if (PreBuyChipsValue > 0)
+                {
+                    UpdateCarryChips();
+                }
+
                 yield return new WaitForSeconds(2);
 
                 /*double sideWinChips = gameRoomData.sideWinData.sideWinChips / gameRoomData.sideWinData.sideWinnersId.Count();
@@ -1153,11 +1171,17 @@ public class GameControl : MonoBehaviour
 
                 yield return gameView.IPotResult(gameRoomData);
 
+                //購買籌碼
+                if (PreBuyChipsValue > 0)
+                {
+                    UpdateCarryChips();
+                }
+
+                yield return new WaitForSeconds(2);
+
                 //房主執行
                 if (gameRoomData.hostId == DataManager.UserId)
                 {
-                    yield return new WaitForSeconds(2);
-
                     //積分房對手離開/斷線
                     if (RoomType == TableTypeEnum.IntegralTable &&
                         gameRoomData.playingPlayersIdList.Count() == 1)
@@ -1664,7 +1688,6 @@ public class GameControl : MonoBehaviour
     public void UpdateBetAction(string id, BetActingEnum betActing, double betValue)
     {
         if (cdCoroutine != null) StopCoroutine(cdCoroutine);
-
         GameRoomPlayerData roomPlayerData = gameRoomData.playerDataDic[id];
 
         //玩家狀態
@@ -1795,27 +1818,23 @@ public class GameControl : MonoBehaviour
     /// <summary>
     /// 更新攜帶籌碼(購買籌碼)
     /// </summary>
-    /// <param name="buyChipsValue">購買籌碼值</param>
-    public void UpdateCarryChips(double buyChipsValue)
+    public void UpdateCarryChips()
     {
-        LobbyView lobbyView = GameObject.FindAnyObjectByType<LobbyView>();
-        var data = new Dictionary<string, object>();
-
         //更新用戶籌碼資料
-        UpdateLocalChips(-buyChipsValue);
+        //UpdateLocalChips(-buyChipsValue);
 
         //更新房間籌碼
-        GameRoomPlayerData playerData = gameRoomData.playerDataDic.Where(x => x.Value.userId == DataManager.UserId)
-                                                                  .FirstOrDefault()
-                                                                  .Value;
-        double newCarryChips = playerData.carryChips + buyChipsValue;
-        data = new Dictionary<string, object>()
+        GameRoomPlayerData playerData = GetLocalPlayer();
+        double newCarryChips = playerData.carryChips + PreBuyChipsValue;
+        var data = new Dictionary<string, object>()
         {
             { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips)},     //攜帶籌碼
         };
         UpdataPlayerData(playerData.userId,
                          data,
                          UpdateCarryChipsCallback);
+
+        PreBuyChipsValue = 0;
     }
 
     /// <summary>
@@ -2076,7 +2095,7 @@ public class GameControl : MonoBehaviour
 
         //最大的牌型结果
         int maxResult = shapeDic.Values.Min(x => x.Item1);
-        Debug.Log($"Max Result:{maxResult}");
+
         //最大牌型人數
         int matchCount = shapeDic.Values.Count(x => x.Item1 == maxResult);
 

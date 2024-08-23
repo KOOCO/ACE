@@ -530,6 +530,7 @@ public class GameView : MonoBehaviour
                                                 betValue);
 
                     Raise_Tr.gameObject.SetActive(false);
+                    SetActionButton = false;
                 }
                 else
                 {
@@ -547,7 +548,6 @@ public class GameView : MonoBehaviour
                                   AutoActingEnum.None :
                                   AutoActingEnum.CallAny;
             }
-            SetActionButton = false;
         });
 
         #endregion
@@ -1509,7 +1509,8 @@ public class GameView : MonoBehaviour
             }*/
 
             if (player.userId == gameRoomData.currActionerId &&
-                gameRoomData.currGameFlow > (int)GameFlowEnum.Licensing)
+                gameRoomData.currGameFlow > (int)GameFlowEnum.Licensing &&
+                gameRoomData.actionCD > 0)
             {
                 gamePlayerInfo.ActionFrame = true;
                 gamePlayerInfo.CountDown(DataManager.StartCountDownTime,
@@ -2425,8 +2426,10 @@ public class GameView : MonoBehaviour
     /// <param name="buyValue"></param>
     public void BuyChips(double buyValue)
     {
-        ViewManager.Instance.OpenWaitingView(transform);
-        gameControl.UpdateCarryChips(buyValue);
+        buyChipsView.gameObject.SetActive(false);
+        ViewManager.Instance.OpenTipMsgView(transform,
+                                            LanguageManager.Instance.GetText("Start replenishing chips for the next hand"));
+        gameControl.PreBuyChipsValue = Math.Floor(buyValue);
     }
 
     /// <summary>
