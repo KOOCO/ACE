@@ -87,9 +87,13 @@ public class LobbyMinePageView : MonoBehaviour
     TextMeshProUGUI InvitationCodeTitle_Txt, InvitationCodeShareBtn_Txt, MyInvitationCode_Txt,
                     InvitationCode_Txt, CopiedInvitationCode_Txt,
                     BoundInviterTitle_Txt, BoundInviterIdf_Placeholder, InviationCodeSubmitBtn_Txt,
-                    InviationCodeError_Txt,BringFriends_Text,InviteCodeTitle_Text,Copy_Text;
+                    InviationCodeError_Txt, BringFriends_Text, InviteCodeTitle_Text, Copy_Text;
+    
+   
+   
 
-    [Header("交易紀錄")]
+
+   [Header("交易紀錄")]
     [SerializeField]
     Button TransactionHistory_Btn;
     [SerializeField]
@@ -115,6 +119,13 @@ public class LobbyMinePageView : MonoBehaviour
 
     [Header("設定")]
     [SerializeField]
+    RectTransform Settings_Obj;
+    [SerializeField]
+    Image settings_Img;
+    [SerializeField]
+    Button Settings_Btn_Expance;
+
+   [SerializeField]
     GameObject SettingsViewObj;
     [SerializeField]
     Button Settings_Btn;
@@ -131,6 +142,7 @@ public class LobbyMinePageView : MonoBehaviour
     bool isAccountBalanceExpand;                                                //是否展開帳戶餘額
     bool isScoreRecordExpand;                                                   //是否展開分數紀錄
     bool isInviteUIExpand;                                                      //是否展開邀請碼介面
+    bool isSettingExpand;
 
     /// <summary>
     /// 更新文本翻譯
@@ -243,6 +255,7 @@ public class LobbyMinePageView : MonoBehaviour
             AccountBalance_Obj,     //帳戶餘額
             ScoreRecord_Obj,        //分數紀錄
             Invitation_Obj,
+            Settings_Obj
         };
         foreach (var expandObj in expandObjList)
         {
@@ -358,6 +371,16 @@ public class LobbyMinePageView : MonoBehaviour
                                             Invitation_Img));
         });
 
+        // 設定介面展開
+        Settings_Btn_Expance.onClick.AddListener(() =>
+        {
+            isSettingExpand = !isSettingExpand;
+            StartCoroutine(ISwitchContent(isSettingExpand,
+                                          Settings_Obj,
+                                          settings_Img));
+
+           
+        });
 
         #endregion
 
@@ -469,7 +492,7 @@ public class LobbyMinePageView : MonoBehaviour
         #region 設定
 
         //開啟設定
-        Settings_Btn.onClick.AddListener(() =>
+      /*  Settings_Btn.onClick.AddListener(() =>
         {
             LobbyView lobbyView = GameObject.FindFirstObjectByType<LobbyView>();
             if (lobbyView != null)
@@ -477,6 +500,7 @@ public class LobbyMinePageView : MonoBehaviour
                 Instantiate(SettingsViewObj, lobbyView.transform);
             }
         });
+      */
 
         #endregion
     }
