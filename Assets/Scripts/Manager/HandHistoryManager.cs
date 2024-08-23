@@ -103,7 +103,7 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
         LoadGameInitData();
         LoadProcessData();
 
-        Debug.Log("Loaded Hand History Data!");
+      //  Debug.Log("Loaded Hand History Data!");
     }
 
     /// <summary>
@@ -123,7 +123,7 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
         HandHistoryView handHistoryView = GameObject.FindAnyObjectByType<HandHistoryView>();
         handHistoryView?.UpdateHitoryDate();
 
-        Debug.Log("Deleted Hand History Data!!!");
+       // Debug.Log("Deleted Hand History Data!!!");
     }
 
 
