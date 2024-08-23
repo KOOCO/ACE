@@ -22,6 +22,7 @@ using Org.BouncyCastle.Asn1.Ocsp;
 using System.Text.RegularExpressions;
 using UnityEngine.SocialPlatforms;
 using Newtonsoft.Json;
+using JetBrains.Annotations;
 
 public class LoginView : MonoBehaviour, IPointerClickHandler
 {
@@ -207,7 +208,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
     List<TMP_InputField> currIfList = new List<TMP_InputField>();               //當前可切換InputFild
     UnityAction KybordEnterAction;                                              //Enter鍵執行方法
 
-
+    public bool isCorrect =true;
     /*
     
 
@@ -693,7 +694,8 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
             AccountIf_Placeholder.gameObject.SetActive(true);
         }
         
-        string AccountName = RegisterAccountName_If.text;
+
+            string AccountName = RegisterAccountName_If.text;
 
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -1035,23 +1037,13 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
     {
         MobileSignInError_Txt.text = "";
         SignInNumberError_Txt.text = "";
-
+        Debug.Log("輸入enter");
         if (!StringUtils.CheckPhoneNumber(SignInNumber_If.text))
         {
             SignInNumberError_Txt.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
         }
         else
         {
-            //改24/8/19
-            //LoginRequest login = new LoginRequest()
-            //{
-            //    userNameOrEmailAddress = "wei123456789",
-            //    password = "123",
-            //    ipAddress = "123",
-            //    machineCode ="123",
-            //};
-            //SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login);
-            //currVerifyPhoneNumber = StringUtils.GetPhoneAddCode(SignInNumber_Dd, SignInNumber_If.text);
             currVerifyPsw = SignInPassword_If.text;
             Debug.Log($"Mobile Sign In = Phone:{currVerifyPhoneNumber} / Password = {currVerifyPsw}");
 
@@ -1178,7 +1170,8 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
     /// </summary>
     public void MobileRegisterSubmit()
     {
-       
+        //MobileSignInSubmit();
+        
         RegisterNumberError_Txt.text = "";
         RegisterCodeError_Txt.text = "";
         RegisterPasswordError_Txt.text = "";
@@ -1199,7 +1192,6 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         {
             isRegisterAccountNameCorrect = false;
             isCorrect = false;
-            Debug.Log("檢查帳號");
             return;
         }
 
@@ -1210,12 +1202,17 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
             RegisterNumberError_Txt.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
         }
 
-        if (string.IsNullOrEmpty(RegisterOTP_If.text))
-        {
-            //OTP為空
-            RegisterCodeError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
-            isCorrect = false;
-        }
+        //if (string.IsNullOrEmpty(RegisterOTP_If.text))//快樂驗證碼
+        //{
+        //    //OTP為空
+        //    RegisterCodeError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
+        //    if(RegisterOTP_If.text.Length<5 && RegisterOTP_If.text ==null)
+        //    {
+        //        isCorrect = false;
+        //        Debug.Log("驗證碼錯誤");
+        //    }
+        //}
+
 
         if (!isRegisterPasswordCorrect)
         {
@@ -1229,6 +1226,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         {
             //隱私條款未同意
             isCorrect = false;
+
             RegisterPrivacyError_Txt.text = LanguageManager.Instance.GetText("Please Agree To The Privacy Policy.");
         }
 
@@ -1239,7 +1237,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
             RegisterCodeError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
         }
 
-        if (isCorrect)
+        if (isCorrect=true)
         {
             //資料正確    
             Debug.Log($"Register Submit = Phone:{phoneNumber} / Code:{code} / Password:{psw}");
@@ -1264,7 +1262,6 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
                 confirmPassword = RegisterPassword_If.text,
 
             };
-            Debug.Log("使用按鈕送出");
             SwaggerAPIManager.Instance.SendPostAPI<Register, callback>("/api/app/ace-accounts/register", register);
         }
     }
