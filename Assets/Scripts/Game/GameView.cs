@@ -994,8 +994,6 @@ public class GameView : MonoBehaviour
         SetTotalPot = 0;
 
         Raise_Tr.gameObject.SetActive(false);
-
-        Debug.Log("GameVuew Init!!!");
     }
 
     /// <summary>
@@ -1034,8 +1032,6 @@ public class GameView : MonoBehaviour
         thisData.IsPlaying = false;
         thisData.isFold = false;
         thisData.CurrCommunityPoker = new List<int>();
-
-        Debug.Log("GameView Game Init!!!");
     }
 
     /// <summary>
@@ -2284,8 +2280,8 @@ public class GameView : MonoBehaviour
         PokerWinRateCalculator pokerWinRateCalculator = new PokerWinRateCalculator(judgeHand, thisData.CurrCommunityPoker);
         pokerWinRateCalculator.CalculateWinRate((winRate) =>
         {
-            Debug.Log($"Judge Win Rate Time : {(DateTime.Now - startTime).TotalSeconds}");
-            Debug.Log($"Win Rate : {winRate}");
+            //Debug.Log($"Judge Win Rate Time : {(DateTime.Now - startTime).TotalSeconds}");
+            //Debug.Log($"Win Rate : {winRate}");
         });
     }
 
@@ -2670,14 +2666,11 @@ public class GameView : MonoBehaviour
             HandHistoryManager.Instance.SaveResult(saveResultData);
             HandHistoryManager.Instance.SaveGameInit(gameInitHistoryData);
             HandHistoryManager.Instance.SaveProcess(processHistoryData);
-
-            Debug.Log("上一局遊戲紀錄存檔");
         }
 
         exitPlayerSeatList = new List<int>();
         processHistoryData = new ProcessHistoryData();
         processHistoryData.processStepHistoryDataList = new List<ProcessStepHistoryData>();
-
 
         //更新存檔資料
         HandHistoryView handHistoryView = GameObject.FindAnyObjectByType<HandHistoryView>();
@@ -2711,7 +2704,6 @@ public class GameView : MonoBehaviour
         processStepHistoryData.CommunityPoker = thisData.CurrCommunityPoker;
         processStepHistoryData.TotalPot = thisData.TotalPot;
         processStepHistoryData.ExitPlayerSeatList = exitPlayerSeatList;
-
         return processStepHistoryData;
     }
 
