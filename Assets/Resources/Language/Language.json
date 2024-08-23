@@ -804,11 +804,7 @@
     "English": "Bound Inviter",
     "zh_TW": "邀請人"
   },
-  {
-    "ID": "Enter Invitation Code",
-    "English": "Enter Invitation Code",
-    "zh_TW": "輸入邀請碼"
-  },
+
   {
     "ID": "My Invitation Code",
     "English": "My Invitation Code",
@@ -1112,7 +1108,7 @@
   {
     "ID": "Your UserName",
     "English": "Your UserName",
-    "zh_TW": "你的帳號"
+    "zh_TW": "你的使用者名稱"
   },
   {
     "ID": "Your Account",
