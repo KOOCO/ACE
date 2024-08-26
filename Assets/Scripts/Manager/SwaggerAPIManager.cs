@@ -168,6 +168,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
            
 
 
+
             Debug.Log("promotionCoin");
 
             //Callback執行
