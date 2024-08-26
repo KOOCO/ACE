@@ -113,7 +113,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
 
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
-            DataManager.istipAppear = true;
+            
 
           
 
@@ -129,6 +129,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
             if (errorJson== "Invalid username or password!")
             {
                 DataManager.TipText = LanguageManager.Instance.GetText("Invalid Username or Password!");
+                DataManager.istipAppear = true;
                 //Debug.Log("登入失敗");
             }
             errCallback?.Invoke();

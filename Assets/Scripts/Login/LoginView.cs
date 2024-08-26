@@ -2000,6 +2000,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
 
         isGetInviteCode = true;
     }
+
     string GetLocalIPAddress()
     {
         string localIP = "";
@@ -2032,7 +2033,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         string JsonStringIp =JsonConvert.SerializeObject(local_IP,Formatting.Indented);
         return localIP;
     }
-
+     
     public class Local_IP
     {
         public string IPAddress { get; set; }
