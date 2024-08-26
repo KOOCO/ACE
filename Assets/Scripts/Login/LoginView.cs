@@ -99,7 +99,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
 
     [Header("手機註冊")]
     [SerializeField]
-    GameObject RegisterPage_Obj;
+    public GameObject RegisterPage_Obj, TipBanner_Obj;
     [SerializeField]
     TextMeshProUGUI RegisterNumberError_Txt, RegisterCodeError_Txt, RegisterPasswordError_Txt, RegisterPrivacyError_Txt;
     [SerializeField]
@@ -116,8 +116,9 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
     TextMeshProUGUI RegisterNumber_Txt, Account_Txt, RegisterNumberIf_Placeholder,
                     RegisterCode_Txt, RegisterOTPIf_Placeholder, RegisterOTPSendBtn_Txt,
                     RegisterPassword_Txt, RegisterPasswordIf_Placeholder,
-                    RegisterSubmitBtn_Txt, AccountIf_Placeholder;
+                    RegisterSubmitBtn_Txt, AccountIf_Placeholder,fail_banner_Text;
 
+  
     [Header("手機注冊密碼檢查")]
     [SerializeField]
     GameObject RegisterCheckPassword_Obj;
@@ -338,6 +339,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         #endregion
     }
 
+    
     private void OnDestroy()
     {
         LanguageManager.Instance.RemoveLanguageFun(UpdateLanguage);
@@ -688,7 +690,15 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
 
     private void Update()
     {
-        
+
+        fail_banner_Text.text = DataManager.TipText;
+
+        if (DataManager.istipAppear)
+            TipBanner_Obj.SetActive(true);
+        else
+            TipBanner_Obj.SetActive(false);
+
+
         if (RegisterAccountName_If.text.Length > 0)
         {
             AccountIf_Placeholder.gameObject.SetActive(false);
@@ -705,6 +715,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         {
             if (IsValidAccountName(AccountName))
             {
+
                 isRegisterAccountNameCorrect = true;
             }
             else
@@ -1010,8 +1021,9 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         SignInPassword_If.text = !string.IsNullOrEmpty(recodePassword) ?
                                  recodePassword :
                                  "";
-
+      
         MobileTip_Txt.text = LanguageManager.Instance.GetText("Please use your mobile phone number to log in.");
+         
         MobileSignIn_Obj.SetActive(true);
         MobileSiginPage_Obj.SetActive(true);
         RegisterPage_Obj.SetActive(false);
@@ -1044,12 +1056,22 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         Debug.Log("輸入enter");
         if (!StringUtils.CheckPhoneNumber(SignInNumber_If.text))
         {
+
+            Debug.Log("afafafaf");
+
+            fail_banner_Text.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
+
             SignInNumberError_Txt.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
         }
         else
         {
+
+            Debug.Log("afafafaf");
+
             currVerifyPsw = SignInPassword_If.text;
             Debug.Log($"Mobile Sign In = Phone:{currVerifyPhoneNumber} / Password = {currVerifyPsw}");
+
+          
 
             JudgeDateExists(nameof(JudgeMobileSignIn),
                             LoginType.phoneUser.ToString());
@@ -1113,6 +1135,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
             }
             else
             {
+                fail_banner_Text.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
                 MobileSignInError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
             }
         }
@@ -1203,7 +1226,9 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         {
             //手機號格式錯誤
             isCorrect = false;
+        
             RegisterNumberError_Txt.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
+            fail_banner_Text.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
         }
 
         //if (string.IsNullOrEmpty(RegisterOTP_If.text))//快樂驗證碼
@@ -1222,23 +1247,29 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         {
             //密碼錯誤
             isCorrect = false;
-            RegisterPasswordError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
+            
+             RegisterPasswordError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
+            fail_banner_Text.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
         }
   
 
         if (!Privacy_Tog.isOn)
         {
             //隱私條款未同意
+            Debug.Log("afafafaf");
             isCorrect = false;
 
             RegisterPrivacyError_Txt.text = LanguageManager.Instance.GetText("Please Agree To The Privacy Policy.");
+            fail_banner_Text.text = LanguageManager.Instance.GetText("Please Agree To The Privacy Policy.");
         }
 
         if (phoneNumber != $"{currVerifyPhoneNumber}")
         {
             //輸入手機號與驗證手機號不符
             isCorrect = false;
+           
             RegisterCodeError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
+            fail_banner_Text.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
         }
 
         if (isCorrect=true)
@@ -1325,6 +1356,7 @@ private void RegisterVerifyCode(string jsonData)
         if (isSuccess == "false")
         {
             //驗證失敗
+            TipBanner_Obj.SetActive(true);
             RegisterCodeError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
             return;
         }
@@ -1414,6 +1446,9 @@ private void RegisterVerifyCode(string jsonData)
         {
             //手機號格式錯誤
             isCorrect = false;
+
+            LostPswNumberError_Txt.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
+
             LostPswNumberError_Txt.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
         }
 
@@ -1918,6 +1953,11 @@ private void RegisterVerifyCode(string jsonData)
     }
 
     #endregion
+
+    public void closetipBanner()
+    {
+        DataManager.istipAppear = false;
+    }
 
     #region 註冊前設置資料
 

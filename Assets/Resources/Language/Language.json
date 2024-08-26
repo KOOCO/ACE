@@ -1138,5 +1138,15 @@
     "ID": "Please proceed with collateralization",
     "English": "Please proceed with collateralization.",
     "zh_TW": "請繼續抵押"
+  },
+  {
+    "ID": "Phone Number Empty!!!",
+    "English": "Phone Number Empty!!!",
+    "zh_TW": "電話號碼為空!!!"
+  },
+  {
+    "ID": "Invalid Username or Password!",
+    "English": "Invalid Username or Password!",
+    "zh_TW": "帳號或密碼錯誤!"
   }
 ]
