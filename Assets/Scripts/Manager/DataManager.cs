@@ -92,6 +92,8 @@ public static class DataManager
 
     public static LoginType UserLoginType { get; set; }             //用戶登入類型
     public static string UserLoginPhoneNumber { get; set; }         //用戶登入手機號
+
+    public static string UserAccount {  get; set; } // 用戶登入帳號
     public static string UserLoginPassword { get; set; }            //用戶登入密碼
     public static string UserWalletAddress { get; set; }            //用戶錢包地址
     public static string UserWalletBalance { get; set; }            //用戶錢包餘額

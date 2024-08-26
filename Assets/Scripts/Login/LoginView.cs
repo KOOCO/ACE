@@ -25,7 +25,7 @@ using Newtonsoft.Json;
 using JetBrains.Annotations;
 using System.Linq.Expressions;
 
-public class LoginView : MonoBehaviour, IPointerClickHandler
+public class LoginView : MonoBehaviour
 {
     [Header("切換/版本")]
     [SerializeField]
@@ -118,7 +118,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
     TextMeshProUGUI RegisterNumber_Txt, Account_Txt, RegisterNumberIf_Placeholder,
                     RegisterCode_Txt, RegisterOTPIf_Placeholder, RegisterOTPSendBtn_Txt,
                     RegisterPassword_Txt, RegisterPasswordIf_Placeholder,
-                    RegisterSubmitBtn_Txt, AccountIf_Placeholder,fail_banner_Text;
+                    RegisterSubmitBtn_Txt, AccountIf_Placeholder,fail_banner_Text,login_input_Text, Register_input_Text;
 
   
     [Header("手機注冊密碼檢查")]
@@ -571,6 +571,12 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         //註冊成功登入
         RegisterSuccSignin_Btn.onClick.AddListener(() =>
         {
+             DataManager.UserAccount= Register_input_Text.text ;
+            Debug.Log(DataManager.UserAccount);
+
+            login_input_Text.text = DataManager.UserAccount;
+
+
             RegisterSuccessSignIn();
         });
 
@@ -723,10 +729,24 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
 
 
 
-       
-       
+        /*
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+             LoginRequest login = new LoginRequest()
+            {
+
+                userNameOrEmailAddress = SingInAccount_If.text, 
+                password = SignInPassword_If.text,
+                ipAddress = localIP,
+                machineCode = "123456789",
+            };
+            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login, OnIntoLobby);
+            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login, OnIntoLobby);
+
+
 
         }
+        */
         //發送OTP倒數
         float codeTime = (float)(DateTime.Now - codeStartTime).TotalSeconds;
         LostPswOTPSend_Btn.interactable = codeTime > codeCountDownTime;
@@ -1304,14 +1324,14 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
 
     }
     public class callback
-{
+    {
 
-}
-/// <summary>
-/// 手機註冊OTP驗證
-/// </summary>
-/// <param name="jsonData">回傳資料</param>
-private void RegisterVerifyCode(string jsonData)
+    }
+    /// <summary>
+    /// 手機註冊OTP驗證
+    /// </summary>
+    /// <param name="jsonData">回傳資料</param>
+    private void RegisterVerifyCode(string jsonData)
     {
         AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
 
@@ -1404,6 +1424,7 @@ private void RegisterVerifyCode(string jsonData)
     private void RegisterSuccessSignIn()
     {
         DataManager.UserLoginType = LoginType.phoneUser;
+
         //OnIntoLobby();
     }
 
@@ -1578,7 +1599,7 @@ private void RegisterVerifyCode(string jsonData)
 
                 DataManager.UserWalletAddress = add;
                 DataManager.UserWalletBalance = balStr;
-
+                
                 CancelInvoke(nameof(TryBinanceConnect));
                 LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
             }
@@ -1987,6 +2008,7 @@ private void RegisterVerifyCode(string jsonData)
 
         isGetInviteCode = true;
     }
+
     string GetLocalIPAddress()
     {
         string localIP = "";
@@ -2019,7 +2041,7 @@ private void RegisterVerifyCode(string jsonData)
         string JsonStringIp =JsonConvert.SerializeObject(local_IP,Formatting.Indented);
         return localIP;
     }
-
+     
     public class Local_IP
     {
         public string IPAddress { get; set; }
@@ -2078,6 +2100,7 @@ private void RegisterVerifyCode(string jsonData)
         LocalDataSave();
 
         DataManager.UserNickname = SingInAccount_If.text;
+        DataManager.UserId = SingInAccount_If.text;
         DataManager.UserLoginPhoneNumber = currVerifyPhoneNumber;
         DataManager.UserLoginPassword = currVerifyPsw;
 
