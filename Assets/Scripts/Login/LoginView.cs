@@ -118,7 +118,7 @@ public class LoginView : MonoBehaviour
     TextMeshProUGUI RegisterNumber_Txt, Account_Txt, RegisterNumberIf_Placeholder,
                     RegisterCode_Txt, RegisterOTPIf_Placeholder, RegisterOTPSendBtn_Txt,
                     RegisterPassword_Txt, RegisterPasswordIf_Placeholder,
-                    RegisterSubmitBtn_Txt, AccountIf_Placeholder,fail_banner_Text,login_input_Text;
+                    RegisterSubmitBtn_Txt, AccountIf_Placeholder,fail_banner_Text,login_input_Text, Register_input_Text;
 
   
     [Header("手機注冊密碼檢查")]
@@ -571,7 +571,11 @@ public class LoginView : MonoBehaviour
         //註冊成功登入
         RegisterSuccSignin_Btn.onClick.AddListener(() =>
         {
+             DataManager.UserAccount= Register_input_Text.text ;
+            Debug.Log(DataManager.UserAccount);
+
             login_input_Text.text = DataManager.UserAccount;
+
 
             RegisterSuccessSignIn();
         });
