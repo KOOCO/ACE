@@ -92,7 +92,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
     TMP_Text ForgotPassword_TmpTxt;
     [SerializeField]
     TextMeshProUGUI MobileTitle_Txt, MobileTip_Txt, MobileSignInError_Txt, SignInNumberError_Txt,
-                    SignInMobileNumber_Txt, SignInNumberIf_Placeholder,
+                    SignInMobileNumber_Txt, SignInNumberIf_Placeholder, SignInNumberIf_Text,
                     SignInPassword_Txt, SignInPasswordIf_Placeholder,
                     RememberMeTog_Txt, SignInBtn_Txt, RegisterBtn_Txt;
 
@@ -489,6 +489,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         SignIn_Btn.onClick.AddListener(() =>
         {
             currVerifyPhoneNumber = SingInAccount_If.text;
+
             LoginRequest login = new LoginRequest()
             {
                 userNameOrEmailAddress = SingInAccount_If.text, 
@@ -497,6 +498,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
                 machineCode = "123456789",
             };
             SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login, OnIntoLobby);
+           
             //MobileSignInSubmit();
 
         });
@@ -558,6 +560,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         RegisterSubmit_Btn.onClick.AddListener(() =>
         {
             MobileRegisterSubmit();
+            SignInNumberIf_Text.text = currVerifyPhoneNumber;
         });
 
         //註冊成功登入

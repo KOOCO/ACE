@@ -225,6 +225,8 @@ public class LobbyView : MonoBehaviour
     private void Update()
     {
 
+       
+
         #region 測試
 
         if (Entry.Instance.releaseType == ReleaseEnvironmentEnum.Test)
@@ -268,9 +270,9 @@ public class LobbyView : MonoBehaviour
         //DataManager.UserInvitationCode = loginData.invitationCode;
         //DataManager.UserBoundInviterId = loginData.boundInviterId;
         //DataManager.UserLineToken = loginData.lineToken;
-        DataManager.UserUChips = Math.Round(DataManager.InitGiveUChips);
-        DataManager.UserAChips = Math.Round(DataManager.InitGiveAChips);
-        DataManager.UserGold = Math.Round(DataManager.InitGiveGold);
+       // DataManager.UserUChips = Math.Round(DataManager.InitGiveUChips);
+        //DataManager.UserAChips = Math.Round(DataManager.InitGiveAChips);
+        //DataManager.UserGold = Math.Round(DataManager.InitGiveGold);
 
 
         DataManager.UserAvatarIndex = 0;
@@ -359,10 +361,22 @@ public class LobbyView : MonoBehaviour
         CryptoChips_Txt.text = string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 " : DataManager.UserWalletBalance;
 
         //資源列表
+       
         Assets_CryptoChipsValue_Txt.text = string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 " : DataManager.UserWalletBalance;
-        Assets_VCValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserAChips);
+       
+
+      
+         Assets_VCValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserAChips);
+     
+  
         Assets_GoldValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserGold);
+     
+
+
+
         Assets_StaminaValue_Txt.text = $"{DataManager.UserStamina}/{DataManager.MaxStaminaValue}";
+       
+
         Assets_OTPropsValue_Txt.text = $"{DataManager.UserOTProps}";
     }
 

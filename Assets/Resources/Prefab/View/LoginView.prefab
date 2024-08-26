@@ -2868,6 +2868,7 @@ MonoBehaviour:
   SignInNumberError_Txt: {fileID: 7819590502762274360}
   SignInMobileNumber_Txt: {fileID: 221251716641747303}
   SignInNumberIf_Placeholder: {fileID: 7208704788757846797}
+  SignInNumberIf_Text: {fileID: 8876685586406509806}
   SignInPassword_Txt: {fileID: 3177642886972802910}
   SignInPasswordIf_Placeholder: {fileID: 1681859439851206276}
   RememberMeTog_Txt: {fileID: 2377365215483047242}

@@ -11,7 +11,7 @@ using Microsoft.AspNet.SignalR.Client.Http;
 public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
 {
     private const string BASE_URL = "https://admin.jf588.com/";           //API Base Url
-
+    
     public override void Awake()
     {
         base.Awake();
@@ -107,7 +107,19 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
             //Debug.Log("MemberId: " + loginResponse.memberId);
             //Debug.Log("MemberStatus: " + loginResponse.memberStatus);
             //Debug.Log("WalletAmount: " + loginResponse.WalletAmount);
-            
+            //Debug.Log("WalletAmount: " + loginResponse.WalletAmount);
+            //Debug.Log("promotionCoin: " + loginResponse.promotionCoin);
+            //Debug.Log("gold: " + loginResponse.gold);
+            //Debug.Log(DataManager.UserAChips);
+
+            DataManager.UserWalletBalance = loginResponse.WalletAmount.ToString();
+            DataManager.UserAChips = loginResponse.promotionCoin;
+            DataManager.UserGold = loginResponse.gold;
+
+           
+
+           
+
             //Callback執行
             if (callback != null)
                 {
