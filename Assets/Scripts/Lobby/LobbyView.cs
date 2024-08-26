@@ -267,7 +267,7 @@ public class LobbyView : MonoBehaviour
 
             //DataManager.UserId = loginData.userId;
             //DataManager.UserLoginPhoneNumber = loginData.phoneNumber;
-            //DataManager.UserNickname = loginData.nickname;
+            DataManager.UserNickname = loginData.nickname;
             DataManager.UserAvatarIndex = loginData.avatarIndex;
             //DataManager.UserInvitationCode = loginData.invitationCode;
             //DataManager.UserBoundInviterId = loginData.boundInviterId;

@@ -824,7 +824,18 @@ public class GameView : MonoBehaviour
                 if (value == false)
                 {
                     Raise_Tr.gameObject.SetActive(false);
-                    strData.FoldStr = "CheckOrFold";
+
+                    if (gameControl.GetLocalPlayer() != null &&
+                        gameRoomData != null &&
+                        (gameRoomData.currGameFlow == (int)GameFlowEnum.SetBlind))
+                    {
+                        strData.FoldStr = "Fold";
+                    }
+                    else
+                    {
+                        strData.FoldStr = "CheckOrFold";
+                    }
+
                     FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
                     if (gameControl.GetLocalPlayer() != null &&
                         gameControl.GetLocalPlayer().currAllBetChips < gameRoomData.smallBlind * 2 &&
@@ -983,7 +994,7 @@ public class GameView : MonoBehaviour
     public void Init()
     {
         WaitingTip_Txt.text = $"{LanguageManager.Instance.GetText("Waiting for the next round...")}";
-        strData.FoldStr = "CheckOrFold";
+        strData.FoldStr = "Fold";
         FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
         strData.CallStr = "Check";
         strData.CallValueStr = "";
@@ -1307,7 +1318,11 @@ public class GameView : MonoBehaviour
                 }
                 else
                 {
-                    if (thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue)
+                    if (gameRoomData.currGameFlow == (int)GameFlowEnum.SetBlind)
+                    {
+                        OnFold();
+                    }
+                    else if (thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue)
                     {
                         OnCallAndCheck();
                     }
