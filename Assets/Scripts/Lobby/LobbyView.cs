@@ -13,6 +13,12 @@ public class LobbyView : MonoBehaviour
     [SerializeField]
     public Request_LobbyView baseRequest;
 
+    [Header("遊戲測試")]
+    [SerializeField]
+    Button OpenGameTest_Btn;
+    [SerializeField]
+    Toggle GameTest_Tog;
+
     [Header("用戶訊息")]
     [SerializeField]
     TextMeshProUGUI Nickname_Txt, Stamina_Txt, CryptoChips_Txt;
@@ -58,6 +64,9 @@ public class LobbyView : MonoBehaviour
     TextMeshProUGUI TransfersBtn_Txt;
 
     bool isFirstIn;
+
+    DateTime gameTestCountTime;             //開啟遊戲測試點擊時間
+    int gameTestTouchCount;                 //開啟遊戲測試點擊次數
 
     /// <summary>
     /// 項目按鈕類型
@@ -124,6 +133,23 @@ public class LobbyView : MonoBehaviour
     /// </summary>
     private void ListenerEvent()
     {
+        #region 遊戲測試
+
+        //開啟遊戲測試
+        OpenGameTest_Btn.onClick.AddListener(() =>
+        {
+            gameTestCountTime = DateTime.Now;
+            gameTestTouchCount++;
+        });
+
+        //遊戲測試開關
+        GameTest_Tog.onValueChanged.AddListener((isOn) =>
+        {
+            DataManager.IsOpenGameTest = isOn;
+        });
+
+        #endregion
+
         //顯示用戶資源列表
         Avatar_Btn.onClick.AddListener(() =>
         {
@@ -173,6 +199,8 @@ public class LobbyView : MonoBehaviour
 
     private void OnEnable()
     {
+        GameTest_Tog.gameObject.SetActive(false);
+
         isShowAssetList = false;
         SetIsShowAssetList = isShowAssetList;
 
@@ -224,20 +252,19 @@ public class LobbyView : MonoBehaviour
 
     private void Update()
     {
-
-        #region 測試
-
-        if (Entry.Instance.releaseType == ReleaseEnvironmentEnum.Test)
+        //開啟遊戲測試
+        if ((DateTime.Now - gameTestCountTime).TotalSeconds < 2)
         {
-            //測試_返回登入
-            if (Input.GetKeyDown(KeyCode.E))
+            if (gameTestTouchCount >= 3)
             {
-                WalletManager.Instance.OnWalletDisconnect();
-                LoadSceneManager.Instance.LoadScene(SceneEnum.Login);
+                gameTestTouchCount = 0;
+                GameTest_Tog.gameObject.SetActive(!GameTest_Tog.gameObject.activeSelf);
             }
         }
-
-        #endregion
+        else
+        {
+            gameTestTouchCount = 0;
+        }
     }
 
     /// <summary>

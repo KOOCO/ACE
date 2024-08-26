@@ -25,7 +25,7 @@ using Newtonsoft.Json;
 using JetBrains.Annotations;
 using System.Linq.Expressions;
 
-public class LoginView : MonoBehaviour, IPointerClickHandler
+public class LoginView : MonoBehaviour
 {
     [Header("切換/版本")]
     [SerializeField]

@@ -55,6 +55,12 @@ public class Entry : UnitySingleton<Entry>
             Reporter.I.show = false;
         }
 
+#if !UNITY_EDITOR
+
+        JSBridgeManager.Instance.GetPlayerIPAddress();
+
+#endif
+
         LanguageManager.Instance.LoadLangageJson();
 
         yield return AssetsManager.Instance.ILoadAssets();
@@ -74,7 +80,7 @@ public class Entry : UnitySingleton<Entry>
     {
 
     }
-    #region Instagram登入
+#region Instagram登入
 
     /// <summary>
     /// 接收獲取IG用戶訊息
@@ -173,9 +179,9 @@ public class Entry : UnitySingleton<Entry>
 
     }
 
-    #endregion
+#endregion
 
-    #region 邀請碼
+#region 邀請碼
 
     [System.Serializable]
     public class InvitationData
@@ -195,9 +201,18 @@ public class Entry : UnitySingleton<Entry>
         DataManager.GetInviterId = data.inviterId;
     }
 
-    #endregion
+#endregion
 
-    #region 工具類 
+#region 工具類 
+
+    /// <summary>
+    /// 獲取IP地址回傳
+    /// </summary>
+    /// <param name="ip"></param>
+    public void GetPlayerIPAddressCallback(string ip)
+    {
+        Debug.Log($"Player IP Address:{ip}");
+    }
 
     /// <summary>
     /// 網頁視窗失去焦點
@@ -257,5 +272,5 @@ public class Entry : UnitySingleton<Entry>
         Debug.Log($"Browser Debug: {str}");
     }
 
-    #endregion
+#endregion
 }
