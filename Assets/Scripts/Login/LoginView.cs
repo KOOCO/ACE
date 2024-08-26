@@ -647,7 +647,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
 
         Local_IP local_Ip = new Local_IP { IPAddress = localIP };
 
-        JsonStringIp = JsonConvert.SerializeObject(local_Ip);
+        JsonStringIp = localIP;
 
         Debug.Log(JsonStringIp);
         //下拉式選單添加國碼
