@@ -38,11 +38,10 @@ public class HandHistoryView : MonoBehaviour
         List<ResultHistoryData> resultDatas = HandHistoryManager.Instance.GetResultDataList();
         for (int i = resultDatas.Count - 1; i >= 0; i--)
         {
-            if (resultDatas[i] == null)
+            if (resultDatas == null || resultDatas[i] == null)
             {
-                Debug.LogError("Hand History Data Error!!!");
                 HandHistoryManager.Instance.OnDeleteHistoryData();
-                continue;
+                return;
             }
 
             HistorySample historySample = Instantiate(HistorySampleObj, HistroyParent).GetComponent<HistorySample>();

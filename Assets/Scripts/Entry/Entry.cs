@@ -63,24 +63,6 @@ public class Entry : UnitySingleton<Entry>
         LoadSceneManager.Instance.LoadScene(SceneEnum.Login);
     }
 
-    private void Update()
-    {
-        #region 測試操作
-
-        if (releaseType == ReleaseEnvironmentEnum.Test)
-        {
-            //NFT測試
-            if (Input.GetKeyDown(KeyCode.RightControl))
-            {
-                DataManager.UserWalletAddress = "0xef279977cBC232C667082E06cfC252529513B738";
-                NFTManager.Instance.UpdateNFT();
-            }
-        }
-
-        #endregion
-
-    }
-
     public class Reigster
     {
         public string phoneNumber;

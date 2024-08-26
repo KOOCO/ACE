@@ -7,6 +7,7 @@ using System.Text;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using Microsoft.AspNet.SignalR.Client.Http;
+using Amazon.Lambda.Model;
 
 public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
 {
@@ -50,11 +51,31 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         public decimal WalletAmount { get; set; }
 
     }
+    public class GetBanner
+    {
+        public string imageName {  get; set; }
+
+        public string imageUrl { get; set; }
+
+        public string blobFileName { get; set; }
+
+        public string startDate { get; set; }
+
+        public string endDate { get; set; }
+
+        public bool isEnabled { get; set; }
+
+    }
+    public class RegisterResponce
+    {
+        
+    }
     public class ErrorResponse
     {
         public string error { get; set; }
         public string message { get; set; }
     }
+
     /// <summary>
     /// 發送POST請求
     /// </summary>
@@ -119,9 +140,14 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
 
           
 
-            //Debug.Log("Response: " + Response);
+            Debug.Log("Response: " + Response);
+            //if (Response = "SUCCESS")
+            //{
+            //    Debug.Log("123");
+            //}
             //回傳結果
             //Debug.Log("Response: " + request.downloadHandler.text);
+
 
             //Debug.Log("AccessToken: " + loginResponse.accessToken);
             //Debug.Log("MemberId: " + loginResponse.memberId);
@@ -140,6 +166,9 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
            
 
            
+
+
+            Debug.Log("promotionCoin");
 
             //Callback執行
             if (callback != null)

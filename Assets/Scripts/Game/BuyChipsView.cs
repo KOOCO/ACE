@@ -20,6 +20,9 @@ public class BuyChipsView : MonoBehaviour
                     CancelBtn_Txt, BuyBtn_Txt,
                     CountDownTip_Txt;
 
+    [SerializeField]
+    SliderClickDetection sliderClickDetection;
+
     private ThisData thisData;
     public class ThisData
     {
@@ -86,7 +89,8 @@ public class BuyChipsView : MonoBehaviour
                                                                     value,
                                                                     thisData.SmallBlind * 2,
                                                                     BuyChips_Sli.minValue,
-                                                                    BuyChips_Sli.maxValue);
+                                                                    BuyChips_Sli.maxValue,
+                                                                    sliderClickDetection);
             PreBuyChips_Txt.text = StringUtils.SetChipsUnit(newRaiseValue);
         });
 

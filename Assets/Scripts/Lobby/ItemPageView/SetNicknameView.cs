@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Proyecto26;
 
 public class SetNicknameView : MonoBehaviour
 {
@@ -92,21 +93,29 @@ public class SetNicknameView : MonoBehaviour
     /// </summary>
     private void OnSubmit()
     {
-#if UNITY_EDITOR
-
-        DataManager.UserNickname = SetNickname_If.text.Trim();
-        SetNicknameSuccess();
-        return;
-
-#endif
-
-
         if (SetNickname_If.text.Trim().Length <= 0)
         {
             Error_Txt.text = LanguageManager.Instance.GetText("Please Enter A Nickname.");
         }
         else
         {
+            currNickname = SetNickname_If.text.Trim();
+
+#if UNITY_EDITOR
+
+            //修改資料
+            Dictionary<string, object> dataDic = new()
+            {
+                { FirebaseManager.NICKNAME, currNickname },
+            };
+            JSBridgeManager.Instance.UpdateDataFromFirebase(
+                $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}",
+                dataDic,
+                gameObject.name,
+                nameof(SetNicknameSuccess));
+            return;
+#endif
+
             string nickname = SetNickname_If.text.Trim();
             currNickname = nickname;
             ViewManager.Instance.OpenWaitingView(transform);
@@ -136,8 +145,9 @@ public class SetNicknameView : MonoBehaviour
         {
             { FirebaseManager.NICKNAME, currNickname },
         };
-        JSBridgeManager.Instance.UpdateDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
-                                                        dataDic);
+        JSBridgeManager.Instance.UpdateDataFromFirebase(
+            $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}",
+            dataDic);
 
         SetNicknameSuccess();
     }
@@ -148,6 +158,7 @@ public class SetNicknameView : MonoBehaviour
     private void SetNicknameSuccess()
     {
         DataManager.UserNickname = currNickname;
+        GameObject.FindFirstObjectByType<LobbyView>().UpdateUserData();
         Destroy(gameObject);
     }
 }
