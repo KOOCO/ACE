@@ -90,7 +90,9 @@ public static class DataManager
 
     #region 用戶訊息
 
-    public static LoginType UserLoginType { get; set; }             //用戶登入類型
+    public static LoginType UserLoginType { get; set; }    //用戶登入類型
+    public static string UserAccount { get; set; }             //登入帳號
+
     public static string UserLoginPhoneNumber { get; set; }         //用戶登入手機號
     public static string UserLoginPassword { get; set; }            //用戶登入密碼
     public static string UserWalletAddress { get; set; }            //用戶錢包地址
@@ -342,6 +344,8 @@ public static class DataManager
 
     #region 遊戲
 
+    public static bool IsOpenGameTest { get; set; }                                   //是否開啟遊戲測試
+
     public static int RoomTokenLength { get { return 10; } }                          //房間亂碼長度
 
     public static int MaxPlayerCount { get { return 6; } }                            //最大遊戲人數
@@ -350,8 +354,8 @@ public static class DataManager
     public static int RobotActionTime { get { return 19; } }                          //機器人行動時間(秒)
     public static int BuyChipsCountDown { get { return 120; } }                        //購買籌碼離開遊戲倒數時間
 
-    public static double IntegralSmallBlind { get { return 100; } }                    //積分房小盲值
-    public static double IntegralNeedChips { get { return 20000; } }                   //積分房配對所需籌碼
+    public static double IntegralSmallBlind { get { return 100; } }                   //積分房小盲值
+    public static double IntegralNeedChips { get { return 20000; } }                  //積分房配對所需籌碼
 
     #endregion
 

@@ -1,5 +1,17 @@
 mergeInto(LibraryManager.library, {
 
+    //獲取玩家IP位置
+    JS_GetPlayerIPAddress: function() {
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                window.unityInstance.SendMessage('Entry', 'GetPlayerIPAddressCallback', data.ip);
+            })
+            .catch(error => {
+                console.error('Error fetching IP address:', error);
+            });
+    },
+
     //清除URL資料
     JS_ClearUrlQueryString: function() {
         // 获取当前的URL

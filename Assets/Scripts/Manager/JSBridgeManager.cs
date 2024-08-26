@@ -343,6 +343,16 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
     #region 工具
 
     [DllImport("__Internal")]
+    private static extern bool JS_GetPlayerIPAddress();
+    /// <summary>
+    /// 獲取IP地址
+    /// </summary>
+    public void GetPlayerIPAddress()
+    {
+        JS_GetPlayerIPAddress();
+    }
+
+    [DllImport("__Internal")]
     private static extern bool JS_ClearUrlQueryString();
     /// <summary>
     /// 清除URL資料

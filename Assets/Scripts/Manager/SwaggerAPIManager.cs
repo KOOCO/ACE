@@ -163,10 +163,11 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
             DataManager.UserWalletBalance = loginResponse.WalletAmount.ToString();
             DataManager.UserAChips = loginResponse.promotionCoin;
             DataManager.UserGold = loginResponse.gold;
-            
-           
+            DataManager.UserAccount = loginResponse.memberId;
 
-           
+            Debug.Log(DataManager.UserAccount);
+
+
 
 
 
