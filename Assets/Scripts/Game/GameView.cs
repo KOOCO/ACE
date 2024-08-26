@@ -2426,13 +2426,27 @@ public class GameView : MonoBehaviour
                                              gameRoomData.smallBlind,
                                              transform.name,
                                              RoomType,
-                                             BuyChips);
+                                             InsufficientChipsBuyChipsCallback);
+
             thisData.LocalGamePlayerInfo.Init();
+            thisData.LocalGamePlayerInfo.IsOpenInfoMask = true;
+            WaitingTip_Txt.text = $"{LanguageManager.Instance.GetText("Waiting for the next round...")}";
         }
         else if (RoomType == TableTypeEnum.IntegralTable)
         {
             SetBattleResult(false);
         }
+    }
+
+    /// <summary>
+    /// 籌碼不足購買籌碼回傳
+    /// </summary>
+    /// <param name="buyValue"></param>
+    private void InsufficientChipsBuyChipsCallback(double buyValue)
+    {
+        buyChipsView.gameObject.SetActive(false);
+        gameControl.PreBuyChipsValue = Math.Floor(buyValue);
+        gameControl.UpdateCarryChips();
     }
 
     /// <summary>
@@ -2816,7 +2830,8 @@ public class GameView : MonoBehaviour
                                                                           .Value;
 
                 //沒有離座
-                if (playerData.isSitOut == false)
+                if (playerData.isSitOut == false &&
+                    (PlayerStateEnum)playerData.gameState != PlayerStateEnum.Waiting)
                 {
                     thisData.IsPlaying = true;
                     gamePlayerInfo.SetHandPoker(playerData.handPoker[0],

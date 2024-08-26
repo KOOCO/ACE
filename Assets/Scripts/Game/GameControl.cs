@@ -983,13 +983,13 @@ public class GameControl : MonoBehaviour
             case GameFlowEnum.Licensing:
 
                 //本地玩家資料
-                GameRoomPlayerData playerData = gameRoomData.playerDataDic.Where(x => x.Value.userId == DataManager.UserId)
-                                                                          .FirstOrDefault()
-                                                                          .Value;
+                GameRoomPlayerData playerData = GetLocalPlayer();
+
                 //籌碼不足
                 if (playerData.carryChips < leastChips)
                 {
                     gameView.OnInsufficientChips();
+                    playerData.gameState = (int)PlayerStateEnum.Waiting;
                 }
 
                 gameView.UpdateGameRoomInfo(gameRoomData);
@@ -1060,13 +1060,6 @@ public class GameControl : MonoBehaviour
 
                 yield return new WaitForSeconds(2);
 
-               /* double potWinChips = gameRoomData.potWinData.potWinChips / gameRoomData.potWinData.potWinnersId.Count();
-                foreach (var sideWinnerId in gameRoomData.potWinData.potWinnersId)
-                {
-                    double currCarryChips = gameRoomData.playerDataDic[sideWinnerId].carryChips;
-                    gameRoomData.playerDataDic[sideWinnerId].carryChips = currCarryChips + potWinChips;
-                }*/
-
                 //是否有玩家籌碼不足
                 bool isPotIntefralResult = gameRoomData.potWinData.isHaveSide == false &&
                                  gameRoomData.playerDataDic.Any(x => x.Value.carryChips < leastChips);
@@ -1120,22 +1113,6 @@ public class GameControl : MonoBehaviour
 
                 yield return new WaitForSeconds(2);
 
-                /*double sideWinChips = gameRoomData.sideWinData.sideWinChips / gameRoomData.sideWinData.sideWinnersId.Count();
-                foreach (var sideWinnerId in gameRoomData.sideWinData.sideWinnersId)
-                {
-                    double currCarryChips = gameRoomData.playerDataDic[sideWinnerId].carryChips;
-                    gameRoomData.playerDataDic[sideWinnerId].carryChips = currCarryChips + sideWinChips;
-                }
-
-                //添加退回籌碼
-                if (gameRoomData.sideWinData.backChipsData != null)
-                {
-                    foreach (var backPlayer in gameRoomData.sideWinData.backChipsData.Values)
-                    {
-                        double currCarryChips = gameRoomData.playerDataDic[backPlayer.backUserId].carryChips;
-                        gameRoomData.playerDataDic[backPlayer.backUserId].carryChips = currCarryChips + backPlayer.backChipsValue;
-                    }
-                }*/
 
                 //是否有玩家籌碼不足
                 bool isSideIntegralResult = gameRoomData.playerDataDic.Any(x => x.Value.carryChips < leastChips);
