@@ -198,7 +198,7 @@ public class LobbyView : MonoBehaviour
 
         #endregion
 
-        //ViewManager.Instance.OpenWaitingView(transform);
+        ViewManager.Instance.OpenWaitingView(transform);
         DataManager.ReciveRankData();
         UpdateUserData();
 
@@ -247,7 +247,7 @@ public class LobbyView : MonoBehaviour
     {
         //讀取用戶資料
         JSBridgeManager.Instance.ReadDataFromFirebase(
-            $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
+            $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}",
             gameObject.name,
             nameof(GetDataCallback));
     }
@@ -258,39 +258,55 @@ public class LobbyView : MonoBehaviour
     /// <param name="jsonData">回傳資料</param>
     public void GetDataCallback(string jsonData)
     {
-        ViewManager.Instance.CloseWaitingView(transform);
-        //AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
+        AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
 
-        //DataManager.UserId = loginData.userId;
-        //DataManager.UserLoginPhoneNumber = loginData.phoneNumber;
-        //DataManager.UserNickname = loginData.nickname;
-        //DataManager.UserAvatarIndex = loginData.avatarIndex;
-        //DataManager.UserInvitationCode = loginData.invitationCode;
-        //DataManager.UserBoundInviterId = loginData.boundInviterId;
-        //DataManager.UserLineToken = loginData.lineToken;
-        DataManager.UserUChips = Math.Round(DataManager.InitGiveUChips);
-        DataManager.UserAChips = Math.Round(DataManager.InitGiveAChips);
-        DataManager.UserGold = Math.Round(DataManager.InitGiveGold);
+        if (loginData != null &&
+            !string.IsNullOrEmpty(loginData.userId))
+        {
+            ViewManager.Instance.CloseWaitingView(transform);
 
+            //DataManager.UserId = loginData.userId;
+            //DataManager.UserLoginPhoneNumber = loginData.phoneNumber;
+            //DataManager.UserNickname = loginData.nickname;
+            DataManager.UserAvatarIndex = loginData.avatarIndex;
+            //DataManager.UserInvitationCode = loginData.invitationCode;
+            //DataManager.UserBoundInviterId = loginData.boundInviterId;
+            //DataManager.UserLineToken = loginData.lineToken;
+            DataManager.UserUChips = Math.Round(DataManager.InitGiveUChips);
+            DataManager.UserAChips = Math.Round(DataManager.InitGiveAChips);
+            DataManager.UserGold = Math.Round(DataManager.InitGiveGold);
+        }
+        else
+        {
+            var data = new Dictionary<string, object>()
+            {
+                { FirebaseManager.USER_ID, DataManager.UserId},
+                { FirebaseManager.AVATAR_INDEX, 0},
+                { FirebaseManager.NICKNAME, DataManager.UserId},
+            };
+            JSBridgeManager.Instance.UpdateDataFromFirebase(
+                $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}",
+                data,
+                gameObject.name,
+                nameof(UpdateUserData));
 
-        DataManager.UserAvatarIndex = 0;
+            //開啟設置暱稱
+            if (isFirstIn)
+            {
+                Instantiate(SetNicknameViewObj, transform);
+            }
+        }
 
-        if (string.IsNullOrEmpty(DataManager.UserId))
+        /*if (string.IsNullOrEmpty(DataManager.UserId))
         {
             DataManager.UserId = StringUtils.GenerateRandomString(15);
-        }
-        DataManager.UserLoginPhoneNumber = DataManager.UserId;
+        }*/
+        
+        //DataManager.UserLoginPhoneNumber = DataManager.UserId;
 
         if (string.IsNullOrEmpty(DataManager.UserInvitationCode))
         {
             DataManager.UserInvitationCode = StringUtils.GenerateRandomString(15);
-        }
-
-        //開啟設置暱稱
-        if (isFirstIn &&
-            string.IsNullOrEmpty(DataManager.UserNickname))
-        {
-            Instantiate(SetNicknameViewObj, transform);
         }
 
         //使用邀請碼登入

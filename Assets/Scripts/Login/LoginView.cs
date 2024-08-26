@@ -1287,14 +1287,14 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
 
     }
     public class callback
-{
+    {
 
-}
-/// <summary>
-/// 手機註冊OTP驗證
-/// </summary>
-/// <param name="jsonData">回傳資料</param>
-private void RegisterVerifyCode(string jsonData)
+    }
+    /// <summary>
+    /// 手機註冊OTP驗證
+    /// </summary>
+    /// <param name="jsonData">回傳資料</param>
+    private void RegisterVerifyCode(string jsonData)
     {
         AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
 
@@ -2042,6 +2042,7 @@ private void RegisterVerifyCode(string jsonData)
         LocalDataSave();
 
         DataManager.UserNickname = SingInAccount_If.text;
+        DataManager.UserId = SingInAccount_If.text;
         DataManager.UserLoginPhoneNumber = currVerifyPhoneNumber;
         DataManager.UserLoginPassword = currVerifyPsw;
 
