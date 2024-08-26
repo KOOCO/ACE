@@ -2875,6 +2875,7 @@ MonoBehaviour:
   SignInBtn_Txt: {fileID: 3428368766179141969}
   RegisterBtn_Txt: {fileID: 9117181285011920369}
   RegisterPage_Obj: {fileID: 6069215149750039581}
+  TipBanner_Obj: {fileID: 3579059708923241878}
   RegisterNumberError_Txt: {fileID: 56501171216150686}
   RegisterCodeError_Txt: {fileID: 2726490192484425751}
   RegisterPasswordError_Txt: {fileID: 3261667072585885452}
@@ -2901,6 +2902,7 @@ MonoBehaviour:
   RegisterPasswordIf_Placeholder: {fileID: 5629747264171531673}
   RegisterSubmitBtn_Txt: {fileID: 5683100999587270992}
   AccountIf_Placeholder: {fileID: 4229662793647038876}
+  fail_banner_Text: {fileID: 4977525266711128182}
   RegisterCheckPassword_Obj: {fileID: 161390252552557261}
   RegisterCheckPassword1_Img: {fileID: 6521931935835860254}
   RegisterCheckPassword2_Img: {fileID: 1559302045834349548}
@@ -12451,10 +12453,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3579059708923241878}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 980070357314481176}
+        m_TargetAssemblyTypeName: LoginView, Assembly-CSharp
+        m_MethodName: closetipBanner
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
