@@ -2868,6 +2868,7 @@ MonoBehaviour:
   PrivacyContent_Txt: {fileID: 7475959142497942712}
   PrivacyConfirmBtn_Txt: {fileID: 4629093563685045697}
   localIP: 
+  isCorrect: 1
 --- !u!222 &837559756044227817
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13704,7 +13705,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8219718242652126899
 RectTransform:
   m_ObjectHideFlags: 0

@@ -23,6 +23,7 @@ using System.Text.RegularExpressions;
 using UnityEngine.SocialPlatforms;
 using Newtonsoft.Json;
 using JetBrains.Annotations;
+using System.Linq.Expressions;
 
 public class LoginView : MonoBehaviour, IPointerClickHandler
 {
@@ -95,6 +96,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
                     SignInMobileNumber_Txt, SignInNumberIf_Placeholder,
                     SignInPassword_Txt, SignInPasswordIf_Placeholder,
                     RememberMeTog_Txt, SignInBtn_Txt, RegisterBtn_Txt;
+    string JsonStringIp;
 
 
     [Header("手機註冊")]
@@ -186,7 +188,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
 
     Coroutine connectionEffectCoroutine;                                        //連接錢包效果
     DateTime startConnectTime;                                                  //開始連接錢包時間
-    bool isRegisterAccountNameCorrect;                                   //帳號是否正確
+    bool isRegisterAccountNameCorrect;                                          //帳號是否正確
     bool isShowPassword;                                                        //是否顯示密碼
     bool isClickSignUpHere;                                                     //是否點擊註冊
     bool isRegisterPasswordCorrect;                                             //是否手機注冊密碼正確
@@ -240,6 +242,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
         public string WalletProviderStr;
         public WalletEnum TheWalletEnum;
     }
+
     
     /// <summary>
     /// 更新文本翻譯
@@ -493,7 +496,7 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
             {
                 userNameOrEmailAddress = SingInAccount_If.text, 
                 password = SignInPassword_If.text,
-                ipAddress = localIP,
+                ipAddress = JsonStringIp,
                 machineCode = "123456789",
             };
             SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login, OnIntoLobby);
@@ -639,8 +642,14 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
 
     private void Start()
     {
-      
-        localIP = GetLocalIPAddress();
+
+        string localIP = GetLocalIPAddress();
+
+        Local_IP local_Ip = new Local_IP { IPAddress = localIP };
+
+        JsonStringIp = JsonConvert.SerializeObject(local_Ip);
+
+        Debug.Log(JsonStringIp);
         //下拉式選單添加國碼
         Utils.SetOptionsToDropdown(SMSMobileNumber_Dd, DataManager.CountryCode);
         //Utils.SetOptionsToDropdown(SignInNumber_Dd, DataManager.CountryCode);
@@ -685,50 +694,18 @@ public class LoginView : MonoBehaviour, IPointerClickHandler
 
     private void Update()
     {
-        
-        if (RegisterAccountName_If.text.Length > 0)
-        {
-            AccountIf_Placeholder.gameObject.SetActive(false);
-        }
-        else
-        {
-            AccountIf_Placeholder.gameObject.SetActive(true);
-        }
-        
-
-            string AccountName = RegisterAccountName_If.text;
-
         if (Input.GetKeyDown(KeyCode.F))
         {
-            if (IsValidAccountName(AccountName))
+             LoginRequest login = new LoginRequest()
             {
-                isRegisterAccountNameCorrect = true;
-            }
-            else
-            {
-                Debug.Log("檢查帳號規則");
-                isRegisterAccountNameCorrect = false;
-                return;
-            }
-            if (!isRegisterAccountNameCorrect)
-            {
-                Debug.Log("檢查帳號規則");
-            }
-            else
-            {
-                Register register = new Register()
-                {
-                    //RegisterNumber_If, RegisterOTP_If, RegisterPassword_If, RegisterAccountName_If;
-                    inviteCode = "123456789",
-                    phoneNumber = RegisterNumber_If.text,//把 RegisterNumber物件的匯入
-                    userName = RegisterAccountName_If.text,
-                    password = RegisterPassword_If.text,
-                    confirmPassword = RegisterPassword_If.text,
-                };
-                
-                SwaggerAPIManager.Instance.SendPostAPI<Register, callback>("/api/app/ace-accounts/register", register);
-            }
-            
+                userNameOrEmailAddress = SingInAccount_If.text, 
+                password = SignInPassword_If.text,
+                ipAddress = localIP,
+                machineCode = "123456789",
+            };
+            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login, OnIntoLobby);
+            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login, OnIntoLobby);
+
         }
         //發送OTP倒數
         float codeTime = (float)(DateTime.Now - codeStartTime).TotalSeconds;
@@ -1966,11 +1943,9 @@ private void RegisterVerifyCode(string jsonData)
         string localIP = "";
         try
         {
-            // 獲取本機 DNS 資料
             var host = Dns.GetHostEntry(Dns.GetHostName());
             foreach (var ip in host.AddressList)
             {
-                // 檢查是否為 IPv4 地址，且不是回送地址
                 if (ip.AddressFamily == AddressFamily.InterNetwork)
                 {
                     localIP = ip.ToString();
@@ -1979,15 +1954,27 @@ private void RegisterVerifyCode(string jsonData)
             }
             if (string.IsNullOrEmpty(localIP))
             {
-                throw new System.Exception("找不到本機 IP 地址！");
+                throw new System.Exception("找不到'IP");
             }
         }
         catch (System.Exception ex)
         {
-            Debug.LogError("獲取本機 IP 地址時出錯: " + ex.Message);
+            Debug.LogError("取得IP出錯: " + ex.Message);
         }
 
+        // 实例化 Local_IP 对象
+        Local_IP local_IP = new Local_IP
+        {
+            IPAddress = localIP
+        };
+        string JsonStringIp =JsonConvert.SerializeObject(local_IP,Formatting.Indented);
         return localIP;
+    }
+
+    public class Local_IP
+    {
+        public string IPAddress { get; set; }
+        
     }
 
     /// <summary>
