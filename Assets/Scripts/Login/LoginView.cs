@@ -377,13 +377,8 @@ public class LoginView : MonoBehaviour
                                             RegisterPassword_If);
             StringUtils.InitPasswordContent(LostPswPasswordEye_Btn.image,
                                             LosrPswPassword_If);
-            #region 忘記密碼
-            LostPsw_Btn.onClick.AddListener(() =>
-            {
-                LostPassWord();
-            });
+            
 
-            #endregion
             if (isOn)
             {
                 //錢包登入
@@ -1952,6 +1947,7 @@ public class LoginView : MonoBehaviour
     }
     public void LostPassWord()
     {
+        print("123");
         MobileSignIn_Obj.SetActive(false);
         LostPassword_Obj.SetActive(true);
         LostPswCheckPassword_Obj.SetActive(false);
