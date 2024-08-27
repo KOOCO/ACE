@@ -311,6 +311,7 @@ public class LobbyView : MonoBehaviour
             //DataManager.UserBoundInviterId = loginData.boundInviterId;
             //DataManager.UserLineToken = loginData.lineToken;
             DataManager.UserUChips = Math.Round(DataManager.InitGiveUChips);
+            //以下初始資料帶入
             DataManager.UserAChips = Math.Round(DataManager.InitGiveAChips);
             DataManager.UserGold = Math.Round(DataManager.InitGiveGold);
         }

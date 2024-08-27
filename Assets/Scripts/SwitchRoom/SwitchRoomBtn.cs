@@ -40,7 +40,7 @@ public class SwitchRoomBtn : MonoBehaviour
     {
         set
         {
-            selectFrame_Tr.gameObject.SetActive(value);
+           // selectFrame_Tr.gameObject.SetActive(value);
         }
     }
 
