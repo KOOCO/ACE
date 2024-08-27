@@ -118,10 +118,14 @@ public class LoginView : MonoBehaviour
                     RegisterCode_Txt, RegisterOTPIf_Placeholder, RegisterOTPSendBtn_Txt,
                     RegisterPassword_Txt, RegisterPasswordIf_Placeholder,
 <<<<<<< HEAD
+<<<<<<< HEAD
                     RegisterSubmitBtn_Txt, AccountIf_Placeholder,fail_banner_Text,login_input_Text, Register_input_Text;
 =======
                     RegisterSubmitBtn_Txt, AccountIf_Placeholder,fail_banner_Text;
 >>>>>>> 7ac8011512a5a9f5aa793c4f7e03b0c25047ddc1
+=======
+                    RegisterSubmitBtn_Txt, AccountIf_Placeholder,fail_banner_Text,login_input_Text, Register_input_Text;
+>>>>>>> 1429dd0472f322b15dbe87929de1953ef8009108
 
   
     [Header("手機注冊密碼檢查")]
@@ -583,6 +587,7 @@ public class LoginView : MonoBehaviour
         //手機注冊提交
         RegisterSubmit_Btn.onClick.AddListener(() =>
         {
+            DataManager.UserAccount = Register_input_Text.text;
             MobileRegisterSubmit();
             SignInNumberIf_Text.text = currVerifyPhoneNumber;
         });
@@ -590,10 +595,17 @@ public class LoginView : MonoBehaviour
         //註冊成功登入
         RegisterSuccSignin_Btn.onClick.AddListener(() =>
         {
+<<<<<<< HEAD
              DataManager.UserAccount= Register_input_Text.text ;
             Debug.Log(DataManager.UserAccount);
 
             login_input_Text.text = DataManager.UserAccount;
+=======
+            
+            Debug.Log(DataManager.UserAccount);
+
+            SignInNumber_If.text = DataManager.UserAccount;
+>>>>>>> 1429dd0472f322b15dbe87929de1953ef8009108
 
 
             RegisterSuccessSignIn();
@@ -775,9 +787,25 @@ public class LoginView : MonoBehaviour
 
 
 
+<<<<<<< HEAD
        
        
 >>>>>>> 7ac8011512a5a9f5aa793c4f7e03b0c25047ddc1
+=======
+        /*
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+             LoginRequest login = new LoginRequest()
+            {
+
+                userNameOrEmailAddress = SingInAccount_If.text, 
+                password = SignInPassword_If.text,
+                ipAddress = localIP,
+                machineCode = "123456789",
+            };
+            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login, OnIntoLobby);
+            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login, OnIntoLobby);
+>>>>>>> 1429dd0472f322b15dbe87929de1953ef8009108
 
 
 
@@ -1054,9 +1082,11 @@ public class LoginView : MonoBehaviour
 
         //紀錄的國碼/手機/密碼
         //SignInNumber_Dd.value = recodeCountryCodeIndex;
+
         SignInNumber_If.text = !string.IsNullOrEmpty(recodePhoneNumber) ?
                                recodePhoneNumber :
                                "";
+
         SignInPassword_If.text = !string.IsNullOrEmpty(recodePassword) ?
                                  recodePassword :
                                  "";

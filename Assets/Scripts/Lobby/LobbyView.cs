@@ -253,16 +253,27 @@ public class LobbyView : MonoBehaviour
     private void Update()
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         //開啟遊戲測試
         if ((DateTime.Now - gameTestCountTime).TotalSeconds < 2)
 =======
+=======
+
+>>>>>>> 1429dd0472f322b15dbe87929de1953ef8009108
 
        
 
         #region 測試
 
         if (Entry.Instance.releaseType == ReleaseEnvironmentEnum.Test)
+<<<<<<< HEAD
 >>>>>>> 7ac8011512a5a9f5aa793c4f7e03b0c25047ddc1
+=======
+
+        //開啟遊戲測試
+        if ((DateTime.Now - gameTestCountTime).TotalSeconds < 2)
+
+>>>>>>> 1429dd0472f322b15dbe87929de1953ef8009108
         {
             if (gameTestTouchCount >= 3)
             {
@@ -297,10 +308,15 @@ public class LobbyView : MonoBehaviour
         AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1429dd0472f322b15dbe87929de1953ef8009108
         if (loginData != null &&
             !string.IsNullOrEmpty(loginData.userId))
         {
             ViewManager.Instance.CloseWaitingView(transform);
+<<<<<<< HEAD
 =======
         //DataManager.UserId = loginData.userId;
         //DataManager.UserLoginPhoneNumber = loginData.phoneNumber;
@@ -313,6 +329,9 @@ public class LobbyView : MonoBehaviour
         //DataManager.UserAChips = Math.Round(DataManager.InitGiveAChips);
         //DataManager.UserGold = Math.Round(DataManager.InitGiveGold);
 >>>>>>> 7ac8011512a5a9f5aa793c4f7e03b0c25047ddc1
+=======
+
+>>>>>>> 1429dd0472f322b15dbe87929de1953ef8009108
 
             //DataManager.UserId = loginData.userId;
             //DataManager.UserLoginPhoneNumber = loginData.phoneNumber;
@@ -322,6 +341,7 @@ public class LobbyView : MonoBehaviour
             //DataManager.UserBoundInviterId = loginData.boundInviterId;
             //DataManager.UserLineToken = loginData.lineToken;
             DataManager.UserUChips = Math.Round(DataManager.InitGiveUChips);
+            //以下初始資料帶入
             DataManager.UserAChips = Math.Round(DataManager.InitGiveAChips);
             DataManager.UserGold = Math.Round(DataManager.InitGiveGold);
         }
@@ -541,3 +561,4 @@ public class LobbyView : MonoBehaviour
         }
     }
 }
+#endregion
