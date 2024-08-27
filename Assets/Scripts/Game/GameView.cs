@@ -2144,13 +2144,13 @@ public class GameView : MonoBehaviour
                     switch (roomType)
                     {
                         case TableTypeEnum.IntegralTable:
-                            roomName = "Integral Table";
+                            roomName = "Integral";
                             break;
                         case TableTypeEnum.Cash:
-                            roomName = "Crypto Table";
+                            roomName = "Classic Battle";
                             break;
                         case TableTypeEnum.VCTable:
-                            roomName = "VC Table";
+                            roomName = "High Roller Battleground";
                             break;
                     }
 
