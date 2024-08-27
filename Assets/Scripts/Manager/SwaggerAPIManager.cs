@@ -6,8 +6,6 @@ using Newtonsoft.Json;
 using System.Text;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using Microsoft.AspNet.SignalR.Client.Http;
-using Amazon.Lambda.Model;
 
 public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
 {
