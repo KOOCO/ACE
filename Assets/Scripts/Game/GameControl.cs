@@ -184,7 +184,7 @@ public class GameControl : MonoBehaviour
         if (isWaitingCreateRobot)
         {
             isWaitingCreateRobot = false;
-            CreateRobot();
+            CreateRobot(true);
         }
 
         return;
@@ -202,7 +202,7 @@ public class GameControl : MonoBehaviour
         if (isWaitingCreateRobot)
         {
             isWaitingCreateRobot = false;
-            CreateRobot();
+            CreateRobot(true);
         }
     }
 
@@ -357,10 +357,12 @@ public class GameControl : MonoBehaviour
     /// <summary>
     /// 產生機器人
     /// </summary>
-    private void CreateRobot()
+    private void CreateRobot(bool randonSeat = false)
     {
         //設置座位
-        int robotSeat = TexasHoldemUtil.SetGameSeat(gameRoomData);
+        int robotSeat = randonSeat == true ?
+                        UnityEngine.Random.Range(1, 6) :
+                        TexasHoldemUtil.SetGameSeat(gameRoomData);
 
         //機器人暱稱
         string[] names = {
