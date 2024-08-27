@@ -24,7 +24,6 @@ using UnityEngine.SocialPlatforms;
 using Newtonsoft.Json;
 using JetBrains.Annotations;
 using System.Linq.Expressions;
-
 public class LoginView : MonoBehaviour
 {
     [Header("切換/版本")]
@@ -93,7 +92,7 @@ public class LoginView : MonoBehaviour
     TMP_Text ForgotPassword_TmpTxt;
     [SerializeField]
     TextMeshProUGUI MobileTitle_Txt, MobileTip_Txt, MobileSignInError_Txt, SignInNumberError_Txt,
-                    SignInMobileNumber_Txt, SignInNumberIf_Placeholder,
+                    SignInMobileNumber_Txt, SignInNumberIf_Placeholder, SignInNumberIf_Text,
                     SignInPassword_Txt, SignInPasswordIf_Placeholder,
                     RememberMeTog_Txt, SignInBtn_Txt, RegisterBtn_Txt;
     string JsonStringIp;
@@ -101,7 +100,7 @@ public class LoginView : MonoBehaviour
 
     [Header("手機註冊")]
     [SerializeField]
-    GameObject RegisterPage_Obj;
+    public GameObject RegisterPage_Obj, TipBanner_Obj;
     [SerializeField]
     TextMeshProUGUI RegisterNumberError_Txt, RegisterCodeError_Txt, RegisterPasswordError_Txt, RegisterPrivacyError_Txt;
     [SerializeField]
@@ -118,8 +117,9 @@ public class LoginView : MonoBehaviour
     TextMeshProUGUI RegisterNumber_Txt, Account_Txt, RegisterNumberIf_Placeholder,
                     RegisterCode_Txt, RegisterOTPIf_Placeholder, RegisterOTPSendBtn_Txt,
                     RegisterPassword_Txt, RegisterPasswordIf_Placeholder,
-                    RegisterSubmitBtn_Txt, AccountIf_Placeholder;
+                    RegisterSubmitBtn_Txt, AccountIf_Placeholder,fail_banner_Text,login_input_Text, Register_input_Text;
 
+  
     [Header("手機注冊密碼檢查")]
     [SerializeField]
     GameObject RegisterCheckPassword_Obj;
@@ -341,6 +341,7 @@ public class LoginView : MonoBehaviour
         #endregion
     }
 
+    
     private void OnDestroy()
     {
         LanguageManager.Instance.RemoveLanguageFun(UpdateLanguage);
@@ -492,15 +493,19 @@ public class LoginView : MonoBehaviour
         SignIn_Btn.onClick.AddListener(() =>
         {
             currVerifyPhoneNumber = SingInAccount_If.text;
-            LoginRequest login = new LoginRequest()
+            
             {
-                userNameOrEmailAddress = SingInAccount_If.text, 
-                password = SignInPassword_If.text,
-                ipAddress = JsonStringIp,
-                machineCode = "123456789",
-            };
-            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login, OnIntoLobby);
-            //MobileSignInSubmit();
+                LoginRequest login = new LoginRequest()
+                {
+                    userNameOrEmailAddress = SingInAccount_If.text,
+                    password = SignInPassword_If.text,
+                    ipAddress = SignInPassword_If.text,//這邊要替換
+                    machineCode = "123456789",
+                };
+                SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login, OnIntoLobby);
+
+                //MobileSignInSubmit();
+            }
 
         });
 
@@ -554,18 +559,25 @@ public class LoginView : MonoBehaviour
         RegisterPasswordEye_Btn.onClick.AddListener(() =>
         {
             isShowPassword = !isShowPassword;
-            PasswordDisplayControl(isShowPassword);
+            PasswordDisplayControl(isShowPassword); 
         });
 
         //手機注冊提交
         RegisterSubmit_Btn.onClick.AddListener(() =>
         {
             MobileRegisterSubmit();
+            SignInNumberIf_Text.text = currVerifyPhoneNumber;
         });
 
         //註冊成功登入
         RegisterSuccSignin_Btn.onClick.AddListener(() =>
         {
+             DataManager.UserAccount= Register_input_Text.text ;
+            Debug.Log(DataManager.UserAccount);
+
+            login_input_Text.text = DataManager.UserAccount;
+
+
             RegisterSuccessSignIn();
         });
 
@@ -647,9 +659,8 @@ public class LoginView : MonoBehaviour
 
         Local_IP local_Ip = new Local_IP { IPAddress = localIP };
 
-        JsonStringIp = JsonConvert.SerializeObject(local_Ip);
+        JsonStringIp = localIP;
 
-        Debug.Log(JsonStringIp);
         //下拉式選單添加國碼
         Utils.SetOptionsToDropdown(SMSMobileNumber_Dd, DataManager.CountryCode);
         //Utils.SetOptionsToDropdown(SignInNumber_Dd, DataManager.CountryCode);
@@ -694,10 +705,36 @@ public class LoginView : MonoBehaviour
 
     private void Update()
     {
+
+
+        fail_banner_Text.text = DataManager.TipText;
+
+        if (DataManager.istipAppear)
+            TipBanner_Obj.SetActive(true);
+        else
+            TipBanner_Obj.SetActive(false);
+
+
+        if (RegisterAccountName_If.text.Length > 0)
+        {
+            AccountIf_Placeholder.gameObject.SetActive(false);
+        }
+        else
+        {
+            AccountIf_Placeholder.gameObject.SetActive(true);
+        }
+        
+
+            string AccountName = RegisterAccountName_If.text;
+
+
+
+        /*
         if (Input.GetKeyDown(KeyCode.F))
         {
              LoginRequest login = new LoginRequest()
             {
+
                 userNameOrEmailAddress = SingInAccount_If.text, 
                 password = SignInPassword_If.text,
                 ipAddress = localIP,
@@ -706,7 +743,10 @@ public class LoginView : MonoBehaviour
             SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login, OnIntoLobby);
             SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login, OnIntoLobby);
 
+
+
         }
+        */
         //發送OTP倒數
         float codeTime = (float)(DateTime.Now - codeStartTime).TotalSeconds;
         LostPswOTPSend_Btn.interactable = codeTime > codeCountDownTime;
@@ -984,8 +1024,9 @@ public class LoginView : MonoBehaviour
         SignInPassword_If.text = !string.IsNullOrEmpty(recodePassword) ?
                                  recodePassword :
                                  "";
-
+      
         MobileTip_Txt.text = LanguageManager.Instance.GetText("Please use your mobile phone number to log in.");
+         
         MobileSignIn_Obj.SetActive(true);
         MobileSiginPage_Obj.SetActive(true);
         RegisterPage_Obj.SetActive(false);
@@ -1018,12 +1059,22 @@ public class LoginView : MonoBehaviour
         Debug.Log("輸入enter");
         if (!StringUtils.CheckPhoneNumber(SignInNumber_If.text))
         {
+
+            Debug.Log("afafafaf");
+
+            fail_banner_Text.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
+
             SignInNumberError_Txt.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
         }
         else
         {
+
+            Debug.Log("afafafaf");
+
             currVerifyPsw = SignInPassword_If.text;
             Debug.Log($"Mobile Sign In = Phone:{currVerifyPhoneNumber} / Password = {currVerifyPsw}");
+
+          
 
             JudgeDateExists(nameof(JudgeMobileSignIn),
                             LoginType.phoneUser.ToString());
@@ -1087,6 +1138,7 @@ public class LoginView : MonoBehaviour
             }
             else
             {
+                fail_banner_Text.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
                 MobileSignInError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
             }
         }
@@ -1177,7 +1229,9 @@ public class LoginView : MonoBehaviour
         {
             //手機號格式錯誤
             isCorrect = false;
+        
             RegisterNumberError_Txt.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
+            fail_banner_Text.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
         }
 
         //if (string.IsNullOrEmpty(RegisterOTP_If.text))//快樂驗證碼
@@ -1196,23 +1250,29 @@ public class LoginView : MonoBehaviour
         {
             //密碼錯誤
             isCorrect = false;
-            RegisterPasswordError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
+            
+             RegisterPasswordError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
+            fail_banner_Text.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
         }
   
 
         if (!Privacy_Tog.isOn)
         {
             //隱私條款未同意
+            Debug.Log("afafafaf");
             isCorrect = false;
 
             RegisterPrivacyError_Txt.text = LanguageManager.Instance.GetText("Please Agree To The Privacy Policy.");
+            fail_banner_Text.text = LanguageManager.Instance.GetText("Please Agree To The Privacy Policy.");
         }
 
         if (phoneNumber != $"{currVerifyPhoneNumber}")
         {
             //輸入手機號與驗證手機號不符
             isCorrect = false;
+           
             RegisterCodeError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
+            fail_banner_Text.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
         }
 
         if (isCorrect=true)
@@ -1299,6 +1359,7 @@ public class LoginView : MonoBehaviour
         if (isSuccess == "false")
         {
             //驗證失敗
+            TipBanner_Obj.SetActive(true);
             RegisterCodeError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
             return;
         }
@@ -1363,6 +1424,7 @@ public class LoginView : MonoBehaviour
     private void RegisterSuccessSignIn()
     {
         DataManager.UserLoginType = LoginType.phoneUser;
+
         //OnIntoLobby();
     }
 
@@ -1388,6 +1450,9 @@ public class LoginView : MonoBehaviour
         {
             //手機號格式錯誤
             isCorrect = false;
+
+            LostPswNumberError_Txt.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
+
             LostPswNumberError_Txt.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
         }
 
@@ -1893,6 +1958,11 @@ public class LoginView : MonoBehaviour
 
     #endregion
 
+    public void closetipBanner()
+    {
+        DataManager.istipAppear = false;
+    }
+
     #region 註冊前設置資料
 
     /// <summary>
@@ -1938,6 +2008,7 @@ public class LoginView : MonoBehaviour
 
         isGetInviteCode = true;
     }
+
     string GetLocalIPAddress()
     {
         string localIP = "";
@@ -1970,7 +2041,7 @@ public class LoginView : MonoBehaviour
         string JsonStringIp =JsonConvert.SerializeObject(local_IP,Formatting.Indented);
         return localIP;
     }
-
+     
     public class Local_IP
     {
         public string IPAddress { get; set; }
