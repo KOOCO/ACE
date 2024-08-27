@@ -404,11 +404,6 @@ public class HistoryVideoView : MonoBehaviour
             }
         }
 
-        //公共牌
-        foreach (var common in CommunityPokser)
-        {
-            common.PokerInit();
-        }
         if (processStepHistoryData.CommunityPoker == null ||
             processStepHistoryData.CommunityPoker.Count == 0)
         {
