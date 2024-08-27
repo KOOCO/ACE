@@ -76,7 +76,7 @@ public class GameView : MonoBehaviour
     [SerializeField]
     RectTransform MenuPage_Tr;
     [SerializeField]
-    Button Menu_Btn, MenuClose_Btn, SitOut_Btn, BuyChips_Btn, HandHistory_Btn;
+    Button Menu_Btn, MenuClose_Btn, SitOut_Btn, BuyChips_Btn, GameRules_Btn , HandHistory_Btn;
     [SerializeField]
     Image MenuAvatar_Img;
     [SerializeField]
@@ -112,6 +112,12 @@ public class GameView : MonoBehaviour
     [Header("購買籌碼")]
     [SerializeField]
     BuyChipsView buyChipsView;
+
+    [Header("遊戲規則")]
+    [SerializeField]
+    GameObject RuleView;
+    [SerializeField]
+    Button closeRule_Btn,got_it_btn;
 
     [Header("遊戲結果")]
     [SerializeField]
@@ -396,6 +402,23 @@ public class GameView : MonoBehaviour
                                              BuyChips);
         });
 
+        //開始規則
+        GameRules_Btn.onClick.AddListener(() => {
+            RuleView.SetActive(true);
+
+          
+        });
+
+        closeRule_Btn.onClick.AddListener(() => {
+            RuleView.SetActive(false);
+
+
+        });
+        got_it_btn.onClick.AddListener(() => {
+            RuleView.SetActive(false);
+
+
+        });
         //離開/回到座位
         SitOut_Btn.onClick.AddListener(() =>
         {
@@ -668,6 +691,7 @@ public class GameView : MonoBehaviour
         buyChipsView.gameObject.SetActive(false);
         BattleResultView.gameObject.SetActive(false);
         BackToSit_Btn.gameObject.SetActive(false);
+        RuleView.SetActive(false);
         TotalPot_Txt.text = StringUtils.SetChipsUnit(0);
 
         //選單玩家訊息
