@@ -62,7 +62,7 @@ public class Poker : MonoBehaviour
     /// </summary>
     public void StartWinEffect()
     {
-        thisRt.localScale = new Vector3(1.1f, 1.1f, 1);
+        //thisRt.localScale = new Vector3(1.1f, 1.1f, 1);
     }
 
     /// <summary>
