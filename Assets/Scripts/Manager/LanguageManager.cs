@@ -155,7 +155,16 @@ public class LanguageManager
         }
         else
         {
+<<<<<<< HEAD
             //Debug.LogError($"{id}:翻譯文本不存在");
+=======
+
+            //Debug.LogError($"{id}:翻譯文本不存在");
+
+
+
+
+>>>>>>> 7ac8011512a5a9f5aa793c4f7e03b0c25047ddc1
 
             return id;
         }
@@ -193,6 +202,16 @@ public class LanguageManager
     /// </summary>
     private void UpdateLanguage()
     {
+<<<<<<< HEAD
+=======
+        //Debug.Log($"Change Language:{languageId[thisData.CurrLanguageIndex]}");
+
+
+        Debug.Log($"Change Language:{languageId[thisData.CurrLanguageIndex]}");
+
+
+
+>>>>>>> 7ac8011512a5a9f5aa793c4f7e03b0c25047ddc1
         foreach (var func in updateLanguageFuncDic)
         {
             if (func.Value != null)

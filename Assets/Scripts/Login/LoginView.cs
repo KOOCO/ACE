@@ -117,7 +117,11 @@ public class LoginView : MonoBehaviour
     TextMeshProUGUI RegisterNumber_Txt, Account_Txt, RegisterNumberIf_Placeholder,
                     RegisterCode_Txt, RegisterOTPIf_Placeholder, RegisterOTPSendBtn_Txt,
                     RegisterPassword_Txt, RegisterPasswordIf_Placeholder,
+<<<<<<< HEAD
                     RegisterSubmitBtn_Txt, AccountIf_Placeholder,fail_banner_Text,login_input_Text, Register_input_Text;
+=======
+                    RegisterSubmitBtn_Txt, AccountIf_Placeholder,fail_banner_Text;
+>>>>>>> 7ac8011512a5a9f5aa793c4f7e03b0c25047ddc1
 
   
     [Header("手機注冊密碼檢查")]
@@ -493,6 +497,7 @@ public class LoginView : MonoBehaviour
         SignIn_Btn.onClick.AddListener(() =>
         {
             currVerifyPhoneNumber = SingInAccount_If.text;
+<<<<<<< HEAD
             
             {
                 LoginRequest login = new LoginRequest()
@@ -506,6 +511,19 @@ public class LoginView : MonoBehaviour
 
                 //MobileSignInSubmit();
             }
+=======
+
+            LoginRequest login = new LoginRequest()
+            {
+                userNameOrEmailAddress = SingInAccount_If.text, 
+                password = SignInPassword_If.text,
+                ipAddress = JsonStringIp,
+                machineCode = "123456789",
+            };
+            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login, OnIntoLobby);
+           
+            //MobileSignInSubmit();
+>>>>>>> 7ac8011512a5a9f5aa793c4f7e03b0c25047ddc1
 
         });
 
@@ -716,6 +734,7 @@ public class LoginView : MonoBehaviour
 
 
         if (RegisterAccountName_If.text.Length > 0)
+<<<<<<< HEAD
         {
             AccountIf_Placeholder.gameObject.SetActive(false);
         }
@@ -742,6 +761,23 @@ public class LoginView : MonoBehaviour
             };
             SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login, OnIntoLobby);
             SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login, OnIntoLobby);
+=======
+        {
+            AccountIf_Placeholder.gameObject.SetActive(false);
+        }
+        else
+        {
+            AccountIf_Placeholder.gameObject.SetActive(true);
+        }
+        
+
+            string AccountName = RegisterAccountName_If.text;
+
+
+
+       
+       
+>>>>>>> 7ac8011512a5a9f5aa793c4f7e03b0c25047ddc1
 
 
 

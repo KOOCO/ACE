@@ -13,6 +13,8 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
 {
     private const string BASE_URL = "https://admin.jf588.com/";           //API Base Url
 
+    public bool isTipBanner=false;
+    
     public override void Awake()
     {
         base.Awake();
@@ -89,6 +91,8 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     {
         string fullUrl = BASE_URL + apiUrl;
 
+
+
         //Debug.Log($"Send POST:{fullUrl}");
 
 
@@ -102,16 +106,29 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
 
+       
+
+
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
+            DataManager.istipAppear = true;
+
+          
+
+
+         
             //請求錯誤
             string errorJson = request.downloadHandler.text;
             Debug.LogError($"Error: {request.error}\nError Details: {errorJson}");
             Debug.LogError(errorJson);
-            if(errorJson== "Invalid username or password!")
+
+           
+
+            if (errorJson== "Invalid username or password!")
             {
+                DataManager.TipText = LanguageManager.Instance.GetText("Invalid Username or Password!");
                 //Debug.Log("登入失敗");
             }
             errCallback?.Invoke();
@@ -119,6 +136,9 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         else
         {
             string Response = request.downloadHandler.text;
+            LoginResponse loginResponse = JsonConvert.DeserializeObject<LoginResponse>(Response);
+
+          
 
             Debug.Log("Response: " + Response);
             //if (Response = "SUCCESS")
@@ -127,6 +147,27 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
             //}
             //回傳結果
             //Debug.Log("Response: " + request.downloadHandler.text);
+
+
+            //Debug.Log("AccessToken: " + loginResponse.accessToken);
+            //Debug.Log("MemberId: " + loginResponse.memberId);
+            // Debug.Log("MemberStatus: " + loginResponse.memberStatus);
+            //Debug.Log("WalletAmount: " + loginResponse.WalletAmount);
+
+           // Debug.Log("promotionCoin: " + loginResponse.promotionCoin);
+            //Debug.Log("gold: " + loginResponse.gold);
+            //Debug.Log(DataManager.UserAChips);
+
+            
+            DataManager.UserWalletBalance = loginResponse.WalletAmount.ToString();
+            DataManager.UserAChips = loginResponse.promotionCoin;
+            DataManager.UserGold = loginResponse.gold;
+            
+           
+
+           
+
+
             //LoginResponse loginResponse = JsonConvert.DeserializeObject<LoginResponse>(Response);
             //Debug.Log("AccessToken: " + loginResponse.accessToken);
             //Debug.Log("MemberId: " + loginResponse.memberId);
@@ -135,6 +176,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
             //Debug.Log("MemberStatus: " + loginResponse.memberStatus);
             //Debug.Log("WalletAmount: " + loginResponse.WalletAmount);
             Debug.Log("promotionCoin");
+
             //Callback執行
             if (callback != null)
                 {

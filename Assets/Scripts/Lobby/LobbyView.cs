@@ -252,8 +252,17 @@ public class LobbyView : MonoBehaviour
 
     private void Update()
     {
+<<<<<<< HEAD
         //開啟遊戲測試
         if ((DateTime.Now - gameTestCountTime).TotalSeconds < 2)
+=======
+
+       
+
+        #region 測試
+
+        if (Entry.Instance.releaseType == ReleaseEnvironmentEnum.Test)
+>>>>>>> 7ac8011512a5a9f5aa793c4f7e03b0c25047ddc1
         {
             if (gameTestTouchCount >= 3)
             {
@@ -287,10 +296,23 @@ public class LobbyView : MonoBehaviour
     {
         AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
 
+<<<<<<< HEAD
         if (loginData != null &&
             !string.IsNullOrEmpty(loginData.userId))
         {
             ViewManager.Instance.CloseWaitingView(transform);
+=======
+        //DataManager.UserId = loginData.userId;
+        //DataManager.UserLoginPhoneNumber = loginData.phoneNumber;
+        //DataManager.UserNickname = loginData.nickname;
+        //DataManager.UserAvatarIndex = loginData.avatarIndex;
+        //DataManager.UserInvitationCode = loginData.invitationCode;
+        //DataManager.UserBoundInviterId = loginData.boundInviterId;
+        //DataManager.UserLineToken = loginData.lineToken;
+       // DataManager.UserUChips = Math.Round(DataManager.InitGiveUChips);
+        //DataManager.UserAChips = Math.Round(DataManager.InitGiveAChips);
+        //DataManager.UserGold = Math.Round(DataManager.InitGiveGold);
+>>>>>>> 7ac8011512a5a9f5aa793c4f7e03b0c25047ddc1
 
             //DataManager.UserId = loginData.userId;
             //DataManager.UserLoginPhoneNumber = loginData.phoneNumber;
@@ -393,10 +415,22 @@ public class LobbyView : MonoBehaviour
         CryptoChips_Txt.text = string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 " : DataManager.UserWalletBalance;
 
         //資源列表
+       
         Assets_CryptoChipsValue_Txt.text = string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 " : DataManager.UserWalletBalance;
-        Assets_VCValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserAChips);
+       
+
+      
+         Assets_VCValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserAChips);
+     
+  
         Assets_GoldValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserGold);
+     
+
+
+
         Assets_StaminaValue_Txt.text = $"{DataManager.UserStamina}/{DataManager.MaxStaminaValue}";
+       
+
         Assets_OTPropsValue_Txt.text = $"{DataManager.UserOTProps}";
     }
 
