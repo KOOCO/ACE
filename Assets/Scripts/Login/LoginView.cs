@@ -564,6 +564,7 @@ public class LoginView : MonoBehaviour
         //手機注冊提交
         RegisterSubmit_Btn.onClick.AddListener(() =>
         {
+            DataManager.UserAccount = Register_input_Text.text;
             MobileRegisterSubmit();
             SignInNumberIf_Text.text = currVerifyPhoneNumber;
         });
@@ -571,10 +572,10 @@ public class LoginView : MonoBehaviour
         //註冊成功登入
         RegisterSuccSignin_Btn.onClick.AddListener(() =>
         {
-             DataManager.UserAccount= Register_input_Text.text ;
+            
             Debug.Log(DataManager.UserAccount);
 
-            login_input_Text.text = DataManager.UserAccount;
+            SignInNumber_If.text = DataManager.UserAccount;
 
 
             RegisterSuccessSignIn();
@@ -1018,9 +1019,11 @@ public class LoginView : MonoBehaviour
 
         //紀錄的國碼/手機/密碼
         //SignInNumber_Dd.value = recodeCountryCodeIndex;
+
         SignInNumber_If.text = !string.IsNullOrEmpty(recodePhoneNumber) ?
                                recodePhoneNumber :
                                "";
+
         SignInPassword_If.text = !string.IsNullOrEmpty(recodePassword) ?
                                  recodePassword :
                                  "";
