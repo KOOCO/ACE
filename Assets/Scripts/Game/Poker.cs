@@ -10,27 +10,9 @@ public class Poker : MonoBehaviour
     [SerializeField]
     RectTransform thisRt;
     [SerializeField]
-    Image poker_Img, frame_Img, Pattern_Img, SmallPattern_Img;
-    [SerializeField]
-    GameObject shining_Obj, PokerBack_Obj;
-    [SerializeField]
-    TextMeshProUGUI Num_Txt;
+    Image Number_Img, Back_Img;
 
     int pokerNumber;    //撲克數字(-1=背面)
-
-    private void OnEnable()
-    {
-        PokerInit();
-    }
-
-    /// <summary>
-    /// 撲克初始化
-    /// </summary>
-    public void PokerInit()
-    {
-        PokerEffectEnable = false;
-        shining_Obj.SetActive(false);
-    }
 
     /// <summary>
     /// 撲克數字(-1=背面)
@@ -44,51 +26,11 @@ public class Poker : MonoBehaviour
         set
         {
             pokerNumber = value;
-            PokerBack_Obj.SetActive(value <= -1);
+            Back_Img.gameObject.SetActive(value <= -1);
             if (value >= 0)
             {
-                //數字
-                string suitsStr = "";
-                int num = value % 13 + 1;
-
-                switch (num)
-                {
-                    case 1:
-                        suitsStr = "A";
-                        break;
-
-                    case 11:
-                        suitsStr = "J";
-                        break;
-
-                    case 12:
-                        suitsStr = "Q";
-                        break;
-
-                    case 13:
-                        suitsStr = "K";
-                        break;
-
-                    default:
-                        suitsStr = num.ToString(); ;
-                        break;
-                }
-                Num_Txt.text = suitsStr;
-
-                //花色
-                int suitsImg = value / 13;
-                Pattern_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.PokerSuitsAlbum).album[suitsImg];
-                SmallPattern_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.PokerSuitsAlbum).album[suitsImg];
-                if (suitsImg == 0 ||
-                    suitsImg == 3)
-                {
-                    Num_Txt.color = Color.black;
-                }
-                else
-                {
-                    Num_Txt.color = Color.red;
-                }
-
+                Sprite[] pokersNum = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.PokerNumAlbum).album;
+                Number_Img.sprite = pokersNum[value];
             }          
         }
     }
@@ -100,16 +42,7 @@ public class Poker : MonoBehaviour
     {
         set
         {
-            frame_Img.enabled = false;
-            shining_Obj.SetActive(value);
             thisRt.localScale = Vector3.one;
-
-            /*frame_Img.enabled = value;
-            poker_Img.rectTransform.localScale = Vector3.one;
-            if (value == false)
-            {
-                shining_Obj.SetActive(false);
-            }*/
         }
     }
 
@@ -120,7 +53,7 @@ public class Poker : MonoBehaviour
     {
         set
         {
-            poker_Img.color = new Color(value, value, value, 1);
+            Number_Img.color = new Color(value, value, value, 1);
         }
     }
 
@@ -129,7 +62,6 @@ public class Poker : MonoBehaviour
     /// </summary>
     public void StartWinEffect()
     {
-        shining_Obj.SetActive(true);
         thisRt.localScale = new Vector3(1.1f, 1.1f, 1);
     }
 
@@ -140,8 +72,8 @@ public class Poker : MonoBehaviour
     /// <returns></returns>
     public IEnumerator IHorizontalFlopEffect(int frontNum)
     {
-        poker_Img.rectTransform.rotation = Quaternion.Euler(poker_Img.rectTransform.eulerAngles.x, 180, poker_Img.rectTransform.eulerAngles.z);
-        PokerBack_Obj.SetActive(true);
+        Number_Img.rectTransform.rotation = Quaternion.Euler(Number_Img.rectTransform.eulerAngles.x, 180, Number_Img.rectTransform.eulerAngles.z);
+        Back_Img.gameObject.SetActive(true);
 
         float turnTime = 0.5f;
         DateTime startTime = DateTime.Now;
@@ -149,7 +81,7 @@ public class Poker : MonoBehaviour
         {
             float progess = (float)(DateTime.Now - startTime).TotalSeconds / turnTime;
             float rotY = Mathf.Lerp(180, 0, progess);
-            poker_Img.rectTransform.rotation = Quaternion.Euler(poker_Img.rectTransform.eulerAngles.x, rotY, poker_Img.rectTransform.eulerAngles.z);
+            Number_Img.rectTransform.rotation = Quaternion.Euler(Number_Img.rectTransform.eulerAngles.x, rotY, Number_Img.rectTransform.eulerAngles.z);
 
             if (rotY <= 90)
             {
@@ -159,6 +91,6 @@ public class Poker : MonoBehaviour
             yield return null;
         }
 
-        poker_Img.rectTransform.rotation = Quaternion.Euler(poker_Img.rectTransform.eulerAngles.x, 0, poker_Img.rectTransform.eulerAngles.z);
+        Number_Img.rectTransform.rotation = Quaternion.Euler(Number_Img.rectTransform.eulerAngles.x, 0, Number_Img.rectTransform.eulerAngles.z);
     }
 }
