@@ -94,7 +94,7 @@ public static class TexasHoldemUtil
     /// <returns></returns>
     public static int SetGameSeat(GameRoomData gameRoomData)
     {
-        int robotSeat = 0;
+        int seat = 0;
         int maxRoomPeople = DataManager.MaxPlayerCount;
         int currMaxSeat = gameRoomData.playerDataDic.Values.OrderByDescending(x => x.gameSeat).FirstOrDefault().gameSeat;
         int temp = (currMaxSeat + 1) % maxRoomPeople;
@@ -103,13 +103,13 @@ public static class TexasHoldemUtil
             bool seated = gameRoomData.playerDataDic.Values.Any(x => x.gameSeat == temp);
             if (seated == false)
             {
-                robotSeat = temp;
+                seat = temp;
                 break;
             }
 
             temp = (temp + 1) % maxRoomPeople;
         }
 
-        return robotSeat;
+        return seat;
     }
 }
