@@ -253,12 +253,16 @@ public class LobbyView : MonoBehaviour
     private void Update()
     {
 
+        //開啟遊戲測試
+        if ((DateTime.Now - gameTestCountTime).TotalSeconds < 2)
+
 
        
 
         #region 測試
 
         if (Entry.Instance.releaseType == ReleaseEnvironmentEnum.Test)
+
 
         //開啟遊戲測試
         if ((DateTime.Now - gameTestCountTime).TotalSeconds < 2)
@@ -301,6 +305,7 @@ public class LobbyView : MonoBehaviour
             !string.IsNullOrEmpty(loginData.userId))
         {
             ViewManager.Instance.CloseWaitingView(transform);
+
 
 
             //DataManager.UserId = loginData.userId;

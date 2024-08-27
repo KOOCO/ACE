@@ -156,8 +156,7 @@ public class LanguageManager
         else
         {
 
-
-
+            //Debug.LogError($"{id}:翻譯文本不存在");
 
             return id;
         }
