@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: pokerBackAlbum
   m_EditorClassIdentifier: 
   album:
-  - {fileID: 21300000, guid: c4e3a8bd7cdaafb40a0161a3c719a477, type: 3}
+  - {fileID: 21300000, guid: d1aaaa08ab5c8f94eaa29c963cd9cb68, type: 3}

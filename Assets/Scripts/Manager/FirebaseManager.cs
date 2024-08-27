@@ -46,6 +46,8 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
     public const string CURR_ACTIONER_SEAT = "currActionerSeat";                            //當前行動座位
     public const string CURR_CALL_VALUE = "currCallValue";                                  //當前跟注值
     public const string ACTIONP_PLAYER_COUNT = "actionPlayerCount";                         //當前流程行動玩家次數
+    public const string GAME_START_TIME = "gameStartTime";                                  //遊戲開始時間
+    public const string GAME_END_TIME = "gameEndTime";                                      //遊戲結束時間
 
     [Header("遊戲玩家資料路徑名稱")]
     public const string ROOM_NAME = "room_";                                                //房間名
@@ -227,6 +229,8 @@ public class GameRoomData
     public int currActionerSeat;                                        //前行動座位
     public double currCallValue;                                        //當前跟注值
     public int actionPlayerCount;                                       //當前流程行動玩家次數
+    public string gameStartTime;                                        //遊戲開始時間
+    public string gameEndTime;                                          //遊戲結束時間
 }
 
 /// <summary>

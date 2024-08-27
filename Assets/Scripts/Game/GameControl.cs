@@ -1083,6 +1083,13 @@ public class GameControl : MonoBehaviour
                     }
                     else
                     {
+                        //更新遊戲結束時間
+                        data = new Dictionary<string, object>()
+                        {
+                            { FirebaseManager.GAME_END_TIME, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}, //遊戲結束時間
+                        };
+                        UpdateGameRoomData(data);
+
                         //積分房
                         if (RoomType == TableTypeEnum.IntegralTable)
                         {
@@ -1127,6 +1134,13 @@ public class GameControl : MonoBehaviour
                 //房主執行
                 if (gameRoomData.hostId == DataManager.UserId)
                 {
+                    //更新遊戲結束時間
+                    data = new Dictionary<string, object>()
+                    {
+                        { FirebaseManager.GAME_END_TIME, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}, //遊戲結束時間
+                    };
+                    UpdateGameRoomData(data);
+
                     //積分房
                     if (RoomType == TableTypeEnum.IntegralTable)
                     {
@@ -1159,12 +1173,20 @@ public class GameControl : MonoBehaviour
                 //房主執行
                 if (gameRoomData.hostId == DataManager.UserId)
                 {
+                    //更新遊戲結束時間
+                    data = new Dictionary<string, object>()
+                    {
+                        { FirebaseManager.GAME_END_TIME, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}, //遊戲結束時間
+                    };
+                    UpdateGameRoomData(data);
+
                     //積分房對手離開/斷線
                     if (RoomType == TableTypeEnum.IntegralTable &&
                         gameRoomData.playingPlayersIdList.Count() == 1)
                     {
                         //顯示積分結果
                         gameView.SetBattleResult(GetLocalPlayer().carryChips >= leastChips);
+                        yield break;
                     }
 
                     //重新遊戲流程
@@ -1556,11 +1578,12 @@ public class GameControl : MonoBehaviour
         //更新房間資料
         data = new Dictionary<string, object>()
         {
-            { FirebaseManager.POT_CHIPS, 0},                                        //底池
-            { FirebaseManager.PLAYING_PLAYER_ID, playingPlayersId},                 //遊戲中玩家ID
-            { FirebaseManager.COMMUNITY_POKER, SetPoker()},                         //公共牌
-            { FirebaseManager.CURR_COMMUNITY_POKER, new List<int>()},               //當前公共牌座位
-            { FirebaseManager.BUTTON_SEAT, newButtonSeat},                          //Button座位
+            { FirebaseManager.POT_CHIPS, 0},                                                    //底池
+            { FirebaseManager.PLAYING_PLAYER_ID, playingPlayersId},                             //遊戲中玩家ID
+            { FirebaseManager.COMMUNITY_POKER, SetPoker()},                                     //公共牌
+            { FirebaseManager.CURR_COMMUNITY_POKER, new List<int>()},                           //當前公共牌座位
+            { FirebaseManager.BUTTON_SEAT, newButtonSeat},                                      //Button座位
+            { FirebaseManager.GAME_START_TIME, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}    //遊戲開始時間
         };
         UpdateGameRoomData(data);
 

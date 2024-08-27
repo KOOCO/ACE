@@ -395,6 +395,4 @@ public static class StringUtils
         Regex regex = new Regex("^(?=.*[@$!%*?&#])");
         return regex.IsMatch(number);
     }
-
-
 }

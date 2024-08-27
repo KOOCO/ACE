@@ -125,6 +125,24 @@ public class GameView : MonoBehaviour
     [SerializeField]
     Button GameContinue_Btn;
 
+    [Header("遊戲測試用")]
+    [SerializeField]
+    GameObject GameTest_Obj;
+    [SerializeField]
+    Button GameTestStart_Btn;
+    [SerializeField]
+    List<TMP_Dropdown> CP_SuitTogList;
+    [SerializeField]
+    List<TMP_Dropdown> CP_NumTogList;
+    [SerializeField]
+    List<TMP_Dropdown> PH0_SuitTogList;
+    [SerializeField]
+    List<TMP_Dropdown> PH1_SuitTogList;
+    [SerializeField]
+    List<TMP_Dropdown> PN0_NumTogList;
+    [SerializeField]
+    List<TMP_Dropdown> PN1_NumTogList;
+
     const float PageMoveTime = 0.25f;                           //滑動頁面移動時間
 
     //底池倍率
@@ -680,6 +698,37 @@ public class GameView : MonoBehaviour
         }
 
         LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
+
+
+        #region 遊戲測試
+
+        GameTest_Obj.SetActive(false);
+        CP_SuitTogList.AddRange(PH0_SuitTogList);
+        CP_SuitTogList.AddRange(PH1_SuitTogList);
+        List<string> suitName = new()
+        {
+            "S",//黑桃
+            "H",//紅心
+            "D",//方塊
+            "C",//梅花
+        };
+        for (int i = 0; i < CP_SuitTogList.Count; i++)
+        {
+            Utils.SetOptionsToDropdown(CP_SuitTogList[i], suitName);
+        }
+
+        List<string> numName = new()
+        {
+            "A","2","3","4","5","6","7","8","9","10","J","Q","K",
+        };
+        CP_NumTogList.AddRange(PN0_NumTogList);
+        CP_NumTogList.AddRange(PN1_NumTogList);
+        for (int i = 0; i < CP_NumTogList.Count; i++)
+        {
+            Utils.SetOptionsToDropdown(CP_NumTogList[i], numName);
+        }
+
+        #endregion
     }
 
     private void Update()
@@ -733,6 +782,17 @@ public class GameView : MonoBehaviour
             SendChat();
             Chat_If.ActivateInputField();
             Chat_If.Select();
+        }
+    }
+
+    /// <summary>
+    /// 是否開啟遊戲測試操作
+    /// </summary>
+    public bool IsOpenGameTestObj
+    {
+        set
+        {
+            GameTest_Obj.SetActive(value);
         }
     }
 

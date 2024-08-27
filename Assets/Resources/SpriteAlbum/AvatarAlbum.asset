@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: AvatarAlbum
   m_EditorClassIdentifier: 
   album:
-  - {fileID: 21300000, guid: 65122a63e5d56594fb894ca162adaa81, type: 3}
-  - {fileID: 21300000, guid: d3294a5adbc931e47a58d5f037e6b081, type: 3}
-  - {fileID: 21300000, guid: 2ce99e7e0f72bae42ad555ea1ce842dc, type: 3}
-  - {fileID: 21300000, guid: 8a48c8058ec600248b5f0684c3114f3e, type: 3}
-  - {fileID: 21300000, guid: 2acf9439c8295cb44936f76335640a9c, type: 3}
-  - {fileID: 21300000, guid: d0ddcb5745d59c44f897f6114be646d3, type: 3}
-  - {fileID: 21300000, guid: 19e776caeddf6e04f97602924dfbe251, type: 3}
-  - {fileID: 21300000, guid: e49f54bd8d00c374da659b3b9d4970db, type: 3}
+  - {fileID: 21300000, guid: 93b59b056e8c5db46a44743d769d4cce, type: 3}
+  - {fileID: 21300000, guid: 355aacc96bdc89a4d8314be4a0b877ff, type: 3}
+  - {fileID: 21300000, guid: 540900aaf45ca524d8cce7320f022c28, type: 3}
+  - {fileID: 21300000, guid: fe7f8fb0244962e4bae95d99744a366c, type: 3}
+  - {fileID: 21300000, guid: a6852b8f4cc56514290e2a43a7408f1d, type: 3}
+  - {fileID: 21300000, guid: 073a6ec9e471b5b4ba738c1a9c141c3b, type: 3}
+  - {fileID: 21300000, guid: 25aef0e9111ed8b41aebc2cc2ece121d, type: 3}
+  - {fileID: 21300000, guid: 06b4338e285946844828ce83a6369bbb, type: 3}
