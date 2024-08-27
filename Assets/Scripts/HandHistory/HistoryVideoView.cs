@@ -253,6 +253,7 @@ public class HistoryVideoView : MonoBehaviour
 
         for (int i = 1; i < Players.Length; i++)
         {
+            Players[i].IsWinnerActive = false;
             Players[i].gameObject.SetActive(false);
         }
         foreach (var common in CommunityPokser)
@@ -266,6 +267,7 @@ public class HistoryVideoView : MonoBehaviour
             int seatIndex = gameInitsHistoryData.SeatList[i];
             Players[seatIndex].gameObject.SetActive(true);
             Players[seatIndex].IsOpenInfoMask = false;
+            Players[seatIndex].IsWinnerActive = false;
 
             string nickname = gameInitsHistoryData.NicknameList[i];
             int avatarIndex = gameInitsHistoryData.AvatarList[i];
@@ -319,6 +321,15 @@ public class HistoryVideoView : MonoBehaviour
             if (seatIndex == gameInitsHistoryData.ButtonSeat)
             {
                 Players[seatIndex].SetSeatCharacter(SeatCharacterEnum.Button);
+
+                if (gameInitsHistoryData.SeatList.Count == 2)
+                {
+                    Players[seatIndex].SetSeatCharacter(SeatCharacterEnum.SB);
+                    Players[seatIndex].DisplayBetAction(true,
+                                                        gameInitsHistoryData.CurrBetChipsList[i],
+                                                        BetActionEnum.Blinds,
+                                                        false);
+                }
             }
             else if (seatIndex == gameInitsHistoryData.SBSeat)
             {

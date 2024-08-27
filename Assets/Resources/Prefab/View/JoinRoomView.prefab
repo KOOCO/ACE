@@ -1306,6 +1306,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 30792988110920864}
+  - component: {fileID: 5960352359014185}
   - component: {fileID: 1156752187251427586}
   m_Layer: 5
   m_Name: BuyChips_Sli
@@ -1336,6 +1337,18 @@ RectTransform:
   m_AnchoredPosition: {x: -5.9728, y: -52}
   m_SizeDelta: {x: 265.6732, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5960352359014185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4370312894696333230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbc3ab27c8e158d468eda6441601c165, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1156752187251427586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2371,6 +2384,7 @@ MonoBehaviour:
   MaxBuyChips_Txt: {fileID: 5076660429235420243}
   CancelBtn_Txt: {fileID: 2572845934840490581}
   BuyBtn_Txt: {fileID: 1603493937035676819}
+  sliderClickDetection: {fileID: 5960352359014185}
 --- !u!114 &8819878342560726024
 MonoBehaviour:
   m_ObjectHideFlags: 0

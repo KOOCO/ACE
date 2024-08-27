@@ -22,6 +22,8 @@ public class JoinRoomView : MonoBehaviour
                     SB_Txt, BB_Txt, PreBuyChips_Txt,
                     MinBuyChips_Txt, MaxBuyChips_Txt,
                     CancelBtn_Txt, BuyBtn_Txt;
+    [SerializeField]
+    SliderClickDetection sliderClickDetection;
 
     string dataRoomName;                 //查詢資料的房間名稱
     double smallBlind;                   //小盲值
@@ -100,7 +102,8 @@ public class JoinRoomView : MonoBehaviour
                                                                     value,
                                                                     smallBlind * 2,
                                                                     BuyChips_Sli.minValue,
-                                                                    BuyChips_Sli.maxValue);
+                                                                    BuyChips_Sli.maxValue,
+                                                                    sliderClickDetection);
             PreBuyChips_Txt.text = StringUtils.SetChipsUnit(newRaiseValue);
         });
 

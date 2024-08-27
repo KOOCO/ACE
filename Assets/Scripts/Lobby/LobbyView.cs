@@ -13,6 +13,12 @@ public class LobbyView : MonoBehaviour
     [SerializeField]
     public Request_LobbyView baseRequest;
 
+    [Header("遊戲測試")]
+    [SerializeField]
+    Button OpenGameTest_Btn;
+    [SerializeField]
+    Toggle GameTest_Tog;
+
     [Header("用戶訊息")]
     [SerializeField]
     TextMeshProUGUI Nickname_Txt, Stamina_Txt, CryptoChips_Txt;
@@ -57,7 +63,10 @@ public class LobbyView : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI TransfersBtn_Txt;
 
-    bool isFirstIn;                         //是否首次登入
+    bool isFirstIn;
+
+    DateTime gameTestCountTime;             //開啟遊戲測試點擊時間
+    int gameTestTouchCount;                 //開啟遊戲測試點擊次數
 
     /// <summary>
     /// 項目按鈕類型
@@ -124,6 +133,23 @@ public class LobbyView : MonoBehaviour
     /// </summary>
     private void ListenerEvent()
     {
+        #region 遊戲測試
+
+        //開啟遊戲測試
+        OpenGameTest_Btn.onClick.AddListener(() =>
+        {
+            gameTestCountTime = DateTime.Now;
+            gameTestTouchCount++;
+        });
+
+        //遊戲測試開關
+        GameTest_Tog.onValueChanged.AddListener((isOn) =>
+        {
+            DataManager.IsOpenGameTest = isOn;
+        });
+
+        #endregion
+
         //顯示用戶資源列表
         Avatar_Btn.onClick.AddListener(() =>
         {
@@ -173,6 +199,8 @@ public class LobbyView : MonoBehaviour
 
     private void OnEnable()
     {
+        GameTest_Tog.gameObject.SetActive(false);
+
         isShowAssetList = false;
         SetIsShowAssetList = isShowAssetList;
 
@@ -198,7 +226,7 @@ public class LobbyView : MonoBehaviour
 
         #endregion
 
-        //ViewManager.Instance.OpenWaitingView(transform);
+        ViewManager.Instance.OpenWaitingView(transform);
         DataManager.ReciveRankData();
         UpdateUserData();
 
@@ -225,21 +253,26 @@ public class LobbyView : MonoBehaviour
     private void Update()
     {
 
+
        
 
         #region 測試
 
         if (Entry.Instance.releaseType == ReleaseEnvironmentEnum.Test)
+
+        if ((DateTime.Now - gameTestCountTime).TotalSeconds < 2)
+
         {
-            //測試_返回登入
-            if (Input.GetKeyDown(KeyCode.E))
+            if (gameTestTouchCount >= 3)
             {
-                WalletManager.Instance.OnWalletDisconnect();
-                LoadSceneManager.Instance.LoadScene(SceneEnum.Login);
+                gameTestTouchCount = 0;
+                GameTest_Tog.gameObject.SetActive(!GameTest_Tog.gameObject.activeSelf);
             }
         }
-
-        #endregion
+        else
+        {
+            gameTestTouchCount = 0;
+        }
     }
 
     /// <summary>
@@ -249,7 +282,7 @@ public class LobbyView : MonoBehaviour
     {
         //讀取用戶資料
         JSBridgeManager.Instance.ReadDataFromFirebase(
-            $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
+            $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}",
             gameObject.name,
             nameof(GetDataCallback));
     }
@@ -260,39 +293,57 @@ public class LobbyView : MonoBehaviour
     /// <param name="jsonData">回傳資料</param>
     public void GetDataCallback(string jsonData)
     {
-        ViewManager.Instance.CloseWaitingView(transform);
-        //AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
-
-        //DataManager.UserId = loginData.userId;
-        //DataManager.UserLoginPhoneNumber = loginData.phoneNumber;
-        //DataManager.UserNickname = loginData.nickname;
-        //DataManager.UserAvatarIndex = loginData.avatarIndex;
-        //DataManager.UserInvitationCode = loginData.invitationCode;
-        //DataManager.UserBoundInviterId = loginData.boundInviterId;
-        //DataManager.UserLineToken = loginData.lineToken;
-       // DataManager.UserUChips = Math.Round(DataManager.InitGiveUChips);
-        //DataManager.UserAChips = Math.Round(DataManager.InitGiveAChips);
-        //DataManager.UserGold = Math.Round(DataManager.InitGiveGold);
+        AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
 
 
-        DataManager.UserAvatarIndex = 0;
+        if (loginData != null &&
+            !string.IsNullOrEmpty(loginData.userId))
+        {
+            ViewManager.Instance.CloseWaitingView(transform);
 
-        if (string.IsNullOrEmpty(DataManager.UserId))
+
+            //DataManager.UserId = loginData.userId;
+            //DataManager.UserLoginPhoneNumber = loginData.phoneNumber;
+            DataManager.UserNickname = loginData.nickname;
+            DataManager.UserAvatarIndex = loginData.avatarIndex;
+            //DataManager.UserInvitationCode = loginData.invitationCode;
+            //DataManager.UserBoundInviterId = loginData.boundInviterId;
+            //DataManager.UserLineToken = loginData.lineToken;
+            DataManager.UserUChips = Math.Round(DataManager.InitGiveUChips);
+            DataManager.UserAChips = Math.Round(DataManager.InitGiveAChips);
+            DataManager.UserGold = Math.Round(DataManager.InitGiveGold);
+        }
+        else
+        {
+            var data = new Dictionary<string, object>()
+            {
+                { FirebaseManager.USER_ID, DataManager.UserId},
+                { FirebaseManager.AVATAR_INDEX, 0},
+                { FirebaseManager.NICKNAME, DataManager.UserId},
+            };
+            JSBridgeManager.Instance.UpdateDataFromFirebase(
+                $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}",
+                data,
+                gameObject.name,
+                nameof(UpdateUserData));
+
+            //開啟設置暱稱
+            if (isFirstIn)
+            {
+                Instantiate(SetNicknameViewObj, transform);
+            }
+        }
+
+        /*if (string.IsNullOrEmpty(DataManager.UserId))
         {
             DataManager.UserId = StringUtils.GenerateRandomString(15);
-        }
-        DataManager.UserLoginPhoneNumber = DataManager.UserId;
+        }*/
+        
+        //DataManager.UserLoginPhoneNumber = DataManager.UserId;
 
         if (string.IsNullOrEmpty(DataManager.UserInvitationCode))
         {
             DataManager.UserInvitationCode = StringUtils.GenerateRandomString(15);
-        }
-
-        //開啟設置暱稱
-        if (isFirstIn &&
-            string.IsNullOrEmpty(DataManager.UserNickname))
-        {
-            Instantiate(SetNicknameViewObj, transform);
         }
 
         //使用邀請碼登入
@@ -337,15 +388,6 @@ public class LobbyView : MonoBehaviour
         }
 
         UpdateUserInfo();
-
-        #region 測試
-
-        if (isFirstIn)
-        {
-            HandHistoryManager.Instance.OnDeleteHistoryData();
-        }
-
-        #endregion
 
         isFirstIn = false;
     }
@@ -487,3 +529,4 @@ public class LobbyView : MonoBehaviour
         }
     }
 }
+#endregion

@@ -24,7 +24,7 @@ using UnityEngine.SocialPlatforms;
 using Newtonsoft.Json;
 using JetBrains.Annotations;
 using System.Linq.Expressions;
-
+using System.Runtime.InteropServices;
 public class LoginView : MonoBehaviour
 {
     [Header("切換/版本")]
@@ -494,17 +494,21 @@ public class LoginView : MonoBehaviour
         SignIn_Btn.onClick.AddListener(() =>
         {
             currVerifyPhoneNumber = SingInAccount_If.text;
-
-            LoginRequest login = new LoginRequest()
+            Application.ExternalCall("GetUserIPAddress", new object[] { "OnReceiveIPAddress" });
+            
+            void OnReceiveIPAddress(string ipAddress)
             {
-                userNameOrEmailAddress = SingInAccount_If.text, 
-                password = SignInPassword_If.text,
-                ipAddress = JsonStringIp,
-                machineCode = "123456789",
-            };
-            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login, OnIntoLobby);
-           
-            //MobileSignInSubmit();
+                LoginRequest login = new LoginRequest()
+                {
+                    userNameOrEmailAddress = SingInAccount_If.text,
+                    password = SignInPassword_If.text,
+                    ipAddress = ipAddress,
+                    machineCode = "123456789",
+                };
+                SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login, OnIntoLobby);
+
+                //MobileSignInSubmit();
+            }
 
         });
 
@@ -558,7 +562,7 @@ public class LoginView : MonoBehaviour
         RegisterPasswordEye_Btn.onClick.AddListener(() =>
         {
             isShowPassword = !isShowPassword;
-            PasswordDisplayControl(isShowPassword);
+            PasswordDisplayControl(isShowPassword); 
         });
 
         //手機注冊提交
@@ -660,7 +664,6 @@ public class LoginView : MonoBehaviour
 
         JsonStringIp = localIP;
 
-        Debug.Log(JsonStringIp);
         //下拉式選單添加國碼
         Utils.SetOptionsToDropdown(SMSMobileNumber_Dd, DataManager.CountryCode);
         //Utils.SetOptionsToDropdown(SignInNumber_Dd, DataManager.CountryCode);

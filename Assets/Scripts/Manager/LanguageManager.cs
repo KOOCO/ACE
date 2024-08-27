@@ -198,10 +198,11 @@ public class LanguageManager
     /// </summary>
     private void UpdateLanguage()
     {
-        //Debug.Log($"Change Language:{languageId[thisData.CurrLanguageIndex]}");
+
 
 
         Debug.Log($"Change Language:{languageId[thisData.CurrLanguageIndex]}");
+
 
 
 

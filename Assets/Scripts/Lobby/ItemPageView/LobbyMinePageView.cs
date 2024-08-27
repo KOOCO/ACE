@@ -313,8 +313,9 @@ public class LobbyMinePageView : MonoBehaviour
             {
                 { FirebaseManager.AVATAR_INDEX, DataManager.UserAvatarIndex },
             };
-            JSBridgeManager.Instance.UpdateDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
-                                                           dataDic);
+            JSBridgeManager.Instance.UpdateDataFromFirebase(
+                $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}",
+                dataDic);
 
             EditorAvatar_Btn.image.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[DataManager.UserAvatarIndex];
             GameObject.FindAnyObjectByType<LobbyView>().UpdateUserData();
