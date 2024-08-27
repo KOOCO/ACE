@@ -38,7 +38,7 @@ public static class DataManager
 
     #region Database
 
-    public static string DatabaseUrl{ get{ return "https://asia-poker-5959b-default-rtdb.firebaseio.com/"; }}   //Database資料庫URL
+    public static string DatabaseUrl { get { return "https://asia-poker-5959b-default-rtdb.firebaseio.com/"; } }   //Database資料庫URL
 
     #endregion
 
@@ -90,7 +90,9 @@ public static class DataManager
 
     #region 用戶訊息
 
-    public static LoginType UserLoginType { get; set; }             //用戶登入類型
+    public static LoginType UserLoginType { get; set; }    //用戶登入類型
+    public static string UserAccount { get; set; }             //登入帳號
+
     public static string UserLoginPhoneNumber { get; set; }         //用戶登入手機號
     public static string UserLoginPassword { get; set; }            //用戶登入密碼
     public static string UserWalletAddress { get; set; }            //用戶錢包地址
@@ -108,7 +110,8 @@ public static class DataManager
     public static double UserGold { get; set; }                     //用戶Gold籌碼
 
 
-    public static double InitGiveUChips{get{ return 100000; }}          //初始給予U幣
+
+    public static double InitGiveUChips { get { return 100000; } }          //初始給予U幣
     public static double InitGiveAChips { get { return 100000; } }      //初始給予A幣
     public static double InitGiveGold { get { return 1000; } }          //初始給予黃金
 
@@ -347,12 +350,19 @@ public static class DataManager
 
     public static int MaxPlayerCount { get { return 6; } }                            //最大遊戲人數
     public static int MaxVideoSaveCount { get { return 20; } }                        //最大紀錄影片數量
-    public static int StartCountDownTime{get{ return 20; }}                           //行動倒數時間(秒)
+    public static int StartCountDownTime { get { return 20; } }                           //行動倒數時間(秒)
     public static int RobotActionTime { get { return 19; } }                          //機器人行動時間(秒)
-    public static int BuyChipsCountDown { get { return 120;} }                        //購買籌碼離開遊戲倒數時間
+    public static int BuyChipsCountDown { get { return 120; } }                        //購買籌碼離開遊戲倒數時間
 
     public static double IntegralSmallBlind { get { return 100; } }                   //積分房小盲值
     public static double IntegralNeedChips { get { return 20000; } }                  //積分房配對所需籌碼
+
+    #endregion
+
+    #region POP
+    public static bool istipAppear { get; set; }       //顯示提示
+ 
+    public static string TipText { get; set; } //提示文字
 
     #endregion
 }

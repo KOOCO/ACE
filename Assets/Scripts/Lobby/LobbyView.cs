@@ -252,8 +252,21 @@ public class LobbyView : MonoBehaviour
 
     private void Update()
     {
+
         //開啟遊戲測試
         if ((DateTime.Now - gameTestCountTime).TotalSeconds < 2)
+
+
+       
+
+        #region 測試
+
+        if (Entry.Instance.releaseType == ReleaseEnvironmentEnum.Test)
+
+
+        //開啟遊戲測試
+        if ((DateTime.Now - gameTestCountTime).TotalSeconds < 2)
+
         {
             if (gameTestTouchCount >= 3)
             {
@@ -287,10 +300,13 @@ public class LobbyView : MonoBehaviour
     {
         AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
 
+
         if (loginData != null &&
             !string.IsNullOrEmpty(loginData.userId))
         {
             ViewManager.Instance.CloseWaitingView(transform);
+
+
 
             //DataManager.UserId = loginData.userId;
             //DataManager.UserLoginPhoneNumber = loginData.phoneNumber;
@@ -300,6 +316,7 @@ public class LobbyView : MonoBehaviour
             //DataManager.UserBoundInviterId = loginData.boundInviterId;
             //DataManager.UserLineToken = loginData.lineToken;
             DataManager.UserUChips = Math.Round(DataManager.InitGiveUChips);
+            //以下初始資料帶入
             DataManager.UserAChips = Math.Round(DataManager.InitGiveAChips);
             DataManager.UserGold = Math.Round(DataManager.InitGiveGold);
         }
@@ -393,10 +410,22 @@ public class LobbyView : MonoBehaviour
         CryptoChips_Txt.text = string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 " : DataManager.UserWalletBalance;
 
         //資源列表
+       
         Assets_CryptoChipsValue_Txt.text = string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 " : DataManager.UserWalletBalance;
-        Assets_VCValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserAChips);
+       
+
+      
+         Assets_VCValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserAChips);
+     
+  
         Assets_GoldValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserGold);
+     
+
+
+
         Assets_StaminaValue_Txt.text = $"{DataManager.UserStamina}/{DataManager.MaxStaminaValue}";
+       
+
         Assets_OTPropsValue_Txt.text = $"{DataManager.UserOTProps}";
     }
 
@@ -507,3 +536,4 @@ public class LobbyView : MonoBehaviour
         }
     }
 }
+#endregion

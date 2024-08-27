@@ -3357,7 +3357,7 @@ GameObject:
   - component: {fileID: 7988010333614874130}
   - component: {fileID: 2995131127224762152}
   m_Layer: 5
-  m_Name: CryptoChips_Txt
+  m_Name: VCChips_Txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6152,7 +6152,7 @@ GameObject:
   - component: {fileID: 6425599004509869563}
   - component: {fileID: 976586946095851554}
   m_Layer: 5
-  m_Name: CryptoChips_Txt
+  m_Name: Gold_Txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
