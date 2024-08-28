@@ -2882,14 +2882,20 @@ public class GameView : MonoBehaviour
     }
 
     /// <summary>
+    /// 遊戲開始初始化
+    /// </summary>
+    public void GameStartInit()
+    {
+        Init();
+        GameInit();
+    }
+
+    /// <summary>
     /// 發牌流程
     /// </summary>
     /// <param name="gameRoomData"></param>
     public void OnLicensingFlow(GameRoomData gameRoomData)
     {
-        Init();
-        GameInit();
-
         foreach (var userId in gameRoomData.playingPlayersIdList)
         {
             GamePlayerInfo gamePlayerInfo = GetPlayer(userId);
