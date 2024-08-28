@@ -7,6 +7,9 @@ using TMPro;
 
 public class LanguageManager
 {
+    public bool Languageidex;
+
+
     const string LanguagePlayerPrefsKey = "AsiaPoker_LanguageDataList";
 
     private static readonly object lockObject = new object();
@@ -261,4 +264,7 @@ public class LanguageManager
             }
         }
     }
+
+
+   
 }

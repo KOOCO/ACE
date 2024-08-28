@@ -7668,6 +7668,42 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &1258103158685079522
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8985875858311556971}
+  m_Layer: 5
+  m_Name: EN
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &8985875858311556971
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1258103158685079522}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8052038508647786115}
+  m_Father: {fileID: 676902897302796788}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -0.000015258789, y: -0.000079870224}
+  m_SizeDelta: {x: 0, y: 1244.5631}
+  m_Pivot: {x: 0, y: 1}
 --- !u!1 &1258199901529808189
 GameObject:
   m_ObjectHideFlags: 0
@@ -8136,7 +8172,7 @@ GameObject:
   - component: {fileID: 2747272771417940516}
   - component: {fileID: 7985156471350091768}
   m_Layer: 5
-  m_Name: RegisterSuccTip_Txt (1)
+  m_Name: CH_Txt (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16080,6 +16116,163 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &2632665947300593070
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8052038508647786115}
+  - component: {fileID: 6705622134401979087}
+  - component: {fileID: 4328447449503798970}
+  m_Layer: 5
+  m_Name: EN_Txt (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8052038508647786115
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2632665947300593070}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8985875858311556971}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 151.401, y: -536.33325}
+  m_SizeDelta: {x: 298.9059, y: 678.7352}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &6705622134401979087
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2632665947300593070}
+  m_CullTransparentMesh: 1
+--- !u!114 &4328447449503798970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2632665947300593070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: "\rTexas Hold'em Poker is the world's most popular poker game. It swept
+    across the United States during the poker boom and is now played globally in
+    both cash games and tournaments. The rules are simple and straightforward, the
+    gameplay is fast-paced and exciting, but it is known for being deceptively simple:
+    the game is famous for the saying \"It takes a minute to learn, but a lifetime
+    to master.\"\n\nGameplay\n\n1.Pre-Flop\n\nTwo forced bets (the \"blinds\") are
+    placed. The small blind is placed by the player to the left of the dealer, and
+    the big blind is placed by the player to the left of the small blind. Each player
+    is then dealt two \"hole cards.\"\n\nStarting from the player to the left of
+    the big blind and moving clockwise, each player takes turns to call, raise, or
+    fold. If more than one player remains active (holding hole cards) at the end
+    of this round, the Flop is dealt.\n\n2.The Flop\n\nThree community cards are
+    dealt face-up (the Flop). Starting from the player closest to the button, players
+    again take turns, moving clockwise, to check, bet, raise, or fold. If more than
+    one player remains active at the end of this round, the Turn is dealt.\n\n3.The
+    Turn\n\nA fourth community card is dealt. Another round of betting ensues (similar
+    to the Flop round). If more than one player remains active at the end of this
+    round, the River is dealt.\n\n4.The River\n\nThe fifth and final community card
+    is dealt. There is a final round of betting. If more than one player remains
+    active after the final round of betting, the hand reaches the \"Showdown.\"\n\n5.Showdown\n\nPlayers
+    reveal their hole cards (in an order determined by the action on the River or
+    table position), and the player with the best hand wins the pot."
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 13.3
+  m_fontSizeBase: 13.3
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &2633782870349658042
 GameObject:
   m_ObjectHideFlags: 0
@@ -23059,6 +23252,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2417172932802116850}
+  - {fileID: 8985875858311556971}
   m_Father: {fileID: 1440310137658317469}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -25611,6 +25805,7 @@ MonoBehaviour:
   GameSettingsBtn_Txt: {fileID: 1646863608274377459}
   MenuNickname_Txt: {fileID: 7645453557826017615}
   MenuWalletAddr_Txt: {fileID: 6228956401512909656}
+  GameRules_Txt: {fileID: 6786208801298724566}
   ChatPage_Tr: {fileID: 2650940697778809434}
   ChatContent_Tr: {fileID: 7161370105925558879}
   NotReadChat_Tr: {fileID: 549597411896904175}
@@ -25632,6 +25827,11 @@ MonoBehaviour:
   HandHistoryTip_Txt: {fileID: 7082580612432146819}
   buyChipsView: {fileID: 3206520187363870020}
   RuleView: {fileID: 4799676544336673318}
+  Ch_text: {fileID: 8341266579032353488}
+  En_text: {fileID: 1258103158685079522}
+  GameRules_ScrollView: {fileID: 4620344953342553396}
+  GameRules_Top: {fileID: 3803338071206055779}
+  GameRules_mid: {fileID: 2563805891297742679}
   closeRule_Btn: {fileID: 6078647380719725015}
   got_it_btn: {fileID: 9051381404753615518}
   BattleResultView: {fileID: 4365519394436732982}
@@ -50384,7 +50584,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2417172932802116850}
   m_Layer: 5
-  m_Name: Content
+  m_Name: CH
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
