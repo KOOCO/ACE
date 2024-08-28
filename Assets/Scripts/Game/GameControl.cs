@@ -26,8 +26,8 @@ public class GameControl : MonoBehaviour
     int prePlayerCount { get; set; }                            //上個紀錄的遊戲人數
     bool isWaitingCreateRobot { get; set; }                     //是否等待產生機器人
     bool isGameStart { get; set; }                              //是否遊戲開始
-    GameFlowEnum preUpdateGameFlow { get; set; }                //上個更新遊戲流程
-    GameFlowEnum preLocalGameFlow { get; set; }                 //上個本地遊戲流程
+    public GameFlowEnum preUpdateGameFlow { get; set; }         //上個更新遊戲流程
+    public GameFlowEnum preLocalGameFlow { get; set; }          //上個本地遊戲流程
     string preBetActionerId { get; set; }                       //上個下注玩家
     int preCD { get; set; }                                     //當前行動倒數時間
     bool isCloseAllCdInfo { get; set; }                         //是否關閉倒數訊息
@@ -527,7 +527,7 @@ public class GameControl : MonoBehaviour
     /// 開始遊戲流程
     /// </summary>
     /// <param name="gameFlow">遊戲流程</param>
-    private IEnumerator IStartGameFlow(GameFlowEnum gameFlow)
+    public IEnumerator IStartGameFlow(GameFlowEnum gameFlow)
     {
         if (preUpdateGameFlow == gameFlow ||
             gameRoomData.hostId != DataManager.UserId)
@@ -1009,6 +1009,17 @@ public class GameControl : MonoBehaviour
 
                 gameView.GameStartInit();
 
+                //本地玩家資料
+                GameRoomPlayerData playerData = GetLocalPlayer();
+
+                //籌碼不足
+                if (playerData.carryChips < leastChips &&
+                    PreBuyChipsValue < leastChips)
+                {
+                    gameView.OnInsufficientChips();
+                    playerData.gameState = (int)PlayerStateEnum.Waiting;
+                }
+
                 if (gameRoomData.playingPlayersIdList.Count < 2)
                 {
                     preUpdateGameFlow = GameFlowEnum.None;
@@ -1016,14 +1027,18 @@ public class GameControl : MonoBehaviour
                     yield break;
                 }
 
-                //本地玩家資料
-                GameRoomPlayerData playerData = GetLocalPlayer();
-
-                //籌碼不足
-                if (playerData.carryChips < leastChips)
+                //遊戲測試開啟
+                if (DataManager.IsOpenGameTest == true &&
+                    gameView.IsStartGameTest == false)
                 {
-                    gameView.OnInsufficientChips();
-                    playerData.gameState = (int)PlayerStateEnum.Waiting;
+                    gameView.UpdateGameRoomInfo(gameRoomData);
+                    gameView.IsOpenGameTestObj = true;
+                    yield break;
+                }
+                //重製遊戲測試
+                if (DataManager.IsOpenGameTest == true)
+                {
+                    gameView.IsStartGameTest = false;
                 }
 
                 gameView.UpdateGameRoomInfo(gameRoomData);
@@ -1906,8 +1921,18 @@ public class GameControl : MonoBehaviour
         List<int> community = new();
         for (int i = 0; i < 5; i++)
         {
-            poker = Licensing();
-            community.Add(poker);
+            if (DataManager.IsOpenGameTest)
+            {
+                //測試
+                poker = (13 * gameView.CP_SuitTogList[i].value) + gameView.CP_NumTogList[i].value;
+                community.Add(poker);
+            }
+            else
+            {
+                //正式
+                poker = Licensing();
+                community.Add(poker);
+            }
         }
         
         //玩家手牌
@@ -1920,10 +1945,21 @@ public class GameControl : MonoBehaviour
             }
 
             int[] handPoker = new int[2];
-            for (int i = 0; i < 2; i++)
+
+            if (DataManager.IsOpenGameTest)
             {
-                poker = Licensing();
-                handPoker[i] = poker;
+                //測試
+                handPoker[0] = (13 * gameView.PH0_SuitTogList[player.Value.gameSeat].value) + gameView.PN0_NumTogList[player.Value.gameSeat].value;
+                handPoker[1] = (13 * gameView.PH1_SuitTogList[player.Value.gameSeat].value) + gameView.PN1_NumTogList[player.Value.gameSeat].value;
+            }
+            else
+            {
+                //正式
+                for (int i = 0; i < 2; i++)
+                {
+                    poker = Licensing();
+                    handPoker[i] = poker;
+                }
             }
 
             //更新玩家資料

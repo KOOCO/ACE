@@ -2071,12 +2071,14 @@ public class LoginView : MonoBehaviour
 
         isGetUserId = true;
     }
+
+    #endregion
+
+    #region 帳號規則
     /// <summary>
     /// 帳號規則檢查
     /// </summary>
-    /// <param name="jsonData">回傳結果(true/false)</param>
-
-    #region 帳號規則
+    /// <param name="AccountName">回傳結果(true/false)</param>
     bool IsValidAccountName(string AccountName)
     {
         if (AccountName.Length < 6)
@@ -2112,4 +2114,3 @@ public class LoginView : MonoBehaviour
 
     #endregion
 }
-# endregion
