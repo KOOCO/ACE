@@ -1987,7 +1987,6 @@ public class LoginView : MonoBehaviour
     }
     public void LostPassWord()
     {
-        print("123");
         MobileSignIn_Obj.SetActive(false);
         LostPassword_Obj.SetActive(true);
         LostPswCheckPassword_Obj.SetActive(false);
