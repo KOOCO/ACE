@@ -577,21 +577,7 @@ public class LoginView : MonoBehaviour
             PasswordDisplayControl(isShowPassword); 
         });
 
-        //手機注冊提交
-        RegisterSubmit_Btn.onClick.AddListener(() =>
-        {
-          
-            MobileRegisterSubmit();
-
-            SignInNumber_If.text = curruser;
-
-        });
-
-        //註冊成功登入取消按鈕
-        RegisterSuccessfulCancel_Btn.onClick.AddListener(() =>
-        {
-            OnMobileSignInInit();
-        });
+      
 
         //註冊成功登入
         RegisterSuccSignin_Btn.onClick.AddListener(() =>
@@ -601,7 +587,7 @@ public class LoginView : MonoBehaviour
             
          
 
-            SignInNumber_If.text = curruser;
+            SignInNumber_If.text = RegisterAccountName_If.text;
             Debug.Log(SignInNumber_If.text);
 
             RegisterSuccessSignIn();
@@ -672,6 +658,22 @@ public class LoginView : MonoBehaviour
         });
 
         #endregion
+
+        //手機注冊提交
+        RegisterSubmit_Btn.onClick.AddListener(() =>
+        {
+
+            MobileRegisterSubmit();
+
+            SignInNumber_If.text = RegisterAccountName_If.text;
+            Debug.Log(SignInNumber_If.text);
+        });
+
+        //註冊成功登入取消按鈕
+        RegisterSuccessfulCancel_Btn.onClick.AddListener(() =>
+        {
+            OnMobileSignInInit();
+        });
     }
 
     private void Start()
@@ -1017,14 +1019,17 @@ public class LoginView : MonoBehaviour
 
         await ThirdwebManager.Instance.SDK.Wallet.Disconnect(true);
 
-        
 
-        SignInNumber_If.text = !string.IsNullOrEmpty(recodePhoneNumber) ?
+       
+            SignInNumber_If.text = !string.IsNullOrEmpty(recodePhoneNumber) ?
                                recodePhoneNumber :
                                "";
         
-        if(curruser!=null)
-        SignInNumber_If.text = curruser;
+        
+            
+           
+        
+
 
         SignInPassword_If.text = !string.IsNullOrEmpty(recodePassword) ?
                                  recodePassword :
@@ -1172,7 +1177,7 @@ public class LoginView : MonoBehaviour
             confirmPassword = RegisterPassword_If.text,
         };
 
-        curruser = reigster.userName;
+        curruser = RegisterAccountName_If.text;
 
 
         //設定TAB切換與Enter提交方法
