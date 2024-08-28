@@ -251,7 +251,7 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
         {
             //積分房
             case TableTypeEnum.IntegralTable:
-                str = "INTEGRAL";
+                str = "PR";
                 break;
 
             //現金桌
@@ -308,32 +308,6 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
         room.name = roomName;
         room.anchoredPosition = new Vector2(Entry.Instance.resolution.x * (GetRoomCount - 1), 0);
 
-        //房間腳本
-        GameView gameView = room.GetComponent<GameView>();
-        gameView.RoomType = roomType;
-
-        //遊戲控制
-        GameControl gameControl = room.GetComponent<GameControl>();
-        gameControl.QueryRoomPath = queryRoomPath;
-        gameControl.SmallBlind = smallBlind;
-        gameControl.RoomType = roomType;
-        gameControl.MaxRoomPeople = roomType == TableTypeEnum.IntegralTable ?
-                                    2 :
-                                    DataManager.MaxPlayerCount;
-        if (isNewRoom)
-        {
-            gameControl.CreateFirstPlayer(Math.Floor(carryChips),
-                                          seatIndex,
-                                          pairPlayerId,
-                                          integralRoomName);
-
-        }
-        else
-        {
-            gameControl.NewPlayerInRoom(Math.Floor(carryChips), 
-                                        seatIndex);
-        }
-
         //關閉其他切換房間按鈕框
         CloseAllBtnFrame();
 
@@ -351,6 +325,33 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
         thisData.CurrRoomIndex = GetRoomCount;
         thisData.RoomNameIndex++;
         thisData.RoomDic.Add(roomName, (room, switchRoomBtn));
+
+        //房間腳本
+        GameView gameView = room.GetComponent<GameView>();
+        gameView.RoomType = roomType;
+
+        //遊戲控制
+        GameControl gameControl = room.GetComponent<GameControl>();
+        gameControl.QueryRoomPath = queryRoomPath;
+        gameControl.SmallBlind = smallBlind;
+        gameControl.RoomType = roomType;
+        gameControl.switchRoomBtn = switchRoomBtn;
+        gameControl.MaxRoomPeople = roomType == TableTypeEnum.IntegralTable ?
+                                    2 :
+                                    DataManager.MaxPlayerCount;
+        if (isNewRoom)
+        {
+            gameControl.CreateFirstPlayer(Math.Floor(carryChips),
+                                          seatIndex,
+                                          pairPlayerId,
+                                          integralRoomName);
+
+        }
+        else
+        {
+            gameControl.NewPlayerInRoom(Math.Floor(carryChips),
+                                        seatIndex);
+        }
 
         GoLobbyBtn_Tr.SetSiblingIndex(GetRoomCount + 1);
 

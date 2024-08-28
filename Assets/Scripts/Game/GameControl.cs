@@ -15,12 +15,13 @@ public class GameControl : MonoBehaviour
     public string QueryRoomPath { get; set; }                   //查詢房間資料路徑
     public double SmallBlind { get; set; }                      //小盲值
     public TableTypeEnum RoomType { get; set; }                 //房間類型
+    public SwitchRoomBtn switchRoomBtn { get; set; }            //切換房間按鈕
     public int MaxRoomPeople { get; set; }                      //房間最大人數
     public double PreBuyChipsValue { get; set; }                //下一手購買籌碼值
+    public double leastChips { get; set; }                      //最少所需籌碼
 
     GameRoomData gameRoomData;                                  //房間資料
     Coroutine cdCoroutine;                                      //倒數Coroutine
-    public double leastChips { get; set; }                      //最少所需籌碼
 
     int prePlayerCount { get; set; }                            //上個紀錄的遊戲人數
     bool isWaitingCreateRobot { get; set; }                     //是否等待產生機器人
@@ -361,7 +362,7 @@ public class GameControl : MonoBehaviour
     {
         //設置座位
         int robotSeat = randonSeat == true ?
-                        UnityEngine.Random.Range(1, 6) :
+                        UnityEngine.Random.Range(1, 5) :
                         TexasHoldemUtil.SetGameSeat(gameRoomData);
 
         //機器人暱稱
@@ -577,7 +578,7 @@ public class GameControl : MonoBehaviour
             case GameFlowEnum.Licensing:
 
                 //遊戲資料初始化
-                 GameDataInit();
+                GameDataInit();
 
                 //積分房只剩下玩家1名
                 if (RoomType == TableTypeEnum.IntegralTable && 
@@ -911,6 +912,9 @@ public class GameControl : MonoBehaviour
         //判斷房主
         JudgeHost();
 
+        //遊戲只剩一人進行判斷是否開始
+        JudgePauseToStar();
+
         //聊天訊息
         ChatMessage();
 
@@ -933,7 +937,8 @@ public class GameControl : MonoBehaviour
                 gameView.UpdateGameRoomInfo(gameRoomData);
 
                 //剩下一名玩家在進行遊戲
-                if (gameRoomData.playingPlayersIdList.Count() == 1)
+                if (gameRoomData.playingPlayersIdList.Count() == 1 &&
+                    gameRoomData.currGameFlow >= (int)GameFlowEnum.SetBlind)
                 {
                     StartCoroutine(IJudgeNextSeason());
                 }
@@ -952,6 +957,24 @@ public class GameControl : MonoBehaviour
             {
                 gameView.ShowFoldPoker();
             }       
+        }
+    }
+
+    /// <summary>
+    /// 遊戲只剩一人進行判斷是否開始
+    /// </summary>
+    private void JudgePauseToStar()
+    {
+        if (gameRoomData != null &&
+            gameRoomData.playingPlayersIdList != null)
+        {
+            if (gameRoomData.hostId == DataManager.UserId)
+            {
+                if (gameRoomData.playingPlayersIdList.Count == 1)
+                {
+                    StartCoroutine(IStartGameFlow(GameFlowEnum.Licensing));
+                }
+            }
         }
     }
 
@@ -983,6 +1006,15 @@ public class GameControl : MonoBehaviour
         {
             //發牌
             case GameFlowEnum.Licensing:
+
+                gameView.GameStartInit();
+
+                if (gameRoomData.playingPlayersIdList.Count < 2)
+                {
+                    preUpdateGameFlow = GameFlowEnum.None;
+                    preLocalGameFlow = GameFlowEnum.None;
+                    yield break;
+                }
 
                 //本地玩家資料
                 GameRoomPlayerData playerData = GetLocalPlayer();
@@ -1298,6 +1330,11 @@ public class GameControl : MonoBehaviour
         if (player.UserId == DataManager.UserId)
         {
             gameView.CheckActionArea(gameRoomData);
+            switchRoomBtn.SetCdTimeText($"{gameRoomData.actionCD}");
+        }
+        else
+        {
+            switchRoomBtn.SetCdTimeText("");
         }
 
         cdSound += 1;
@@ -1393,6 +1430,7 @@ public class GameControl : MonoBehaviour
             return;
         }
 
+        switchRoomBtn.SetCdTimeText("");
         gameView.GetPlayerAction(gameRoomData);
         if (cdCoroutine != null) StopCoroutine(cdCoroutine);
 
@@ -1616,7 +1654,6 @@ public class GameControl : MonoBehaviour
                                                 gameObject.name,
                                                 callback.Method.Name);
         }
-
     }
 
     /// <summary>
