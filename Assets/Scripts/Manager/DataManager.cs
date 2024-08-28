@@ -90,8 +90,8 @@ public static class DataManager
 
     #region 用戶訊息
 
-    public static LoginType UserLoginType { get; set; }    //用戶登入類型
-    public static string UserAccount { get; set; }             //登入帳號
+    public static LoginType UserLoginType { get; set; }             //用戶登入類型
+    public static string UserAccount { get; set; }                  //登入帳號
 
     public static string UserLoginPhoneNumber { get; set; }         //用戶登入手機號
     public static string UserLoginPassword { get; set; }            //用戶登入密碼

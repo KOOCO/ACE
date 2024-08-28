@@ -94,9 +94,13 @@ public class LoginView : MonoBehaviour
     TextMeshProUGUI MobileTitle_Txt, MobileTip_Txt, MobileSignInError_Txt, SignInNumberError_Txt,
                     SignInMobileNumber_Txt, SignInNumberIf_Placeholder, SignInNumberIf_Text,
                     SignInPassword_Txt, SignInPasswordIf_Placeholder,
-                    RememberMeTog_Txt, SignInBtn_Txt, RegisterBtn_Txt;
-    string JsonStringIp;
+                    RememberMeTog_Txt, SignInBtn_Txt, RegisterBtn_Txt,
+                    SignIn_Btn_Disable_Text;
+    [SerializeField]
+    bool SingInAccount, LoginPassword;
 
+    string JsonStringIp;
+    
 
     [Header("手機註冊")]
     [SerializeField]
@@ -293,6 +297,7 @@ public class LoginView : MonoBehaviour
         SignInBtn_Txt.text = LanguageManager.Instance.GetText("SIGN IN");
         RegisterBtn_Txt.text = LanguageManager.Instance.GetText("REGISTER");
         ForgotPassword_TmpTxt.text = LanguageManager.Instance.GetText("<color=#79E84B><link=Forgot Password?><u>Forgot Password?</u></link></color>");
+        SignIn_Btn_Disable_Text.text = LanguageManager.Instance.GetText("SIGN IN");
 
         #endregion
 
@@ -461,8 +466,14 @@ public class LoginView : MonoBehaviour
 
         #endregion
 
+        #region 檢查按鈕輸入
+        LostPsw_Btn.onClick.AddListener(() =>
+        {
+            LostPassWord();
+        });
+        #endregion
+       
         #region 錢包連接簡訊認證
-
         //發送獲取驗證碼
         SMSOTPSend_Btn.onClick.AddListener(() =>
         {
@@ -554,7 +565,6 @@ public class LoginView : MonoBehaviour
             bool check1 = GameUtils.CnahgeCheckIcon(StringUtils.CheckSpecialCharacter(RegisterPassword_If.text), RegisterCheckPassword1_Img);
             bool check2 = GameUtils.CnahgeCheckIcon(StringUtils.CheckUppercaseAndLowercase(RegisterPassword_If.text), RegisterCheckPassword2_Img);
             bool check3 = GameUtils.CnahgeCheckIcon(RegisterPassword_If.text.Length >= 8, RegisterCheckPassword3_Img);
-            isRegisterPasswordCorrect = check1 && check2 && check3 && isRegisterAccountNameCorrect;
         });
 
         //手機注冊密碼顯示
@@ -714,7 +724,8 @@ public class LoginView : MonoBehaviour
 
     private void Update()
     {
-
+        SingInAccount = false;
+        LoginPassword = false;
 
         fail_banner_Text.text = DataManager.TipText;
 
@@ -723,7 +734,7 @@ public class LoginView : MonoBehaviour
         else
             TipBanner_Obj.SetActive(false);
 
-
+        #region 註冊帳號規則檢查
         if (RegisterAccountName_If.text.Length > 0)
         {
             AccountIf_Placeholder.gameObject.SetActive(false);
@@ -732,13 +743,42 @@ public class LoginView : MonoBehaviour
         {
             AccountIf_Placeholder.gameObject.SetActive(true);
         }
+                    string AccountName = RegisterAccountName_If.text;
+        #endregion
+
+        RegisterPasswordError_Txt.text = "";
+
+        #region 登入按鈕
+
+        string LoginAccountName = SingInAccount_If.text;
+        bool SingInAccount_If_IsLongEnough = SingInAccount_If.text.Length > 6;
+        bool hasDigit = Regex.IsMatch(LoginAccountName, "[0-9]");
+
+        if(hasDigit&& SingInAccount_If_IsLongEnough) 
+        {
+            SingInAccount=true;
+        }
+        bool hasSpecialCharacter = StringUtils.CheckSpecialCharacter(SignInPassword_If.text);
+        bool hasUppercaseAndLowercase = StringUtils.CheckUppercaseAndLowercase(SignInPassword_If.text);
+        bool isLongEnough = SignInPassword_If.text.Length >= 8;
+
+        if(hasSpecialCharacter&& hasUppercaseAndLowercase&& isLongEnough)
+        {
+            LoginPassword = true;
+        }
         
+        if(!SingInAccount||!LoginPassword)
+        {
+            SignIn_Btn.gameObject.SetActive(false);
+        }
+        else
+        {
+            SignIn_Btn.gameObject.SetActive(true);
+        }
 
-            string AccountName = RegisterAccountName_If.text;
 
+        #endregion
 
-
-     
         //發送OTP倒數
         float codeTime = (float)(DateTime.Now - codeStartTime).TotalSeconds;
         LostPswOTPSend_Btn.interactable = codeTime > codeCountDownTime;

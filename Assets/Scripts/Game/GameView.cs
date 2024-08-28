@@ -105,8 +105,6 @@ public class GameView : MonoBehaviour
     [SerializeField]
     Button HandHistoryClose_Btn;
     [SerializeField]
-    Image HandHistoryTip_Img;
-    [SerializeField]
     TextMeshProUGUI HandHistoryTitle_Txt, HandHistoryTip_Txt;
 
     [Header("購買籌碼")]
@@ -292,8 +290,6 @@ public class GameView : MonoBehaviour
 
         HandHistoryTitle_Txt.text = LanguageManager.Instance.GetText("HAND HISTORY");
         HandHistoryTip_Txt.text = LanguageManager.Instance.GetText("Show last 20 hands");
-        StringUtils.TextInFrontOfImageFollow(HandHistoryTip_Txt,
-                                             HandHistoryTip_Img);
 
         #endregion
 
@@ -2169,13 +2165,13 @@ public class GameView : MonoBehaviour
                     switch (roomType)
                     {
                         case TableTypeEnum.IntegralTable:
-                            roomName = "Integral Table";
+                            roomName = "Integral";
                             break;
                         case TableTypeEnum.Cash:
-                            roomName = "Crypto Table";
+                            roomName = "Classic Battle";
                             break;
                         case TableTypeEnum.VCTable:
-                            roomName = "VC Table";
+                            roomName = "High Roller Battleground";
                             break;
                     }
 
