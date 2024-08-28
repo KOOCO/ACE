@@ -583,14 +583,10 @@ public class LoginView : MonoBehaviour
         RegisterSuccSignin_Btn.onClick.AddListener(() =>
         {
 
-           
-            
-         
-
+   
+            RegisterSuccessSignIn();
             SignInNumber_If.text = RegisterAccountName_If.text;
             Debug.Log(SignInNumber_If.text);
-
-            RegisterSuccessSignIn();
         });
 
       
@@ -665,19 +661,22 @@ public class LoginView : MonoBehaviour
 
             MobileRegisterSubmit();
 
-            SignInNumber_If.text = RegisterAccountName_If.text;
-            Debug.Log(SignInNumber_If.text);
+       
         });
 
         //註冊成功登入取消按鈕
         RegisterSuccessfulCancel_Btn.onClick.AddListener(() =>
         {
+            
             OnMobileSignInInit();
+            SignInNumber_If.text = RegisterAccountName_If.text;
+            Debug.Log(SignInNumber_If.text);
         });
     }
 
     private void Start()
     {
+      
 
         string localIP = GetLocalIPAddress();
 
@@ -729,6 +728,9 @@ public class LoginView : MonoBehaviour
 
     private void Update()
     {
+       
+
+
         SingInAccount = false;
         LoginPassword = false;
 
