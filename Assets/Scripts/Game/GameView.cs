@@ -401,13 +401,14 @@ public class GameView : MonoBehaviour
         //開始規則
         GameRules_Btn.onClick.AddListener(() => {
             RuleView.SetActive(true);
+            CloseMenu();
 
-          
+
         });
 
         closeRule_Btn.onClick.AddListener(() => {
             RuleView.SetActive(false);
-
+           
 
         });
         got_it_btn.onClick.AddListener(() => {
