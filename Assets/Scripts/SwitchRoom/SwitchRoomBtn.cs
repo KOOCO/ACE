@@ -32,7 +32,9 @@ public class SwitchRoomBtn : MonoBehaviour
     {
         LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
     }
-
+    private void Update()
+    {
+    }
     /// <summary>
     /// 設置選擇按鈕激活狀態
     /// </summary>
@@ -40,7 +42,20 @@ public class SwitchRoomBtn : MonoBehaviour
     {
         set
         {
-           // selectFrame_Tr.gameObject.SetActive(value);
+            if(value)
+            {
+             
+                transform.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+              
+            }
+            else
+            {
+              
+                transform.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.5f);
+               
+            }
+
+            // selectFrame_Tr.gameObject.SetActive(value);
         }
     }
 
