@@ -159,9 +159,6 @@ public class LanguageManager
             //Debug.LogError($"{id}:翻譯文本不存在");
 
 
-
-
-
             return id;
         }
     }

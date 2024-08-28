@@ -24,7 +24,6 @@ using UnityEngine.SocialPlatforms;
 using Newtonsoft.Json;
 using JetBrains.Annotations;
 using System.Linq.Expressions;
-using System.Runtime.InteropServices;
 public class LoginView : MonoBehaviour
 {
     [Header("切換/版本")]
@@ -95,9 +94,13 @@ public class LoginView : MonoBehaviour
     TextMeshProUGUI MobileTitle_Txt, MobileTip_Txt, MobileSignInError_Txt, SignInNumberError_Txt,
                     SignInMobileNumber_Txt, SignInNumberIf_Placeholder, SignInNumberIf_Text,
                     SignInPassword_Txt, SignInPasswordIf_Placeholder,
-                    RememberMeTog_Txt, SignInBtn_Txt, RegisterBtn_Txt;
-    string JsonStringIp;
+                    RememberMeTog_Txt, SignInBtn_Txt, RegisterBtn_Txt,
+                    SignIn_Btn_Disable_Text;
+    [SerializeField]
+    bool SingInAccount, LoginPassword;
 
+    string JsonStringIp;
+    
 
     [Header("手機註冊")]
     [SerializeField]
@@ -141,7 +144,7 @@ public class LoginView : MonoBehaviour
     [SerializeField]
     TMP_InputField LostPswNumber_If, LostPswOTP_If, LosrPswPassword_If;
     [SerializeField]
-    Button BackToMobileSignIn_Btn, LostPswPasswordEye_Btn, LostPswOTPSend_Btn, LostPswSubmit_Btn;
+    Button BackToMobileSignIn_Btn, LostPswPasswordEye_Btn, LostPswOTPSend_Btn, LostPswSubmit_Btn,LostPsw_Btn;
     [SerializeField]
     TMP_Dropdown LostPswNumber_Dd;
     [SerializeField]
@@ -291,6 +294,7 @@ public class LoginView : MonoBehaviour
         SignInBtn_Txt.text = LanguageManager.Instance.GetText("SIGN IN");
         RegisterBtn_Txt.text = LanguageManager.Instance.GetText("REGISTER");
         ForgotPassword_TmpTxt.text = LanguageManager.Instance.GetText("<color=#79E84B><link=Forgot Password?><u>Forgot Password?</u></link></color>");
+        SignIn_Btn_Disable_Text.text = LanguageManager.Instance.GetText("SIGN IN");
 
         #endregion
 
@@ -375,6 +379,7 @@ public class LoginView : MonoBehaviour
                                             RegisterPassword_If);
             StringUtils.InitPasswordContent(LostPswPasswordEye_Btn.image,
                                             LosrPswPassword_If);
+            
 
             if (isOn)
             {
@@ -458,8 +463,14 @@ public class LoginView : MonoBehaviour
 
         #endregion
 
+        #region 檢查按鈕輸入
+        LostPsw_Btn.onClick.AddListener(() =>
+        {
+            LostPassWord();
+        });
+        #endregion
+       
         #region 錢包連接簡訊認證
-
         //發送獲取驗證碼
         SMSOTPSend_Btn.onClick.AddListener(() =>
         {
@@ -494,7 +505,6 @@ public class LoginView : MonoBehaviour
         SignIn_Btn.onClick.AddListener(() =>
         {
             currVerifyPhoneNumber = SingInAccount_If.text;
-            Application.ExternalCall("GetUserIPAddress", new object[] { "OnReceiveIPAddress" });
             
             void OnReceiveIPAddress(string ipAddress)
             {
@@ -510,6 +520,19 @@ public class LoginView : MonoBehaviour
                 //MobileSignInSubmit();
             }
 
+
+
+
+            LoginRequest login = new LoginRequest()
+            {
+                userNameOrEmailAddress = SingInAccount_If.text, 
+                password = SignInPassword_If.text,
+                ipAddress = JsonStringIp,
+                machineCode = "123456789",
+            };
+            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login, OnIntoLobby);
+           
+            //MobileSignInSubmit();
         });
 
         //手機登入密碼顯示
@@ -555,7 +578,6 @@ public class LoginView : MonoBehaviour
             bool check1 = GameUtils.CnahgeCheckIcon(StringUtils.CheckSpecialCharacter(RegisterPassword_If.text), RegisterCheckPassword1_Img);
             bool check2 = GameUtils.CnahgeCheckIcon(StringUtils.CheckUppercaseAndLowercase(RegisterPassword_If.text), RegisterCheckPassword2_Img);
             bool check3 = GameUtils.CnahgeCheckIcon(RegisterPassword_If.text.Length >= 8, RegisterCheckPassword3_Img);
-            isRegisterPasswordCorrect = check1 && check2 && check3 && isRegisterAccountNameCorrect;
         });
 
         //手機注冊密碼顯示
@@ -568,6 +590,7 @@ public class LoginView : MonoBehaviour
         //手機注冊提交
         RegisterSubmit_Btn.onClick.AddListener(() =>
         {
+            DataManager.UserAccount = Register_input_Text.text;
             MobileRegisterSubmit();
             SignInNumberIf_Text.text = currVerifyPhoneNumber;
         });
@@ -575,10 +598,17 @@ public class LoginView : MonoBehaviour
         //註冊成功登入
         RegisterSuccSignin_Btn.onClick.AddListener(() =>
         {
+
              DataManager.UserAccount= Register_input_Text.text ;
             Debug.Log(DataManager.UserAccount);
 
             login_input_Text.text = DataManager.UserAccount;
+
+
+            Debug.Log(DataManager.UserAccount);
+
+            SignInNumber_If.text = DataManager.UserAccount;
+
 
 
             RegisterSuccessSignIn();
@@ -708,7 +738,8 @@ public class LoginView : MonoBehaviour
 
     private void Update()
     {
-
+        SingInAccount = false;
+        LoginPassword = false;
 
         fail_banner_Text.text = DataManager.TipText;
 
@@ -717,7 +748,7 @@ public class LoginView : MonoBehaviour
         else
             TipBanner_Obj.SetActive(false);
 
-
+        #region 註冊帳號規則檢查
         if (RegisterAccountName_If.text.Length > 0)
         {
             AccountIf_Placeholder.gameObject.SetActive(false);
@@ -726,11 +757,16 @@ public class LoginView : MonoBehaviour
         {
             AccountIf_Placeholder.gameObject.SetActive(true);
         }
-        
+                    string AccountName = RegisterAccountName_If.text;
+        #endregion
 
-            string AccountName = RegisterAccountName_If.text;
+        RegisterPasswordError_Txt.text = "";
 
+        #region 登入按鈕
 
+        string LoginAccountName = SingInAccount_If.text;
+        bool SingInAccount_If_IsLongEnough = SingInAccount_If.text.Length > 6;
+        bool hasDigit = Regex.IsMatch(LoginAccountName, "[0-9]");
 
         /*
         if (Input.GetKeyDown(KeyCode.F))
@@ -744,12 +780,36 @@ public class LoginView : MonoBehaviour
                 machineCode = "123456789",
             };
             SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login, OnIntoLobby);
-            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login, OnIntoLobby);
 
 
 
         }
         */
+        if(hasDigit&& SingInAccount_If_IsLongEnough) 
+        {
+            SingInAccount=true;
+        }
+        bool hasSpecialCharacter = StringUtils.CheckSpecialCharacter(SignInPassword_If.text);
+        bool hasUppercaseAndLowercase = StringUtils.CheckUppercaseAndLowercase(SignInPassword_If.text);
+        bool isLongEnough = SignInPassword_If.text.Length >= 8;
+
+        if(hasSpecialCharacter&& hasUppercaseAndLowercase&& isLongEnough)
+        {
+            LoginPassword = true;
+        }
+        
+        if(!SingInAccount||!LoginPassword)
+        {
+            SignIn_Btn.gameObject.SetActive(false);
+        }
+        else
+        {
+            SignIn_Btn.gameObject.SetActive(true);
+        }
+
+
+        #endregion
+
         //發送OTP倒數
         float codeTime = (float)(DateTime.Now - codeStartTime).TotalSeconds;
         LostPswOTPSend_Btn.interactable = codeTime > codeCountDownTime;
@@ -827,10 +887,8 @@ public class LoginView : MonoBehaviour
 
     #region 工具類
 
-    /// <summary>
-    /// TIM_Text Link 點擊事件
-    /// </summary>
-    /// <param name="eventData"></param>
+
+    #region 登入帳號
     public void OnPointerClick(PointerEventData eventData)
     {
         //註冊
@@ -849,44 +907,12 @@ public class LoginView : MonoBehaviour
                     break;
             }
         }
+        #endregion
 
-        //忘記密碼
-        int forgotPasswordLinkIndex = TMP_TextUtilities.FindIntersectingLink(ForgotPassword_TmpTxt, Input.mousePosition, null);
-        if (forgotPasswordLinkIndex != -1)
-        {
-            TMP_LinkInfo linkInfo = ForgotPassword_TmpTxt.textInfo.linkInfo[forgotPasswordLinkIndex];
-            string linkID = linkInfo.GetLinkID();
+ 
 
-            switch (linkID)
-            {
-                //忘記密碼
-                case "Forgot Password?":
-                    MobileSignIn_Obj.SetActive(false);
-                    LostPassword_Obj.SetActive(true);
-                    LostPswCheckPassword_Obj.SetActive(false);
 
-                    LostPswNumberError_Txt.text = "";
-                    LostPswCodeError_Txt.text = "";
-                    LostPswPasswordError_Txt.text = "";
-
-                    isShowPassword = false;
-                    PasswordDisplayControl(isShowPassword);
-
-                    //設定TAB切換與Enter提交方法
-                    if (!DataManager.IsMobilePlatform)
-                    {
-                        LostPswNumber_If.Select();
-                        currIfList = new List<TMP_InputField>()
-                        {
-                            LostPswNumber_If,
-                            LostPswOTP_If,
-                            LosrPswPassword_If,
-                        };
-                        KybordEnterAction = LostPswSubmit;
-                    }
-                    break;
-            }
-        }
+            
 
         //隱私條款
         int privacyLinkIndex = TMP_TextUtilities.FindIntersectingLink(Privacy_TmpTxt, Input.mousePosition, null);
@@ -1019,11 +1045,12 @@ public class LoginView : MonoBehaviour
 
         await ThirdwebManager.Instance.SDK.Wallet.Disconnect(true);
 
-        //紀錄的國碼/手機/密碼
-        //SignInNumber_Dd.value = recodeCountryCodeIndex;
+        
+
         SignInNumber_If.text = !string.IsNullOrEmpty(recodePhoneNumber) ?
                                recodePhoneNumber :
                                "";
+
         SignInPassword_If.text = !string.IsNullOrEmpty(recodePassword) ?
                                  recodePassword :
                                  "";
@@ -1063,7 +1090,7 @@ public class LoginView : MonoBehaviour
         if (!StringUtils.CheckPhoneNumber(SignInNumber_If.text))
         {
 
-            Debug.Log("afafafaf");
+            
 
             fail_banner_Text.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
 
@@ -1072,7 +1099,6 @@ public class LoginView : MonoBehaviour
         else
         {
 
-            Debug.Log("afafafaf");
 
             currVerifyPsw = SignInPassword_If.text;
             Debug.Log($"Mobile Sign In = Phone:{currVerifyPhoneNumber} / Password = {currVerifyPsw}");
@@ -1114,18 +1140,6 @@ public class LoginView : MonoBehaviour
                         //有勾選記住帳號密碼
                         LocalDataSave();
 
-                        //  後台帳號登入
-                        /*
-                        string LoginUrl =  "/api/app/ace-accounts/login";
-
-                        Login Data = new Login()
-                        {
-                            userNameOrEmailAddress = currUserId,
-                            password = currVerifyPsw,
-                        };
-
-                        SwaggerAPIManager.Instance.SendPostAPI<Login, Respon>(LoginUrl, Data);
-                        */
                     }
                     else
                     {
@@ -1237,16 +1251,7 @@ public class LoginView : MonoBehaviour
             fail_banner_Text.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
         }
 
-        //if (string.IsNullOrEmpty(RegisterOTP_If.text))//快樂驗證碼
-        //{
-        //    //OTP為空
-        //    RegisterCodeError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
-        //    if(RegisterOTP_If.text.Length<5 && RegisterOTP_If.text ==null)
-        //    {
-        //        isCorrect = false;
-        //        Debug.Log("驗證碼錯誤");
-        //    }
-        //}
+     
 
 
         if (!isRegisterPasswordCorrect)
@@ -2012,6 +2017,33 @@ public class LoginView : MonoBehaviour
         isGetInviteCode = true;
     }
 
+    public void LostPassWord()
+    {
+        MobileSignIn_Obj.SetActive(false);
+        LostPassword_Obj.SetActive(true);
+        LostPswCheckPassword_Obj.SetActive(false);
+
+        LostPswNumberError_Txt.text = "";
+        LostPswCodeError_Txt.text = "";
+        LostPswPasswordError_Txt.text = "";
+
+        isShowPassword = false;
+        PasswordDisplayControl(isShowPassword);
+
+        //設定TAB切換與Enter提交方法
+        if (!DataManager.IsMobilePlatform)
+        {
+            LostPswNumber_If.Select();
+            currIfList = new List<TMP_InputField>()
+                    {
+                        LostPswNumber_If,
+                        LostPswOTP_If,
+                        LosrPswPassword_If,
+                    };
+            KybordEnterAction = LostPswSubmit;
+        }
+    }
+
     string GetLocalIPAddress()
     {
         string localIP = "";
@@ -2075,8 +2107,8 @@ public class LoginView : MonoBehaviour
     /// 帳號規則檢查
     /// </summary>
     /// <param name="jsonData">回傳結果(true/false)</param>
-    
-    
+
+    #region 帳號規則
     bool IsValidAccountName(string AccountName)
     {
         if (AccountName.Length < 6)
@@ -2112,3 +2144,4 @@ public class LoginView : MonoBehaviour
 
     #endregion
 }
+# endregion

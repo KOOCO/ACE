@@ -254,6 +254,10 @@ public class LobbyView : MonoBehaviour
     {
 
 
+        //開啟遊戲測試
+        if ((DateTime.Now - gameTestCountTime).TotalSeconds < 2)
+
+
        
 
         #region 測試
@@ -302,6 +306,7 @@ public class LobbyView : MonoBehaviour
             ViewManager.Instance.CloseWaitingView(transform);
 
 
+
             //DataManager.UserId = loginData.userId;
             //DataManager.UserLoginPhoneNumber = loginData.phoneNumber;
             DataManager.UserNickname = loginData.nickname;
@@ -310,6 +315,7 @@ public class LobbyView : MonoBehaviour
             //DataManager.UserBoundInviterId = loginData.boundInviterId;
             //DataManager.UserLineToken = loginData.lineToken;
             DataManager.UserUChips = Math.Round(DataManager.InitGiveUChips);
+            //以下初始資料帶入
             DataManager.UserAChips = Math.Round(DataManager.InitGiveAChips);
             DataManager.UserGold = Math.Round(DataManager.InitGiveGold);
         }

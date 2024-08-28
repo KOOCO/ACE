@@ -113,7 +113,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
 
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
-            DataManager.istipAppear = true;
+            
 
           
 
@@ -129,6 +129,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
             if (errorJson== "Invalid username or password!")
             {
                 DataManager.TipText = LanguageManager.Instance.GetText("Invalid Username or Password!");
+                DataManager.istipAppear = true;
                 //Debug.Log("登入失敗");
             }
             errCallback?.Invoke();
@@ -162,19 +163,14 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
             DataManager.UserWalletBalance = loginResponse.WalletAmount.ToString();
             DataManager.UserAChips = loginResponse.promotionCoin;
             DataManager.UserGold = loginResponse.gold;
-            
-           
+            DataManager.UserAccount = loginResponse.memberId;
 
-           
+            Debug.Log(DataManager.UserAccount);
 
 
-            //LoginResponse loginResponse = JsonConvert.DeserializeObject<LoginResponse>(Response);
-            //Debug.Log("AccessToken: " + loginResponse.accessToken);
-            //Debug.Log("MemberId: " + loginResponse.memberId);
-            //DataManager.UserId = loginResponse.memberId;
-            ////Debug.Log($"JIMMY資料庫{DataManager.UserId}");
-            //Debug.Log("MemberStatus: " + loginResponse.memberStatus);
-            //Debug.Log("WalletAmount: " + loginResponse.WalletAmount);
+
+
+
             Debug.Log("promotionCoin");
 
             //Callback執行
