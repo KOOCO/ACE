@@ -123,8 +123,8 @@ public class LoginView : MonoBehaviour
                     RegisterPassword_Txt, RegisterPasswordIf_Placeholder,
 
 
-   
-                    RegisterSubmitBtn_Txt, AccountIf_Placeholder,fail_banner_Text,login_input_Text, Register_input_Text;
+
+                    RegisterSubmitBtn_Txt, AccountIf_Placeholder, fail_banner_Text;
 
   
     [Header("手機注冊密碼檢查")]
@@ -203,7 +203,8 @@ public class LoginView : MonoBehaviour
     DateTime codeStartTime;                                                     //發送OTP倒數開始時間
     WalletEnum currConnectingWallet;                                            //當前連接錢包
 
-    string currVerifyPhoneNumber;                                               //當前驗證手機號
+    string currVerifyPhoneNumber; //當前驗證手機號
+    string curruser;                                                             //使用者帳號
     string currVerifyPsw;                                                       //當前驗證密碼
     string currVerifyCode;                                                      //當前驗證OTP碼
     string currInviteCode;                                                      //當前驗證碼
@@ -517,7 +518,8 @@ public class LoginView : MonoBehaviour
                 ipAddress = JsonStringIp,
                 machineCode = "123456789",
             };
-            currVerifyPhoneNumber = login.userNameOrEmailAddress;
+            
+          
             SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login, OnIntoLobby);
            
             //MobileSignInSubmit();
@@ -581,8 +583,14 @@ public class LoginView : MonoBehaviour
           
             MobileRegisterSubmit();
 
-            SignInNumberIf_Text.text = currVerifyPhoneNumber;
+            SignInNumber_If.text = curruser;
 
+        });
+
+        //註冊成功登入取消按鈕
+        RegisterSuccessfulCancel_Btn.onClick.AddListener(() =>
+        {
+            OnMobileSignInInit();
         });
 
         //註冊成功登入
@@ -591,19 +599,15 @@ public class LoginView : MonoBehaviour
 
            
             
+         
+
+            SignInNumber_If.text = curruser;
             Debug.Log(SignInNumber_If.text);
-
-            SignInNumberIf_Text.text = currVerifyPhoneNumber;
-
 
             RegisterSuccessSignIn();
         });
 
-        //註冊成功登入取消按鈕
-        RegisterSuccessfulCancel_Btn.onClick.AddListener(() =>
-        {
-            OnMobileSignInInit();
-        });
+      
 
         #endregion
 
@@ -1019,6 +1023,9 @@ public class LoginView : MonoBehaviour
                                recodePhoneNumber :
                                "";
         
+        if(curruser!=null)
+        SignInNumber_If.text = curruser;
+
         SignInPassword_If.text = !string.IsNullOrEmpty(recodePassword) ?
                                  recodePassword :
                                  "";
@@ -1164,6 +1171,10 @@ public class LoginView : MonoBehaviour
             password = RegisterPassword_If.text,
             confirmPassword = RegisterPassword_If.text,
         };
+
+        curruser = reigster.userName;
+
+
         //設定TAB切換與Enter提交方法
         if (!DataManager.IsMobilePlatform)
         {
