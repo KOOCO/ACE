@@ -82,7 +82,7 @@ public class GameView : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI MenuCloseBtn_Txt, SitOutBtn_Txt, BuyChipsBtn_Txt, HandHistoryBtn_Txt,
                     GameSettingsBtn_Txt,
-                    MenuNickname_Txt, MenuWalletAddr_Txt;
+                    MenuNickname_Txt, MenuWalletAddr_Txt,GameRules_Txt;
 
     [Header("聊天")]
     [SerializeField]
@@ -113,9 +113,12 @@ public class GameView : MonoBehaviour
 
     [Header("遊戲規則")]
     [SerializeField]
-    GameObject RuleView;
+    GameObject RuleView,Ch_text,En_text, GameRules_ScrollView;
+    [SerializeField]
+    TextMeshProUGUI GameRules_Top, GameRules_mid;
     [SerializeField]
     Button closeRule_Btn,got_it_btn;
+ 
 
     [Header("遊戲結果")]
     [SerializeField]
@@ -256,6 +259,9 @@ public class GameView : MonoBehaviour
     /// </summary>
     private void UpdateLanguage()
     {
+
+    
+
         #region 操作按鈕
 
         if (strData != null)
@@ -275,6 +281,31 @@ public class GameView : MonoBehaviour
         HandHistoryBtn_Txt.text = LanguageManager.Instance.GetText("Hand History");
         LogOutBtn_Txt.text = LanguageManager.Instance.GetText("Log Out");
         GameSettingsBtn_Txt.text = LanguageManager.Instance.GetText("Game Settings");
+        GameRules_Txt.text = LanguageManager.Instance.GetText("Game Rules");
+        #endregion
+
+        #region 規則
+        GameRules_Txt.text = LanguageManager.Instance.GetText("Game Rules");
+        GameRules_Top.text= LanguageManager.Instance.GetText("Game Rules");
+        GameRules_mid.text= LanguageManager.Instance.GetText("Welcome to AISA POKER! Learn the rules and start playing right away!");
+
+        Debug.Log(LanguageManager.Instance.GetCurrLanguageIndex());
+
+       
+
+
+         if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
+        {
+            GameRules_ScrollView.GetComponent<ScrollRect>().content = En_text.GetComponent<RectTransform>(); 
+            En_text.SetActive(true);
+            Ch_text.SetActive(false);
+        }
+        else if (LanguageManager.Instance.GetCurrLanguageIndex() == 1)
+        {
+            GameRules_ScrollView.GetComponent<ScrollRect>().content = Ch_text.GetComponent<RectTransform>();
+            Ch_text.SetActive(true);
+            En_text.SetActive(false);
+        }
 
         #endregion
 

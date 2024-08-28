@@ -507,7 +507,7 @@ public class LoginView : MonoBehaviour
         //手機登入提交
         SignIn_Btn.onClick.AddListener(() =>
         {
-            currVerifyPhoneNumber = SingInAccount_If.text;
+            
 
 
             LoginRequest login = new LoginRequest()
@@ -517,6 +517,7 @@ public class LoginView : MonoBehaviour
                 ipAddress = JsonStringIp,
                 machineCode = "123456789",
             };
+            currVerifyPhoneNumber = login.userNameOrEmailAddress;
             SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login, OnIntoLobby);
            
             //MobileSignInSubmit();
@@ -577,24 +578,22 @@ public class LoginView : MonoBehaviour
         //手機注冊提交
         RegisterSubmit_Btn.onClick.AddListener(() =>
         {
-            DataManager.UserAccount = Register_input_Text.text;
+          
             MobileRegisterSubmit();
+
             SignInNumberIf_Text.text = currVerifyPhoneNumber;
+
         });
 
         //註冊成功登入
         RegisterSuccSignin_Btn.onClick.AddListener(() =>
         {
 
-             DataManager.UserAccount= Register_input_Text.text ;
-            Debug.Log(DataManager.UserAccount);
-
-            login_input_Text.text = DataManager.UserAccount;
-
+           
             
-            Debug.Log(DataManager.UserAccount);
+            Debug.Log(SignInNumber_If.text);
 
-            SignInNumber_If.text = DataManager.UserAccount;
+            SignInNumberIf_Text.text = currVerifyPhoneNumber;
 
 
             RegisterSuccessSignIn();
@@ -1019,7 +1018,7 @@ public class LoginView : MonoBehaviour
         SignInNumber_If.text = !string.IsNullOrEmpty(recodePhoneNumber) ?
                                recodePhoneNumber :
                                "";
-
+        
         SignInPassword_If.text = !string.IsNullOrEmpty(recodePassword) ?
                                  recodePassword :
                                  "";

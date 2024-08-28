@@ -1148,5 +1148,15 @@
     "ID": "Invalid Username or Password!",
     "English": "Invalid Username or Password!",
     "zh_TW": "帳號或密碼錯誤!"
+  },
+  {
+    "ID": "Game Rules",
+    "English": "Game Rules",
+    "zh_TW": "遊戲規則"
+  },
+  {
+    "ID": "Welcome to AISA POKER! Learn the rules and start playing right away!",
+    "English": "Welcome to AISA POKER! Learn the rules and start playing right away!",
+    "zh_TW": "歡迎來到 AISA POKER，了解玩法立刻暢遊！"
   }
 ]

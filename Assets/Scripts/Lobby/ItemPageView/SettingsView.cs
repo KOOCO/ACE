@@ -61,6 +61,7 @@ public class SettingsView : MonoBehaviour
         Language_Dd.onValueChanged.AddListener((value) =>
         {
             LanguageManager.Instance.ChangeLanguage(value);
+           
         });
     }
 }
