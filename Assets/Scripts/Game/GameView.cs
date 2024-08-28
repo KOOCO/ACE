@@ -136,19 +136,23 @@ public class GameView : MonoBehaviour
     [SerializeField]
     GameObject GameTest_Obj;
     [SerializeField]
+    List<GameObject> PlayerTestObjList;
+    [SerializeField]
     Button GameTestStart_Btn;
     [SerializeField]
-    List<TMP_Dropdown> CP_SuitTogList;
+    public List<TMP_Dropdown> CP_SuitTogList;
     [SerializeField]
-    List<TMP_Dropdown> CP_NumTogList;
+    public List<TMP_Dropdown> CP_NumTogList;
     [SerializeField]
-    List<TMP_Dropdown> PH0_SuitTogList;
+    public List<TMP_Dropdown> PH0_SuitTogList;
     [SerializeField]
-    List<TMP_Dropdown> PH1_SuitTogList;
+    public List<TMP_Dropdown> PH1_SuitTogList;
     [SerializeField]
-    List<TMP_Dropdown> PN0_NumTogList;
+    public List<TMP_Dropdown> PN0_NumTogList;
     [SerializeField]
-    List<TMP_Dropdown> PN1_NumTogList;
+    public List<TMP_Dropdown> PN1_NumTogList;
+
+    public bool IsStartGameTest;                                //是否開始遊戲測試
 
     const float PageMoveTime = 0.25f;                           //滑動頁面移動時間
 
@@ -697,6 +701,20 @@ public class GameView : MonoBehaviour
         });
 
         #endregion
+
+        #region 遊戲測試
+
+        //測試開始
+        GameTestStart_Btn.onClick.AddListener(() =>
+        {
+            IsStartGameTest = true;
+            gameControl.preUpdateGameFlow = GameFlowEnum.None;
+            gameControl.preLocalGameFlow = GameFlowEnum.None;
+            StartCoroutine(gameControl.IStartGameFlow(GameFlowEnum.Licensing));
+            IsOpenGameTestObj = false;
+        });
+
+        #endregion
     }
 
     private void OnEnable()
@@ -754,15 +772,15 @@ public class GameView : MonoBehaviour
 
         #region 遊戲測試
 
-        GameTest_Obj.SetActive(false);
+        IsOpenGameTestObj = false;
         CP_SuitTogList.AddRange(PH0_SuitTogList);
         CP_SuitTogList.AddRange(PH1_SuitTogList);
         List<string> suitName = new()
         {
-            "S",//黑桃
-            "H",//紅心
-            "D",//方塊
             "C",//梅花
+            "D",//方塊
+            "H",//紅心
+            "S",//黑桃
         };
         for (int i = 0; i < CP_SuitTogList.Count; i++)
         {
@@ -845,6 +863,20 @@ public class GameView : MonoBehaviour
         set
         {
             GameTest_Obj.SetActive(value);
+
+            foreach (var item in PlayerTestObjList)
+            {
+                item.SetActive(false);
+            }
+
+            if (gameRoomData != null &&
+                gameRoomData.playerDataDic != null)
+            {
+                foreach (var item in gameRoomData.playerDataDic)
+                {
+                    PlayerTestObjList[item.Value.gameSeat].SetActive(true);
+                }
+            }
         }
     }
 
@@ -1600,6 +1632,7 @@ public class GameView : MonoBehaviour
             gamePlayerInfo.CloseChatInfo();
 
             if (player.userId != DataManager.UserId &&
+                gameRoomData.playingPlayersIdList != null &&
                 gameRoomData.playingPlayersIdList.Contains(player.userId))
             {
                 gamePlayerInfo.SetPokerShapeTxtStr = "";
@@ -2532,17 +2565,20 @@ public class GameView : MonoBehaviour
         if (RoomType == TableTypeEnum.Cash ||
             RoomType == TableTypeEnum.VCTable)
         {
-            buyChipsView.gameObject.SetActive(true);
-            buyChipsView.SetBuyChipsViewInfo(gameControl,
-                                             false,
-                                             gameRoomData.smallBlind,
-                                             transform.name,
-                                             RoomType,
-                                             InsufficientChipsBuyChipsCallback);
+            if (buyChipsView.gameObject.activeSelf == false)
+            {
+                buyChipsView.gameObject.SetActive(true);
+                buyChipsView.SetBuyChipsViewInfo(gameControl,
+                                                 false,
+                                                 gameRoomData.smallBlind,
+                                                 transform.name,
+                                                 RoomType,
+                                                 InsufficientChipsBuyChipsCallback);
 
-            thisData.LocalGamePlayerInfo.Init();
-            thisData.LocalGamePlayerInfo.IsOpenInfoMask = true;
-            WaitingTip_Txt.text = $"{LanguageManager.Instance.GetText("Waiting for the next round...")}";
+                thisData.LocalGamePlayerInfo.Init();
+                thisData.LocalGamePlayerInfo.IsOpenInfoMask = true;
+                WaitingTip_Txt.text = $"{LanguageManager.Instance.GetText("Waiting for the next round...")}";
+            }
         }
         else if (RoomType == TableTypeEnum.IntegralTable)
         {

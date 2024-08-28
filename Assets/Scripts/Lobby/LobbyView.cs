@@ -252,21 +252,10 @@ public class LobbyView : MonoBehaviour
 
     private void Update()
     {
+        #region 開啟遊戲測試
 
         //開啟遊戲測試
         if ((DateTime.Now - gameTestCountTime).TotalSeconds < 2)
-
-
-       
-
-        #region 測試
-
-        if (Entry.Instance.releaseType == ReleaseEnvironmentEnum.Test)
-
-
-        //開啟遊戲測試
-        if ((DateTime.Now - gameTestCountTime).TotalSeconds < 2)
-
         {
             if (gameTestTouchCount >= 3)
             {
@@ -278,6 +267,8 @@ public class LobbyView : MonoBehaviour
         {
             gameTestTouchCount = 0;
         }
+
+        #endregion
     }
 
     /// <summary>
@@ -536,4 +527,3 @@ public class LobbyView : MonoBehaviour
         }
     }
 }
-#endregion
