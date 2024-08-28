@@ -15,12 +15,13 @@ public class GameControl : MonoBehaviour
     public string QueryRoomPath { get; set; }                   //查詢房間資料路徑
     public double SmallBlind { get; set; }                      //小盲值
     public TableTypeEnum RoomType { get; set; }                 //房間類型
+    public SwitchRoomBtn switchRoomBtn { get; set; }            //切換房間按鈕
     public int MaxRoomPeople { get; set; }                      //房間最大人數
     public double PreBuyChipsValue { get; set; }                //下一手購買籌碼值
+    public double leastChips { get; set; }                      //最少所需籌碼
 
     GameRoomData gameRoomData;                                  //房間資料
     Coroutine cdCoroutine;                                      //倒數Coroutine
-    public double leastChips { get; set; }                      //最少所需籌碼
 
     int prePlayerCount { get; set; }                            //上個紀錄的遊戲人數
     bool isWaitingCreateRobot { get; set; }                     //是否等待產生機器人
@@ -1329,6 +1330,11 @@ public class GameControl : MonoBehaviour
         if (player.UserId == DataManager.UserId)
         {
             gameView.CheckActionArea(gameRoomData);
+            switchRoomBtn.SetCdTimeText($"{gameRoomData.actionCD}");
+        }
+        else
+        {
+            switchRoomBtn.SetCdTimeText("");
         }
 
         cdSound += 1;
@@ -1424,6 +1430,7 @@ public class GameControl : MonoBehaviour
             return;
         }
 
+        switchRoomBtn.SetCdTimeText("");
         gameView.GetPlayerAction(gameRoomData);
         if (cdCoroutine != null) StopCoroutine(cdCoroutine);
 

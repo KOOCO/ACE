@@ -14,6 +14,7 @@ public class SwitchRoomBtn : MonoBehaviour
     RectTransform selectFrame_Tr;
 
     private string roomName;
+    private string cdTimeStr;
 
     public int BtnIndex { get; set; }
 
@@ -24,7 +25,9 @@ public class SwitchRoomBtn : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(roomName))
         {
-            roomName_Txt.text = LanguageManager.Instance.GetText(roomName);
+            roomName_Txt.text = string.IsNullOrEmpty(cdTimeStr) ?
+                                $"{LanguageManager.Instance.GetText(roomName)}" :
+                                $"{LanguageManager.Instance.GetText(roomName)}:{cdTimeStr}";
         }
     }
 
@@ -32,9 +35,7 @@ public class SwitchRoomBtn : MonoBehaviour
     {
         LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
     }
-    private void Update()
-    {
-    }
+
     /// <summary>
     /// 設置選擇按鈕激活狀態
     /// </summary>
@@ -57,6 +58,18 @@ public class SwitchRoomBtn : MonoBehaviour
 
             // selectFrame_Tr.gameObject.SetActive(value);
         }
+    }
+
+    /// <summary>
+    /// 設置倒數時間
+    /// </summary>
+    /// <param name="cdTimeStr"></param>
+    public void SetCdTimeText(string cdTimeStr)
+    {
+        this.cdTimeStr = cdTimeStr;
+        roomName_Txt.text = string.IsNullOrEmpty(cdTimeStr) ?
+                            $"{roomName}" :
+                            $"{roomName}:{cdTimeStr}";
     }
 
     /// <summary>
