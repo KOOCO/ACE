@@ -1159,6 +1159,7 @@ public class GameView : MonoBehaviour
         foreach (var poker in CommunityPokerList)
         {
             poker.gameObject.SetActive(false);
+            poker.SetColor = 1;
         }
         foreach (var player in gamePlayerInfoList)
         {
@@ -2841,7 +2842,10 @@ public class GameView : MonoBehaviour
         //本地玩家有參與
         if (thisData != null &&
             thisData.LocalGamePlayerInfo != null &&
-            thisData.LocalGamePlayerInfo.IsPlaying)
+            thisData.LocalGamePlayerInfo.IsPlaying &&
+            saveResultData != null &&
+            gameInitHistoryData != null &&
+            processHistoryData != null)
         {
             HandHistoryManager.Instance.SaveResult(saveResultData);
             HandHistoryManager.Instance.SaveGameInit(gameInitHistoryData);
