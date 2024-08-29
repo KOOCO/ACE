@@ -87,10 +87,6 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
 
     public override void Awake()
     {
-        ResultHistoryPlayerPrefsKey = $"AsiaPoker_ResultHistoryDataList_{DataManager.UserAccount}";
-        GameInitHistoryPlayerPrefsKey = $"AsiaPoker_GameInifHistoryDataList_{DataManager.UserAccount}";
-        ProcessHistoryPlayerPrefsKey = $"AsiaPoker_ProcessHistoryDataList_{DataManager.UserAccount}";
-
         base.Awake();
     }
 
@@ -99,13 +95,13 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
     /// </summary>
     public void LoadHandHistoryData()
     {
+        ResultHistoryPlayerPrefsKey = $"AsiaPoker_ResultHistoryDataList_{DataManager.UserId}";
+        GameInitHistoryPlayerPrefsKey = $"AsiaPoker_GameInifHistoryDataList_{DataManager.UserId}";
+        ProcessHistoryPlayerPrefsKey = $"AsiaPoker_ProcessHistoryDataList_{DataManager.UserId}";
+
         LoadResultData();
         LoadGameInitData();
         LoadProcessData();
-
-
-        //Debug.Log("Loaded Hand History Data!");
-
     }
 
     /// <summary>

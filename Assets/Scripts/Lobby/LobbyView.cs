@@ -204,8 +204,6 @@ public class LobbyView : MonoBehaviour
         isShowAssetList = false;
         SetIsShowAssetList = isShowAssetList;
 
-        HandHistoryManager.Instance.LoadHandHistoryData();
-
         OpenItemPage(ItemType.Main);
     }
 
@@ -290,7 +288,6 @@ public class LobbyView : MonoBehaviour
     public void GetDataCallback(string jsonData)
     {
         AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
-
 
         if (loginData != null &&
             !string.IsNullOrEmpty(loginData.userId))
@@ -386,6 +383,7 @@ public class LobbyView : MonoBehaviour
         }
 
         UpdateUserInfo();
+        HandHistoryManager.Instance.LoadHandHistoryData();
 
         isFirstIn = false;
     }
