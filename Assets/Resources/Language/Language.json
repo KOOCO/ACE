@@ -1158,5 +1158,15 @@
     "ID": "Welcome to AISA POKER! Learn the rules and start playing right away!",
     "English": "Welcome to AISA POKER! Learn the rules and start playing right away!",
     "zh_TW": "歡迎來到 AISA POKER，了解玩法立刻暢遊！"
+  },
+  {
+    "ID": "U point",
+    "English": "U point",
+    "zh_TW": "U幣"
+  },
+  {
+    "ID": "A point",
+    "English": "A point",
+    "zh_TW": "A幣"
   }
 ]

@@ -166,8 +166,8 @@ public class LobbyMinePageView : MonoBehaviour
 
         AccountBalanceTitle_Txt.text = LanguageManager.Instance.GetText("Account Balance");
         AccountBalanceReflashBtn_Txt.text = LanguageManager.Instance.GetText("REFLASH");
-        CryptoTable_Txt.text = LanguageManager.Instance.GetText("Crypto Table");
-        VCTable_Txt.text = LanguageManager.Instance.GetText("VC Table");
+        CryptoTable_Txt.text = LanguageManager.Instance.GetText("U point");
+        VCTable_Txt.text = LanguageManager.Instance.GetText("A point");
         Gold_Txt.text = LanguageManager.Instance.GetText("Gold");
         Stamina_Txt.text = LanguageManager.Instance.GetText("Stamina");
         OTProps_Txt.text = LanguageManager.Instance.GetText("OT Props");
