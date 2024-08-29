@@ -519,7 +519,7 @@ public class LoginView : MonoBehaviour
                 machineCode = "123456789",
             };
             currVerifyPhoneNumber = login.userNameOrEmailAddress;
-            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest, callback>("/api/app/ace-accounts/login", login, OnIntoLobby);
+            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest>("/api/app/ace-accounts/login", login, OnIntoLobby);
            
             //MobileSignInSubmit();
         });
@@ -667,15 +667,6 @@ public class LoginView : MonoBehaviour
         });
 
         #endregion
-
-        //手機注冊提交
-        RegisterSubmit_Btn.onClick.AddListener(() =>
-        {
-
-            MobileRegisterSubmit();
-
-       
-        });
 
         //註冊成功登入取消按鈕
         RegisterSuccessfulCancel_Btn.onClick.AddListener(() =>
@@ -1301,19 +1292,17 @@ public class LoginView : MonoBehaviour
                 confirmPassword = RegisterPassword_If.text,
 
             };
-            SwaggerAPIManager.Instance.SendPostAPI<Register, callback>("/api/app/ace-accounts/register", register);
+            SwaggerAPIManager.Instance.SendPostAPI<Register>("/api/app/ace-accounts/register", register, WritePhoneNewUser);
         }
     }
    
     public class Register
     {
-    public string inviteCode;
-    public string phoneNumber;
-    public string userName;
-    public string password;
-    public string confirmPassword;
-
-        
+        public string inviteCode;
+        public string phoneNumber;
+        public string userName;
+        public string password;
+        public string confirmPassword;
     }
 
     public class LoginRequest
@@ -1322,11 +1311,6 @@ public class LoginView : MonoBehaviour
         public string password;
         public string ipAddress;
         public string machineCode;
-
-    }
-    public class callback
-    {
-
     }
     /// <summary>
     /// 手機註冊OTP驗證
@@ -1365,15 +1349,17 @@ public class LoginView : MonoBehaviour
             return;
         }
 
-        checkDataCallbackFunc = WritePhoneNewUser;
+        //checkDataCallbackFunc = WritePhoneNewUser;
         SetUniqueData();
     }
 
     /// <summary>
     /// 寫入手機新用戶資料
     /// </summary>
-    private void WritePhoneNewUser()
+    private void WritePhoneNewUser(string data)
     {
+        ViewManager.Instance.CloseWaitingView(transform);
+
         //註冊成功
         MobileSignIn_Obj.SetActive(false);
         RegisterSucce_Obj.SetActive(true);
@@ -1389,6 +1375,7 @@ public class LoginView : MonoBehaviour
         //本地資料紀錄
         LocalDataSave();
 
+        /*
         //寫入資料
         Dictionary<string, object> dataDic = new()
         {
@@ -1403,7 +1390,7 @@ public class LoginView : MonoBehaviour
         };
         JSBridgeManager.Instance.WriteDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH }{LoginType.phoneUser}/{currVerifyPhoneNumber}",
                                                         dataDic);
-
+        */
         /*
         //  後台創建帳號
         string RegisterUrl = "/api/app/ace-accounts/register";
@@ -1923,7 +1910,7 @@ public class LoginView : MonoBehaviour
         }
 
         ViewManager.Instance.CloseWaitingView(transform);
-        OnIntoLobby();
+        OnIntoLobby(jsonData);
     }
 
     /// <summary>
@@ -1954,7 +1941,7 @@ public class LoginView : MonoBehaviour
     /// <param name="isSuccess">回傳結果(true/false)</param>
     public void WalletNewUerDataCallback(string isSuccess)
     {
-        OnIntoLobby();
+        OnIntoLobby(isSuccess);
     }
 
     #endregion
@@ -2122,7 +2109,7 @@ public class LoginView : MonoBehaviour
     /// <summary>
     /// 進入大廳
     /// </summary>
-    private void OnIntoLobby(callback callbackData = null)
+    private void OnIntoLobby(string data)
     {
         ViewManager.Instance.CloseWaitingView(transform);
 
