@@ -62,6 +62,7 @@ public class LobbyShopView : MonoBehaviour
     GameObject PurchaseSuccessUI;
     [SerializeField]
     TextMeshProUGUI MallMsgInfo,Cancle_Text,Confirm_Text,PurchaseSuccessText;
+    
 
 
     Dictionary<ItemType,GameObject> ItemList;
@@ -249,7 +250,13 @@ public class LobbyShopView : MonoBehaviour
             iconSprite.gameObject.SetActive(true);
             Confirm.onClick.RemoveAllListeners();       //  取消事件訂閱
         });
+        PurchaseSuccessUI.GetComponent<Button>().onClick.AddListener(() =>
+        {
+            MallMsg.SetActive(false);
+            iconSprite.gameObject.SetActive(true);
+            Confirm.onClick.RemoveAllListeners();
 
+        });
 
     }
 

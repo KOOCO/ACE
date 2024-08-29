@@ -2906,8 +2906,6 @@ MonoBehaviour:
   RegisterSubmitBtn_Txt: {fileID: 5683100999587270992}
   AccountIf_Placeholder: {fileID: 4229662793647038876}
   fail_banner_Text: {fileID: 4977525266711128182}
-  login_input_Text: {fileID: 8876685586406509806}
-  Register_input_Text: {fileID: 8059378845199437255}
   RegisterCheckPassword_Obj: {fileID: 161390252552557261}
   RegisterCheckPassword1_Img: {fileID: 6521931935835860254}
   RegisterCheckPassword2_Img: {fileID: 1559302045834349548}
@@ -19791,8 +19789,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 13
-  m_fontSizeBase: 13
+  m_fontSize: 14
+  m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -23827,8 +23825,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 13
-  m_fontSizeBase: 13
+  m_fontSize: 14
+  m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

@@ -583,10 +583,10 @@ MonoBehaviour:
   IntegralBtn_Txt: {fileID: 8537344941982934353}
   CryptoTableBtnSample: {fileID: 1615624873703608288}
   CryptoTableParent: {fileID: 5330213269815619968}
-  CryptoTableTital_Txt: {fileID: 6407172325053128498}
+  CryptoTableTital_Txt: {fileID: 5176142854841288493}
   VCTableBtnSample: {fileID: 986116214013111154}
   VCTableParent: {fileID: 3292186870722903568}
-  VCTableTital_Txt: {fileID: 5176142854841288493}
+  VCTableTital_Txt: {fileID: 6407172325053128498}
   LineService: {fileID: 8559779028727428784}
   billboardImgList: []
 --- !u!1 &1615624873703608288
@@ -3803,8 +3803,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: GO TO INTEGRAL
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
