@@ -2234,7 +2234,76 @@ public class GameControl : MonoBehaviour
                 }
             }
 
-            if (maxResultPlayersList.Count() == 1)
+            //高牌比較
+            if (maxResult < 10)
+            {
+                return maxResultPlayersList;
+            }
+            else
+            {
+                //比較最大手牌玩家
+                List<GameRoomPlayerData> handPokerList = new List<GameRoomPlayerData>();
+
+                if (maxResultPlayersList.Count() > 1)
+                {
+                    //符合最大結果有多人
+                    handPokerList = new List<GameRoomPlayerData>(maxResultPlayersList);
+                }
+                else
+                {
+                    //所有相同結果的牌型都一樣
+                    foreach (var player in pairPlayer)
+                    {
+                        handPokerList.Add(player.Key);
+                    }
+                }
+
+                //將最大牌放置手牌1
+                foreach (var player in handPokerList)
+                {
+                    if (player.handPoker[0] % 13 > 0 && player.handPoker[0] % 13 < player.handPoker[1] % 13)
+                    {
+                        int temp = player.handPoker[0];
+                        player.handPoker[0] = player.handPoker[1];
+                        player.handPoker[1] = temp;
+                    }
+                }
+
+                //最大手牌1玩家(不包含符合結果牌)
+                GameRoomPlayerData maxHand0PokerPlayer = handPokerList.OrderByDescending(x => (x.handPoker[0] % 13 == 0 ? int.MinValue : x.handPoker[0] % 13) + 1)
+                                                          .FirstOrDefault();
+
+                List<GameRoomPlayerData> maxHandPokerClientList = new List<GameRoomPlayerData>();
+                if (maxHand0PokerPlayer != null)
+                {
+                    //符合牌不在手牌1
+                    maxHandPokerClientList = handPokerList.Where(x => x.handPoker[0] % 13 == maxHand0PokerPlayer.handPoker[0] % 13).ToList();
+                }
+
+                //最大手牌1玩家1人
+                if (maxHandPokerClientList.Count() == 1)
+                {
+                    return maxHandPokerClientList;
+                }
+                else
+                {
+                    //比較手牌2(不包含符合結果牌)
+                    GameRoomPlayerData maxHand1PokerPlayer = handPokerList.OrderByDescending(x => (x.handPoker[1] % 13 == 0 ? int.MinValue : x.handPoker[1] % 13) + 1)
+                                                              .FirstOrDefault();
+
+                    //符合牌都在手牌
+                    if (maxHand1PokerPlayer == null)
+                    {
+                        return handPokerList;
+                    }
+
+                    //最大手牌2所有玩家
+                    List<GameRoomPlayerData> maxHandPoker1PlayerList = handPokerList.Where(x => x.handPoker[1] % 13 == maxHand1PokerPlayer.handPoker[1] % 13).ToList();
+                    return maxHandPoker1PlayerList;
+                }
+            }
+            
+            /*if (maxResultPlayersList.Count() == 1)
             {
                 //最大符合結果1人
                 return maxResultPlayersList;
@@ -2301,7 +2370,7 @@ public class GameControl : MonoBehaviour
                     List<GameRoomPlayerData> maxHandPoker1PlayerList = handPokerList.Where(x => x.handPoker[1] % 13 == maxHand1PokerPlayer.handPoker[1] % 13).ToList();
                     return maxHandPoker1PlayerList;
                 }
-            }
+            }*/
         }
     }
 

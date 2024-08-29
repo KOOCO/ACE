@@ -301,8 +301,6 @@ public static class PokerShape
         string s = "";
         foreach (var matchNum in matchNumList)
         {
-            
-
             s += matchNum + ",";
             foreach (var poker in pokerList)
             {
