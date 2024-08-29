@@ -6,6 +6,8 @@ using Newtonsoft.Json;
 using System.Text;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using System;
+using HtmlAgilityPack;
 
 public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
 {
@@ -26,16 +28,15 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     /// <param name="data">傳遞的資料</param>
     /// <param name="callback">結果回傳</param>
     /// <param name="errCallback"></param>
-    public void SendPostAPI<T1, T2>(string apiUrl, T1 data, UnityAction<T2> callback = null, UnityAction errCallback = null)
+    public void SendPostAPI<T1>(string apiUrl, T1 data, UnityAction<string> callback = null, UnityAction errCallback = null)
         where T1 : class
-        where T2 : class
     {
         StartCoroutine(ISendPOSTRequest(apiUrl,
                                         data,
                                         callback,
                                         errCallback));
     }
-
+    [Serializable]
     public class LoginResponse
     {
         public string accessToken { get; set; }
@@ -83,9 +84,8 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     /// <param name="callback"></param>
     /// <param name="errCallback"></param>
     /// <returns></returns>
-    private IEnumerator ISendPOSTRequest<T1, T2>(string apiUrl, T1 data, UnityAction<T2> callback = null, UnityAction errCallback = null)
+    private IEnumerator ISendPOSTRequest<T1>(string apiUrl, T1 data, UnityAction<string> callback = null, UnityAction errCallback = null)
         where T1 : class
-        where T2 : class
     {
         string fullUrl = BASE_URL + apiUrl;
 
@@ -110,19 +110,11 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
-        {
-            
-
-          
-
-
-         
+        {         
             //請求錯誤
             string errorJson = request.downloadHandler.text;
             Debug.LogError($"Error: {request.error}\nError Details: {errorJson}");
             Debug.LogError(errorJson);
-
-           
 
             if (errorJson== "Invalid username or password!")
             {
@@ -135,10 +127,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         else
         {
             string Response = request.downloadHandler.text;
-            LoginResponse loginResponse = JsonConvert.DeserializeObject<LoginResponse>(Response);
-
-          
-
+            
             Debug.Log("Response: " + Response);
             //if (Response = "SUCCESS")
             //{
@@ -153,17 +142,17 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
             // Debug.Log("MemberStatus: " + loginResponse.memberStatus);
             //Debug.Log("WalletAmount: " + loginResponse.WalletAmount);
 
-           // Debug.Log("promotionCoin: " + loginResponse.promotionCoin);
+            //Debug.Log("promotionCoin: " + loginResponse.promotionCoin);
             //Debug.Log("gold: " + loginResponse.gold);
             //Debug.Log(DataManager.UserAChips);
 
-            
+            /*LoginResponse loginResponse = JsonConvert.DeserializeObject<LoginResponse>(Response);
             DataManager.UserWalletBalance = loginResponse.WalletAmount.ToString();
             DataManager.UserAChips = loginResponse.promotionCoin;
             DataManager.UserGold = loginResponse.gold;
             DataManager.UserAccount = loginResponse.memberId;
 
-            Debug.Log(DataManager.UserAccount);
+            Debug.Log(DataManager.UserAccount);*/
 
 
 
@@ -173,11 +162,10 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
 
             //Callback執行
             if (callback != null)
-                {
-                    T2 response = JsonUtility.FromJson<T2>(request.downloadHandler.text);
-                    callback?.Invoke(response);
-                }
-            
+            {
+                //T2 response = JsonUtility.FromJson<T2>(request.downloadHandler.text);
+                callback?.Invoke(Response);
+            }       
         }
     }
 
@@ -191,8 +179,6 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     {
         //StartCoroutine(IDownloadImage(imageUrl, targetImage, callback, errCallback));
     }
+    #endregion
 }
-
-    
-#endregion
 
