@@ -290,11 +290,9 @@ public static class PokerShape
         foreach (var poker in pokerList)
         {
             poker.PokerEffectEnable = false;
-
-            if (isWinEffect)
-            {
-                poker.SetColor = 0.5f;
-            }
+            poker.SetColor = isWinEffect == true ?
+                             0.5f :
+                             1;
         }
 
         //符合牌開啟外框

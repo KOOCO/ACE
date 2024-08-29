@@ -1159,6 +1159,7 @@ public class GameView : MonoBehaviour
         foreach (var poker in CommunityPokerList)
         {
             poker.gameObject.SetActive(false);
+            poker.SetColor = 1;
         }
         foreach (var player in gamePlayerInfoList)
         {
