@@ -181,4 +181,3 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     }
     #endregion
 }
-
