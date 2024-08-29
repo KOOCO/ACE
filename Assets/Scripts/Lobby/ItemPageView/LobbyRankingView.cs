@@ -284,7 +284,7 @@ public class LobbyRankingView : MonoBehaviour
         LocalUserRank_Txt.text = localUserData.rank > 999 ?
                                  $"{LanguageManager.Instance.GetText("My Rank")}   #999+" :
                                  $"{LanguageManager.Instance.GetText("My Rank")}   #{localUserData.rank}";
-        LocalUserPoint_Txt.text = $"{localUserData.point} {pointStr}";
+        LocalUserPoint_Txt.text = $"{localUserData.point}";
         LocalUserAward_Txt.text = $"{localUserData.award}";
 
         #endregion

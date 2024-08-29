@@ -26,7 +26,7 @@ public class RankSample : MonoBehaviour
         Nickname_Txt.text = rankData.nickname == DataManager.UserNickname ?
                             $"<color=#E6C94E>{rankData.nickname}</color>" :
                             $"<color=#FFFFFF>{rankData.nickname}</color>";
-        Point_Txt.text = $"{rankData.point.ToString()} {pointStr}";
+        Point_Txt.text = $"{rankData.point.ToString()}";
         Award_Txt.text = rankData.award.ToString();
         Rank_Txt.text = rank.ToString();
     }
