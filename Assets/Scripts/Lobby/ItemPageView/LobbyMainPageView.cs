@@ -523,7 +523,7 @@ public class LobbyMainPageView : MonoBehaviour
                                                 DataManager.IntegralSmallBlind,
                                                 $"{Entry.Instance.releaseType}/{TableTypeEnum.IntegralTable}/{FirebaseManager.INTEGRAL_ROOM}/{dataRoomName}",
                                                 true,
-                                                DataManager.IntegralNeedChips,
+                                                (int)DataManager.IntegralNeedChips,
                                                 0,
                                                 pairPlayerUserId,
                                                 dataRoomName);
@@ -552,7 +552,7 @@ public class LobbyMainPageView : MonoBehaviour
                                                     DataManager.IntegralSmallBlind,
                                                     $"{Entry.Instance.releaseType}/{TableTypeEnum.IntegralTable}/{FirebaseManager.INTEGRAL_ROOM}/{dataRoomName}",
                                                     false,
-                                                    DataManager.IntegralNeedChips,
+                                                    (int)DataManager.IntegralNeedChips,
                                                     3,
                                                     null,
                                                     loginData.pairRoomName);

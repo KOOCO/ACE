@@ -1624,7 +1624,6 @@ public class GameView : MonoBehaviour
         //本地玩家座位
         thisData.LocalPlayerSeat = localData.gameSeat;
 
-
         //更新玩家訊息
         foreach (var player in gameRoomData.playerDataDic.Values)
         {

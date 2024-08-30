@@ -273,17 +273,17 @@ public static class StringUtils
         else if (chips / 10000 < 1000)
         {
             //萬
-            return $"{((double)chips / 1000):f2}K";
+            return $"{(chips / 1000):f2}K";
         }
         else if (chips / 10000000 < 1000)
         {
             //億
-            return $"{((double)chips / 10000000):f2}M";
+            return $"{(chips / 10000000):f2}M";
         }
         else if (chips / 100000000 < 1000)
         {
             //兆
-            return $"{((double)chips / 100000000):f2}B";
+            return $"{(chips / 100000000):f2}B";
         }
         
         return $"{chips:f0}";

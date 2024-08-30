@@ -313,6 +313,21 @@ public class GameControl : MonoBehaviour
         }
         else
         {
+            //積分房
+            if (RoomType == TableTypeEnum.IntegralTable)
+            {
+                string newHostId = gameRoomData.playingPlayersIdList.Where(x => x != DataManager.UserId)
+                                                                    .FirstOrDefault();
+
+                //更新房主
+                var dataDic = new Dictionary<string, object>()
+                {
+                     { FirebaseManager.ROOM_HOST_ID, newHostId},
+                };
+                JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}",
+                                                                dataDic);
+            }
+
             //移除玩家
             RemovePlayer(DataManager.UserId);
         }

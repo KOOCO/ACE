@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using TMPro;
+using System;
 
 public class BuyChipsView : MonoBehaviour
 {
@@ -24,6 +25,8 @@ public class BuyChipsView : MonoBehaviour
 
     [SerializeField]
     SliderClickDetection sliderClickDetection;
+
+    double newValue;                     //更新後的購買籌碼
 
     private ThisData thisData;
     public class ThisData
@@ -102,33 +105,32 @@ public class BuyChipsView : MonoBehaviour
         //購買Slider單位設定
         BuyChips_Sli.onValueChanged.AddListener((value) =>
         {
-            double newRaiseValue = TexasHoldemUtil.SliderValueChange(BuyChips_Sli,
-                                                                    value,
-                                                                    thisData.SmallBlind * 2,
-                                                                    BuyChips_Sli.minValue,
-                                                                    BuyChips_Sli.maxValue,
-                                                                    sliderClickDetection);
-            PreBuyChips_Txt.text = StringUtils.SetChipsUnit(newRaiseValue);
+            newValue = TexasHoldemUtil.SliderValueChange(BuyChips_Sli,
+                                                        value,
+                                                        thisData.SmallBlind * 2,
+                                                        BuyChips_Sli.minValue,
+                                                        BuyChips_Sli.maxValue,
+                                                        sliderClickDetection);
+            PreBuyChips_Txt.text = StringUtils.SetChipsUnit(newValue);
         });
 
         //購買按鈕
         Buy_Btn.onClick.AddListener(() =>
         {
             CancelInvoke(nameof(SetCountDownTip));
-            double buyChipsValue = BuyChips_Sli.value;
-            thisData.SendBuyChipsCallback(buyChipsValue);
+            thisData.SendBuyChipsCallback(newValue);
         });
 
         //+按鈕
         BuyPlus_Btn.onClick.AddListener(() =>
         {
-            BuyChips_Sli.value += (float)thisData.SmallBlind * 2;
+            BuyChips_Sli.value = (float)(newValue + thisData.SmallBlind * 2);
         });
 
         //-按鈕
         BuyMinus_Btn.onClick.AddListener(() =>
         {
-            BuyChips_Sli.value -= (float)thisData.SmallBlind * 2;
+            BuyChips_Sli.value = (float)(newValue - thisData.SmallBlind * 2);
         });
     }
 
@@ -156,7 +158,8 @@ public class BuyChipsView : MonoBehaviour
     /// <param name="roomName">房間名</param>
     /// <param name="tableTypeEnum">遊戲房間類型</param>
     /// <param name="sendBuyCallback">購買結果回傳</param>
-    public void SetBuyChipsViewInfo(GameControl gameControl, bool isJustBuyChips, double smallBlind, string roomName, TableTypeEnum tableTypeEnum, UnityAction<double> sendBuyCallback)
+    public void SetBuyChipsViewInfo(GameControl gameControl, bool isJustBuyChips, double smallBlind, string roomName, 
+        TableTypeEnum tableTypeEnum, UnityAction<double> sendBuyCallback)
     {
         thisData.gameControl = gameControl;
         thisData.IsJustBuyChips = isJustBuyChips;

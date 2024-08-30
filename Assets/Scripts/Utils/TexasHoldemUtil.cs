@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using System;
 
 public static class TexasHoldemUtil
 {
@@ -84,7 +85,8 @@ public static class TexasHoldemUtil
             newRaiseValue = maxValue;
         }
 
-        return newRaiseValue;
+        newRaiseValue = (int)newRaiseValue;
+        return Math.Floor(newRaiseValue);
     }
 
     /// <summary>

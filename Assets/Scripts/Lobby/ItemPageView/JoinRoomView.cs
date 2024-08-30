@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using TMPro;
+using System;
 using Proyecto26;
 using System.Threading.Tasks;
 
@@ -30,6 +31,7 @@ public class JoinRoomView : MonoBehaviour
     string dataRoomName;                 //查詢資料的房間名稱
     double smallBlind;                   //小盲值
     TableTypeEnum tableType;             //房間類型
+    double newValue;                     //更新後的購買籌碼
 
     /// <summary>
     /// 更新文本翻譯
@@ -107,25 +109,25 @@ public class JoinRoomView : MonoBehaviour
         //購買Slider單位設定
         BuyChips_Sli.onValueChanged.AddListener((value) =>
         {
-            double newRaiseValue = TexasHoldemUtil.SliderValueChange(BuyChips_Sli,
-                                                                    value,
-                                                                    smallBlind * 2,
-                                                                    BuyChips_Sli.minValue,
-                                                                    BuyChips_Sli.maxValue,
-                                                                    sliderClickDetection);
-            PreBuyChips_Txt.text = StringUtils.SetChipsUnit(newRaiseValue);
+            newValue = TexasHoldemUtil.SliderValueChange(BuyChips_Sli,
+                                                        value,
+                                                        smallBlind * 2,
+                                                        BuyChips_Sli.minValue,
+                                                        BuyChips_Sli.maxValue,
+                                                        sliderClickDetection);
+            PreBuyChips_Txt.text = StringUtils.SetChipsUnit(newValue);
         });
 
         //購買+按鈕
         BuyPlus_Btn.onClick.AddListener(() =>
         {
-            BuyChips_Sli.value += (float)smallBlind * 2;
+            BuyChips_Sli.value = (float)(newValue + smallBlind * 2);
         });
 
         //購買-按鈕
         BuyMinus_Btn.onClick.AddListener(() =>
         {
-            BuyChips_Sli.value -= (float)smallBlind * 2;
+            BuyChips_Sli.value = (float)(newValue - smallBlind * 2);
         });
     }
 
@@ -254,7 +256,7 @@ public class JoinRoomView : MonoBehaviour
                                                 smallBlind,
                                                 $"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}/{dataRoomName}",
                                                 true,
-                                                BuyChips_Sli.value,
+                                                newValue,
                                                 0);
 
         ViewManager.Instance.CloseWaitingView(transform);
@@ -275,7 +277,7 @@ public class JoinRoomView : MonoBehaviour
                                                 smallBlind,
                                                 $"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}/{dataRoomName}",
                                                 false,
-                                                BuyChips_Sli.value,
+                                                newValue,
                                                 seat);
 
         ViewManager.Instance.CloseWaitingView(transform);
