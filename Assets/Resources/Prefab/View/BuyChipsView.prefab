@@ -2671,12 +2671,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e842eddc6c423554baf93400f01b931a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BlindACoin_Img: {fileID: 8808632411958102037}
-  BlindUCoin_Img: {fileID: 8494791167244367691}
-  MinBuyACoin_Img: {fileID: 7836825999281576126}
-  MinBuyUCoin_Img: {fileID: 105279258383094367}
-  MaxBuyACoin_Img: {fileID: 8133567616724280812}
-  MaxBuyUCoin_Img: {fileID: 390003766746648984}
+  BlindACoin_Img: {fileID: 8494791167244367691}
+  BlindUCoin_Img: {fileID: 8808632411958102037}
+  MinBuyACoin_Img: {fileID: 105279258383094367}
+  MinBuyUCoin_Img: {fileID: 7836825999281576126}
+  MaxBuyACoin_Img: {fileID: 390003766746648984}
+  MaxBuyUCoin_Img: {fileID: 8133567616724280812}
   BuyChips_Sli: {fileID: 8498113738024759689}
   Close_Btn: {fileID: 8548608727827821965}
   Cancel_Btn: {fileID: 8043673924428233221}

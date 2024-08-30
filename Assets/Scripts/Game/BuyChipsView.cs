@@ -179,7 +179,7 @@ public class BuyChipsView : MonoBehaviour
         {
             //現金桌
             case TableTypeEnum.Cash:
-                titleStr = "Classic Battle";
+                titleStr = "High Roller Battleground";
                 maxBuyChipsStr = $"{StringUtils.SetChipsUnit(DataManager.UserUChips)}";
                 BlindACoin_Img.gameObject.SetActive(true);
                 BlindUCoin_Img.gameObject.SetActive(false);
@@ -191,7 +191,7 @@ public class BuyChipsView : MonoBehaviour
 
             //虛擬貨幣桌
             case TableTypeEnum.VCTable:
-                titleStr = "High Roller Battleground";
+                titleStr = "Classic Battle";
                 maxBuyChipsStr = $"{StringUtils.SetChipsUnit(DataManager.UserAChips)}";
                 BlindACoin_Img.gameObject.SetActive(false);
                 BlindUCoin_Img.gameObject.SetActive(true);

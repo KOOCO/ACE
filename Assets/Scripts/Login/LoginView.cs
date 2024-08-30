@@ -167,12 +167,13 @@ public class LoginView : MonoBehaviour
 
     [Header("隱私政策物件")]
     [SerializeField]
-    GameObject Privacy_Obj;
+    GameObject Privacy_Obj, Privacy_text, Term_text,Privacy_obj_Scroll,Term_obj_Scroll,
+      Privacy_text_CH, Term_text_CH, Privacy_text_EN, Term_text_EN,Button_EN,Button_CH;
     [SerializeField]
-    Button PrivacyConfirm_Btn;
+    Button PrivacyConfirm_Btn,Term_Btn, PrivacyPolicy_Btn;
     [SerializeField]
     TextMeshProUGUI PrivacyTitle_Txt, PrivacyContent_Txt,
-                    PrivacyConfirmBtn_Txt;
+                    PrivacyConfirmBtn_Txt,Privacy_Title,Term_Title;
 
     const int ErrorWalletConnectTime = 30;                                      //判定連接失敗等待時間
     const int codeCountDownTime = 60;                                           //發送OTP倒數時間
@@ -346,7 +347,36 @@ public class LoginView : MonoBehaviour
         #region 隱私政策物件
 
         PrivacyConfirmBtn_Txt.text = LanguageManager.Instance.GetText("Confirm");
+        Privacy_Title.text = LanguageManager.Instance.GetText("Asia Poker privacy policy");
+        Term_Title.text= LanguageManager.Instance.GetText("Asia Poker Terms of Service");
+        if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
+        {
+            Term_obj_Scroll.GetComponent<ScrollRect>().content = Term_text_EN.GetComponent<RectTransform>();
 
+
+            Privacy_obj_Scroll.GetComponent<ScrollRect>().content = Privacy_text_EN.GetComponent<RectTransform>();
+            Privacy_text_EN.SetActive(true);
+            Privacy_text_CH.SetActive(false);
+            Term_text_EN.SetActive(true);
+            Term_text_CH.SetActive(false);
+            Button_EN.SetActive(true);
+            Button_CH.SetActive(false);
+
+        }
+        else if (LanguageManager.Instance.GetCurrLanguageIndex() == 1)
+        {
+
+            Term_obj_Scroll.GetComponent<ScrollRect>().content = Term_text_CH.GetComponent<RectTransform>();
+
+            Privacy_obj_Scroll.GetComponent<ScrollRect>().content = Privacy_text_CH.GetComponent<RectTransform>();
+            Term_text_CH.SetActive(true);
+            Term_text_EN.SetActive(false);
+            Privacy_text_CH.SetActive(true);
+            Privacy_text_EN.SetActive(false);
+            Button_EN.SetActive(false);
+            Button_CH.SetActive(true);
+
+        }
         #endregion
     }
 
@@ -359,6 +389,9 @@ public class LoginView : MonoBehaviour
     private void Awake()
     {
         LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
+
+        Term_text.SetActive(false);
+        Privacy_text.SetActive(false);
 
         recordConnect = new RecordConnect();
         ListenerEvent();
@@ -666,6 +699,16 @@ public class LoginView : MonoBehaviour
             Privacy_Obj.SetActive(false);
         });
 
+        Term_Btn.onClick.AddListener(() =>
+        {
+            Term_text.SetActive(true);
+            Privacy_text.SetActive(false);
+        });
+        PrivacyPolicy_Btn.onClick.AddListener(() =>
+        {
+            Term_text.SetActive(false);
+            Privacy_text.SetActive(true);
+        });
         #endregion
 
         //註冊成功登入取消按鈕
