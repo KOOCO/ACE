@@ -2329,20 +2329,21 @@ public class GameControl : MonoBehaviour
                     {
                         foreach (var item in pairPlayer)
                         {
-                            pairPlayer[item.Key].Add(item.Key.handPoker[0]);
-                            pairPlayer[item.Key].Add(item.Key.handPoker[1]);
+                            pairPlayer[item.Key].Add(item.Key.handPoker[0] % 13 == 0 ? 14 : item.Key.handPoker[0] % 13);
+                            pairPlayer[item.Key].Add(item.Key.handPoker[1] % 13 == 0 ? 14 : item.Key.handPoker[1] % 13);
+                            pairPlayer[item.Key].Sort(new TexasHoldemUtil.SpecialComparer());
                         }
                     }
                     else if (pairPlayer.FirstOrDefault().Value.Count == 4)
                     {
                         foreach (var item in pairPlayer)
                         {
-                            pairPlayer[item.Key].Add(item.Key.handPoker.);
+                            int num = Math.Max(item.Key.handPoker[0] % 13 == 0 ? 14 : item.Key.handPoker[0] % 13,
+                                               item.Key.handPoker[1] % 13 == 0 ? 14 : item.Key.handPoker[1] % 13);
+                            pairPlayer[item.Key].Add(num);
+                            pairPlayer[item.Key].Sort(new TexasHoldemUtil.SpecialComparer());
                         }
-                    }
-
-                    //List<int> numList = shape.Value.Item2.Select(x => x % 13 == 0 ? 14 : x % 13).ToList();
-                    //numList.Sort(new TexasHoldemUtil.SpecialComparer());
+                    }                    
 
                     for (int i = 0; i < pairPlayer.FirstOrDefault().Value.Count; i++)
                     {
