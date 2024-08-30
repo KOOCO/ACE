@@ -12,14 +12,16 @@ public class JoinRoomView : MonoBehaviour
     [SerializeField]
     Request_JoinRoom baseRequest;
     [SerializeField]
-    Image SB_Img, BB_Img;
+    Image BlindACoin_Img, BlindUCoin_Img,
+          MinBuyACoin_Img, MinBuyUCoin_Img,
+          MaxBuyACoin_Img, MaxBuyUCoin_Img;
     [SerializeField]
     Slider BuyChips_Sli;
     [SerializeField]
-    Button Cancel_Btn, Buy_Btn, BuyPlus_Btn, BuyMinus_Btn;
+    Button Close_Btn, Cancel_Btn, Buy_Btn, BuyPlus_Btn, BuyMinus_Btn;
     [SerializeField]
     TextMeshProUGUI Title_Txt, BlindsTitle_Txt,
-                    SB_Txt, BB_Txt, PreBuyChips_Txt,
+                    Blind_Txt, PreBuyChips_Txt,
                     MinBuyChips_Txt, MaxBuyChips_Txt,
                     CancelBtn_Txt, BuyBtn_Txt;
     [SerializeField]
@@ -34,9 +36,9 @@ public class JoinRoomView : MonoBehaviour
     /// </summary>
     private void UpdateLanguage()
     {
-        BlindsTitle_Txt.text = LanguageManager.Instance.GetText("Blinds");
-        CancelBtn_Txt.text = LanguageManager.Instance.GetText("Cancel");
-        BuyBtn_Txt.text = LanguageManager.Instance.GetText("Buy");
+        BlindsTitle_Txt.text = LanguageManager.Instance.GetText("Blind Bet");
+        CancelBtn_Txt.text = LanguageManager.Instance.GetText("CANCEL");
+        BuyBtn_Txt.text = LanguageManager.Instance.GetText("CONFIRM");
     }
 
     private void OnDestroy()
@@ -55,6 +57,13 @@ public class JoinRoomView : MonoBehaviour
     /// </summary>
     private void ListenerEvent()
     {
+        //關閉
+        Close_Btn.onClick.AddListener(() =>
+        {
+            GameRoomManager.Instance.IsCanMoveSwitch = true;
+            gameObject.SetActive(false);
+        });
+
         //取消
         Cancel_Btn.onClick.AddListener(() =>
         {
@@ -138,22 +147,30 @@ public class JoinRoomView : MonoBehaviour
             case TableTypeEnum.Cash:
                 titleStr = "Classic Battle";
                 maxBuyChipsStr = $"{StringUtils.SetChipsUnit(DataManager.UserUChips)}";
-                SB_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.CurrencyAlbum).album[0];
-                BB_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.CurrencyAlbum).album[0];
+                BlindACoin_Img.gameObject.SetActive(true);
+                BlindUCoin_Img.gameObject.SetActive(false);
+                MinBuyACoin_Img.gameObject.SetActive(true);
+                MinBuyUCoin_Img.gameObject.SetActive(false);
+                MaxBuyACoin_Img.gameObject.SetActive(true);
+                MaxBuyUCoin_Img.gameObject.SetActive(false);
                 break;
 
             //虛擬貨幣桌
             case TableTypeEnum.VCTable:
                 titleStr = "High Roller Battleground";
                 maxBuyChipsStr = $"{StringUtils.SetChipsUnit(DataManager.UserAChips)}";
-                SB_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.CurrencyAlbum).album[1];
-                BB_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.CurrencyAlbum).album[1];
+                BlindACoin_Img.gameObject.SetActive(false);
+                BlindUCoin_Img.gameObject.SetActive(true);
+                MinBuyACoin_Img.gameObject.SetActive(false);
+                MinBuyUCoin_Img.gameObject.SetActive(true);
+                MaxBuyACoin_Img.gameObject.SetActive(false);
+                MaxBuyUCoin_Img.gameObject.SetActive(true);
                 break;
         }
         Title_Txt.text = LanguageManager.Instance.GetText(titleStr);
 
-        SB_Txt.text = $"{StringUtils.SetChipsUnit(smallBlind)}";
-        BB_Txt.text = $"{StringUtils.SetChipsUnit(smallBlind * 2)}";
+        Blind_Txt.text = $"{StringUtils.SetChipsUnit(smallBlind)} / " +
+                         $"{StringUtils.SetChipsUnit(smallBlind * 2)}";
 
         TexasHoldemUtil.SetBuySlider(this.smallBlind, BuyChips_Sli, tableType);
         MinBuyChips_Txt.text = $"{StringUtils.SetChipsUnit(this.smallBlind * DataManager.MinMagnification)}";
