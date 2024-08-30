@@ -306,7 +306,8 @@ public class GameControl : MonoBehaviour
         JSBridgeManager.Instance.RemoveListenerConnectState($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{DataManager.UserId}");
 
         //移除房間判斷
-        if (gameRoomData.playerDataDic.Count - robotCount == 1)
+        if (gameRoomData.playerDataDic.Count - robotCount == 1 &&
+            RoomType != TableTypeEnum.IntegralTable)
         {
             //房間剩下1名玩家
             JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}");
@@ -316,16 +317,26 @@ public class GameControl : MonoBehaviour
             //積分房
             if (RoomType == TableTypeEnum.IntegralTable)
             {
-                string newHostId = gameRoomData.playingPlayersIdList.Where(x => x != DataManager.UserId)
-                                                                    .FirstOrDefault();
-
-                //更新房主
-                var dataDic = new Dictionary<string, object>()
+                if (gameRoomData.playerDataDic.Count == 1)
                 {
-                     { FirebaseManager.ROOM_HOST_ID, newHostId},
-                };
-                JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}",
-                                                                dataDic);
+                    //房間剩下1名玩家
+                    JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}");
+                    GameRoomManager.Instance.RemoveGameRoom(transform.name);
+                    return;
+                }
+                else
+                {
+                    string newHostId = gameRoomData.playingPlayersIdList.Where(x => x != DataManager.UserId)
+                                                    .FirstOrDefault();
+
+                    //更新房主
+                    var dataDic = new Dictionary<string, object>()
+                    {
+                         { FirebaseManager.ROOM_HOST_ID, newHostId},
+                    };
+                    JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}",
+                                                                    dataDic);
+                }
             }
 
             //移除玩家
