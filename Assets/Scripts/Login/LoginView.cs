@@ -592,7 +592,6 @@ public class LoginView : MonoBehaviour
 
            
             
-            Debug.Log(SignInNumber_If.text);
 
             SignInNumberIf_Text.text = currVerifyPhoneNumber;
 
@@ -762,10 +761,9 @@ public class LoginView : MonoBehaviour
         #region 登入按鈕
 
         string LoginAccountName = SingInAccount_If.text;
-        bool SingInAccount_If_IsLongEnough = SingInAccount_If.text.Length > 6;
-        bool hasDigit = Regex.IsMatch(LoginAccountName, "[0-9]");
+        bool SingInAccount_If_IsLongEnough = SingInAccount_If.text.Length > 5;
 
-        if(hasDigit&& SingInAccount_If_IsLongEnough) 
+        if( SingInAccount_If_IsLongEnough) 
         {
             SingInAccount=true;
         }
@@ -1148,6 +1146,7 @@ public class LoginView : MonoBehaviour
     #endregion
 
     #region 手機註冊
+    
 
     /// <summary>
     /// 手機註冊初始化
@@ -1215,7 +1214,6 @@ public class LoginView : MonoBehaviour
 
         if (IsValidAccountName(AccountName))
         {
-            Debug.Log(RegisterAccountName_If.text);
             
             isRegisterAccountNameCorrect = true;
         }
@@ -2092,15 +2090,12 @@ public class LoginView : MonoBehaviour
     /// <param name="AccountName">回傳結果(true/false)</param>
     bool IsValidAccountName(string AccountName)
     {
-        if (AccountName.Length < 6)
+        if (AccountName.Length < 5)
             return false;
-
-        // 需要同時有英文跟數字
         bool hasLetter = Regex.IsMatch(AccountName, "[A-Za-z]");
-        bool hasDigit = Regex.IsMatch(AccountName, "[0-9]");
 
         // 檢查字元
-        return Regex.IsMatch(AccountName, "^[A-Za-z0-9]+$") && hasLetter && hasDigit;
+        return Regex.IsMatch(AccountName, "^[A-Za-z0-9]+$") && hasLetter  ;
     }
     #endregion
 

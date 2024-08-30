@@ -8,12 +8,13 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using System;
 using HtmlAgilityPack;
+using System.Web;
+using static LobbyMainPageView;
 
 public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
 {
     private const string BASE_URL = "https://admin.jf588.com/";           //API Base Url
 
-    
     public override void Awake()
     {
         base.Awake();
@@ -32,10 +33,9 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     {
         StartCoroutine(ISendPOSTRequest(apiUrl,data,callback,errCallback));
     }
-    public void SendGetAPI<T1>(string apiUrl, T1 data, UnityAction<string> callback = null, UnityAction errCallback = null)
-        where T1 : class
+    public void SendGetAPI(string apiUrl, UnityAction<string> callback = null, UnityAction errCallback = null)
     {
-        StartCoroutine(ISendGetRequest(apiUrl,data,callback,errCallback));
+        StartCoroutine(ISendGetRequest(apiUrl, callback, errCallback));
     }
     [Serializable]
     public class LoginResponse
@@ -51,7 +51,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         public decimal WalletAmount { get; set; }
 
     }
-    public class GetBanner
+    public class GetBanner_File
     {
         public string imageName {  get; set; }
 
@@ -121,7 +121,6 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         {
             string Response = request.downloadHandler.text;
             
-            Debug.Log("Response: " + Response);
           
             //Callback執行
             if (callback != null)
@@ -131,60 +130,46 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
             }       
         }
     }
-    private IEnumerator ISendGetRequest<T1>(string apiUrl, T1 data, UnityAction<string> callback = null, UnityAction errCallback = null)
-        where T1 : class
+    public string ConvertHtmlToJson(string htmlString)
     {
-        string fullUrl = BASE_URL + apiUrl;
+        // 对HTML字符串进行编码，以防止特殊字符引起的JSON格式错误
+        string encodedHtml = HttpUtility.HtmlEncode(htmlString);
 
+        // 构建JSON格式的字符串
+        string json = "{\"html\": \"" + encodedHtml + "\"}";
 
-        //發送的Json
-        string jsonData = JsonUtility.ToJson(data);
-        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
+        return json;
+    }
+    public IEnumerator ISendGetRequest(string apiUrl, UnityAction<string> callback = null, UnityAction errCallback = null)
+    {
+        // 將GetBanner對象轉換為查詢字符串
+        //string queryString = $"?Filter={Filter}&StartDate={StartDate}&EndDate={EndDate}&IsEnabled={IsEnabled}&Sorting={Sorting}&SkipCount={data.SkipCount}&MaxResultCount={data.MaxResultCount}";
+        string fullUrl = BASE_URL + apiUrl; //+ queryString;
 
-        //創建GET請求
-        UnityWebRequest GETrequest = new UnityWebRequest(fullUrl, "GET");
-        GETrequest.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        // 創建GET請求
+        UnityWebRequest GETrequest = UnityWebRequest.Get(fullUrl);
         GETrequest.downloadHandler = new DownloadHandlerBuffer();
-        GETrequest.SetRequestHeader("Content-Type", "application/json");
+
         yield return GETrequest.SendWebRequest();
 
         if (GETrequest.result == UnityWebRequest.Result.ConnectionError || GETrequest.result == UnityWebRequest.Result.ProtocolError)
         {
-            //請求錯誤
-            string errorJson = GETrequest.downloadHandler.text;
-            Debug.LogError($"Error: {GETrequest.error}\nError Details: {errorJson}");
-            Debug.LogError(GETrequest);
+            // 請求錯誤
+            Debug.LogError($"Error: {GETrequest.error}\nError Details: {GETrequest.downloadHandler.text}");
             errCallback?.Invoke();
         }
         else
         {
-            string Response = GETrequest.downloadHandler.text;
-
-            Debug.Log("Response: " + Response);
-            
-
-
+            string response = GETrequest.downloadHandler.text;
+            Debug.Log("Response: " + response);
+            GetBanner getBanner = JsonConvert.DeserializeObject<GetBanner>(response);
+            //ConvertHtmlToJson(response);
 
 
-
-            //Callback執行
-            if (callback != null)
-            {
-                //T2 response = JsonUtility.FromJson<T2>(request.downloadHandler.text);
-                callback?.Invoke(Response);
-            }
+            // 執行Callback
+            callback?.Invoke(response);
         }
     }
 
-    /// <summary>
-    /// 下載圖片並應用到目標物體
-    /// </summary>
-    /// <param name"imageUrl">圖片的URL</param>
-    /// <param name="targetRenderer">目標物體的Renderer</param>
-    #region 圖片載入
-    public void DownloadImage(string imageUrl, Image targetImage, UnityAction<Sprite> callback = null, UnityAction errCallback = null)
-    {
-        //StartCoroutine(IDownloadImage(imageUrl, targetImage, callback, errCallback));
-    }
-    #endregion
+
 }
