@@ -803,46 +803,6 @@ public class GameView : MonoBehaviour
 
     private void Update()
     {
-        #region 測試
-
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            baseRequest.gameServer.TextChat();
-        }
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            MainPack exitPack = new MainPack();
-            exitPack.ActionCode = ActionCode.Request_PlayerInOutRoom;
-
-            PlayerInfoPack playerInfoPack = new PlayerInfoPack();
-            playerInfoPack.UserID = gamePlayerInfoList[0].UserId;
-
-            PlayerInOutRoomPack playerInOutRoomPack = new PlayerInOutRoomPack();
-            playerInOutRoomPack.IsInRoom = false;
-            playerInOutRoomPack.PlayerInfoPack = playerInfoPack;
-
-            exitPack.PlayerInOutRoomPack = playerInOutRoomPack;
-            baseRequest.gameServer.Request_PlayerInOutRoom(exitPack);
-        }
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            MainPack exitPack = new MainPack();
-            exitPack.ActionCode = ActionCode.Request_PlayerInOutRoom;
-
-            PlayerInfoPack playerInfoPack = new PlayerInfoPack();
-            playerInfoPack.UserID = gamePlayerInfoList[1].UserId;
-
-            PlayerInOutRoomPack playerInOutRoomPack = new PlayerInOutRoomPack();
-            playerInOutRoomPack.IsInRoom = false;
-            playerInOutRoomPack.PlayerInfoPack = playerInfoPack;
-
-            exitPack.PlayerInOutRoomPack = playerInOutRoomPack;
-            baseRequest.gameServer.Request_PlayerInOutRoom(exitPack);
-        }
-
-        #endregion
-
         //發送聊天訊息
         if ((Input.GetKeyDown(KeyCode.Return) ||
             Input.GetKeyDown(KeyCode.KeypadEnter)) &&
@@ -1630,7 +1590,6 @@ public class GameView : MonoBehaviour
             GamePlayerInfo gamePlayerInfo = AddPlayer(player, gameRoomData);
 
             gamePlayerInfo.CloseChatInfo();
-
             if (player.userId != DataManager.UserId &&
                 gameRoomData.playingPlayersIdList != null &&
                 gameRoomData.playingPlayersIdList.Contains(player.userId))
@@ -1661,6 +1620,13 @@ public class GameView : MonoBehaviour
                         JudgePokerShape(gamePlayerInfo,
                                         true);
                     }
+                }
+
+                if ((PlayerStateEnum)player.gameState == PlayerStateEnum.Waiting)
+                {
+                    gamePlayerInfo.SetPokerShapeTxtStr = "";
+                    gamePlayerInfo.GetHandPoker[0].gameObject.SetActive(false);
+                    gamePlayerInfo.GetHandPoker[1].gameObject.SetActive(false);
                 }
             }
             /*if (player.currAllBetChips > 0)

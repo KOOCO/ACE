@@ -1035,8 +1035,20 @@ public class GameControl : MonoBehaviour
                     playerData.gameState = (int)PlayerStateEnum.Waiting;
                 }
 
+                //遊戲人數不足
                 if (gameRoomData.playingPlayersIdList.Count < 2)
                 {
+                    foreach (var item in gameRoomData.playerDataDic.Values)
+                    {
+                        item.gameState = (int)PlayerStateEnum.Waiting;
+                        data = new Dictionary<string, object>()
+                        {
+                            { FirebaseManager.GAME_STATE, (int)PlayerStateEnum.Waiting},//(PlayerStateEnum)遊戲狀態(等待/遊戲中/棄牌/All In/保留座位離開)
+                        };
+                        UpdataPlayerData(item.userId,
+                                         data);
+                    }
+
                     preUpdateGameFlow = GameFlowEnum.None;
                     preLocalGameFlow = GameFlowEnum.None;
                     yield break;
@@ -1582,6 +1594,9 @@ public class GameControl : MonoBehaviour
     {
         var data = FirebaseManager.Instance.OnFirebaseDataRead<GameRoomData>(jsonData);
         gameRoomData = data;
+
+        //遊戲介面更新房間資料
+        gameView.UpdateGameRoomData(gameRoomData);
 
         gameView.UpdateGameRoomInfo(gameRoomData);
     }
