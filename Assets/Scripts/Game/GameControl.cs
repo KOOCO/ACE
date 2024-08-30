@@ -1033,6 +1033,12 @@ public class GameControl : MonoBehaviour
                 {
                     gameView.OnInsufficientChips();
                     playerData.gameState = (int)PlayerStateEnum.Waiting;
+                    data = new Dictionary<string, object>()
+                    {
+                        { FirebaseManager.GAME_STATE, (int)PlayerStateEnum.Waiting},//(PlayerStateEnum)遊戲狀態(等待/遊戲中/棄牌/All In/保留座位離開)
+                    };
+                    UpdataPlayerData(playerData.userId,
+                                     data);
                 }
 
                 //遊戲人數不足

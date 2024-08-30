@@ -1600,7 +1600,6 @@ public class GameView : MonoBehaviour
             else
             {
                 //本地玩家
-                JudgePokerShape(gamePlayerInfo, false);
 
                 //沒有離座/非等待
                 if (player.isSitOut == false &&
