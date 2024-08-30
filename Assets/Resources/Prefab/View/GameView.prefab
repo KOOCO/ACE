@@ -1848,8 +1848,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4032190721928120212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5829021}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -7683,7 +7683,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8985875858311556971
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16150,7 +16150,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 151.401, y: -536.33325}
+  m_AnchoredPosition: {x: 151.401, y: -519}
   m_SizeDelta: {x: 298.9059, y: 678.7352}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6705622134401979087
@@ -16181,28 +16181,28 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\rTexas Hold'em Poker is the world's most popular poker game. It swept
-    across the United States during the poker boom and is now played globally in
-    both cash games and tournaments. The rules are simple and straightforward, the
-    gameplay is fast-paced and exciting, but it is known for being deceptively simple:
-    the game is famous for the saying \"It takes a minute to learn, but a lifetime
-    to master.\"\n\nGameplay\n\n1.Pre-Flop\n\nTwo forced bets (the \"blinds\") are
-    placed. The small blind is placed by the player to the left of the dealer, and
-    the big blind is placed by the player to the left of the small blind. Each player
-    is then dealt two \"hole cards.\"\n\nStarting from the player to the left of
-    the big blind and moving clockwise, each player takes turns to call, raise, or
-    fold. If more than one player remains active (holding hole cards) at the end
-    of this round, the Flop is dealt.\n\n2.The Flop\n\nThree community cards are
-    dealt face-up (the Flop). Starting from the player closest to the button, players
-    again take turns, moving clockwise, to check, bet, raise, or fold. If more than
-    one player remains active at the end of this round, the Turn is dealt.\n\n3.The
-    Turn\n\nA fourth community card is dealt. Another round of betting ensues (similar
-    to the Flop round). If more than one player remains active at the end of this
-    round, the River is dealt.\n\n4.The River\n\nThe fifth and final community card
-    is dealt. There is a final round of betting. If more than one player remains
-    active after the final round of betting, the hand reaches the \"Showdown.\"\n\n5.Showdown\n\nPlayers
-    reveal their hole cards (in an order determined by the action on the River or
-    table position), and the player with the best hand wins the pot."
+  m_text: "\rTexas hold'em is the most popular poker game in the world. Sweeping
+    America during the poker craze. It is now played worldwide in cash games and
+    tournament formats. The rules are simple and clear, and the game is intense and
+    fun, but it's deceptively simple: the game is famous for taking a minute to learn
+    but a lifetime to master. \r\n\r\nGame play\r\n\r\nPreflop\r\n\r\nTwo mandatory
+    bets (\"blinds\") are placed, the small blind is placed by the player to the
+    left of the dealer, and the big blind is placed by the player to the left of
+    the small blind. Each player receives two \"hole cards.\" \r\n\r\nPlayers move
+    clockwise from the left side of the big blind, and each player calls, raises,
+    or folds in sequence. If more than one player remains active (holding a hole
+    card) at the end of the round, the flop card is dealt. \r\n\r\nflop\r\n\r\nThree
+    community cards are dealt face up (flop). Starting from the player closest to
+    the button, players check, bet, raise or fold again in a clockwise direction.
+    If more than one player remains active (holding cards) at the end of the round,
+    the cards are dealt. \r\n\r\nturn card\r\n\r\nThe fourth community card is dealt.
+    There is another round of betting (like the flop), and if more than one player
+    remains active at the end of the round, the river card is dealt. \r\n\r\nriver
+    card\r\n\r\nThe fifth and final community card is dealt. There is a final round
+    of betting, and if more than one player is still active during the final betting
+    round, the hand reaches a \"showdown.\" \r\n\r\nShowdown\r\n\r\nPlayers reveal
+    their hole cards (the order depends on river action or table position), and the
+    player with the highest card wins the pot.\r\n\r\n\r\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
   m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
@@ -23256,9 +23256,9 @@ RectTransform:
   m_Father: {fileID: 1440310137658317469}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -19.2, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &8096491397042651624
 CanvasRenderer:
@@ -28789,7 +28789,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7473826045201626893
 RectTransform:
   m_ObjectHideFlags: 0
@@ -50589,7 +50589,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2417172932802116850
 RectTransform:
   m_ObjectHideFlags: 0
@@ -56358,27 +56358,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1798412039497908948, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1798412039497908948, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1798412039497908948, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 30
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1798412039497908948, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 40
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1798412039497908948, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 143.46135
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1798412039497908948, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1863249104484107952, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchorMax.y
@@ -56670,27 +56670,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3095206864574135297, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3095206864574135297, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3095206864574135297, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 30
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3095206864574135297, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 40
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3095206864574135297, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 113.46135
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3095206864574135297, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3852115253061079755, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_SizeDelta.y
@@ -56814,51 +56814,51 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5306369422913393267, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5306369422913393267, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5306369422913393267, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 30
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5306369422913393267, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 40
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5306369422913393267, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 59.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5306369422913393267, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5358635458197742007, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5358635458197742007, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5358635458197742007, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 30
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5358635458197742007, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 40
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5358635458197742007, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 23.46135
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5358635458197742007, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5446375917378263151, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchorMax.x
@@ -56894,27 +56894,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5939262563461161782, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5939262563461161782, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5939262563461161782, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 30
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5939262563461161782, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 40
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5939262563461161782, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 53.46135
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5939262563461161782, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6205260459300785504, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchorMax.y
@@ -56950,27 +56950,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6403822564183319414, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6403822564183319414, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6403822564183319414, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 30
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6403822564183319414, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 40
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6403822564183319414, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 15
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6403822564183319414, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6465466782511465224, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -57130,27 +57130,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8058422413443223038, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8058422413443223038, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8058422413443223038, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 30
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8058422413443223038, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 40
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8058422413443223038, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 83.46135
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8058422413443223038, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8447844103364747671, guid: d11666f9bc9a3a444b3cd7e377b7d265, type: 3}
       propertyPath: m_AnchorMax.y

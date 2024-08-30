@@ -167,8 +167,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 13
+  m_fontSizeBase: 13
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1143,8 +1143,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 15
-  m_fontSizeBase: 15
+  m_fontSize: 14
+  m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1354,8 +1354,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1882,8 +1882,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 15
-  m_fontSizeBase: 15
+  m_fontSize: 14
+  m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2445,12 +2445,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseRequest: {fileID: 8819878342560726024}
-  BlindACoin_Img: {fileID: 6754417756289454366}
-  BlindUCoin_Img: {fileID: 7541707705916270691}
-  MinBuyACoin_Img: {fileID: 6526721596076932716}
-  MinBuyUCoin_Img: {fileID: 4865467457614740026}
-  MaxBuyACoin_Img: {fileID: 562394781402289034}
-  MaxBuyUCoin_Img: {fileID: 5236556787668096953}
+  BlindACoin_Img: {fileID: 7541707705916270691}
+  BlindUCoin_Img: {fileID: 6754417756289454366}
+  MinBuyACoin_Img: {fileID: 4865467457614740026}
+  MinBuyUCoin_Img: {fileID: 6526721596076932716}
+  MaxBuyACoin_Img: {fileID: 5236556787668096953}
+  MaxBuyUCoin_Img: {fileID: 562394781402289034}
   BuyChips_Sli: {fileID: 7285156936133587851}
   Close_Btn: {fileID: 3776154403249972148}
   Cancel_Btn: {fileID: 7366425569266978576}
@@ -2980,8 +2980,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 13
+  m_fontSizeBase: 13
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
