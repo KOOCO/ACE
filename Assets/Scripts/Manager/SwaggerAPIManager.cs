@@ -13,7 +13,6 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
 {
     private const string BASE_URL = "https://admin.jf588.com/";           //API Base Url
 
-    public bool isTipBanner=false;
     
     public override void Awake()
     {
@@ -31,10 +30,12 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     public void SendPostAPI<T1>(string apiUrl, T1 data, UnityAction<string> callback = null, UnityAction errCallback = null)
         where T1 : class
     {
-        StartCoroutine(ISendPOSTRequest(apiUrl,
-                                        data,
-                                        callback,
-                                        errCallback));
+        StartCoroutine(ISendPOSTRequest(apiUrl,data,callback,errCallback));
+    }
+    public void SendGetAPI<T1>(string apiUrl, T1 data, UnityAction<string> callback = null, UnityAction errCallback = null)
+        where T1 : class
+    {
+        StartCoroutine(ISendGetRequest(apiUrl,data,callback,errCallback));
     }
     [Serializable]
     public class LoginResponse
@@ -90,10 +91,6 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         string fullUrl = BASE_URL + apiUrl;
 
 
-
-        //Debug.Log($"Send POST:{fullUrl}");
-
-
         //發送的Json
         string jsonData = JsonUtility.ToJson(data);
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
@@ -103,10 +100,6 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
-
-       
-
-
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
@@ -129,43 +122,57 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
             string Response = request.downloadHandler.text;
             
             Debug.Log("Response: " + Response);
-            //if (Response = "SUCCESS")
-            //{
-            //    Debug.Log("123");
-            //}
-            //回傳結果
-            //Debug.Log("Response: " + request.downloadHandler.text);
-
-
-            //Debug.Log("AccessToken: " + loginResponse.accessToken);
-            //Debug.Log("MemberId: " + loginResponse.memberId);
-            // Debug.Log("MemberStatus: " + loginResponse.memberStatus);
-            //Debug.Log("WalletAmount: " + loginResponse.WalletAmount);
-
-            //Debug.Log("promotionCoin: " + loginResponse.promotionCoin);
-            //Debug.Log("gold: " + loginResponse.gold);
-            //Debug.Log(DataManager.UserAChips);
-
-            /*LoginResponse loginResponse = JsonConvert.DeserializeObject<LoginResponse>(Response);
-            DataManager.UserWalletBalance = loginResponse.WalletAmount.ToString();
-            DataManager.UserAChips = loginResponse.promotionCoin;
-            DataManager.UserGold = loginResponse.gold;
-            DataManager.UserAccount = loginResponse.memberId;
-
-            Debug.Log(DataManager.UserAccount);*/
-
-
-
-
-
-            Debug.Log("promotionCoin");
-
+          
             //Callback執行
             if (callback != null)
             {
                 //T2 response = JsonUtility.FromJson<T2>(request.downloadHandler.text);
                 callback?.Invoke(Response);
             }       
+        }
+    }
+    private IEnumerator ISendGetRequest<T1>(string apiUrl, T1 data, UnityAction<string> callback = null, UnityAction errCallback = null)
+        where T1 : class
+    {
+        string fullUrl = BASE_URL + apiUrl;
+
+
+        //發送的Json
+        string jsonData = JsonUtility.ToJson(data);
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
+
+        //創建GET請求
+        UnityWebRequest GETrequest = new UnityWebRequest(fullUrl, "GET");
+        GETrequest.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        GETrequest.downloadHandler = new DownloadHandlerBuffer();
+        GETrequest.SetRequestHeader("Content-Type", "application/json");
+        yield return GETrequest.SendWebRequest();
+
+        if (GETrequest.result == UnityWebRequest.Result.ConnectionError || GETrequest.result == UnityWebRequest.Result.ProtocolError)
+        {
+            //請求錯誤
+            string errorJson = GETrequest.downloadHandler.text;
+            Debug.LogError($"Error: {GETrequest.error}\nError Details: {errorJson}");
+            Debug.LogError(GETrequest);
+            errCallback?.Invoke();
+        }
+        else
+        {
+            string Response = GETrequest.downloadHandler.text;
+
+            Debug.Log("Response: " + Response);
+            
+
+
+
+
+
+            //Callback執行
+            if (callback != null)
+            {
+                //T2 response = JsonUtility.FromJson<T2>(request.downloadHandler.text);
+                callback?.Invoke(Response);
+            }
         }
     }
 

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using TMPro;
+using static LoginView;
 
 public class LobbyMainPageView : MonoBehaviour
 {
@@ -240,7 +241,21 @@ public class LobbyMainPageView : MonoBehaviour
         }
 
         #endregion
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            GetBanner getBanner = new GetBanner()
+            {
+                Filter ="",
+                StartDate ="",
+                EndDate ="",
+                IsEnabled = true,
+                Sorting = "",
+                SkipCount = 0,
+                MaxResultCount = 0,
+            };
+            SwaggerAPIManager.Instance.SendGetAPI<GetBanner>("/api/app/banner-images/get-list",getBanner);
 
+        }
         #region 積分房
 
         //積分配對計時器
@@ -585,6 +600,18 @@ public class LobbyMainPageView : MonoBehaviour
     /// <summary>
     /// 創建房間按鈕
     /// </summary>
+
+
+    public class GetBanner
+    {
+        public string Filter;
+        public string StartDate;
+        public string EndDate;
+        public Boolean IsEnabled;
+        public string Sorting;
+        public Int32 SkipCount;
+        public Int32 MaxResultCount;
+    }
     private void CreateRoomBtn()
     {
         //加密貨幣桌        
