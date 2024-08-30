@@ -407,7 +407,7 @@ public class GameControl : MonoBehaviour
         int robotAvatar = UnityEngine.Random.Range(0, avatarLength);
 
         //機器人攜帶籌碼
-        double robotCarryChips = UnityEngine.Random.Range((int)(SmallBlind * 2) * 20, (int)(SmallBlind * 2) * 80);
+        double robotCarryChips = (SmallBlind * 2) * 20;//UnityEngine.Random.Range((int)(SmallBlind * 2) * 20, (int)(SmallBlind * 2) * 80);
 
         //機器人ID
         string robotId = $"{FirebaseManager.ROBOT_ID}{gameRoomData.robotIndex + 1}";
@@ -669,7 +669,7 @@ public class GameControl : MonoBehaviour
                 foreach (var potWinner in potWinners)
                 {
                     potWinnerIdList.Add(potWinner.userId);
-                    newCarryChips = (potWinner.carryChips + potWinChips) / potWinners.Count;
+                    newCarryChips = potWinner.carryChips + (potWinChips / potWinners.Count);
                     data = new Dictionary<string, object>()
                     {
                         { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips)},   //攜帶籌碼
@@ -2249,143 +2249,127 @@ public class GameControl : MonoBehaviour
                 }
             }
 
-            //高牌比較
-            if (maxResult < 10)
-            {
-                return maxResultPlayersList;
-            }
-            else
-            {
-                //比較最大手牌玩家
-                List<GameRoomPlayerData> handPokerList = new List<GameRoomPlayerData>();
-
-                if (maxResultPlayersList.Count() > 1)
-                {
-                    //符合最大結果有多人
-                    handPokerList = new List<GameRoomPlayerData>(maxResultPlayersList);
-                }
-                else
-                {
-                    //所有相同結果的牌型都一樣
-                    foreach (var player in pairPlayer)
-                    {
-                        handPokerList.Add(player.Key);
-                    }
-                }
-
-                //將最大牌放置手牌1
-                foreach (var player in handPokerList)
-                {
-                    if (player.handPoker[0] % 13 > 0 && player.handPoker[0] % 13 < player.handPoker[1] % 13)
-                    {
-                        int temp = player.handPoker[0];
-                        player.handPoker[0] = player.handPoker[1];
-                        player.handPoker[1] = temp;
-                    }
-                }
-
-                //最大手牌1玩家(不包含符合結果牌)
-                GameRoomPlayerData maxHand0PokerPlayer = handPokerList.OrderByDescending(x => (x.handPoker[0] % 13 == 0 ? int.MinValue : x.handPoker[0] % 13) + 1)
-                                                          .FirstOrDefault();
-
-                List<GameRoomPlayerData> maxHandPokerClientList = new List<GameRoomPlayerData>();
-                if (maxHand0PokerPlayer != null)
-                {
-                    //符合牌不在手牌1
-                    maxHandPokerClientList = handPokerList.Where(x => x.handPoker[0] % 13 == maxHand0PokerPlayer.handPoker[0] % 13).ToList();
-                }
-
-                //最大手牌1玩家1人
-                if (maxHandPokerClientList.Count() == 1)
-                {
-                    return maxHandPokerClientList;
-                }
-                else
-                {
-                    //比較手牌2(不包含符合結果牌)
-                    GameRoomPlayerData maxHand1PokerPlayer = handPokerList.OrderByDescending(x => (x.handPoker[1] % 13 == 0 ? int.MinValue : x.handPoker[1] % 13) + 1)
-                                                              .FirstOrDefault();
-
-                    //符合牌都在手牌
-                    if (maxHand1PokerPlayer == null)
-                    {
-                        return handPokerList;
-                    }
-
-                    //最大手牌2所有玩家
-                    List<GameRoomPlayerData> maxHandPoker1PlayerList = handPokerList.Where(x => x.handPoker[1] % 13 == maxHand1PokerPlayer.handPoker[1] % 13).ToList();
-                    return maxHandPoker1PlayerList;
-                }
-            }
-            
-            /*if (maxResultPlayersList.Count() == 1)
+            if (maxResultPlayersList.Count() == 1)
             {
                 //最大符合結果1人
                 return maxResultPlayersList;
             }
             else
             {
-                //比較最大手牌玩家
-                List<GameRoomPlayerData> handPokerList = new List<GameRoomPlayerData>();
+                //高牌比較
+                if (maxResult == 10)
+                {
+                    //比較最大手牌玩家
+                    List<GameRoomPlayerData> handPokerList = new List<GameRoomPlayerData>();
 
-                if (maxResultPlayersList.Count() > 1)
-                {
-                    //符合最大結果有多人
-                    handPokerList = new List<GameRoomPlayerData>(maxResultPlayersList);
-                }
-                else
-                {
-                    //所有相同結果的牌型都一樣
-                    foreach (var player in pairPlayer)
+                    if (maxResultPlayersList.Count() > 1)
                     {
-                        handPokerList.Add(player.Key);
+                        //符合最大結果有多人
+                        handPokerList = new List<GameRoomPlayerData>(maxResultPlayersList);
                     }
-                }
-
-                //將最大牌放置手牌1
-                foreach (var player in handPokerList)
-                {
-                    if (player.handPoker[0] % 13 > 0 && player.handPoker[0] % 13 < player.handPoker[1] % 13)
+                    else
                     {
-                        int temp = player.handPoker[0];
-                        player.handPoker[0] = player.handPoker[1];
-                        player.handPoker[1] = temp;
+                        //所有相同結果的牌型都一樣
+                        foreach (var player in pairPlayer)
+                        {
+                            handPokerList.Add(player.Key);
+                        }
                     }
-                }
 
-                //最大手牌1玩家(不包含符合結果牌)
-                GameRoomPlayerData maxHand0PokerPlayer = handPokerList.OrderByDescending(x => (x.handPoker[0] % 13 == 0 ? int.MinValue : x.handPoker[0] % 13) + 1)
-                                                          .FirstOrDefault();
+                    //將最大牌放置手牌1
+                    foreach (var player in handPokerList)
+                    {
+                        if (player.handPoker[0] % 13 > 0 && player.handPoker[0] % 13 < player.handPoker[1] % 13)
+                        {
+                            int temp = player.handPoker[0];
+                            player.handPoker[0] = player.handPoker[1];
+                            player.handPoker[1] = temp;
+                        }
+                    }
 
-                List<GameRoomPlayerData> maxHandPokerClientList = new List<GameRoomPlayerData>();
-                if (maxHand0PokerPlayer != null)
-                {
-                    //符合牌不在手牌1
-                    maxHandPokerClientList = handPokerList.Where(x => x.handPoker[0] % 13 == maxHand0PokerPlayer.handPoker[0] % 13).ToList();
-                }
-
-                //最大手牌1玩家1人
-                if (maxHandPokerClientList.Count() == 1)
-                {
-                    return maxHandPokerClientList;
-                }
-                else
-                {
-                    //比較手牌2(不包含符合結果牌)
-                    GameRoomPlayerData maxHand1PokerPlayer = handPokerList.OrderByDescending(x => (x.handPoker[1] % 13 == 0 ? int.MinValue : x.handPoker[1] % 13) + 1)
+                    //最大手牌1玩家(不包含符合結果牌)
+                    GameRoomPlayerData maxHand0PokerPlayer = handPokerList.OrderByDescending(x => (x.handPoker[0] % 13 == 0 ? int.MinValue : x.handPoker[0] % 13) + 1)
                                                               .FirstOrDefault();
 
-                    //符合牌都在手牌
-                    if (maxHand1PokerPlayer == null)
+                    List<GameRoomPlayerData> maxHandPokerClientList = new List<GameRoomPlayerData>();
+                    if (maxHand0PokerPlayer != null)
                     {
-                        return handPokerList;
+                        //符合牌不在手牌1
+                        maxHandPokerClientList = handPokerList.Where(x => x.handPoker[0] % 13 == maxHand0PokerPlayer.handPoker[0] % 13).ToList();
                     }
 
-                    //最大手牌2所有玩家
-                    List<GameRoomPlayerData> maxHandPoker1PlayerList = handPokerList.Where(x => x.handPoker[1] % 13 == maxHand1PokerPlayer.handPoker[1] % 13).ToList();
-                    return maxHandPoker1PlayerList;
+                    //最大手牌1玩家1人
+                    if (maxHandPokerClientList.Count() == 1)
+                    {
+                        return maxHandPokerClientList;
+                    }
+                    else
+                    {
+                        //比較手牌2(不包含符合結果牌)
+                        GameRoomPlayerData maxHand1PokerPlayer = handPokerList.OrderByDescending(x => (x.handPoker[1] % 13 == 0 ? int.MinValue : x.handPoker[1] % 13) + 1)
+                                                                  .FirstOrDefault();
+
+                        //符合牌都在手牌
+                        if (maxHand1PokerPlayer == null)
+                        {
+                            return handPokerList;
+                        }
+
+                        //最大手牌2所有玩家
+                        List<GameRoomPlayerData> maxHandPoker1PlayerList = handPokerList.Where(x => x.handPoker[1] % 13 == maxHand1PokerPlayer.handPoker[1] % 13).ToList();
+                        return maxHandPoker1PlayerList;
+                    }
                 }
-            }*/
+                else
+                {
+                    //尋找單牌最大玩家
+                    List<GameRoomPlayerData> winPlayers = new List<GameRoomPlayerData>();
+
+                    if (pairPlayer.FirstOrDefault().Value.Count <= 3)
+                    {
+                        foreach (var item in pairPlayer)
+                        {
+                            pairPlayer[item.Key].Add(item.Key.handPoker[0]);
+                            pairPlayer[item.Key].Add(item.Key.handPoker[1]);
+                        }
+                    }
+                    else if (pairPlayer.FirstOrDefault().Value.Count == 4)
+                    {
+                        foreach (var item in pairPlayer)
+                        {
+                            pairPlayer[item.Key].Add(item.Key.handPoker.);
+                        }
+                    }
+
+                    //List<int> numList = shape.Value.Item2.Select(x => x % 13 == 0 ? 14 : x % 13).ToList();
+                    //numList.Sort(new TexasHoldemUtil.SpecialComparer());
+
+                    for (int i = 0; i < pairPlayer.FirstOrDefault().Value.Count; i++)
+                    {
+                        int max = int.MinValue;
+                        foreach (var item in pairPlayer)
+                        {
+                            if (item.Value[i] > max)
+                            {
+                                winPlayers = new List<GameRoomPlayerData>();
+                                max = item.Value[i];
+                                winPlayers.Add(item.Key);
+                            }
+                            else if (item.Value[i] == max)
+                            {
+                                winPlayers.Add(item.Key);
+                            }
+                        }
+
+                        if (winPlayers.Count == 1)
+                        {
+                            return winPlayers;
+                        }
+                    }
+
+                    return winPlayers;
+                }
+            }
         }
     }
 
