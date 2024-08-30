@@ -165,7 +165,7 @@ public class GameView : MonoBehaviour
     //加註大盲倍率
     readonly float[] PotBbRate = new float[]
     {
-        2.1f, 2.5f, 3.0f, 4.0f,
+        2f, 3f, 4.0f, 4.0f,
     };
 
     const int MaxChatCount = 50;                                //保留聊天最大訊息數
@@ -1288,6 +1288,16 @@ public class GameView : MonoBehaviour
         float raiseValue = isBlindFirst ?
                           ((float)(gameRoomData.smallBlind * 2) * PotBbRate[btnIndex]) :
                           ((float)gameRoomData.potChips * (PotPercentRate[btnIndex] / 100));
+        if (btnIndex == 3)
+        {
+            raiseValue = (float)gameRoomData.potChips;
+        }
+        else
+        {
+            raiseValue = isBlindFirst ?
+                          ((float)(gameRoomData.smallBlind * 2) * PotBbRate[btnIndex]) :
+                          ((float)gameRoomData.potChips * (PotPercentRate[btnIndex] / 100));
+        }
 
         Raise_Sli.value = (int)raiseValue;
     }
@@ -1530,7 +1540,7 @@ public class GameView : MonoBehaviour
             MinRaiseBtn_Txt.text = thisData.MinRaiseValue.ToString(); ;
 
             //底池倍率
-            for (int i = 0; i < PotPercentRaiseTxtList.Count; i++)
+            for (int i = 0; i < 4; i++)
             {
                 if (thisData.TotalPot <= thisData.SmallBlindValue * 3)
                 {
@@ -1540,6 +1550,14 @@ public class GameView : MonoBehaviour
                 {
                     PotPercentRaiseTxtList[i].text = $"{PotPercentRate[i]}%";
                 }
+            }
+            if (thisData.TotalPot <= thisData.SmallBlindValue * 3)
+            {
+                PotPercentRaiseTxtList[3].text = LanguageManager.Instance.GetText("Pot");
+            }
+            else
+            {
+                PotPercentRaiseTxtList[3].text = $"{PotPercentRate[3]}%";
             }
         }
     }
