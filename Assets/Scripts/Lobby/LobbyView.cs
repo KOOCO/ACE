@@ -290,7 +290,8 @@ public class LobbyView : MonoBehaviour
         AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
 
         if (loginData != null &&
-            !string.IsNullOrEmpty(loginData.userId))
+            !string.IsNullOrEmpty(loginData.userId) &&
+            !string.IsNullOrEmpty(loginData.nickname))
         {
             ViewManager.Instance.CloseWaitingView(transform);
 
@@ -314,7 +315,6 @@ public class LobbyView : MonoBehaviour
             {
                 { FirebaseManager.USER_ID, DataManager.UserId},
                 { FirebaseManager.AVATAR_INDEX, 0},
-                { FirebaseManager.NICKNAME, DataManager.UserId},
             };
             JSBridgeManager.Instance.UpdateDataFromFirebase(
                 $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}",

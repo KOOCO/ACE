@@ -2117,7 +2117,7 @@ public class LoginView : MonoBehaviour
     /// <summary>
     /// 進入大廳
     /// </summary>
-    private void OnIntoLobby(string data)
+    public void OnIntoLobby(string data)
     {
         ViewManager.Instance.CloseWaitingView(transform);
 

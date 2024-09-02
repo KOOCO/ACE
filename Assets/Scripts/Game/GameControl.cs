@@ -312,7 +312,7 @@ public class GameControl : MonoBehaviour
         JSBridgeManager.Instance.RemoveListenerConnectState($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{DataManager.UserId}");
 
         //移除房間判斷
-        if (gameRoomData.playerDataDic.Count - robotCount == 1 &&
+        if (gameRoomData.playerDataDic.Count - robotCount == 0 &&
             RoomType != TableTypeEnum.IntegralTable)
         {
             //房間剩下1名玩家
@@ -424,7 +424,7 @@ public class GameControl : MonoBehaviour
         int robotAvatar = UnityEngine.Random.Range(0, avatarLength);
 
         //機器人攜帶籌碼
-        double robotCarryChips = (SmallBlind * 2) * 20;//UnityEngine.Random.Range((int)(SmallBlind * 2) * 20, (int)(SmallBlind * 2) * 80);
+        double robotCarryChips = UnityEngine.Random.Range((int)(SmallBlind * 2) * 20, (int)(SmallBlind * 2) * 80);
 
         //機器人ID
         string robotId = $"{FirebaseManager.ROBOT_ID}{gameRoomData.robotIndex + 1}";
@@ -966,10 +966,12 @@ public class GameControl : MonoBehaviour
             //人數有變化更新房間玩家訊息
             if (gameRoomData.playerDataDic.Count() != prePlayerCount)
             {
+                Debug.Log($"人數有變化更新房間玩家訊息:{gameRoomData.playerDataDic.Count()}");
                 prePlayerCount = gameRoomData.playerDataDic.Count();
                 gameView.UpdateGameRoomInfo(gameRoomData);
 
                 //剩下一名玩家在進行遊戲
+                Debug.Log($"剩下一名玩家在進行遊戲:{gameRoomData.playingPlayersIdList.Count()}");
                 if (gameRoomData.playingPlayersIdList.Count() == 1 &&
                     gameRoomData.currGameFlow >= (int)GameFlowEnum.SetBlind)
                 {
@@ -985,7 +987,8 @@ public class GameControl : MonoBehaviour
             GameRoomPlayerData playerData = gameRoomData.playerDataDic.Where(x => x.Value.userId == DataManager.UserId)
                                                                       .FirstOrDefault()
                                                                       .Value;
-            if (playerData.handPoker != null &&
+            if (localHand != null &&
+                playerData.handPoker != null &&
                 playerData.handPoker.SequenceEqual(localHand))
             {
                 gameView.ShowFoldPoker();

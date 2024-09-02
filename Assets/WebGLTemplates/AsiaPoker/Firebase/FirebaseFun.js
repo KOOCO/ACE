@@ -18,7 +18,6 @@ function initializeFirebase() {
         appId: "1:787364137649:web:a2a4b47b61a22d0195b090",
 
         measurementId: "G-XRQ05KCWT7"
-
     };
 
     // 初始化 Firebase
