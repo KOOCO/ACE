@@ -1123,6 +1123,7 @@ public class GameView : MonoBehaviour
         }
         foreach (var player in gamePlayerInfoList)
         {
+            player.SetPokerShapeTxtStr = "";
             player.IsWinnerActive = false;
             player.SetBackChips = 0;
             player.GetHandPoker[0].gameObject.SetActive(false);
@@ -1605,6 +1606,7 @@ public class GameView : MonoBehaviour
             gamePlayerInfo.CloseChatInfo();
             if (player.userId != DataManager.UserId &&
                 gameRoomData.playingPlayersIdList != null &&
+                gameRoomData.playingPlayersIdList.Count() >= 2 &&
                 gameRoomData.playingPlayersIdList.Contains(player.userId))
             {
                 gamePlayerInfo.SetPokerShapeTxtStr = "";

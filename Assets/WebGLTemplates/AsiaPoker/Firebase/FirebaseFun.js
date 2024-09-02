@@ -149,19 +149,15 @@ function initializePresence(path, id) {
 
 // 移除在線狀態監測
 // 監測ID
-function removePresenceListener(id) {
-    console.log("Remove Listener Connection State:" + id);
-    
+function removePresenceListener(id) {    
     var userStatusDatabaseRef = window.userStatusDatabaseRefs[id];
     var connectedRef = window.connectedRefs[id];
     var connectedCallback = window.callbacks[id];
 
     if (connectedRef && connectedCallback) {
-        console.log("Removing listener...");
         connectedRef.off("value", connectedCallback);
-        console.log("Listener removed for ID: " + id);
     } else {
-        console.log("No listener found for ID: " + id);
+
     }
 
     // 取消 onDisconnect 事件
