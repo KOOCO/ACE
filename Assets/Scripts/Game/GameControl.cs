@@ -66,7 +66,7 @@ public class GameControl : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            CreateRobot();
+            CreateRobot(false);
         }
 
         if (Input.GetKeyDown(KeyCode.X))
@@ -119,7 +119,13 @@ public class GameControl : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.P))
         {
-            gameView.UpdateGameRoomInfo(gameRoomData);
+            //更新房主
+            var dataDic = new Dictionary<string, object>()
+                {
+                     { FirebaseManager.ROOM_HOST_ID, "robot1"},
+                };
+            JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}",
+                                                            dataDic);
         }
 
 #endif
@@ -607,7 +613,8 @@ public class GameControl : MonoBehaviour
                 GameDataInit();
 
                 //積分房只剩下玩家1名
-                if (RoomType == TableTypeEnum.IntegralTable && 
+                if (RoomType == TableTypeEnum.IntegralTable &&
+                    gameRoomData.playingPlayersIdList != null &&
                     gameRoomData.playingPlayersIdList.Count() == 1)
                 {
                     //顯示積分結果
@@ -996,7 +1003,8 @@ public class GameControl : MonoBehaviour
         {
             if (gameRoomData.hostId == DataManager.UserId)
             {
-                if (gameRoomData.playingPlayersIdList.Count == 1)
+                if (gameRoomData.playingPlayersIdList.Count == 1 &&
+                    RoomType != TableTypeEnum.IntegralTable)
                 {
                     StartCoroutine(IStartGameFlow(GameFlowEnum.Licensing));
                 }
@@ -1053,7 +1061,8 @@ public class GameControl : MonoBehaviour
                 }
 
                 //遊戲人數不足
-                if (gameRoomData.playingPlayersIdList.Count < 2)
+                if (gameRoomData.playingPlayersIdList != null &&
+                    gameRoomData.playingPlayersIdList.Count < 2)
                 {
                     foreach (var item in gameRoomData.playerDataDic.Values)
                     {
@@ -1361,7 +1370,8 @@ public class GameControl : MonoBehaviour
         {
             yield return new WaitForSeconds(1);
 
-            if (gameRoomData.actionCD < 0 ||
+            if (player == null ||
+                gameRoomData.actionCD < 0 ||
                 preCD != gameRoomData.actionCD)
             {
                 yield break;
@@ -1377,7 +1387,8 @@ public class GameControl : MonoBehaviour
             cdSound = 0;
         }
 
-        if (gameRoomData.actionCD < 0 ||
+        if (player == null ||
+            gameRoomData.actionCD < 0 ||
             preCD != gameRoomData.actionCD)
         {
             yield break;

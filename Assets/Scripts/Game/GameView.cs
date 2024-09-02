@@ -1257,19 +1257,6 @@ public class GameView : MonoBehaviour
                 }
             }
         }
-
-        /*string id = pack.ShowFoldPokerPack.UserID;
-        int pokerIndex = pack.ShowFoldPokerPack.HandPokerIndex;
-        int pokerNum = pack.ShowFoldPokerPack.PokerNum;
-
-        GamePlayerInfo gamePlayerInfo = GetPlayer(id);
-        gamePlayerInfo.GetHandPoker[pokerIndex].gameObject.SetActive(true);
-        gamePlayerInfo.GetHandPoker[pokerIndex].SetColor = 1;
-
-        if (id != Entry.TestInfoData.LocalUserId)
-        {
-            gamePlayerInfo.GetHandPoker[pokerIndex].PokerNum = pokerNum;
-        }*/
     }
 
     /// <summary>
@@ -1280,7 +1267,9 @@ public class GameView : MonoBehaviour
     {
         bool isBlindFirst = false;
         if ((GameFlowEnum)gameRoomData.currGameFlow == GameFlowEnum.SetBlind &&
-            gameRoomData.actionPlayerCount == 1)
+            gameRoomData.playingPlayersIdList.Count > 3 &&
+            gameControl.GetLocalPlayer().seatCharacter != (int)SeatCharacterEnum.SB &&
+            gameControl.GetLocalPlayer().seatCharacter != (int)SeatCharacterEnum.BB)
         {
             isBlindFirst = true;
         }
@@ -1366,7 +1355,9 @@ public class GameView : MonoBehaviour
         //是否無法跟注
         thisData.isCanCall = isCanCall;
         //最小加注
-        thisData.MinRaiseValue = thisData.CurrCallValue * 2;
+        thisData.MinRaiseValue = isFirst ?
+                                 thisData.CurrCallValue :
+                                 thisData.CurrCallValue * 2;
         thisData.CurrRaiseValue = thisData.MinRaiseValue;
 
 
@@ -1542,7 +1533,9 @@ public class GameView : MonoBehaviour
             //底池倍率
             for (int i = 0; i < 4; i++)
             {
-                if (thisData.TotalPot <= thisData.SmallBlindValue * 3)
+                if (gameControl.GetLocalPlayer().seatCharacter != (int)SeatCharacterEnum.SB &&
+                    gameControl.GetLocalPlayer().seatCharacter != (int)SeatCharacterEnum.BB &&
+                    gameRoomData.playingPlayersIdList.Count > 3)
                 {
                     PotPercentRaiseTxtList[i].text = $"{PotBbRate[i]}BB";
                 }
@@ -1551,7 +1544,9 @@ public class GameView : MonoBehaviour
                     PotPercentRaiseTxtList[i].text = $"{PotPercentRate[i]}%";
                 }
             }
-            if (thisData.TotalPot <= thisData.SmallBlindValue * 3)
+            if (gameControl.GetLocalPlayer().seatCharacter != (int)SeatCharacterEnum.SB &&
+                gameControl.GetLocalPlayer().seatCharacter != (int)SeatCharacterEnum.BB &&
+                gameRoomData.playingPlayersIdList.Count > 3)
             {
                 PotPercentRaiseTxtList[3].text = LanguageManager.Instance.GetText("Pot");
             }
@@ -1760,7 +1755,6 @@ public class GameView : MonoBehaviour
     {
         GamePlayerInfo exitPlayer = GetPlayer(id);
 
-        //SeatButtonList[exitPlayer.SeatIndex].image.enabled = true;
         gamePlayerInfoList.Remove(exitPlayer);
 
         exitPlayerSeatList.Add(exitPlayer.SeatIndex);
@@ -2215,10 +2209,10 @@ public class GameView : MonoBehaviour
                             roomName = "Integral";
                             break;
                         case TableTypeEnum.Cash:
-                            roomName = "Classic Battle";
+                            roomName = "High Roller Battleground";
                             break;
                         case TableTypeEnum.VCTable:
-                            roomName = "High Roller Battleground";
+                            roomName = "Classic Battle";
                             break;
                     }
 

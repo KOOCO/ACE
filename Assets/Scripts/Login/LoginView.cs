@@ -62,19 +62,17 @@ public class LoginView : MonoBehaviour
     [SerializeField]
     TMP_Text DownloadWallet_Txt;
 
-    [Header("錢包連接_簡訊認證頁面")]
+    [Header("錢包連接_註冊頁面")]
     [SerializeField]
-    GameObject SMSVerificationPage_Obj;
+    GameObject WalletRegisterPage_Obj;
     [SerializeField]
-    Button SMSOTPSend_Btn, SMSOTPSubmit_Btn;
+    Button WalletRegisterSubmit_Btn;
     [SerializeField]
-    TMP_InputField SMSMobileNumber_If, SMSOTP_If;
-    [SerializeField]
-    TMP_Dropdown SMSMobileNumber_Dd;
+    TMP_InputField WalletRegister_If, WalletEmail_If;
     [SerializeField]
     TextMeshProUGUI SMSMobileNumberError_Txt, SMSCodeError_Txt, 
-                    SMSMobileNumber_Txt, SMSMobileNumberIf_Placeholder, 
-                    SMSOTPCode_Txt, SMSOTPIf_Placeholder, SMSOTPSendBtn_Txt,
+                    WalletRegisterAccountTitle_Txt, WalletRegister_If_Placeholder, 
+                    WalletEmailTitle_Txt, WalletEmailIf_Placeholder,
                     SMSOTPSubmitBtn_Txt;
 
     [Header("手機登入")]
@@ -281,10 +279,10 @@ public class LoginView : MonoBehaviour
 
         #region 錢包簡訊認證頁面
 
-        SMSMobileNumber_Txt.text = LanguageManager.Instance.GetText("MobileNumber");
-        SMSMobileNumberIf_Placeholder.text = LanguageManager.Instance.GetText("Your Phone Number");
-        SMSOTPCode_Txt.text = LanguageManager.Instance.GetText("OTP Code");
-        SMSOTPIf_Placeholder.text = LanguageManager.Instance.GetText("Please Enter The OTP Code");
+        WalletRegisterAccountTitle_Txt.text = LanguageManager.Instance.GetText("Account");
+        WalletRegister_If_Placeholder.text = LanguageManager.Instance.GetText("Your UserName");
+        WalletEmailTitle_Txt.text = LanguageManager.Instance.GetText("Email");
+        WalletEmailIf_Placeholder.text = LanguageManager.Instance.GetText("Your Email");
         SMSOTPSubmitBtn_Txt.text = LanguageManager.Instance.GetText("SUBMIT");
 
         #endregion
@@ -508,30 +506,12 @@ public class LoginView : MonoBehaviour
         #endregion
        
         #region 錢包連接簡訊認證
-        //發送獲取驗證碼
-        SMSOTPSend_Btn.onClick.AddListener(() =>
-        {
-            if (!StringUtils.CheckPhoneNumber(SMSMobileNumber_If.text))
-            {
-                SMSMobileNumberError_Txt.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
-                return;
-            }
-
-            SMSMobileNumberError_Txt.text = "";
-
-            Debug.Log($"Send Code:{ StringUtils.GetPhoneAddCode(SMSMobileNumber_Dd, SMSMobileNumber_If.text) }");
-
-            SMSMobileNumberError_Txt.text = "";
-            SMSCodeError_Txt.text = "";
-            SMSOTP_If.text = "";
-
-            SendOTP(StringUtils.GetPhoneAddCode(SMSMobileNumber_Dd, SMSMobileNumber_If.text));
-        });
 
         //簡訊OTP提交
-        SMSOTPSubmit_Btn.onClick.AddListener(() =>
+        WalletRegisterSubmit_Btn.onClick.AddListener(() =>
         {
-            SMSOTPSubmitAction();
+            Debug.Log($"Wallet Register:{WalletRegister_If.text}/{WalletEmail_If.text}");
+            //SMSOTPSubmitAction();
         });
 
         #endregion
@@ -731,7 +711,7 @@ public class LoginView : MonoBehaviour
         JsonStringIp = localIP;
 
         //下拉式選單添加國碼
-        Utils.SetOptionsToDropdown(SMSMobileNumber_Dd, DataManager.CountryCode);
+        //Utils.SetOptionsToDropdown(SMSMobileNumber_Dd, DataManager.CountryCode);
         //Utils.SetOptionsToDropdown(SignInNumber_Dd, DataManager.CountryCode);
         Utils.SetOptionsToDropdown(RegisterNumber_Dd, DataManager.CountryCode);
         Utils.SetOptionsToDropdown(LostPswNumber_Dd, DataManager.CountryCode);
@@ -841,10 +821,9 @@ public class LoginView : MonoBehaviour
         RegisterOTPSendBtn_Txt.text = codeTime > codeCountDownTime ?
                                       LanguageManager.Instance.GetText("SEND CODE") :
                                       $"{LanguageManager.Instance.GetText("RESEND")} {codeCountDownTime - (int)codeTime}";
-        SMSOTPSend_Btn.interactable = codeTime > codeCountDownTime;
-        SMSOTPSendBtn_Txt.text = codeTime > codeCountDownTime ?
+        /*SMSOTPSendBtn_Txt.text = codeTime > codeCountDownTime ?
                                  LanguageManager.Instance.GetText("SEND CODE") :
-                                 $"{LanguageManager.Instance.GetText("RESEND")} {codeCountDownTime - (int)codeTime}";
+                                 $"{LanguageManager.Instance.GetText("RESEND")} {codeCountDownTime - (int)codeTime}";*/
 
         //連接錢包過久判定失敗
         if (Connecting_Obj.activeSelf &&
@@ -1592,7 +1571,7 @@ public class LoginView : MonoBehaviour
         SelectWalletPage_Obj.SetActive(true);
         ConnectingWallet_Obj.SetActive(false);
         WalletLoadingPage_Obj.SetActive(false);
-        SMSVerificationPage_Obj.SetActive(false);
+        WalletRegisterPage_Obj.SetActive(false);
 
         SMSMobileNumberError_Txt.text = "";
         SMSCodeError_Txt.text = "";
@@ -1678,7 +1657,7 @@ public class LoginView : MonoBehaviour
         recordConnect.TheWalletEnum = walletEnum;
 
         WalletLoadingPage_Obj.SetActive(true);
-        SMSVerificationPage_Obj.SetActive(false);
+        WalletRegisterPage_Obj.SetActive(false);
         ConnectingWallet_Obj.SetActive(true);
         SelectWalletPage_Obj.SetActive(false);
         Connecting_Obj.SetActive(true);
@@ -1763,13 +1742,6 @@ public class LoginView : MonoBehaviour
     /// <param name="wc"></param>
     async private void Connect(WalletConnection wc)
     {
-#if UNITY_EDITOR
-
-        await Task.Delay(2000);
-        OpenSMSVerificationPage();
-
-#else
-
         Debug.Log("Start Connecting....");
         try
         {
@@ -1785,8 +1757,6 @@ public class LoginView : MonoBehaviour
         }
 
         PostConnect(wc);
-
-#endif
     }
 
     /// <summary>
@@ -1831,7 +1801,7 @@ public class LoginView : MonoBehaviour
         NFTManager.Instance.StartHandleUpdate();
         WalletManager.Instance.StartCheckConnect();
 
-        OpenSMSVerificationPage();
+        //OpenSMSVerificationPage();
     }
 
     /// <summary>
@@ -1841,16 +1811,16 @@ public class LoginView : MonoBehaviour
     {
         ConnectionTitle_Txt.text = LanguageManager.Instance.GetText("SMS Verification");
         WalletLoadingPage_Obj.SetActive(false);
-        SMSVerificationPage_Obj.SetActive(true);
+        WalletRegisterPage_Obj.SetActive(true);
 
         //設定TAB切換與Enter提交方法
         if (!DataManager.IsMobilePlatform)
         {
-            SMSMobileNumber_If.Select();
+            WalletRegister_If.Select();
             currIfList = new List<TMP_InputField>()
             {
-                SMSMobileNumber_If,
-                SMSOTP_If,
+                WalletRegister_If,
+                WalletEmail_If,
             };
             KybordEnterAction = SMSOTPSubmitAction;
         }
@@ -1864,18 +1834,18 @@ public class LoginView : MonoBehaviour
         SMSMobileNumberError_Txt.text = "";
         SMSCodeError_Txt.text = "";
 
-        string phoneNumber = StringUtils.GetPhoneAddCode(SMSMobileNumber_Dd, SMSMobileNumber_If.text);
-        string code = SMSOTP_If.text;
+        string phoneNumber = "";//StringUtils.GetPhoneAddCode(SMSMobileNumber_Dd, WalletRegister_If.text);
+        string code = WalletEmail_If.text;
 
         bool isCorrect = true;
-        if (!StringUtils.CheckPhoneNumber(SMSMobileNumber_If.text))
+        if (!StringUtils.CheckPhoneNumber(WalletRegister_If.text))
         {
             //手機號格式錯誤
             isCorrect = false;
             SMSMobileNumberError_Txt.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
         }
 
-        if (string.IsNullOrEmpty(SMSOTP_If.text))
+        if (string.IsNullOrEmpty(WalletEmail_If.text))
         {
             //OTP為空
             isCorrect = false;

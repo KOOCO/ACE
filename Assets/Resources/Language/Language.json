@@ -457,7 +457,7 @@
   {
     "ID": "Sign Up",
     "English": "Sign Up",
-    "zh_TW": "註冊"
+    "zh_TW": "報名"
   },
   {
     "ID": "REGISTER",
@@ -503,6 +503,16 @@
     "ID": "Your Account",
     "English": "Your Account",
     "zh_TW": "您的帳號"
+  },
+  {
+    "ID": "Email",
+    "English": "Email",
+    "zh_TW": "信箱"
+  },
+  {
+    "ID": "Your Email",
+    "English": "Your Email",
+    "zh_TW": "您的信箱"
   },
   {
     "ID": "錢包連接頁面",
@@ -1148,25 +1158,5 @@
     "ID": "Please proceed with collateralization",
     "English": "Please proceed with collateralization.",
     "zh_TW": "請繼續抵押"
-  },
-  {
-    "ID": "Game Rules",
-    "English": "Game Rules",
-    "zh_TW": "遊戲規則"
-  },
-  {
-    "ID": "Welcome to AISA POKER! Learn the rules and start playing right away!",
-    "English": "Welcome to AISA POKER! Learn the rules and start playing right away!",
-    "zh_TW": "歡迎來到 AISA POKER，了解玩法立刻暢遊！"
-  },
-  {
-    "ID": "Asia Poker privacy policy",
-    "English": "Asia Poker privacy policy",
-    "zh_TW": "Asia Poker 隱私權政策 "
-  },
-  {
-    "ID": "Asia Poker Terms of Service",
-    "English": "Asia Poker Terms of Service",
-    "zh_TW": "Asia Poker 服務條款"
   }
 ]

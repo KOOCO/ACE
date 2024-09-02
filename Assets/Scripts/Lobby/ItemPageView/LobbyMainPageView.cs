@@ -242,7 +242,7 @@ public class LobbyMainPageView : MonoBehaviour
         }
 
         #endregion
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.H))
         {
            
             SwaggerAPIManager.Instance.SendGetAPI("/api/app/banner-images/get-list");
