@@ -31,49 +31,11 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     public void SendPostAPI<T1>(string apiUrl, T1 data, UnityAction<string> callback = null, UnityAction errCallback = null)
         where T1 : class
     {
-        StartCoroutine(ISendPOSTRequest(apiUrl,data,callback,errCallback));
+        StartCoroutine(ISendPOSTRequest(apiUrl, data, callback, errCallback));
     }
-    public void SendGetAPI(string apiUrl, UnityAction<string> callback = null, UnityAction errCallback = null)
+    public void SendGetAPI(string apiUrl, UnityAction<string> callback = null, UnityAction errCallback = null, bool addHeader = false)
     {
-        StartCoroutine(ISendGetRequest(apiUrl, callback, errCallback));
-    }
-    [Serializable]
-    public class LoginResponse
-    {
-        public string accessToken { get; set; }
-        public string memberId { get; set; }
-        public string memberStatus { get; set; }
-        public int promotionCoin { get; set; }
-        public int gold { get; set; }
-        public int timer { get; set; }
-        public int currentEnergy { get; set; }
-        public int maxEnergy { get; set; }
-        public decimal WalletAmount { get; set; }
-
-    }
-    public class GetBanner_File
-    {
-        public string imageName {  get; set; }
-
-        public string imageUrl { get; set; }
-
-        public string blobFileName { get; set; }
-
-        public string startDate { get; set; }
-
-        public string endDate { get; set; }
-
-        public bool isEnabled { get; set; }
-
-    }
-    public class RegisterResponce
-    {
-        
-    }
-    public class ErrorResponse
-    {
-        public string error { get; set; }
-        public string message { get; set; }
+        StartCoroutine(ISendGetRequest(apiUrl, callback, errCallback, addHeader));
     }
 
     /// <summary>
@@ -103,13 +65,13 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
-        {         
+        {
             //請求錯誤
             string errorJson = request.downloadHandler.text;
             Debug.LogError($"Error: {request.error}\nError Details: {errorJson}");
             Debug.LogError(errorJson);
 
-            if (errorJson== "Invalid username or password!")
+            if (errorJson == "Invalid username or password!")
             {
                 DataManager.TipText = LanguageManager.Instance.GetText("Invalid Username or Password!");
                 DataManager.istipAppear = true;
@@ -120,14 +82,14 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         else
         {
             string Response = request.downloadHandler.text;
-            
-          
+
+
             //Callback執行
             if (callback != null)
             {
                 //T2 response = JsonUtility.FromJson<T2>(request.downloadHandler.text);
                 callback?.Invoke(Response);
-            }       
+            }
         }
     }
     public string ConvertHtmlToJson(string htmlString)
@@ -140,27 +102,28 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
 
         return json;
     }
-    public IEnumerator ISendGetRequest(string apiUrl, UnityAction<string> callback = null, UnityAction errCallback = null)
+    public IEnumerator ISendGetRequest(string apiUrl, UnityAction<string> callback = null, UnityAction errCallback = null, bool addHeader = false)
     {
         // 將GetBanner對象轉換為查詢字符串
         //string queryString = $"?Filter={Filter}&StartDate={StartDate}&EndDate={EndDate}&IsEnabled={IsEnabled}&Sorting={Sorting}&SkipCount={data.SkipCount}&MaxResultCount={data.MaxResultCount}";
         string fullUrl = BASE_URL + apiUrl; //+ queryString;
 
         // 創建GET請求
-        UnityWebRequest GETrequest = UnityWebRequest.Get(fullUrl);
-        GETrequest.downloadHandler = new DownloadHandlerBuffer();
+        UnityWebRequest getRequest = UnityWebRequest.Get(fullUrl);
+        getRequest.downloadHandler = new DownloadHandlerBuffer();
+        if (addHeader)
+            getRequest.SetRequestHeader("Authorization", "Bearer " + Services.PlayerService.GetAccessToken());
+        yield return getRequest.SendWebRequest();
 
-        yield return GETrequest.SendWebRequest();
-
-        if (GETrequest.result == UnityWebRequest.Result.ConnectionError || GETrequest.result == UnityWebRequest.Result.ProtocolError)
+        if (getRequest.result == UnityWebRequest.Result.ConnectionError || getRequest.result == UnityWebRequest.Result.ProtocolError)
         {
             // 請求錯誤
-            Debug.LogError($"Error: {GETrequest.error}\nError Details: {GETrequest.downloadHandler.text}");
+            Debug.LogError($"Error: {getRequest.error}\nError Details: {getRequest.downloadHandler.text}");
             errCallback?.Invoke();
         }
         else
         {
-            string response = GETrequest.downloadHandler.text;
+            string response = getRequest.downloadHandler.text;
             Debug.Log("Response: " + response);
             GetBanner getBanner = JsonConvert.DeserializeObject<GetBanner>(response);
             //ConvertHtmlToJson(response);

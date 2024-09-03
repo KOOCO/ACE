@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
+using Newtonsoft.Json;
+using UnityEditor.PackageManager.UI;
+using System.Linq;
 
 public class LobbyShopView : MonoBehaviour
 {
@@ -11,9 +14,9 @@ public class LobbyShopView : MonoBehaviour
     Toggle All_Tog, Stamina_Tog, Gold_Tog, ExtraTime_Tog;
 
     [SerializeField]
-    GameObject All_Area,Stamina_Area, Gold_Area, ExtraTime_Area;
+    GameObject All_Area, Stamina_Area, Gold_Area, ExtraTime_Area;
     [SerializeField]
-    TextMeshProUGUI ALLTog_Text,StaminaTog_Text, GoldTog_Text, ExtraTimeTog_Text;
+    TextMeshProUGUI ALLTog_Text, StaminaTog_Text, GoldTog_Text, ExtraTimeTog_Text;
     [SerializeField]
     TextMeshProUGUI StaminaTitle_Text, GoldTitle_Text, ExtraTimeTitle_Text;
 
@@ -57,15 +60,15 @@ public class LobbyShopView : MonoBehaviour
     [SerializeField]
     Image iconSprite;
     [SerializeField]
-    Button Cancle, Confirm,CloseBtn;
+    Button Cancle, Confirm, CloseBtn;
     [SerializeField]
     GameObject PurchaseSuccessUI;
     [SerializeField]
-    TextMeshProUGUI MallMsgInfo,Cancle_Text,Confirm_Text,PurchaseSuccessText;
-    
+    TextMeshProUGUI MallMsgInfo, Cancle_Text, Confirm_Text, PurchaseSuccessText;
 
 
-    Dictionary<ItemType,GameObject> ItemList;
+    public ItemList shopItemsList = new();
+    Dictionary<ItemType, GameObject> ItemList;
 
 
     /// <summary>
@@ -78,7 +81,7 @@ public class LobbyShopView : MonoBehaviour
     {
         All,
         Stamina,
-        Gold, 
+        Gold,
         ExtraTime,
     }
 
@@ -93,7 +96,7 @@ public class LobbyShopView : MonoBehaviour
         GoldTitle_Text.text = LanguageManager.Instance.GetText("Gold");
         ExtraTimeTitle_Text.text = LanguageManager.Instance.GetText("EXTRATIME");
 
-        StaminaTitle.text =  LanguageManager.Instance.GetText("Stamina");
+        StaminaTitle.text = LanguageManager.Instance.GetText("Stamina");
         GoldTitle.text = LanguageManager.Instance.GetText("Gold");
         ExtraTimeTitle.text = LanguageManager.Instance.GetText("EXTRATIME");
 
@@ -131,14 +134,40 @@ public class LobbyShopView : MonoBehaviour
     #region 生成初始商店
     public void InitShop()
     {
+        SwaggerAPIManager.Instance.SendGetAPI("api/app/items/get-list", CallBackOnGetList, null, true);
+        // CreateShopItem(All_ShopItem_Sample[0], All_ShopItem_Sample[0].transform.parent.gameObject, DataManager.Stamina_Shop, AlbumEnum.Shop_StaminaAlbum);
+        // CreateShopItem(All_ShopItem_Sample[1], All_ShopItem_Sample[1].transform.parent.gameObject, DataManager.Gold_Shop, AlbumEnum.Shop_GoldAlbum);
+        // CreateShopItem(All_ShopItem_Sample[2], All_ShopItem_Sample[2].transform.parent.gameObject, DataManager.ExtraTime_Shop, AlbumEnum.Shop_ExtraTimeAlbum);
 
-        CreateShopItem(All_ShopItem_Sample[0], All_ShopItem_Sample[0].transform.parent.gameObject, DataManager.Stamina_Shop, AlbumEnum.Shop_StaminaAlbum);
-        CreateShopItem(All_ShopItem_Sample[1], All_ShopItem_Sample[1].transform.parent.gameObject, DataManager.Gold_Shop, AlbumEnum.Shop_GoldAlbum);
-        CreateShopItem(All_ShopItem_Sample[2], All_ShopItem_Sample[2].transform.parent.gameObject, DataManager.ExtraTime_Shop, AlbumEnum.Shop_ExtraTimeAlbum);
-
-        CreateShopItem(Stamina_Sample, Stamina_Parent, DataManager.Stamina_Shop, AlbumEnum.Shop_StaminaAlbum);
-        CreateShopItem(Gold_Sample,Gold_Parent,DataManager.Gold_Shop, AlbumEnum.Shop_GoldAlbum);
-        CreateShopItem(ExtraTime_Sample,ExtraTime_Parent,DataManager.ExtraTime_Shop, AlbumEnum.Shop_ExtraTimeAlbum);
+        // CreateShopItem(Stamina_Sample, Stamina_Parent, DataManager.Stamina_Shop, AlbumEnum.Shop_StaminaAlbum);
+        // CreateShopItem(Gold_Sample, Gold_Parent, DataManager.Gold_Shop, AlbumEnum.Shop_GoldAlbum);
+        // CreateShopItem(ExtraTime_Sample, ExtraTime_Parent, DataManager.ExtraTime_Shop, AlbumEnum.Shop_ExtraTimeAlbum);
+    }
+    void CallBackOnGetList(string data)
+    {
+        Debug.Log(data);
+        shopItemsList = JsonConvert.DeserializeObject<ItemList>(data);
+        foreach (var item in shopItemsList.items)
+        {
+            switch (item.name)
+            {
+                case "Gold":
+                    Debug.Log("GOLD");
+                    CreateShopItem(All_ShopItem_Sample[1], ShopItemView[1].transform.GetChild(1).transform, shopItemsList.items.ToList());
+                    CreateShopItem(Gold_Sample, Gold_Parent.transform, shopItemsList.items.ToList());
+                    break;
+                case "Extra Time":
+                    Debug.Log("Extra Time");
+                    CreateShopItem(All_ShopItem_Sample[2], ShopItemView[2].transform.GetChild(1).transform, shopItemsList.items.ToList());
+                    CreateShopItem(ExtraTime_Sample, ExtraTime_Parent.transform, shopItemsList.items.ToList());
+                    break;
+                case "Stamina":
+                    Debug.Log("Stamina");
+                    CreateShopItem(All_ShopItem_Sample[0], ShopItemView[0].transform.GetChild(1).transform, shopItemsList.items.ToList());
+                    CreateShopItem(Stamina_Sample, Stamina_Parent.transform, shopItemsList.items.ToList());
+                    break;
+            }
+        }
     }
     #endregion
 
@@ -163,12 +192,12 @@ public class LobbyShopView : MonoBehaviour
     {
         for (int i = 1; i < ShopItemView.Length; i++)
         {
-            int index = (All_ShopItem_Sample[i-1].transform.parent.childCount - 1) / 3;
+            int index = (All_ShopItem_Sample[i - 1].transform.parent.childCount - 1) / 3;
 
-            RectTransform CurrentRect = ShopItemView[i-1].GetComponent<RectTransform>();
+            RectTransform CurrentRect = ShopItemView[i - 1].GetComponent<RectTransform>();
             RectTransform NextRect = ShopItemView[i].GetComponent<RectTransform>();
 
-            if ((All_ShopItem_Sample[i-1].transform.parent.childCount - 1)  % 3 > 0)
+            if ((All_ShopItem_Sample[i - 1].transform.parent.childCount - 1) % 3 > 0)
             {
                 NextRect.localPosition = new Vector2(CurrentRect.localPosition.x, ((CurrentRect.localPosition.y - 170)) - (index * 143));
             }
@@ -180,7 +209,7 @@ public class LobbyShopView : MonoBehaviour
 
         RectTransform contentRect = content.GetComponent<RectTransform>();
         float rectTemp = 0;
-        
+
         rectTemp = ShopItemView[ShopItemView.Length - 1].transform.localPosition.y - 200 * 2;
 
         contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, -rectTemp);
@@ -198,7 +227,7 @@ public class LobbyShopView : MonoBehaviour
         //  切換全商品介面
         All_Tog.onValueChanged.AddListener((isOn) =>
         {
-            if (isOn) 
+            if (isOn)
             {
                 itemType = ItemType.All;
                 OpenShopItem();
@@ -283,20 +312,36 @@ public class LobbyShopView : MonoBehaviour
     /// <param name="SampleParent">Item父物件</param>
     /// <param name="shopDatas">傳入商店資料</param>
     /// <param name="albumEnum">圖集枚舉</param>
-    private void CreateShopItem(GameObject Sample,GameObject SampleParent,List<ShopData> shopDatas,AlbumEnum albumEnum)
+    private void CreateShopItem(GameObject Sample, GameObject SampleParent, List<ShopData> shopDatas, AlbumEnum albumEnum)
     {
         Sample.SetActive(false);
 
-        for (int i=0;i<shopDatas.Count;i++)
+        for (int i = 0; i < shopDatas.Count; i++)
         {
             RectTransform rect = Instantiate(Sample, SampleParent.transform).GetComponent<RectTransform>();
             rect.gameObject.SetActive(true);
             var shopSample = rect.GetComponent<ShopSample>();
-            shopSample.SetShopItemData(Sample,shopDatas[i], i, albumEnum);
-            shopSample.OnBuyAddListener(this,MallMsg,shopDatas[i], iconSprite, MallMsgInfo,Sample.name);
+            shopSample.SetShopItemData(Sample, shopDatas[i], i, albumEnum);
+            shopSample.OnBuyAddListener(this, MallMsg, shopDatas[i], iconSprite, MallMsgInfo, Sample.name);
         }
     }
-    
+
+    public void CreateShopItem(GameObject shopItem, Transform itemParent, List<Item> items)
+    {
+        ClearChilds(itemParent.transform);
+        foreach (Item item in items)
+        {
+            ShopSample newShopItem = Instantiate(shopItem, itemParent).GetComponent<ShopSample>();
+            newShopItem.SetShopItemData(item);
+        }
+    }
+    public void ClearChilds(Transform _stransform)
+    {
+        foreach (Transform child in _stransform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
 
     /// <summary>
     /// 購買UI彈窗事件訂閱
@@ -318,7 +363,7 @@ public class LobbyShopView : MonoBehaviour
             else
             {
                 PurchaseSuccessUI.SetActive(!PurchaseSuccessUI.activeSelf);
-                
+
                 switch (itemName)
                 {
                     case "Stamina":
@@ -344,7 +389,7 @@ public class LobbyShopView : MonoBehaviour
 
     private void OpenShopItem()
     {
-        switch(itemType)
+        switch (itemType)
         {
             case ItemType.All:
                 ActiveShopUI(ItemType.All);
