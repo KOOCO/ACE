@@ -968,9 +968,10 @@ public class GameControl : MonoBehaviour
                 gameView.UpdateGameRoomInfo(gameRoomData);
 
                 if (gameRoomData.playingPlayersIdList.Count() == 1 &&
-                    preUpdateGameFlow <= GameFlowEnum.SetBlind)
+                    preUpdateGameFlow >= GameFlowEnum.SetBlind)
                 {
                     //剩下一名玩家在進行遊戲
+                    Debug.Log("剩下一名玩家在進行遊戲");
                     StartCoroutine(IJudgeNextSeason());
                 }
                 else
@@ -981,7 +982,7 @@ public class GameControl : MonoBehaviour
             }
             else
             {
-                //遊戲只剩一人進行判斷是否開始
+                //剩下一名玩家在等待遊戲
                 JudgePauseToStar();
             }
         }
@@ -1003,7 +1004,7 @@ public class GameControl : MonoBehaviour
     }
 
     /// <summary>
-    /// 遊戲只剩一人進行判斷是否開始
+    /// 剩下一名玩家在等待遊戲
     /// </summary>
     private void JudgePauseToStar()
     {
@@ -1532,12 +1533,12 @@ public class GameControl : MonoBehaviour
         //房主執行
         if (gameRoomData.hostId == DataManager.UserId)
         {
-            yield return new WaitForSeconds(1);
-
             List<GameRoomPlayerData> canActionPlayers = GetCanActionPlayer().OrderBy(x => x.currAllBetChips).ToList();
             List<GameRoomPlayerData> allInPlayers = GetAllInPlayer().OrderBy(x => x.currAllBetChips).ToList();
             List<GameRoomPlayerData> foldPlayers = GetFoldPlayer().OrderBy(x => x.currAllBetChips).ToList();
             List<GameRoomPlayerData> playingPlayers = GetPlayingPlayer().OrderBy(x => x.currAllBetChips).ToList();
+
+            yield return new WaitForSeconds(1);
 
             //所有玩家已下注
             bool isAllBet = true;

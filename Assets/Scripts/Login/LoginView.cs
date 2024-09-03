@@ -510,8 +510,17 @@ public class LoginView : MonoBehaviour
         //簡訊OTP提交
         WalletRegisterSubmit_Btn.onClick.AddListener(() =>
         {
-            Debug.Log($"Wallet Register:{WalletRegister_If.text}/{WalletEmail_If.text}");
-            //SMSOTPSubmitAction();
+            //Debug.Log($"Wallet Register:{WalletRegister_If.text}/{WalletEmail_If.text}");
+
+            ViewManager.Instance.OpenWaitingView(transform);
+
+            register_passwordless walletRegister = new register_passwordless()
+            {
+                userName = WalletRegister_If.text,
+                emailAddress = WalletEmail_If.text,
+                walletAddress = "0x315d757d5B0132D9E60F2E05054582DF83B522D0",//DataManager.UserWalletAddress,
+            };
+            SwaggerAPIManager.Instance.SendPostAPI<register_passwordless>("/api/app/ace-accounts/register-passwordless", walletRegister, WalletRegisterCallback);
         });
 
         #endregion
@@ -521,8 +530,10 @@ public class LoginView : MonoBehaviour
         //手機登入提交
         SignIn_Btn.onClick.AddListener(() =>
         {
-            currVerifyPhoneNumber = SingInAccount_If.text;
+            ViewManager.Instance.OpenWaitingView(transform);
 
+            recodePhoneNumber = SingInAccount_If.text;
+            recodePassword = SignInPassword_If.text;
 
             LoginRequest login = new LoginRequest()
             {
@@ -592,7 +603,6 @@ public class LoginView : MonoBehaviour
         //手機注冊提交
         RegisterSubmit_Btn.onClick.AddListener(() =>
         {
-          
             MobileRegisterSubmit();
 
             SignInNumberIf_Text.text = currVerifyPhoneNumber;
@@ -602,19 +612,27 @@ public class LoginView : MonoBehaviour
         //註冊成功登入
         RegisterSuccSignin_Btn.onClick.AddListener(() =>
         {
+            ViewManager.Instance.OpenWaitingView(transform);
 
-           
-            
+            PlayerPrefs.SetString(LocalPhoneNumber, recodePhoneNumber);
+            PlayerPrefs.SetString(LocalPaswword, recodePassword);
 
-            SignInNumberIf_Text.text = currVerifyPhoneNumber;
-
-
-            RegisterSuccessSignIn();
-            SignInNumber_If.text = RegisterAccountName_If.text;
-            Debug.Log(SignInNumber_If.text);
+            LoginRequest login = new LoginRequest()
+            {
+                userNameOrEmailAddress = recodePhoneNumber,
+                password = recodePassword,
+                ipAddress = JsonStringIp,
+                machineCode = "123456789",
+            };
+            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest>("/api/app/ace-accounts/login", login, OnIntoLobby);
         });
 
-      
+        //註冊成功登入取消按鈕
+        RegisterSuccessfulCancel_Btn.onClick.AddListener(() =>
+        {
+            OnMobileSignInInit();
+        });
+
 
         #endregion
 
@@ -689,21 +707,10 @@ public class LoginView : MonoBehaviour
             Privacy_text.SetActive(true);
         });
         #endregion
-
-        //註冊成功登入取消按鈕
-        RegisterSuccessfulCancel_Btn.onClick.AddListener(() =>
-        {
-            
-            OnMobileSignInInit();
-            SignInNumber_If.text = RegisterAccountName_If.text;
-            Debug.Log(SignInNumber_If.text);
-        });
     }
 
     private void Start()
     {
-      
-
         string localIP = GetLocalIPAddress();
 
         Local_IP local_Ip = new Local_IP { IPAddress = localIP };
@@ -754,9 +761,6 @@ public class LoginView : MonoBehaviour
 
     private void Update()
     {
-       
-
-
         SingInAccount = false;
         LoginPassword = false;
 
@@ -882,13 +886,8 @@ public class LoginView : MonoBehaviour
 #endif
     }
 
-
-
-
     #region 工具類
 
-
-    #region 登入帳號
     public void OnPointerClick(PointerEventData eventData)
     {
         //註冊
@@ -907,12 +906,6 @@ public class LoginView : MonoBehaviour
                     break;
             }
         }
-        #endregion
-
- 
-
-
-            
 
         //隱私條款
         int privacyLinkIndex = TMP_TextUtilities.FindIntersectingLink(Privacy_TmpTxt, Input.mousePosition, null);
@@ -1025,8 +1018,8 @@ public class LoginView : MonoBehaviour
     private void LocalDataSave() 
     {
         PlayerPrefs.SetInt(LocalCountryCodeIndex, recodeCountryCodeIndex);
-        PlayerPrefs.SetString(LocalPhoneNumber, SingInAccount_If.text);
-        PlayerPrefs.SetString(LocalPaswword, SignInPassword_If.text);
+        PlayerPrefs.SetString(LocalPhoneNumber, recodePhoneNumber);
+        PlayerPrefs.SetString(LocalPaswword, recodePassword);
     }
 
 #endregion
@@ -1044,10 +1037,8 @@ public class LoginView : MonoBehaviour
         MobileSignInError_Txt.text = "";
 
         await ThirdwebManager.Instance.SDK.Wallet.Disconnect(true);
-
-
        
-            SignInNumber_If.text = !string.IsNullOrEmpty(recodePhoneNumber) ?
+        SignInNumber_If.text = !string.IsNullOrEmpty(recodePhoneNumber) ?
                                recodePhoneNumber :
                                "";
         
@@ -1055,7 +1046,7 @@ public class LoginView : MonoBehaviour
                                  recodePassword :
                                  "";
       
-        MobileTip_Txt.text = LanguageManager.Instance.GetText("Please use your mobile phone number to log in.");
+        MobileTip_Txt.text = LanguageManager.Instance.GetText("Please use your account to login in.");
          
         MobileSignIn_Obj.SetActive(true);
         MobileSiginPage_Obj.SetActive(true);
@@ -1169,7 +1160,6 @@ public class LoginView : MonoBehaviour
 
     #region 手機註冊
     
-
     /// <summary>
     /// 手機註冊初始化
     /// </summary>
@@ -1292,6 +1282,7 @@ public class LoginView : MonoBehaviour
             //資料正確    
             //Debug.Log($"Register Submit = Phone:{phoneNumber} / Code:{code} / Password:{psw}");
 
+            currVerifyPhoneNumber = RegisterAccountName_If.text;
             currVerifyPsw = psw;
             currVerifyCode = code;
 
@@ -1302,17 +1293,6 @@ public class LoginView : MonoBehaviour
             //讀取資料判斷是否已有資料
             JudgeDateExists(nameof(RegisterVerifyCode),
                             LoginType.phoneUser.ToString());
-            //送出註冊內容
-            Register register = new Register()
-            {
-                //RegisterNumber_If, RegisterOTP_If, RegisterPassword_If, RegisterAccountName_If;
-                phoneNumber = RegisterNumber_If.text,//把 RegisterNumber物件的匯入
-                userName = RegisterAccountName_If.text,
-                password = RegisterPassword_If.text,
-                confirmPassword = RegisterPassword_If.text,
-
-            };
-            SwaggerAPIManager.Instance.SendPostAPI<Register>("/api/app/ace-accounts/register", register, WritePhoneNewUser);
         }
     }
    
@@ -1340,7 +1320,8 @@ public class LoginView : MonoBehaviour
     {
         AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
 
-        if (loginData.phoneNumber != null)
+        if (loginData != null &&
+            loginData.phoneNumber != null)
         {
             //已有相同手機號
             ViewManager.Instance.CloseWaitingView(transform);
@@ -1349,8 +1330,7 @@ public class LoginView : MonoBehaviour
         }
 
         JSBridgeManager.Instance.FirebaseVerifyCode(currVerifyCode,
-                                                    gameObject.name,
-                                                    nameof(RegisterOTPVerifyCallback));
+                                                    "Register");
     }
 
     /// <summary>
@@ -1369,8 +1349,20 @@ public class LoginView : MonoBehaviour
             return;
         }
 
+        //送出註冊內容
+        Register register = new Register()
+        {
+            //RegisterNumber_If, RegisterOTP_If, RegisterPassword_If, RegisterAccountName_If;
+            phoneNumber = RegisterNumber_If.text,//把 RegisterNumber物件的匯入
+            userName = RegisterAccountName_If.text,
+            password = RegisterPassword_If.text,
+            confirmPassword = RegisterPassword_If.text,
+
+        };
+        SwaggerAPIManager.Instance.SendPostAPI<Register>("/api/app/ace-accounts/register", register, WritePhoneNewUser);
+
         //checkDataCallbackFunc = WritePhoneNewUser;
-        SetUniqueData();
+        //SetUniqueData();
     }
 
     /// <summary>
@@ -1388,12 +1380,9 @@ public class LoginView : MonoBehaviour
         KybordEnterAction = RegisterSuccessSignIn;
 
         //記錄的資料
-        recodePhoneNumber = RegisterNumber_If.text;
+        recodePhoneNumber = RegisterAccountName_If.text;
         recodePassword = RegisterPassword_If.text;
         recodeCountryCodeIndex = RegisterNumber_Dd.value;
-
-        //本地資料紀錄
-        LocalDataSave();
 
         /*
         //寫入資料
@@ -1520,8 +1509,7 @@ public class LoginView : MonoBehaviour
         }
 
         JSBridgeManager.Instance.FirebaseVerifyCode(currVerifyCode,
-                                                    gameObject.name,
-                                                    nameof(LostPswOTPVerityCallback));
+                                                    "LostPsw");
     }
 
     /// <summary>
@@ -1672,6 +1660,18 @@ public class LoginView : MonoBehaviour
 
         #region 錢包連接
 
+#if UNITY_EDITOR
+
+        passwordless_login wallLogin = new passwordless_login()
+        {
+            walletAddress = "0x315d757d5B0132D9E60F2E05054582DF83B522D0",
+            ipAddress = JsonStringIp,
+            machineCode = "123456789",
+        };
+        SwaggerAPIManager.Instance.SendPostAPI<passwordless_login>("/api/app/ace-accounts/passwordless-login", wallLogin, WalletLoginCallback);
+        return;
+#endif
+
         currConnectingWallet = walletEnum;
         DownloadWallet_Txt.gameObject.SetActive(DataManager.IsMobilePlatform);
 
@@ -1798,10 +1798,41 @@ public class LoginView : MonoBehaviour
         Debug.Log($"Address:{DataManager.UserWalletAddress}");
         Debug.Log($"Balance:{DataManager.UserWalletBalance}");
 
-        NFTManager.Instance.StartHandleUpdate();
+        //NFTManager.Instance.StartHandleUpdate();
         WalletManager.Instance.StartCheckConnect();
 
+        passwordless_login wallLogin = new passwordless_login()
+        {
+            walletAddress = DataManager.UserWalletAddress,
+            ipAddress = JsonStringIp,
+            machineCode = "123456789",
+        };
+        SwaggerAPIManager.Instance.SendPostAPI<passwordless_login>("/api/app/ace-accounts/passwordless-login", wallLogin, WalletLoginCallback);
         //OpenSMSVerificationPage();
+    }
+
+    /// <summary>
+    /// 錢包登入回傳
+    /// </summary>
+    /// <param name="jsonData"></param>
+    public void WalletLoginCallback(string jsonData)
+    {
+        Debug.Log($"錢包登入回傳:{jsonData}");
+        //var data = JsonConvert.DeserializeObject<passwordless_login>(jsonData);
+    }
+
+    /// <summary>
+    /// 錢包註冊回傳
+    /// </summary>
+    /// <param name="jsonData"></param>
+    public void WalletRegisterCallback(string jsonData)
+    {
+        ViewManager.Instance.CloseWaitingView(transform);
+
+        if (jsonData == "SUCCESS")
+        {
+            OnIntoLobby(jsonData);
+        }
     }
 
     /// <summary>
@@ -1871,8 +1902,7 @@ public class LoginView : MonoBehaviour
 
             ViewManager.Instance.OpenWaitingView(transform);
             JSBridgeManager.Instance.FirebaseVerifyCode(currVerifyCode,
-                                                        gameObject.name,
-                                                        nameof(WalletOTPVerifyCallback));
+                                                        "Wallet");
         }     
         else
         {
@@ -1885,8 +1915,6 @@ public class LoginView : MonoBehaviour
     /// </summary>
     /// <param name="isSuccess">回傳結果(true/false)</param>
     /// 
-
-    
     public void WalletOTPVerifyCallback(string isSuccess)
     {
         ViewManager.Instance.CloseWaitingView(transform);
@@ -2123,10 +2151,10 @@ public class LoginView : MonoBehaviour
 
         LocalDataSave();
 
-        DataManager.UserNickname = SingInAccount_If.text;
-        DataManager.UserId = SingInAccount_If.text;
-        DataManager.UserLoginPhoneNumber = currVerifyPhoneNumber;
-        DataManager.UserLoginPassword = currVerifyPsw;
+        DataManager.UserNickname = recodePhoneNumber;
+        DataManager.UserId = recodePhoneNumber;
+        DataManager.UserLoginPhoneNumber = recodePhoneNumber;
+        DataManager.UserLoginPassword = recodePassword;
 
         LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
     }

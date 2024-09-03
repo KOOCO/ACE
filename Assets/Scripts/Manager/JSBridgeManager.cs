@@ -63,25 +63,15 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
     #region Firebase
 
     [DllImport("__Internal")]
-    private static extern bool JS_FirebaseVerifyCode(string code, string objNamePtr, string callbackFunPtr);
+    private static extern bool JS_FirebaseVerifyCode(string code, string typePtr);
     /// <summary>
     /// 驗證OTP
     /// </summary>
     /// <param name="code">OTP Code</param>
-    /// <param name="objNamePtr">回傳物件名</param>
-    /// <param name="callbackFunPtr">回傳方法名</param>
-    public void FirebaseVerifyCode(string code, string objNamePtr, string callbackFunPtr)
+    /// <param name="typePtr">回傳物件名</param>
+    public void FirebaseVerifyCode(string code, string typePtr)
     {
-        if (code == "123123123")
-        {
-            GameObject obj = GameObject.Find(objNamePtr);
-            if (obj != null)
-            {
-                obj.SendMessage(callbackFunPtr, true);
-            }
-            return;
-        }
-            JS_FirebaseVerifyCode(code, objNamePtr, callbackFunPtr);
+        JS_FirebaseVerifyCode(code, typePtr);
     }
 
     [DllImport("__Internal")]

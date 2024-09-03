@@ -90,7 +90,6 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     {
         string fullUrl = BASE_URL + apiUrl;
 
-
         //發送的Json
         string jsonData = JsonUtility.ToJson(data);
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
@@ -120,7 +119,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         else
         {
             string Response = request.downloadHandler.text;
-            
+            Debug.Log(Response);
           
             //Callback執行
             if (callback != null)
@@ -170,6 +169,24 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
             callback?.Invoke(response);
         }
     }
+}
 
+/// <summary>
+/// 錢包登入資料
+/// </summary>
+public class passwordless_login
+{
+    public string walletAddress;
+    public string ipAddress;
+    public string machineCode;
+}
 
+/// <summary>
+/// 錢包註冊資料
+/// </summary>
+public class register_passwordless
+{
+    public string userName;
+    public string emailAddress;
+    public string walletAddress;
 }

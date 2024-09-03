@@ -575,9 +575,9 @@
     "zh_TW": null
   },
   {
-    "ID": "Please use your mobile phone number to log in.",
-    "English": "Please use your mobile phone number to log in.",
-    "zh_TW": "請使用您的手機號碼登入。"
+    "ID": "Please use your account to login in.",
+    "English": "Please use your account to login in.",
+    "zh_TW": "請使用您的帳號登入。"
   },
   {
     "ID": "You Will Receive A New Account.",

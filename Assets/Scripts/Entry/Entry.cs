@@ -69,6 +69,17 @@ public class Entry : UnitySingleton<Entry>
         LoadSceneManager.Instance.LoadScene(SceneEnum.Login);
     }
 
+    private void Update()
+    {
+        if (releaseType == ReleaseEnvironmentEnum.JimmyTest)
+        {
+            if (Input.GetKeyDown(KeyCode.RightAlt))
+            {
+                GameObject.FindAnyObjectByType<LoginView>().OnIntoLobby("");
+            }
+        }
+    }
+
     public class Reigster
     {
         public string phoneNumber;

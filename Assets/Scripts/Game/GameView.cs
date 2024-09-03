@@ -880,9 +880,6 @@ public class GameView : MonoBehaviour
         if (!thisData.IsPlaying)
         {
             BackToSit_Btn.gameObject.SetActive(thisData.IsSitOut);
-            WaitingTip_Txt.text = thisData.IsSitOut == false ?
-                           "" :
-                           $"{LanguageManager.Instance.GetText("Waiting for the next round...")}";
         }
     }
 
@@ -1614,7 +1611,6 @@ public class GameView : MonoBehaviour
                    (PlayerStateEnum)player.gameState != PlayerStateEnum.Fold)
                 {
                     thisData.IsPlaying = true;
-
                     WaitingTip_Txt.text = "";
                     gamePlayerInfo.IsOpenInfoMask = false;
 
@@ -1627,12 +1623,6 @@ public class GameView : MonoBehaviour
                                         true);
                     }
                 }
-
-                WaitingTip_Txt.text = (PlayerStateEnum)player.gameState != PlayerStateEnum.Waiting ?
-                                      "" :
-                                      $"{LanguageManager.Instance.GetText("Waiting for the next round...")}";
-
-
 
                 if ((PlayerStateEnum)player.gameState == PlayerStateEnum.Waiting)
                 {

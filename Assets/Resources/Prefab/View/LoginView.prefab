@@ -3064,7 +3064,6 @@ MonoBehaviour:
   WalletRegister_If_Placeholder: {fileID: 7333414348288869604}
   WalletEmailTitle_Txt: {fileID: 8511306748609582489}
   WalletEmailIf_Placeholder: {fileID: 7237675886219542763}
-  SMSOTPSendBtn_Txt: {fileID: 0}
   SMSOTPSubmitBtn_Txt: {fileID: 6038337291156501651}
   MobileSignIn_Obj: {fileID: 2338227885061680249}
   MobileSiginPage_Obj: {fileID: 7090290602706842150}
@@ -3101,7 +3100,7 @@ MonoBehaviour:
   RegisterPasswordEye_Btn: {fileID: 2391369624630454629}
   RegisterSubmit_Btn: {fileID: 4099841943491871233}
   RegisterSuccSignin_Btn: {fileID: 4445961932518928332}
-  RegisterSuccessfulCancel_Btn: {fileID: 4445961932518928332}
+  RegisterSuccessfulCancel_Btn: {fileID: 1811422973006211998}
   RegisterNumber_If: {fileID: 8807284016663548093}
   RegisterOTP_If: {fileID: 2267895472428880555}
   RegisterPassword_If: {fileID: 1587846338423454546}
@@ -3361,7 +3360,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &720359484208024900
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4224,14 +4223,14 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 2
+  m_ContentType: 0
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 4
+  m_KeyboardType: 0
   m_LineType: 0
   m_HideMobileInput: 0
   m_HideSoftKeyboard: 0
-  m_CharacterValidation: 2
+  m_CharacterValidation: 0
   m_RegexValue: 
   m_GlobalPointSize: 14
   m_CharacterLimit: 15
@@ -21676,7 +21675,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7667961083813465258
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23519,17 +23518,17 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 2
+  m_ContentType: 0
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 4
+  m_KeyboardType: 0
   m_LineType: 0
   m_HideMobileInput: 0
   m_HideSoftKeyboard: 0
-  m_CharacterValidation: 2
+  m_CharacterValidation: 0
   m_RegexValue: 
   m_GlobalPointSize: 14
-  m_CharacterLimit: 10
+  m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []

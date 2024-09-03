@@ -2,22 +2,12 @@ mergeInto(LibraryManager.library, {
 
     // 驗證OTP 
     // code = 驗證碼
-    // objNamePtr = 回傳物件名
-    // callbackFunPtr = 回傳方法名
-    JS_FirebaseVerifyCode: function(codeStr, objNamePtr, callbackFunPtr) {
+    // typePtr = 驗證類型(註冊/忘記密碼)
+    JS_FirebaseVerifyCode: function(codeStr, typePtr) {
         const code = UTF8ToString(codeStr);
-        const gameObjectName = UTF8ToString(objNamePtr);
-        const callbackFunctionName = UTF8ToString(callbackFunPtr);
+        const type = UTF8ToString(typePtr);
 
-        window.confirmationResult.confirm(code).then((result) => {
-            const user = result.user;
-
-            window.unityInstance.SendMessage(gameObjectName, callbackFunctionName, "true");
-        }).catch((error) => {
-            console.log("Verify Code Error : " + error);
-
-            window.unityInstance.SendMessage(gameObjectName, callbackFunctionName, "false");
-        });
+        window.verifyCode(code, type);
     },
 
     // 開始監聽資料
