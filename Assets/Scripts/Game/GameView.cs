@@ -263,9 +263,6 @@ public class GameView : MonoBehaviour
     /// </summary>
     private void UpdateLanguage()
     {
-
-    
-
         #region 操作按鈕
 
         if (strData != null)
@@ -293,12 +290,7 @@ public class GameView : MonoBehaviour
         GameRules_Top.text= LanguageManager.Instance.GetText("Game Rules");
         GameRules_mid.text= LanguageManager.Instance.GetText("Welcome to AISA POKER! Learn the rules and start playing right away!");
 
-        Debug.Log(LanguageManager.Instance.GetCurrLanguageIndex());
-
-       
-
-
-         if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
+        if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
         {
             GameRules_ScrollView.GetComponent<ScrollRect>().content = En_text.GetComponent<RectTransform>(); 
             En_text.SetActive(true);
@@ -888,7 +880,7 @@ public class GameView : MonoBehaviour
         if (!thisData.IsPlaying)
         {
             BackToSit_Btn.gameObject.SetActive(thisData.IsSitOut);
-            WaitingTip_Txt.text = thisData.IsSitOut ?
+            WaitingTip_Txt.text = thisData.IsSitOut == false ?
                            "" :
                            $"{LanguageManager.Instance.GetText("Waiting for the next round...")}";
         }
@@ -1636,6 +1628,12 @@ public class GameView : MonoBehaviour
                     }
                 }
 
+                WaitingTip_Txt.text = (PlayerStateEnum)player.gameState != PlayerStateEnum.Waiting ?
+                                      "" :
+                                      $"{LanguageManager.Instance.GetText("Waiting for the next round...")}";
+
+
+
                 if ((PlayerStateEnum)player.gameState == PlayerStateEnum.Waiting)
                 {
                     gamePlayerInfo.SetPokerShapeTxtStr = "";
@@ -1643,10 +1641,6 @@ public class GameView : MonoBehaviour
                     gamePlayerInfo.GetHandPoker[1].gameObject.SetActive(false);
                 }
             }
-            /*if (player.currAllBetChips > 0)
-            {
-                gamePlayerInfo.PlayerBet(player.currAllBetChips, player.carryChips);
-            }*/
 
             if (player.userId == gameRoomData.currActionerId &&
                 gameRoomData.currGameFlow > (int)GameFlowEnum.Licensing &&

@@ -55,6 +55,11 @@
         let unityInstance;
         let IsMobilePlatform;
 
+        //禁用Log
+        /*console.log = function() {};
+        console.warn = function() {};
+        console.error = function() {};*/
+
         window.onload = () => {
             const buildUrl = "Build";
             const loaderUrl = buildUrl + "/{{{ LOADER_FILENAME }}}";

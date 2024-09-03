@@ -197,13 +197,6 @@ public class LanguageManager
     /// </summary>
     private void UpdateLanguage()
     {
-
-
-        Debug.Log($"Change Language:{languageId[thisData.CurrLanguageIndex]}");
-
-
-
-
         foreach (var func in updateLanguageFuncDic)
         {
             if (func.Value != null)

@@ -942,22 +942,18 @@ public class GameControl : MonoBehaviour
 
         //遊戲介面更新房間資料
         gameView.UpdateGameRoomData(gameRoomData);
-        Debug.Log("遊戲介面更新房間資料");
 
         //判斷房主
         JudgeHost();
-        Debug.Log("判斷房主");
 
         //聊天訊息
         ChatMessage();
 
         //遊戲流程回傳
         LocalGameFlowBehavior();
-        Debug.Log("遊戲流程回傳");
 
         //下注行為演出
         ShowBetAction();
-        Debug.Log("下注行為演出");
 
         //行動倒數
         CountDown();
@@ -972,25 +968,21 @@ public class GameControl : MonoBehaviour
                 gameView.UpdateGameRoomInfo(gameRoomData);
 
                 if (gameRoomData.playingPlayersIdList.Count() == 1 &&
-                    gameRoomData.currGameFlow >= (int)GameFlowEnum.SetBlind)
+                    preUpdateGameFlow <= GameFlowEnum.SetBlind)
                 {
                     //剩下一名玩家在進行遊戲
-                    Debug.Log($"剩下一名玩家在進行遊戲");
                     StartCoroutine(IJudgeNextSeason());
                 }
-                else if (gameRoomData.playingPlayersIdList.Count() == 1 &&
-                         gameRoomData.currGameFlow < (int)GameFlowEnum.Licensing)
+                else
                 {
                     //剩下一名玩家在等待遊戲
-                    Debug.Log($"剩下一名玩家在等待遊戲");
                     JudgePauseToStar();
                 }
             }
             else
             {
                 //遊戲只剩一人進行判斷是否開始
-                Debug.Log($"遊戲只剩一人進行判斷是否開始");
-                //JudgePauseToStar();
+                JudgePauseToStar();
             }
         }
 
@@ -1021,6 +1013,8 @@ public class GameControl : MonoBehaviour
             if (gameRoomData.hostId == DataManager.UserId)
             {
                 if (gameRoomData.playingPlayersIdList.Count == 1 &&
+                    preUpdateGameFlow != (GameFlowEnum)gameRoomData.currGameFlow &&
+                    preUpdateGameFlow <= GameFlowEnum.Licensing &&
                     RoomType != TableTypeEnum.IntegralTable)
                 {
                     StartCoroutine(IStartGameFlow(GameFlowEnum.Licensing));
@@ -1081,15 +1075,18 @@ public class GameControl : MonoBehaviour
                 if (gameRoomData.playingPlayersIdList != null &&
                     gameRoomData.playingPlayersIdList.Count < 2)
                 {
-                    foreach (var item in gameRoomData.playerDataDic.Values)
+                    if (gameRoomData.hostId == DataManager.UserId)
                     {
-                        item.gameState = (int)PlayerStateEnum.Waiting;
-                        data = new Dictionary<string, object>()
+                        foreach (var item in gameRoomData.playerDataDic.Values)
                         {
-                            { FirebaseManager.GAME_STATE, (int)PlayerStateEnum.Waiting},//(PlayerStateEnum)遊戲狀態(等待/遊戲中/棄牌/All In/保留座位離開)
-                        };
-                        UpdataPlayerData(item.userId,
-                                         data);
+                            item.gameState = (int)PlayerStateEnum.Waiting;
+                            data = new Dictionary<string, object>()
+                            {
+                                { FirebaseManager.GAME_STATE, (int)PlayerStateEnum.Waiting},//(PlayerStateEnum)遊戲狀態(等待/遊戲中/棄牌/All In/保留座位離開)
+                            };
+                            UpdataPlayerData(item.userId,
+                                             data);
+                        }
                     }
 
                     preUpdateGameFlow = GameFlowEnum.None;
@@ -1531,7 +1528,7 @@ public class GameControl : MonoBehaviour
     private IEnumerator IJudgeNextSeason()
     {
         if (cdCoroutine != null) StopCoroutine(cdCoroutine);
-        Debug.Log("判斷是否進入下個流程");
+
         //房主執行
         if (gameRoomData.hostId == DataManager.UserId)
         {
@@ -1701,6 +1698,7 @@ public class GameControl : MonoBehaviour
                 playingPlayersId.Add(player.Key);
             }
         }
+        gameRoomData.playingPlayersIdList = playingPlayersId;
 
         //設置Button座位
         int newButtonSeat = SetButtonSeat();
