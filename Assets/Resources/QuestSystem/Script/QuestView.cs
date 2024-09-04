@@ -44,24 +44,12 @@ public class QuestView : MonoBehaviour
 
         DailyBtn.onClick.AddListener(() =>
         {
-            if (!DailyQuestParent.gameObject.activeSelf)
-            {
-                DailyQuestParent.gameObject.SetActive(true);
-                WeeklyQuestParent.gameObject.SetActive(false);
-
-                MaskMove(DailyQuestParent.parent.gameObject);
-            }
+            ShowDaily();
         });
 
         WeeklyBtn.onClick.AddListener(() =>
         {
-            if (!WeeklyQuestParent.gameObject.activeSelf)
-            {
-                DailyQuestParent.gameObject.SetActive(false);
-                WeeklyQuestParent.gameObject.SetActive(true);
-
-                MaskMove(WeeklyQuestParent.parent.gameObject);
-            }
+            ShowWeekly();
         });
 
         CloseQuest.onClick.AddListener(() =>
@@ -72,8 +60,6 @@ public class QuestView : MonoBehaviour
     }
     private void Start()
     {
-        WeeklyQuestParent.gameObject.SetActive(false);
-
         CreateQuestView();
     }
 
@@ -84,6 +70,45 @@ public class QuestView : MonoBehaviour
         {
             UpdateQuestInfo("Cash Bet", 200);
         }
+    }
+
+    /// <summary>
+    /// 顯示每周或每日
+    /// </summary>
+    /// <param name="quest"></param>
+    public void ShowQuest(QuestEnum quest)
+    {
+        switch (quest)
+        {
+            case QuestEnum.Daily:
+                ShowDaily();
+                break;
+            case QuestEnum.Weekly:
+                ShowWeekly();
+                break;
+        }
+    }
+
+    /// <summary>
+    /// 顯示每日
+    /// </summary>
+    private void ShowDaily()
+    {
+        DailyQuestParent.gameObject.SetActive(true);
+        WeeklyQuestParent.gameObject.SetActive(false);
+
+        MaskMove(DailyQuestParent.parent.gameObject);
+    }
+
+    /// <summary>
+    /// 顯示每周
+    /// </summary>
+    private void ShowWeekly()
+    {
+        DailyQuestParent.gameObject.SetActive(false);
+        WeeklyQuestParent.gameObject.SetActive(true);
+
+        MaskMove(WeeklyQuestParent.parent.gameObject);
     }
 
     public void CreateQuestView()

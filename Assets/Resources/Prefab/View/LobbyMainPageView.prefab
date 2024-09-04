@@ -579,6 +579,7 @@ MonoBehaviour:
   PointSample: {fileID: 8023382670496334366}
   BillboardContent: {fileID: 6780976698029347603}
   BillboardPoints: {fileID: 616560779189147140}
+  QuestView: {fileID: 2916295124333432222, guid: 283920420f2c80d4b9b4945f925ddf2a, type: 3}
   Integral_Btn: {fileID: 4893643968115162339}
   IntegralBtn_Txt: {fileID: 8537344941982934353}
   CryptoTableBtnSample: {fileID: 1615624873703608288}

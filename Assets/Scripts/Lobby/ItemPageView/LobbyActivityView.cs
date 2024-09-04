@@ -6,14 +6,10 @@ using UnityEngine.UI;
 
 public class LobbyActivityView : MonoBehaviour
 {
-
-    [SerializeField]
-    RectTransform QuestRect;
     [SerializeField]
     GameObject QuestView;
     [SerializeField]
-    Button ActiveButton;
-
+    Button Daily_Btn, Weekly_Btn;
 
     private void Awake()
     {
@@ -25,11 +21,16 @@ public class LobbyActivityView : MonoBehaviour
     /// </summary>
     private void ListenerEvent()
     {
-        ActiveButton.onClick.AddListener(() =>
+        Daily_Btn.onClick.AddListener(() =>
         {
-            RectTransform questRect = Instantiate(QuestView,QuestRect).GetComponent<RectTransform>();
+            QuestView questView = Instantiate(QuestView, transform).GetComponent<QuestView>();
+            questView.ShowQuest(QuestEnum.Daily);
         });
 
-
+        Weekly_Btn.onClick.AddListener(() =>
+        {
+            QuestView questView = Instantiate(QuestView, transform).GetComponent<QuestView>();
+            questView.ShowQuest(QuestEnum.Weekly);
+        });
     }
 }

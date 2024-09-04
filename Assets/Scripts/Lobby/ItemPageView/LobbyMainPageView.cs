@@ -19,6 +19,8 @@ public class LobbyMainPageView : MonoBehaviour
     GameObject BillboardSample, PointSample;
     [SerializeField]
     RectTransform BillboardContent, BillboardPoints;
+    [SerializeField]
+    GameObject QuestView;
 
     [Header("積分房")]
     [SerializeField]
@@ -55,6 +57,7 @@ public class LobbyMainPageView : MonoBehaviour
     public List<Image> billboardImgList;                    //廣告刊版圖片
     List<Image> billboardPointList;                         //廣告刊版點
     List<int> billboardDisplayIndexList;                    //廣告刊版顯示
+    QuestView questView;
 
     float billboardSizeWidth;                               //廣告刊版寬度
     bool isStartMoveBillboard;                              //是否開始移動廣告刊版
@@ -73,6 +76,14 @@ public class LobbyMainPageView : MonoBehaviour
         set
         {
             Bg_Img.gameObject.SetActive(value);
+            if (value == true)
+            {
+                if (questView != null)
+                {
+                    Destroy(questView.gameObject);
+                    questView = null;
+                }
+            }
         }
     }
 
@@ -304,6 +315,21 @@ public class LobbyMainPageView : MonoBehaviour
                 if (isBillboardClick)
                 {
                     Debug.Log($"Billbroad Click: {DataManager.CurrBillboardIndex}");
+
+                    questView = Instantiate(QuestView, transform).GetComponent<QuestView>();
+
+                    switch (DataManager.CurrBillboardIndex)
+                    {
+                        //每日任務
+                        case 0:
+                            questView.ShowQuest(QuestEnum.Daily);
+                            break;
+
+                        //每周任務
+                        case 1:
+                            questView.ShowQuest(QuestEnum.Weekly);
+                            break;
+                    }
                 }                
             });
             billboardList.Add(billbpard);
