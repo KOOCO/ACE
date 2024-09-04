@@ -70,8 +70,8 @@ public class LoginView : MonoBehaviour
     [SerializeField]
     TMP_InputField WalletRegister_If, WalletEmail_If;
     [SerializeField]
-    TextMeshProUGUI SMSMobileNumberError_Txt, SMSCodeError_Txt, 
-                    WalletRegisterAccountTitle_Txt, WalletRegister_If_Placeholder, 
+    TextMeshProUGUI SMSMobileNumberError_Txt, SMSCodeError_Txt,
+                    WalletRegisterAccountTitle_Txt, WalletRegister_If_Placeholder,
                     WalletEmailTitle_Txt, WalletEmailIf_Placeholder,
                     SMSOTPSubmitBtn_Txt;
 
@@ -98,7 +98,7 @@ public class LoginView : MonoBehaviour
     bool SingInAccount, LoginPassword;
 
     string JsonStringIp;
-    
+
 
     [Header("手機註冊")]
     [SerializeField]
@@ -124,7 +124,7 @@ public class LoginView : MonoBehaviour
 
                     RegisterSubmitBtn_Txt, AccountIf_Placeholder, fail_banner_Text;
 
-  
+
     [Header("手機注冊密碼檢查")]
     [SerializeField]
     GameObject RegisterCheckPassword_Obj;
@@ -145,7 +145,7 @@ public class LoginView : MonoBehaviour
     [SerializeField]
     TMP_InputField LostPswNumber_If, LostPswOTP_If, LosrPswPassword_If;
     [SerializeField]
-    Button BackToMobileSignIn_Btn, LostPswPasswordEye_Btn, LostPswOTPSend_Btn, LostPswSubmit_Btn,LostPsw_Btn;
+    Button BackToMobileSignIn_Btn, LostPswPasswordEye_Btn, LostPswOTPSend_Btn, LostPswSubmit_Btn, LostPsw_Btn;
     [SerializeField]
     TMP_Dropdown LostPswNumber_Dd;
     [SerializeField]
@@ -165,13 +165,13 @@ public class LoginView : MonoBehaviour
 
     [Header("隱私政策物件")]
     [SerializeField]
-    GameObject Privacy_Obj, Privacy_text, Term_text,Privacy_obj_Scroll,Term_obj_Scroll,
-      Privacy_text_CH, Term_text_CH, Privacy_text_EN, Term_text_EN,Button_EN,Button_CH;
+    GameObject Privacy_Obj, Privacy_text, Term_text, Privacy_obj_Scroll, Term_obj_Scroll,
+      Privacy_text_CH, Term_text_CH, Privacy_text_EN, Term_text_EN, Button_EN, Button_CH;
     [SerializeField]
-    Button PrivacyConfirm_Btn,Term_Btn, PrivacyPolicy_Btn;
+    Button PrivacyConfirm_Btn, Term_Btn, PrivacyPolicy_Btn;
     [SerializeField]
     TextMeshProUGUI PrivacyTitle_Txt, PrivacyContent_Txt,
-                    PrivacyConfirmBtn_Txt,Privacy_Title,Term_Title;
+                    PrivacyConfirmBtn_Txt, Privacy_Title, Term_Title;
 
     const int ErrorWalletConnectTime = 30;                                      //判定連接失敗等待時間
     const int codeCountDownTime = 60;                                           //發送OTP倒數時間
@@ -217,7 +217,7 @@ public class LoginView : MonoBehaviour
     List<TMP_InputField> currIfList = new List<TMP_InputField>();               //當前可切換InputFild
     UnityAction KybordEnterAction;                                              //Enter鍵執行方法
 
-    public bool isCorrect =true;
+    public bool isCorrect = true;
     /*
     
 
@@ -250,7 +250,7 @@ public class LoginView : MonoBehaviour
         public WalletEnum TheWalletEnum;
     }
 
-    
+
     /// <summary>
     /// 更新文本翻譯
     /// </summary>
@@ -346,7 +346,7 @@ public class LoginView : MonoBehaviour
 
         PrivacyConfirmBtn_Txt.text = LanguageManager.Instance.GetText("Confirm");
         Privacy_Title.text = LanguageManager.Instance.GetText("Asia Poker privacy policy");
-        Term_Title.text= LanguageManager.Instance.GetText("Asia Poker Terms of Service");
+        Term_Title.text = LanguageManager.Instance.GetText("Asia Poker Terms of Service");
         if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
         {
             Term_obj_Scroll.GetComponent<ScrollRect>().content = Term_text_EN.GetComponent<RectTransform>();
@@ -378,7 +378,7 @@ public class LoginView : MonoBehaviour
         #endregion
     }
 
-    
+
     private void OnDestroy()
     {
         LanguageManager.Instance.RemoveLanguageFun(UpdateLanguage);
@@ -414,7 +414,7 @@ public class LoginView : MonoBehaviour
                                             RegisterPassword_If);
             StringUtils.InitPasswordContent(LostPswPasswordEye_Btn.image,
                                             LosrPswPassword_If);
-            
+
 
             if (isOn)
             {
@@ -436,12 +436,12 @@ public class LoginView : MonoBehaviour
                     OnMobileSignInInit();
                 }
 
-            }            
+            }
         });
 
         //返回選擇錢包
         BackToSelectWallet_Btn.onClick.AddListener(() =>
-        {            
+        {
             StopCoroutine(connectionEffectCoroutine);
             OnSwlwctWalletInit();
             OnWalletDisconnect();
@@ -479,7 +479,7 @@ public class LoginView : MonoBehaviour
             else
             {
                 StartConnect("WalletConnect", WalletEnum.Binance);
-            }                
+            }
 
             InvokeRepeating(nameof(TryBinanceConnect), 8, 3);
         });
@@ -493,7 +493,7 @@ public class LoginView : MonoBehaviour
         //重新嘗試連接
         RetryConnectWallet_Btn.onClick.AddListener(() =>
         {
-            StartConnect(recordConnect.WalletProviderStr, recordConnect.TheWalletEnum);            
+            StartConnect(recordConnect.WalletProviderStr, recordConnect.TheWalletEnum);
         });
 
         #endregion
@@ -504,7 +504,7 @@ public class LoginView : MonoBehaviour
             LostPassWord();
         });
         #endregion
-       
+
         #region 錢包連接簡訊認證
 
         //簡訊OTP提交
@@ -539,14 +539,14 @@ public class LoginView : MonoBehaviour
 
             LoginRequest login = new LoginRequest()
             {
-                userNameOrEmailAddress = SingInAccount_If.text, 
+                userNameOrEmailAddress = SingInAccount_If.text,
                 password = SignInPassword_If.text,
                 ipAddress = JsonStringIp,
                 machineCode = "123456789",
             };
             currVerifyPhoneNumber = login.userNameOrEmailAddress;
             SwaggerAPIManager.Instance.SendPostAPI<LoginRequest>("/api/app/ace-accounts/login", login, OnIntoLobby);
-           
+
             //MobileSignInSubmit();
         });
 
@@ -577,7 +577,7 @@ public class LoginView : MonoBehaviour
             else
             {
                 RegisterNumberError_Txt.text = "";
-                Debug.Log($"Register Send Code:{ StringUtils.GetPhoneAddCode(RegisterNumber_Dd, RegisterNumber_If.text) }");
+                Debug.Log($"Register Send Code:{StringUtils.GetPhoneAddCode(RegisterNumber_Dd, RegisterNumber_If.text)}");
 
                 SendOTP(StringUtils.GetPhoneAddCode(RegisterNumber_Dd, RegisterNumber_If.text));
             }
@@ -599,12 +599,13 @@ public class LoginView : MonoBehaviour
         RegisterPasswordEye_Btn.onClick.AddListener(() =>
         {
             isShowPassword = !isShowPassword;
-            PasswordDisplayControl(isShowPassword); 
+            PasswordDisplayControl(isShowPassword);
         });
 
         //手機注冊提交
         RegisterSubmit_Btn.onClick.AddListener(() =>
         {
+          
             MobileRegisterSubmit();
 
             SignInNumberIf_Text.text = currVerifyPhoneNumber;
@@ -663,7 +664,7 @@ public class LoginView : MonoBehaviour
             else
             {
                 LostPswNumberError_Txt.text = "";
-                Debug.Log($"Lost Password Send Code:{ StringUtils.GetPhoneAddCode(LostPswNumber_Dd, LostPswNumber_If.text) }");
+                Debug.Log($"Lost Password Send Code:{StringUtils.GetPhoneAddCode(LostPswNumber_Dd, LostPswNumber_If.text)}");
 
                 SendOTP(StringUtils.GetPhoneAddCode(LostPswNumber_Dd, LostPswNumber_If.text));
             }
@@ -685,7 +686,7 @@ public class LoginView : MonoBehaviour
         //忘記密碼提交
         LostPswSubmit_Btn.onClick.AddListener(() =>
         {
-            LostPswSubmit();            
+            LostPswSubmit();
         });
 
         #endregion
@@ -758,7 +759,7 @@ public class LoginView : MonoBehaviour
         }
 
         DataManager.IsNotFirstInLogin = true;
-        
+
     }
 
     private void Update()
@@ -782,7 +783,7 @@ public class LoginView : MonoBehaviour
         {
             AccountIf_Placeholder.gameObject.SetActive(true);
         }
-                    string AccountName = RegisterAccountName_If.text;
+        string AccountName = RegisterAccountName_If.text;
         #endregion
 
         RegisterPasswordError_Txt.text = "";
@@ -792,20 +793,20 @@ public class LoginView : MonoBehaviour
         string LoginAccountName = SingInAccount_If.text;
         bool SingInAccount_If_IsLongEnough = SingInAccount_If.text.Length > 5;
 
-        if( SingInAccount_If_IsLongEnough) 
+        if (SingInAccount_If_IsLongEnough)
         {
-            SingInAccount=true;
+            SingInAccount = true;
         }
         bool hasSpecialCharacter = StringUtils.CheckSpecialCharacter(SignInPassword_If.text);
         bool hasUppercaseAndLowercase = StringUtils.CheckUppercaseAndLowercase(SignInPassword_If.text);
         bool isLongEnough = SignInPassword_If.text.Length >= 8;
 
-        if(hasSpecialCharacter&& hasUppercaseAndLowercase&& isLongEnough)
+        if (hasSpecialCharacter && hasUppercaseAndLowercase && isLongEnough)
         {
             LoginPassword = true;
         }
-        
-        if(!SingInAccount||!LoginPassword)
+
+        if (!SingInAccount || !LoginPassword)
         {
             SignIn_Btn.gameObject.SetActive(false);
         }
@@ -837,7 +838,7 @@ public class LoginView : MonoBehaviour
         {
             ErrorWalletConnect();
         }
-        
+
         //當前輸入框切換
         if (Input.GetKeyDown(KeyCode.Tab))
         {
@@ -850,7 +851,7 @@ public class LoginView : MonoBehaviour
                                i + 1;
                     currIfList[next].Select();
                 }
-            }            
+            }
         }
 
         //執行Enter提交方法
@@ -958,7 +959,7 @@ public class LoginView : MonoBehaviour
     /// <param name="callBackFunName">回傳方法名</param>
     /// <param name="childNode">資料節點路徑</param>
     private void JudgeDateExists(string callBackFunName, string childNode)
-    {        
+    {
         ViewManager.Instance.OpenWaitingView(transform);
 
         JSBridgeManager.Instance.ReadDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{childNode}/{currVerifyPhoneNumber}",
@@ -1017,14 +1018,14 @@ public class LoginView : MonoBehaviour
     /// <summary>
     /// 本地資料紀錄
     /// </summary>
-    private void LocalDataSave() 
+    private void LocalDataSave()
     {
         PlayerPrefs.SetInt(LocalCountryCodeIndex, recodeCountryCodeIndex);
         PlayerPrefs.SetString(LocalPhoneNumber, recodePhoneNumber);
         PlayerPrefs.SetString(LocalPaswword, recodePassword);
     }
 
-#endregion
+    #endregion
 
     #region 手機登入
 
@@ -1083,7 +1084,7 @@ public class LoginView : MonoBehaviour
         if (!StringUtils.CheckPhoneNumber(SignInNumber_If.text))
         {
 
-            
+
 
             fail_banner_Text.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
 
@@ -1096,7 +1097,7 @@ public class LoginView : MonoBehaviour
             currVerifyPsw = SignInPassword_If.text;
             Debug.Log($"Mobile Sign In = Phone:{currVerifyPhoneNumber} / Password = {currVerifyPsw}");
 
-          
+
 
             JudgeDateExists(nameof(JudgeMobileSignIn),
                             LoginType.phoneUser.ToString());
@@ -1207,7 +1208,7 @@ public class LoginView : MonoBehaviour
             KybordEnterAction = MobileRegisterSubmit;
         }
     }
-    
+
 
     /// <summary>
     /// 手機註冊提交
@@ -1215,7 +1216,7 @@ public class LoginView : MonoBehaviour
     public void MobileRegisterSubmit()
     {
         //MobileSignInSubmit();
-        
+
         RegisterNumberError_Txt.text = "";
         RegisterCodeError_Txt.text = "";
         RegisterPasswordError_Txt.text = "";
@@ -1228,7 +1229,7 @@ public class LoginView : MonoBehaviour
 
         if (IsValidAccountName(AccountName))
         {
-            
+
             isRegisterAccountNameCorrect = true;
         }
         else
@@ -1242,23 +1243,23 @@ public class LoginView : MonoBehaviour
         {
             //手機號格式錯誤
             isCorrect = false;
-        
+
             RegisterNumberError_Txt.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
             fail_banner_Text.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
         }
 
-     
+
 
 
         if (!isRegisterPasswordCorrect)
         {
             //密碼錯誤
             isCorrect = false;
-            
-             RegisterPasswordError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
+
+            RegisterPasswordError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
             fail_banner_Text.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
         }
-  
+
 
         if (!Privacy_Tog.isOn)
         {
@@ -1274,12 +1275,12 @@ public class LoginView : MonoBehaviour
         {
             //輸入手機號與驗證手機號不符
             isCorrect = false;
-           
+
             RegisterCodeError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
             fail_banner_Text.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
         }
 
-        if (isCorrect=true)
+        if (isCorrect = true)
         {
             //資料正確    
             //Debug.Log($"Register Submit = Phone:{phoneNumber} / Code:{code} / Password:{psw}");
@@ -1297,7 +1298,7 @@ public class LoginView : MonoBehaviour
                             LoginType.phoneUser.ToString());
         }
     }
-   
+
     public class Register
     {
         public string inviteCode;
@@ -1597,7 +1598,7 @@ public class LoginView : MonoBehaviour
 
                 DataManager.UserWalletAddress = add;
                 DataManager.UserWalletBalance = balStr;
-                
+
                 CancelInvoke(nameof(TryBinanceConnect));
                 LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
             }
@@ -1677,7 +1678,7 @@ public class LoginView : MonoBehaviour
         currConnectingWallet = walletEnum;
         DownloadWallet_Txt.gameObject.SetActive(DataManager.IsMobilePlatform);
 
-        if (DataManager.IsMobilePlatform && 
+        if (DataManager.IsMobilePlatform &&
             DataManager.IsDefaultBrowser &&
             Application.platform != RuntimePlatform.IPhonePlayer)
         {
@@ -1720,7 +1721,7 @@ public class LoginView : MonoBehaviour
                         ErrorWalletConnect();
                     }
                 }
-            }           
+            }
         }
         else
         {
@@ -2093,14 +2094,14 @@ public class LoginView : MonoBehaviour
         {
             IPAddress = localIP
         };
-        string JsonStringIp =JsonConvert.SerializeObject(local_IP,Formatting.Indented);
+        string JsonStringIp = JsonConvert.SerializeObject(local_IP, Formatting.Indented);
         return localIP;
     }
-     
+
     public class Local_IP
     {
         public string IPAddress { get; set; }
-        
+
     }
 
     /// <summary>
@@ -2138,7 +2139,7 @@ public class LoginView : MonoBehaviour
         bool hasLetter = Regex.IsMatch(AccountName, "[A-Za-z]");
 
         // 檢查字元
-        return Regex.IsMatch(AccountName, "^[A-Za-z0-9]+$") && hasLetter  ;
+        return Regex.IsMatch(AccountName, "^[A-Za-z0-9]+$") && hasLetter;
     }
     #endregion
 
@@ -2149,6 +2150,8 @@ public class LoginView : MonoBehaviour
     /// </summary>
     private void OnIntoLobby(string data)
     {
+        Debug.Log("Login Response Data :: " + data);
+        Services.PlayerService.SaveUser(data);
         ViewManager.Instance.CloseWaitingView(transform);
 
         LocalDataSave();

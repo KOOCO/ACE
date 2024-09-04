@@ -10,7 +10,7 @@ public class ShopSample : MonoBehaviour
     Image ItemIcon;
 
     [SerializeField]
-    TextMeshProUGUI Buff_Text,CostAmount_Text;
+    TextMeshProUGUI Buff_Text, CostAmount_Text;
 
     [SerializeField]
     Button BuyBtn;
@@ -21,7 +21,7 @@ public class ShopSample : MonoBehaviour
     /// <param name="shopData">商店資料</param>
     /// <param name="index">圖集index</param>
     /// <param name="albumEnum">圖集枚舉</param>
-    public void SetShopItemData(GameObject sample,ShopData shopData,int index,AlbumEnum albumEnum)
+    public void SetShopItemData(GameObject sample, ShopData shopData, int index, AlbumEnum albumEnum)
     {
         ItemIcon.sprite = AssetsManager.Instance.GetAlbumAsset(albumEnum).album[index];
 
@@ -40,7 +40,33 @@ public class ShopSample : MonoBehaviour
         }
         CostAmount_Text.text = $"{shopData.CostCoin}";
     }
-    
+
+
+    public void SetShopItemData(Item item)
+    {
+        Debug.Log($"Setting Shop Data :: {item.name} {item.price}");
+        ItemIcon.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.Shop_GoldAlbum).album[0];
+
+
+        switch (item.name)
+        {
+            case "Stamina":
+                Debug.Log($"Setting Shop Data :: {item.name} {item.price}");
+                Buff_Text.text = $"+ {item.price} {LanguageManager.Instance.GetText("Percentage")}";
+                break;
+            case "Gold":
+                Debug.Log($"Setting Shop Data :: {item.name} {item.price}");
+                Buff_Text.text = $"+ {item.price} {LanguageManager.Instance.GetText("Points")}";
+                break;
+            case "Extra Time":
+                Debug.Log($"Setting Shop Data :: {item.name} {item.price}");
+                Buff_Text.text = $"+ {item.price} {LanguageManager.Instance.GetText("Second")}";
+                break;
+
+        }
+        CostAmount_Text.text = $"{item.price}";
+    }
+
     /// <summary>
     /// 購買商品事件
     /// </summary>
@@ -50,7 +76,7 @@ public class ShopSample : MonoBehaviour
     /// <param name="img">商品Icon</param>
     /// <param name="info">購買訊息欄位</param>
     /// <param name="ItemName">商品名</param>
-    public void OnBuyAddListener(LobbyShopView shopView, GameObject MallMsg, ShopData shopData, Image img, TextMeshProUGUI info,string ItemName)
+    public void OnBuyAddListener(LobbyShopView shopView, GameObject MallMsg, ShopData shopData, Image img, TextMeshProUGUI info, string ItemName)
     {
         BuyBtn.onClick.AddListener(() =>
         {
@@ -70,7 +96,7 @@ public class ShopSample : MonoBehaviour
                     break;
             }
 
-            shopView.GetComponent<LobbyShopView>().OnBuyingPopupUI(this,shopData,ItemName);
+            shopView.GetComponent<LobbyShopView>().OnBuyingPopupUI(this, shopData, ItemName);
         });
     }
 
