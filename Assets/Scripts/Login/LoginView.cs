@@ -496,6 +496,18 @@ public class LoginView : MonoBehaviour
             StartConnect(recordConnect.WalletProviderStr, recordConnect.TheWalletEnum);
         });
 
+        //錢包註冊提交
+        WalletRegisterSubmit_Btn.onClick.AddListener(() =>
+        {
+            register_passwordless walletRegister = new register_passwordless()
+            {
+                memberName = WalletRegister_If.text,
+                emailAddress = WalletEmail_If.text,
+                walletAddress = DataManager.UserWalletAddress,
+            };
+            SwaggerAPIManager.Instance.SendPostAPI<register_passwordless>("/api/app/ace-accounts/register-passwordless", walletRegister, WalletRegisterCallback);
+        });
+
         #endregion
 
         #region 檢查按鈕輸入
@@ -503,28 +515,6 @@ public class LoginView : MonoBehaviour
         {
             LostPassWord();
         });
-        #endregion
-
-        #region 錢包連接簡訊認證
-
-        //簡訊OTP提交
-        WalletRegisterSubmit_Btn.onClick.AddListener(() =>
-        {
-            //Debug.Log($"Wallet Register:{WalletRegister_If.text}/{WalletEmail_If.text}");
-
-            ViewManager.Instance.OpenWaitingView(transform);
-
-            Debug.Log($"WalletRegister_If.text:{WalletRegister_If.text}");
-            Debug.Log($"WalletEmail_If.text:{WalletEmail_If.text}");
-            register_passwordless walletRegister = new register_passwordless()
-            {
-                memberName = WalletRegister_If.text,
-                emailAddress = WalletEmail_If.text,
-                walletAddress = "0xB5791711BD39F18631CCCaE21628A8E895Cb65EA",//DataManager.UserWalletAddress,
-            };
-            SwaggerAPIManager.Instance.SendPostAPI<register_passwordless>("/api/app/ace-accounts/register-passwordless", walletRegister, WalletRegisterCallback);
-        });
-
         #endregion
 
         #region 手機登入
@@ -1663,18 +1653,6 @@ public class LoginView : MonoBehaviour
 
         #region 錢包連接
 
-#if UNITY_EDITOR
-
-        passwordless_login wallLogin = new passwordless_login()
-        {
-            walletAddress = "0xB5791711BD39F18631CCCaE21628A8E895Cb65EA",
-            ipAddress = JsonStringIp,
-            machineCode = "123456789",
-        };
-        SwaggerAPIManager.Instance.SendPostAPI<passwordless_login>("/api/app/ace-accounts/passwordless-login", wallLogin, WalletLoginCallback);
-        return;
-#endif
-
         currConnectingWallet = walletEnum;
         DownloadWallet_Txt.gameObject.SetActive(DataManager.IsMobilePlatform);
 
@@ -1804,6 +1782,16 @@ public class LoginView : MonoBehaviour
         //NFTManager.Instance.StartHandleUpdate();
         WalletManager.Instance.StartCheckConnect();
 
+        WalletLogin();
+
+        //OpenSMSVerificationPage();
+    }
+
+    /// <summary>
+    /// 錢包登入
+    /// </summary>
+    private void WalletLogin()
+    {
         passwordless_login wallLogin = new passwordless_login()
         {
             walletAddress = DataManager.UserWalletAddress,
@@ -1811,7 +1799,6 @@ public class LoginView : MonoBehaviour
             machineCode = "123456789",
         };
         SwaggerAPIManager.Instance.SendPostAPI<passwordless_login>("/api/app/ace-accounts/passwordless-login", wallLogin, WalletLoginCallback);
-        //OpenSMSVerificationPage();
     }
 
     /// <summary>
@@ -1820,8 +1807,8 @@ public class LoginView : MonoBehaviour
     /// <param name="jsonData"></param>
     public void WalletLoginCallback(string jsonData)
     {
-        Debug.Log($"錢包登入回傳:{jsonData}");
-        //var data = JsonConvert.DeserializeObject<passwordless_login>(jsonData);
+        DataManager.UserLoginType = LoginType.walletUser;
+        OnIntoLobby(jsonData);
     }
 
     /// <summary>
@@ -1830,11 +1817,9 @@ public class LoginView : MonoBehaviour
     /// <param name="jsonData"></param>
     public void WalletRegisterCallback(string jsonData)
     {
-        ViewManager.Instance.CloseWaitingView(transform);
-
         if (jsonData == "SUCCESS")
         {
-            OnIntoLobby(jsonData);
+            WalletLogin();
         }
     }
 
@@ -2157,7 +2142,7 @@ public class LoginView : MonoBehaviour
         LocalDataSave();
 
         DataManager.UserNickname = recodePhoneNumber;
-        DataManager.UserId = recodePhoneNumber;
+        DataManager.UserId = Services.PlayerService.GetMemberId();
         DataManager.UserLoginPhoneNumber = recodePhoneNumber;
         DataManager.UserLoginPassword = recodePassword;
 

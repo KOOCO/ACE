@@ -56,6 +56,8 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         string jsonData = JsonUtility.ToJson(data);
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
 
+        Debug.Log($"Send POST:{jsonData}");
+
         //創建POST請求
         UnityWebRequest request = new UnityWebRequest(fullUrl, "POST");
         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
