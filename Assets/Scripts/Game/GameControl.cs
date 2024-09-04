@@ -44,6 +44,7 @@ public class GameControl : MonoBehaviour
 
 #endif
 
+        StopAllCoroutines();
     }
 
     private void Start()
@@ -1554,8 +1555,6 @@ public class GameControl : MonoBehaviour
             List<GameRoomPlayerData> foldPlayers = GetFoldPlayer().OrderBy(x => x.currAllBetChips).ToList();
             List<GameRoomPlayerData> playingPlayers = GetPlayingPlayer().OrderBy(x => x.currAllBetChips).ToList();
 
-            yield return new WaitForSeconds(1);
-
             //所有玩家已下注
             bool isAllBet = true;
             if (canActionPlayers.Count() > 0)
@@ -2404,9 +2403,11 @@ public class GameControl : MonoBehaviour
                     {
                         foreach (var item in pairPlayer)
                         {
-                            pairPlayer[item.Key].Add(item.Key.handPoker[0] % 13 == 0 ? 14 : item.Key.handPoker[0] % 13);
-                            pairPlayer[item.Key].Add(item.Key.handPoker[1] % 13 == 0 ? 14 : item.Key.handPoker[1] % 13);
-                            pairPlayer[item.Key].Sort(new TexasHoldemUtil.SpecialComparer());
+                            List<int> handPoker = new List<int>();
+                            handPoker.Add(item.Key.handPoker[0] % 13 == 0 ? 14 : item.Key.handPoker[0] % 13);
+                            handPoker.Add(item.Key.handPoker[1] % 13 == 0 ? 14 : item.Key.handPoker[1] % 13);
+                            handPoker.Sort(new TexasHoldemUtil.SpecialComparer());
+                            pairPlayer[item.Key].AddRange(handPoker);
                         }
                     }
                     else if (pairPlayer.FirstOrDefault().Value.Count == 4)
@@ -2416,7 +2417,6 @@ public class GameControl : MonoBehaviour
                             int num = Math.Max(item.Key.handPoker[0] % 13 == 0 ? 14 : item.Key.handPoker[0] % 13,
                                                item.Key.handPoker[1] % 13 == 0 ? 14 : item.Key.handPoker[1] % 13);
                             pairPlayer[item.Key].Add(num);
-                            pairPlayer[item.Key].Sort(new TexasHoldemUtil.SpecialComparer());
                         }
                     }                    
 
