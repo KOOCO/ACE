@@ -64,6 +64,7 @@ public class LobbyView : MonoBehaviour
     TextMeshProUGUI TransfersBtn_Txt;
 
     bool isFirstIn;
+    bool isListenered;
 
     DateTime gameTestCountTime;             //開啟遊戲測試點擊時間
     int gameTestTouchCount;                 //開啟遊戲測試點擊次數
@@ -307,9 +308,9 @@ public class LobbyView : MonoBehaviour
 
 #if !UNITY_EDITOR
 
-            if (isFirstIn)
+            if (!isListenered)
             {
-                isFirstIn = false;
+                isListenered = true;
 
                 //監聽在線狀態
                 JSBridgeManager.Instance.StartListenerConnectState(
@@ -391,6 +392,8 @@ public class LobbyView : MonoBehaviour
 
         UpdateUserInfo();
         HandHistoryManager.Instance.LoadHandHistoryData();
+
+        isFirstIn = false;
     }
 
     /// <summary>
