@@ -234,7 +234,7 @@ public class JoinRoomView : MonoBehaviour
         //錯誤
         if (isSuccess == "false")
         {
-            ViewManager.Instance?.CloseWaitingView(transform);
+            ViewManager.Instance.CloseWaitingView(transform);
             Debug.LogError("Create Room Error!!!");
             return;
         }
@@ -257,10 +257,10 @@ public class JoinRoomView : MonoBehaviour
                                                 newValue,
                                                 0);
 
-        ViewManager.Instance?.CloseWaitingView(transform);
+        ViewManager.Instance.CloseWaitingView(transform);
 
         gameObject.SetActive(false);
-        LoadSceneManager.Instance.LoadScene(SceneEnum.Game);
+        //LoadSceneManager.Instance.LoadScene(SceneEnum.Game);
     }
 
     /// <summary>
@@ -280,7 +280,7 @@ public class JoinRoomView : MonoBehaviour
                                                 newValue,
                                                 seat);
 
-        ViewManager.Instance?.CloseWaitingView(transform);
+        ViewManager.Instance.CloseWaitingView(transform);
         gameObject.SetActive(false);
     }
 }
