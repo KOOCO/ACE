@@ -75,7 +75,7 @@ public class Entry : UnitySingleton<Entry>
         {
             if (Input.GetKeyDown(KeyCode.RightAlt))
             {
-                GameObject.FindAnyObjectByType<LoginView>().OnIntoLobby("");
+                GameObject.FindAnyObjectByType<LoginView>().TestOnIntoLobby();
             }
         }
     }

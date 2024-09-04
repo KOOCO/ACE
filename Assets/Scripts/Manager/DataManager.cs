@@ -111,7 +111,7 @@ public static class DataManager
 
 
 
-    public static double InitGiveUChips { get { return 100000; } }      //初始給予U幣
+    public static double InitGiveUChips { get { return 100; } }      //初始給予U幣
     public static double InitGiveAChips { get { return 100000; } }      //初始給予A幣
     public static double InitGiveGold { get { return 1000; } }          //初始給予黃金
 
@@ -125,12 +125,14 @@ public static class DataManager
     public static int MaxMagnification { get { return 200; } }                                    //購買籌碼最大倍率
     public static readonly List<double> CryptoSmallBlindList = new List<double>                   //加密貨幣桌小盲值
     {
-        50, 100, 200, 400,
+        1, 2, 5, 10,
     };
     public static readonly List<double> VCSmallBlindList = new List<double>                       //虛擬貨幣桌小盲值
     {
-        200, 400, 800, 1000,
+        100, 500, 2500, 5000,
     };
+    public static double IntegralSmallBlind { get { return 100; } }                   //積分房小盲值
+    public static double IntegralNeedChips { get { return 10000; } }                  //積分房配對所需籌碼
 
     #endregion
 
@@ -350,12 +352,9 @@ public static class DataManager
 
     public static int MaxPlayerCount { get { return 6; } }                            //最大遊戲人數
     public static int MaxVideoSaveCount { get { return 20; } }                        //最大紀錄影片數量
-    public static int StartCountDownTime { get { return 20; } }                           //行動倒數時間(秒)
+    public static int StartCountDownTime { get { return 20; } }                       //行動倒數時間(秒)
     public static int RobotActionTime { get { return 19; } }                          //機器人行動時間(秒)
-    public static int BuyChipsCountDown { get { return 120; } }                        //購買籌碼離開遊戲倒數時間
-
-    public static double IntegralSmallBlind { get { return 100; } }                   //積分房小盲值
-    public static double IntegralNeedChips { get { return 20000; } }                  //積分房配對所需籌碼
+    public static int BuyChipsCountDown { get { return 120; } }                       //購買籌碼離開遊戲倒數時間
 
     #endregion
 

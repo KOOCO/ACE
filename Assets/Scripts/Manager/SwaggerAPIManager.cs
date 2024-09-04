@@ -186,7 +186,7 @@ public class passwordless_login
 /// </summary>
 public class register_passwordless
 {
-    public string userName;
+    public string memberName;
     public string emailAddress;
     public string walletAddress;
 }

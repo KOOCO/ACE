@@ -514,11 +514,13 @@ public class LoginView : MonoBehaviour
 
             ViewManager.Instance.OpenWaitingView(transform);
 
+            Debug.Log($"WalletRegister_If.text:{WalletRegister_If.text}");
+            Debug.Log($"WalletEmail_If.text:{WalletEmail_If.text}");
             register_passwordless walletRegister = new register_passwordless()
             {
-                userName = WalletRegister_If.text,
+                memberName = WalletRegister_If.text,
                 emailAddress = WalletEmail_If.text,
-                walletAddress = "0x315d757d5B0132D9E60F2E05054582DF83B522D0",//DataManager.UserWalletAddress,
+                walletAddress = "0xB5791711BD39F18631CCCaE21628A8E895Cb65EA",//DataManager.UserWalletAddress,
             };
             SwaggerAPIManager.Instance.SendPostAPI<register_passwordless>("/api/app/ace-accounts/register-passwordless", walletRegister, WalletRegisterCallback);
         });
@@ -1664,7 +1666,7 @@ public class LoginView : MonoBehaviour
 
         passwordless_login wallLogin = new passwordless_login()
         {
-            walletAddress = "0x315d757d5B0132D9E60F2E05054582DF83B522D0",
+            walletAddress = "0xB5791711BD39F18631CCCaE21628A8E895Cb65EA",
             ipAddress = JsonStringIp,
             machineCode = "123456789",
         };
@@ -2145,7 +2147,7 @@ public class LoginView : MonoBehaviour
     /// <summary>
     /// 進入大廳
     /// </summary>
-    public void OnIntoLobby(string data)
+    private void OnIntoLobby(string data)
     {
         ViewManager.Instance.CloseWaitingView(transform);
 
@@ -2160,4 +2162,21 @@ public class LoginView : MonoBehaviour
     }
 
     #endregion
+
+
+    /// <summary>
+    /// 測試用_進入大廳
+    /// </summary>
+    public void TestOnIntoLobby()
+    {
+        ViewManager.Instance.CloseWaitingView(transform);
+
+        DataManager.UserNickname = SingInAccount_If.text;
+        DataManager.UserId = SingInAccount_If.text;
+        DataManager.UserLoginPhoneNumber = SingInAccount_If.text;
+        DataManager.UserLoginPassword = SignInPassword_If.text;       
+
+        LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
+    }
+
 }
