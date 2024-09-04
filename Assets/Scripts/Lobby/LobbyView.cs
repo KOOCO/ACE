@@ -116,9 +116,12 @@ public class LobbyView : MonoBehaviour
     private void OnDestroy()
     {
         LanguageManager.Instance.RemoveLanguageFun(UpdateLanguage);
+
+        /*
+        //移除監聽在線狀態
         JSBridgeManager.Instance.RemoveListenerConnectState($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}");
         JSBridgeManager.Instance.StopListeningForDataChanges($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}");
-        WalletManager.Instance.CancelCheckConnect();
+        WalletManager.Instance.CancelCheckConnect();*/
     }
 
     private void Awake()
@@ -295,19 +298,30 @@ public class LobbyView : MonoBehaviour
         {
             ViewManager.Instance.CloseWaitingView(transform);
 
-
-
-            //DataManager.UserId = loginData.userId;
-            //DataManager.UserLoginPhoneNumber = loginData.phoneNumber;
             DataManager.UserNickname = loginData.nickname;
             DataManager.UserAvatarIndex = loginData.avatarIndex;
-            //DataManager.UserInvitationCode = loginData.invitationCode;
-            //DataManager.UserBoundInviterId = loginData.boundInviterId;
-            //DataManager.UserLineToken = loginData.lineToken;
+
             DataManager.UserUChips = Math.Round(DataManager.InitGiveUChips);
-            //以下初始資料帶入
             DataManager.UserAChips = Math.Round(DataManager.InitGiveAChips);
             DataManager.UserGold = Math.Round(DataManager.InitGiveGold);
+
+#if !UNITY_EDITOR
+
+            if (isFirstIn)
+            {
+                isFirstIn = false;
+
+                //監聽在線狀態
+                JSBridgeManager.Instance.StartListenerConnectState(
+                    $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}");
+
+                //監聽用戶資料
+                JSBridgeManager.Instance.StartListeningForDataChanges(
+                    $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}",
+                gameObject.name,
+                nameof(GetDataCallback));
+            }
+#endif
         }
         else
         {
@@ -328,13 +342,6 @@ public class LobbyView : MonoBehaviour
                 Instantiate(SetNicknameViewObj, transform);
             }
         }
-
-        /*if (string.IsNullOrEmpty(DataManager.UserId))
-        {
-            DataManager.UserId = StringUtils.GenerateRandomString(15);
-        }*/
-        
-        //DataManager.UserLoginPhoneNumber = DataManager.UserId;
 
         if (string.IsNullOrEmpty(DataManager.UserInvitationCode))
         {
@@ -384,8 +391,6 @@ public class LobbyView : MonoBehaviour
 
         UpdateUserInfo();
         HandHistoryManager.Instance.LoadHandHistoryData();
-
-        isFirstIn = false;
     }
 
     /// <summary>

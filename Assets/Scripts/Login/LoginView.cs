@@ -944,20 +944,6 @@ public class LoginView : MonoBehaviour
     }
 
     /// <summary>
-    /// 讀取資料判斷是否已有資料
-    /// </summary>
-    /// <param name="callBackFunName">回傳方法名</param>
-    /// <param name="childNode">資料節點路徑</param>
-    private void JudgeDateExists(string callBackFunName, string childNode)
-    {
-        ViewManager.Instance.OpenWaitingView(transform);
-
-        JSBridgeManager.Instance.ReadDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{childNode}/{currVerifyPhoneNumber}",
-                                                       gameObject.name,
-                                                       callBackFunName);
-    }
-
-    /// <summary>
     /// 發送OTP
     /// </summary>
     /// <param name="phoneNumber">手機號</param>
@@ -1070,84 +1056,18 @@ public class LoginView : MonoBehaviour
     {
         MobileSignInError_Txt.text = "";
         SignInNumberError_Txt.text = "";
-        Debug.Log("輸入enter");
+
         if (!StringUtils.CheckPhoneNumber(SignInNumber_If.text))
         {
-
-
-
             fail_banner_Text.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
-
             SignInNumberError_Txt.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
         }
         else
         {
-
-
             currVerifyPsw = SignInPassword_If.text;
             Debug.Log($"Mobile Sign In = Phone:{currVerifyPhoneNumber} / Password = {currVerifyPsw}");
-
-
-
-            JudgeDateExists(nameof(JudgeMobileSignIn),
-                            LoginType.phoneUser.ToString());
         }
-    }
-
-    /// <summary>
-    /// 手機登入判斷
-    /// </summary>
-    /// <param name="jsonData">判斷資料回傳</param>
-    private void JudgeMobileSignIn(string jsonData)
-    {
-        ViewManager.Instance.CloseWaitingView(transform);
-
-        AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
-        if (loginData.phoneNumber != null)
-        {
-            if (loginData.password == currVerifyPsw)
-            {
-                //帳號已登入
-                if (loginData.online == true)
-                {
-                    SignInNumberError_Txt.text = LanguageManager.Instance.GetText("Duplicate Login.");
-                }
-                else
-                {
-                    //登入成功
-                    if (RememberMe_Tog.isOn)
-                    {
-                        recodePhoneNumber = SignInNumber_If.text;
-                        recodePassword = SignInPassword_If.text;
-                        //recodeCountryCodeIndex = SignInNumber_Dd.value;
-
-                        //有勾選記住帳號密碼
-                        LocalDataSave();
-
-                    }
-                    else
-                    {
-                        //沒勾選清空資料
-                        PlayerPrefs.SetInt(LocalCountryCodeIndex, 0);
-                        PlayerPrefs.SetString(LocalPhoneNumber, "");
-                        PlayerPrefs.SetString(LocalPaswword, "");
-                    }
-
-                    DataManager.UserLoginType = LoginType.phoneUser;
-                    //OnIntoLobby();
-                }
-            }
-            else
-            {
-                fail_banner_Text.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
-                MobileSignInError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
-            }
-        }
-        else
-        {
-            SignInNumberError_Txt.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
-        }
-    }
+    } 
 
     #endregion
 
@@ -1282,10 +1202,6 @@ public class LoginView : MonoBehaviour
             RegisterNumberError_Txt.text = "";
             RegisterCodeError_Txt.text = "";
             RegisterPasswordError_Txt.text = "";
-
-            //讀取資料判斷是否已有資料
-            JudgeDateExists(nameof(RegisterVerifyCode),
-                            LoginType.phoneUser.ToString());
         }
     }
 
@@ -1478,10 +1394,6 @@ public class LoginView : MonoBehaviour
             LostPswNumberError_Txt.text = "";
             LostPswCodeError_Txt.text = "";
             LostPswPasswordError_Txt.text = "";
-
-            //讀取資料判斷是否已有資料
-            JudgeDateExists(nameof(LostPswVerifyCode),
-                            LoginType.phoneUser.ToString());
         }
     }
 
@@ -2146,7 +2058,57 @@ public class LoginView : MonoBehaviour
         DataManager.UserLoginPhoneNumber = recodePhoneNumber;
         DataManager.UserLoginPassword = recodePassword;
 
+#if UNITY_EDITOR
         LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
+        return;
+#endif
+
+        ReadUserData(nameof(JudgeLoggedIn));
+
+        LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
+    }
+
+    /// <summary>
+    /// 讀取用戶Database資料
+    /// </summary>
+    /// <param name="callBackFunName">回傳方法名</param>
+    private void ReadUserData(string callBackFunName)
+    {
+        ViewManager.Instance.OpenWaitingView(transform);
+        JSBridgeManager.Instance.ReadDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}",
+                                                       gameObject.name,
+                                                       callBackFunName);
+    }
+
+    /// <summary>
+    /// 帳號是否登入判斷
+    /// </summary>
+    /// <param name="jsonData">判斷資料回傳</param>
+    private void JudgeLoggedIn(string jsonData)
+    {
+        ViewManager.Instance.CloseWaitingView(transform);
+
+        AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
+        if (loginData.userId != null)
+        {
+            if (loginData.online == true)
+            {
+                //user logged in
+                Debug.Log("用戶帳號已登入，已在遊戲內");
+                /*ViewManager.Instance.OpenTipMsgView(transform,
+                                                    LanguageManager.Instance.GetText("Duplicate Login."));*/
+            }
+            else
+            {
+                Debug.Log("用戶未登入，正常");
+                //LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
+            }
+        }
+        else
+        {
+            //Not Find User
+            Debug.Log("未找到用戶，錯誤");
+        }
     }
 
     #endregion
@@ -2162,7 +2124,7 @@ public class LoginView : MonoBehaviour
         DataManager.UserNickname = SingInAccount_If.text;
         DataManager.UserId = SingInAccount_If.text;
         DataManager.UserLoginPhoneNumber = SingInAccount_If.text;
-        DataManager.UserLoginPassword = SignInPassword_If.text;       
+        DataManager.UserLoginPassword = SignInPassword_If.text;
 
         LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
     }
