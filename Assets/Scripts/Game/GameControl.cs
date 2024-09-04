@@ -946,6 +946,15 @@ public class GameControl : MonoBehaviour
         //判斷房主
         JudgeHost();
 
+        //積分房未開始牌局只剩1名玩家
+        if (RoomType == TableTypeEnum.IntegralTable &&
+            gameRoomData.playerDataDic.Count() == 1 &&
+            gameRoomData.currGameFlow < (int)GameFlowEnum.Licensing)
+        {
+            gameView.SetBattleResult(true);
+            return;
+        }
+
         //聊天訊息
         ChatMessage();
 
@@ -971,7 +980,6 @@ public class GameControl : MonoBehaviour
                     preUpdateGameFlow >= GameFlowEnum.SetBlind)
                 {
                     //剩下一名玩家在進行遊戲
-                    Debug.Log("剩下一名玩家在進行遊戲");
                     StartCoroutine(IJudgeNextSeason());
                 }
                 else
@@ -1378,7 +1386,15 @@ public class GameControl : MonoBehaviour
             yield return new WaitForSeconds(1);
             StartCoroutine(IJudgeNextSeason());
             yield break;
-        } 
+        }
+
+        //積分房玩家剩下1名
+        if (RoomType == TableTypeEnum.IntegralTable &&
+            gameRoomData.playerDataDic.Count() == 1)
+        {
+            StartCoroutine(IJudgeNextSeason());
+            yield break;
+        }
 
         GamePlayerInfo player = gameView.GetPlayer(gameRoomData.playerDataDic[gameRoomData.currActionerId].userId);
         if (gameRoomData.actionCD == DataManager.StartCountDownTime)

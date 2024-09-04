@@ -111,8 +111,8 @@ public static class DataManager
 
 
 
-    public static double InitGiveUChips { get { return 100; } }      //初始給予U幣
-    public static double InitGiveAChips { get { return 100000; } }      //初始給予A幣
+    public static double InitGiveUChips { get { return 100; } }         //初始給予U幣
+    public static double InitGiveAChips { get { return 500000; } }      //初始給予A幣
     public static double InitGiveGold { get { return 1000; } }          //初始給予黃金
 
     #endregion

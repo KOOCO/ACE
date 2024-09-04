@@ -249,7 +249,7 @@ public static class StringUtils
     /// <returns></returns>
     public static double JudgeUnit(string str)
     {
-        if (str.EndsWith("K")) return double.Parse(str.Replace("K", "")) * 10000;
+        if (str.EndsWith("K")) return double.Parse(str.Replace("K", "")) * 1000;
         else if (str.EndsWith("B")) return double.Parse(str.Replace("B", "")) * 1000000;
         else if (str.EndsWith("T")) return double.Parse(str.Replace("T", "")) * 100000000;
         else
