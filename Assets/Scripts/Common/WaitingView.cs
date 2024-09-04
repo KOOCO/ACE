@@ -13,7 +13,7 @@ public class WaitingView : MonoBehaviour
     {
         if ((DateTime.Now - startTime).TotalSeconds >= waitTime)
         {
-            ViewManager.Instance.CloseWaitingView(parent);
+            ViewManager.Instance?.CloseWaitingView(parent);
         }
     }
 

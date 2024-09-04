@@ -77,7 +77,6 @@ public class JoinRoomView : MonoBehaviour
         Buy_Btn.onClick.AddListener(() =>
         {
             ViewManager.Instance.OpenWaitingView(transform);
-
 #if UNITY_EDITOR
 
             dataRoomName = "EditorRoom";
@@ -95,7 +94,6 @@ public class JoinRoomView : MonoBehaviour
                 dataDic,
                 gameObject.name,
                 nameof(CreateNewRoomCallback));
-
             return;
 #endif
 
@@ -188,7 +186,7 @@ public class JoinRoomView : MonoBehaviour
         QueryRoom queryRoom = FirebaseManager.Instance.OnFirebaseDataRead<QueryRoom>(jsonData);
 
         //錯誤
-        if (!string.IsNullOrEmpty(queryRoom.error) )
+        if (!string.IsNullOrEmpty(queryRoom.error))
         {
             Debug.LogError(queryRoom.error);
             return;
@@ -236,7 +234,7 @@ public class JoinRoomView : MonoBehaviour
         //錯誤
         if (isSuccess == "false")
         {
-            ViewManager.Instance.CloseWaitingView(transform);
+            ViewManager.Instance?.CloseWaitingView(transform);
             Debug.LogError("Create Room Error!!!");
             return;
         }
@@ -259,8 +257,10 @@ public class JoinRoomView : MonoBehaviour
                                                 newValue,
                                                 0);
 
-        ViewManager.Instance.CloseWaitingView(transform);
+        ViewManager.Instance?.CloseWaitingView(transform);
+
         gameObject.SetActive(false);
+        LoadSceneManager.Instance.LoadScene(SceneEnum.Game);
     }
 
     /// <summary>
@@ -280,7 +280,7 @@ public class JoinRoomView : MonoBehaviour
                                                 newValue,
                                                 seat);
 
-        ViewManager.Instance.CloseWaitingView(transform);
+        ViewManager.Instance?.CloseWaitingView(transform);
         gameObject.SetActive(false);
     }
 }
