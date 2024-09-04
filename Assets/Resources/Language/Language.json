@@ -515,6 +515,11 @@
     "zh_TW": "您的信箱"
   },
   {
+    "ID": "i GOT IT",
+    "English": "i GOT IT",
+    "zh_TW": "我明白了"
+  },
+  {
     "ID": "錢包連接頁面",
     "English": null,
     "zh_TW": null
@@ -618,6 +623,16 @@
     "ID": "Terms",
     "English": "Terms",
     "zh_TW": "條款"
+  },
+  {
+    "ID": "Asia Poker privacy policy",
+    "English": "Asia Poker privacy policy",
+    "zh_TW": "Asia Poker 隱私權政策"
+  },
+  {
+    "ID": "Asia Poker Terms of Service",
+    "English": "Asia Poker Terms of Service",
+    "zh_TW": "Asia Poker 服務條款"
   },
   {
     "ID": "設置暱稱",

@@ -171,7 +171,8 @@ public class LoginView : MonoBehaviour
     Button PrivacyConfirm_Btn, Term_Btn, PrivacyPolicy_Btn;
     [SerializeField]
     TextMeshProUGUI PrivacyTitle_Txt, PrivacyContent_Txt,
-                    PrivacyConfirmBtn_Txt, Privacy_Title, Term_Title;
+                    PrivacyConfirmBtn_Txt, Privacy_Title, Term_Title,
+                    TermsConfirm_Btn_Txt, PrivacyConfirm_Btn_Txt;
 
     const int ErrorWalletConnectTime = 30;                                      //判定連接失敗等待時間
     const int codeCountDownTime = 60;                                           //發送OTP倒數時間
@@ -344,6 +345,8 @@ public class LoginView : MonoBehaviour
 
         #region 隱私政策物件
 
+        TermsConfirm_Btn_Txt.text = LanguageManager.Instance.GetText("i GOT IT");
+        PrivacyConfirm_Btn_Txt.text = LanguageManager.Instance.GetText("i GOT IT");
         PrivacyConfirmBtn_Txt.text = LanguageManager.Instance.GetText("Confirm");
         Privacy_Title.text = LanguageManager.Instance.GetText("Asia Poker privacy policy");
         Term_Title.text = LanguageManager.Instance.GetText("Asia Poker Terms of Service");
@@ -691,13 +694,13 @@ public class LoginView : MonoBehaviour
 
         Term_Btn.onClick.AddListener(() =>
         {
-            Term_text.SetActive(true);
-            Privacy_text.SetActive(false);
+            Term_text.SetActive(false);
+            Privacy_text.SetActive(true);
         });
         PrivacyPolicy_Btn.onClick.AddListener(() =>
         {
-            Term_text.SetActive(false);
-            Privacy_text.SetActive(true);
+            Term_text.SetActive(true);
+            Privacy_text.SetActive(false);
         });
         #endregion
     }
@@ -912,15 +915,15 @@ public class LoginView : MonoBehaviour
                 //條款
                 case "Terms":
                     Privacy_Obj.SetActive(true);
-                    PrivacyTitle_Txt.text = LanguageManager.Instance.GetText("Terms");
-                    PrivacyContent_Txt.text = LanguageManager.Instance.GetText("Terms Content");
+                    PrivacyTitle_Txt.text = LanguageManager.Instance.GetText("Privacy Policy");
+                    PrivacyContent_Txt.text = LanguageManager.Instance.GetText("Privacy Policy Content");
                     break;
 
                 //隱私權政策
                 case "Privacy Policy":
                     Privacy_Obj.SetActive(true);
-                    PrivacyTitle_Txt.text = LanguageManager.Instance.GetText("Privacy Policy");
-                    PrivacyContent_Txt.text = LanguageManager.Instance.GetText("Privacy Policy Content");
+                    PrivacyTitle_Txt.text = LanguageManager.Instance.GetText("Terms");
+                    PrivacyContent_Txt.text = LanguageManager.Instance.GetText("Terms Content");
                     break;
             }
         }
@@ -2112,21 +2115,4 @@ public class LoginView : MonoBehaviour
     }
 
     #endregion
-
-
-    /// <summary>
-    /// 測試用_進入大廳
-    /// </summary>
-    public void TestOnIntoLobby()
-    {
-        ViewManager.Instance.CloseWaitingView(transform);
-
-        DataManager.UserNickname = SingInAccount_If.text;
-        DataManager.UserId = SingInAccount_If.text;
-        DataManager.UserLoginPhoneNumber = SingInAccount_If.text;
-        DataManager.UserLoginPassword = SignInPassword_If.text;
-
-        LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
-    }
-
 }
