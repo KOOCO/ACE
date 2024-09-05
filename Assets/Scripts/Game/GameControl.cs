@@ -1555,6 +1555,8 @@ public class GameControl : MonoBehaviour
             List<GameRoomPlayerData> foldPlayers = GetFoldPlayer().OrderBy(x => x.currAllBetChips).ToList();
             List<GameRoomPlayerData> playingPlayers = GetPlayingPlayer().OrderBy(x => x.currAllBetChips).ToList();
 
+            yield return new WaitForSeconds(1);
+
             //所有玩家已下注
             bool isAllBet = true;
             if (canActionPlayers.Count() > 0)

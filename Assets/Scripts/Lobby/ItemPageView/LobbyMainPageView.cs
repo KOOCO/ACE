@@ -480,9 +480,6 @@ public class LobbyMainPageView : MonoBehaviour
         var data = new Dictionary<string, object>();
         foreach (var waitPlayer in gameRoomData.integralWaitData)
         {
-            Debug.Log($"配對ID:{waitPlayer.Value.userId}");
-            Debug.Log($"配對:{(waitPlayer.Value.paired == false)}");
-            Debug.Log($"配對3:{string.IsNullOrEmpty(waitPlayer.Value.pairRoomName)}");
             //配對到玩家
             if (waitPlayer.Value.paired == false &&
                 string.IsNullOrEmpty(waitPlayer.Value.pairRoomName))
@@ -615,11 +612,6 @@ public class LobbyMainPageView : MonoBehaviour
 
     #endregion
 
-    /// <summary>
-    /// 創建房間按鈕
-    /// </summary>
-
-
     public class GetBanner
     {
         public string Filter;
@@ -630,6 +622,10 @@ public class LobbyMainPageView : MonoBehaviour
         public int SkipCount;
         public int MaxResultCount;
     }
+
+    /// <summary>
+    /// 創建房間按鈕
+    /// </summary>
     private void CreateRoomBtn()
     {
         //加密貨幣桌        

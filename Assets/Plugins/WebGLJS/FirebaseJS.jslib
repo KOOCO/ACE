@@ -236,7 +236,7 @@ mergeInto(LibraryManager.library, {
                     // 新增检查所有玩家是否都离线
                     let allPlayersOffline = true;
                     for (let playerKey in room.playerDataDic) {
-                        const player = room.playerDataDic[playerKey];
+                        const player = room.playerDataDic[playerKey];                        
                         if (player.online === true) {
                             allPlayersOffline = false;
                             break;

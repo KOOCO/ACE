@@ -12471,6 +12471,7 @@ MonoBehaviour:
   BringFriends_Text: {fileID: 5586383570094066061}
   InviteCodeTitle_Text: {fileID: 3859211333185014574}
   Copy_Text: {fileID: 4943930381295854052}
+  InvitCode_Txt: {fileID: 6318865649006316307}
   TransactionHistory_Btn: {fileID: 7112698518765981088}
   TransactionHistoryViewObj: {fileID: 3537822008069001750, guid: 7846f6c4a33fa0948bc3115d1d669fa1, type: 3}
   TransactionHistoryTitle_Txt: {fileID: 53905211550346938}
@@ -15645,7 +15646,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8607072467687399009}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
   m_Name: 
@@ -16106,7 +16107,7 @@ GameObject:
   - component: {fileID: 3628556758750511962}
   - component: {fileID: 6318865649006316307}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: InvitCode_Txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16153,7 +16154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

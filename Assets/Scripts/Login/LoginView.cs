@@ -707,7 +707,9 @@ public class LoginView : MonoBehaviour
 
     private void Start()
     {
-        string localIP = GetLocalIPAddress();
+        string localIP = string.IsNullOrEmpty(DataManager.PlayerIPAddress) ?
+                         GetLocalIPAddress() :
+                         DataManager.PlayerIPAddress;
 
         Local_IP local_Ip = new Local_IP { IPAddress = localIP };
 
@@ -767,7 +769,7 @@ public class LoginView : MonoBehaviour
         else
             TipBanner_Obj.SetActive(false);
 
-        #region 註冊帳號規則檢查
+#region 註冊帳號規則檢查
         if (RegisterAccountName_If.text.Length > 0)
         {
             AccountIf_Placeholder.gameObject.SetActive(false);
@@ -777,11 +779,11 @@ public class LoginView : MonoBehaviour
             AccountIf_Placeholder.gameObject.SetActive(true);
         }
         string AccountName = RegisterAccountName_If.text;
-        #endregion
+#endregion
 
         RegisterPasswordError_Txt.text = "";
 
-        #region 登入按鈕
+#region 登入按鈕
 
         string LoginAccountName = SingInAccount_If.text;
         bool SingInAccount_If_IsLongEnough = SingInAccount_If.text.Length > 5;
@@ -809,7 +811,7 @@ public class LoginView : MonoBehaviour
         }
 
 
-        #endregion
+#endregion
 
         //發送OTP倒數
         float codeTime = (float)(DateTime.Now - codeStartTime).TotalSeconds;
@@ -882,7 +884,7 @@ public class LoginView : MonoBehaviour
 #endif
     }
 
-    #region 工具類
+#region 工具類
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -1004,9 +1006,9 @@ public class LoginView : MonoBehaviour
         PlayerPrefs.SetString(LocalPaswword, recodePassword);
     }
 
-    #endregion
+#endregion
 
-    #region 手機登入
+#region 手機登入
 
     /// <summary>
     /// 手機登入初始
@@ -1072,9 +1074,9 @@ public class LoginView : MonoBehaviour
         }
     } 
 
-    #endregion
+#endregion
 
-    #region 手機註冊
+#region 手機註冊
     
     /// <summary>
     /// 手機註冊初始化
@@ -1337,9 +1339,9 @@ public class LoginView : MonoBehaviour
         //OnIntoLobby();
     }
 
-    #endregion
+#endregion
 
-    #region 忘記密碼
+#region 忘記密碼
 
     /// <summary>
     /// 忘記密碼提交
@@ -1453,9 +1455,9 @@ public class LoginView : MonoBehaviour
         OnMobileSignInInit();
     }
 
-    #endregion
+#endregion
 
-    #region 錢包連接
+#region 錢包連接
 
     /// <summary>
     /// 選擇錢包畫面初始
@@ -1546,7 +1548,7 @@ public class LoginView : MonoBehaviour
     /// <param name="walletEnum">連接的錢包</param>
     async private void StartConnect(string walletProviderStr, WalletEnum walletEnum)
     {
-        #region 開啟連接畫面
+#region 開啟連接畫面
 
         startConnectTime = DateTime.Now;
         recordConnect.WalletProviderStr = walletProviderStr;
@@ -1564,9 +1566,9 @@ public class LoginView : MonoBehaviour
         ConnectingLogo_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.WalletLogoAlbum).album[(int)walletEnum];
         connectionEffectCoroutine = StartCoroutine(IConnectionEffect());
 
-        #endregion
+#endregion
 
-        #region 錢包連接
+#region 錢包連接
 
         currConnectingWallet = walletEnum;
         DownloadWallet_Txt.gameObject.SetActive(DataManager.IsMobilePlatform);
@@ -1629,7 +1631,7 @@ public class LoginView : MonoBehaviour
             Connect(wc);
         }
 
-        #endregion
+#endregion
     }
 
     /// <summary>
@@ -1867,9 +1869,6 @@ public class LoginView : MonoBehaviour
             { FirebaseManager.INVITATION_CODE, currInviteCode },                        //邀請碼
             { FirebaseManager.USER_ID, currUserId },                                    //UserID
             { FirebaseManager.AVATAR_INDEX, 0},                                         //頭像編號
-            { FirebaseManager.U_CHIPS, Math.Round(DataManager.InitGiveUChips) },        //初始給予U幣
-            { FirebaseManager.A_CHIPS, Math.Round(DataManager.InitGiveAChips) },        //初始給予A幣
-            { FirebaseManager.GOLD, Math.Round(DataManager.InitGiveGold) },             //初始給予黃金
         };
         JSBridgeManager.Instance.WriteDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{LoginType.walletUser}/{currVerifyPhoneNumber}",
                                                         dataDic,
@@ -1886,14 +1885,14 @@ public class LoginView : MonoBehaviour
         OnIntoLobby(isSuccess);
     }
 
-    #endregion
+#endregion
 
     public void closetipBanner()
     {
         DataManager.istipAppear = false;
     }
 
-    #region 註冊前設置資料
+#region 註冊前設置資料
 
     /// <summary>
     /// 設置唯一性資料
@@ -2025,9 +2024,9 @@ public class LoginView : MonoBehaviour
         isGetUserId = true;
     }
 
-    #endregion
+#endregion
 
-    #region 帳號規則
+#region 帳號規則
     /// <summary>
     /// 帳號規則檢查
     /// </summary>
@@ -2041,17 +2040,18 @@ public class LoginView : MonoBehaviour
         // 檢查字元
         return Regex.IsMatch(AccountName, "^[A-Za-z0-9]+$") && hasLetter;
     }
-    #endregion
+#endregion
 
-    #region 進入大廳
+#region 進入大廳
 
     /// <summary>
     /// 進入大廳
     /// </summary>
     private void OnIntoLobby(string data)
     {
-        Debug.Log("Login Response Data :: " + data);
         Services.PlayerService.SaveUser(data);
+        Player player = Services.PlayerService.GetPlayer();
+
         ViewManager.Instance.CloseWaitingView(transform);
 
         LocalDataSave();
@@ -2060,6 +2060,14 @@ public class LoginView : MonoBehaviour
         DataManager.UserId = Services.PlayerService.GetMemberId();
         DataManager.UserLoginPhoneNumber = recodePhoneNumber;
         DataManager.UserLoginPassword = recodePassword;
+
+        DataManager.UserAChips = player.promotionCoin;
+        DataManager.UserUChips = player.walletAmount;
+        DataManager.UserGold = player.gold;
+        DataManager.UserInvitationCode = player.inviteCode;
+        DataManager.UserOTProps = player.timer;
+        DataManager.UserStamina = player.currentEnergy;
+        DataManager.UserMaxStamina = 100;//player.maxEnergy;
 
 #if UNITY_EDITOR
         LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
@@ -2114,5 +2122,5 @@ public class LoginView : MonoBehaviour
         }
     }
 
-    #endregion
+#endregion
 }

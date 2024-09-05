@@ -1147,7 +1147,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4486474359657938648, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
       propertyPath: version
-      value: V1.2.4
+      value: V1.2.6
       objectReference: {fileID: 0}
     - target: {fileID: 4486474359657938648, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
       propertyPath: ReporterObj
@@ -1155,7 +1155,7 @@ PrefabInstance:
       objectReference: {fileID: 2076772826}
     - target: {fileID: 4486474359657938648, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
       propertyPath: releaseType
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4486474359657938648, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
       propertyPath: isUsingDebug

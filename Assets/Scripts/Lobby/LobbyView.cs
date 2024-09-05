@@ -21,7 +21,8 @@ public class LobbyView : MonoBehaviour
 
     [Header("用戶訊息")]
     [SerializeField]
-    TextMeshProUGUI Nickname_Txt, Stamina_Txt, CryptoChips_Txt;
+    TextMeshProUGUI Nickname_Txt, Stamina_Txt, 
+                    CryptoChips_Txt;
 
     [Header("用戶資源列表")]
     [SerializeField]
@@ -302,10 +303,6 @@ public class LobbyView : MonoBehaviour
             DataManager.UserNickname = loginData.nickname;
             DataManager.UserAvatarIndex = loginData.avatarIndex;
 
-            DataManager.UserUChips = Math.Round(DataManager.InitGiveUChips);
-            DataManager.UserAChips = Math.Round(DataManager.InitGiveAChips);
-            DataManager.UserGold = Math.Round(DataManager.InitGiveGold);
-
 #if !UNITY_EDITOR
 
             if (!isListenered)
@@ -316,11 +313,11 @@ public class LobbyView : MonoBehaviour
                 JSBridgeManager.Instance.StartListenerConnectState(
                     $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}");
 
-                //監聽用戶資料
+                /*//監聽用戶資料
                 JSBridgeManager.Instance.StartListeningForDataChanges(
                     $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}",
                 gameObject.name,
-                nameof(GetDataCallback));
+                nameof(GetDataCallback));*/
             }
 #endif
         }
@@ -342,11 +339,6 @@ public class LobbyView : MonoBehaviour
             {
                 Instantiate(SetNicknameViewObj, transform);
             }
-        }
-
-        if (string.IsNullOrEmpty(DataManager.UserInvitationCode))
-        {
-            DataManager.UserInvitationCode = StringUtils.GenerateRandomString(15);
         }
 
         //使用邀請碼登入
@@ -403,26 +395,12 @@ public class LobbyView : MonoBehaviour
     {
         Nickname_Txt.text = $"@{DataManager.UserNickname}";
         Avatar_Btn.image.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[DataManager.UserAvatarIndex];
-        Stamina_Txt.text = $"{DataManager.UserStamina}/{DataManager.MaxStaminaValue}";
-        CryptoChips_Txt.text = string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 " : DataManager.UserWalletBalance;
+        Stamina_Txt.text = $"{DataManager.UserStamina}/{DataManager.UserMaxStamina}";
 
-        //資源列表
-       
-        Assets_CryptoChipsValue_Txt.text = string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 " : DataManager.UserWalletBalance;
-       
-
-      
-         Assets_VCValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserAChips);
-     
-  
+        Assets_CryptoChipsValue_Txt.text = $"{StringUtils.SetChipsUnit(DataManager.UserUChips)}";
+        Assets_VCValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserAChips);    
         Assets_GoldValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserGold);
-     
-
-
-
-        Assets_StaminaValue_Txt.text = $"{DataManager.UserStamina}/{DataManager.MaxStaminaValue}";
-       
-
+        Assets_StaminaValue_Txt.text = $"{DataManager.UserStamina}/{DataManager.UserMaxStamina}";
         Assets_OTPropsValue_Txt.text = $"{DataManager.UserOTProps}";
     }
 

@@ -50,6 +50,11 @@ public class PlayerService : MonoBehaviour
     {
         return _player.memberId;
     }
+
+    public Player GetPlayer()
+    {
+        return _player;
+    }
     #endregion
 }
 

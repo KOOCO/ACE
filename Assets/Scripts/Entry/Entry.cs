@@ -69,17 +69,6 @@ public class Entry : UnitySingleton<Entry>
         LoadSceneManager.Instance.LoadScene(SceneEnum.Login);
     }
 
-    private void Update()
-    {
-        if (releaseType == ReleaseEnvironmentEnum.JimmyTest)
-        {
-            if (Input.GetKeyDown(KeyCode.RightAlt))
-            {
-                GameObject.FindAnyObjectByType<LoginView>().TestOnIntoLobby();
-            }
-        }
-    }
-
     public class Reigster
     {
         public string phoneNumber;
@@ -223,6 +212,7 @@ public class Entry : UnitySingleton<Entry>
     public void GetPlayerIPAddressCallback(string ip)
     {
         Debug.Log($"Player IP Address:{ip}");
+        DataManager.PlayerIPAddress = ip;
     }
 
     /// <summary>

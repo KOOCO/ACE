@@ -90,6 +90,8 @@ public static class DataManager
 
     #region 用戶訊息
 
+    public static string PlayerIPAddress { get; set; }              //IP地址
+
     public static LoginType UserLoginType { get; set; }             //用戶登入類型
     public static string UserAccount { get; set; }                  //登入帳號
 
@@ -104,23 +106,17 @@ public static class DataManager
     public static string UserLineToken { get; set; }                //用戶LineToken
     public static int UserAvatarIndex { get; set; }                 //用戶頭像
     public static int UserStamina { get; set; }                     //用戶耐力
+    public static int UserMaxStamina { get; set; }                  //用戶最大耐力
     public static int UserOTProps { get; set; }                     //用戶加時道具數量
     public static double UserUChips { get; set; }                   //用戶U籌碼
     public static double UserAChips { get; set; }                   //用戶A籌碼
     public static double UserGold { get; set; }                     //用戶Gold籌碼
-
-
-
-    public static double InitGiveUChips { get { return 100; } }         //初始給予U幣
-    public static double InitGiveAChips { get { return 500000; } }      //初始給予A幣
-    public static double InitGiveGold { get { return 1000; } }          //初始給予黃金
 
     #endregion
 
     #region 大廳
 
     public static int CurrBillboardIndex { get; set; }                                            //當前廣告刊版Index
-    public static int MaxStaminaValue { get { return 50; } }                                      //最大耐力值
     public static int MinMagnification { get { return 40; } }                                     //購買籌碼最小倍率
     public static int MaxMagnification { get { return 200; } }                                    //購買籌碼最大倍率
     public static readonly List<double> CryptoSmallBlindList = new List<double>                   //加密貨幣桌小盲值

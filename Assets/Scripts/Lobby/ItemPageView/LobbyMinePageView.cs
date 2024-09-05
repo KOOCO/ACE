@@ -87,7 +87,8 @@ public class LobbyMinePageView : MonoBehaviour
     TextMeshProUGUI InvitationCodeTitle_Txt, InvitationCodeShareBtn_Txt, MyInvitationCode_Txt,
                     InvitationCode_Txt, CopiedInvitationCode_Txt,
                     BoundInviterTitle_Txt, BoundInviterIdf_Placeholder, InviationCodeSubmitBtn_Txt,
-                    InviationCodeError_Txt, BringFriends_Text, InviteCodeTitle_Text, Copy_Text;
+                    InviationCodeError_Txt, BringFriends_Text, InviteCodeTitle_Text, Copy_Text,
+                    InvitCode_Txt;
     
    
    
@@ -427,7 +428,7 @@ public class LobbyMinePageView : MonoBehaviour
         //複製邀請碼
         CopyInvitationCode_Btn.onClick.AddListener(() =>
         {
-            if (!string.IsNullOrEmpty(InvitationCode_Txt.text))
+            if (!string.IsNullOrEmpty(InvitCode_Txt.text))
             {
                 StringUtils.CopyText(DataManager.UserInvitationCode);
                 UnityUtils.Instance.ColorFade(CopiedInvitationCode_Txt,
@@ -559,6 +560,9 @@ public class LobbyMinePageView : MonoBehaviour
         //錢包地址 /*先呈現畫面之後再寫回來*/
         //WalletAddress_Txt.text = "TTerwE2220ba3fffba745R...";
 
+        //邀請碼
+        InvitCode_Txt.text = $"{DataManager.UserInvitationCode}";
+
         StringUtils.StrExceedSize(DataManager.UserWalletAddress, WalletAddress_Txt);
 
         
@@ -579,15 +583,15 @@ public class LobbyMinePageView : MonoBehaviour
         LineNotYetLinked_Obj.SetActive(string.IsNullOrEmpty(DataManager.GetLineToken));
         LineLink_Btn.interactable = string.IsNullOrEmpty(DataManager.GetLineToken);
         LineLinked_Txt.text = string.IsNullOrEmpty(DataManager.GetLineToken) ?
-                            LanguageManager.Instance.GetText("LINK NOW") :
-                            LanguageManager.Instance.GetText("LINKED");
+                              LanguageManager.Instance.GetText("LINK NOW") :
+                              LanguageManager.Instance.GetText("LINKED");
         LineLinked_Img.sprite = string.IsNullOrEmpty(DataManager.GetLineToken) ?
                                 AssetsManager.Instance.GetAlbumAsset(AlbumEnum.LinkAlbum).album[0] :
                                 AssetsManager.Instance.GetAlbumAsset(AlbumEnum.LinkAlbum).album[1];
 
         invitationCodeUrl = $"{DataManager.GetRedirectUri()}" +
-                    $"?invitationCode={DataManager.UserInvitationCode}" +
-                    $"&inviterId={DataManager.UserId}";
+                            $"?invitationCode={DataManager.UserInvitationCode}" +
+                            $"&inviterId={DataManager.UserId}";
     }
 
     /// <summary>
@@ -606,10 +610,10 @@ public class LobbyMinePageView : MonoBehaviour
         DataManager.UserStamina = Stamina;
         DataManager.UserOTProps = ot;
 
-        CryptoTableValue_Txt.text = string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 " : DataManager.UserWalletBalance;
+        CryptoTableValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserUChips);
         VCTableValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserAChips);
         GoldValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserGold);
-        StaminaValue_Txt.text = $"{DataManager.UserStamina}/{DataManager.MaxStaminaValue}";
+        StaminaValue_Txt.text = $"{DataManager.UserStamina}/{DataManager.UserMaxStamina}";
         OTPropsValue_Txt.text = $"{DataManager.UserOTProps}";
 
         GameObject.FindAnyObjectByType<LobbyView>().UpdateUserData();
