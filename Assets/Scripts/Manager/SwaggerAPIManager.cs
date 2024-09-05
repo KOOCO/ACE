@@ -28,7 +28,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     /// <param name="data">傳遞的資料</param>
     /// <param name="callback">結果回傳</param>
     /// <param name="errCallback"></param>
-    public void SendPostAPI<T1>(string apiUrl, T1 data, UnityAction<string> callback = null, UnityAction errCallback = null)
+    public void SendPostAPI<T1>(string apiUrl, T1 data, UnityAction<string> callback = null, UnityAction<string> errCallback = null)
         where T1 : class
     {
         StartCoroutine(ISendPOSTRequest(apiUrl, data, callback, errCallback));
@@ -47,7 +47,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     /// <param name="callback"></param>
     /// <param name="errCallback"></param>
     /// <returns></returns>
-    private IEnumerator ISendPOSTRequest<T1>(string apiUrl, T1 data, UnityAction<string> callback = null, UnityAction errCallback = null)
+    private IEnumerator ISendPOSTRequest<T1>(string apiUrl, T1 data, UnityAction<string> callback = null, UnityAction<string> errCallback = null)
         where T1 : class
     {
         string fullUrl = BASE_URL + apiUrl;
@@ -70,7 +70,6 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
             //請求錯誤
             string errorJson = request.downloadHandler.text;
             Debug.LogError($"Error: {request.error}\nError Details: {errorJson}");
-            Debug.LogError(errorJson);
 
             if (errorJson == "Invalid username or password!")
             {
@@ -78,7 +77,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
                 DataManager.istipAppear = true;
                 //Debug.Log("登入失敗");
             }
-            errCallback?.Invoke();
+            errCallback?.Invoke(errorJson);
         }
         else
         {

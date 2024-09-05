@@ -46,11 +46,6 @@ public class PlayerService : MonoBehaviour
         return _player.accessToken;
     }
 
-    public string GetMemberId()
-    {
-        return _player.memberId;
-    }
-
     public Player GetPlayer()
     {
         return _player;

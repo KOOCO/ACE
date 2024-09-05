@@ -120,7 +120,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5493586633629876495}
   m_HandleRect: {fileID: 2059080580140399946}
   m_Direction: 2
-  m_Value: 0.9755563
+  m_Value: 1
   m_Size: 0.24729526
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3166,8 +3166,8 @@ MonoBehaviour:
   Term_obj_Scroll: {fileID: 6606979437050190533}
   Privacy_text_CH: {fileID: 7719021154548318947}
   Term_text_CH: {fileID: 2779514796337256566}
-  Privacy_text_EN: {fileID: 8550726981821466493}
-  Term_text_EN: {fileID: 875341435655203354}
+  Privacy_text_EN: {fileID: 875341435655203354}
+  Term_text_EN: {fileID: 8550726981821466493}
   Button_EN: {fileID: 5454857279497613999}
   Button_CH: {fileID: 8088825261261590505}
   PrivacyConfirm_Btn: {fileID: 6511291395884899237}
@@ -3337,11 +3337,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 874274268721518991}
-  m_Father: {fileID: 7569267755286166466}
+  m_Father: {fileID: 87099528434443230}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0009950328, y: 26.813}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 3681.6938}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &883143584330660026
@@ -6123,8 +6123,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 147494614631944424}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.73430586}
-  m_AnchorMax: {x: 1, y: 0.9816011}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -10870,7 +10870,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &261551706456137173
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11041,7 +11041,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0009950328, y: -0.00008583069}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 2478.2622}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &2781814594083663801
@@ -22931,7 +22931,7 @@ GameObject:
   - component: {fileID: 5709172031119996906}
   - component: {fileID: 6214708513898129705}
   m_Layer: 5
-  m_Name: Scroll View
+  m_Name: Term_Sv
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26917,7 +26917,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0009950328, y: 35.622204}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 1936.1067}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &7778158419153527462
@@ -29013,13 +29013,13 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5647674078199863613}
-  - {fileID: 7368870172110381888}
+  - {fileID: 6530294219279250344}
   m_Father: {fileID: 4252312567911930318}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -19.2, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &4261203264712760451
 CanvasRenderer:
@@ -29214,7 +29214,7 @@ GameObject:
   - component: {fileID: 8305561329639776265}
   - component: {fileID: 3005304308877701988}
   m_Layer: 5
-  m_Name: Scroll View
+  m_Name: Privacy_Sv
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29413,11 +29413,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2272083322081507692}
-  m_Father: {fileID: 87099528434443230}
+  m_Father: {fileID: 7569267755286166466}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0000038146973, y: 1772.3099}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 2251.1}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &8778729788485700010
@@ -30353,7 +30353,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9115753300346143591}
-  - {fileID: 6530294219279250344}
+  - {fileID: 7368870172110381888}
   m_Father: {fileID: 3255324680950049744}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

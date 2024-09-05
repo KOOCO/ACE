@@ -1124,7 +1124,6 @@ public class LoginView : MonoBehaviour
         }
     }
 
-
     /// <summary>
     /// 手機註冊提交
     /// </summary>
@@ -1566,9 +1565,9 @@ public class LoginView : MonoBehaviour
         ConnectingLogo_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.WalletLogoAlbum).album[(int)walletEnum];
         connectionEffectCoroutine = StartCoroutine(IConnectionEffect());
 
-#endregion
+        #endregion
 
-#region 錢包連接
+        #region 錢包連接
 
         currConnectingWallet = walletEnum;
         DownloadWallet_Txt.gameObject.SetActive(DataManager.IsMobilePlatform);
@@ -1715,7 +1714,9 @@ public class LoginView : MonoBehaviour
             ipAddress = JsonStringIp,
             machineCode = "123456789",
         };
-        SwaggerAPIManager.Instance.SendPostAPI<passwordless_login>("/api/app/ace-accounts/passwordless-login", wallLogin, WalletLoginCallback);
+        SwaggerAPIManager.Instance.SendPostAPI<passwordless_login>("/api/app/ace-accounts/passwordless-login", 
+                            wallLogin, WalletLoginCallback,
+                            OpenWalletRigisterPage);
     }
 
     /// <summary>
@@ -1741,24 +1742,29 @@ public class LoginView : MonoBehaviour
     }
 
     /// <summary>
-    /// 開啟錢包簡訊確認頁面
+    /// 開啟錢包註冊頁面
     /// </summary>
-    private void OpenSMSVerificationPage()
+    /// <param name="error"></param>
+    private void OpenWalletRigisterPage(string errorMsg)
     {
-        ConnectionTitle_Txt.text = LanguageManager.Instance.GetText("SMS Verification");
-        WalletLoadingPage_Obj.SetActive(false);
-        WalletRegisterPage_Obj.SetActive(true);
-
-        //設定TAB切換與Enter提交方法
-        if (!DataManager.IsMobilePlatform)
+        //未註冊
+        if (errorMsg == "The token request was rejected by the authentication server.")
         {
-            WalletRegister_If.Select();
-            currIfList = new List<TMP_InputField>()
+            ConnectionTitle_Txt.text = LanguageManager.Instance.GetText("REGISTER");
+            WalletLoadingPage_Obj.SetActive(false);
+            WalletRegisterPage_Obj.SetActive(true);
+
+            //設定TAB切換與Enter提交方法
+            if (!DataManager.IsMobilePlatform)
             {
-                WalletRegister_If,
-                WalletEmail_If,
-            };
-            KybordEnterAction = SMSOTPSubmitAction;
+                WalletRegister_If.Select();
+                currIfList = new List<TMP_InputField>()
+                {
+                    WalletRegister_If,
+                    WalletEmail_If,
+                };
+                KybordEnterAction = SMSOTPSubmitAction;
+            }
         }
     }
 
@@ -2056,11 +2062,10 @@ public class LoginView : MonoBehaviour
 
         LocalDataSave();
 
-        DataManager.UserNickname = recodePhoneNumber;
-        DataManager.UserId = Services.PlayerService.GetMemberId();
         DataManager.UserLoginPhoneNumber = recodePhoneNumber;
         DataManager.UserLoginPassword = recodePassword;
 
+        DataManager.UserId = player.memberId;
         DataManager.UserAChips = player.promotionCoin;
         DataManager.UserUChips = player.walletAmount;
         DataManager.UserGold = player.gold;
