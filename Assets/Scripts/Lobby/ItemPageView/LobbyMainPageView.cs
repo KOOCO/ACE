@@ -102,11 +102,9 @@ public class LobbyMainPageView : MonoBehaviour
     /// </summary>
     private void UpdateLanguage()
     {
-
         IntegralBtn_Txt.text = LanguageManager.Instance.GetText("GO TO INTEGRAL");
         CryptoTableTital_Txt.text = LanguageManager.Instance.GetText("Classic Battle");
         VCTableTital_Txt.text = LanguageManager.Instance.GetText("High Roller Battleground");
-
     }
 
     private void OnDestroy()
@@ -155,7 +153,7 @@ public class LobbyMainPageView : MonoBehaviour
                         integralData.startPairTime = DateTime.Now;
 
                         //移除未使用積分房
-                        JSBridgeManager.Instance.JoinRoomQueryData($"{Entry.Instance.releaseType}/{TableTypeEnum.IntegralTable}",
+                        JSBridgeManager.Instance.JoinRoomQueryData($"{Entry.Instance.releaseType}/{TableTypeEnum.IntegralTable}/{FirebaseManager.INTEGRAL_ROOM}",
                                             $"{2}",
                                             $"{DataManager.UserId}",
                                             gameObject.name,
