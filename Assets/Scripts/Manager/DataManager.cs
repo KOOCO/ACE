@@ -103,8 +103,9 @@ public static class DataManager
     public static string UserNickname { get; set; }                 //用戶暱稱
     public static string UserLineToken { get; set; }                //用戶LineToken
     public static int UserAvatarIndex { get; set; }                 //用戶頭像
-    public static int UserStamina { get; set; }                     //用戶耐力
-    public static int UserOTProps { get; set; }                     //用戶加時道具數量
+    public static int UserEnergy { get; set; }                     //用戶耐力
+    public static int UserTimer { get; set; }                     //用戶加時道具數量
+    public static int UserTools { get; set; }                     //用戶加時道具數量
     public static double UserUChips { get; set; }                   //用戶U籌碼
     public static double UserAChips { get; set; }                   //用戶A籌碼
     public static double UserGold { get; set; }                     //用戶Gold籌碼
@@ -361,7 +362,7 @@ public static class DataManager
 
     #region POP
     public static bool istipAppear { get; set; }       //顯示提示
- 
+
     public static string TipText { get; set; } //提示文字
 
     #endregion

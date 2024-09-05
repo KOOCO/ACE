@@ -78,7 +78,7 @@ public class LobbyMinePageView : MonoBehaviour
     [SerializeField]
     Image Invitation_Img;
     [SerializeField]
-    Button InvitationCodeShare_Btn, InviationCodeSubmit_Btn, CopyInvitationCode_Btn,InviteUIArrow_Btn;
+    Button InvitationCodeShare_Btn, InviationCodeSubmit_Btn, CopyInvitationCode_Btn, InviteUIArrow_Btn;
     [SerializeField]
     TMP_InputField BoundInviterId_If;
     [SerializeField]
@@ -88,12 +88,12 @@ public class LobbyMinePageView : MonoBehaviour
                     InvitationCode_Txt, CopiedInvitationCode_Txt,
                     BoundInviterTitle_Txt, BoundInviterIdf_Placeholder, InviationCodeSubmitBtn_Txt,
                     InviationCodeError_Txt, BringFriends_Text, InviteCodeTitle_Text, Copy_Text;
-    
-   
-   
 
 
-   [Header("交易紀錄")]
+
+
+
+    [Header("交易紀錄")]
     [SerializeField]
     Button TransactionHistory_Btn;
     [SerializeField]
@@ -125,7 +125,7 @@ public class LobbyMinePageView : MonoBehaviour
     [SerializeField]
     Button Settings_Btn_Expance;
 
-   [SerializeField]
+    [SerializeField]
     GameObject SettingsViewObj;
     [SerializeField]
     Button Settings_Btn;
@@ -368,7 +368,7 @@ public class LobbyMinePageView : MonoBehaviour
         {
             isInviteUIExpand = !isInviteUIExpand;
             StartCoroutine(ISwitchContent(isInviteUIExpand,
-                                            Invitation_Obj, 
+                                            Invitation_Obj,
                                             Invitation_Img));
         });
 
@@ -380,7 +380,7 @@ public class LobbyMinePageView : MonoBehaviour
                                           Settings_Obj,
                                           settings_Img));
 
-           
+
         });
 
         #endregion
@@ -493,15 +493,15 @@ public class LobbyMinePageView : MonoBehaviour
         #region 設定
 
         //開啟設定
-      /*  Settings_Btn.onClick.AddListener(() =>
-        {
-            LobbyView lobbyView = GameObject.FindFirstObjectByType<LobbyView>();
-            if (lobbyView != null)
-            {
-                Instantiate(SettingsViewObj, lobbyView.transform);
-            }
-        });
-      */
+        /*  Settings_Btn.onClick.AddListener(() =>
+          {
+              LobbyView lobbyView = GameObject.FindFirstObjectByType<LobbyView>();
+              if (lobbyView != null)
+              {
+                  Instantiate(SettingsViewObj, lobbyView.transform);
+              }
+          });
+        */
 
         #endregion
     }
@@ -538,8 +538,8 @@ public class LobbyMinePageView : MonoBehaviour
         UpdatetAccountBalance(string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 " : DataManager.UserWalletBalance,
                               DataManager.UserAChips,
                               DataManager.UserGold,
-                              DataManager.UserStamina,
-                              DataManager.UserOTProps);
+                              DataManager.UserEnergy,
+                              DataManager.UserTimer);
 
         UpdateScoreRecord(50, 60, 70, 80);
         UpdateInvitationCodeInfo();
@@ -561,13 +561,13 @@ public class LobbyMinePageView : MonoBehaviour
 
         StringUtils.StrExceedSize(DataManager.UserWalletAddress, WalletAddress_Txt);
 
-        
+
         //WalletAddressBg_Obj.SetActive(true);
         WalletAddressBg_Obj.SetActive(!string.IsNullOrEmpty(WalletAddress_Txt.text));
 
         //IG連接
         IGNotYetLinked_Obj.SetActive(string.IsNullOrEmpty(DataManager.IGIUserIdAndName));
-        IGLink_Btn.interactable = string.IsNullOrEmpty(DataManager.IGIUserIdAndName);                                  
+        IGLink_Btn.interactable = string.IsNullOrEmpty(DataManager.IGIUserIdAndName);
         IGLinked_Txt.text = string.IsNullOrEmpty(DataManager.IGIUserIdAndName) ?
                             LanguageManager.Instance.GetText("LINK NOW") :
                             LanguageManager.Instance.GetText("LINKED");
@@ -603,14 +603,14 @@ public class LobbyMinePageView : MonoBehaviour
         DataManager.UserWalletBalance = crypto.ToString();
         DataManager.UserAChips = vc;
         DataManager.UserGold = gold;
-        DataManager.UserStamina = Stamina;
-        DataManager.UserOTProps = ot;
+        DataManager.UserEnergy = Stamina;
+        DataManager.UserTimer = ot;
 
         CryptoTableValue_Txt.text = string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 " : DataManager.UserWalletBalance;
         VCTableValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserAChips);
         GoldValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserGold);
-        StaminaValue_Txt.text = $"{DataManager.UserStamina}/{DataManager.MaxStaminaValue}";
-        OTPropsValue_Txt.text = $"{DataManager.UserOTProps}";
+        StaminaValue_Txt.text = $"{DataManager.UserEnergy}/{DataManager.MaxStaminaValue}";
+        OTPropsValue_Txt.text = $"{DataManager.UserTimer}";
 
         GameObject.FindAnyObjectByType<LobbyView>().UpdateUserData();
     }
@@ -668,7 +668,7 @@ public class LobbyMinePageView : MonoBehaviour
         {
             float progress = (float)(DateTime.Now - startTime).TotalSeconds / expandTIme;
             float height = Mathf.Lerp(initHeight, targetHeight, progress);
-            rt.sizeDelta = new Vector2(rt.rect.width, height);     
+            rt.sizeDelta = new Vector2(rt.rect.width, height);
 
             yield return null;
         }
@@ -769,12 +769,12 @@ public class LobbyMinePageView : MonoBehaviour
     /// </summary>
     public void UpdateInvitationCodeInfo()
     {
-        
+
         //邀請人Title
         BoundInviterTitle_Txt.text = string.IsNullOrEmpty(DataManager.UserBoundInviterId) ?
                                      LanguageManager.Instance.GetText("Enter Invitation Code") :
                                      LanguageManager.Instance.GetText("Bound Inviter");
-        
+
         //邀請人ID
         BoundInviterId_If.text = !string.IsNullOrEmpty(DataManager.UserBoundInviterId) ?
                                   DataManager.UserBoundInviterId :

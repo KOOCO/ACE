@@ -41,7 +41,7 @@ public class LobbyView : MonoBehaviour
     [SerializeField]
     Button Mine_Btn, Shop_Btn, Main_Btn, Activity_Btn, Ranking_Btn;
     [SerializeField]
-    GameObject LobbyMainPageView, LobbyMinePageView, LobbyRankingView, LobbyShopView,LobbyActivityView;
+    GameObject LobbyMainPageView, LobbyMinePageView, LobbyRankingView, LobbyShopView, LobbyActivityView;
     [SerializeField]
     TextMeshProUGUI MineBtn_Txt, ShopBtn_Txt, ActivityBtn_Txt, RankingBtn_Txt;
 
@@ -333,7 +333,7 @@ public class LobbyView : MonoBehaviour
         {
             DataManager.UserId = StringUtils.GenerateRandomString(15);
         }*/
-        
+
         //DataManager.UserLoginPhoneNumber = DataManager.UserId;
 
         if (string.IsNullOrEmpty(DataManager.UserInvitationCode))
@@ -395,27 +395,27 @@ public class LobbyView : MonoBehaviour
     {
         Nickname_Txt.text = $"@{DataManager.UserNickname}";
         Avatar_Btn.image.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[DataManager.UserAvatarIndex];
-        Stamina_Txt.text = $"{DataManager.UserStamina}/{DataManager.MaxStaminaValue}";
+        Stamina_Txt.text = $"{DataManager.UserEnergy}/{DataManager.MaxStaminaValue}";
         CryptoChips_Txt.text = string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 " : DataManager.UserWalletBalance;
 
         //資源列表
-       
+
         Assets_CryptoChipsValue_Txt.text = string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 " : DataManager.UserWalletBalance;
-       
 
-      
-         Assets_VCValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserAChips);
-     
-  
+
+
+        Assets_VCValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserAChips);
+
+
         Assets_GoldValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserGold);
-     
 
 
 
-        Assets_StaminaValue_Txt.text = $"{DataManager.UserStamina}/{DataManager.MaxStaminaValue}";
-       
 
-        Assets_OTPropsValue_Txt.text = $"{DataManager.UserOTProps}";
+        Assets_StaminaValue_Txt.text = $"{DataManager.UserEnergy}/{DataManager.MaxStaminaValue}";
+
+
+        Assets_OTPropsValue_Txt.text = $"{DataManager.UserTimer}";
     }
 
     /// <summary>
@@ -434,7 +434,7 @@ public class LobbyView : MonoBehaviour
     {
         set
         {
-          ///  AssetList_Obj.SetActive(value);
+            ///  AssetList_Obj.SetActive(value);
         }
     }
 
@@ -486,7 +486,7 @@ public class LobbyView : MonoBehaviour
             case ItemType.Shop:
                 itemObj = LobbyShopView;
                 break;
-            
+
             //活動
             case ItemType.Activity:
                 itemObj = LobbyActivityView;
@@ -520,7 +520,7 @@ public class LobbyView : MonoBehaviour
         }
         else
         {
-            
+
             Destroy(Floor4.GetChild(0).gameObject);
         }
     }
