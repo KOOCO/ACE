@@ -1,24 +1,28 @@
 using System;
+using System.Collections.Generic;
 
 #region Shop
 [Serializable]
-public class Item
+public class ShopItem
 {
-    public string id;
-    //public DateTime creationTime;
-    public string creatorId;
-    //public DateTime lastModificationTime;
-    public string lastModifierId;
     public string name;
-    public float price;
+    public double price;
+    public int currency;
+    public int category;
+    public int targetItemQuantity;
     public string imageUrl;
     public string blobFileName;
+    //public DateTime? lastModificationTime;
+    public string lastModifierId;
+    //public DateTime creationTime;
+    public string creatorId;
+    public string id;
 }
 
 [Serializable]
 public class ItemList
 {
-    public Item[] items;
+    public List<ShopItem> items;
     public int totalCount;
 }
 #endregion

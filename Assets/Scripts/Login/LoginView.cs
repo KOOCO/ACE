@@ -2070,9 +2070,9 @@ public class LoginView : MonoBehaviour
         DataManager.UserUChips = player.walletAmount;
         DataManager.UserGold = player.gold;
         DataManager.UserInvitationCode = player.inviteCode;
-        DataManager.UserOTProps = player.timer;
-        DataManager.UserStamina = player.currentEnergy;
-        DataManager.UserMaxStamina = 100;//player.maxEnergy;
+        DataManager.UserTimer = player.timer;
+        DataManager.UserEnergy = player.currentEnergy;
+        DataManager.UserMaxEnrtgy = 100;//player.maxEnergy;
 
 #if UNITY_EDITOR
         LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);

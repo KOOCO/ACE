@@ -8,14 +8,14 @@ using System.Linq;
 public class LobbyShopView : MonoBehaviour
 {
     [SerializeField]
-    Toggle All_Tog, Stamina_Tog, Gold_Tog, ExtraTime_Tog;
+    Toggle All_Tog, Energy_Tog, Gold_Tog, Tools_Tog, Timer_Tog;
 
     [SerializeField]
-    GameObject All_Area, Stamina_Area, Gold_Area, ExtraTime_Area;
+    GameObject All_Area, Energy_Area, Gold_Area, Timer_Area, Tools_Area;
     [SerializeField]
-    TextMeshProUGUI ALLTog_Text, StaminaTog_Text, GoldTog_Text, ExtraTimeTog_Text;
+    TextMeshProUGUI ALLTog_Text, EnergyTog_Text, GoldTog_Text, TimerTog_Text, ToolsTog_Text;
     [SerializeField]
-    TextMeshProUGUI StaminaTitle_Text, GoldTitle_Text, ExtraTimeTitle_Text;
+    TextMeshProUGUI EnergyTitle_Text, GoldTitle_Text, TimerTitle_Text, ToolsTitle_Text;
 
     [Header("全部商品欄位")]
     [SerializeField]
@@ -23,31 +23,41 @@ public class LobbyShopView : MonoBehaviour
     [SerializeField]
     GameObject[] All_ShopItem_Sample;
     [SerializeField]
+    GameObject Shop_Item;
+    [SerializeField]
     GameObject[] ShopItemView;
 
     [Header("耐力商品欄位")]
+    // [SerializeField]
+    // GameObject Stamina_Sample;
     [SerializeField]
-    GameObject Stamina_Sample;
+    GameObject Energy_Parent;
     [SerializeField]
-    GameObject Stamina_Parent;
-    [SerializeField]
-    TextMeshProUGUI StaminaTitle;
+    TextMeshProUGUI EnergyTitle;
 
     [Header("金幣商品欄位")]
-    [SerializeField]
-    GameObject Gold_Sample;
+    // [SerializeField]
+    // GameObject Gold_Sample;
     [SerializeField]
     GameObject Gold_Parent;
     [SerializeField]
     TextMeshProUGUI GoldTitle;
 
     [Header("加時商品欄位")]
+    // [SerializeField]
+    // GameObject ExtraTime_Sample;
     [SerializeField]
-    GameObject ExtraTime_Sample;
+    GameObject Timer_Parent;
     [SerializeField]
-    GameObject ExtraTime_Parent;
+    TextMeshProUGUI TimerTitle;
+
+    [Header("Tools")]
+    // [SerializeField]
+    // GameObject ExtraTime_Sample;
     [SerializeField]
-    TextMeshProUGUI ExtraTimeTitle;
+    GameObject Tools_Parent;
+    [SerializeField]
+    TextMeshProUGUI ToolsTitle;
 
     [Header("購買彈窗")]
     [SerializeField]
@@ -64,7 +74,7 @@ public class LobbyShopView : MonoBehaviour
     TextMeshProUGUI MallMsgInfo, Cancle_Text, Confirm_Text, PurchaseSuccessText;
 
 
-    public ItemList shopItemsList = new();
+    ItemList shopItemsList = new();
     Dictionary<ItemType, GameObject> ItemList;
 
 
@@ -77,25 +87,34 @@ public class LobbyShopView : MonoBehaviour
     enum ItemType
     {
         All,
-        Stamina,
+        Energy,
+        Timer,
         Gold,
-        ExtraTime,
+        Tools,
     }
-
+    enum CurrencyType
+    {
+        Gold,
+        Timer,
+        UCoin,
+    }
     private void UpdateLanguage()
     {
         ALLTog_Text.text = LanguageManager.Instance.GetText("ALL");
-        //StaminaTog_Text.text = LanguageManager.Instance.GetText("STAMINA");
+        EnergyTog_Text.text = LanguageManager.Instance.GetText("ENERGY");
         GoldTog_Text.text = LanguageManager.Instance.GetText("GOLD");
-        //ExtraTimeTog_Text.text = LanguageManager.Instance.GetText("EXTRATIME");
+        TimerTog_Text.text = LanguageManager.Instance.GetText("TIMER");
+        ToolsTog_Text.text = LanguageManager.Instance.GetText("TOOLS");
 
-        StaminaTitle_Text.text = LanguageManager.Instance.GetText("Stamina");
+        EnergyTitle_Text.text = LanguageManager.Instance.GetText("Energy");
         GoldTitle_Text.text = LanguageManager.Instance.GetText("Gold");
-        ExtraTimeTitle_Text.text = LanguageManager.Instance.GetText("EXTRATIME");
+        TimerTitle_Text.text = LanguageManager.Instance.GetText("Timer");
+        ToolsTitle_Text.text = LanguageManager.Instance.GetText("Tools");
 
-        StaminaTitle.text = LanguageManager.Instance.GetText("Stamina");
+        EnergyTitle.text = LanguageManager.Instance.GetText("Energy");
         GoldTitle.text = LanguageManager.Instance.GetText("Gold");
-        ExtraTimeTitle.text = LanguageManager.Instance.GetText("EXTRATIME");
+        TimerTitle.text = LanguageManager.Instance.GetText("Timer");
+        ToolsTitle.text = LanguageManager.Instance.GetText("Tools");
 
         Cancle_Text.text = LanguageManager.Instance.GetText("CANCLE");
         Confirm_Text.text = LanguageManager.Instance.GetText("CONFIRM");
@@ -143,25 +162,37 @@ public class LobbyShopView : MonoBehaviour
     void CallBackOnGetList(string data)
     {
         Debug.Log(data);
+        ClearChilds(ShopItemView[0].transform.GetChild(1).transform);
+        ClearChilds(ShopItemView[1].transform.GetChild(1).transform);
+        ClearChilds(ShopItemView[2].transform.GetChild(1).transform);
+        ClearChilds(Gold_Parent.transform);
+        ClearChilds(Timer_Parent.transform);
+        ClearChilds(Energy_Parent.transform);
         shopItemsList = JsonConvert.DeserializeObject<ItemList>(data);
+        Debug.Log(shopItemsList.items.Count);
         foreach (var item in shopItemsList.items)
         {
-            switch (item.name)
+            switch (item.category)
             {
-                case "Gold":
+                case 0:
                     Debug.Log("GOLD");
-                    CreateShopItem(All_ShopItem_Sample[1], ShopItemView[1].transform.GetChild(1).transform, shopItemsList.items.ToList());
-                    CreateShopItem(Gold_Sample, Gold_Parent.transform, shopItemsList.items.ToList());
+                    CreateShopItem(Shop_Item, ShopItemView[0].transform.GetChild(1).transform, item);
+                    CreateShopItem(Shop_Item, Gold_Parent.transform, item);
                     break;
-                case "Extra Time":
-                    Debug.Log("Extra Time");
-                    CreateShopItem(All_ShopItem_Sample[2], ShopItemView[2].transform.GetChild(1).transform, shopItemsList.items.ToList());
-                    CreateShopItem(ExtraTime_Sample, ExtraTime_Parent.transform, shopItemsList.items.ToList());
+                case 1:
+                    Debug.Log("Energy");
+                    CreateShopItem(Shop_Item, ShopItemView[1].transform.GetChild(1).transform, item);
+                    CreateShopItem(Shop_Item, Energy_Parent.transform, item);
                     break;
-                case "Stamina":
-                    Debug.Log("Stamina");
-                    CreateShopItem(All_ShopItem_Sample[0], ShopItemView[0].transform.GetChild(1).transform, shopItemsList.items.ToList());
-                    CreateShopItem(Stamina_Sample, Stamina_Parent.transform, shopItemsList.items.ToList());
+                case 2:
+                    Debug.Log("Timer");
+                    CreateShopItem(Shop_Item, ShopItemView[2].transform.GetChild(1).transform, item);
+                    CreateShopItem(Shop_Item, Timer_Parent.transform, item);
+                    break;
+                case 3:
+                    Debug.Log("Tools");
+                    CreateShopItem(Shop_Item, ShopItemView[3].transform.GetChild(1).transform, item);
+                    CreateShopItem(Shop_Item, Tools_Parent.transform, item);
                     break;
             }
         }
@@ -174,9 +205,10 @@ public class LobbyShopView : MonoBehaviour
         ItemList = new Dictionary<ItemType, GameObject>();
 
         ItemList.Add(ItemType.All, All_Area);
-        ItemList.Add(ItemType.Stamina, Stamina_Area);
         ItemList.Add(ItemType.Gold, Gold_Area);
-        ItemList.Add(ItemType.ExtraTime, ExtraTime_Area);
+        ItemList.Add(ItemType.Energy, Energy_Area);
+        ItemList.Add(ItemType.Timer, Timer_Area);
+        ItemList.Add(ItemType.Tools, Tools_Area);
     }
 
     #endregion
@@ -232,11 +264,11 @@ public class LobbyShopView : MonoBehaviour
         });
 
         //  切換耐力商品介面  
-        Stamina_Tog.onValueChanged.AddListener((isOn) =>
+        Energy_Tog.onValueChanged.AddListener((isOn) =>
         {
             if (isOn)
             {
-                itemType = ItemType.Stamina;
+                itemType = ItemType.Energy;
                 OpenShopItem();
             }
         });
@@ -251,12 +283,21 @@ public class LobbyShopView : MonoBehaviour
             }
         });
 
-        //切換加時商品介面
-        ExtraTime_Tog.onValueChanged.AddListener((isOn) =>
+        Timer_Tog.onValueChanged.AddListener((isOn) =>
         {
             if (isOn)
             {
-                itemType = ItemType.ExtraTime;
+                itemType = ItemType.Timer;
+                OpenShopItem();
+            }
+        });
+
+        //切換加時商品介面
+        Tools_Tog.onValueChanged.AddListener((isOn) =>
+        {
+            if (isOn)
+            {
+                itemType = ItemType.Tools;
                 OpenShopItem();
             }
         });
@@ -319,18 +360,15 @@ public class LobbyShopView : MonoBehaviour
             rect.gameObject.SetActive(true);
             var shopSample = rect.GetComponent<ShopSample>();
             shopSample.SetShopItemData(Sample, shopDatas[i], i, albumEnum);
-            shopSample.OnBuyAddListener(this, MallMsg, shopDatas[i], iconSprite, MallMsgInfo, Sample.name);
+            //shopSample.OnBuyAddListener(this, MallMsg, shopDatas[i], iconSprite, MallMsgInfo, Sample.name);
         }
     }
 
-    public void CreateShopItem(GameObject shopItem, Transform itemParent, List<Item> items)
+    public void CreateShopItem(GameObject shopItem, Transform itemParent, ShopItem item)
     {
-        ClearChilds(itemParent.transform);
-        foreach (Item item in items)
-        {
-            ShopSample newShopItem = Instantiate(shopItem, itemParent).GetComponent<ShopSample>();
-            newShopItem.SetShopItemData(item);
-        }
+        ShopSample newShopItem = Instantiate(shopItem, itemParent).GetComponent<ShopSample>();
+        newShopItem.SetShopItemData(item);
+        newShopItem.OnBuyAddListener(this, MallMsg, item, iconSprite, MallMsgInfo, item.category);
     }
     public void ClearChilds(Transform _stransform)
     {
@@ -345,13 +383,13 @@ public class LobbyShopView : MonoBehaviour
     /// </summary>
     /// <param name="shopSample"></param>
     /// <param name="shopData">商品資料</param>
-    /// <param name="itemName">商品名</param>
-    public void OnBuyingPopupUI(ShopSample shopSample, ShopData shopData, string itemName)
+    /// <param name="itemCategory">商品名</param>
+    public void OnBuyingPopupUI(ShopSample shopSample, ShopItem shopData, int itemCategory)
     {
         Confirm.onClick.AddListener(() =>
         {
 
-            if (DataManager.UserAChips < shopData.BuffAmount)
+            if (DataManager.UserAChips < shopData.price)
             {
                 shopSample.InsufficientBalance(iconSprite, MallMsgInfo);
                 //Debug.Log("餘額不足");
@@ -361,21 +399,24 @@ public class LobbyShopView : MonoBehaviour
             {
                 PurchaseSuccessUI.SetActive(!PurchaseSuccessUI.activeSelf);
 
-                switch (itemName)
+                switch (itemCategory)
                 {
-                    case "Stamina":
-                        DataManager.UserStamina += shopData.BuffAmount;
+                    case 0:
+                        DataManager.UserGold += shopData.targetItemQuantity;
                         break;
-                    case "Gold":
-                        DataManager.UserGold += shopData.BuffAmount;
+                    case 1:
+                        DataManager.UserEnergy += shopData.targetItemQuantity;
                         break;
-                    case "Extra Time":
-                        DataManager.UserOTProps += shopData.BuffAmount;
+                    case 2:
+                        DataManager.UserTimer += shopData.targetItemQuantity;
+                        break;
+                    case 3:
+                        DataManager.UserTools += shopData.targetItemQuantity;
                         break;
                 }
 
                 //Debug.Log($"您已購買 {itemName} {shopData.BuffAmount}");
-                DataManager.UserAChips -= shopData.BuffAmount;
+                DataManager.UserAChips -= shopData.price;
                 //Debug.Log($"餘額 {DataManager.UserVCChips}");
             }
 
@@ -392,17 +433,22 @@ public class LobbyShopView : MonoBehaviour
                 ActiveShopUI(ItemType.All);
                 break;
 
-            case ItemType.Stamina:
-                ActiveShopUI(ItemType.Stamina);
+            case ItemType.Energy:
+                ActiveShopUI(ItemType.Energy);
                 break;
 
             case ItemType.Gold:
                 ActiveShopUI(ItemType.Gold);
                 break;
 
-            case ItemType.ExtraTime:
-                ActiveShopUI(ItemType.ExtraTime);
+            case ItemType.Timer:
+                ActiveShopUI(ItemType.Timer);
                 break;
+
+            case ItemType.Tools:
+                ActiveShopUI(ItemType.Tools);
+                break;
+
         }
     }
 
