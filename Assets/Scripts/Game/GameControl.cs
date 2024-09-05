@@ -2273,8 +2273,10 @@ public class GameControl : MonoBehaviour
         }
         else
         {
-            //最大結果玩家(符合的牌)
+            //最大結果玩家(符合的牌(數字已簡化))
             Dictionary<GameRoomPlayerData, List<int>> pairPlayer = new Dictionary<GameRoomPlayerData, List<int>>();
+            //最大結果玩家(符合的牌(數字未簡化))
+            Dictionary<GameRoomPlayerData, List<int>> pairPlayer_InitPokerNum = new Dictionary<GameRoomPlayerData, List<int>>();
 
             //選出相同結果的玩家
             foreach (var shape in shapeDic)
@@ -2284,6 +2286,9 @@ public class GameControl : MonoBehaviour
                     List<int> numList = shape.Value.Item2.Select(x => x % 13 == 0 ? 14 : x % 13).ToList();
                     numList.Sort(new TexasHoldemUtil.SpecialComparer());
                     pairPlayer.Add(shape.Key, numList);
+
+                    List<int> initNumList = shape.Value.Item2.Select(x => x).ToList();
+                    pairPlayer_InitPokerNum.Add(shape.Key, initNumList);
                 }
             }
 
@@ -2405,20 +2410,41 @@ public class GameControl : MonoBehaviour
                     {
                         foreach (var item in pairPlayer)
                         {
-                            List<int> handPoker = new List<int>();
-                            handPoker.Add(item.Key.handPoker[0] % 13 == 0 ? 14 : item.Key.handPoker[0] % 13);
-                            handPoker.Add(item.Key.handPoker[1] % 13 == 0 ? 14 : item.Key.handPoker[1] % 13);
-                            handPoker.Sort(new TexasHoldemUtil.SpecialComparer());
-                            pairPlayer[item.Key].AddRange(handPoker);
+                            List<int> judgePokers = new List<int>();
+                            judgePokers.AddRange(gameRoomData.communityPoker);
+                            judgePokers.Add(item.Key.handPoker[0]);
+                            judgePokers.Add(item.Key.handPoker[1]);
+
+                            for (int i = 0; i < pairPlayer_InitPokerNum.Values.Count; i++)
+                            {
+                                judgePokers.Remove(pairPlayer_InitPokerNum[item.Key][i]);
+                            }
+
+                            judgePokers = judgePokers.Select(x => x % 13 == 0 ? 14 : x % 13).ToList();
+                            judgePokers = judgePokers.OrderByDescending(x => x).ToList();
+                            judgePokers = judgePokers.Take(5 - pairPlayer.FirstOrDefault().Value.Count).ToList();
+                            judgePokers.Sort(new TexasHoldemUtil.SpecialComparer());
+                            pairPlayer[item.Key].AddRange(judgePokers);
                         }
                     }
                     else if (pairPlayer.FirstOrDefault().Value.Count == 4)
                     {
                         foreach (var item in pairPlayer)
                         {
-                            int num = Math.Max(item.Key.handPoker[0] % 13 == 0 ? 14 : item.Key.handPoker[0] % 13,
-                                               item.Key.handPoker[1] % 13 == 0 ? 14 : item.Key.handPoker[1] % 13);
-                            pairPlayer[item.Key].Add(num);
+                            List<int> judgePokers = new List<int>();
+                            judgePokers.AddRange(gameRoomData.communityPoker);
+                            judgePokers.Add(item.Key.handPoker[0]);
+                            judgePokers.Add(item.Key.handPoker[1]);
+
+                            for (int i = 0; i < pairPlayer_InitPokerNum.Values.Count; i++)
+                            {
+                                judgePokers.Remove(pairPlayer_InitPokerNum[item.Key][i]);
+                            }
+
+                            judgePokers = judgePokers.Select(x => x % 13 == 0 ? 14 : x % 13).ToList();
+                            judgePokers = judgePokers.OrderByDescending(x => x).ToList();
+                            judgePokers = judgePokers.Take(1).ToList();
+                            pairPlayer[item.Key].AddRange(judgePokers);
                         }
                     }                    
 

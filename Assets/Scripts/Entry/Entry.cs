@@ -69,18 +69,7 @@ public class Entry : UnitySingleton<Entry>
         LoadSceneManager.Instance.LoadScene(SceneEnum.Login);
     }
 
-    public class Reigster
-    {
-        public string phoneNumber;
-        public string userName;
-        public string password;
-        public string confirmPassword;
-    }
-    public class callback
-    {
-
-    }
-#region Instagram登入
+    #region Instagram登入
 
     /// <summary>
     /// 接收獲取IG用戶訊息
