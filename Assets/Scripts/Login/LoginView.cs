@@ -598,9 +598,8 @@ public class LoginView : MonoBehaviour
         //手機注冊提交
         RegisterSubmit_Btn.onClick.AddListener(() =>
         {
-          
-            MobileRegisterSubmit();
-
+            JSBridgeManager.Instance.FirebaseVerifyCode(currVerifyCode,
+                                                        "Register");
             SignInNumberIf_Text.text = currVerifyPhoneNumber;
 
         });
@@ -1162,9 +1161,6 @@ public class LoginView : MonoBehaviour
             fail_banner_Text.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
         }
 
-
-
-
         if (!isRegisterPasswordCorrect)
         {
             //密碼錯誤
@@ -1173,7 +1169,6 @@ public class LoginView : MonoBehaviour
             RegisterPasswordError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
             fail_banner_Text.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
         }
-
 
         if (!Privacy_Tog.isOn)
         {
@@ -1228,7 +1223,6 @@ public class LoginView : MonoBehaviour
     /// <summary>
     /// 手機註冊OTP驗證
     /// </summary>
-    /// <param name="jsonData">回傳資料</param>
     private void RegisterVerifyCode(string jsonData)
     {
         AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
@@ -1261,6 +1255,7 @@ public class LoginView : MonoBehaviour
             RegisterCodeError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
             return;
         }
+        Debug.Log("註冊OTP驗證成功");
 
         //送出註冊內容
         Register register = new Register()

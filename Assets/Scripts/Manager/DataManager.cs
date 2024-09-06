@@ -44,8 +44,7 @@ public static class DataManager
 
     #region 公用
 
-    public static string RedirectUri { get { return "https://kooco.github.io/ACEdemo/demo.asiapoker/index.html"; } }                        //重定向Url
-    public static string TestRedirectUri { get { return "https://wu11158001.github.io/asiapoker_self/demo.asiapoker/index.html"; } }        //測試重定向Url
+    public static string RedirectUri { get { return "https://jf588.com/"; } }                        //重定向Url
     /// <summary>
     /// 獲取重定向Url
     /// </summary>
@@ -53,9 +52,7 @@ public static class DataManager
     public static string GetRedirectUri()
     {
         //測試用/正式用
-        return Entry.Instance.isUsingTestRedirectUri ?
-               TestRedirectUri :
-               RedirectUri;
+        return RedirectUri;
     }
 
     public static bool IsNotFirstInLogin { get; set; }                                                                                      //非首次進入登入

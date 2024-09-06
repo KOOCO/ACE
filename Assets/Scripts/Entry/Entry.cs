@@ -28,8 +28,6 @@ public class Entry : UnitySingleton<Entry>
     public string version;
     [Header("發布環境")]
     public ReleaseEnvironmentEnum releaseType;
-    [Header("使用測試重定向URL")]
-    public bool isUsingTestRedirectUri;
     [Header("解析度")]
     public Vector2 resolution;
     [Header("Debug工具")]
