@@ -29,27 +29,14 @@ public static class TexasHoldemUtil
     /// 設置購買籌碼Slider
     /// </summary>
     /// <param name="smallBlind">小盲值</param>
+    /// <param name="smallBlind">最大購買值</param>
     /// <param name="sli"></param>
     /// <param name="tableTypeEnum">遊戲桌類型</param>
     /// <param name="addMinValue">增加的最小值</param>
-    public static void SetBuySlider(double smallBlind, Slider sli, TableTypeEnum tableTypeEnum, double addMinValue = 0)
+    public static void SetBuySlider(double smallBlind, double maxValue, Slider sli, TableTypeEnum tableTypeEnum, double addMinValue = 0)
     {
-        float maxValue = 0;
-        switch (tableTypeEnum)
-        {
-            //現金桌
-            case TableTypeEnum.Cash:
-                maxValue = (float)DataManager.UserUChips;
-                break;
-
-            //虛擬貨幣桌
-            case TableTypeEnum.VCTable:
-                maxValue = (float)DataManager.UserAChips;
-                break;
-        }
-
         sli.minValue = (float)(smallBlind * DataManager.MinMagnification) + (float)addMinValue;
-        sli.maxValue = maxValue;
+        sli.maxValue = (float)maxValue;
         sli.value = sli.minValue;
     }
 

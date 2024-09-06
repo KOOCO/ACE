@@ -28,10 +28,11 @@ public class JoinRoomView : MonoBehaviour
     [SerializeField]
     SliderClickDetection sliderClickDetection;
 
+    LobbyView lobbyView;
     string dataRoomName;                 //查詢資料的房間名稱
     double smallBlind;                   //小盲值
     TableTypeEnum tableType;             //房間類型
-    double newValue;                     //更新後的購買籌碼
+    double newCarryChipsValue;           //更新後的購買籌碼
 
     /// <summary>
     /// 更新文本翻譯
@@ -52,6 +53,8 @@ public class JoinRoomView : MonoBehaviour
     {
         LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
         ListenerEvent();
+
+        lobbyView = GameObject.FindAnyObjectByType<LobbyView>();
     }
 
     /// <summary>
@@ -76,6 +79,22 @@ public class JoinRoomView : MonoBehaviour
         //購買
         Buy_Btn.onClick.AddListener(() =>
         {
+            //籌碼不足
+            if (tableType == TableTypeEnum.Cash &&
+                newCarryChipsValue > DataManager.UserUChips)
+            {
+                ViewManager.Instance.OpenTipMsgView(lobbyView.transform, LanguageManager.Instance.GetText("Not enough chips."));
+                gameObject.SetActive(false);
+                return;
+            }
+            else if (tableType == TableTypeEnum.VCTable &&
+                     newCarryChipsValue > DataManager.UserAChips)
+            {
+                ViewManager.Instance.OpenTipMsgView(lobbyView.transform, LanguageManager.Instance.GetText("Not enough chips."));
+                gameObject.SetActive(false);
+                return;
+            }
+
             ViewManager.Instance.OpenWaitingView(transform);
 #if UNITY_EDITOR
 
@@ -107,25 +126,25 @@ public class JoinRoomView : MonoBehaviour
         //購買Slider單位設定
         BuyChips_Sli.onValueChanged.AddListener((value) =>
         {
-            newValue = TexasHoldemUtil.SliderValueChange(BuyChips_Sli,
+            newCarryChipsValue = TexasHoldemUtil.SliderValueChange(BuyChips_Sli,
                                                         value,
                                                         smallBlind * 2,
                                                         BuyChips_Sli.minValue,
                                                         BuyChips_Sli.maxValue,
                                                         sliderClickDetection);
-            PreBuyChips_Txt.text = StringUtils.SetChipsUnit(newValue);
+            PreBuyChips_Txt.text = StringUtils.SetChipsUnit(newCarryChipsValue);
         });
 
         //購買+按鈕
         BuyPlus_Btn.onClick.AddListener(() =>
         {
-            BuyChips_Sli.value = (float)(newValue + smallBlind * 2);
+            BuyChips_Sli.value = (float)(newCarryChipsValue + smallBlind * 2);
         });
 
         //購買-按鈕
         BuyMinus_Btn.onClick.AddListener(() =>
         {
-            BuyChips_Sli.value = (float)(newValue - smallBlind * 2);
+            BuyChips_Sli.value = (float)(newCarryChipsValue - smallBlind * 2);
         });
     }
 
@@ -140,13 +159,11 @@ public class JoinRoomView : MonoBehaviour
         this.tableType = tableType;
 
         string titleStr = "";
-        string maxBuyChipsStr = "";
         switch (tableType)
         {
             //現金桌
             case TableTypeEnum.Cash:
                 titleStr = "High Roller Battleground";
-                maxBuyChipsStr = $"{StringUtils.SetChipsUnit(DataManager.UserUChips)}";
                 BlindACoin_Img.gameObject.SetActive(true);
                 BlindUCoin_Img.gameObject.SetActive(false);
                 MinBuyACoin_Img.gameObject.SetActive(true);
@@ -158,7 +175,6 @@ public class JoinRoomView : MonoBehaviour
             //虛擬貨幣桌
             case TableTypeEnum.VCTable:
                 titleStr = "Classic Battle";
-                maxBuyChipsStr = $"{StringUtils.SetChipsUnit(DataManager.UserAChips)}";
                 BlindACoin_Img.gameObject.SetActive(false);
                 BlindUCoin_Img.gameObject.SetActive(true);
                 MinBuyACoin_Img.gameObject.SetActive(false);
@@ -172,9 +188,11 @@ public class JoinRoomView : MonoBehaviour
         Blind_Txt.text = $"{StringUtils.SetChipsUnit(smallBlind)} / " +
                          $"{StringUtils.SetChipsUnit(smallBlind * 2)}";
 
-        TexasHoldemUtil.SetBuySlider(this.smallBlind, BuyChips_Sli, tableType);
+        TexasHoldemUtil.SetBuySlider(this.smallBlind,
+                                     this.smallBlind * DataManager.MaxMagnification,
+                                     BuyChips_Sli, tableType);
         MinBuyChips_Txt.text = $"{StringUtils.SetChipsUnit(this.smallBlind * DataManager.MinMagnification)}";
-        MaxBuyChips_Txt.text = maxBuyChipsStr;
+        MaxBuyChips_Txt.text = $"{StringUtils.SetChipsUnit(this.smallBlind * DataManager.MaxMagnification)}"; ;
     }
 
     /// <summary>
@@ -254,13 +272,12 @@ public class JoinRoomView : MonoBehaviour
                                                 smallBlind,
                                                 $"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}/{dataRoomName}",
                                                 true,
-                                                newValue,
+                                                newCarryChipsValue,
                                                 0);
 
         ViewManager.Instance.CloseWaitingView(transform);
 
         gameObject.SetActive(false);
-        //LoadSceneManager.Instance.LoadScene(SceneEnum.Game);
     }
 
     /// <summary>
@@ -277,7 +294,7 @@ public class JoinRoomView : MonoBehaviour
                                                 smallBlind,
                                                 $"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}/{dataRoomName}",
                                                 false,
-                                                newValue,
+                                                newCarryChipsValue,
                                                 seat);
 
         ViewManager.Instance.CloseWaitingView(transform);

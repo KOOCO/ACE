@@ -211,7 +211,11 @@ public class BuyChipsView : MonoBehaviour
 
         thisData.SmallBlind = smallBlind;
 
-        TexasHoldemUtil.SetBuySlider(thisData.SmallBlind, BuyChips_Sli, tableTypeEnum, gameControl.PreBuyChipsValue);
+        double maxBuyValue = tableTypeEnum == TableTypeEnum.Cash ?
+                             DataManager.UserUChips :
+                             DataManager.UserAChips;
+
+        TexasHoldemUtil.SetBuySlider(thisData.SmallBlind, maxBuyValue, BuyChips_Sli, tableTypeEnum, gameControl.PreBuyChipsValue);
         MinBuyChips_Txt.text = $"{StringUtils.SetChipsUnit((thisData.SmallBlind * DataManager.MinMagnification) + gameControl.PreBuyChipsValue)}";
         MaxBuyChips_Txt.text = maxBuyChipsStr;
     }
