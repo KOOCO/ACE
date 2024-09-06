@@ -158,18 +158,18 @@ public class LobbyRankingView : MonoBehaviour
             switch (currRankType)
             {
                 case RankType.Integral:
-                    RuleTitle_Txt.text = "INTEGRAL RULE";
-                    RuleContent_Txt.text = "INTEGRAL RULE 1\nINTEGRAL RULE 2\nINTEGRAL RULE 3";
+                    RuleTitle_Txt.text = LanguageManager.Instance.GetText("INTEGRAL RULE");
+                    RuleContent_Txt.text = LanguageManager.Instance.GetText("Rule");
                     break;
 
                 case RankType.Cash:
-                    RuleTitle_Txt.text = "CASH RULE";
-                    RuleContent_Txt.text = "CASH RULE 1\nCASH RULE 2\nCASH RULE 3";
+                    RuleTitle_Txt.text = LanguageManager.Instance.GetText("INTEGRAL RULE");
+                    RuleContent_Txt.text = LanguageManager.Instance.GetText("Rule");
                     break;
 
                 case RankType.Golden:
-                    RuleTitle_Txt.text = "Golden RULE";
-                    RuleContent_Txt.text = "Golden RULE 1\nGolden RULE 2\nGolden RULE 3";
+                    RuleTitle_Txt.text = LanguageManager.Instance.GetText("INTEGRAL RULE");
+                    RuleContent_Txt.text = LanguageManager.Instance.GetText("Rule");
                     break;
             }
         });
@@ -206,10 +206,10 @@ public class LobbyRankingView : MonoBehaviour
         if ((DataManager.RandEndDate - DateTime.Now).TotalSeconds > 0)
         {
             TimeSpan timeLest = DataManager.RandEndDate - DateTime.Now;
-            TimeLest_Txt.text = $"{timeLest.Days }{LanguageManager.Instance.GetText("D")} : " +
+            TimeLest_Txt.text = $"{timeLest.Days}{LanguageManager.Instance.GetText("D")} : " +
                                 $"{timeLest.Hours}{LanguageManager.Instance.GetText("H")} : " +
                                 $"{timeLest.Minutes}{LanguageManager.Instance.GetText("M")}";
-        }        
+        }
     }
 
     /// <summary>

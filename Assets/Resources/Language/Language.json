@@ -1173,5 +1173,51 @@
     "ID": "Please proceed with collateralization",
     "English": "Please proceed with collateralization.",
     "zh_TW": "請繼續抵押"
+  },
+  {
+    "ID": "You are already logged in from another device",
+    "English": "You are already logged in from another device.",
+    "zh_TW": "您已於其他裝置登入"
+  },
+  {
+    "ID": "ENERGY",
+    "English": "ENERGY",
+    "zh_TW": "能量"
+  },
+  {
+    "ID": "TIMER",
+    "English": "TIMER",
+    "zh_TW": "计时器"
+  },
+  {
+    "ID": "TOOLS",
+    "English": "TOOLS",
+    "zh_TW": "工具"
+  },
+  {
+    "ID": "Energy",
+    "English": "Energy",
+    "zh_TW": "能量"
+  },
+  {
+    "ID": "Timer",
+    "English": "Timer",
+    "zh_TW": "计时器"
+  },
+  {
+    "ID": "Tools",
+    "English": "Tools",
+    "zh_TW": "工具"
+  }
+  ,
+  {
+    "ID": "Rule",
+    "English": "TooPoker gameplay: The game adopts standard Texas Hold'em rules, including dealing, betting, raising, discarding and other processes.\nEach player is dealt two hole cards and uses five community cards to form the best five-card combination.\nBlinds and Antes: Set fixed blinds and ante (such as small blind and big blind) to ensure the starting rhythm of the game.\n\nBattle process:\nStart: Two players randomly decide who is the small blind and the big blind, and then rotate each round.\nBetting rounds: including preflop (Pre-flop), flop (Flop), turn card (Turn) and the river card (River) four betting rounds.\n\nDetermination of outcome: After all betting rounds are over, if there are still two players who have not discarded their cards, a showdown will take place (Showdown), compete for the combination of the five best cards, and the one with the highest points wins.\n\nScoring\nBasic points calculation:\nVictory Points: Players who win each round receive certain points (such as10points), the losing player will deduct corresponding points (such as10point).ls",
+    "zh_TW": "基本規則:\n撲克玩法：遊戲採用標準德州撲克規則，包括發牌、下注、加注、棄牌等流程。\n每名玩家發兩張底牌，通過五張公共牌組成最佳五張牌的組合。\n盲注和底注：設置固定的盲注和底注(如小盲注和大盲注)，確保遊戲的起始節奏。\n\n對戰流程:\n開局：兩名玩家隨機決定誰是小盲注和大盲注，之後每局輪換。\n下注回合：包括翻牌前(Pre-flop)、翻牌(Flop)、轉牌(Turn)和河牌(River)四個下注回合。\n\n勝負判定：所有下注回合結束後，若仍有兩名玩家未棄牌，則進行攤牌(Showdown)，比拼五張最佳牌的組合，點數高者勝。\n\n基本積分計算：\n勝利積分：每局勝利的玩家獲得一定積分，失敗的玩家扣除相應積分。"
+  },
+  {
+    "ID": "INTEGRAL RULE",
+    "English": "INTEGRAL RULE",
+    "zh_TW": "积分规则"
   }
 ]
