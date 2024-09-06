@@ -115,7 +115,7 @@ public static class DataManager
     #region 大廳
 
     public static int CurrBillboardIndex { get; set; }                                            //當前廣告刊版Index
-    public static int MinMagnification { get { return 40; } }                                     //購買籌碼最小倍率
+    public static int MinMagnification { get { return 20; } }                                     //購買籌碼最小倍率
     public static int MaxMagnification { get { return 100; } }                                    //購買籌碼最大倍率
     public static readonly List<double> CryptoSmallBlindList = new List<double>                   //加密貨幣桌小盲值
     {
