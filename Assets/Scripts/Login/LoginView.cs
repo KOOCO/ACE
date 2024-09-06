@@ -598,7 +598,7 @@ public class LoginView : MonoBehaviour
         //手機注冊提交
         RegisterSubmit_Btn.onClick.AddListener(() =>
         {
-          
+
             MobileRegisterSubmit();
 
             SignInNumberIf_Text.text = currVerifyPhoneNumber;
@@ -769,7 +769,7 @@ public class LoginView : MonoBehaviour
         else
             TipBanner_Obj.SetActive(false);
 
-#region 註冊帳號規則檢查
+        #region 註冊帳號規則檢查
         if (RegisterAccountName_If.text.Length > 0)
         {
             AccountIf_Placeholder.gameObject.SetActive(false);
@@ -779,11 +779,11 @@ public class LoginView : MonoBehaviour
             AccountIf_Placeholder.gameObject.SetActive(true);
         }
         string AccountName = RegisterAccountName_If.text;
-#endregion
+        #endregion
 
         RegisterPasswordError_Txt.text = "";
 
-#region 登入按鈕
+        #region 登入按鈕
 
         string LoginAccountName = SingInAccount_If.text;
         bool SingInAccount_If_IsLongEnough = SingInAccount_If.text.Length > 5;
@@ -811,7 +811,7 @@ public class LoginView : MonoBehaviour
         }
 
 
-#endregion
+        #endregion
 
         //發送OTP倒數
         float codeTime = (float)(DateTime.Now - codeStartTime).TotalSeconds;
@@ -884,7 +884,7 @@ public class LoginView : MonoBehaviour
 #endif
     }
 
-#region 工具類
+    #region 工具類
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -1006,9 +1006,9 @@ public class LoginView : MonoBehaviour
         PlayerPrefs.SetString(LocalPaswword, recodePassword);
     }
 
-#endregion
+    #endregion
 
-#region 手機登入
+    #region 手機登入
 
     /// <summary>
     /// 手機登入初始
@@ -1021,17 +1021,17 @@ public class LoginView : MonoBehaviour
         MobileSignInError_Txt.text = "";
 
         await ThirdwebManager.Instance.SDK.Wallet.Disconnect(true);
-       
+
         SignInNumber_If.text = !string.IsNullOrEmpty(recodePhoneNumber) ?
                                recodePhoneNumber :
                                "";
-        
+
         SignInPassword_If.text = !string.IsNullOrEmpty(recodePassword) ?
                                  recodePassword :
                                  "";
-      
+
         MobileTip_Txt.text = LanguageManager.Instance.GetText("Please use your account to login in.");
-         
+
         MobileSignIn_Obj.SetActive(true);
         MobileSiginPage_Obj.SetActive(true);
         RegisterPage_Obj.SetActive(false);
@@ -1072,12 +1072,12 @@ public class LoginView : MonoBehaviour
             currVerifyPsw = SignInPassword_If.text;
             Debug.Log($"Mobile Sign In = Phone:{currVerifyPhoneNumber} / Password = {currVerifyPsw}");
         }
-    } 
+    }
 
-#endregion
+    #endregion
 
-#region 手機註冊
-    
+    #region 手機註冊
+
     /// <summary>
     /// 手機註冊初始化
     /// </summary>
@@ -1338,9 +1338,9 @@ public class LoginView : MonoBehaviour
         //OnIntoLobby();
     }
 
-#endregion
+    #endregion
 
-#region 忘記密碼
+    #region 忘記密碼
 
     /// <summary>
     /// 忘記密碼提交
@@ -1454,9 +1454,9 @@ public class LoginView : MonoBehaviour
         OnMobileSignInInit();
     }
 
-#endregion
+    #endregion
 
-#region 錢包連接
+    #region 錢包連接
 
     /// <summary>
     /// 選擇錢包畫面初始
@@ -1547,7 +1547,7 @@ public class LoginView : MonoBehaviour
     /// <param name="walletEnum">連接的錢包</param>
     async private void StartConnect(string walletProviderStr, WalletEnum walletEnum)
     {
-#region 開啟連接畫面
+        #region 開啟連接畫面
 
         startConnectTime = DateTime.Now;
         recordConnect.WalletProviderStr = walletProviderStr;
@@ -1630,7 +1630,7 @@ public class LoginView : MonoBehaviour
             Connect(wc);
         }
 
-#endregion
+        #endregion
     }
 
     /// <summary>
@@ -1714,7 +1714,7 @@ public class LoginView : MonoBehaviour
             ipAddress = JsonStringIp,
             machineCode = "123456789",
         };
-        SwaggerAPIManager.Instance.SendPostAPI<passwordless_login>("/api/app/ace-accounts/passwordless-login", 
+        SwaggerAPIManager.Instance.SendPostAPI<passwordless_login>("/api/app/ace-accounts/passwordless-login",
                             wallLogin, WalletLoginCallback,
                             OpenWalletRigisterPage);
     }
@@ -1814,7 +1814,7 @@ public class LoginView : MonoBehaviour
             ViewManager.Instance.OpenWaitingView(transform);
             JSBridgeManager.Instance.FirebaseVerifyCode(currVerifyCode,
                                                         "Wallet");
-        }     
+        }
         else
         {
             SMSCodeError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
@@ -1891,14 +1891,14 @@ public class LoginView : MonoBehaviour
         OnIntoLobby(isSuccess);
     }
 
-#endregion
+    #endregion
 
     public void closetipBanner()
     {
         DataManager.istipAppear = false;
     }
 
-#region 註冊前設置資料
+    #region 註冊前設置資料
 
     /// <summary>
     /// 設置唯一性資料
@@ -2030,9 +2030,9 @@ public class LoginView : MonoBehaviour
         isGetUserId = true;
     }
 
-#endregion
+    #endregion
 
-#region 帳號規則
+    #region 帳號規則
     /// <summary>
     /// 帳號規則檢查
     /// </summary>
@@ -2046,9 +2046,9 @@ public class LoginView : MonoBehaviour
         // 檢查字元
         return Regex.IsMatch(AccountName, "^[A-Za-z0-9]+$") && hasLetter;
     }
-#endregion
+    #endregion
 
-#region 進入大廳
+    #region 進入大廳
 
     /// <summary>
     /// 進入大廳
@@ -2081,7 +2081,6 @@ public class LoginView : MonoBehaviour
 
         ReadUserData(nameof(JudgeLoggedIn));
 
-        LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
     }
 
     /// <summary>
@@ -2109,6 +2108,8 @@ public class LoginView : MonoBehaviour
         {
             if (loginData.online == true)
             {
+                DataManager.TipText = LanguageManager.Instance.GetText("You are already logged in from another device");
+                DataManager.istipAppear = true;
                 //user logged in
                 Debug.Log("用戶帳號已登入，已在遊戲內");
                 /*ViewManager.Instance.OpenTipMsgView(transform,
@@ -2116,6 +2117,7 @@ public class LoginView : MonoBehaviour
             }
             else
             {
+                LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
                 Debug.Log("用戶未登入，正常");
                 //LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
             }
