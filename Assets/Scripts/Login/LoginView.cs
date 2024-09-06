@@ -2070,7 +2070,8 @@ public class LoginView : MonoBehaviour
         DataManager.UserMaxEnrtgy = 100;//player.maxEnergy;
 
 #if UNITY_EDITOR
-        LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
+        ReadUserData(nameof(JudgeLoggedIn));
+        //LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
         return;
 #endif
 
@@ -2099,7 +2100,8 @@ public class LoginView : MonoBehaviour
         ViewManager.Instance.CloseWaitingView(transform);
 
         AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
-        if (loginData.userId != null)
+        Debug.Log("User id :" + loginData.userId);
+        if (loginData != null)
         {
             if (loginData.online == true)
             {
