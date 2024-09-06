@@ -1900,10 +1900,12 @@ public class GameControl : MonoBehaviour
         double currCallValue = Math.Max(betValue, gameRoomData.currCallValue);
         int actionPlayerCount = gameRoomData.actionPlayerCount + 1;
         if (gameRoomData.actionPlayerCount == 0 &&
-            betActing == BetActingEnum.Check)
+            betActing == BetActingEnum.Check ||
+            betActing == BetActingEnum.Fold)
         {
             actionPlayerCount = 0;
         }
+        Debug.Log(actionPlayerCount);
 
         //更新遊戲房間資料
         var data = new Dictionary<string, object>()

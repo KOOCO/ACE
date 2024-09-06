@@ -3164,8 +3164,8 @@ MonoBehaviour:
   Term_text: {fileID: 6543272808970427857}
   Privacy_obj_Scroll: {fileID: 8536610873067443668}
   Term_obj_Scroll: {fileID: 6606979437050190533}
-  Privacy_text_CH: {fileID: 7719021154548318947}
-  Term_text_CH: {fileID: 2779514796337256566}
+  Privacy_text_CH: {fileID: 2779514796337256566}
+  Term_text_CH: {fileID: 7719021154548318947}
   Privacy_text_EN: {fileID: 875341435655203354}
   Term_text_EN: {fileID: 8550726981821466493}
   Button_EN: {fileID: 5454857279497613999}
@@ -11037,7 +11037,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6998300833274196984}
-  m_Father: {fileID: 7569267755286166466}
+  m_Father: {fileID: 87099528434443230}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -26899,7 +26899,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5647674078199863613
 RectTransform:
   m_ObjectHideFlags: 0
@@ -26913,7 +26913,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8561061693525765781}
-  m_Father: {fileID: 87099528434443230}
+  m_Father: {fileID: 7569267755286166466}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -29012,7 +29012,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5647674078199863613}
+  - {fileID: 9115753300346143591}
   - {fileID: 6530294219279250344}
   m_Father: {fileID: 4252312567911930318}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -30352,7 +30352,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 9115753300346143591}
+  - {fileID: 5647674078199863613}
   - {fileID: 7368870172110381888}
   m_Father: {fileID: 3255324680950049744}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
