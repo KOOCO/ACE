@@ -169,7 +169,7 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
     public bool IsCanMoveSwitch
     {
         set
-        {            
+        {
             GameRoomList_Sr.enabled = value;
             SwtichBtnCanvas.sortingOrder = value == true ?
                                            100 :

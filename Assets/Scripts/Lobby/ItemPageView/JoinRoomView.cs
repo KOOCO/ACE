@@ -65,7 +65,7 @@ public class JoinRoomView : MonoBehaviour
         //關閉
         Close_Btn.onClick.AddListener(() =>
         {
-            GameRoomManager.Instance.IsCanMoveSwitch = true;
+            GameRoomManager.Instance.IsCanMoveSwitch = false;
             gameObject.SetActive(false);
         });
 
@@ -191,8 +191,8 @@ public class JoinRoomView : MonoBehaviour
         TexasHoldemUtil.SetBuySlider(this.smallBlind,
                                      this.smallBlind * DataManager.MaxMagnification,
                                      BuyChips_Sli, tableType);
-        MinBuyChips_Txt.text = $"{StringUtils.SetChipsUnit(this.smallBlind * DataManager.MinMagnification)}";
-        MaxBuyChips_Txt.text = $"{StringUtils.SetChipsUnit(this.smallBlind * DataManager.MaxMagnification)}"; ;
+        MinBuyChips_Txt.text = $"{StringUtils.SetChipsUnit((this.smallBlind * 2) * DataManager.MinMagnification)}";
+        MaxBuyChips_Txt.text = $"{StringUtils.SetChipsUnit((this.smallBlind * 2) * DataManager.MaxMagnification)}"; ;
     }
 
     /// <summary>
