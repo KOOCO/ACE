@@ -1215,6 +1215,14 @@ public class GameControl : MonoBehaviour
                             { FirebaseManager.GAME_END_TIME, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}, //遊戲結束時間
                         };
                         UpdateGameRoomData(data);
+                        RoundRecordRequest round = new RoundRecordRequest()
+                        {
+                            roomId = "",
+                        };
+                        Debug.Log("test api start");
+                        SwaggerAPIManager.Instance.SendPostAPI<RoundRecordRequest>("/api/app/rounds", round, x=> Debug.Log("Test API"+x.ToString()));
+                        Debug.Log("test api END");
+
 
                         //積分房
                         if (RoomType == TableTypeEnum.IntegralTable)
@@ -2524,4 +2532,50 @@ public class GameControl : MonoBehaviour
     }
 
     #endregion
+}
+
+public class RoundRecordRequest
+{
+    public string id;
+    public string roomId;
+    public string tableId;
+    public string tableType;
+    public string isGameEnd;
+    public string gameEndTime;
+    public string tableCommission;
+    public string name;
+    public string creationTime;
+    public RoundRecordTable Table; 
+    public string
+    public string
+    public string
+    public string
+    public string
+    public string
+    public string
+    public string
+    public string
+    public string
+}
+
+public class  RoundRecordTable
+{
+    public string id
+    public string creationTime
+    public string creatorId
+    public string lastModificationTime
+    public string lastModifierId
+    public string isDeleted
+    public string deleterId
+    public string deletionTime
+    public string tenantId
+    public string mode
+    public string rebateSetting
+    public string stake
+    public string smallStake
+    public string minBuyIn
+    public string maxBuIn
+    public string isEnable
+    public string
+    public string
 }
