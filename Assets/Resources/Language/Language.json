@@ -535,9 +535,14 @@
     "zh_TW": "使用瀏覽器錢包連接"
   },
   {
-    "ID": "Don't Have An Account? <color=#79E84B><link=Sign Up Here!><u>Sign Up Here!</u></link></color>",
-    "English": "Don't Have An Account? <color=#79E84B><link=Sign Up Here!><u>Sign Up Here!</u></link></color>",
-    "zh_TW": "沒有帳戶？ <color=#79E84B><link=Sign Up Here!><u>在此註冊！</u></link></color>"
+    "ID": "Don't Have An Account?",
+    "English": "Don't Have An Account?",
+    "zh_TW": "沒有帳戶?"
+  },
+  {
+    "ID": "<color=#79E84B><link=Sign Up Here!><u>Sign Up Here!</u></link></color>",
+    "English": "<color=#79E84B><link=Sign Up Here!><u>Sign Up Here!</u></link></color>",
+    "zh_TW": "<color=#79E84B><link=Sign Up Here!><u>在此註冊!</u></link></color>"
   },
   {
     "ID": "錢包連接中頁面",

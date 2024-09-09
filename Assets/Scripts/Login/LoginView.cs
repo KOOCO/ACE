@@ -145,7 +145,7 @@ public class LoginView : MonoBehaviour
     [SerializeField]
     TMP_InputField LostPswNumber_If, LostPswOTP_If, LosrPswPassword_If;
     [SerializeField]
-    Button BackToMobileSignIn_Btn, LostPswPasswordEye_Btn, LostPswOTPSend_Btn, LostPswSubmit_Btn, LostPsw_Btn;
+    Button BackToMobileSignIn_Btn, LostPswPasswordEye_Btn, SignUp_Btn, LostPswOTPSend_Btn, LostPswSubmit_Btn, LostPsw_Btn;
     [SerializeField]
     TMP_Dropdown LostPswNumber_Dd;
     [SerializeField]
@@ -267,7 +267,8 @@ public class LoginView : MonoBehaviour
         {
             item.text = LanguageManager.Instance.GetText("Connect Using Browser Wallet");
         }
-        SignUp_Txt.text = LanguageManager.Instance.GetText("Don't Have An Account? <color=#79E84B><link=Sign Up Here!><u>Sign Up Here!</u></link></color>");
+        SignUp_Txt.text = LanguageManager.Instance.GetText("Don't Have An Account?");
+        SignUp_Btn.GetComponent<TextMeshProUGUI>().text = LanguageManager.Instance.GetText("<color=#79E84B><link=Sign Up Here!><u>Sign Up Here!</u></link></color>");
 
         #endregion
 
@@ -560,6 +561,11 @@ public class LoginView : MonoBehaviour
             MobileRegisterInit();
         });
 
+        SignUp_Btn.onClick.AddListener(() =>
+        {
+            Mobile_Tog.isOn = true;
+            MobileRegisterInit();
+        });
         //手機注冊發送獲取OTPCode
         RegisterOTPSend_Btn.onClick.AddListener(() =>
         {
