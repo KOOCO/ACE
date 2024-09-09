@@ -2536,46 +2536,48 @@ public class GameControl : MonoBehaviour
 
 public class RoundRecordRequest
 {
-    public string id;
+  
     public string roomId;
-    public string tableId;
     public string tableType;
     public string isGameEnd;
     public string gameEndTime;
     public string tableCommission;
     public string name;
-    public string creationTime;
-    public RoundRecordTable Table; 
-    public string
-    public string
-    public string
-    public string
-    public string
-    public string
-    public string
-    public string
-    public string
-    public string
+    public string tableId;
+    public RoundRecordMembers[] roundMembers;
+    public RoundRecordBoardCards[] boardCards;
+    public RoundRecordWinner[] RoundRecordWinners;
+    public RoundRecordLoser[] RoundRecordLosers;
+
 }
 
-public class  RoundRecordTable
+public class  RoundRecordMembers
 {
-    public string id
-    public string creationTime
-    public string creatorId
-    public string lastModificationTime
-    public string lastModifierId
-    public string isDeleted
-    public string deleterId
-    public string deletionTime
-    public string tenantId
-    public string mode
-    public string rebateSetting
-    public string stake
-    public string smallStake
-    public string minBuyIn
-    public string maxBuIn
-    public string isEnable
-    public string
-    public string
+    public string memberId;
+    public string isBot;
+    public RoundRecordMemberCards[] memberCards;
+}
+
+public class RoundRecordMemberCards
+{
+    public string code;
+}
+
+public class RoundRecordBoardCards
+{
+    public string code;
+}
+
+public class RoundRecordWinner
+{
+    public string memberId;
+    public int gainRankPoint;
+    public int winAmount;
+}
+
+public class RoundRecordLoser
+{
+    public string memberId;
+    public int loseRankPoint;
+    public int lostAmount;
 }
