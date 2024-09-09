@@ -44,7 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9d01340c73fefd4892652924188eeae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: V1.0.0
+  version: V1.2.8.2
+  releaseType: 0
   resolution: {x: 390, y: 844}
   isUsingDebug: 1
   ReporterObj: {fileID: 0}

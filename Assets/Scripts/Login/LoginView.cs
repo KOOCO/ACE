@@ -563,8 +563,8 @@ public class LoginView : MonoBehaviour
 
         SignUp_Btn.onClick.AddListener(() =>
         {
+            isClickSignUpHere = true;
             Mobile_Tog.isOn = true;
-            MobileRegisterInit();
         });
         //手機注冊發送獲取OTPCode
         RegisterOTPSend_Btn.onClick.AddListener(() =>
