@@ -69,7 +69,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         {
             //請求錯誤
             string errorJson = request.downloadHandler.text;
-            Debug.LogError($"Error: {request.error}\nError Details: {errorJson}");
+            Debug.Log($"Error: {request.error}\nError Details: {errorJson}");
 
             if (errorJson == "Invalid username or password!")
             {
@@ -77,7 +77,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
                 DataManager.istipAppear = true;
                 //Debug.Log("登入失敗");
             }
-            errCallback?.Invoke(errorJson);
+            errCallback?.Invoke(request.responseCode.ToString());
         }
         else
         {

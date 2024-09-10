@@ -509,7 +509,7 @@ public class LoginView : MonoBehaviour
                 emailAddress = WalletEmail_If.text,
                 walletAddress = DataManager.UserWalletAddress,
             };
-            SwaggerAPIManager.Instance.SendPostAPI<register_passwordless>("/api/app/ace-accounts/register-passwordless", walletRegister, WalletRegisterCallback);
+            SwaggerAPIManager.Instance.SendPostAPI<register_passwordless>("api/app/ace-accounts/register-passwordless", walletRegister, WalletRegisterCallback);
         });
 
         #endregion
@@ -1715,7 +1715,7 @@ public class LoginView : MonoBehaviour
             ipAddress = JsonStringIp,
             machineCode = "123456789",
         };
-        SwaggerAPIManager.Instance.SendPostAPI<passwordless_login>("/api/app/ace-accounts/passwordless-login",
+        SwaggerAPIManager.Instance.SendPostAPI<passwordless_login>("api/app/ace-accounts/passwordless-login",
                             wallLogin, WalletLoginCallback,
                             OpenWalletRigisterPage);
     }
@@ -1749,7 +1749,8 @@ public class LoginView : MonoBehaviour
     private void OpenWalletRigisterPage(string errorMsg)
     {
         //未註冊
-        if (errorMsg == "The token request was rejected by the authentication server.")
+        Debug.Log("Error when try to login register first :: " + errorMsg);
+        if (errorMsg == "403")
         {
             ConnectionTitle_Txt.text = LanguageManager.Instance.GetText("REGISTER");
             WalletLoadingPage_Obj.SetActive(false);
