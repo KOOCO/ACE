@@ -6,24 +6,14 @@ using Thirdweb.Redcode.Awaiting;
 using System.Numerics;
 using Thirdweb;
 using System;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using System.Linq;
-using UnityEngine.Networking;
 using System.Net;
 using System.Net.Sockets;
-using Newtonsoft.Json.Linq;
-using RotaryHeart.Lib.SerializableDictionary;
 using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
-using NBitcoin;
-using Org.BouncyCastle.Asn1.Ocsp;
 using System.Text.RegularExpressions;
-using UnityEngine.SocialPlatforms;
 using Newtonsoft.Json;
-using JetBrains.Annotations;
-using System.Linq.Expressions;
 public class LoginView : MonoBehaviour
 {
     [Header("切換/版本")]
@@ -604,8 +594,10 @@ public class LoginView : MonoBehaviour
         //手機注冊提交
         RegisterSubmit_Btn.onClick.AddListener(() =>
         {
+            Debug.Log(currVerifyCode + " Code To Be Verified");
             JSBridgeManager.Instance.FirebaseVerifyCode(currVerifyCode,
                                                         "Register");
+            Debug.Log(currVerifyPhoneNumber + " :: Number to verify");
             SignInNumberIf_Text.text = currVerifyPhoneNumber;
 
         });
@@ -625,7 +617,7 @@ public class LoginView : MonoBehaviour
                 ipAddress = JsonStringIp,
                 machineCode = "123456789",
             };
-            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest>("/api/app/ace-accounts/login", login, OnIntoLobby);
+            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest>("api/app/ace-accounts/login", login, OnIntoLobby);
         });
 
         //註冊成功登入取消按鈕
@@ -961,7 +953,7 @@ public class LoginView : MonoBehaviour
     {
         ViewManager.Instance.OpenTipMsgView(transform,
                                             LanguageManager.Instance.GetText("Sent OTP to SMS"));
-
+        Debug.Log("Phone Number :: SendOTP");
         currVerifyPhoneNumber = phoneNumber;
         JSBridgeManager.Instance.TriggerRecaptcha($"{currVerifyPhoneNumber}");
 
@@ -1135,7 +1127,7 @@ public class LoginView : MonoBehaviour
     public void MobileRegisterSubmit()
     {
         //MobileSignInSubmit();
-
+        Debug.Log(nameof(MobileRegisterSubmit));
         RegisterNumberError_Txt.text = "";
         RegisterCodeError_Txt.text = "";
         RegisterPasswordError_Txt.text = "";
