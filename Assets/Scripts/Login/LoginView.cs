@@ -594,8 +594,8 @@ public class LoginView : MonoBehaviour
         //手機注冊提交
         RegisterSubmit_Btn.onClick.AddListener(() =>
         {
-            Debug.Log(currVerifyCode + " Code To Be Verified");
-            JSBridgeManager.Instance.FirebaseVerifyCode(currVerifyCode,
+            Debug.Log(RegisterOTP_If.text.Trim() + " Code To Be Verified");
+            JSBridgeManager.Instance.FirebaseVerifyCode(RegisterOTP_If.text.Trim(),
                                                         "Register");
             Debug.Log(currVerifyPhoneNumber + " :: Number to verify");
             SignInNumberIf_Text.text = currVerifyPhoneNumber;
