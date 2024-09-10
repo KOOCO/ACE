@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   album:
   - {fileID: 21300000, guid: 1605ae1a134bc66439589dc7b41bb689, type: 3}
-  - {fileID: 21300000, guid: 6a4e335a8b327254b947870a8ecb6051, type: 3}
+  - {fileID: 21300000, guid: 7d29da5d9ebcf6444b078a8af6254211, type: 3}
+  - {fileID: 21300000, guid: cf82162a6659f19438bbc18a55537d8e, type: 3}

@@ -383,6 +383,7 @@ MonoBehaviour:
   Buff_Text: {fileID: 94668353155369840}
   CostAmount_Text: {fileID: 7858739426390956759}
   BuyBtn: {fileID: 6530959286626081284}
+  currencyIcon: {fileID: 2655429743594058020}
 --- !u!1 &5544649137735238457
 GameObject:
   m_ObjectHideFlags: 0

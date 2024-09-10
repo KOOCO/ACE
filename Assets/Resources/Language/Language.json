@@ -1226,4 +1226,10 @@
     "English": "INTEGRAL RULE",
     "zh_TW": "積分規則"
   }
+  ,
+  {
+    "ID": "for",
+    "English": "for",
+    "zh_TW": "用"
+  }
 ]
