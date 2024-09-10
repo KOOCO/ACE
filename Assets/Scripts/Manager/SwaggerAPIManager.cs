@@ -13,7 +13,7 @@ using static LobbyMainPageView;
 
 public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
 {
-    private const string BASE_URL = "https://admin.jf588.com/";           //API Base Url
+    private const string BASE_URL = "https://admin.asiapoker.cc/";           //API Base Url
 
     public override void Awake()
     {
