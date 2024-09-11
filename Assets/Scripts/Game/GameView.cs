@@ -1169,15 +1169,17 @@ public class GameView : MonoBehaviour
     {
         double betValue = 0;
         BetActingEnum acting = BetActingEnum.Call;
-
+        Debug.Log("Check or Call :: Call On Start");
         if (thisData.IsFirstRaisePlayer)
         {
             if (thisData.CurrCallValue == thisData.SmallBlindValue * 2)
             {
                 acting = BetActingEnum.Check;
+                Debug.Log("thisData.CurrCallValue == thisData.SmallBlindValue * 2 Check or Call :: Check ");
             }
             else
             {
+                Debug.Log("thisData.CurrCallValue == thisData.SmallBlindValue * 2 else Check or Call :: call");
                 betValue = thisData.CurrCallValue;
             }
         }
@@ -1185,15 +1187,18 @@ public class GameView : MonoBehaviour
         {
             if (thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue)
             {
+                Debug.Log("thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue Check or Call :: Check");
                 acting = BetActingEnum.Check;
             }
             else if (thisData.LocalPlayerChips <= thisData.CurrCallValue)
             {
+                Debug.Log("thisData.LocalPlayerChips <= thisData.CurrCallValue Check or Call :: All in");
                 acting = BetActingEnum.AllIn;
                 betValue = thisData.LocalPlayerChips;
             }
             else
             {
+                Debug.Log("thisData.LocalPlayerChips <= thisData.CurrCallValue else Check or Call :: Call");
                 betValue = thisData.CurrCallValue;
             }
         }
@@ -1306,7 +1311,6 @@ public class GameView : MonoBehaviour
         GameRoomPlayerData gameRoomPlayerData = gameRoomData.playerDataDic.Where(x => x.Value.userId == DataManager.UserId)
                                                                           .FirstOrDefault()
                                                                           .Value;
-
         //首位加注玩家
         bool isFirst = gameRoomData.actionPlayerCount == 0;
 
@@ -1480,8 +1484,19 @@ public class GameView : MonoBehaviour
         strData.CallValueStr = $"\n{StringUtils.SetChipsUnit(thisData.CurrCallValue - thisData.CallDifference)}";
         if (thisData.IsFirstRaisePlayer == true)
         {
-            strData.CallStr = "Check";
-            strData.CallValueStr = "";
+            if (thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue)
+            {
+                strData.CallStr = "Check";
+                strData.CallValueStr = "";
+            }
+            else
+            {
+                strData.CallStr = "Call";
+                strData.CallValueStr = $"\n{StringUtils.SetChipsUnit(thisData.CallDifference)}";
+            }
+            // Debug.Log("Check " + nameof(ShowBetArea) + " " + thisData.IsFirstRaisePlayer + "First Player");
+            // strData.CallStr = "Check";
+            // strData.CallValueStr = "";
         }
         else
         {

@@ -34,7 +34,7 @@ public class GameControl : MonoBehaviour
     List<int> localHand { get; set; }                           //本地玩家手牌
     int cdSound { get; set; }                                   //倒數聲音計時器
 
-    
+
 
     private void OnDestroy()
     {
@@ -242,7 +242,7 @@ public class GameControl : MonoBehaviour
 
         //積分配對上的玩家
         if (RoomType == TableTypeEnum.IntegralTable &&
-            !string.IsNullOrEmpty(pairPlayerId) && 
+            !string.IsNullOrEmpty(pairPlayerId) &&
             !string.IsNullOrEmpty(integralRoomName))
         {
             //更新被配對玩家資料
@@ -370,7 +370,7 @@ public class GameControl : MonoBehaviour
                 playingPlayersId.Add(playerId);
             }
         }
-        
+
         //玩家列表中移除
         if (gameRoomData.playerDataDic.ContainsKey(id))
         {
@@ -1008,7 +1008,7 @@ public class GameControl : MonoBehaviour
                 playerData.handPoker.SequenceEqual(localHand))
             {
                 gameView.ShowFoldPoker();
-            }       
+            }
         }
     }
 
@@ -1229,7 +1229,7 @@ public class GameControl : MonoBehaviour
                         //重新遊戲流程
                         yield return IStartGameFlow(GameFlowEnum.Licensing);
                     }
-                }              
+                }
 
                 break;
 
@@ -1478,7 +1478,7 @@ public class GameControl : MonoBehaviour
         if (gameRoomData.hostId == DataManager.UserId)
         {
             //時間減少
-            int currActionCD =  gameRoomData.actionCD - 1;
+            int currActionCD = gameRoomData.actionCD - 1;
 
             if (currActionCD < 0)
             {
@@ -1562,7 +1562,7 @@ public class GameControl : MonoBehaviour
             if (canActionPlayers.Count() > 0)
             {
                 isAllBet = canActionPlayers.All(x => x.isBet == true);
-            }  
+            }
 
             //所有玩家下注籌碼一致
             bool isAllPlayerBetValueEqual = true;
@@ -1611,7 +1611,7 @@ public class GameControl : MonoBehaviour
             {
                 int nextFlowIndex = (gameRoomData.currGameFlow + 1) % Enum.GetValues(typeof(GameFlowEnum)).Length;
                 GameFlowEnum nextFlow = (GameFlowEnum)Mathf.Max(1, nextFlowIndex);
-                yield return IStartGameFlow(nextFlow);                
+                yield return IStartGameFlow(nextFlow);
                 yield break;
             }
 
@@ -1624,7 +1624,7 @@ public class GameControl : MonoBehaviour
                 GameFlowEnum nextFlow = (GameFlowEnum)Mathf.Max(1, nextFlowIndex);
                 yield return IStartGameFlow(nextFlow);
                 yield break;
-            }            
+            }
 
             //設置下位行動玩家
             UpdateNextPlayer();
@@ -1905,7 +1905,6 @@ public class GameControl : MonoBehaviour
         {
             actionPlayerCount = 0;
         }
-        Debug.Log(actionPlayerCount);
 
         //更新遊戲房間資料
         var data = new Dictionary<string, object>()
@@ -2009,7 +2008,7 @@ public class GameControl : MonoBehaviour
         {
             pokerList.Add(i);
         }
-        
+
         //公共牌
         List<int> community = new();
         for (int i = 0; i < 5; i++)
@@ -2027,7 +2026,7 @@ public class GameControl : MonoBehaviour
                 community.Add(poker);
             }
         }
-        
+
         //玩家手牌
         foreach (var player in gameRoomData.playerDataDic)
         {
@@ -2448,7 +2447,7 @@ public class GameControl : MonoBehaviour
                             judgePokers = judgePokers.Take(1).ToList();
                             pairPlayer[item.Key].AddRange(judgePokers);
                         }
-                    }                    
+                    }
 
                     for (int i = 0; i < pairPlayer.FirstOrDefault().Value.Count; i++)
                     {
@@ -2507,7 +2506,7 @@ public class GameControl : MonoBehaviour
     /// </summary>
     private void ChatMessage()
     {
-        if (gameRoomData.chatData != null && 
+        if (gameRoomData.chatData != null &&
             !string.IsNullOrEmpty(gameRoomData.chatData.chatMsg))
         {
             gameView.ReciveChat(gameRoomData.chatData);
