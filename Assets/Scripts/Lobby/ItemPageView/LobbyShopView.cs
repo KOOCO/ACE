@@ -425,7 +425,7 @@ public class LobbyShopView : MonoBehaviour
                 }, (errMsg) =>
                 {
                     Debug.LogError(errMsg);
-                }, false);
+                }, true, true);
 
                 //Debug.Log($"您已購買 {itemName} {shopData.BuffAmount}");
                 //DataManager.UserAChips -= shopData.price;
