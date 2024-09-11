@@ -25,6 +25,14 @@ public class ItemList
     public List<ShopItem> items;
     public int totalCount;
 }
+
+public class PurchaseItem
+{
+    public string itemId;
+    public int quantity;
+    public string playerId;
+
+}
 #endregion
 
 #region User Data

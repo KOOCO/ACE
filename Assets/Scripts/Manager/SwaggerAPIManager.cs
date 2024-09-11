@@ -28,10 +28,10 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     /// <param name="data">傳遞的資料</param>
     /// <param name="callback">結果回傳</param>
     /// <param name="errCallback"></param>
-    public void SendPostAPI<T1>(string apiUrl, T1 data, UnityAction<string> callback = null, UnityAction<string> errCallback = null)
+    public void SendPostAPI<T1>(string apiUrl, T1 data, UnityAction<string> callback = null, UnityAction<string> errCallback = null, bool addHeader = false)
         where T1 : class
     {
-        StartCoroutine(ISendPOSTRequest(apiUrl, data, callback, errCallback));
+        StartCoroutine(ISendPOSTRequest(apiUrl, data, callback, errCallback, addHeader));
     }
     public void SendGetAPI(string apiUrl, UnityAction<string> callback = null, UnityAction errCallback = null, bool addHeader = false)
     {
@@ -47,7 +47,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     /// <param name="callback"></param>
     /// <param name="errCallback"></param>
     /// <returns></returns>
-    private IEnumerator ISendPOSTRequest<T1>(string apiUrl, T1 data, UnityAction<string> callback = null, UnityAction<string> errCallback = null)
+    private IEnumerator ISendPOSTRequest<T1>(string apiUrl, T1 data, UnityAction<string> callback = null, UnityAction<string> errCallback = null, bool addHeader = false)
         where T1 : class
     {
         string fullUrl = BASE_URL + apiUrl;
@@ -63,6 +63,10 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
+
+        if (addHeader)
+            request.SetRequestHeader("Authorization", "Bearer " + Services.PlayerService.GetAccessToken());
+
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)

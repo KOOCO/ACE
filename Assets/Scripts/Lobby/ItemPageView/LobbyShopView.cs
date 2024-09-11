@@ -388,7 +388,12 @@ public class LobbyShopView : MonoBehaviour
     {
         Confirm.onClick.AddListener(() =>
         {
-
+            PurchaseItem itemToPurchase = new PurchaseItem()
+            {
+                itemId = shopData.id,
+                quantity = shopData.targetItemQuantity,
+                playerId = Services.PlayerService.GetPlayer().memberId,
+            };
             if (DataManager.UserAChips < shopData.price)
             {
                 shopSample.InsufficientBalance(iconSprite, MallMsgInfo);
@@ -397,33 +402,38 @@ public class LobbyShopView : MonoBehaviour
             }
             else
             {
-                PurchaseSuccessUI.SetActive(!PurchaseSuccessUI.activeSelf);
-
-                switch (itemCategory)
+                SwaggerAPIManager.Instance.SendPostAPI<PurchaseItem>("api/app/items/purchase-item", itemToPurchase, (data) =>
                 {
-                    case 0:
-                        DataManager.UserGold += shopData.targetItemQuantity;
-                        break;
-                    case 1:
-                        DataManager.UserEnergy += shopData.targetItemQuantity;
-                        break;
-                    case 2:
-                        DataManager.UserTimer += shopData.targetItemQuantity;
-                        break;
-                    case 3:
-                        DataManager.UserTools += shopData.targetItemQuantity;
-                        break;
-                }
+                    Debug.Log(data);
+                    PurchaseSuccessUI.SetActive(!PurchaseSuccessUI.activeSelf);
+
+                    switch (itemCategory)
+                    {
+                        case 0:
+                            DataManager.UserGold += shopData.targetItemQuantity;
+                            break;
+                        case 1:
+                            DataManager.UserEnergy += shopData.targetItemQuantity;
+                            break;
+                        case 2:
+                            DataManager.UserTimer += shopData.targetItemQuantity;
+                            break;
+                        case 3:
+                            DataManager.UserTools += shopData.targetItemQuantity;
+                            break;
+                    }
+                }, (errMsg) =>
+                {
+                    Debug.LogError(errMsg);
+                }, false);
 
                 //Debug.Log($"您已購買 {itemName} {shopData.BuffAmount}");
-                DataManager.UserAChips -= shopData.price;
+                //DataManager.UserAChips -= shopData.price;
                 //Debug.Log($"餘額 {DataManager.UserVCChips}");
             }
 
         });
     }
-
-
 
     private void OpenShopItem()
     {
