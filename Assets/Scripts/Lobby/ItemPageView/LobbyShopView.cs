@@ -402,7 +402,7 @@ public class LobbyShopView : MonoBehaviour
             }
             else
             {
-                SwaggerAPIManager.Instance.SendPostAPI<PurchaseItem>("api/app/items/purchase-item", itemToPurchase, (data) =>
+                SwaggerAPIManager.Instance.SendPostAPI<PurchaseItem>($"api/app/items/purchase-item?itemId={itemToPurchase.itemId}&quantity={itemToPurchase.quantity}&playerId={itemToPurchase.playerId}", null, (data) =>
                 {
                     Debug.Log(data);
                     PurchaseSuccessUI.SetActive(!PurchaseSuccessUI.activeSelf);

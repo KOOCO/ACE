@@ -52,29 +52,6 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     {
         string fullUrl = BASE_URL + apiUrl;
 
-        if (useParams)
-        {
-            // Create a list to hold the query parameters
-            List<string> queryParams = new List<string>();
-
-            // Serialize data to key-value pairs
-            foreach (var prop in typeof(T1).GetProperties())
-            {
-                var value = prop.GetValue(data)?.ToString();
-                if (value != null)
-                {
-                    // Add URL-encoded query parameters
-                    queryParams.Add($"{Uri.EscapeDataString(prop.Name)}={Uri.EscapeDataString(value)}");
-                }
-            }
-
-            // Append query parameters to the URL
-            if (queryParams.Count > 0)
-            {
-                fullUrl += "?" + string.Join("&", queryParams);
-            }
-        }
-
         Debug.Log($"Send POST to URL: {fullUrl}");
 
         // Create POST request
