@@ -3,11 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
-using Thirdweb;
-using System.Threading.Tasks;
 using TMPro;
-using Unity.VisualScripting;
-using Unity.Android.Gradle.Manifest;
 
 public class LobbyView : MonoBehaviour
 {
@@ -64,11 +60,6 @@ public class LobbyView : MonoBehaviour
     Button Transfers_Btn;
     [SerializeField]
     TextMeshProUGUI TransfersBtn_Txt;
-
-    [SerializeField]
-    GameObject noticePopup;
-    [SerializeField]
-    TextMeshProUGUI noticeText;
 
     bool isFirstIn;
     bool isListenered;
@@ -277,8 +268,6 @@ public class LobbyView : MonoBehaviour
             gameTestTouchCount = 0;
         }
 
-        noticeText.text = DataManager.TipText;
-        noticePopup.gameObject.SetActive(DataManager.istipAppear);
         #endregion
     }
 
@@ -517,10 +506,5 @@ public class LobbyView : MonoBehaviour
 
             Destroy(Floor4.GetChild(0).gameObject);
         }
-    }
-
-    public void CloseNotice()
-    {
-        DataManager.istipAppear = false;
     }
 }

@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,10 +37,10 @@ public class QuestBonus : MonoBehaviour
         slider.minValue = BonusIndex;
         slider.value = DataManager.CurrentBonusAmount;
 
-        for (int i=0;i<RocketParent.transform.childCount;i++)
+        for (int i = 0; i < RocketParent.transform.childCount; i++)
         {
             BonusRocket.Add(RocketParent.transform.GetChild(i).gameObject);
-            
+
             //  設置紅利數值
             Text bonusText = BonusRocket[i].transform.GetChild(0).GetComponent<Text>();
             bonusText.text = (BonusIndex * (i + 1)).ToString();
@@ -59,9 +56,9 @@ public class QuestBonus : MonoBehaviour
         slider.value = DataManager.CurrentBonusAmount;
         BonusIndex = DataManager.BonusMax / RocketParent.transform.childCount;
 
-        for (int i=0;i<RocketParent.transform.childCount;i++)
+        for (int i = 0; i < RocketParent.transform.childCount; i++)
         {
-            if (DataManager.CurrentBonusAmount / BonusIndex >= i+1)
+            if (DataManager.CurrentBonusAmount / BonusIndex >= i + 1)
             {
                 BonusRocket[i].GetComponent<Image>().sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.BonusRocketAlbum).album[1];
             }
