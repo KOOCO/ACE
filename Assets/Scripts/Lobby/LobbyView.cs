@@ -267,7 +267,11 @@ public class LobbyView : MonoBehaviour
         {
             gameTestTouchCount = 0;
         }
-
+        if (DataManager.DataUpdated)
+        {
+            UpdateUserData();
+            DataManager.DataUpdated = false;
+        }
         #endregion
     }
 

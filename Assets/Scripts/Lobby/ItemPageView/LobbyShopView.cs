@@ -368,7 +368,7 @@ public class LobbyShopView : MonoBehaviour
     {
         ShopSample newShopItem = Instantiate(shopItem, itemParent).GetComponent<ShopSample>();
         newShopItem.SetShopItemData(item);
-        newShopItem.OnBuyAddListener(this, MallMsg, item, iconSprite, MallMsgInfo, item.category);
+        newShopItem.OnBuyAddListener(this, MallMsg, item, iconSprite, MallMsgInfo);
     }
     public void ClearChilds(Transform _stransform)
     {
@@ -384,7 +384,7 @@ public class LobbyShopView : MonoBehaviour
     /// <param name="shopSample"></param>
     /// <param name="shopData">商品資料</param>
     /// <param name="itemCategory">商品名</param>
-    public void OnBuyingPopupUI(ShopSample shopSample, ShopItem shopData, int itemCategory)
+    public void OnBuyingPopupUI(ShopSample shopSample, ShopItem shopData)
     {
         Confirm.onClick.AddListener(() =>
         {
@@ -406,7 +406,7 @@ public class LobbyShopView : MonoBehaviour
                     Debug.Log(data);
                     PurchaseSuccessUI.SetActive(!PurchaseSuccessUI.activeSelf);
 
-                    switch (itemCategory)
+                    switch (shopData.category)
                     {
                         case 0:
                             DataManager.UserGold += shopData.targetItemQuantity;
@@ -421,6 +421,24 @@ public class LobbyShopView : MonoBehaviour
                             DataManager.UserTools += shopData.targetItemQuantity;
                             break;
                     }
+
+                    switch (shopData.currency)
+                    {
+                        case 0:
+                            Debug.Log("Gold");
+                            DataManager.UserGold -= shopData.price;
+                            break;
+                        case 1:
+                            Debug.Log("Timer");
+                            DataManager.UserTimer -= (int)shopData.price;
+                            break;
+                        case 2:
+                            Debug.Log("UCoin");
+                            DataManager.UserUChips -= shopData.price;
+                            break;
+                    }
+
+                    DataManager.DataUpdated = true;
                 }, (errMsg) =>
                 {
                     Debug.LogError(errMsg);
