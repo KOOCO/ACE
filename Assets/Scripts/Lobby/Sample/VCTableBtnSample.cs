@@ -50,15 +50,23 @@ public class VCTableBtnSample : MonoBehaviour
         {
             if (GameRoomManager.Instance.JudgeIsCanBeCreateRoom())
             {
-                if (joinRoomView == null)
+                if (DataManager.UserAChips > ((smallBlind * 2) * DataManager.MinMagnification))
                 {
-                    joinRoomView = ViewManager.Instance.CreateViewInCurrCanvas<JoinRoomView>(JoinRoomViewObj);
-                    joinRoomView.SetCreatRoomViewInfo(TableTypeEnum.VCTable, smallBlind);
+                    if (joinRoomView == null)
+                    {
+                        joinRoomView = ViewManager.Instance.CreateViewInCurrCanvas<JoinRoomView>(JoinRoomViewObj);
+                        joinRoomView.SetCreatRoomViewInfo(TableTypeEnum.VCTable, smallBlind);
+                    }
+                    else
+                    {
+                        joinRoomView.SetCreatRoomViewInfo(TableTypeEnum.VCTable, smallBlind);
+                        joinRoomView.gameObject.SetActive(!joinRoomView.gameObject.activeSelf);
+                    }
                 }
                 else
                 {
-                    joinRoomView.SetCreatRoomViewInfo(TableTypeEnum.VCTable, smallBlind);
-                    joinRoomView.gameObject.SetActive(!joinRoomView.gameObject.activeSelf);
+                    DataManager.TipText = LanguageManager.Instance.GetText("you dont have enough chips Please buy from shop");
+                    DataManager.istipAppear = true;
                 }
             }
             else

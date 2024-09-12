@@ -34,6 +34,8 @@ public class JoinRoomView : MonoBehaviour
     TableTypeEnum tableType;             //房間類型
     double newCarryChipsValue;           //更新後的購買籌碼
 
+    bool isClassic;
+
     /// <summary>
     /// 更新文本翻譯
     /// </summary>
@@ -164,6 +166,7 @@ public class JoinRoomView : MonoBehaviour
             //現金桌
             case TableTypeEnum.Cash:
                 titleStr = "High Roller Battleground";
+                isClassic = false;
                 BlindACoin_Img.gameObject.SetActive(true);
                 BlindUCoin_Img.gameObject.SetActive(false);
                 MinBuyACoin_Img.gameObject.SetActive(true);
@@ -175,6 +178,7 @@ public class JoinRoomView : MonoBehaviour
             //虛擬貨幣桌
             case TableTypeEnum.VCTable:
                 titleStr = "Classic Battle";
+                isClassic = true;
                 BlindACoin_Img.gameObject.SetActive(false);
                 BlindUCoin_Img.gameObject.SetActive(true);
                 MinBuyACoin_Img.gameObject.SetActive(false);
@@ -188,8 +192,8 @@ public class JoinRoomView : MonoBehaviour
         Blind_Txt.text = $"{StringUtils.SetChipsUnit(smallBlind)} / " +
                          $"{StringUtils.SetChipsUnit(smallBlind * 2)}";
 
-        TexasHoldemUtil.SetBuySlider(this.smallBlind,
-                                     this.smallBlind * DataManager.MaxMagnification,
+        TexasHoldemUtil.SetBuySlider(this.smallBlind * 2, isClassic ? DataManager.UserAChips : DataManager.UserUChips < ((this.smallBlind * 2) * DataManager.MaxMagnification) ?
+                                     isClassic ? DataManager.UserAChips : DataManager.UserUChips : (this.smallBlind * 2) * DataManager.MaxMagnification,
                                      BuyChips_Sli, tableType);
         MinBuyChips_Txt.text = $"{StringUtils.SetChipsUnit((this.smallBlind * 2) * DataManager.MinMagnification)}";
         MaxBuyChips_Txt.text = $"{StringUtils.SetChipsUnit((this.smallBlind * 2) * DataManager.MaxMagnification)}"; ;

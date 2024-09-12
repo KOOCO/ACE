@@ -50,15 +50,23 @@ public class CryptoTableBtnSample : MonoBehaviour
         {
             if (GameRoomManager.Instance.JudgeIsCanBeCreateRoom())
             {
-                if (joinRoomView == null)
+                if (DataManager.UserUChips > ((smallBlind * 2) * DataManager.MinMagnification))
                 {
-                    joinRoomView = ViewManager.Instance.CreateViewInCurrCanvas<JoinRoomView>(JoinRoomViewObj);
-                    joinRoomView.SetCreatRoomViewInfo(TableTypeEnum.Cash, smallBlind);
+                    if (joinRoomView == null)
+                    {
+                        joinRoomView = ViewManager.Instance.CreateViewInCurrCanvas<JoinRoomView>(JoinRoomViewObj);
+                        joinRoomView.SetCreatRoomViewInfo(TableTypeEnum.Cash, smallBlind);
+                    }
+                    else
+                    {
+                        joinRoomView.SetCreatRoomViewInfo(TableTypeEnum.Cash, smallBlind);
+                        joinRoomView.gameObject.SetActive(!joinRoomView.gameObject.activeSelf);
+                    }
                 }
                 else
                 {
-                    joinRoomView.SetCreatRoomViewInfo(TableTypeEnum.Cash, smallBlind);
-                    joinRoomView.gameObject.SetActive(!joinRoomView.gameObject.activeSelf);
+                    DataManager.TipText = LanguageManager.Instance.GetText("you dont have enough Ucoins Please buy from shop");
+                    DataManager.istipAppear = true;
                 }
             }
             else
