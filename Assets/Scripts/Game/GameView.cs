@@ -1172,14 +1172,21 @@ public class GameView : MonoBehaviour
         Debug.Log("Check or Call :: Call On Start");
         if (thisData.IsFirstRaisePlayer)
         {
-            if (thisData.CurrCallValue == thisData.SmallBlindValue * 2)
+            Debug.Log($"{thisData.CurrCallValue} currentCall :: {thisData.CurrRaiseValue} currentRaise :: {thisData.LocalPlayerCurrBetValue}");
+            if (thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue)
             {
+                Debug.Log("thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue Check or Call :: Check");
                 acting = BetActingEnum.Check;
-                Debug.Log("thisData.CurrCallValue == thisData.SmallBlindValue * 2 Check or Call :: Check ");
+            }
+            else if (thisData.LocalPlayerChips <= thisData.CurrCallValue)
+            {
+                Debug.Log("thisData.LocalPlayerChips <= thisData.CurrCallValue Check or Call :: All in");
+                acting = BetActingEnum.AllIn;
+                betValue = thisData.LocalPlayerChips;
             }
             else
             {
-                Debug.Log("thisData.CurrCallValue == thisData.SmallBlindValue * 2 else Check or Call :: call");
+                Debug.Log("thisData.LocalPlayerChips <= thisData.CurrCallValue else Check or Call :: Call");
                 betValue = thisData.CurrCallValue;
             }
         }
