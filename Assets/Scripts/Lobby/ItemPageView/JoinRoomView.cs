@@ -192,9 +192,11 @@ public class JoinRoomView : MonoBehaviour
         Blind_Txt.text = $"{StringUtils.SetChipsUnit(smallBlind)} / " +
                          $"{StringUtils.SetChipsUnit(smallBlind * 2)}";
 
-        TexasHoldemUtil.SetBuySlider(this.smallBlind * 2, isClassic ? DataManager.UserAChips : DataManager.UserUChips < ((this.smallBlind * 2) * DataManager.MaxMagnification) ?
-                                     isClassic ? DataManager.UserAChips : DataManager.UserUChips : (this.smallBlind * 2) * DataManager.MaxMagnification,
-                                     BuyChips_Sli, tableType);
+        if (isClassic)
+            TexasHoldemUtil.SetBuySlider(this.smallBlind * 2, DataManager.UserAChips < ((this.smallBlind * 2) * DataManager.MaxMagnification) ? DataManager.UserAChips : (this.smallBlind * 2) * DataManager.MaxMagnification, BuyChips_Sli, tableType);
+        else
+            TexasHoldemUtil.SetBuySlider(this.smallBlind * 2, DataManager.UserUChips < ((this.smallBlind * 2) * DataManager.MaxMagnification) ? DataManager.UserUChips : (this.smallBlind * 2) * DataManager.MaxMagnification, BuyChips_Sli, tableType);
+
         MinBuyChips_Txt.text = $"{StringUtils.SetChipsUnit((this.smallBlind * 2) * DataManager.MinMagnification)}";
         MaxBuyChips_Txt.text = $"{StringUtils.SetChipsUnit((this.smallBlind * 2) * DataManager.MaxMagnification)}"; ;
     }
