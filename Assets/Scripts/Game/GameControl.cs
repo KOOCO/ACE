@@ -1215,10 +1215,8 @@ public class GameControl : MonoBehaviour
                             { FirebaseManager.GAME_END_TIME, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}, //遊戲結束時間
                         };
                         UpdateGameRoomData(data);
-                        RoundRecordRequest round = new RoundRecordRequest()
-                        {
-                            roomId = "",
-                        };
+                        
+                        RoundRecordRequest round = RoundRecordRequest.makeTestRequest();
                         Debug.Log("test api start");
                         SwaggerAPIManager.Instance.SendPostAPI<RoundRecordRequest>("/api/app/rounds", round, x=> Debug.Log("Test API"+x.ToString()));
                         Debug.Log("test api END");
@@ -1775,8 +1773,8 @@ public class GameControl : MonoBehaviour
     /// </summary>
     /// <param name="data"></param>
     public void UpdateGameRoomData(Dictionary<string, object> data)
-    {
-        JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}",
+     {
+         JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}",
                                                         data);
     }
 
@@ -2539,7 +2537,7 @@ public class RoundRecordRequest
   
     public string roomId;
     public string tableType;
-    public string isGameEnd;
+    public bool isGameEnd;
     public string gameEndTime;
     public string tableCommission;
     public string name;
@@ -2549,6 +2547,24 @@ public class RoundRecordRequest
     public RoundRecordWinner[] RoundRecordWinners;
     public RoundRecordLoser[] RoundRecordLosers;
 
+    public static RoundRecordRequest makeTestRequest()
+    {
+        RoundRecordRequest request = new RoundRecordRequest();
+        request.roomId = "0f362841-7223-d1d1-8d76-3a148b505c0a";
+        request.tableType = "string";
+        request.isGameEnd = true;
+        request.gameEndTime = "2024/09/10 14:09:34";
+        request.tableCommission = "";
+        request.name = "";
+        request.tableId = "";
+        
+        
+        request.roundMembers = new RoundRecordMembers[1];
+        request.boardCards = new RoundRecordBoardCards[1];
+        request.RoundRecordWinners = new RoundRecordWinner[1];
+        request.RoundRecordLosers = new RoundRecordLoser[1];
+        return request;
+    }
 }
 
 public class  RoundRecordMembers
