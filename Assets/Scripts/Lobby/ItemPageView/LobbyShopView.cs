@@ -391,7 +391,6 @@ public class LobbyShopView : MonoBehaviour
             PurchaseItem itemToPurchase = new PurchaseItem()
             {
                 itemId = shopData.id,
-                quantity = shopData.targetItemQuantity,
                 playerId = Services.PlayerService.GetPlayer().memberId,
             };
             if (DataManager.UserAChips < shopData.price)
@@ -402,7 +401,7 @@ public class LobbyShopView : MonoBehaviour
             }
             else
             {
-                SwaggerAPIManager.Instance.SendPostAPI<PurchaseItem>($"api/app/items/purchase-item?itemId={itemToPurchase.itemId}&quantity={itemToPurchase.quantity}&playerId={itemToPurchase.playerId}", null, (data) =>
+                SwaggerAPIManager.Instance.SendPostAPI<PurchaseItem>($"api/app/items/purchase-item?itemId={itemToPurchase.itemId}&playerId={itemToPurchase.playerId}", null, (data) =>
                 {
                     Debug.Log(data);
                     PurchaseSuccessUI.SetActive(!PurchaseSuccessUI.activeSelf);

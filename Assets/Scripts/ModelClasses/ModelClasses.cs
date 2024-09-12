@@ -29,7 +29,6 @@ public class ItemList
 public class PurchaseItem
 {
     public string itemId;
-    public int quantity;
     public string playerId;
 
 }
