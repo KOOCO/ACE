@@ -420,6 +420,9 @@ public class LobbyShopView : MonoBehaviour
                         case 3:
                             DataManager.UserTools += shopData.targetItemQuantity;
                             break;
+                        case 4:
+                            DataManager.UserAChips += (int)shopData.targetItemQuantity;
+                            break;
                     }
 
                     switch (shopData.currency)
@@ -429,12 +432,12 @@ public class LobbyShopView : MonoBehaviour
                             DataManager.UserGold -= shopData.price;
                             break;
                         case 1:
-                            Debug.Log("Timer");
-                            DataManager.UserTimer -= (int)shopData.price;
+                            Debug.Log("UCoin");
+                            DataManager.UserUChips -= (int)shopData.price;
                             break;
                         case 2:
-                            Debug.Log("UCoin");
-                            DataManager.UserUChips -= shopData.price;
+                            Debug.Log("ACoin");
+                            DataManager.UserAChips -= (int)shopData.price;
                             break;
                     }
 
