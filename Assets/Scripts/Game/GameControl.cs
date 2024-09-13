@@ -563,17 +563,18 @@ public class GameControl : MonoBehaviour
     /// <param name="gameFlow">遊戲流程</param>
     public IEnumerator IStartGameFlow(GameFlowEnum gameFlow)
     {
+        Debug.Log($"{nameof(IStartGameFlow)} :: {gameFlow}");
         if (preUpdateGameFlow == gameFlow ||
             gameRoomData.hostId != DataManager.UserId)
         {
             yield break;
         }
         preUpdateGameFlow = gameFlow;
-
+        bool isGameStarting = gameFlow == GameFlowEnum.Licensing || gameFlow == GameFlowEnum.SetBlind;
         //重製房間資料
         var roomData = new Dictionary<string, object>()
         {
-            { FirebaseManager.CURR_CALL_VALUE, gameRoomData.smallBlind * 2},                //當前跟注值
+            { FirebaseManager.CURR_CALL_VALUE,isGameStarting? gameRoomData.smallBlind * 2:0},                //當前跟注值
             { FirebaseManager.ACTIONP_PLAYER_COUNT, 0},                                     //當前流程行動玩家次數
             { FirebaseManager.ACTION_CD, -1},                                               //行動倒數時間
         };

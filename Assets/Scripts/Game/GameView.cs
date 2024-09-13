@@ -1170,9 +1170,9 @@ public class GameView : MonoBehaviour
         double betValue = 0;
         BetActingEnum acting = BetActingEnum.Call;
         Debug.Log("Check or Call :: Call On Start");
+        Debug.Log($"{thisData.CurrCallValue} currentCall :: {thisData.CurrRaiseValue} currentLocalRaise :: {thisData.LocalPlayerCurrBetValue} :: currentGlobalRaise {thisData.CurrRaiseValue} :: isCallOrRaise {thisData.isCanCall}");
         if (thisData.IsFirstRaisePlayer)
         {
-            Debug.Log($"{thisData.CurrCallValue} currentCall :: {thisData.CurrRaiseValue} currentRaise :: {thisData.LocalPlayerCurrBetValue}");
             if (thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue)
             {
                 Debug.Log("thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue Check or Call :: Check");
@@ -1350,6 +1350,7 @@ public class GameView : MonoBehaviour
         //首位加注玩家
         thisData.IsFirstRaisePlayer = isFirst;
         //當前跟注值
+        Debug.Log(gameRoomData.currCallValue + " :: Current Call value :: " + nameof(LocalPlayerRound));
         thisData.CurrCallValue = gameRoomData.currCallValue;
         //跟注差額
         thisData.CallDifference = gameRoomData.currCallValue - gameRoomPlayerData.currAllBetChips;
@@ -1360,9 +1361,7 @@ public class GameView : MonoBehaviour
         //是否無法跟注
         thisData.isCanCall = isCanCall;
         //最小加注
-        thisData.MinRaiseValue = isFirst ?
-                                 thisData.CurrCallValue :
-                                 thisData.CurrCallValue * 2;
+        thisData.MinRaiseValue = thisData.CurrCallValue == 0 ? thisData.SmallBlindValue * 2 : thisData.CurrCallValue * 2;
         thisData.CurrRaiseValue = thisData.MinRaiseValue;
 
 
@@ -1489,15 +1488,18 @@ public class GameView : MonoBehaviour
         //跟注&過牌
         strData.CallStr = "Call";
         strData.CallValueStr = $"\n{StringUtils.SetChipsUnit(thisData.CurrCallValue - thisData.CallDifference)}";
+        Debug.Log($"{nameof(ShowBetArea)} {thisData.CurrCallValue} currentCall :: {thisData.CurrRaiseValue} currentLocalRaise :: {thisData.LocalPlayerCurrBetValue} :: currentGlobalRaise {thisData.CurrRaiseValue} :: isCallOrRaise {thisData.isCanCall} :: Total Pot {thisData.TotalPot}");
         if (thisData.IsFirstRaisePlayer == true)
         {
             if (thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue)
             {
+                Debug.Log($"{nameof(ShowBetArea)} :: check");
                 strData.CallStr = "Check";
                 strData.CallValueStr = "";
             }
             else
             {
+                Debug.Log($"{nameof(ShowBetArea)} :: call");
                 strData.CallStr = "Call";
                 strData.CallValueStr = $"\n{StringUtils.SetChipsUnit(thisData.CallDifference)}";
             }
@@ -1509,11 +1511,13 @@ public class GameView : MonoBehaviour
         {
             if (thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue)
             {
+                Debug.Log($"{nameof(ShowBetArea)} :: else check");
                 strData.CallStr = "Check";
                 strData.CallValueStr = "";
             }
             else
             {
+                Debug.Log($"{nameof(ShowBetArea)} :: else call");
                 strData.CallStr = "Call";
                 strData.CallValueStr = $"\n{StringUtils.SetChipsUnit(thisData.CallDifference)}";
             }
@@ -2022,7 +2026,7 @@ public class GameView : MonoBehaviour
 
             processHistoryData.processStepHistoryDataList.Add(processStepHistoryData);
         }
-
+        Debug.Log("Collecting Pot");
         yield return IConcentrateBetChips();
 
         if (currCommunityPoker != null)
