@@ -2245,9 +2245,7 @@ public class GameControl : MonoBehaviour
 
         Debug.Log("Inside Judge Winner");
 
-        // 判斷結果(牌型結果, 符合的牌)
         Dictionary<GameRoomPlayerData, (int, List<int>)> shapeDic = new Dictionary<GameRoomPlayerData, (int, List<int>)>();
-        // 玩家牌(牌型結果, (公牌+手牌))
         Dictionary<GameRoomPlayerData, (int, List<int>)> clientPokerDic = new Dictionary<GameRoomPlayerData, (int, List<int>)>();
 
         foreach (var player in judgePlayers)
@@ -2257,25 +2255,19 @@ public class GameControl : MonoBehaviour
             if (player.handPoker == null || player.handPoker.Count < 2)
             {
                 Debug.LogError($"Player {player.userId} has invalid hand cards. Skipping player.");
-                continue; // Skip players who don't have the required cards
+                continue; // Skip players without valid hands
             }
 
-            List<int> judgePoker = new List<int>
-        {
-            player.handPoker[0],
-            player.handPoker[1]
-        };
+            List<int> judgePoker = new List<int> { player.handPoker[0], player.handPoker[1] };
 
             if (gameRoomData.communityPoker != null && gameRoomData.communityPoker.Count > 0)
             {
-                Debug.Log("Concatenating hand cards with community cards.");
                 judgePoker = judgePoker.Concat(gameRoomData.communityPoker).ToList();
                 Debug.Log($"Concatenated judgePoker: {string.Join(",", judgePoker)}");
 
-                // 判定牌型
+                // Judge the poker hand
                 PokerShape.JudgePokerShape(judgePoker, (result, matchPoker) =>
                 {
-                    Debug.Log($"Result: {result}, Match Poker: {string.Join(",", matchPoker)}");
                     shapeDic.Add(player, (result, matchPoker));
                     clientPokerDic.Add(player, (result, judgePoker));
                 });
@@ -2295,70 +2287,60 @@ public class GameControl : MonoBehaviour
         int maxResult = shapeDic.Values.Min(x => x.Item1);
         Debug.Log($"Max result: {maxResult}");
 
-        int matchCount = shapeDic.Values.Count(x => x.Item1 == maxResult);
-        Debug.Log($"Match count: {matchCount}");
+        var playersWithMaxResult = shapeDic.Where(x => x.Value.Item1 == maxResult).ToList();
+        Debug.Log($"Players with max result count: {playersWithMaxResult.Count}");
 
-        if (matchCount == 1)
+        if (playersWithMaxResult.Count == 1)
         {
-            var minItem = shapeDic.FirstOrDefault(x => x.Value.Item1 == maxResult);
-            Debug.Log($"Single match found, PlayerId: {minItem.Key.userId}");
-            return new List<GameRoomPlayerData>() { minItem.Key };
+            Debug.Log($"Single winner found: {playersWithMaxResult[0].Key.userId}");
+            return new List<GameRoomPlayerData>() { playersWithMaxResult[0].Key };
         }
         else
         {
-            // Multiple match scenarios
-            Dictionary<GameRoomPlayerData, List<int>> pairPlayer = new Dictionary<GameRoomPlayerData, List<int>>();
-            Dictionary<GameRoomPlayerData, List<int>> pairPlayer_InitPokerNum = new Dictionary<GameRoomPlayerData, List<int>>();
-
-            foreach (var shape in shapeDic)
+            // Multiple players with the same max result
+            Dictionary<GameRoomPlayerData, List<int>> sortedHands = new Dictionary<GameRoomPlayerData, List<int>>();
+            foreach (var player in playersWithMaxResult)
             {
-                if (shape.Value.Item1 == maxResult)
-                {
-                    List<int> numList = shape.Value.Item2.Select(x => x % 13 == 0 ? 14 : x % 13).ToList();
-                    numList.Sort(new TexasHoldemUtil.SpecialComparer());
-                    Debug.Log($"Player {shape.Key.userId} Num List after sorting: {string.Join(",", numList)}");
-
-                    pairPlayer.Add(shape.Key, numList);
-                    pairPlayer_InitPokerNum.Add(shape.Key, new List<int>(shape.Value.Item2));
-                }
+                // Convert card values to ranks (Ace = 14, 2-10 = 2-10, J=11, Q=12, K=13)
+                List<int> sortedHand = player.Value.Item2.Select(x => x % 13 == 0 ? 14 : x % 13).ToList();
+                sortedHand.Sort(new TexasHoldemUtil.SpecialComparer()); // Sorting based on poker ranking rules
+                sortedHands.Add(player.Key, sortedHand);
+                Debug.Log($"Player {player.Key.userId} sorted hand: {string.Join(",", sortedHand)}");
             }
 
-            // Determine winner
-            List<GameRoomPlayerData> maxResultPlayersList = new List<GameRoomPlayerData>();
-            int maxValue = int.MinValue;
-            Debug.Log("Evaluating max result players");
+            // Compare hands by kicker
+            List<GameRoomPlayerData> winners = CompareByKickers(sortedHands);
 
-            foreach (var pair in pairPlayer)
+            if (winners.Count == 1)
             {
-                int max = pair.Value.Max();
-                Debug.Log($"Player {pair.Key.userId} max value: {max}");
-
-                if (max > maxValue)
-                {
-                    maxValue = max;
-                    maxResultPlayersList.Clear();
-                    maxResultPlayersList.Add(pair.Key);
-                }
-                else if (max == maxValue)
-                {
-                    maxResultPlayersList.Add(pair.Key);
-                }
-            }
-
-            if (maxResultPlayersList.Count == 1)
-            {
-                Debug.Log($"Single winner found: {maxResultPlayersList[0].userId}");
-                return maxResultPlayersList;
+                Debug.Log($"Winner determined by kicker: {winners[0].userId}");
+                return winners;
             }
             else
             {
-                Debug.Log("Multiple players with the same max result.");
-                // Handle more complex tie-breaking logic here, if needed.
-
-                return new List<GameRoomPlayerData>(); // Default return if tie-break not resolved
+                Debug.Log("Tie remains even after kicker comparison.");
+                return winners; // Return all tied players
             }
         }
     }
+
+    private List<GameRoomPlayerData> CompareByKickers(Dictionary<GameRoomPlayerData, List<int>> sortedHands)
+    {
+        List<GameRoomPlayerData> potentialWinners = sortedHands.Keys.ToList();
+        int kickerIndex = 0;
+
+        while (potentialWinners.Count > 1 && kickerIndex < 5) // Texas Hold'em uses 5-card hands
+        {
+            int maxKickerValue = potentialWinners.Max(player => sortedHands[player][kickerIndex]);
+            potentialWinners = potentialWinners.Where(player => sortedHands[player][kickerIndex] == maxKickerValue).ToList();
+
+            Debug.Log($"Kicker comparison at index {kickerIndex}, max value: {maxKickerValue}");
+            kickerIndex++;
+        }
+
+        return potentialWinners;
+    }
+
 
 
     #endregion
