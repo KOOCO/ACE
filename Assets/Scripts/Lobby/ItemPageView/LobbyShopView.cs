@@ -176,26 +176,39 @@ public class LobbyShopView : MonoBehaviour
             {
                 case 0:
                     Debug.Log("GOLD");
+                    Gold_Tog.gameObject.SetActive(true);
+                    ShopItemView[0].gameObject.SetActive(true);
                     CreateShopItem(Shop_Item, ShopItemView[0].transform.GetChild(1).transform, item);
                     CreateShopItem(Shop_Item, Gold_Parent.transform, item);
                     break;
                 case 1:
                     Debug.Log("Energy");
+                    Energy_Tog.gameObject.SetActive(true);
+                    ShopItemView[1].gameObject.SetActive(true);
                     CreateShopItem(Shop_Item, ShopItemView[1].transform.GetChild(1).transform, item);
                     CreateShopItem(Shop_Item, Energy_Parent.transform, item);
                     break;
                 case 2:
                     Debug.Log("Timer");
+                    Timer_Tog.gameObject.SetActive(true);
+                    ShopItemView[2].gameObject.SetActive(true);
                     CreateShopItem(Shop_Item, ShopItemView[2].transform.GetChild(1).transform, item);
                     CreateShopItem(Shop_Item, Timer_Parent.transform, item);
                     break;
                 case 3:
                     Debug.Log("Tools");
+                    Tools_Tog.gameObject.SetActive(true);
+                    ShopItemView[3].gameObject.SetActive(true);
                     CreateShopItem(Shop_Item, ShopItemView[3].transform.GetChild(1).transform, item);
                     CreateShopItem(Shop_Item, Tools_Parent.transform, item);
                     break;
             }
         }
+    }
+
+    void ShowHideObject()
+    {
+
     }
     #endregion
 
