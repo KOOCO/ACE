@@ -337,7 +337,7 @@
   {
     "ID": "If you leave now, you will not be able to get back your staked chips.",
     "English": "If you leave now, you will not be able to get back your staked chips.",
-    "zh_TW": "如果您現在離開，您將無法取回質押的籌碼。"
+    "zh_TW": "如果您現在離開，您將無法取回已下注的籌碼"
   },
   {
     "ID": "Cannot Be Changed After Linking.",
@@ -977,7 +977,7 @@
   {
     "ID": "CallAny",
     "English": "Call Any",
-    "zh_TW": "任何跟注"
+    "zh_TW": "跟任何注"
   },
   {
     "ID": "RaiseTo",
