@@ -399,7 +399,7 @@ public class GameView : MonoBehaviour
             confirmView.SetBnt(() =>
             {
                 gameControl.ExitGame();
-                LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
+                //LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
             },
             true,
             () =>
