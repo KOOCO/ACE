@@ -8,14 +8,14 @@ using System.Linq;
 public class LobbyShopView : MonoBehaviour
 {
     [SerializeField]
-    Toggle All_Tog, Energy_Tog, Gold_Tog, Tools_Tog, Timer_Tog;
+    Toggle All_Tog, Energy_Tog, Gold_Tog, Tools_Tog, Timer_Tog, ACoin_Tog;
 
     [SerializeField]
-    GameObject All_Area, Energy_Area, Gold_Area, Timer_Area, Tools_Area;
+    GameObject All_Area, Energy_Area, Gold_Area, Timer_Area, Tools_Area, ACoin_Area;
     [SerializeField]
-    TextMeshProUGUI ALLTog_Text, EnergyTog_Text, GoldTog_Text, TimerTog_Text, ToolsTog_Text;
+    TextMeshProUGUI ALLTog_Text, EnergyTog_Text, GoldTog_Text, TimerTog_Text, ToolsTog_Text, ACoinTog_Text;
     [SerializeField]
-    TextMeshProUGUI EnergyTitle_Text, GoldTitle_Text, TimerTitle_Text, ToolsTitle_Text;
+    TextMeshProUGUI EnergyTitle_Text, GoldTitle_Text, TimerTitle_Text, ToolsTitle_Text, ACoinTitle_Text;
 
     [Header("全部商品欄位")]
     [SerializeField]
@@ -59,6 +59,14 @@ public class LobbyShopView : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI ToolsTitle;
 
+    [Header("ACoin")]
+    // [SerializeField]
+    // GameObject ExtraTime_Sample;
+    [SerializeField]
+    GameObject ACoin_Parent;
+    [SerializeField]
+    TextMeshProUGUI ACoinTitle;
+
     [Header("購買彈窗")]
     [SerializeField]
     GameObject MallMsg;
@@ -91,6 +99,7 @@ public class LobbyShopView : MonoBehaviour
         Timer,
         Gold,
         Tools,
+        ACoin,
     }
     enum CurrencyType
     {
@@ -103,10 +112,12 @@ public class LobbyShopView : MonoBehaviour
         ALLTog_Text.text = LanguageManager.Instance.GetText("ALL");
         EnergyTog_Text.text = LanguageManager.Instance.GetText("ENERGY");
         GoldTog_Text.text = LanguageManager.Instance.GetText("GOLD");
+        ACoinTog_Text.text = LanguageManager.Instance.GetText("ACoin");
         TimerTog_Text.text = LanguageManager.Instance.GetText("TIMER");
         ToolsTog_Text.text = LanguageManager.Instance.GetText("TOOLS");
 
         EnergyTitle_Text.text = LanguageManager.Instance.GetText("Energy");
+        ACoinTitle_Text.text = LanguageManager.Instance.GetText("ACoin");
         GoldTitle_Text.text = LanguageManager.Instance.GetText("Gold");
         TimerTitle_Text.text = LanguageManager.Instance.GetText("Timer");
         ToolsTitle_Text.text = LanguageManager.Instance.GetText("Tools");
@@ -115,6 +126,7 @@ public class LobbyShopView : MonoBehaviour
         GoldTitle.text = LanguageManager.Instance.GetText("Gold");
         TimerTitle.text = LanguageManager.Instance.GetText("Timer");
         ToolsTitle.text = LanguageManager.Instance.GetText("Tools");
+        ACoinTitle.text = LanguageManager.Instance.GetText("ACoin");
 
         Cancle_Text.text = LanguageManager.Instance.GetText("CANCLE");
         Confirm_Text.text = LanguageManager.Instance.GetText("CONFIRM");
@@ -202,6 +214,13 @@ public class LobbyShopView : MonoBehaviour
                     CreateShopItem(Shop_Item, ShopItemView[3].transform.GetChild(1).transform, item);
                     CreateShopItem(Shop_Item, Tools_Parent.transform, item);
                     break;
+                case 4:
+                    Debug.Log("Tools");
+                    Tools_Tog.gameObject.SetActive(true);
+                    ShopItemView[4].gameObject.SetActive(true);
+                    CreateShopItem(Shop_Item, ShopItemView[4].transform.GetChild(1).transform, item);
+                    CreateShopItem(Shop_Item, Tools_Parent.transform, item);
+                    break;
             }
         }
     }
@@ -222,6 +241,7 @@ public class LobbyShopView : MonoBehaviour
         ItemList.Add(ItemType.Energy, Energy_Area);
         ItemList.Add(ItemType.Timer, Timer_Area);
         ItemList.Add(ItemType.Tools, Tools_Area);
+        ItemList.Add(ItemType.ACoin, ACoin_Area);
     }
 
     #endregion
@@ -311,6 +331,14 @@ public class LobbyShopView : MonoBehaviour
             if (isOn)
             {
                 itemType = ItemType.Tools;
+                OpenShopItem();
+            }
+        });
+        ACoin_Tog.onValueChanged.AddListener((isOn) =>
+        {
+            if (isOn)
+            {
+                itemType = ItemType.ACoin;
                 OpenShopItem();
             }
         });
@@ -490,6 +518,9 @@ public class LobbyShopView : MonoBehaviour
 
             case ItemType.Tools:
                 ActiveShopUI(ItemType.Tools);
+                break;
+            case ItemType.ACoin:
+                ActiveShopUI(ItemType.ACoin);
                 break;
 
         }
