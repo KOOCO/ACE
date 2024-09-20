@@ -21,7 +21,7 @@
   },
   {
     "ID": "REFLASH",
-    "English": "REFLASH",
+    "English": "REFRESH",
     "zh_TW": "重新整理"
   },
   {
@@ -171,7 +171,7 @@
   },
   {
     "ID": "GO TO INTEGRAL",
-    "English": "Rank Mode",
+    "English": "RANK MODE",
     "zh_TW": "積分"
   },
   {
@@ -1177,7 +1177,7 @@
   {
     "ID": "INTEGRAL RULE",
     "English": "INTEGRAL RULE",
-    "zh_TW": "积分规则"
+    "zh_TW": "積分規則"
   },
   {
     "ID": "Award",
@@ -1193,5 +1193,35 @@
     "ID": "Rank",
     "English": "Rank",
     "zh_TW": "積分"
+  },
+  {
+    "ID": "AsiaPoker 隱私權政策",
+    "English": null,
+    "zh_TW": null
+  },
+  {
+    "ID": "AsiaPoker 條款",
+    "English": null,
+    "zh_TW": null
+  },
+  {
+    "ID": "遊戲規則",
+    "English": null,
+    "zh_TW": null
+  },
+  {
+    "ID": "積分規則",
+    "English": null,
+    "zh_TW": null
+  },
+  {
+    "ID": "目前用不到",
+    "English": "Weighted Scoring: Based on the opponent’sMMR Adjust the gap. If defeatedMMR Higher than your opponent, get more points ; lose to MMR Lower than your opponent, more points will be deducted. ",
+    "zh_TW": "加權計分：根據對手的 MMR 差距進行調整。若擊敗 MMR 高於自己 的對手，獲得更多積分；敗給 MMR 低於自己的對手，扣除 更多積分"
+  },
+  {
+    "ID": "目前用不到",
+    "English": "Hide Points (MMR）： \ninitialMMR: New players participate in several placement matches,determine the initial value based on the winning rate and opponent’s strengthMMR. \nDynamic adjustment: After each game, the result will be adjusted according to the outcome and opponent.MMR Adjust player'sMMR, the specific calculation formula is as follows: NewMMR=old MMR+K×(match result−expected results) \nAmong them, the result of the competition is1(win) or0(failure), the expected result depends on the player and opponentMMR Differencevaluecalculate.",
+    "zh_TW": "隱藏積分（MMR）： \n初始 MMR：新玩家進行若干定位賽，根據勝率和對手實力確定初始 MMR。 \n動態調整：每局比賽結束後根據勝負結果和對手 MMR 調整玩家的 MMR，\n具體計算公式如下： 新 MMR=舊 MMR+K×(比賽結果−預期結果) \n其中，比賽結果為1（勝利）或0（失敗），預期結果根據玩家和對手的 MMR 差值計算。"
   }
 ]
