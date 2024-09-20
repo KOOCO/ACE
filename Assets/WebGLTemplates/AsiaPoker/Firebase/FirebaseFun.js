@@ -1,35 +1,35 @@
 // Firebase初始化
 function initializeFirebase() {
     // Firebase Dev
-    const firebaseConfig = {
-
-        apiKey: "AIzaSyCMscT-pnhqg4CTqjyGJ7GsSzxF57cKO_k",
-
-        authDomain: "ace2024-e8b4a.firebaseapp.com",
-
-        databaseURL: "https://ace2024-e8b4a-default-rtdb.asia-southeast1.firebasedatabase.app",
-
-        projectId: "ace2024-e8b4a",
-
-        storageBucket: "ace2024-e8b4a.appspot.com",
-
-        messagingSenderId: "787364137649",
-
-        appId: "1:787364137649:web:a2a4b47b61a22d0195b090",
-
-        measurementId: "G-XRQ05KCWT7"
-    };
-// Firebase Prod
     // const firebaseConfig = {
-    //     apiKey: "AIzaSyBFha1eTB-iMCs5EhX0FYGSY60wQSSpfj4",
-    //     authDomain: "ace-prod-e74d2.firebaseapp.com",
-    //     databaseURL: "https://ace-prod-e74d2-default-rtdb.asia-southeast1.firebasedatabase.app",
-    //     projectId: "ace-prod-e74d2",
-    //     storageBucket: "ace-prod-e74d2.appspot.com",
-    //     messagingSenderId: "914028494223",
-    //     appId: "1:914028494223:web:4e3c28d8c44cb98ab75ffa",
-    //     measurementId: "G-Q6YQ6FHZ19"
-    //   };
+
+    //     apiKey: "AIzaSyCMscT-pnhqg4CTqjyGJ7GsSzxF57cKO_k",
+
+    //     authDomain: "ace2024-e8b4a.firebaseapp.com",
+
+    //     databaseURL: "https://ace2024-e8b4a-default-rtdb.asia-southeast1.firebasedatabase.app",
+
+    //     projectId: "ace2024-e8b4a",
+
+    //     storageBucket: "ace2024-e8b4a.appspot.com",
+
+    //     messagingSenderId: "787364137649",
+
+    //     appId: "1:787364137649:web:a2a4b47b61a22d0195b090",
+
+    //     measurementId: "G-XRQ05KCWT7"
+    // };
+// Firebase Prod
+    const firebaseConfig = {
+        apiKey: "AIzaSyBFha1eTB-iMCs5EhX0FYGSY60wQSSpfj4",
+        authDomain: "ace-prod-e74d2.firebaseapp.com",
+        databaseURL: "https://ace-prod-e74d2-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "ace-prod-e74d2",
+        storageBucket: "ace-prod-e74d2.appspot.com",
+        messagingSenderId: "914028494223",
+        appId: "1:914028494223:web:4e3c28d8c44cb98ab75ffa",
+        measurementId: "G-Q6YQ6FHZ19"
+      };
 
     // 初始化 Firebase
     const app = firebase.initializeApp(firebaseConfig);
