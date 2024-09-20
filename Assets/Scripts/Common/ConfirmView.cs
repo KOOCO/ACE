@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,8 @@ public class ConfirmView : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI Title_Txt, Content_Txt,
                     CancelBtn_Txt, ConfirmBtn_Txt;
+
+    private LobbyView lobbyView;
 
     /// <summary>
     /// 設定確認介面內容
@@ -33,6 +36,11 @@ public class ConfirmView : MonoBehaviour
         ConfirmBtn_Txt.text = LanguageManager.Instance.GetText("Confirm");
     }
 
+    public void Awake()
+    {
+        lobbyView = GameObject.FindAnyObjectByType<LobbyView>();
+    }
+
     /// <summary>
     /// 設定確認介面按鈕
     /// </summary>
@@ -46,6 +54,7 @@ public class ConfirmView : MonoBehaviour
         {
             confirmCallback?.Invoke();
             Destroy(gameObject);
+            lobbyView.audioSource.Play();
         });
 
         Cancel_Btn.gameObject.SetActive(showCancel);

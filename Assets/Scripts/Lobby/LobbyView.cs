@@ -61,6 +61,8 @@ public class LobbyView : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI TransfersBtn_Txt;
 
+    [Header("背景音樂")] [SerializeField] public AudioSource audioSource;
+
     bool isFirstIn;
     bool isListenered;
 
@@ -207,6 +209,7 @@ public class LobbyView : MonoBehaviour
         SetIsShowAssetList = isShowAssetList;
 
         OpenItemPage(ItemType.Main);
+        audioSource.Play();
     }
 
     private void Start()

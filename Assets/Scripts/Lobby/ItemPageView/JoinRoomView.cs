@@ -98,6 +98,7 @@ public class JoinRoomView : MonoBehaviour
             }
 
             ViewManager.Instance.OpenWaitingView(transform);
+            lobbyView.audioSource.Stop();
 #if UNITY_EDITOR
 
             dataRoomName = "EditorRoom";

@@ -131,6 +131,10 @@ public class GameView : MonoBehaviour
     GameObject GamePause_Obj;
     [SerializeField]
     Button GameContinue_Btn;
+    
+    [Header("遊戲音樂")]
+    [SerializeField]
+    AudioSource AudioSource_Obj;
 
     [Header("遊戲測試用")]
     [SerializeField]
