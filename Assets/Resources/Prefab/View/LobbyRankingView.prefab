@@ -3147,10 +3147,10 @@ RectTransform:
   - {fileID: 1489557964676344524}
   m_Father: {fileID: 9070942925796218431}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 180, y: -20}
+  m_SizeDelta: {x: 360, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5140026088069825745
 MonoBehaviour:
@@ -8152,6 +8152,9 @@ MonoBehaviour:
   ChangeSeasonBtn_Txt: {fileID: 2922421578032178767}
   TimeLestTitle_Txt: {fileID: 4362211894210544829}
   TimeLest_Txt: {fileID: 7511416301238979937}
+  PlayerTag_Txt: {fileID: 8892935999275646051}
+  PointTag_Txt: {fileID: 2543283784783195931}
+  AwardTag_Txt: {fileID: 7668237116095343058}
   LocalUserRank_Txt: {fileID: 1472523776683564706}
   LocalUserPoint_Txt: {fileID: 1847655198361595452}
   LocalUserAward_Txt: {fileID: 5712707009752686322}
