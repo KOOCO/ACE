@@ -20,7 +20,7 @@ public class LobbyRankingView : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI IntegralTog_Txt, CashTog_Txt, GoldenTog_Txt,
                     Season_Txt, ChangeSeasonBtn_Txt,
-                    TimeLestTitle_Txt, TimeLest_Txt;
+                    TimeLestTitle_Txt, TimeLest_Txt,PlayerTag_Txt,PointTag_Txt,AwardTag_Txt;
 
     [Header("本地玩家")]
     [SerializeField]
@@ -69,6 +69,9 @@ public class LobbyRankingView : MonoBehaviour
         ChangeSeasonBtn_Txt.text = currSeasonType == SeasonType.Current ?
                                    LanguageManager.Instance.GetText("Previous") :
                                    LanguageManager.Instance.GetText("Current");
+        PlayerTag_Txt.text = $"{LanguageManager.Instance.GetText("Player")}";
+        PointTag_Txt.text = $"{LanguageManager.Instance.GetText("Rank")}";
+        AwardTag_Txt.text = $"{LanguageManager.Instance.GetText("Award")}";
     }
 
     private void OnDestroy()

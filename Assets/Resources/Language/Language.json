@@ -1178,5 +1178,20 @@
     "ID": "INTEGRAL RULE",
     "English": "INTEGRAL RULE",
     "zh_TW": "积分规则"
+  },
+  {
+    "ID": "Award",
+    "English": "Award",
+    "zh_TW": "獎勵"
+  },
+  {
+    "ID": "Player",
+    "English": "Player",
+    "zh_TW": "玩家"
+  },
+  {
+    "ID": "Rank",
+    "English": "Rank",
+    "zh_TW": "積分"
   }
 ]
