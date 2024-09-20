@@ -21,32 +21,99 @@
 
     <script>
         let isBackWarningDisplayed = false;
+        let touchStartX = 0;
+        let touchEndX = 0;
+        let threshold = 100;
 
-        window.onpopstate = function (event) {
+        // Detect swipe gesture on mobile
+        window.addEventListener('touchstart', function (event) {
+            console.log('touchstart')
+            touchStartX = event.changedTouches[0].screenX;  // Record where the touch started
+        }, false);
+
+        window.addEventListener('touchmove', function (event) {
+            console.log('touchmove')
+            touchEndX = event.changedTouches[0].screenX;    // Record where the touch moved to
+        }, false);
+
+        window.addEventListener('touchend', function (event) {
+            console.log('touchend')
+            handleSwipeGesture();
+        }, false);
+
+        // Function to handle the swipe gesture
+        function handleSwipeGesture() {
+            console.log('handleSwipeGesture')
+            const swipeDistance = touchEndX - touchStartX;
+
+            // Check if the swipe is long enough
+            if (Math.abs(swipeDistance) > threshold) {
+                // Swipe from the left side (right swipe)
+                if (swipeDistance > 0 && touchStartX < 50) {
+                    // Swipe started near the left edge (swipe from left to right)
+                    handleBackSwipe();
+                }
+                // Swipe from the right side (left swipe)
+                else if (swipeDistance < 0 && window.innerWidth - touchStartX < 50) {
+                    // Swipe started near the right edge (swipe from right to left)
+                    handleBackSwipe();
+                }
+            }
+        }
+
+        // Handle back swipe action with warning
+        function handleBackSwipe() {
+            console.log('handleBackSwipe')
             if (!isBackWarningDisplayed) {
-                // Prevent the back action
-                history.pushState(null, null, window.location.href);
+                // Prevent the back action, show a warning
+                showWarningNotification();
 
-                // Show a warning to the user
-                alert("Swipe again to exit the game.");
-
-                // Set the flag to true, so the next swipe goes back
+                // Set the flag to allow exit on the next swipe
                 isBackWarningDisplayed = true;
 
-                // Optionally, after some time, reset the warning state
+                // Reset the flag after a few seconds to prevent accidental exit
                 setTimeout(() => {
                     isBackWarningDisplayed = false;
-                }, 5000); // Reset after 3 seconds (adjust as needed)
+                }, 3000);  // Adjust the duration as needed
             } else {
-                // Allow the browser to go back on the second swipe
+                // Allow the swipe back action (or trigger the browser's back behavior)
+                window.history.back();
+            }
+        }
+
+        // Detect when user presses back/swipes back
+        window.onpopstate = function (event) {
+            console.log('onpopstate')
+            if (!isBackWarningDisplayed) {
+                // Prevent the default back action by pushing state again
+                history.pushState(null, null, window.location.href);
+
+                // Show the warning (can be a custom modal or in-app notification)
+                showWarningNotification();
+
+                // Set the flag to allow exit on the next back swipe
+                isBackWarningDisplayed = true;
+
+                // Optionally, reset the flag after a few seconds to prevent accidental exit
+                setTimeout(() => {
+                    isBackWarningDisplayed = false;
+                }, 3000); // Customize the time as needed
+            } else {
+                // Allow the back action on the second swipe
                 window.history.back();
             }
         };
 
-        // Push a dummy state to the history stack
+        // Push a dummy state into history on page load to prevent immediate exit
         window.history.pushState(null, null, window.location.href);
-    </script>
 
+        // Function to show notification
+        function showWarningNotification() {
+            // Use any UI component or alert to show the message
+            alert("Swipe again to exit the game.");
+            // You can replace the alert with a more user-friendly modal or in-game UI
+        }
+    </script>
 
     <style>
         /*recaptcha小工具隱藏*/
@@ -64,10 +131,31 @@
             display: none;
             /* 隐藏按钮 */
         }
+
+        #exit-warning {
+            display: none;
+            position: fixed;
+            top: 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+        #exit-warning-text {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
     </style>
 </head>
 
 <body class="{{{ SPLASH_SCREEN_STYLE.toLowerCase() }}}">
+    <div id="exit-warning">
+        <div id="exit-warning-text">
+            Swipe again to exit the game.
+        </div>
+    </div>
     <div id="unity-container" class="unity-desktop">
         <div id="recaptcha-container"></div><!--recaptcha小工具隱藏-->
         <button id="recaptcha-button"></button><!--recaptcha驗證按鈕-->

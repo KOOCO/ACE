@@ -116,6 +116,9 @@ public class ShopSample : MonoBehaviour
                 case 3:
                     info.text = $"{LanguageManager.Instance.GetText("Purchase")} {itemData.targetItemQuantity} {LanguageManager.Instance.GetText("Tools")}";
                     break;
+                case 4:
+                    info.text = $"{LanguageManager.Instance.GetText("Purchase")} {itemData.targetItemQuantity} {LanguageManager.Instance.GetText("ACoin")}";
+                    break;
             }
 
             shopView.GetComponent<LobbyShopView>().OnBuyingPopupUI(this, itemData);
