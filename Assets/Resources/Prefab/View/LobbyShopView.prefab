@@ -7901,7 +7901,7 @@ GameObject:
   - component: {fileID: 864921634470248149}
   - component: {fileID: 1416816877498263517}
   m_Layer: 5
-  m_Name: ToolsTog_Txt
+  m_Name: ACoinTog_Txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

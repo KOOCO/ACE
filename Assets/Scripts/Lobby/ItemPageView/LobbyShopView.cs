@@ -104,7 +104,7 @@ public class LobbyShopView : MonoBehaviour
     enum CurrencyType
     {
         Gold,
-        Timer,
+        ACoin,
         UCoin,
     }
     private void UpdateLanguage()
@@ -112,15 +112,15 @@ public class LobbyShopView : MonoBehaviour
         ALLTog_Text.text = LanguageManager.Instance.GetText("ALL");
         EnergyTog_Text.text = LanguageManager.Instance.GetText("ENERGY");
         GoldTog_Text.text = LanguageManager.Instance.GetText("GOLD");
-        ACoinTog_Text.text = LanguageManager.Instance.GetText("ACoin");
         TimerTog_Text.text = LanguageManager.Instance.GetText("TIMER");
         ToolsTog_Text.text = LanguageManager.Instance.GetText("TOOLS");
+        ACoinTog_Text.text = LanguageManager.Instance.GetText("ACoin");
 
         EnergyTitle_Text.text = LanguageManager.Instance.GetText("Energy");
-        ACoinTitle_Text.text = LanguageManager.Instance.GetText("ACoin");
         GoldTitle_Text.text = LanguageManager.Instance.GetText("Gold");
         TimerTitle_Text.text = LanguageManager.Instance.GetText("Timer");
         ToolsTitle_Text.text = LanguageManager.Instance.GetText("Tools");
+        ACoinTitle_Text.text = LanguageManager.Instance.GetText("ACoin");
 
         EnergyTitle.text = LanguageManager.Instance.GetText("Energy");
         GoldTitle.text = LanguageManager.Instance.GetText("Gold");
@@ -216,10 +216,10 @@ public class LobbyShopView : MonoBehaviour
                     break;
                 case 4:
                     Debug.Log("Tools");
-                    Tools_Tog.gameObject.SetActive(true);
+                    ACoin_Tog.gameObject.SetActive(true);
                     ShopItemView[4].gameObject.SetActive(true);
                     CreateShopItem(Shop_Item, ShopItemView[4].transform.GetChild(1).transform, item);
-                    CreateShopItem(Shop_Item, Tools_Parent.transform, item);
+                    CreateShopItem(Shop_Item, ACoin_Parent.transform, item);
                     break;
             }
         }
