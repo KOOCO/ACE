@@ -1,6 +1,6 @@
 // Firebase初始化
 function initializeFirebase() {
-    // Firebase 配置
+    // Firebase Dev
     const firebaseConfig = {
 
         apiKey: "AIzaSyCMscT-pnhqg4CTqjyGJ7GsSzxF57cKO_k",
@@ -19,6 +19,17 @@ function initializeFirebase() {
 
         measurementId: "G-XRQ05KCWT7"
     };
+// Firebase Prod
+    // const firebaseConfig = {
+    //     apiKey: "AIzaSyBFha1eTB-iMCs5EhX0FYGSY60wQSSpfj4",
+    //     authDomain: "ace-prod-e74d2.firebaseapp.com",
+    //     databaseURL: "https://ace-prod-e74d2-default-rtdb.asia-southeast1.firebasedatabase.app",
+    //     projectId: "ace-prod-e74d2",
+    //     storageBucket: "ace-prod-e74d2.appspot.com",
+    //     messagingSenderId: "914028494223",
+    //     appId: "1:914028494223:web:4e3c28d8c44cb98ab75ffa",
+    //     measurementId: "G-Q6YQ6FHZ19"
+    //   };
 
     // 初始化 Firebase
     const app = firebase.initializeApp(firebaseConfig);
