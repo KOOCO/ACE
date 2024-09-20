@@ -2329,10 +2329,36 @@ public class GameControl : MonoBehaviour
         List<GameRoomPlayerData> potentialWinners = sortedHands.Keys.ToList();
         int kickerIndex = 0;
 
-        while (potentialWinners.Count > 1 && kickerIndex < 5) // Texas Hold'em uses 5-card hands
+        while (potentialWinners.Count > 1)
         {
-            int maxKickerValue = potentialWinners.Max(player => sortedHands[player][kickerIndex]);
-            potentialWinners = potentialWinners.Where(player => sortedHands[player][kickerIndex] == maxKickerValue).ToList();
+            // Check if all remaining players have enough cards for comparison at the current kicker index
+            int maxKickerValue = int.MinValue;
+            bool validComparison = false;
+
+            foreach (var player in potentialWinners)
+            {
+                // Ensure the player has enough cards before comparing
+                if (kickerIndex < sortedHands[player].Count)
+                {
+                    int currentKickerValue = sortedHands[player][kickerIndex];
+                    if (currentKickerValue > maxKickerValue)
+                    {
+                        maxKickerValue = currentKickerValue;
+                        validComparison = true;
+                    }
+                }
+            }
+
+            if (!validComparison)
+            {
+                // If no valid comparison was made, break the loop (e.g., all players ran out of cards to compare)
+                break;
+            }
+
+            // Filter potential winners based on the current kicker value
+            potentialWinners = potentialWinners
+                .Where(player => kickerIndex < sortedHands[player].Count && sortedHands[player][kickerIndex] == maxKickerValue)
+                .ToList();
 
             Debug.Log($"Kicker comparison at index {kickerIndex}, max value: {maxKickerValue}");
             kickerIndex++;
@@ -2340,6 +2366,7 @@ public class GameControl : MonoBehaviour
 
         return potentialWinners;
     }
+
 
 
 
