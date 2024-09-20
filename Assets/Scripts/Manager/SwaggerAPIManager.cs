@@ -116,7 +116,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         // 將GetBanner對象轉換為查詢字符串
         //string queryString = $"?Filter={Filter}&StartDate={StartDate}&EndDate={EndDate}&IsEnabled={IsEnabled}&Sorting={Sorting}&SkipCount={data.SkipCount}&MaxResultCount={data.MaxResultCount}";
         string fullUrl = BASE_URL + apiUrl; //+ queryString;
-
+        Debug.Log($"Send Get to URL: {fullUrl}");
         // 創建GET請求
         UnityWebRequest getRequest = UnityWebRequest.Get(fullUrl);
         getRequest.downloadHandler = new DownloadHandlerBuffer();

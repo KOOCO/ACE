@@ -162,7 +162,7 @@ public class LobbyShopView : MonoBehaviour
     #region 生成初始商店
     public void InitShop()
     {
-        SwaggerAPIManager.Instance.SendGetAPI("api/app/items/get-list", CallBackOnGetList, null, true);
+        SwaggerAPIManager.Instance.SendGetAPI("api/app/items/get-list?maxCount=1000", CallBackOnGetList, null, true);
         // CreateShopItem(All_ShopItem_Sample[0], All_ShopItem_Sample[0].transform.parent.gameObject, DataManager.Stamina_Shop, AlbumEnum.Shop_StaminaAlbum);
         // CreateShopItem(All_ShopItem_Sample[1], All_ShopItem_Sample[1].transform.parent.gameObject, DataManager.Gold_Shop, AlbumEnum.Shop_GoldAlbum);
         // CreateShopItem(All_ShopItem_Sample[2], All_ShopItem_Sample[2].transform.parent.gameObject, DataManager.ExtraTime_Shop, AlbumEnum.Shop_ExtraTimeAlbum);
@@ -442,7 +442,7 @@ public class LobbyShopView : MonoBehaviour
             }
             else
             {
-                SwaggerAPIManager.Instance.SendPostAPI<PurchaseItem>($"api/app/items/purchase-item?itemId={itemToPurchase.itemId}&playerId={itemToPurchase.playerId}", null, (data) =>
+                SwaggerAPIManager.Instance.SendPostAPI<PurchaseItem>($"api/app/items/purchase-item?itemId={itemToPurchase.itemId}&playerId={itemToPurchase.playerId}&maxCount={1000}", null, (data) =>
                 {
                     Debug.Log(data);
                     PurchaseSuccessUI.SetActive(!PurchaseSuccessUI.activeSelf);
