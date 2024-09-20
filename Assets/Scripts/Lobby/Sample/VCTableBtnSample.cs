@@ -14,6 +14,7 @@ public class VCTableBtnSample : MonoBehaviour
     TextMeshProUGUI BlindsStr_Txt, Blinds_Txt,
                     MinBuyStr_Txt, MinBuy_Txt,
                     LaunchBtn_Txt;
+    public static JoinRoomView joinRoomView;
 
     /// <summary>
     /// 更新文本翻譯
@@ -49,8 +50,24 @@ public class VCTableBtnSample : MonoBehaviour
         {
             if (GameRoomManager.Instance.JudgeIsCanBeCreateRoom())
             {
-                JoinRoomView joinRoomView = ViewManager.Instance.CreateViewInCurrCanvas<JoinRoomView>(JoinRoomViewObj);
-                joinRoomView.SetCreatRoomViewInfo(TableTypeEnum.VCTable, smallBlind);
+                if (DataManager.UserAChips > ((smallBlind * 2) * DataManager.MinMagnification))
+                {
+                    if (joinRoomView == null)
+                    {
+                        joinRoomView = ViewManager.Instance.CreateViewInCurrCanvas<JoinRoomView>(JoinRoomViewObj);
+                        joinRoomView.SetCreatRoomViewInfo(TableTypeEnum.VCTable, smallBlind);
+                    }
+                    else
+                    {
+                        joinRoomView.SetCreatRoomViewInfo(TableTypeEnum.VCTable, smallBlind);
+                        joinRoomView.gameObject.SetActive(!joinRoomView.gameObject.activeSelf);
+                    }
+                }
+                else
+                {
+                    DataManager.TipText = LanguageManager.Instance.GetText("you dont have enough chips Please buy from shop");
+                    DataManager.istipAppear = true;
+                }
             }
             else
             {

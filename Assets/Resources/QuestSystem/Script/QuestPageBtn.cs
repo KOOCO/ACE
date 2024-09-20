@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -49,8 +46,8 @@ public class QuestPageBtn : MonoBehaviour
 
         if (info.CurrentProgress >= info.FinishProgress && !info.Received)
             ReceiveActive(true);
-        
-        
+
+
         QuestName.text = info.QuestName;
         CoinAmount.text = $"* {info.GetCoin}";
         QuestProgress.text = $"{info.CurrentProgress}/{info.FinishProgress}";
@@ -81,7 +78,7 @@ public class QuestPageBtn : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public string GetQuestName() { return QuestName.text; }
-    
+
     /// <summary>
     /// 獲取任務進程
     /// </summary>
@@ -100,7 +97,7 @@ public class QuestPageBtn : MonoBehaviour
     /// <param name="Active"></param>
     public void ReceiveActive(bool Active)
     {
-        if(Receive != null)
+        if (Receive != null)
             Receive.gameObject.SetActive(Active);
     }
 

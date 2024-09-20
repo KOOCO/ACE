@@ -53,14 +53,14 @@ public class HistorySample : MonoBehaviour
             return;
         }
 
-        WinACoin_Img.gameObject.SetActive(resultHistory.RoomType != "Classic Battle");
-        WinUCoin_Img.gameObject.SetActive(resultHistory.RoomType == "Classic Battle");
+        WinACoin_Img.gameObject.SetActive(resultHistory.RoomType == "Classic Battle");
+        WinUCoin_Img.gameObject.SetActive(resultHistory.RoomType == "High Roller Battleground");
         CoinType_Txt.text = resultHistory.RoomType == "Classic Battle" ?
-                            "U COIN" :
-                            "A COIN";
+                            "A COIN" :
+                            "U COIN";
 
-        BlindACoin_Img.gameObject.SetActive(resultHistory.RoomType != "Classic Battle");
-        BlindUCoin_Img.gameObject.SetActive(resultHistory.RoomType == "Classic Battle");
+        BlindACoin_Img.gameObject.SetActive(resultHistory.RoomType == "Classic Battle");
+        BlindUCoin_Img.gameObject.SetActive(resultHistory.RoomType == "High Roller Battleground");
 
         tempResultHistory = resultHistory;
         tempIndex = index;

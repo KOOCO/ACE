@@ -34,7 +34,7 @@ public class GameControl : MonoBehaviour
     List<int> localHand { get; set; }                           //本地玩家手牌
     int cdSound { get; set; }                                   //倒數聲音計時器
 
-    
+
 
     private void OnDestroy()
     {
@@ -242,7 +242,7 @@ public class GameControl : MonoBehaviour
 
         //積分配對上的玩家
         if (RoomType == TableTypeEnum.IntegralTable &&
-            !string.IsNullOrEmpty(pairPlayerId) && 
+            !string.IsNullOrEmpty(pairPlayerId) &&
             !string.IsNullOrEmpty(integralRoomName))
         {
             //更新被配對玩家資料
@@ -370,7 +370,7 @@ public class GameControl : MonoBehaviour
                 playingPlayersId.Add(playerId);
             }
         }
-        
+
         //玩家列表中移除
         if (gameRoomData.playerDataDic.ContainsKey(id))
         {
@@ -563,17 +563,18 @@ public class GameControl : MonoBehaviour
     /// <param name="gameFlow">遊戲流程</param>
     public IEnumerator IStartGameFlow(GameFlowEnum gameFlow)
     {
+        Debug.Log($"{nameof(IStartGameFlow)} :: {gameFlow}");
         if (preUpdateGameFlow == gameFlow ||
             gameRoomData.hostId != DataManager.UserId)
         {
             yield break;
         }
         preUpdateGameFlow = gameFlow;
-
+        bool isGameStarting = gameFlow == GameFlowEnum.Licensing || gameFlow == GameFlowEnum.SetBlind;
         //重製房間資料
         var roomData = new Dictionary<string, object>()
         {
-            { FirebaseManager.CURR_CALL_VALUE, gameRoomData.smallBlind * 2},                //當前跟注值
+            { FirebaseManager.CURR_CALL_VALUE,isGameStarting? gameRoomData.smallBlind * 2:0},                //當前跟注值
             { FirebaseManager.ACTIONP_PLAYER_COUNT, 0},                                     //當前流程行動玩家次數
             { FirebaseManager.ACTION_CD, -1},                                               //行動倒數時間
         };
@@ -672,18 +673,24 @@ public class GameControl : MonoBehaviour
 
             //遊戲結果_底池
             case GameFlowEnum.PotResult:
-
+                Debug.Log("Before gettting playing Players");
                 //遊戲中玩家
                 playingPlayers = GetPlayingPlayer().OrderBy(x => x.allBetChips)
                                                    .ToList();
 
+                Debug.Log("Before Judging player " + playingPlayers.Count);
                 //底池獲勝玩家
+                if (playingPlayers.Count == 0)
+                    break;
+
                 List<GameRoomPlayerData> potWinners = JudgeWinner(playingPlayers).OrderBy(x => x.allBetChips).ToList();
 
                 //底池贏得籌碼
+                Debug.Log("before finding potMin and PotWinChips");
                 double potMin = playingPlayers[0].allBetChips;
                 double potWinChips = potMin * playingPlayers.Count();
 
+                Debug.Log("before potWinnerIdList");
                 //更新底池贏家玩家籌碼
                 List<string> potWinnerIdList = new List<string>();
                 foreach (var potWinner in potWinners)
@@ -701,6 +708,7 @@ public class GameControl : MonoBehaviour
                 //是否有邊池
                 bool IsHaveSide = gameRoomData.potChips - potWinChips > 0;
 
+                Debug.Log("before data dictionary");
                 //更新遊戲流程
                 data = new Dictionary<string, object>()
                 {
@@ -708,6 +716,7 @@ public class GameControl : MonoBehaviour
                 };
                 UpdateGameRoomData(data);
 
+                Debug.Log("before finding potWinnersId");
                 //更新底池獲勝資料
                 List<string> potWinnersId = potWinners.Select(x => x.userId).ToList();
                 data = new Dictionary<string, object>()
@@ -1008,7 +1017,7 @@ public class GameControl : MonoBehaviour
                 playerData.handPoker.SequenceEqual(localHand))
             {
                 gameView.ShowFoldPoker();
-            }       
+            }
         }
     }
 
@@ -1229,7 +1238,7 @@ public class GameControl : MonoBehaviour
                         //重新遊戲流程
                         yield return IStartGameFlow(GameFlowEnum.Licensing);
                     }
-                }              
+                }
 
                 break;
 
@@ -1478,7 +1487,7 @@ public class GameControl : MonoBehaviour
         if (gameRoomData.hostId == DataManager.UserId)
         {
             //時間減少
-            int currActionCD =  gameRoomData.actionCD - 1;
+            int currActionCD = gameRoomData.actionCD - 1;
 
             if (currActionCD < 0)
             {
@@ -1562,7 +1571,7 @@ public class GameControl : MonoBehaviour
             if (canActionPlayers.Count() > 0)
             {
                 isAllBet = canActionPlayers.All(x => x.isBet == true);
-            }  
+            }
 
             //所有玩家下注籌碼一致
             bool isAllPlayerBetValueEqual = true;
@@ -1611,7 +1620,7 @@ public class GameControl : MonoBehaviour
             {
                 int nextFlowIndex = (gameRoomData.currGameFlow + 1) % Enum.GetValues(typeof(GameFlowEnum)).Length;
                 GameFlowEnum nextFlow = (GameFlowEnum)Mathf.Max(1, nextFlowIndex);
-                yield return IStartGameFlow(nextFlow);                
+                yield return IStartGameFlow(nextFlow);
                 yield break;
             }
 
@@ -1624,7 +1633,7 @@ public class GameControl : MonoBehaviour
                 GameFlowEnum nextFlow = (GameFlowEnum)Mathf.Max(1, nextFlowIndex);
                 yield return IStartGameFlow(nextFlow);
                 yield break;
-            }            
+            }
 
             //設置下位行動玩家
             UpdateNextPlayer();
@@ -1905,7 +1914,6 @@ public class GameControl : MonoBehaviour
         {
             actionPlayerCount = 0;
         }
-        Debug.Log(actionPlayerCount);
 
         //更新遊戲房間資料
         var data = new Dictionary<string, object>()
@@ -2009,7 +2017,7 @@ public class GameControl : MonoBehaviour
         {
             pokerList.Add(i);
         }
-        
+
         //公共牌
         List<int> community = new();
         for (int i = 0; i < 5; i++)
@@ -2027,7 +2035,7 @@ public class GameControl : MonoBehaviour
                 community.Add(poker);
             }
         }
-        
+
         //玩家手牌
         foreach (var player in gameRoomData.playerDataDic)
         {
@@ -2230,254 +2238,136 @@ public class GameControl : MonoBehaviour
     /// <returns></returns>
     private List<GameRoomPlayerData> JudgeWinner(List<GameRoomPlayerData> judgePlayers)
     {
-        if (judgePlayers == null ||
-            judgePlayers.Count == 0)
+        if (judgePlayers == null || judgePlayers.Count == 0)
         {
             return new List<GameRoomPlayerData>();
         }
 
-        //判斷結果(牌型結果,符合的牌)
+        Debug.Log("Inside Judge Winner");
+
         Dictionary<GameRoomPlayerData, (int, List<int>)> shapeDic = new Dictionary<GameRoomPlayerData, (int, List<int>)>();
-        //玩家的牌(牌型結果,(公牌+手牌))
         Dictionary<GameRoomPlayerData, (int, List<int>)> clientPokerDic = new Dictionary<GameRoomPlayerData, (int, List<int>)>();
 
         foreach (var player in judgePlayers)
         {
-            List<int> judgePoker = new List<int>();
-            judgePoker.Add(player.handPoker[0]);
-            judgePoker.Add(player.handPoker[1]);
+            Debug.Log($"Processing player: {player.userId}");
 
-            if (judgePoker != null &&
-                gameRoomData.communityPoker != null)
+            if (player.handPoker == null || player.handPoker.Count < 2)
+            {
+                Debug.LogError($"Player {player.userId} has invalid hand cards. Skipping player.");
+                continue; // Skip players without valid hands
+            }
+
+            List<int> judgePoker = new List<int> { player.handPoker[0], player.handPoker[1] };
+
+            if (gameRoomData.communityPoker != null && gameRoomData.communityPoker.Count > 0)
             {
                 judgePoker = judgePoker.Concat(gameRoomData.communityPoker).ToList();
+                Debug.Log($"Concatenated judgePoker: {string.Join(",", judgePoker)}");
 
-                //判定牌型
+                // Judge the poker hand
                 PokerShape.JudgePokerShape(judgePoker, (result, matchPoker) =>
                 {
                     shapeDic.Add(player, (result, matchPoker));
                     clientPokerDic.Add(player, (result, judgePoker));
                 });
             }
+            else
+            {
+                Debug.LogWarning("Community poker cards are null or empty. Skipping this player.");
+            }
         }
 
-        //最大的牌型结果
-        int maxResult = shapeDic.Values.Min(x => x.Item1);
-
-        //最大牌型人數
-        int matchCount = shapeDic.Values.Count(x => x.Item1 == maxResult);
-
-        if (matchCount == 1)
+        if (!shapeDic.Any())
         {
-            //最大結果1人
-            KeyValuePair<GameRoomPlayerData, (int, List<int>)> minItem = shapeDic.FirstOrDefault(x => x.Value.Item1 == maxResult);
-            return new List<GameRoomPlayerData>() { minItem.Key };
+            Debug.LogError("No valid players to judge.");
+            return new List<GameRoomPlayerData>();
+        }
+
+        int maxResult = shapeDic.Values.Min(x => x.Item1);
+        Debug.Log($"Max result: {maxResult}");
+
+        var playersWithMaxResult = shapeDic.Where(x => x.Value.Item1 == maxResult).ToList();
+        Debug.Log($"Players with max result count: {playersWithMaxResult.Count}");
+
+        if (playersWithMaxResult.Count == 1)
+        {
+            Debug.Log($"Single winner found: {playersWithMaxResult[0].Key.userId}");
+            return new List<GameRoomPlayerData>() { playersWithMaxResult[0].Key };
         }
         else
         {
-            //最大結果玩家(符合的牌(數字已簡化))
-            Dictionary<GameRoomPlayerData, List<int>> pairPlayer = new Dictionary<GameRoomPlayerData, List<int>>();
-            //最大結果玩家(符合的牌(數字未簡化))
-            Dictionary<GameRoomPlayerData, List<int>> pairPlayer_InitPokerNum = new Dictionary<GameRoomPlayerData, List<int>>();
-
-            //選出相同結果的玩家
-            foreach (var shape in shapeDic)
+            // Multiple players with the same max result
+            Dictionary<GameRoomPlayerData, List<int>> sortedHands = new Dictionary<GameRoomPlayerData, List<int>>();
+            foreach (var player in playersWithMaxResult)
             {
-                if (shape.Value.Item1 == maxResult)
-                {
-                    List<int> numList = shape.Value.Item2.Select(x => x % 13 == 0 ? 14 : x % 13).ToList();
-                    numList.Sort(new TexasHoldemUtil.SpecialComparer());
-                    pairPlayer.Add(shape.Key, numList);
-
-                    List<int> initNumList = shape.Value.Item2.Select(x => x).ToList();
-                    pairPlayer_InitPokerNum.Add(shape.Key, initNumList);
-                }
+                // Convert card values to ranks (Ace = 14, 2-10 = 2-10, J=11, Q=12, K=13)
+                List<int> sortedHand = player.Value.Item2.Select(x => x % 13 == 0 ? 14 : x % 13).ToList();
+                sortedHand.Sort(new TexasHoldemUtil.SpecialComparer()); // Sorting based on poker ranking rules
+                sortedHands.Add(player.Key, sortedHand);
+                Debug.Log($"Player {player.Key.userId} sorted hand: {string.Join(",", sortedHand)}");
             }
 
-            //找出符合牌最大結果玩家
-            List<GameRoomPlayerData> maxResultPlayersList = new List<GameRoomPlayerData>();
-            int maxValue = int.MinValue;
-            foreach (var pair in pairPlayer)
+            // Compare hands by kicker
+            List<GameRoomPlayerData> winners = CompareByKickers(sortedHands);
+
+            if (winners.Count == 1)
             {
-                int max = 0;
-
-                //順子判斷
-                if (maxResult == 1 || maxResult == 6)
-                {
-                    //最小順子判斷
-                    if ((pair.Value.Contains(14) && pair.Value.Contains(1) &&
-                        pair.Value.Contains(2) && pair.Value.Contains(3) && pair.Value.Contains(4)))
-                    {
-                        max = 4;
-                    }
-                    else
-                    {
-                        max = pair.Value.Max();
-                    }
-                }
-                else
-                {
-                    max = pair.Value.Max();
-                }
-
-                if (max > maxValue)
-                {
-                    maxValue = max;
-                    maxResultPlayersList.Clear();
-                    maxResultPlayersList.Add(pair.Key);
-                }
-                else if (max == maxValue)
-                {
-                    maxResultPlayersList.Add(pair.Key);
-                }
-            }
-
-            if (maxResultPlayersList.Count() == 1)
-            {
-                //最大符合結果1人
-                return maxResultPlayersList;
+                Debug.Log($"Winner determined by kicker: {winners[0].userId}");
+                return winners;
             }
             else
             {
-                //高牌比較
-                if (maxResult == 10)
-                {
-                    //比較最大手牌玩家
-                    List<GameRoomPlayerData> handPokerList = new List<GameRoomPlayerData>();
-
-                    if (maxResultPlayersList.Count() > 1)
-                    {
-                        //符合最大結果有多人
-                        handPokerList = new List<GameRoomPlayerData>(maxResultPlayersList);
-                    }
-                    else
-                    {
-                        //所有相同結果的牌型都一樣
-                        foreach (var player in pairPlayer)
-                        {
-                            handPokerList.Add(player.Key);
-                        }
-                    }
-
-                    //將最大牌放置手牌1
-                    foreach (var player in handPokerList)
-                    {
-                        if (player.handPoker[0] % 13 > 0 && player.handPoker[0] % 13 < player.handPoker[1] % 13)
-                        {
-                            int temp = player.handPoker[0];
-                            player.handPoker[0] = player.handPoker[1];
-                            player.handPoker[1] = temp;
-                        }
-                    }
-
-                    //最大手牌1玩家(不包含符合結果牌)
-                    GameRoomPlayerData maxHand0PokerPlayer = handPokerList.OrderByDescending(x => (x.handPoker[0] % 13 == 0 ? int.MinValue : x.handPoker[0] % 13) + 1)
-                                                              .FirstOrDefault();
-
-                    List<GameRoomPlayerData> maxHandPokerClientList = new List<GameRoomPlayerData>();
-                    if (maxHand0PokerPlayer != null)
-                    {
-                        //符合牌不在手牌1
-                        maxHandPokerClientList = handPokerList.Where(x => x.handPoker[0] % 13 == maxHand0PokerPlayer.handPoker[0] % 13).ToList();
-                    }
-
-                    //最大手牌1玩家1人
-                    if (maxHandPokerClientList.Count() == 1)
-                    {
-                        return maxHandPokerClientList;
-                    }
-                    else
-                    {
-                        //比較手牌2(不包含符合結果牌)
-                        GameRoomPlayerData maxHand1PokerPlayer = handPokerList.OrderByDescending(x => (x.handPoker[1] % 13 == 0 ? int.MinValue : x.handPoker[1] % 13) + 1)
-                                                                  .FirstOrDefault();
-
-                        //符合牌都在手牌
-                        if (maxHand1PokerPlayer == null)
-                        {
-                            return handPokerList;
-                        }
-
-                        //最大手牌2所有玩家
-                        List<GameRoomPlayerData> maxHandPoker1PlayerList = handPokerList.Where(x => x.handPoker[1] % 13 == maxHand1PokerPlayer.handPoker[1] % 13).ToList();
-                        return maxHandPoker1PlayerList;
-                    }
-                }
-                else
-                {
-                    //尋找單牌最大玩家
-                    List<GameRoomPlayerData> winPlayers = new List<GameRoomPlayerData>();
-
-                    if (pairPlayer.FirstOrDefault().Value.Count <= 3)
-                    {
-                        foreach (var item in pairPlayer)
-                        {
-                            List<int> judgePokers = new List<int>();
-                            judgePokers.AddRange(gameRoomData.communityPoker);
-                            judgePokers.Add(item.Key.handPoker[0]);
-                            judgePokers.Add(item.Key.handPoker[1]);
-
-                            for (int i = 0; i < pairPlayer_InitPokerNum.Values.Count; i++)
-                            {
-                                judgePokers.Remove(pairPlayer_InitPokerNum[item.Key][i]);
-                            }
-
-                            judgePokers = judgePokers.Select(x => x % 13 == 0 ? 14 : x % 13).ToList();
-                            judgePokers = judgePokers.OrderByDescending(x => x).ToList();
-                            judgePokers = judgePokers.Take(5 - pairPlayer.FirstOrDefault().Value.Count).ToList();
-                            judgePokers.Sort(new TexasHoldemUtil.SpecialComparer());
-                            pairPlayer[item.Key].AddRange(judgePokers);
-                        }
-                    }
-                    else if (pairPlayer.FirstOrDefault().Value.Count == 4)
-                    {
-                        foreach (var item in pairPlayer)
-                        {
-                            List<int> judgePokers = new List<int>();
-                            judgePokers.AddRange(gameRoomData.communityPoker);
-                            judgePokers.Add(item.Key.handPoker[0]);
-                            judgePokers.Add(item.Key.handPoker[1]);
-
-                            for (int i = 0; i < pairPlayer_InitPokerNum.Values.Count; i++)
-                            {
-                                judgePokers.Remove(pairPlayer_InitPokerNum[item.Key][i]);
-                            }
-
-                            judgePokers = judgePokers.Select(x => x % 13 == 0 ? 14 : x % 13).ToList();
-                            judgePokers = judgePokers.OrderByDescending(x => x).ToList();
-                            judgePokers = judgePokers.Take(1).ToList();
-                            pairPlayer[item.Key].AddRange(judgePokers);
-                        }
-                    }                    
-
-                    for (int i = 0; i < pairPlayer.FirstOrDefault().Value.Count; i++)
-                    {
-                        int max = int.MinValue;
-                        foreach (var item in pairPlayer)
-                        {
-                            if (item.Value[i] > max)
-                            {
-                                winPlayers = new List<GameRoomPlayerData>();
-                                max = item.Value[i];
-                                winPlayers.Add(item.Key);
-                            }
-                            else if (item.Value[i] == max)
-                            {
-                                winPlayers.Add(item.Key);
-                            }
-                        }
-
-                        if (winPlayers.Count == 1)
-                        {
-                            return winPlayers;
-                        }
-                    }
-
-                    return winPlayers;
-                }
+                Debug.Log("Tie remains even after kicker comparison.");
+                return winners; // Return all tied players
             }
         }
     }
+
+    private List<GameRoomPlayerData> CompareByKickers(Dictionary<GameRoomPlayerData, List<int>> sortedHands)
+    {
+        List<GameRoomPlayerData> potentialWinners = sortedHands.Keys.ToList();
+        int kickerIndex = 0;
+
+        while (potentialWinners.Count > 1)
+        {
+            // Check if all remaining players have enough cards for comparison at the current kicker index
+            int maxKickerValue = int.MinValue;
+            bool validComparison = false;
+
+            foreach (var player in potentialWinners)
+            {
+                // Ensure the player has enough cards before comparing
+                if (kickerIndex < sortedHands[player].Count)
+                {
+                    int currentKickerValue = sortedHands[player][kickerIndex];
+                    if (currentKickerValue > maxKickerValue)
+                    {
+                        maxKickerValue = currentKickerValue;
+                        validComparison = true;
+                    }
+                }
+            }
+
+            if (!validComparison)
+            {
+                // If no valid comparison was made, break the loop (e.g., all players ran out of cards to compare)
+                break;
+            }
+
+            // Filter potential winners based on the current kicker value
+            potentialWinners = potentialWinners
+                .Where(player => kickerIndex < sortedHands[player].Count && sortedHands[player][kickerIndex] == maxKickerValue)
+                .ToList();
+
+            Debug.Log($"Kicker comparison at index {kickerIndex}, max value: {maxKickerValue}");
+            kickerIndex++;
+        }
+
+        return potentialWinners;
+    }
+
+
 
 
     #endregion
@@ -2507,7 +2397,7 @@ public class GameControl : MonoBehaviour
     /// </summary>
     private void ChatMessage()
     {
-        if (gameRoomData.chatData != null && 
+        if (gameRoomData.chatData != null &&
             !string.IsNullOrEmpty(gameRoomData.chatData.chatMsg))
         {
             gameView.ReciveChat(gameRoomData.chatData);

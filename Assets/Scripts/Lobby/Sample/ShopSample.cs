@@ -15,6 +15,17 @@ public class ShopSample : MonoBehaviour
     [SerializeField]
     Button BuyBtn;
 
+    [SerializeField]
+    Image currencyIcon;
+
+    AssetsManager assetsManager = new();
+
+
+    private void Start()
+    {
+        assetsManager = AssetsManager.Instance;
+    }
+
     /// <summary>
     /// 設置商店物品資料
     /// </summary>
@@ -45,7 +56,7 @@ public class ShopSample : MonoBehaviour
     public void SetShopItemData(ShopItem item)
     {
         Services.RemoteImageDownloader.LoadImage(item.imageUrl, ItemIcon);
-
+        currencyIcon.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.CurrencyAlbum).album[item.currency];
         Buff_Text.text = $"{item.name}";
         CostAmount_Text.text = $"{item.price:F2}";
 
@@ -84,30 +95,30 @@ public class ShopSample : MonoBehaviour
     /// <param name="img">商品Icon</param>
     /// <param name="info">購買訊息欄位</param>
     /// <param name="itemCategory">商品名</param>
-    public void OnBuyAddListener(LobbyShopView shopView, GameObject MallMsg, ShopItem itemData, Image img, TextMeshProUGUI info, int itemCategory)
+    public void OnBuyAddListener(LobbyShopView shopView, GameObject MallMsg, ShopItem itemData, Image img, TextMeshProUGUI info)
     {
         BuyBtn.onClick.AddListener(() =>
         {
             MallMsg.SetActive(!MallMsg.activeSelf);
             img.sprite = ItemIcon.sprite;
-
-            switch (itemCategory)
+            //{LanguageManager.Instance.GetText("for")} {itemData.price} {assetsManager.GetAlbumAsset(AlbumEnum.CurrencyAlbum).album[itemData.currency].name}
+            switch (itemData.category)
             {
                 case 0:
-                    info.text = $"{LanguageManager.Instance.GetText("Purchase")} {itemData.price} {LanguageManager.Instance.GetText("Gold")}";
+                    info.text = $"{LanguageManager.Instance.GetText("Purchase")} {itemData.targetItemQuantity} {LanguageManager.Instance.GetText("Gold")}";
                     break;
                 case 1:
-                    info.text = $"{LanguageManager.Instance.GetText("Purchase")} {itemData.price} {LanguageManager.Instance.GetText("Energy")}";
+                    info.text = $"{LanguageManager.Instance.GetText("Purchase")} {itemData.targetItemQuantity} {LanguageManager.Instance.GetText("Energy")}";
                     break;
                 case 2:
-                    info.text = $"{LanguageManager.Instance.GetText("Purchase")} {itemData.price} {LanguageManager.Instance.GetText("Timer")}";
+                    info.text = $"{LanguageManager.Instance.GetText("Purchase")} {itemData.targetItemQuantity} {LanguageManager.Instance.GetText("Timer")}";
                     break;
                 case 3:
-                    info.text = $"{LanguageManager.Instance.GetText("Purchase")} {itemData.price} {LanguageManager.Instance.GetText("Tools")}";
+                    info.text = $"{LanguageManager.Instance.GetText("Purchase")} {itemData.targetItemQuantity} {LanguageManager.Instance.GetText("Tools")}";
                     break;
             }
 
-            shopView.GetComponent<LobbyShopView>().OnBuyingPopupUI(this, itemData, itemCategory);
+            shopView.GetComponent<LobbyShopView>().OnBuyingPopupUI(this, itemData);
         });
     }
 

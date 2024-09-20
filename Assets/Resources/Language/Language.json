@@ -21,7 +21,7 @@
   },
   {
     "ID": "REFLASH",
-    "English": "REFLASH",
+    "English": "REFRESH",
     "zh_TW": "重新整理"
   },
   {
@@ -131,7 +131,7 @@
   },
   {
     "ID": "INTEGRAL",
-    "English": "INTEGRAL",
+    "English": "RANK",
     "zh_TW": "積分"
   },
   {
@@ -156,7 +156,7 @@
   },
   {
     "ID": "Integral Table",
-    "English": "Integral Table",
+    "English": "Rank Table",
     "zh_TW": "積分房"
   },
   {
@@ -171,7 +171,7 @@
   },
   {
     "ID": "GO TO INTEGRAL",
-    "English": "GO TO INTEGRAL",
+    "English": "RANK MODE",
     "zh_TW": "積分"
   },
   {
@@ -192,12 +192,12 @@
   {
     "ID": "Stamina",
     "English": "Stamina",
-    "zh_TW": "耐力"
+    "zh_TW": "能量"
   },
   {
     "ID": "OT Props",
     "English": "OT Props",
-    "zh_TW": "加時道具"
+    "zh_TW": "延時"
   },
   {
     "ID": "Type",
@@ -337,7 +337,7 @@
   {
     "ID": "If you leave now, you will not be able to get back your staked chips.",
     "English": "If you leave now, you will not be able to get back your staked chips.",
-    "zh_TW": "如果您現在離開，您將無法取回質押的籌碼。"
+    "zh_TW": "如果您現在離開，您將無法取回已下注的籌碼"
   },
   {
     "ID": "Cannot Be Changed After Linking.",
@@ -357,7 +357,7 @@
   {
     "ID": "User Name Entered Incorrectly, Please Try Again.",
     "English": "User Name Entered Incorrectly, Please Try Again.",
-    "zh_TW": "手機號格式錯誤，請重新輸入"
+    "zh_TW": "使用者名稱格式錯誤，請重新輸入"
   },
   {
     "ID": "Invalid Code, Please Try Again.",
@@ -535,14 +535,9 @@
     "zh_TW": "使用瀏覽器錢包連接"
   },
   {
-    "ID": "Don't Have An Account?",
-    "English": "Don't Have An Account?",
-    "zh_TW": "沒有帳戶?"
-  },
-  {
-    "ID": "<color=#79E84B><link=Sign Up Here!><u>Sign Up Here!</u></link></color>",
-    "English": "<color=#79E84B><link=Sign Up Here!><u>Sign Up Here!</u></link></color>",
-    "zh_TW": "<color=#79E84B><link=Sign Up Here!><u>在此註冊!</u></link></color>"
+    "ID": "Don't Have An Account? <color=#79E84B><link=Sign Up Here!><u>Sign Up Here!</u></link></color>",
+    "English": "Don't Have An Account? <color=#79E84B><link=Sign Up Here!><u>Sign Up Here!</u></link></color>",
+    "zh_TW": "沒有帳戶？ <color=#79E84B><link=Sign Up Here!><u>在此註冊！</u></link></color>"
   },
   {
     "ID": "錢包連接中頁面",
@@ -686,7 +681,7 @@
   },
   {
     "ID": "Activity",
-    "English": "Activity",
+    "English": "PROMO",
     "zh_TW": "活動"
   },
   {
@@ -946,7 +941,7 @@
   },
   {
     "ID": "Blind Bet",
-    "English": "Blind Bet",
+    "English": "Blinds",
     "zh_TW": "盲注"
   },
   {
@@ -982,7 +977,7 @@
   {
     "ID": "CallAny",
     "English": "Call Any",
-    "zh_TW": "任何跟注"
+    "zh_TW": "跟任何注"
   },
   {
     "ID": "RaiseTo",
@@ -1116,7 +1111,7 @@
   },
   {
     "ID": "HightCard",
-    "English": "Hight Card",
+    "English": "High Card",
     "zh_TW": "高牌"
   },
   {
@@ -1127,17 +1122,17 @@
   {
     "ID": "STAMINA",
     "English": "STAMINA",
-    "zh_TW": "耐力"
+    "zh_TW": "能量"
   },
   {
     "ID": "EXTRATIME",
     "English": "EXTRA TIME",
-    "zh_TW": "加時道具"
+    "zh_TW": "延時"
   },
   {
     "ID": "ExtraTime",
     "English": "ExtraTime",
-    "zh_TW": "加時道具"
+    "zh_TW": "延時"
   },
   {
     "ID": "Percentage",
@@ -1161,7 +1156,7 @@
   },
   {
     "ID": "CANCLE",
-    "English": "CANCLE",
+    "English": "CANCEL",
     "zh_TW": "取消"
   },
   {
@@ -1180,56 +1175,53 @@
     "zh_TW": "請繼續抵押"
   },
   {
-    "ID": "You are already logged in from another device",
-    "English": "You are already logged in from another device.",
-    "zh_TW": "您已於其他裝置登入"
-  },
-  {
-    "ID": "ENERGY",
-    "English": "ENERGY",
-    "zh_TW": "能量"
-  },
-  {
-    "ID": "TIMER",
-    "English": "TIMER",
-    "zh_TW": "计时器"
-  },
-  {
-    "ID": "TOOLS",
-    "English": "TOOLS",
-    "zh_TW": "工具"
-  },
-  {
-    "ID": "Energy",
-    "English": "Energy",
-    "zh_TW": "能量"
-  },
-  {
-    "ID": "Timer",
-    "English": "Timer",
-    "zh_TW": "计时器"
-  },
-  {
-    "ID": "Tools",
-    "English": "Tools",
-    "zh_TW": "工具"
-  }
-  ,
-  {
-    "ID": "Rule",
-    "English": "TooPoker gameplay: The game adopts standard Texas Hold'em rules, including dealing, betting, raising, discarding and other processes.\nEach player is dealt two hole cards and uses five community cards to form the best five-card combination.\nBlinds and Antes: Set fixed blinds and ante (such as small blind and big blind) to ensure the starting rhythm of the game.\n\nBattle process:\nStart: Two players randomly decide who is the small blind and the big blind, and then rotate each round.\nBetting rounds: including preflop (Pre-flop), flop (Flop), turn card (Turn) and the river card (River) four betting rounds.\n\nDetermination of outcome: After all betting rounds are over, if there are still two players who have not discarded their cards, a showdown will take place (Showdown), compete for the combination of the five best cards, and the one with the highest points wins.\n\nScoring\nBasic points calculation:\nVictory Points: Players who win each round receive certain points (such as10points), the losing player will deduct corresponding points (such as10point).ls",
-    "zh_TW": "基本規則:\n撲克玩法：遊戲採用標準德州撲克規則，包括發牌、下注、加注、棄牌等流程。\n每名玩家發兩張底牌，通過五張公共牌組成最佳五張牌的組合。\n盲注和底注：設置固定的盲注和底注(如小盲注和大盲注)，確保遊戲的起始節奏。\n\n對戰流程:\n開局：兩名玩家隨機決定誰是小盲注和大盲注，之後每局輪換。\n下注回合：包括翻牌前(Pre-flop)、翻牌(Flop)、轉牌(Turn)和河牌(River)四個下注回合。\n\n勝負判定：所有下注回合結束後，若仍有兩名玩家未棄牌，則進行攤牌(Showdown)，比拼五張最佳牌的組合，點數高者勝。\n\n基本積分計算：\n勝利積分：每局勝利的玩家獲得一定積分，失敗的玩家扣除相應積分。"
-  }
-  ,
-  {
     "ID": "INTEGRAL RULE",
     "English": "INTEGRAL RULE",
     "zh_TW": "積分規則"
-  }
-  ,
+  },
   {
-    "ID": "for",
-    "English": "for",
-    "zh_TW": "用"
+    "ID": "Award",
+    "English": "Award",
+    "zh_TW": "獎勵"
+  },
+  {
+    "ID": "Player",
+    "English": "Player",
+    "zh_TW": "玩家"
+  },
+  {
+    "ID": "Rank",
+    "English": "Rank",
+    "zh_TW": "積分"
+  },
+  {
+    "ID": "AsiaPoker 隱私權政策",
+    "English": null,
+    "zh_TW": null
+  },
+  {
+    "ID": "AsiaPoker 條款",
+    "English": null,
+    "zh_TW": null
+  },
+  {
+    "ID": "遊戲規則",
+    "English": null,
+    "zh_TW": null
+  },
+  {
+    "ID": "積分規則",
+    "English": null,
+    "zh_TW": null
+  },
+  {
+    "ID": "目前用不到",
+    "English": "Weighted Scoring: Based on the opponent’sMMR Adjust the gap. If defeatedMMR Higher than your opponent, get more points ; lose to MMR Lower than your opponent, more points will be deducted. ",
+    "zh_TW": "加權計分：根據對手的 MMR 差距進行調整。若擊敗 MMR 高於自己 的對手，獲得更多積分；敗給 MMR 低於自己的對手，扣除 更多積分"
+  },
+  {
+    "ID": "目前用不到",
+    "English": "Hide Points (MMR）： \ninitialMMR: New players participate in several placement matches,determine the initial value based on the winning rate and opponent’s strengthMMR. \nDynamic adjustment: After each game, the result will be adjusted according to the outcome and opponent.MMR Adjust player'sMMR, the specific calculation formula is as follows: NewMMR=old MMR+K×(match result−expected results) \nAmong them, the result of the competition is1(win) or0(failure), the expected result depends on the player and opponentMMR Differencevaluecalculate.",
+    "zh_TW": "隱藏積分（MMR）： \n初始 MMR：新玩家進行若干定位賽，根據勝率和對手實力確定初始 MMR。 \n動態調整：每局比賽結束後根據勝負結果和對手 MMR 調整玩家的 MMR，\n具體計算公式如下： 新 MMR=舊 MMR+K×(比賽結果−預期結果) \n其中，比賽結果為1（勝利）或0（失敗），預期結果根據玩家和對手的 MMR 差值計算。"
   }
 ]

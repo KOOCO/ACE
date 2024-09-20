@@ -18,7 +18,7 @@ public class RobotControl : MonoBehaviour
         GameRoomPlayerData robotData = gameRoomData.playerDataDic.Where(x => x.Key == gameRoomData.currActionerId)
                                                                   .FirstOrDefault()
                                                                   .Value;
-        
+
         /////// 以下AI邏輯 ///////////////
 
 
@@ -44,7 +44,14 @@ public class RobotControl : MonoBehaviour
             {
                 if (isFirst == true)
                 {
-                    action = BetActingEnum.Check;
+                    if (robotData.currAllBetChips == gameRoomData.currCallValue)
+                    {
+                        action = BetActingEnum.Check;
+                    }
+                    else
+                    {
+                        betValue = gameRoomData.currCallValue;
+                    }
                 }
                 else
                 {

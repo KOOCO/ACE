@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
-using Thirdweb;
-using System.Threading.Tasks;
 using TMPro;
-using Unity.VisualScripting;
 
 public class LobbyView : MonoBehaviour
 {
@@ -21,7 +18,7 @@ public class LobbyView : MonoBehaviour
 
     [Header("用戶訊息")]
     [SerializeField]
-    TextMeshProUGUI Nickname_Txt, Stamina_Txt, 
+    TextMeshProUGUI Nickname_Txt, Stamina_Txt,
                     CryptoChips_Txt;
 
     [Header("用戶資源列表")]
@@ -63,6 +60,8 @@ public class LobbyView : MonoBehaviour
     Button Transfers_Btn;
     [SerializeField]
     TextMeshProUGUI TransfersBtn_Txt;
+
+    [Header("背景音樂")] [SerializeField] public AudioSource audioSource;
 
     bool isFirstIn;
     bool isListenered;
@@ -210,6 +209,7 @@ public class LobbyView : MonoBehaviour
         SetIsShowAssetList = isShowAssetList;
 
         OpenItemPage(ItemType.Main);
+        audioSource.Play();
     }
 
     private void Start()
@@ -270,7 +270,11 @@ public class LobbyView : MonoBehaviour
         {
             gameTestTouchCount = 0;
         }
-
+        if (DataManager.DataUpdated)
+        {
+            UpdateUserData();
+            DataManager.DataUpdated = false;
+        }
         #endregion
     }
 
@@ -398,7 +402,7 @@ public class LobbyView : MonoBehaviour
         Stamina_Txt.text = $"{DataManager.UserEnergy}/{DataManager.UserMaxEnrtgy}";
 
         Assets_CryptoChipsValue_Txt.text = $"{StringUtils.SetChipsUnit(DataManager.UserUChips)}";
-        Assets_VCValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserAChips);    
+        Assets_VCValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserAChips);
         Assets_GoldValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserGold);
         Assets_StaminaValue_Txt.text = $"{DataManager.UserEnergy}/{DataManager.UserMaxEnrtgy}";
         Assets_OTPropsValue_Txt.text = $"{DataManager.UserTimer}";

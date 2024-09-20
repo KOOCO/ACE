@@ -8,14 +8,14 @@ using System.Linq;
 public class LobbyShopView : MonoBehaviour
 {
     [SerializeField]
-    Toggle All_Tog, Energy_Tog, Gold_Tog, Tools_Tog, Timer_Tog;
+    Toggle All_Tog, Energy_Tog, Gold_Tog, Tools_Tog, Timer_Tog, ACoin_Tog;
 
     [SerializeField]
-    GameObject All_Area, Energy_Area, Gold_Area, Timer_Area, Tools_Area;
+    GameObject All_Area, Energy_Area, Gold_Area, Timer_Area, Tools_Area, ACoin_Area;
     [SerializeField]
-    TextMeshProUGUI ALLTog_Text, EnergyTog_Text, GoldTog_Text, TimerTog_Text, ToolsTog_Text;
+    TextMeshProUGUI ALLTog_Text, EnergyTog_Text, GoldTog_Text, TimerTog_Text, ToolsTog_Text, ACoinTog_Text;
     [SerializeField]
-    TextMeshProUGUI EnergyTitle_Text, GoldTitle_Text, TimerTitle_Text, ToolsTitle_Text;
+    TextMeshProUGUI EnergyTitle_Text, GoldTitle_Text, TimerTitle_Text, ToolsTitle_Text, ACoinTitle_Text;
 
     [Header("全部商品欄位")]
     [SerializeField]
@@ -59,6 +59,14 @@ public class LobbyShopView : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI ToolsTitle;
 
+    [Header("ACoin")]
+    // [SerializeField]
+    // GameObject ExtraTime_Sample;
+    [SerializeField]
+    GameObject ACoin_Parent;
+    [SerializeField]
+    TextMeshProUGUI ACoinTitle;
+
     [Header("購買彈窗")]
     [SerializeField]
     GameObject MallMsg;
@@ -91,6 +99,7 @@ public class LobbyShopView : MonoBehaviour
         Timer,
         Gold,
         Tools,
+        ACoin,
     }
     enum CurrencyType
     {
@@ -103,10 +112,12 @@ public class LobbyShopView : MonoBehaviour
         ALLTog_Text.text = LanguageManager.Instance.GetText("ALL");
         EnergyTog_Text.text = LanguageManager.Instance.GetText("ENERGY");
         GoldTog_Text.text = LanguageManager.Instance.GetText("GOLD");
+        ACoinTog_Text.text = LanguageManager.Instance.GetText("ACoin");
         TimerTog_Text.text = LanguageManager.Instance.GetText("TIMER");
         ToolsTog_Text.text = LanguageManager.Instance.GetText("TOOLS");
 
         EnergyTitle_Text.text = LanguageManager.Instance.GetText("Energy");
+        ACoinTitle_Text.text = LanguageManager.Instance.GetText("ACoin");
         GoldTitle_Text.text = LanguageManager.Instance.GetText("Gold");
         TimerTitle_Text.text = LanguageManager.Instance.GetText("Timer");
         ToolsTitle_Text.text = LanguageManager.Instance.GetText("Tools");
@@ -115,6 +126,7 @@ public class LobbyShopView : MonoBehaviour
         GoldTitle.text = LanguageManager.Instance.GetText("Gold");
         TimerTitle.text = LanguageManager.Instance.GetText("Timer");
         ToolsTitle.text = LanguageManager.Instance.GetText("Tools");
+        ACoinTitle.text = LanguageManager.Instance.GetText("ACoin");
 
         Cancle_Text.text = LanguageManager.Instance.GetText("CANCLE");
         Confirm_Text.text = LanguageManager.Instance.GetText("CONFIRM");
@@ -176,26 +188,46 @@ public class LobbyShopView : MonoBehaviour
             {
                 case 0:
                     Debug.Log("GOLD");
+                    Gold_Tog.gameObject.SetActive(true);
+                    ShopItemView[0].gameObject.SetActive(true);
                     CreateShopItem(Shop_Item, ShopItemView[0].transform.GetChild(1).transform, item);
                     CreateShopItem(Shop_Item, Gold_Parent.transform, item);
                     break;
                 case 1:
                     Debug.Log("Energy");
+                    Energy_Tog.gameObject.SetActive(true);
+                    ShopItemView[1].gameObject.SetActive(true);
                     CreateShopItem(Shop_Item, ShopItemView[1].transform.GetChild(1).transform, item);
                     CreateShopItem(Shop_Item, Energy_Parent.transform, item);
                     break;
                 case 2:
                     Debug.Log("Timer");
+                    Timer_Tog.gameObject.SetActive(true);
+                    ShopItemView[2].gameObject.SetActive(true);
                     CreateShopItem(Shop_Item, ShopItemView[2].transform.GetChild(1).transform, item);
                     CreateShopItem(Shop_Item, Timer_Parent.transform, item);
                     break;
                 case 3:
                     Debug.Log("Tools");
+                    Tools_Tog.gameObject.SetActive(true);
+                    ShopItemView[3].gameObject.SetActive(true);
                     CreateShopItem(Shop_Item, ShopItemView[3].transform.GetChild(1).transform, item);
+                    CreateShopItem(Shop_Item, Tools_Parent.transform, item);
+                    break;
+                case 4:
+                    Debug.Log("Tools");
+                    Tools_Tog.gameObject.SetActive(true);
+                    ShopItemView[4].gameObject.SetActive(true);
+                    CreateShopItem(Shop_Item, ShopItemView[4].transform.GetChild(1).transform, item);
                     CreateShopItem(Shop_Item, Tools_Parent.transform, item);
                     break;
             }
         }
+    }
+
+    void ShowHideObject()
+    {
+
     }
     #endregion
 
@@ -209,6 +241,7 @@ public class LobbyShopView : MonoBehaviour
         ItemList.Add(ItemType.Energy, Energy_Area);
         ItemList.Add(ItemType.Timer, Timer_Area);
         ItemList.Add(ItemType.Tools, Tools_Area);
+        ItemList.Add(ItemType.ACoin, ACoin_Area);
     }
 
     #endregion
@@ -301,6 +334,14 @@ public class LobbyShopView : MonoBehaviour
                 OpenShopItem();
             }
         });
+        ACoin_Tog.onValueChanged.AddListener((isOn) =>
+        {
+            if (isOn)
+            {
+                itemType = ItemType.ACoin;
+                OpenShopItem();
+            }
+        });
 
 
         //  關閉BuyPopUpUI
@@ -368,7 +409,7 @@ public class LobbyShopView : MonoBehaviour
     {
         ShopSample newShopItem = Instantiate(shopItem, itemParent).GetComponent<ShopSample>();
         newShopItem.SetShopItemData(item);
-        newShopItem.OnBuyAddListener(this, MallMsg, item, iconSprite, MallMsgInfo, item.category);
+        newShopItem.OnBuyAddListener(this, MallMsg, item, iconSprite, MallMsgInfo);
     }
     public void ClearChilds(Transform _stransform)
     {
@@ -384,11 +425,15 @@ public class LobbyShopView : MonoBehaviour
     /// <param name="shopSample"></param>
     /// <param name="shopData">商品資料</param>
     /// <param name="itemCategory">商品名</param>
-    public void OnBuyingPopupUI(ShopSample shopSample, ShopItem shopData, int itemCategory)
+    public void OnBuyingPopupUI(ShopSample shopSample, ShopItem shopData)
     {
         Confirm.onClick.AddListener(() =>
         {
-
+            PurchaseItem itemToPurchase = new PurchaseItem()
+            {
+                itemId = shopData.id,
+                playerId = Services.PlayerService.GetPlayer().memberId,
+            };
             if (DataManager.UserAChips < shopData.price)
             {
                 shopSample.InsufficientBalance(iconSprite, MallMsgInfo);
@@ -397,33 +442,59 @@ public class LobbyShopView : MonoBehaviour
             }
             else
             {
-                PurchaseSuccessUI.SetActive(!PurchaseSuccessUI.activeSelf);
-
-                switch (itemCategory)
+                SwaggerAPIManager.Instance.SendPostAPI<PurchaseItem>($"api/app/items/purchase-item?itemId={itemToPurchase.itemId}&playerId={itemToPurchase.playerId}", null, (data) =>
                 {
-                    case 0:
-                        DataManager.UserGold += shopData.targetItemQuantity;
-                        break;
-                    case 1:
-                        DataManager.UserEnergy += shopData.targetItemQuantity;
-                        break;
-                    case 2:
-                        DataManager.UserTimer += shopData.targetItemQuantity;
-                        break;
-                    case 3:
-                        DataManager.UserTools += shopData.targetItemQuantity;
-                        break;
-                }
+                    Debug.Log(data);
+                    PurchaseSuccessUI.SetActive(!PurchaseSuccessUI.activeSelf);
+
+                    switch (shopData.category)
+                    {
+                        case 0:
+                            DataManager.UserGold += shopData.targetItemQuantity;
+                            break;
+                        case 1:
+                            DataManager.UserEnergy += shopData.targetItemQuantity;
+                            break;
+                        case 2:
+                            DataManager.UserTimer += shopData.targetItemQuantity;
+                            break;
+                        case 3:
+                            DataManager.UserTools += shopData.targetItemQuantity;
+                            break;
+                        case 4:
+                            DataManager.UserAChips += (int)shopData.targetItemQuantity;
+                            break;
+                    }
+
+                    switch (shopData.currency)
+                    {
+                        case 0:
+                            Debug.Log("Gold");
+                            DataManager.UserGold -= shopData.price;
+                            break;
+                        case 1:
+                            Debug.Log("UCoin");
+                            DataManager.UserUChips -= (int)shopData.price;
+                            break;
+                        case 2:
+                            Debug.Log("ACoin");
+                            DataManager.UserAChips -= (int)shopData.price;
+                            break;
+                    }
+
+                    DataManager.DataUpdated = true;
+                }, (errMsg) =>
+                {
+                    Debug.LogError(errMsg);
+                }, true, true);
 
                 //Debug.Log($"您已購買 {itemName} {shopData.BuffAmount}");
-                DataManager.UserAChips -= shopData.price;
+                //DataManager.UserAChips -= shopData.price;
                 //Debug.Log($"餘額 {DataManager.UserVCChips}");
             }
 
         });
     }
-
-
 
     private void OpenShopItem()
     {
@@ -447,6 +518,9 @@ public class LobbyShopView : MonoBehaviour
 
             case ItemType.Tools:
                 ActiveShopUI(ItemType.Tools);
+                break;
+            case ItemType.ACoin:
+                ActiveShopUI(ItemType.ACoin);
                 break;
 
         }

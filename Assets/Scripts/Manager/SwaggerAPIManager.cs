@@ -28,10 +28,10 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     /// <param name="data">傳遞的資料</param>
     /// <param name="callback">結果回傳</param>
     /// <param name="errCallback"></param>
-    public void SendPostAPI<T1>(string apiUrl, T1 data, UnityAction<string> callback = null, UnityAction<string> errCallback = null)
+    public void SendPostAPI<T1>(string apiUrl, T1 data, UnityAction<string> callback = null, UnityAction<string> errCallback = null, bool addHeader = false, bool useParams = false)
         where T1 : class
     {
-        StartCoroutine(ISendPOSTRequest(apiUrl, data, callback, errCallback));
+        StartCoroutine(ISendPOSTRequest(apiUrl, data, callback, errCallback, addHeader, useParams));
     }
     public void SendGetAPI(string apiUrl, UnityAction<string> callback = null, UnityAction errCallback = null, bool addHeader = false)
     {
@@ -47,27 +47,42 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     /// <param name="callback"></param>
     /// <param name="errCallback"></param>
     /// <returns></returns>
-    private IEnumerator ISendPOSTRequest<T1>(string apiUrl, T1 data, UnityAction<string> callback = null, UnityAction<string> errCallback = null)
-        where T1 : class
+    private IEnumerator ISendPOSTRequest<T1>(string apiUrl, T1 data, UnityAction<string> callback = null, UnityAction<string> errCallback = null, bool addHeader = false, bool useParams = false)
+    where T1 : class
     {
         string fullUrl = BASE_URL + apiUrl;
 
-        //發送的Json
-        string jsonData = JsonUtility.ToJson(data);
-        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
+        Debug.Log($"Send POST to URL: {fullUrl}");
 
-        Debug.Log($"Send POST:{jsonData}");
-
-        //創建POST請求
+        // Create POST request
         UnityWebRequest request = new UnityWebRequest(fullUrl, "POST");
-        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+
+        if (useParams)
+        {
+            // Empty body for POST request if using parameters in the URL
+            request.uploadHandler = new UploadHandlerRaw(new byte[0]);
+        }
+        else
+        {
+            // Serialize data to JSON if not using URL parameters
+            string jsonData = JsonUtility.ToJson(data);
+            byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        }
+
         request.downloadHandler = new DownloadHandlerBuffer();
-        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Content-Type", useParams ? "application/x-www-form-urlencoded" : "application/json");
+
+        if (addHeader)
+        {
+            request.SetRequestHeader("Authorization", "Bearer " + Services.PlayerService.GetAccessToken());
+        }
+
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
-            //請求錯誤
+            // Request error
             string errorJson = request.downloadHandler.text;
             Debug.Log($"Error: {request.error}\nError Details: {errorJson}");
 
@@ -75,7 +90,6 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
             {
                 DataManager.TipText = LanguageManager.Instance.GetText("Invalid Username or Password!");
                 DataManager.istipAppear = true;
-                //Debug.Log("登入失敗");
             }
             errCallback?.Invoke(request.responseCode.ToString());
         }
@@ -83,13 +97,8 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         {
             string Response = request.downloadHandler.text;
 
-
-            //Callback執行
-            if (callback != null)
-            {
-                //T2 response = JsonUtility.FromJson<T2>(request.downloadHandler.text);
-                callback?.Invoke(Response);
-            }
+            // Callback execution
+            callback?.Invoke(Response);
         }
     }
     public string ConvertHtmlToJson(string htmlString)

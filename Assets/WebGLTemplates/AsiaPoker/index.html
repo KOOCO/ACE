@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -18,20 +19,54 @@
 
     <script src="Firebase/FirebaseFun.js"></script>
 
+    <script>
+        let isBackWarningDisplayed = false;
+
+        window.onpopstate = function (event) {
+            if (!isBackWarningDisplayed) {
+                // Prevent the back action
+                history.pushState(null, null, window.location.href);
+
+                // Show a warning to the user
+                alert("Swipe again to exit the game.");
+
+                // Set the flag to true, so the next swipe goes back
+                isBackWarningDisplayed = true;
+
+                // Optionally, after some time, reset the warning state
+                setTimeout(() => {
+                    isBackWarningDisplayed = false;
+                }, 5000); // Reset after 3 seconds (adjust as needed)
+            } else {
+                // Allow the browser to go back on the second swipe
+                window.history.back();
+            }
+        };
+
+        // Push a dummy state to the history stack
+        window.history.pushState(null, null, window.location.href);
+    </script>
+
+
     <style>
         /*recaptcha小工具隱藏*/
         #recaptcha-container {
             display: none;
         }
+
         /*recaptcha驗證按鈕*/
-        #recaptcha-button {            
+        #recaptcha-button {
             position: absolute;
-            opacity: 0; /* 设置透明度为0 */
-            pointer-events: none; /* 禁用指针事件 */
-            display: none; /* 隐藏按钮 */
+            opacity: 0;
+            /* 设置透明度为0 */
+            pointer-events: none;
+            /* 禁用指针事件 */
+            display: none;
+            /* 隐藏按钮 */
         }
     </style>
 </head>
+
 <body class="{{{ SPLASH_SCREEN_STYLE.toLowerCase() }}}">
     <div id="unity-container" class="unity-desktop">
         <div id="recaptcha-container"></div><!--recaptcha小工具隱藏-->
@@ -67,12 +102,12 @@
                 dataUrl: buildUrl + "/{{{ DATA_FILENAME }}}",
                 frameworkUrl: buildUrl + "/{{{ FRAMEWORK_FILENAME }}}",
                 codeUrl: buildUrl + "/{{{ CODE_FILENAME }}}",
-    #if MEMORY_FILENAME
+                #if MEMORY_FILENAME
                 memoryUrl: buildUrl + "/{{{ MEMORY_FILENAME }}}",
-    #endif
+                #endif
     #if SYMBOLS_FILENAME
                 symbolsUrl: buildUrl + "/{{{ SYMBOLS_FILENAME }}}",
-    #endif
+                #endif
                 streamingAssetsUrl: "StreamingAssets",
                 companyName: "{{{ COMPANY_NAME }}}",
                 productName: "{{{ PRODUCT_NAME }}}",
@@ -86,7 +121,7 @@
             const progressBarFull = document.querySelector("#unity-progress-bar-full");
             const fullscreenButton = document.querySelector("#unity-fullscreen-button");
 
-            const canFullscreen = (function() {
+            const canFullscreen = (function () {
                 return false;
             }());
 
@@ -94,9 +129,9 @@
                 container.className = "unity-mobile";
                 config.devicePixelRatio = 3;
             }
-    #if BACKGROUND_FILENAME
+            #if BACKGROUND_FILENAME
             canvas.style.background = "url('" + buildUrl + "/{{{ BACKGROUND_FILENAME.replace(/'/g, '%27') }}}') center / cover";
-    #endif
+            #endif
             loadingCover.style.display = "";
             const script = document.createElement("script");
             script.src = loaderUrl;
@@ -124,13 +159,13 @@
 
                         //是否在預設瀏覽器內
                         const isDefaultBrowser = (navigator.userAgent.includes("Samsung Browser") || navigator.userAgent.includes("SamsungBrowser")) ||
-                                                 (navigator.userAgent.includes("EMUI Browser") || navigator.userAgent.includes("EMUIBrowser")) ||
-                                                 (navigator.userAgent.includes("MIUI Browser") || navigator.userAgent.includes("MIUIBrowser")) ||
-                                                 (navigator.userAgent.includes("OPPO Browser") || navigator.userAgent.includes("OPPOBrowser")) ||
-                                                 (navigator.userAgent.includes("vivo Browser") || navigator.userAgent.includes("vivoBrowser")) ||
-                                                 (navigator.userAgent.includes("OnePlus Browser") || navigator.userAgent.includes("OnePlusBrowser")) ||
-                                                 (navigator.userAgent.includes("Sony Browser") || navigator.userAgent.includes("SonyBrowser")) ||
-                                                 (navigator.userAgent.includes("LG Browser") || navigator.userAgent.includes("LGBrowser"));
+                            (navigator.userAgent.includes("EMUI Browser") || navigator.userAgent.includes("EMUIBrowser")) ||
+                            (navigator.userAgent.includes("MIUI Browser") || navigator.userAgent.includes("MIUIBrowser")) ||
+                            (navigator.userAgent.includes("OPPO Browser") || navigator.userAgent.includes("OPPOBrowser")) ||
+                            (navigator.userAgent.includes("vivo Browser") || navigator.userAgent.includes("vivoBrowser")) ||
+                            (navigator.userAgent.includes("OnePlus Browser") || navigator.userAgent.includes("OnePlusBrowser")) ||
+                            (navigator.userAgent.includes("Sony Browser") || navigator.userAgent.includes("SonyBrowser")) ||
+                            (navigator.userAgent.includes("LG Browser") || navigator.userAgent.includes("LGBrowser"));
                         instance.SendMessage('Entry', 'IsDefaultBrowser', isDefaultBrowser.toString());
 
                         //檢測Coinbase App是否開啟
@@ -149,19 +184,19 @@
                             document.body.appendChild(iframe);
 
                             // 定时器用于检测iframe是否加载成功
-                            var timer = setTimeout(function() {
+                            var timer = setTimeout(function () {
                                 // 当iframe加载超时时，认为Coinbase应用未打开
                                 isAppOpen(false);
                             }, 2000); // 2秒钟作为超时时间，您可以根据需要调整
 
                             // iframe加载完成后的处理函数
-                            iframe.onload = function() {
+                            iframe.onload = function () {
                                 clearTimeout(timer); // 清除超时定时器
                                 isAppOpen(true); // 说明Coinbase应用已经打开
                             };
 
                             // 检查是否有异常发生
-                            iframe.onerror = function() {
+                            iframe.onerror = function () {
                                 clearTimeout(timer); // 清除超时定时器
                                 isAppOpen(false); // 说明Coinbase应用未打开或者不存在
                             };
@@ -178,12 +213,12 @@
                         isCoinbaseAppOpen();
 
                         // 網頁視窗焦點
-                        window.addEventListener("blur", function() {
+                        window.addEventListener("blur", function () {
                             instance.SendMessage('Entry', 'OnWindowBlur');
                         });
 
                         // 頁面窗口獲得焦點
-                        window.addEventListener("focus", function() {
+                        window.addEventListener("focus", function () {
                             instance.SendMessage('Entry', 'OnWindowFocus');
                         });
 
@@ -195,10 +230,10 @@
                             //Line登入回傳
                             window.unityInstance.SendMessage('ThirdLoginManager', 'OnLineLoginCallback', code);
                         }
-                        if(code && state == null) {
+                        if (code && state == null) {
                             //IG登入回傳
                             window.unityInstance.SendMessage('Entry', 'OnIGLoginCallback', code);
-                        }                        
+                        }
 
                         // 放置接收代碼的 JavaScript
                         function getQueryParams() {
@@ -221,18 +256,18 @@
                         const invitationCode = queryParams['invitationCode'];
                         //邀請者ID
                         const inviterId = queryParams['inviterId'];
-                        instance.SendMessage('Entry', 'HtmlDebug', 'lineMail:'+lineMail);
-                        instance.SendMessage('Entry', 'HtmlDebug', 'igIdAndName:'+igIdAndName);
-                        instance.SendMessage('Entry', 'HtmlDebug', 'invitationCode:'+invitationCode);
-                        if(lineMail) {
+                        instance.SendMessage('Entry', 'HtmlDebug', 'lineMail:' + lineMail);
+                        instance.SendMessage('Entry', 'HtmlDebug', 'igIdAndName:' + igIdAndName);
+                        instance.SendMessage('Entry', 'HtmlDebug', 'invitationCode:' + invitationCode);
+                        if (lineMail) {
                             //Line
                             instance.SendMessage('Entry', 'ReceiveLineMail', lineMail);
                         }
-                        if(igIdAndName) {
+                        if (igIdAndName) {
                             //IG
                             instance.SendMessage('Entry', 'ReceiveIGInfo', igIdAndName);
                         }
-                        if(invitationCode && inviterId) {
+                        if (invitationCode && inviterId) {
                             //接收邀請碼，綁定要請者
                             window.unityInstance.SendMessage('Entry', 'ReceiveInvitationCode', JSON.stringify({ invitationCode: invitationCode, inviterId: inviterId }));
                         }
@@ -247,4 +282,5 @@
 
     </script>
 </body>
+
 </html>

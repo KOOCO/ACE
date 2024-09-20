@@ -14,6 +14,7 @@ public class CryptoTableBtnSample : MonoBehaviour
     TextMeshProUGUI BlindsStr_Txt, Blinds_Txt,
                     MinBuyStr_Txt, MinBuy_Txt,
                     LaunchBtn_Txt;
+    public static JoinRoomView joinRoomView;
 
     /// <summary>
     /// 更新文本翻譯
@@ -49,13 +50,29 @@ public class CryptoTableBtnSample : MonoBehaviour
         {
             if (GameRoomManager.Instance.JudgeIsCanBeCreateRoom())
             {
-                JoinRoomView joinRoomView = ViewManager.Instance.CreateViewInCurrCanvas<JoinRoomView>(JoinRoomViewObj);
-                joinRoomView.SetCreatRoomViewInfo(TableTypeEnum.Cash, smallBlind);
+                if (DataManager.UserUChips > ((smallBlind * 2) * DataManager.MinMagnification))
+                {
+                    if (joinRoomView == null)
+                    {
+                        joinRoomView = ViewManager.Instance.CreateViewInCurrCanvas<JoinRoomView>(JoinRoomViewObj);
+                        joinRoomView.SetCreatRoomViewInfo(TableTypeEnum.Cash, smallBlind);
+                    }
+                    else
+                    {
+                        joinRoomView.SetCreatRoomViewInfo(TableTypeEnum.Cash, smallBlind);
+                        joinRoomView.gameObject.SetActive(!joinRoomView.gameObject.activeSelf);
+                    }
+                }
+                else
+                {
+                    DataManager.TipText = LanguageManager.Instance.GetText("you dont have enough Ucoins Please buy from shop");
+                    DataManager.istipAppear = true;
+                }
             }
             else
             {
                 lobbyView.ShowMaxRoomTip();
-            }            
+            }
         });
     }
 }

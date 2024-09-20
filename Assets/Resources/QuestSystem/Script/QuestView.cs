@@ -1,11 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System;
-using Amazon.Lambda.Model;
 
 public class QuestView : MonoBehaviour
 {
@@ -113,7 +108,7 @@ public class QuestView : MonoBehaviour
 
     public void CreateQuestView()
     {
-        
+
         RectTransform Dailyrect = Instantiate(DailyQuestView, DailyQuestParent).GetComponent<RectTransform>();
         Dailyrect.gameObject.SetActive(true);
 
