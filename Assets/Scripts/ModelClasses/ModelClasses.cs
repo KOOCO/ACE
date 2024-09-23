@@ -52,3 +52,32 @@ public class Player
     public string inviteCode;
 }
 #endregion
+
+
+[System.Serializable]
+public class TableItem
+{
+    public string id;
+    public string creationTime;
+    public string creatorId;
+    public string lastModificationTime;
+    public string lastModifierId;
+    public bool isDeleted;
+    public string deleterId;
+    public string deletionTime;
+    public string tenantId;
+    public int mode;
+    public double rebateSetting;
+    public double stake;
+    public double smallStake;
+    public double minBuyIn;
+    public double maxBuyIn;
+    public bool isEnable;
+}
+
+[Serializable]
+public class TableItemList
+{
+    public List<TableItem> items;
+    public int totalCount;
+}
