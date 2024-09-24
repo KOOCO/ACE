@@ -272,7 +272,7 @@ public class LobbyView : MonoBehaviour
         }
         if (DataManager.DataUpdated)
         {
-            UpdateUserData();
+            UpdateUserInfo();
             DataManager.DataUpdated = false;
         }
         #endregion

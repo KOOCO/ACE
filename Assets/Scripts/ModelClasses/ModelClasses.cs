@@ -89,6 +89,14 @@ public class JoinRound
     public string memberId;
     public string tableId;
     public double amount;
+    public int rankPoint;
+}
+public class LeaveRound
+{
+    public string memberId;
+    public double amount;
+    public string type;
+    public int rankPoint;
 }
 public class GameRound
 {

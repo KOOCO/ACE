@@ -115,6 +115,7 @@ public class JoinRoomView : MonoBehaviour
                 GameRound gameRound = JsonConvert.DeserializeObject<GameRound>(data);
                 var _currencyType = DataManager.CurrencyType;
                 Debug.Log("Currency Type :: " + _currencyType);
+                DataManager.TableType = gameRound.tableType;
                 switch (_currencyType)
                 {
                     case CurrencyType.Gold:
