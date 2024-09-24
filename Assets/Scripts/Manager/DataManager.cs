@@ -90,6 +90,7 @@ public static class DataManager
     public static string PlayerIPAddress { get; set; }              //IP地址
 
     public static LoginType UserLoginType { get; set; }             //用戶登入類型
+    public static CurrencyType CurrencyType { get; set; }             //CurrencyType
     public static string UserAccount { get; set; }                  //登入帳號
 
     public static string UserLoginPhoneNumber { get; set; }         //用戶登入手機號
@@ -110,6 +111,7 @@ public static class DataManager
     public static double UserAChips { get; set; }                   //用戶A籌碼
     public static double UserGold { get; set; }                     //用戶Gold籌碼
     public static bool DataUpdated { get; set; }                     //用戶Gold籌碼
+    public static string TableId { get; set; }
 
     #endregion
 

@@ -15,6 +15,10 @@ public class CryptoTableBtnSample : MonoBehaviour
                     MinBuyStr_Txt, MinBuy_Txt,
                     LaunchBtn_Txt;
     public static JoinRoomView joinRoomView;
+    CurrencyType currencyType;
+
+
+    string tableId;
 
     /// <summary>
     /// 更新文本翻譯
@@ -34,6 +38,7 @@ public class CryptoTableBtnSample : MonoBehaviour
     private void Awake()
     {
         LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
+        currencyType = CurrencyType.UCoin;
     }
 
     /// <summary>
@@ -41,13 +46,17 @@ public class CryptoTableBtnSample : MonoBehaviour
     /// </summary>
     /// <param name="smallBlind">小盲</param>
     /// <param name="lobbyView">大廳</param>
-    public void SetCryptoTableBtnInfo(double smallBlind, LobbyView lobbyView)
+    public void SetCryptoTableBtnInfo(double smallBlind, LobbyView lobbyView, string _tableId)
     {
+        tableId = _tableId;
         Blinds_Txt.text = $"{StringUtils.SetChipsUnit(smallBlind)} / {StringUtils.SetChipsUnit(smallBlind * 2)}";
         MinBuy_Txt.text = $"{StringUtils.SetChipsUnit(smallBlind * DataManager.MinMagnification)}";
 
         Launch_Btn.onClick.AddListener(() =>
         {
+            DataManager.TableId = tableId;
+            DataManager.CurrencyType = currencyType;
+
             if (GameRoomManager.Instance.JudgeIsCanBeCreateRoom())
             {
                 if (DataManager.UserUChips > ((smallBlind * 2) * DataManager.MinMagnification))
@@ -65,8 +74,8 @@ public class CryptoTableBtnSample : MonoBehaviour
                 }
                 else
                 {
-                    DataManager.TipText = LanguageManager.Instance.GetText("you dont have enough Ucoins Please buy from shop");
-                    DataManager.istipAppear = true;
+                    ViewManager.Instance.OpenTipMsgView(transform, LanguageManager.Instance.GetText("you dont have enough Ucoins Please buy from shop"));
+                    //DataManager.istipAppear = true;
                 }
             }
             else

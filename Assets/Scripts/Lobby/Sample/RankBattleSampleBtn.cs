@@ -16,6 +16,10 @@ public class RankBattleSampleBtn : MonoBehaviour
                     LaunchBtn_Txt;
     public static JoinRoomView joinRoomView;
 
+    CurrencyType currencyType;
+
+    string tableId;
+
     /// <summary>
     /// 更新文本翻譯
     /// </summary>
@@ -34,6 +38,7 @@ public class RankBattleSampleBtn : MonoBehaviour
     private void Awake()
     {
         LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
+        currencyType = CurrencyType.ACoin;
     }
 
     /// <summary>
@@ -41,13 +46,16 @@ public class RankBattleSampleBtn : MonoBehaviour
     /// </summary>
     /// <param name="smallBlind">小盲</param>
     /// <param name="lobbyView">大廳</param>
-    public void SetRankBattleBtnInfo(double smallBlind, LobbyView lobbyView)
+    public void SetRankBattleBtnInfo(double smallBlind, LobbyView lobbyView, string _tableId)
     {
+        tableId = _tableId;
         Blinds_Txt.text = $"{StringUtils.SetChipsUnit(smallBlind)} / {StringUtils.SetChipsUnit(smallBlind * 2)}";
         MinBuy_Txt.text = $"{StringUtils.SetChipsUnit(smallBlind * DataManager.MinMagnification)}";
 
         Launch_Btn.onClick.AddListener(() =>
         {
+            DataManager.TableId = tableId;
+            DataManager.CurrencyType = currencyType;
             if (GameRoomManager.Instance.JudgeIsCanBeCreateRoom())
             {
                 if (DataManager.UserAChips > ((smallBlind * 2) * DataManager.MinMagnification))
@@ -65,8 +73,7 @@ public class RankBattleSampleBtn : MonoBehaviour
                 }
                 else
                 {
-                    DataManager.TipText = LanguageManager.Instance.GetText("you dont have enough chips Please buy from shop");
-                    DataManager.istipAppear = true;
+                    ViewManager.Instance.OpenTipMsgView(transform, LanguageManager.Instance.GetText("you dont have enough chips Please buy from shop"));
                 }
             }
             else

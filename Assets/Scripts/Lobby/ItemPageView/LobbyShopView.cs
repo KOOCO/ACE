@@ -91,7 +91,6 @@ public class LobbyShopView : MonoBehaviour
     /// </summary>
     ItemType itemType;
 
-
     enum ItemType
     {
         All,
@@ -100,12 +99,6 @@ public class LobbyShopView : MonoBehaviour
         Gold,
         Tools,
         ACoin,
-    }
-    enum CurrencyType
-    {
-        Gold,
-        ACoin,
-        UCoin,
     }
     private void UpdateLanguage()
     {

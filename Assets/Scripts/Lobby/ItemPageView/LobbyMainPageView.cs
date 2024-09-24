@@ -677,7 +677,7 @@ public class LobbyMainPageView : MonoBehaviour
                 RectTransform rt = Instantiate(RankBattleBtnSample).GetComponent<RectTransform>();
                 rt.gameObject.SetActive(true);
                 rt.SetParent(RankTableParent);
-                rt.GetComponent<RankBattleSampleBtn>().SetRankBattleBtnInfo(tablesData.items[i].smallStake, lobbyView);
+                rt.GetComponent<RankBattleSampleBtn>().SetRankBattleBtnInfo(tablesData.items[i].smallStake, lobbyView, tablesData.items[i].id);
                 rt.localScale = Vector3.one;
             }
         }
@@ -697,7 +697,7 @@ public class LobbyMainPageView : MonoBehaviour
                 RectTransform rt = Instantiate(CryptoTableBtnSample).GetComponent<RectTransform>();
                 rt.gameObject.SetActive(true);
                 rt.SetParent(CryptoTableParent);
-                rt.GetComponent<CryptoTableBtnSample>().SetCryptoTableBtnInfo(tablesData.items[i].smallStake, lobbyView);
+                rt.GetComponent<CryptoTableBtnSample>().SetCryptoTableBtnInfo(tablesData.items[i].smallStake, lobbyView, tablesData.items[i].id);
                 rt.localScale = Vector3.one;
             }
         }
@@ -722,7 +722,7 @@ public class LobbyMainPageView : MonoBehaviour
                 RectTransform rt = Instantiate(VCTableBtnSample).GetComponent<RectTransform>();
                 rt.gameObject.SetActive(true);
                 rt.SetParent(VCTableParent);
-                rt.GetComponent<VCTableBtnSample>().SetVCTableBtnInfo(tablesData.items[i].smallStake, lobbyView);
+                rt.GetComponent<VCTableBtnSample>().SetVCTableBtnInfo(tablesData.items[i].smallStake, lobbyView, tablesData.items[i].id);
                 rt.localScale = Vector3.one;
             }
         }

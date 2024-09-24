@@ -7,6 +7,7 @@ using TMPro;
 using System;
 using Proyecto26;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 public class JoinRoomView : MonoBehaviour
 {
@@ -99,6 +100,39 @@ public class JoinRoomView : MonoBehaviour
 
             ViewManager.Instance.OpenWaitingView(transform);
             lobbyView.audioSource.Stop();
+            JoinRound newRound = new JoinRound
+            {
+                memberId = DataManager.UserId,
+                tableId = DataManager.TableId,
+                amount = newCarryChipsValue
+            };
+            Debug.Log($"MemberId {newRound.memberId} :: TableId {newRound.tableId} :: Amount {newRound.amount}");
+
+            //ViewManager.Instance.OpenWaitingView(transform);
+            SwaggerAPIManager.Instance.SendPostAPI<JoinRound>($"api/app/rounds/join-round?memberId={newRound.memberId}&tableId={newRound.tableId}&amount={newRound.amount}", newRound, (data) =>
+            {
+                Debug.Log("Join Round Response :: " + data);
+                GameRound gameRound = JsonConvert.DeserializeObject<GameRound>(data);
+                var _currencyType = DataManager.CurrencyType;
+                Debug.Log("Currency Type :: " + _currencyType);
+                switch (_currencyType)
+                {
+                    case CurrencyType.Gold:
+                        Debug.Log(_currencyType);
+                        DataManager.UserGold -= newCarryChipsValue;
+                        break;
+                    case CurrencyType.ACoin:
+                        Debug.Log(_currencyType);
+                        DataManager.UserAChips -= newCarryChipsValue;
+                        break;
+                    case CurrencyType.UCoin:
+                        Debug.Log(_currencyType);
+                        DataManager.UserUChips -= newCarryChipsValue;
+                        break;
+                }
+                DataManager.DataUpdated = true;
+            }, null, true, true);
+
 #if UNITY_EDITOR
 
             dataRoomName = "EditorRoom";
@@ -124,6 +158,7 @@ public class JoinRoomView : MonoBehaviour
                                                         $"{DataManager.UserId}",
                                                         gameObject.name,
                                                         nameof(JoinRoomQueryCallback));
+
         });
 
         //購買Slider單位設定
