@@ -197,6 +197,7 @@ public class LobbyMainPageView : MonoBehaviour
         SwitchBg = false;
 
         InitBillBoard();
+        ViewManager.Instance.OpenWaitingView(transform);
         SwaggerAPIManager.Instance.SendGetAPI("/api/app/tables", (data) =>
         {
             Debug.Log("Tables data :: " + data);
@@ -727,6 +728,8 @@ public class LobbyMainPageView : MonoBehaviour
         }
         else
             tables[2].SetActive(false);
+
+        ViewManager.Instance.CloseWaitingView(transform);
     }
 
     #region Line客服加好友
