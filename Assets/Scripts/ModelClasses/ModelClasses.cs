@@ -109,6 +109,7 @@ public class GameRound
     public double tableCommission;
     public string name;
     public string tenantId;
+    public string roundId;
     //public DateTime creationTime;
     public Table table;
     public List<RoundMember> roundMembers;

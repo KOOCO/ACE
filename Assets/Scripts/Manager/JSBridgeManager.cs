@@ -164,6 +164,33 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
                                  callbackFunPtr);
     }
 
+    public void WriteDataToFirebase(string refPathPtr, string data, string objNamePtr = null, string callbackFunPtr = null, bool isHistory = true)
+    {
+        //string jsonData = JsonConvert.SerializeObject(data);
+
+#if UNITY_EDITOR
+
+        RestClient.Post($"{DataManager.DatabaseUrl}{refPathPtr}.json", data).Then(response =>
+        {
+            if (!string.IsNullOrEmpty(objNamePtr) && !string.IsNullOrEmpty(callbackFunPtr))
+            {
+                GameObject obj = GameObject.Find(objNamePtr);
+                obj.SendMessage(callbackFunPtr, response.Text);
+            }
+        }).Catch(error =>
+        {
+            Debug.LogError("Write Data Error: " + error);
+        });
+
+        return;
+#endif
+
+        JS_WriteDataFromFirebase(refPathPtr,
+                                 data,
+                                 objNamePtr,
+                                 callbackFunPtr);
+    }
+
     [DllImport("__Internal")]
     private static extern bool JS_UpdateDataFromFirebase(string refPathPtr, string jsonDataPtr, string objNamePtr = null, string callbackFunPtr = null);
     /// <summary>
@@ -214,7 +241,7 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
 #if UNITY_EDITOR
 
         RestClient.Get($"{DataManager.DatabaseUrl}{refPathPtr}.json").Then(response =>
-        {           
+        {
             GameObject obj = GameObject.Find(objNamePtr);
             obj.SendMessage(callbackFunPtr, response.Text);
 
