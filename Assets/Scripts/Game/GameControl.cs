@@ -309,7 +309,7 @@ public class GameControl : MonoBehaviour
         {
             memberId = DataManager.UserId,
             amount = 0,
-            type = DataManager.TableType,
+            type = DataManager.CurrencyType.ToString(),
             rankPoint = 10
         };
 
