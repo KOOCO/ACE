@@ -773,101 +773,102 @@ public class GameControl : MonoBehaviour
             //邊池結果
             case GameFlowEnum.SideResult:
 
-                //更新遊戲流程
+                // Update game flow
                 data = new Dictionary<string, object>()
                 {
-                    { FirebaseManager.CURR_COMMUNITY_POKER, gameRoomData.communityPoker.Take(5)},      //當前顯示公共牌
+                    { FirebaseManager.CURR_COMMUNITY_POKER, gameRoomData.communityPoker.Take(5)},      // Current community cards
                 };
                 UpdateGameRoomData(data);
 
-                //遊戲中玩家
-                playingPlayers = GetPlayingPlayer().OrderBy(x => x.allBetChips)
-                                                   .ToList();
+                // Get players still in the game, ordered by total bet chips
+                playingPlayers = GetPlayingPlayer().OrderBy(x => x.allBetChips).ToList();
 
-                //邊池贏家
-                List<GameRoomPlayerData> sideWinners = JudgeWinner(playingPlayers).OrderBy(x => x.allBetChips)
-                                                                                  .ToList();
+                // Side pot winners
+                List<GameRoomPlayerData> sideWinners = JudgeWinner(playingPlayers).OrderBy(x => x.allBetChips).ToList();
 
-                //底池贏家總下注籌碼
-                double potMInChips = Math.Floor(gameRoomData.potWinData.potWinChips / playingPlayers.Count());
+                // Main pot chip allocation
+                double potMinChips = Math.Floor(gameRoomData.potWinData.potWinChips / playingPlayers.Count());
 
-                //退回籌碼與邊池總籌碼
+                // Initialize side pot value
                 double sideWinValue = 0;
+
                 foreach (var player in playingPlayers)
                 {
-                    //與底池差額
-                    double potDifference = player.allBetChips - potMInChips;
+                    // Difference between player's bet and main pot bet
+                    double potDifference = player.allBetChips - potMinChips;
 
+                    // If there is no difference, skip this player
                     if (potDifference == 0)
                     {
                         continue;
                     }
 
+                    // Calculate how much to return and distribute in the side pot
                     double backChips = 0;
-                    double chips = (sideWinners[0].allBetChips - potMInChips) - (player.allBetChips - potMInChips);
                     if (player.allBetChips <= sideWinners[0].allBetChips)
                     {
+                        // The player is eligible for the full side pot winnings
                         sideWinValue += potDifference;
                     }
                     else
                     {
-                        double lose = (player.allBetChips - potMInChips) - (sideWinners[0].allBetChips - potMInChips) - potDifference;
-                        sideWinValue += lose;
+                        // The player exceeded the side winner's bet, so calculate loss and chips to return
+                        double excess = player.allBetChips - sideWinners[0].allBetChips;
+                        sideWinValue += sideWinners[0].allBetChips - potMinChips;
+                        backChips = potDifference - excess;
 
-                        //退回籌碼
-                        backChips = potDifference - lose;
-
-                        //更新玩家籌碼
+                        // Update the player's chips with the returned amount
                         newCarryChips = player.carryChips + backChips;
                         data = new Dictionary<string, object>()
                         {
-                            { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips)},   //攜帶籌碼
+                            { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips)},   // Carry chips
                         };
-                        UpdataPlayerData(player.userId,
-                                         data);
+                        UpdataPlayerData(player.userId, data);
 
-                        //更新退回籌碼資料
+                        // Update chip return data
                         data = new Dictionary<string, object>()
                         {
-                            { FirebaseManager.BACK_USER_ID, player.userId},        //用戶ID
-                            { FirebaseManager.BACK_CHIPS_VALUE, backChips},        //退回籌碼值
+                            { FirebaseManager.BACK_USER_ID, player.userId},        // User ID
+                            { FirebaseManager.BACK_CHIPS_VALUE, backChips},        // Returned chip value
                         };
                         JSBridgeManager.Instance.UpdateDataFromFirebase(
                             $"{QueryRoomPath}/{FirebaseManager.SIDE_WIN_DATA}/{FirebaseManager.BACK_CHIPS_DATA}/{player.userId}",
                             data);
 
+                        // Update local player chip data
                         GetPlayerData(player.userId).carryChips = newCarryChips;
                     }
                 }
 
-                //更新邊池贏家籌碼
+                // Update side pot winners' chips
                 List<string> sideWinnerIdList = new List<string>();
                 foreach (var sidewinner in sideWinners)
                 {
                     sideWinnerIdList.Add(sidewinner.userId);
 
-                    //更新玩家籌碼
-                    newCarryChips = sidewinner.carryChips + (sideWinValue / sideWinners.Count());
+                    // Calculate new chips after winning side pot
+                    newCarryChips = sidewinner.carryChips + (sideWinValue / sideWinners.Count);
                     data = new Dictionary<string, object>()
                     {
-                        { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips)},   //攜帶籌碼
+                        { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips)},   // Carry chips
                     };
-                    UpdataPlayerData(sidewinner.userId,
-                                     data);
+                    UpdataPlayerData(sidewinner.userId, data);
 
+                    // Update local side winner chip data
                     GetPlayerData(sidewinner.userId).carryChips = newCarryChips;
                 }
 
-                //更新邊池資料
+                // Update side pot data in Firebase
                 data = new Dictionary<string, object>()
                 {
-                    { FirebaseManager.SIDE_WIN_CHIPS, sideWinValue},             //邊池獲得籌碼
-                    { FirebaseManager.SIDE_WINNERS_ID, sideWinnerIdList},        //邊池贏家ID
+                    { FirebaseManager.SIDE_WIN_CHIPS, sideWinValue},             // Side pot winnings
+                    { FirebaseManager.SIDE_WINNERS_ID, sideWinnerIdList},        // Side pot winners' IDs
                 };
                 JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.SIDE_WIN_DATA}",
                                                                 data,
                                                                 gameObject.name,
                                                                 nameof(SideWinDataCallback));
+
 
                 break;
 
