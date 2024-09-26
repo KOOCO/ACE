@@ -3182,6 +3182,7 @@ MonoBehaviour:
   Term_Title: {fileID: 4838180019163020456}
   TermsConfirm_Btn_Txt: {fileID: 4310507527192152554}
   PrivacyConfirm_Btn_Txt: {fileID: 7943017785349477194}
+  AudioSource: {fileID: 3524427178081872549}
   localIP: 
   isCorrect: 1
 --- !u!222 &837559756044227817
