@@ -7,9 +7,13 @@ using System.Linq;
 using TMPro;
 using static LoginView;
 using Microsoft.AspNet.SignalR.Client.Http;
+using Newtonsoft.Json;
+using Org.BouncyCastle.Math.EC.Rfc7748;
 
 public class LobbyMainPageView : MonoBehaviour
 {
+    [Header("Tables")]
+    public List<GameObject> tables;
     [Header("背景")]
     [SerializeField]
     Image Bg_Img;
@@ -27,6 +31,15 @@ public class LobbyMainPageView : MonoBehaviour
     Button Integral_Btn;
     [SerializeField]
     TextMeshProUGUI IntegralBtn_Txt;
+
+
+    [Header("Rank Battle")]
+    [SerializeField]
+    GameObject RankBattleBtnSample;
+    [SerializeField]
+    RectTransform RankTableParent;
+    [SerializeField]
+    TextMeshProUGUI RankTableTital_Txt;
 
     [Header("加密貨幣桌")]
     [SerializeField]
@@ -103,8 +116,6 @@ public class LobbyMainPageView : MonoBehaviour
     private void UpdateLanguage()
     {
         IntegralBtn_Txt.text = LanguageManager.Instance.GetText("GO TO INTEGRAL");
-        CryptoTableTital_Txt.text = LanguageManager.Instance.GetText("Classic Battle");
-        VCTableTital_Txt.text = LanguageManager.Instance.GetText("High Roller Battleground");
     }
 
     private void OnDestroy()
@@ -186,7 +197,13 @@ public class LobbyMainPageView : MonoBehaviour
         SwitchBg = false;
 
         InitBillBoard();
-        CreateRoomBtn();
+        ViewManager.Instance.OpenWaitingView(transform);
+        SwaggerAPIManager.Instance.SendGetAPI("/api/app/tables", (data) =>
+        {
+            Debug.Log("Tables data :: " + data);
+            tablesData = JsonConvert.DeserializeObject<TableItemList>(data);
+            CreateRoomBtn();
+        }, null, true);
 
     }
 
@@ -645,37 +662,74 @@ public class LobbyMainPageView : MonoBehaviour
     /// <summary>
     /// 創建房間按鈕
     /// </summary>
+    TableItemList tablesData = new();
     private void CreateRoomBtn()
     {
-        //加密貨幣桌        
-        CryptoTableBtnSample.SetActive(false);
-        float cryptoSpacing = CryptoTableParent.GetComponent<HorizontalLayoutGroup>().spacing;
-        Rect cryptoRect = CryptoTableBtnSample.GetComponent<RectTransform>().rect;
-        CryptoTableParent.sizeDelta = new Vector2((cryptoRect.width + cryptoSpacing) * DataManager.CryptoSmallBlindList.Count, cryptoRect.height);
-        foreach (var smallBlind in DataManager.CryptoSmallBlindList)
+        var selectedData = tablesData.items.Where(x => x.mode == 0 && x.isEnable == true);
+        if (selectedData.Count() > 0)
         {
-            RectTransform rt = Instantiate(CryptoTableBtnSample).GetComponent<RectTransform>();
-            rt.gameObject.SetActive(true);
-            rt.SetParent(CryptoTableParent);
-            rt.GetComponent<CryptoTableBtnSample>().SetCryptoTableBtnInfo(smallBlind, lobbyView);
-            rt.localScale = Vector3.one;
-        }
-        CryptoTableParent.anchoredPosition = Vector2.zero;
+            tables[0].SetActive(true);
+            RankTableTital_Txt.text = LanguageManager.Instance.GetText("Rank Battle");
+            RankBattleBtnSample.SetActive(false);
 
-        //虛擬貨幣桌
-        VCTableBtnSample.SetActive(false);
-        float vcSpacing = VCTableParent.GetComponent<HorizontalLayoutGroup>().spacing;
-        Rect vcRect = VCTableBtnSample.GetComponent<RectTransform>().rect;
-        VCTableParent.sizeDelta = new Vector2((vcRect.width + vcSpacing) * DataManager.VCSmallBlindList.Count, vcRect.height);
-        foreach (var smallBlind in DataManager.VCSmallBlindList)
-        {
-            RectTransform rt = Instantiate(VCTableBtnSample).GetComponent<RectTransform>();
-            rt.gameObject.SetActive(true);
-            rt.SetParent(VCTableParent);
-            rt.GetComponent<VCTableBtnSample>().SetVCTableBtnInfo(smallBlind, lobbyView);
-            rt.localScale = Vector3.one;
+            for (int i = 0; i < selectedData.Count(); i++)
+            {
+                RectTransform rt = Instantiate(RankBattleBtnSample).GetComponent<RectTransform>();
+                rt.gameObject.SetActive(true);
+                rt.SetParent(RankTableParent);
+                rt.GetComponent<RankBattleSampleBtn>().SetRankBattleBtnInfo(tablesData.items[i].smallStake, lobbyView, tablesData.items[i].id);
+                rt.localScale = Vector3.one;
+            }
         }
-        VCTableParent.anchoredPosition = Vector2.zero;
+        else
+            tables[0].SetActive(false);
+
+        selectedData = tablesData.items.Where(x => x.mode == 1 && x.isEnable == true);
+
+        if (selectedData.Count() > 0)
+        {
+            tables[1].SetActive(true);
+            CryptoTableTital_Txt.text = LanguageManager.Instance.GetText("High Roller Battleground");
+            CryptoTableBtnSample.SetActive(false);
+
+            for (int i = 0; i < selectedData.Count(); i++)
+            {
+                RectTransform rt = Instantiate(CryptoTableBtnSample).GetComponent<RectTransform>();
+                rt.gameObject.SetActive(true);
+                rt.SetParent(CryptoTableParent);
+                rt.GetComponent<CryptoTableBtnSample>().SetCryptoTableBtnInfo(tablesData.items[i].smallStake, lobbyView, tablesData.items[i].id);
+                rt.localScale = Vector3.one;
+            }
+        }
+        else
+            tables[1].SetActive(false);
+        //加密貨幣桌
+
+
+
+
+        selectedData = tablesData.items.Where(x => x.mode == 2 && x.isEnable == true);
+
+        if (selectedData.Count() > 0)
+        {
+            tables[2].SetActive(true);
+            VCTableTital_Txt.text = LanguageManager.Instance.GetText("Classic Battle");
+
+            //虛擬貨幣桌
+            VCTableBtnSample.SetActive(false);
+            for (int i = 0; i < selectedData.Count(); i++)
+            {
+                RectTransform rt = Instantiate(VCTableBtnSample).GetComponent<RectTransform>();
+                rt.gameObject.SetActive(true);
+                rt.SetParent(VCTableParent);
+                rt.GetComponent<VCTableBtnSample>().SetVCTableBtnInfo(tablesData.items[i].smallStake, lobbyView, tablesData.items[i].id);
+                rt.localScale = Vector3.one;
+            }
+        }
+        else
+            tables[2].SetActive(false);
+
+        ViewManager.Instance.CloseWaitingView(transform);
     }
 
     #region Line客服加好友

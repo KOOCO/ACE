@@ -1,8 +1,10 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class VCTableBtnSample : MonoBehaviour
+public class RankBattleSampleBtn : MonoBehaviour
 {
     [SerializeField]
     Button Launch_Btn;
@@ -13,7 +15,9 @@ public class VCTableBtnSample : MonoBehaviour
                     MinBuyStr_Txt, MinBuy_Txt,
                     LaunchBtn_Txt;
     public static JoinRoomView joinRoomView;
+
     CurrencyType currencyType;
+
     string tableId;
 
     /// <summary>
@@ -42,18 +46,16 @@ public class VCTableBtnSample : MonoBehaviour
     /// </summary>
     /// <param name="smallBlind">小盲</param>
     /// <param name="lobbyView">大廳</param>
-    public void SetVCTableBtnInfo(double smallBlind, LobbyView lobbyView, string _tableId)
+    public void SetRankBattleBtnInfo(double smallBlind, LobbyView lobbyView, string _tableId)
     {
+        tableId = _tableId;
         Blinds_Txt.text = $"{StringUtils.SetChipsUnit(smallBlind)} / {StringUtils.SetChipsUnit(smallBlind * 2)}";
         MinBuy_Txt.text = $"{StringUtils.SetChipsUnit(smallBlind * DataManager.MinMagnification)}";
-
-        tableId = _tableId;
 
         Launch_Btn.onClick.AddListener(() =>
         {
             DataManager.TableId = tableId;
             DataManager.CurrencyType = currencyType;
-
             if (GameRoomManager.Instance.JudgeIsCanBeCreateRoom())
             {
                 if (DataManager.UserAChips > ((smallBlind * 2) * DataManager.MinMagnification))

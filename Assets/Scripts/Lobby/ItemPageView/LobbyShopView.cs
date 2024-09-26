@@ -91,7 +91,6 @@ public class LobbyShopView : MonoBehaviour
     /// </summary>
     ItemType itemType;
 
-
     enum ItemType
     {
         All,
@@ -100,12 +99,6 @@ public class LobbyShopView : MonoBehaviour
         Gold,
         Tools,
         ACoin,
-    }
-    enum CurrencyType
-    {
-        Gold,
-        ACoin,
-        UCoin,
     }
     private void UpdateLanguage()
     {
@@ -162,6 +155,7 @@ public class LobbyShopView : MonoBehaviour
     #region 生成初始商店
     public void InitShop()
     {
+        ViewManager.Instance.OpenWaitingView(transform);
         SwaggerAPIManager.Instance.SendGetAPI("api/app/items/get-list?maxCount=1000", CallBackOnGetList, null, true);
         // CreateShopItem(All_ShopItem_Sample[0], All_ShopItem_Sample[0].transform.parent.gameObject, DataManager.Stamina_Shop, AlbumEnum.Shop_StaminaAlbum);
         // CreateShopItem(All_ShopItem_Sample[1], All_ShopItem_Sample[1].transform.parent.gameObject, DataManager.Gold_Shop, AlbumEnum.Shop_GoldAlbum);
@@ -223,6 +217,7 @@ public class LobbyShopView : MonoBehaviour
                     break;
             }
         }
+        ViewManager.Instance.CloseWaitingView(transform);
     }
 
     void ShowHideObject()

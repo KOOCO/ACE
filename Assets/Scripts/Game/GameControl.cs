@@ -299,13 +299,53 @@ public class GameControl : MonoBehaviour
     /// </summary>
     public void ExitGame()
     {
+        if (DataManager.UserId == null)
+        {
+            Debug.LogError("User ID is null. Cannot exit game.");
+            return;
+        }
+
+        LeaveRound leaveRound = new LeaveRound
+        {
+            memberId = DataManager.UserId,
+            amount = 0,
+            type = DataManager.CurrencyType.ToString(),
+            rankPoint = 10
+        };
+
+        // Null and key existence check
+        if (gameRoomData != null && gameRoomData.playerDataDic != null &&
+            gameRoomData.playerDataDic.TryGetValue(DataManager.UserId, out GameRoomPlayerData gameRoomPlayerData))
+        {
+            leaveRound.amount = gameRoomPlayerData.carryChips;
+        }
+        else
+        {
+            Debug.LogWarning("Game room data or player data dictionary is null, or player data not found.");
+        }
+
+        string apiEndpoint = $"api/app/rounds/leave-table?memberId={leaveRound.memberId}&amount={leaveRound.amount}&type={leaveRound.type}&rankPoint={leaveRound.rankPoint}";
+
+        SwaggerAPIManager.Instance.SendPostAPI<LeaveRound>(apiEndpoint, null, (data) =>
+        {
+            Debug.Log("Player successfully left the room.");
+            DataManager.UserUChips += leaveRound.amount;
+            DataManager.DataUpdated = true;
+            OnLeaveTable();
+        },
+        (error) =>
+        {
+            Debug.LogError($"Failed to leave the room. Error: {error}");
+        }, true, true);
+    }
+    void OnLeaveTable()
+    {
         //移除倒數
         if (cdCoroutine != null) StopCoroutine(cdCoroutine);
 
         //機器人數量
         int robotCount = gameRoomData.playerDataDic.Where(x => x.Value.userId.StartsWith(FirebaseManager.ROBOT_ID))
                                                    .Count();
-
         //停止監聽遊戲房間資料
         JSBridgeManager.Instance.StopListeningForDataChanges($"{QueryRoomPath}");
 
@@ -353,7 +393,6 @@ public class GameControl : MonoBehaviour
         //本地玩家房間關閉
         GameRoomManager.Instance.RemoveGameRoom(transform.name);
     }
-
     /// <summary>
     /// 移除玩家
     /// </summary>

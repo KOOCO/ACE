@@ -162,6 +162,10 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
         resultDataList.Add(newData);
         string json = JsonConvert.SerializeObject(resultDataList);
         PlayerPrefs.SetString(ResultHistoryPlayerPrefsKey, json);
+        JSBridgeManager.Instance.WriteDataToFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}/HandHistory/{nameof(resultDataList)}",
+                                                json,
+                                                gameObject.name,
+                                                nameof(GameResultDataSaveToFirebase), true);
         PlayerPrefs.Save();
     }
 
@@ -253,7 +257,26 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
         gameInitHistoryDataList.Add(newData);
         string json = JsonConvert.SerializeObject(gameInitHistoryDataList);
         PlayerPrefs.SetString(GameInitHistoryPlayerPrefsKey, json);
+        JSBridgeManager.Instance.WriteDataToFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}/HandHistory/{nameof(gameInitHistoryDataList)}",
+                                                        json,
+                                                        gameObject.name,
+                                                        nameof(GameInitDataSaveToFirebase), true);
         PlayerPrefs.Save();
+    }
+
+    Dictionary<string, object> gameInitHistoryDic;
+
+    void GameInitDataSaveToFirebase()
+    {
+        Debug.Log("GameInitDataSavedToFirebase");
+    }
+    void GameProcessDataSaveToFirebase()
+    {
+        Debug.Log("GameProcessDataSavedToFirebase");
+    }
+    void GameResultDataSaveToFirebase()
+    {
+        Debug.Log("GameResultDataSavedToFirebase");
     }
 
     #endregion
@@ -293,6 +316,10 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
         processHistoryDataList.Add(newData);
         string json = JsonConvert.SerializeObject(processHistoryDataList);
         PlayerPrefs.SetString(ProcessHistoryPlayerPrefsKey, json);
+        JSBridgeManager.Instance.WriteDataToFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}/HandHistory/{nameof(processHistoryDataList)}",
+                                                json,
+                                                gameObject.name,
+                                                nameof(GameProcessDataSaveToFirebase), true);
         PlayerPrefs.Save();
     }
 

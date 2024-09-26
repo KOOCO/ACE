@@ -61,7 +61,7 @@ public class LobbyView : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI TransfersBtn_Txt;
 
-    [Header("背景音樂")] [SerializeField] public AudioSource audioSource;
+    [Header("背景音樂")][SerializeField] public AudioSource audioSource;
 
     bool isFirstIn;
     bool isListenered;
@@ -272,7 +272,7 @@ public class LobbyView : MonoBehaviour
         }
         if (DataManager.DataUpdated)
         {
-            UpdateUserData();
+            UpdateUserInfo();
             DataManager.DataUpdated = false;
         }
         #endregion
@@ -435,22 +435,31 @@ public class LobbyView : MonoBehaviour
     private void OpenItemPage(ItemType itemType)
     {
         LobbyMainPageView mainPageView = null;
+
+        // Find existing pages
         for (int i = 0; i < Floor3.childCount; i++)
         {
-            if (Floor3.GetChild(i).GetComponent<LobbyMainPageView>() != null)
+            Transform child = Floor3.GetChild(i);
+            if (child.TryGetComponent(out LobbyMainPageView foundView))
             {
-                mainPageView = Floor3.GetChild(i).GetComponent<LobbyMainPageView>();
-                mainPageView.SwitchBg = true;
-                continue;
-            }
+                if (itemType == ItemType.Main)
+                {
+                    mainPageView = foundView;
+                    mainPageView.SwitchBg = true;
+                }
+                else
+                    Destroy(child.gameObject);
 
-            Destroy(Floor3.GetChild(i).gameObject);
+            }
+            else
+            {
+                Destroy(child.gameObject);
+            }
         }
 
         GameObject itemObj = null;
         switch (itemType)
         {
-            //主頁
             case ItemType.Main:
                 if (mainPageView == null)
                 {
@@ -461,26 +470,21 @@ public class LobbyView : MonoBehaviour
                     mainPageView.SwitchBg = false;
                 }
                 break;
-
-            //用戶訊息
             case ItemType.Mine:
                 itemObj = LobbyMinePageView;
                 break;
-
-            //排名
             case ItemType.Ranking:
                 itemObj = LobbyRankingView;
                 break;
-
-            //商店
             case ItemType.Shop:
                 itemObj = LobbyShopView;
                 break;
-
-            //活動
             case ItemType.Activity:
                 itemObj = LobbyActivityView;
                 break;
+            default:
+                Debug.LogWarning("Unknown item type: " + itemType);
+                return; // Early exit for unknown types
         }
 
         if (itemObj != null)
@@ -489,6 +493,7 @@ public class LobbyView : MonoBehaviour
             ViewManager.Instance.InitViewTr(itemPageView, itemType.ToString());
         }
     }
+
 
     /// <summary>
     /// 顯示已達房間數量提示
