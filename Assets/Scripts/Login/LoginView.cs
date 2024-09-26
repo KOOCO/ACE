@@ -164,6 +164,9 @@ public class LoginView : MonoBehaviour
                     PrivacyConfirmBtn_Txt, Privacy_Title, Term_Title,
                     TermsConfirm_Btn_Txt, PrivacyConfirm_Btn_Txt;
 
+    [Header("音樂撥放")]
+    public AudioSource AudioSource;
+    [SerializeField]
     const int ErrorWalletConnectTime = 30;                                      //判定連接失敗等待時間
     const int codeCountDownTime = 60;                                           //發送OTP倒數時間
 
@@ -752,6 +755,7 @@ public class LoginView : MonoBehaviour
 
         DataManager.IsNotFirstInLogin = true;
 
+       SoundToggleGroup.IsPlayAudio(AudioSource);
     }
 
     private void Update()

@@ -799,6 +799,7 @@ public class GameView : MonoBehaviour
         }
 
         #endregion
+        SoundToggleGroup.IsPlayAudio(AudioSource_Obj);
     }
 
     private void Update()

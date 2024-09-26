@@ -212,7 +212,6 @@ public class LobbyView : MonoBehaviour
         SetIsShowAssetList = isShowAssetList;
 
         OpenItemPage(ItemType.Main);
-        audioSource.Play();
     }
 
     private void Start()
@@ -254,6 +253,7 @@ public class LobbyView : MonoBehaviour
 
         //刷新用戶資料
         //InvokeRepeating(nameof(UpdateUserData), 30, 30);*/
+        SoundToggleGroup.IsPlayAudio(audioSource);
     }
 
     private void Update()
