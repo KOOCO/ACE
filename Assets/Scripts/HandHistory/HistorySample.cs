@@ -79,7 +79,7 @@ public class HistorySample : MonoBehaviour
         {
             common.PokerNum = -1;
         }
-        for (int i = resultHistory.CommunityPoker.Count - 1; i >= 0; i--)
+        for (int i = 0; i < resultHistory.CommunityPoker.Count; i++)
         {
             CommunityPokers[i].PokerNum = resultHistory.CommunityPoker[i];
         }
