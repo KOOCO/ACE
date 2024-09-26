@@ -21,7 +21,7 @@ public class HandHistoryView : MonoBehaviour
     /// </summary>
     public void UpdateHitoryDate()
     {
-        for (int i = 1; i < HistroyParent.childCount; i++)
+        for (int i = 0; i < HistroyParent.childCount; i++)
         {
             Destroy(HistroyParent.GetChild(i).gameObject);
         }
