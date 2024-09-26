@@ -74,8 +74,8 @@ public class CryptoTableBtnSample : MonoBehaviour
                 }
                 else
                 {
-                    ViewManager.Instance.OpenTipMsgView(transform, LanguageManager.Instance.GetText("you dont have enough Ucoins Please buy from shop"));
-                    //DataManager.istipAppear = true;
+                    DataManager.istipAppear = true;
+                    DataManager.TipText = LanguageManager.Instance.GetText("you dont have enough Ucoins Please buy from shop");
                 }
             }
             else

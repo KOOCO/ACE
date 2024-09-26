@@ -61,6 +61,9 @@ public class LobbyView : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI TransfersBtn_Txt;
 
+    public GameObject Notice;
+    public TextMeshProUGUI noticeText;
+
     [Header("背景音樂")][SerializeField] public AudioSource audioSource;
 
     bool isFirstIn;
@@ -276,6 +279,10 @@ public class LobbyView : MonoBehaviour
             DataManager.DataUpdated = false;
         }
         #endregion
+
+
+        Notice.gameObject.SetActive(DataManager.istipAppear);
+        noticeText.text = DataManager.TipText;
     }
 
     /// <summary>
@@ -494,6 +501,10 @@ public class LobbyView : MonoBehaviour
         }
     }
 
+    public void CloseNotice()
+    {
+        DataManager.istipAppear = false;
+    }
 
     /// <summary>
     /// 顯示已達房間數量提示

@@ -73,7 +73,8 @@ public class RankBattleSampleBtn : MonoBehaviour
                 }
                 else
                 {
-                    ViewManager.Instance.OpenTipMsgView(transform, LanguageManager.Instance.GetText("you dont have enough chips Please buy from shop"));
+                    DataManager.istipAppear = true;
+                    DataManager.TipText = LanguageManager.Instance.GetText("you dont have enough chips Please buy from shop");
                 }
             }
             else
