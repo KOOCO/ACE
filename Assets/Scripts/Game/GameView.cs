@@ -1422,7 +1422,7 @@ public class GameView : MonoBehaviour
             case AutoActingEnum.CheckAndFold:
                 if (thisData.IsFirstRaisePlayer == true)
                 {
-                    if (thisData.CurrCallValue <= thisData.SmallBlindValue * 2)
+                    if (thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue)
                     {
                         OnCallAndCheck();
                     }
