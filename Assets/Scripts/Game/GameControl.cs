@@ -786,86 +786,98 @@ public class GameControl : MonoBehaviour
                 // Side pot winners
                 List<GameRoomPlayerData> sideWinners = JudgeWinner(playingPlayers).OrderBy(x => x.allBetChips).ToList();
 
-                // Main pot chip allocation
-                double potMinChips = Math.Floor(gameRoomData.potWinData.potWinChips / playingPlayers.Count());
+                // Calculate minimum chips required for the main pot (main pot chips are divided equally)
+                double potMinChips = Math.Floor(gameRoomData.potWinData.potWinChips / playingPlayers.Count);
 
-                // Initialize side pot value
-                double sideWinValue = 0;
+                // Initialize the total side pot value
+                double totalSidePot = 0;
 
+                // Calculate the total side pot value by summing all chips above the main pot minimum
                 foreach (var player in playingPlayers)
                 {
-                    // Difference between player's bet and main pot bet
+                    double potDifference = player.allBetChips - potMinChips;
+                    if (potDifference > 0)
+                    {
+                        // Add only the excess chips to the side pot
+                        totalSidePot += potDifference;
+                    }
+                }
+
+                // Now calculate the amount to return for players who over-bet compared to the side winners
+                foreach (var player in playingPlayers)
+                {
                     double potDifference = player.allBetChips - potMinChips;
 
-                    // If there is no difference, skip this player
+                    // If player didn't over-bet, skip
                     if (potDifference == 0)
                     {
                         continue;
                     }
 
-                    // Calculate how much to return and distribute in the side pot
-                    double backChips = 0;
                     if (player.allBetChips <= sideWinners[0].allBetChips)
                     {
-                        // The player is eligible for the full side pot winnings
-                        sideWinValue += potDifference;
+                        // Player is eligible for the full side pot winnings
+                        continue;
                     }
                     else
                     {
-                        // The player exceeded the side winner's bet, so calculate loss and chips to return
+                        // Player over-bet, so calculate the excess and return chips
                         double excess = player.allBetChips - sideWinners[0].allBetChips;
-                        sideWinValue += sideWinners[0].allBetChips - potMinChips;
-                        backChips = potDifference - excess;
+                        double backChips = excess;
 
-                        // Update the player's chips with the returned amount
+                        // Return excess chips to player
                         newCarryChips = player.carryChips + backChips;
                         data = new Dictionary<string, object>()
                         {
-                            { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips)},   // Carry chips
+                            { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips) }, // Update player's carry chips
                         };
                         UpdataPlayerData(player.userId, data);
 
-                        // Update chip return data
+                        // Update Firebase with returned chips data
                         data = new Dictionary<string, object>()
                         {
-                            { FirebaseManager.BACK_USER_ID, player.userId},        // User ID
-                            { FirebaseManager.BACK_CHIPS_VALUE, backChips},        // Returned chip value
+                            { FirebaseManager.BACK_USER_ID, player.userId },           // Player ID
+                            { FirebaseManager.BACK_CHIPS_VALUE, backChips },           // Chips returned to player
                         };
                         JSBridgeManager.Instance.UpdateDataFromFirebase(
                             $"{QueryRoomPath}/{FirebaseManager.SIDE_WIN_DATA}/{FirebaseManager.BACK_CHIPS_DATA}/{player.userId}",
                             data);
 
-                        // Update local player chip data
+                        // Update local player data
                         GetPlayerData(player.userId).carryChips = newCarryChips;
                     }
                 }
 
-                // Update side pot winners' chips
+                // Distribute the side pot proportionally among the winners
                 List<string> sideWinnerIdList = new List<string>();
-                foreach (var sidewinner in sideWinners)
+                foreach (var sideWinner in sideWinners)
                 {
-                    sideWinnerIdList.Add(sidewinner.userId);
+                    sideWinnerIdList.Add(sideWinner.userId);
 
-                    // Calculate new chips after winning side pot
-                    newCarryChips = sidewinner.carryChips + (sideWinValue / sideWinners.Count);
+                    // Calculate this winner's proportional share of the side pot
+                    double winnerContribution = Math.Min(sideWinner.allBetChips - potMinChips, totalSidePot);
+                    double winnerShare = (winnerContribution / totalSidePot) * totalSidePot;
+
+                    // Update player's chips with their side pot winnings
+                    newCarryChips = sideWinner.carryChips + Math.Floor(winnerShare);
                     data = new Dictionary<string, object>()
                     {
-                        { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips)},   // Carry chips
+                        { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips) },  // Update carry chips
                     };
-                    UpdataPlayerData(sidewinner.userId, data);
+                    UpdataPlayerData(sideWinner.userId, data);
 
-                    // Update local side winner chip data
-                    GetPlayerData(sidewinner.userId).carryChips = newCarryChips;
+                    // Update local side winner data
+                    GetPlayerData(sideWinner.userId).carryChips = newCarryChips;
                 }
 
-                // Update side pot data in Firebase
-                data = new Dictionary<string, object>()
+                // Update Firebase with the side pot data and the list of winners
+                var sidePotData = new Dictionary<string, object>()
                 {
-                    { FirebaseManager.SIDE_WIN_CHIPS, sideWinValue},             // Side pot winnings
-                    { FirebaseManager.SIDE_WINNERS_ID, sideWinnerIdList},        // Side pot winners' IDs
+                    { FirebaseManager.SIDE_WIN_CHIPS, totalSidePot },          // Total side pot value
+                    { FirebaseManager.SIDE_WINNERS_ID, sideWinnerIdList },     // List of side pot winners
                 };
                 JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.SIDE_WIN_DATA}",
-                                                                data,
+                                                                sidePotData,
                                                                 gameObject.name,
                                                                 nameof(SideWinDataCallback));
 
