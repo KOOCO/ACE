@@ -50,7 +50,7 @@ public class RankBattleSampleBtn : MonoBehaviour
     {
         tableId = _tableId;
         Blinds_Txt.text = $"{StringUtils.SetChipsUnit(smallBlind)} / {StringUtils.SetChipsUnit(smallBlind * 2)}";
-        MinBuy_Txt.text = $"{StringUtils.SetChipsUnit(smallBlind * DataManager.MinMagnification)}";
+        MinBuy_Txt.text = $"{StringUtils.SetChipsUnit((smallBlind * 2) * DataManager.MinMagnification)}";
 
         Launch_Btn.onClick.AddListener(() =>
         {
