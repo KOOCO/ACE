@@ -60,7 +60,9 @@ public class GameView : MonoBehaviour
     [SerializeField]
     Image Pot_Img;
     [SerializeField]
-    TextMeshProUGUI TotalPot_Txt, WaitingTip_Txt, WinType_Txt;
+    TextMeshProUGUI TotalPot_Txt, WinType_Txt;
+    [SerializeField]
+    GameObject WaitingTip_Txt;
 
     [Header("公共牌")]
     [SerializeField]
@@ -1095,7 +1097,9 @@ public class GameView : MonoBehaviour
     /// </summary>
     public void Init()
     {
-        WaitingTip_Txt.text = $"{LanguageManager.Instance.GetText("Waiting for the next round...")}";
+        //已從文字物件改為圖片
+        //WaitingTip_Txt.text = $"{LanguageManager.Instance.GetText("Waiting for the next round...")}";
+        WaitingTip_Txt.gameObject.SetActive(true);
         strData.FoldStr = "Fold";
         FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
         strData.CallStr = "Check";
@@ -1646,7 +1650,9 @@ public class GameView : MonoBehaviour
                    (PlayerStateEnum)player.gameState != PlayerStateEnum.Fold)
                 {
                     thisData.IsPlaying = true;
-                    WaitingTip_Txt.text = "";
+                    //已從文字物件改為圖片
+                    //WaitingTip_Txt.text = "";
+                    WaitingTip_Txt.gameObject.SetActive(false);
                     gamePlayerInfo.IsOpenInfoMask = false;
 
                     //判斷牌行
@@ -2575,7 +2581,9 @@ public class GameView : MonoBehaviour
 
                 thisData.LocalGamePlayerInfo.Init();
                 thisData.LocalGamePlayerInfo.IsOpenInfoMask = true;
-                WaitingTip_Txt.text = $"{LanguageManager.Instance.GetText("Waiting for the next round...")}";
+                //已從文字物件改為圖片
+                // WaitingTip_Txt.text = $"{LanguageManager.Instance.GetText("Waiting for the next round...")}";
+                WaitingTip_Txt.gameObject.SetActive(true);
             }
         }
         else if (RoomType == TableTypeEnum.IntegralTable)
@@ -2992,7 +3000,9 @@ public class GameView : MonoBehaviour
                     gamePlayerInfo.SetHandPoker(playerData.handPoker[0],
                                                 playerData.handPoker[1]);
 
-                    WaitingTip_Txt.text = "";
+                    //已從文字物件改為圖片
+                    //WaitingTip_Txt.text = "";
+                    WaitingTip_Txt.gameObject.SetActive(false);
 
                     //判斷牌行
                     if (gameRoomData.playingPlayersIdList.Contains(DataManager.UserId))
