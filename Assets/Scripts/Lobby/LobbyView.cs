@@ -253,7 +253,7 @@ public class LobbyView : MonoBehaviour
 
         //刷新用戶資料
         //InvokeRepeating(nameof(UpdateUserData), 30, 30);*/
-        SoundToggleGroup.IsPlayAudio(audioSource);
+        MusicSwitchBtn.IsPlayAudio(audioSource);
     }
 
     private void Update()
