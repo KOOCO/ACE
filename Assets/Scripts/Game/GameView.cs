@@ -131,7 +131,7 @@ public class GameView : MonoBehaviour
     GameObject GamePause_Obj;
     [SerializeField]
     Button GameContinue_Btn;
-    
+
     [Header("遊戲音樂")]
     [SerializeField]
     AudioSource AudioSource_Obj;
@@ -920,72 +920,195 @@ public class GameView : MonoBehaviour
     {
         set
         {
+            Debug.Log("SetActionButton " + value);
             thisData.isLocalPlayerTurn = value;
-            if (SetActingButtonEnable == true)
+
+            if (!SetActingButtonEnable) return;
+
+            if (!value)
             {
-                if (value == false)
-                {
-                    Raise_Tr.gameObject.SetActive(false);
-
-                    if (gameControl.GetLocalPlayer() != null &&
-                        gameRoomData != null &&
-                        (gameRoomData.currGameFlow == (int)GameFlowEnum.SetBlind))
-                    {
-                        strData.FoldStr = "Fold";
-                    }
-                    else
-                    {
-                        strData.FoldStr = "CheckOrFold";
-                    }
-
-                    FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
-                    if (gameControl.GetLocalPlayer() != null &&
-                        gameControl.GetLocalPlayer().currAllBetChips < gameRoomData.smallBlind * 2 &&
-                        gameRoomData != null &&
-                        gameRoomData.currCallValue <= gameRoomData.smallBlind * 2 &&
-                        (gameRoomData.currGameFlow == (int)GameFlowEnum.Licensing || gameRoomData.currGameFlow == (int)GameFlowEnum.SetBlind))
-                    {
-                        GameRoomPlayerData local = gameControl.GetLocalPlayer();
-                        if (local != null)
-                        {
-                            switch ((SeatCharacterEnum)local.seatCharacter)
-                            {
-                                case SeatCharacterEnum.SB:
-                                    strData.CallStr = "Call";
-                                    strData.CallValueStr = $"\n{gameRoomData.smallBlind.ToString()}";
-                                    CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
-                                    break;
-                                case SeatCharacterEnum.BB:
-                                    strData.CallStr = "Check";
-                                    strData.CallValueStr = "";
-                                    CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
-                                    break;
-                                default:
-                                    strData.CallStr = "Call";
-                                    strData.CallValueStr = $"\n{(gameRoomData.smallBlind * 2).ToString()}";
-                                    CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
-                                    break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        strData.CallStr = "Check";
-                        strData.CallValueStr = "";
-                        CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
-                    }
-                    strData.RaiseStr = "CallAny";
-                    strData.RaiseValueStr = "";
-                    RaiseBtn_Txt.text = LanguageManager.Instance.GetText(strData.RaiseStr) + strData.RaiseValueStr;
-                }
-                else
-                {
-                    strData.FoldStr = "Fold";
-                    FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
-                }
+                HandleInactivePlayerTurn();
+            }
+            else
+            {
+                // If it's the player's turn, they should always have the Fold option
+                strData.FoldStr = "Fold";
+                FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
             }
         }
     }
+
+    private void HandleInactivePlayerTurn()
+    {
+        Raise_Tr.gameObject.SetActive(false);
+
+        if (IsSetBlindPhase())
+        {
+            strData.FoldStr = "Fold";
+        }
+        else
+        {
+            strData.FoldStr = "Check/Fold";
+        }
+
+        FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
+
+        if (ShouldShowCallOptions())
+        {
+            SetCallButton();
+        }
+        else
+        {
+            // If there's no bet, the player can only "Check"
+            strData.CallStr = "Check";
+            strData.CallValueStr = "";
+            CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
+        }
+
+        strData.RaiseStr = "CallAny";
+        strData.RaiseValueStr = "";
+        RaiseBtn_Txt.text = LanguageManager.Instance.GetText(strData.RaiseStr) + strData.RaiseValueStr;
+    }
+
+    private bool IsSetBlindPhase()
+    {
+        // Check if it's the Pre-Flop phase (blinds are being set)
+        return gameControl.GetLocalPlayer() != null &&
+               gameRoomData != null &&
+               gameRoomData.currGameFlow == (int)GameFlowEnum.SetBlind;
+    }
+
+    private bool ShouldShowCallOptions()
+    {
+        // Show call options if the player has less than the current raise
+        return gameControl.GetLocalPlayer() != null &&
+               gameControl.GetLocalPlayer().currAllBetChips < gameRoomData.currCallValue &&
+               gameRoomData != null &&
+               gameRoomData.currCallValue > gameRoomData.smallBlind &&
+               (gameRoomData.currGameFlow == (int)GameFlowEnum.Licensing ||
+                gameRoomData.currGameFlow == (int)GameFlowEnum.SetBlind);
+    }
+
+    private void SetCallButton()
+    {
+        var localPlayer = gameControl.GetLocalPlayer();
+        if (localPlayer == null) return;
+
+        // Set different call amounts based on the player's position (SB, BB, or otherwise)
+        switch ((SeatCharacterEnum)localPlayer.seatCharacter)
+        {
+            case SeatCharacterEnum.SB:
+                // SB can call the difference to match the big blind
+                strData.CallStr = "Call";
+                strData.CallValueStr = $"\n{(gameRoomData.smallBlind - localPlayer.currAllBetChips).ToString()}";
+                break;
+            case SeatCharacterEnum.BB:
+                // BB can check if no one has raised
+                strData.CallStr = gameRoomData.currCallValue == gameRoomData.smallBlind * 2 ? "Check" : "Call";
+                strData.CallValueStr = gameRoomData.currCallValue == gameRoomData.smallBlind * 2
+                    ? ""
+                    : $"\n{(gameRoomData.currCallValue - localPlayer.currAllBetChips).ToString()}";
+                break;
+            default:
+                // Other players can call the current bet (or raise)
+                strData.CallStr = "Call";
+                strData.CallValueStr = $"\n{(gameRoomData.currCallValue - localPlayer.currAllBetChips).ToString()}";
+                break;
+        }
+
+        CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
+    }
+
+    public void UpdateActionBtns()
+    {
+        Debug.Log($"UpdateActionBtns called. Player's turn: {thisData.isLocalPlayerTurn}");
+
+        if (!thisData.isLocalPlayerTurn)
+        {
+            var localPlayer = gameControl.GetLocalPlayer();
+            if (localPlayer == null || gameRoomData == null) return;
+
+            bool isRaised = gameRoomData.currCallValue > gameRoomData.smallBlind * 2;
+            bool isBigBlind = localPlayer.seatCharacter == (int)SeatCharacterEnum.BB;
+            bool isPreFlop = gameRoomData.currGameFlow == (int)GameFlowEnum.SetBlind;
+
+            if (isPreFlop)
+            {
+                SetPreFlopActions(isBigBlind);
+            }
+            else
+            {
+                SetPostFlopActions(isRaised);
+            }
+        }
+    }
+
+    private void SetPreFlopActions(bool isBigBlind)
+    {
+        // Pre-Flop: Set Fold/Call/Check actions based on whether the player is Big Blind
+        strData.FoldStr = "Fold";
+        FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
+
+        // Handle Big Blind logic
+        if (isBigBlind)
+        {
+            if (gameRoomData.currCallValue == gameRoomData.smallBlind * 2)
+            {
+                strData.CallStr = "Check";
+                strData.CallValueStr = "";  // No amount to call, so clear the value
+            }
+            else
+            {
+                strData.CallStr = "Call";
+                strData.CallValueStr = $"\n{gameRoomData.currCallValue - gameControl.GetLocalPlayer().currAllBetChips}";
+            }
+        }
+        else
+        {
+            // Small Blind or other positions
+            strData.CallStr = gameRoomData.currCallValue == 0 ? "" : "Call";
+
+            // If the call amount is 0, don't show a value
+            strData.CallValueStr = gameRoomData.currCallValue == 0
+                ? ""
+                : $"\n{gameRoomData.currCallValue - gameControl.GetLocalPlayer().currAllBetChips}";
+        }
+
+        // Update the call and raise button texts
+        CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
+        RaiseBtn_Txt.text = LanguageManager.Instance.GetText("CallAny");
+    }
+
+    private void SetPostFlopActions(bool isRaised)
+    {
+        if (isRaised)
+        {
+            // Player must call or fold
+            Debug.Log("PostFlop :: " + isRaised);
+            strData.FoldStr = "Fold";
+            strData.CallStr = gameRoomData.currCallValue == 0 ? "" : "Call";
+            strData.CallValueStr = gameRoomData.currCallValue == 0
+                ? ""
+                : $"\n{gameRoomData.currCallValue - gameControl.GetLocalPlayer().currAllBetChips}";
+        }
+        else
+        {
+            Debug.Log("PostFlop :: " + isRaised);
+            // No bet raised, player can check
+            strData.FoldStr = "Check/Fold";
+            strData.CallStr = "Check";
+            strData.CallValueStr = "";  // Clear the call value since it's 0
+        }
+
+        // Update button texts accordingly
+        FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
+        CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
+        RaiseBtn_Txt.text = LanguageManager.Instance.GetText("CallAny");
+    }
+
+
+
+
 
     /// <summary>
     /// 行動按鈕激活
@@ -1355,7 +1478,6 @@ public class GameView : MonoBehaviour
         //首位加注玩家
         thisData.IsFirstRaisePlayer = isFirst;
         //當前跟注值
-        Debug.Log(gameRoomData.currCallValue + " :: Current Call value :: " + nameof(LocalPlayerRound));
         thisData.CurrCallValue = gameRoomData.currCallValue;
         //跟注差額
         thisData.CallDifference = gameRoomData.currCallValue - gameRoomPlayerData.currAllBetChips;
