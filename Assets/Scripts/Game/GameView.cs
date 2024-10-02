@@ -920,55 +920,81 @@ public class GameView : MonoBehaviour
     {
         set
         {
-            Debug.Log("SetActionButton " + value);
-            thisData.isLocalPlayerTurn = value;
+            Debug.Log($"SetActionButton called with value: {value}");
 
-            if (!SetActingButtonEnable) return;
+            thisData.isLocalPlayerTurn = value;
+            Debug.Log($"isLocalPlayerTurn set to: {thisData.isLocalPlayerTurn}");
+
+            // Check if the acting button can be enabled
+            if (!SetActingButtonEnable)
+            {
+                Debug.Log("SetActingButtonEnable is false, exiting SetActionButton.");
+                return;
+            }
 
             if (!value)
             {
+                Debug.Log("Player's turn ended, calling HandleInactivePlayerTurn.");
                 HandleInactivePlayerTurn();
             }
             else
             {
+                Debug.Log("Player's turn started, setting Fold button text.");
                 // If it's the player's turn, they should always have the Fold option
                 strData.FoldStr = "Fold";
                 FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
+                Debug.Log($"Fold button text set to: {FoldBtn_Txt.text}");
             }
         }
     }
 
+
     private void HandleInactivePlayerTurn()
     {
-        Raise_Tr.gameObject.SetActive(false);
+        Debug.Log("HandleInactivePlayerTurn called.");
 
+        // Deactivate the raise button
+        Raise_Tr.gameObject.SetActive(false);
+        Debug.Log("Raise button deactivated.");
+
+        // Determine whether to set the Fold button to "Fold" or "Check/Fold"
         if (IsSetBlindPhase())
         {
             strData.FoldStr = "Fold";
+            Debug.Log("Blind phase detected, FoldStr set to 'Fold'.");
         }
         else
         {
             strData.FoldStr = "Check/Fold";
+            Debug.Log("Not blind phase, FoldStr set to 'Check/Fold'.");
         }
 
+        // Set Fold button text
         FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
+        Debug.Log($"Fold button text set to: {FoldBtn_Txt.text}");
 
+        // Determine if the call button should be shown
         if (ShouldShowCallOptions())
         {
+            Debug.Log("Call options should be shown, calling SetCallButton.");
             SetCallButton();
         }
         else
         {
-            // If there's no bet, the player can only "Check"
+            // If no bet, set Call button to "Check"
             strData.CallStr = "Check";
             strData.CallValueStr = "";
             CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
+            Debug.Log($"Call button text set to: {CallBtn.text}");
         }
 
+        // Set the Raise button to "CallAny"
         strData.RaiseStr = "CallAny";
         strData.RaiseValueStr = "";
         RaiseBtn_Txt.text = LanguageManager.Instance.GetText(strData.RaiseStr) + strData.RaiseValueStr;
+        Debug.Log($"Raise button text set to: {RaiseBtn_Txt.text}");
     }
+
 
     private bool IsSetBlindPhase()
     {
@@ -992,32 +1018,46 @@ public class GameView : MonoBehaviour
     private void SetCallButton()
     {
         var localPlayer = gameControl.GetLocalPlayer();
-        if (localPlayer == null) return;
+        if (localPlayer == null)
+        {
+            Debug.Log("Local player is null. Exiting SetCallButton.");
+            return;
+        }
+
+        Debug.Log($"Local player found: SeatCharacter = {(SeatCharacterEnum)localPlayer.seatCharacter}, Current All Bet Chips = {localPlayer.currAllBetChips}");
 
         // Set different call amounts based on the player's position (SB, BB, or otherwise)
         switch ((SeatCharacterEnum)localPlayer.seatCharacter)
         {
             case SeatCharacterEnum.SB:
+                Debug.Log("Player is in Small Blind position.");
                 // SB can call the difference to match the big blind
                 strData.CallStr = "Call";
                 strData.CallValueStr = $"\n{(gameRoomData.smallBlind - localPlayer.currAllBetChips).ToString()}";
+                Debug.Log($"CallStr: {strData.CallStr}, CallValueStr: {strData.CallValueStr}");
                 break;
             case SeatCharacterEnum.BB:
+                Debug.Log("Player is in Big Blind position.");
                 // BB can check if no one has raised
                 strData.CallStr = gameRoomData.currCallValue == gameRoomData.smallBlind * 2 ? "Check" : "Call";
                 strData.CallValueStr = gameRoomData.currCallValue == gameRoomData.smallBlind * 2
                     ? ""
                     : $"\n{(gameRoomData.currCallValue - localPlayer.currAllBetChips).ToString()}";
+                Debug.Log($"CallStr: {strData.CallStr}, CallValueStr: {strData.CallValueStr}");
                 break;
             default:
+                Debug.Log("Player is in a position other than SB or BB.");
                 // Other players can call the current bet (or raise)
                 strData.CallStr = "Call";
                 strData.CallValueStr = $"\n{(gameRoomData.currCallValue - localPlayer.currAllBetChips).ToString()}";
+                Debug.Log($"CallStr: {strData.CallStr}, CallValueStr: {strData.CallValueStr}");
                 break;
         }
 
         CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
+        Debug.Log($"Call button text set to: {CallBtn.text}");
     }
+
 
     public void UpdateActionBtns()
     {
