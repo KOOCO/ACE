@@ -1147,7 +1147,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4486474359657938648, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
       propertyPath: version
-      value: V1.2.9.2
+      value: V1.2.9.0
       objectReference: {fileID: 0}
     - target: {fileID: 4486474359657938648, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
       propertyPath: ReporterObj
@@ -1259,6 +1259,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1776581414948100687, guid: 595d35a91a389aa4aa584fef504a36d7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6e67ee763bced7e42b042ebd77c8cdc9, type: 3}
     - target: {fileID: 3341277279865789206, guid: 595d35a91a389aa4aa584fef504a36d7, type: 3}
       propertyPath: m_Name
       value: LoadSceneManager

@@ -546,6 +546,27 @@ public class LobbyMinePageView : MonoBehaviour
         UpdateInvitationCodeInfo();
     }
 
+    //外部調用方法
+    ///<summary>
+    ///開啟交易報表
+    ///</summary>
+    public void openTransactionHistoryView()
+    {
+        Transform lobbyView = GameObject.Find("LobbyView").transform;
+        RectTransform transactionHistoryView = Instantiate(TransactionHistoryViewObj, lobbyView).GetComponent<RectTransform>();
+        ViewManager.Instance.InitViewTr(transactionHistoryView, "TransactionHistoryView");
+    }
+    ///<summary>
+    ///開啟設定選單
+    ///</summary>
+    public void openSettingsView()
+    {
+        isSettingExpand = !isSettingExpand;
+        StartCoroutine(ISwitchContent(isSettingExpand,
+                                      Settings_Obj,
+                                      settings_Img));
+    }
+
     /// <summary>
     /// 設置用戶訊息
     /// </summary>

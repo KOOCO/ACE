@@ -49,8 +49,8 @@ public class CryptoTableBtnSample : MonoBehaviour
     public void SetCryptoTableBtnInfo(double smallBlind, LobbyView lobbyView, string _tableId)
     {
         tableId = _tableId;
-        Blinds_Txt.text = $"{StringUtils.SetChipsUnit(smallBlind)} / {StringUtils.SetChipsUnit(smallBlind * 2)}";
-        MinBuy_Txt.text = $"{StringUtils.SetChipsUnit((smallBlind * 2) * DataManager.MinMagnification)}";
+        Blinds_Txt.text = $"$ {StringUtils.SetChipsUnit(smallBlind)} / {StringUtils.SetChipsUnit(smallBlind * 2)}";
+        MinBuy_Txt.text = $"$ {StringUtils.SetChipsUnit((smallBlind * 2) * DataManager.MinMagnification)}";
 
         Launch_Btn.onClick.AddListener(() =>
         {

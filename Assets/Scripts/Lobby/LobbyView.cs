@@ -37,11 +37,11 @@ public class LobbyView : MonoBehaviour
     [SerializeField]
     RectTransform Floor3;
     [SerializeField]
-    Button Mine_Btn, Shop_Btn, Main_Btn, Activity_Btn, Ranking_Btn;
+    Button Mine_Btn, Shop_Btn, Main_Btn, Activity_Btn, Ranking_Btn, t_History_Btn, Settings_Btn;
     [SerializeField]
     GameObject LobbyMainPageView, LobbyMinePageView, LobbyRankingView, LobbyShopView, LobbyActivityView;
     [SerializeField]
-    TextMeshProUGUI MineBtn_Txt, ShopBtn_Txt, ActivityBtn_Txt, RankingBtn_Txt;
+    TextMeshProUGUI MineBtn_Txt, ShopBtn_Txt, ActivityBtn_Txt, RankingBtn_Txt, t_HistoryBtn_Txt, SettingsBtn_Txt;
 
     [Header("任務介面")]
     [SerializeField]
@@ -82,6 +82,8 @@ public class LobbyView : MonoBehaviour
         Main,
         Activity,
         Ranking,
+        t_History,
+        Settings
     }
 
     bool isShowAssetList;               //是否顯示用戶資源列表
@@ -104,9 +106,11 @@ public class LobbyView : MonoBehaviour
         #region 項目按鈕
 
         MineBtn_Txt.text = LanguageManager.Instance.GetText("Mine");
-        ShopBtn_Txt.text = LanguageManager.Instance.GetText("Shop");
-        ActivityBtn_Txt.text = LanguageManager.Instance.GetText("Activity");
+        //ShopBtn_Txt.text = LanguageManager.Instance.GetText("Shop");
+        //ActivityBtn_Txt.text = LanguageManager.Instance.GetText("Activity");
         RankingBtn_Txt.text = LanguageManager.Instance.GetText("Ranking");
+        t_HistoryBtn_Txt.text = LanguageManager.Instance.GetText("Transaction History");
+        SettingsBtn_Txt.text = LanguageManager.Instance.GetText("Settings");
 
         #endregion
 
@@ -183,18 +187,30 @@ public class LobbyView : MonoBehaviour
         {
             OpenItemPage(ItemType.Ranking);
         });
+        
+        //報表
+        t_History_Btn.onClick.AddListener(() =>
+        {
+            OpenItemPage(ItemType.t_History);
+        });
+        
+        //設定
+        Settings_Btn.onClick.AddListener(() =>
+        {
+            OpenItemPage(ItemType.Settings);
+        });
 
         //商店
-        Shop_Btn.onClick.AddListener(() =>
+        /*Shop_Btn.onClick.AddListener(() =>
         {
             OpenItemPage(ItemType.Shop);
-        });
+        });*/
 
         //活動
-        Activity_Btn.onClick.AddListener(() =>
+        /*Activity_Btn.onClick.AddListener(() =>
         {
             OpenItemPage(ItemType.Activity);
-        });
+        });*/
 
         #endregion
 
@@ -253,7 +269,7 @@ public class LobbyView : MonoBehaviour
 
         //刷新用戶資料
         //InvokeRepeating(nameof(UpdateUserData), 30, 30);*/
-        MusicSwitchBtn.IsPlayAudio(audioSource);
+        SoundToggleGroup.IsPlayAudio(audioSource);
     }
 
     private void Update()
@@ -489,6 +505,12 @@ public class LobbyView : MonoBehaviour
             case ItemType.Activity:
                 itemObj = LobbyActivityView;
                 break;
+            case ItemType.t_History:
+                itemObj = LobbyMinePageView;
+                break;
+            case ItemType.Settings:
+                itemObj = LobbyMinePageView;
+                break;
             default:
                 Debug.LogWarning("Unknown item type: " + itemType);
                 return; // Early exit for unknown types
@@ -498,6 +520,15 @@ public class LobbyView : MonoBehaviour
         {
             RectTransform itemPageView = Instantiate(itemObj, Floor3).GetComponent<RectTransform>();
             ViewManager.Instance.InitViewTr(itemPageView, itemType.ToString());
+
+            if(itemType == ItemType.t_History)
+            {
+                LobbyMinePageView mineView = Floor3.GetComponentInChildren<LobbyMinePageView>();
+                mineView.openTransactionHistoryView();
+            }else if(itemType == ItemType.Settings)
+            {
+                StartCoroutine(wait4MineLoad());
+            }
         }
     }
 
@@ -528,6 +559,18 @@ public class LobbyView : MonoBehaviour
         {
 
             Destroy(Floor4.GetChild(0).gameObject);
+        }
+    }
+
+    IEnumerator wait4MineLoad()
+    {
+        LobbyMinePageView mineView = Floor3.GetComponentInChildren<LobbyMinePageView>();
+        yield return new WaitUntil(() => mineView!=null);
+
+        if (mineView != null)
+        {
+            print(mineView.name);
+            mineView.openSettingsView();
         }
     }
 }
