@@ -1066,10 +1066,10 @@ public class GameView : MonoBehaviour
         else
         {
             // Small Blind or other positions
-            strData.CallStr = gameRoomData.currCallValue == 0 ? "" : "Call";
+            strData.CallStr = gameRoomData.currCallValue - gameControl.GetLocalPlayer().currAllBetChips == 0 ? "" : "Call";
 
             // If the call amount is 0, don't show a value
-            strData.CallValueStr = gameRoomData.currCallValue == 0
+            strData.CallValueStr = gameRoomData.currCallValue - gameControl.GetLocalPlayer().currAllBetChips == 0
                 ? ""
                 : $"\n{gameRoomData.currCallValue - gameControl.GetLocalPlayer().currAllBetChips}";
         }
@@ -1086,8 +1086,8 @@ public class GameView : MonoBehaviour
             // Player must call or fold
             Debug.Log("PostFlop :: " + isRaised);
             strData.FoldStr = "Fold";
-            strData.CallStr = gameRoomData.currCallValue == 0 ? "" : "Call";
-            strData.CallValueStr = gameRoomData.currCallValue == 0
+            strData.CallStr = gameRoomData.currCallValue - gameControl.GetLocalPlayer().currAllBetChips == 0 ? "" : "Call";
+            strData.CallValueStr = gameRoomData.currCallValue - gameControl.GetLocalPlayer().currAllBetChips == 0
                 ? ""
                 : $"\n{gameRoomData.currCallValue - gameControl.GetLocalPlayer().currAllBetChips}";
         }
