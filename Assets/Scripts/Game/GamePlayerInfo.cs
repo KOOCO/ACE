@@ -16,7 +16,7 @@ public class GamePlayerInfo : MonoBehaviour
     [SerializeField]
     Image CDMask_Img, Avatar_Img, ButtonCharacter_Img;
     [SerializeField]
-    TextMeshProUGUI Nickname_Txt, Chips_Txt, BackChips_Txt, PokerShape_Txt, BlindCharacter_Txt, Winner_Txt;
+    TextMeshProUGUI Nickname_Txt, Chips_Txt, BackChips_Txt, PokerShape_Txt, BlindCharacter_Txt, countDown_Txt, Winner_Txt;
 
     [Header("手牌")]
     [SerializeField]
@@ -448,6 +448,7 @@ public class GamePlayerInfo : MonoBehaviour
     {
         if(cdCoroutine != null) StopCoroutine(cdCoroutine);
         CDMask_Img.fillAmount = 0;
+        countDown_Txt.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -457,6 +458,7 @@ public class GamePlayerInfo : MonoBehaviour
     /// <param name="cd">倒數</param>
     public void CountDown(int cdTime, int cd)
     {
+        if (cdCoroutine != null) StopCoroutine(cdCoroutine);
         if (gameObject.activeSelf)
         {
             cdCoroutine = StartCoroutine(ICountDown(cdTime, cd));
@@ -470,8 +472,10 @@ public class GamePlayerInfo : MonoBehaviour
     /// <param name="cd">倒數</param>
     private IEnumerator ICountDown(int cdTime, int cd)
     {
-        float target = ((float)cdTime - (cd - 1)) / (float)cdTime;
+        #region 舊的答辯
+        /*float target = ((float)cdTime - (cd - 1)) / (float)cdTime;
         float curr = ((float)cdTime - cd) / (float)cdTime;
+        print($"{cdTime}, {cd}, {target}");
 
         DateTime startTime = DateTime.Now;
         while ((DateTime.Now - startTime).TotalSeconds < 1)
@@ -480,10 +484,33 @@ public class GamePlayerInfo : MonoBehaviour
             float value = Mathf.Lerp(curr, target, process);
 
             CDMask_Img.fillAmount = value;
+            countDown_Txt.gameObject.SetActive(false);
+
+            countDown_Txt.gameObject.SetActive(true);
+            countDown_Txt.text = ((int)value).ToString();
             yield return null;
+        }*/
+        #endregion
+        //if(cd<=0)
+        //    cd = cdTime;
+
+        while (cd > 0)  // 當cd大於0時持續倒數
+        {
+            Debug.Log($"{Nickname}倒數剩餘時間：{cd}秒");
+
+            yield return new WaitForSeconds(1);  // 每一秒更新一次
+
+            cd--;  // 每秒減去1
+
+            countDown_Txt.gameObject.SetActive(true);
+            countDown_Txt.text = cd.ToString();
         }
 
-        CDMask_Img.fillAmount = target;
+        // 當倒數結束時，執行完成的操作
+        Debug.Log("倒數結束");
+
+        CDMask_Img.fillAmount = cdTime;
+        yield break;
     }
 
     /// <summary>

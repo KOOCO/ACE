@@ -54,7 +54,7 @@ public class ConfirmView : MonoBehaviour
         {
             confirmCallback?.Invoke();
             Destroy(gameObject);
-            MusicSwitchBtn.IsPlayAudio(lobbyView.audioSource);
+            SoundToggleGroup.IsPlayAudio(lobbyView.audioSource);
         });
 
         Cancel_Btn.gameObject.SetActive(showCancel);

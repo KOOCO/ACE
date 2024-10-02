@@ -1488,6 +1488,7 @@ public class GameControl : MonoBehaviour
         }
 
         player.ActionFrame = true;
+        //gameRoomData.actionCD = 1;
         player.CountDown(DataManager.StartCountDownTime,
                          gameRoomData.actionCD);
         if (player.UserId == DataManager.UserId)
@@ -1575,8 +1576,6 @@ public class GameControl : MonoBehaviour
     /// </summary>
     public void ShowBetAction()
     {
-        gameView.UpdateActionBtns();
-
         if (gameRoomData.betActionDataDic == null ||
             string.IsNullOrEmpty(gameRoomData.betActionDataDic.betActionerId))
         {
