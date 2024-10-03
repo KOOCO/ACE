@@ -37,7 +37,7 @@ public class LobbyView : MonoBehaviour
     [SerializeField]
     RectTransform Floor3;
     [SerializeField]
-    Button Mine_Btn, Shop_Btn, Main_Btn, Activity_Btn, Ranking_Btn, t_History_Btn, Settings_Btn;
+    Button Mine_Btn, Shop_Btn, Main_Btn, Activity_Btn, Ranking_Btn, t_History_Btn, Settings_Btn, Refresh_Btn;
     [SerializeField]
     GameObject LobbyMainPageView, LobbyMinePageView, LobbyRankingView, LobbyShopView, LobbyActivityView;
     [SerializeField]
@@ -198,6 +198,14 @@ public class LobbyView : MonoBehaviour
         Settings_Btn.onClick.AddListener(() =>
         {
             OpenItemPage(ItemType.Settings);
+        });
+        
+        //刷新
+        Refresh_Btn.onClick.AddListener(() =>
+        {
+            UpdateUserData();
+            Refresh_Btn.interactable = false;
+            StartCoroutine(openRefreshBtn());
         });
 
         //商店
@@ -424,7 +432,7 @@ public class LobbyView : MonoBehaviour
         Avatar_Btn.image.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[DataManager.UserAvatarIndex];
         Stamina_Txt.text = $"{DataManager.UserEnergy}/{DataManager.UserMaxEnrtgy}";
 
-        Assets_CryptoChipsValue_Txt.text = $"{StringUtils.SetChipsUnit(DataManager.UserUChips)}";
+        Assets_CryptoChipsValue_Txt.text = $"${StringUtils.SetChipsUnit(DataManager.UserUChips)}";
         Assets_VCValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserAChips);
         Assets_GoldValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserGold);
         Assets_StaminaValue_Txt.text = $"{DataManager.UserEnergy}/{DataManager.UserMaxEnrtgy}";
@@ -572,5 +580,12 @@ public class LobbyView : MonoBehaviour
             print(mineView.name);
             mineView.openSettingsView();
         }
+    }
+    
+    IEnumerator openRefreshBtn()
+    {
+        yield return new WaitForSeconds(5);
+
+        Refresh_Btn.interactable = true;
     }
 }

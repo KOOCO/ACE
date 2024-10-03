@@ -765,7 +765,7 @@ MonoBehaviour:
   m_fontSizeMin: 6
   m_fontSizeMax: 12
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -6497,6 +6497,7 @@ MonoBehaviour:
   Ranking_Btn: {fileID: 7046335866529988638}
   t_History_Btn: {fileID: 3331400750447362435}
   Settings_Btn: {fileID: 3965957964669112655}
+  Refresh_Btn: {fileID: 4114166848442823577}
   LobbyMainPageView: {fileID: 1550548926770612537, guid: e614b5f25a817bb46832e62767c4df0f, type: 3}
   LobbyMinePageView: {fileID: 6752597787101536108, guid: b33876997bb0a6a40962eea04ef1b32b, type: 3}
   LobbyRankingView: {fileID: 7532165618673014345, guid: 5b90ffcffb6e64a4d80acdef6b16c56f, type: 3}

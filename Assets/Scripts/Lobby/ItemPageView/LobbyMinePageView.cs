@@ -341,8 +341,8 @@ public class LobbyMinePageView : MonoBehaviour
         //帳戶餘額刷新
         AccountBalanceReflash_Btn.onClick.AddListener(() =>
         {
-
             //UpdatetAccountBalance("4,300 ETH", 40000, 3000, 5, 30);
+            FindAnyObjectByType<LobbyView>().UpdateUserData();
         });
 
         #endregion

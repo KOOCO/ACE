@@ -210,8 +210,12 @@ public class GamePlayerInfo : MonoBehaviour
         set
         {
             Winner_Obj.SetActive(value);
-            Winner_Txt.text = LanguageManager.Instance.GetText("Winner");
+            //Winner_Txt.text = LanguageManager.Instance.GetText("Winner");
         }
+    }
+    public void setWinnerDisplay(string Result)
+    {
+        Winner_Txt.text = Result;
     }
 
     /// <summary>
@@ -278,7 +282,7 @@ public class GamePlayerInfo : MonoBehaviour
     {
         set
         {
-            Chips_Txt.text = StringUtils.SetChipsUnit(Math.Floor(value));
+            Chips_Txt.text = $"{StringUtils.SetChipsUnit(Math.Floor(value))}";
         }
     }
 
