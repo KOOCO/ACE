@@ -60,7 +60,9 @@ public class GameView : MonoBehaviour
     [SerializeField]
     Image Pot_Img;
     [SerializeField]
-    TextMeshProUGUI TotalPot_Txt, WaitingTip_Txt, WinType_Txt;
+    TextMeshProUGUI TotalPot_Txt, WinType_Txt;
+    [SerializeField]
+    GameObject WaitingTip_Txt;
 
     [Header("公共牌")]
     [SerializeField]
@@ -131,7 +133,7 @@ public class GameView : MonoBehaviour
     GameObject GamePause_Obj;
     [SerializeField]
     Button GameContinue_Btn;
-
+    
     [Header("遊戲音樂")]
     [SerializeField]
     AudioSource AudioSource_Obj;
@@ -948,7 +950,6 @@ public class GameView : MonoBehaviour
         }
     }
 
-
     private void HandleInactivePlayerTurn()
     {
         Debug.Log("HandleInactivePlayerTurn called.");
@@ -994,7 +995,6 @@ public class GameView : MonoBehaviour
         RaiseBtn_Txt.text = LanguageManager.Instance.GetText(strData.RaiseStr) + strData.RaiseValueStr;
         Debug.Log($"Raise button text set to: {RaiseBtn_Txt.text}");
     }
-
 
     private bool IsSetBlindPhase()
     {
@@ -1057,7 +1057,6 @@ public class GameView : MonoBehaviour
         CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
         Debug.Log($"Call button text set to: {CallBtn.text}");
     }
-
 
     public void UpdateActionBtns()
     {
@@ -1145,10 +1144,6 @@ public class GameView : MonoBehaviour
         CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
         RaiseBtn_Txt.text = LanguageManager.Instance.GetText("CallAny");
     }
-
-
-
-
 
     /// <summary>
     /// 行動按鈕激活
@@ -1258,7 +1253,9 @@ public class GameView : MonoBehaviour
     /// </summary>
     public void Init()
     {
-        WaitingTip_Txt.text = $"{LanguageManager.Instance.GetText("Waiting for the next round...")}";
+        //已從文字物件改為圖片
+        //WaitingTip_Txt.text = $"{LanguageManager.Instance.GetText("Waiting for the next round...")}";
+        WaitingTip_Txt.gameObject.SetActive(true);
         strData.FoldStr = "Fold";
         FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
         strData.CallStr = "Check";
@@ -1518,6 +1515,7 @@ public class GameView : MonoBehaviour
         //首位加注玩家
         thisData.IsFirstRaisePlayer = isFirst;
         //當前跟注值
+        Debug.Log(gameRoomData.currCallValue + " :: Current Call value :: " + nameof(LocalPlayerRound));
         thisData.CurrCallValue = gameRoomData.currCallValue;
         //跟注差額
         thisData.CallDifference = gameRoomData.currCallValue - gameRoomPlayerData.currAllBetChips;
@@ -1808,7 +1806,9 @@ public class GameView : MonoBehaviour
                    (PlayerStateEnum)player.gameState != PlayerStateEnum.Fold)
                 {
                     thisData.IsPlaying = true;
-                    WaitingTip_Txt.text = "";
+                    //已從文字物件改為圖片
+                    //WaitingTip_Txt.text = "";
+                    WaitingTip_Txt.gameObject.SetActive(false);
                     gamePlayerInfo.IsOpenInfoMask = false;
 
                     //判斷牌行
@@ -1834,6 +1834,7 @@ public class GameView : MonoBehaviour
                 gameRoomData.actionCD > 0)
             {
                 gamePlayerInfo.ActionFrame = true;
+                //gameRoomData.actionCD = 1;
                 gamePlayerInfo.CountDown(DataManager.StartCountDownTime,
                                          gameRoomData.actionCD);
             }
@@ -2441,35 +2442,29 @@ public class GameView : MonoBehaviour
     public IEnumerator SideResult(GameRoomData gameRoomData)
     {
         thisData.SideWinnerList = new List<string>();
-
-        // Ensure the number of winners is valid to avoid division by zero
-        if (gameRoomData.sideWinData.sideWinnersId.Count() == 0)
-        {
-            yield break; // No winners, exit early
-        }
-
         thisData.SideWinChips = gameRoomData.sideWinData.sideWinChips / gameRoomData.sideWinData.sideWinnersId.Count();
 
-        // Open the information mask for all players
+        //開啟遮罩
         foreach (var player in gamePlayerInfoList)
         {
             player.IsOpenInfoMask = true;
             player.IsWinnerActive = false;
         }
 
-        // If there are side pot winners
+        //邊池贏家效果
+        //thisData.SideWinnerList = new List<string>();
+
         if (gameRoomData.sideWinData.sideWinChips > 0)
         {
             WinType_Txt.text = LanguageManager.Instance.GetText("Side");
             SetTotalPot = gameRoomData.sideWinData.sideWinChips;
 
-            // Iterate through the side pot winners
             foreach (var sideWinnerId in gameRoomData.sideWinData.sideWinnersId)
             {
-                // Local player
+                //本地玩家
                 if (sideWinnerId == DataManager.UserId)
                 {
-                    // Update the user's chips
+                    //更新用戶籌碼資料
                     double changeValue = gameRoomData.sideWinData.sideWinChips / gameRoomData.sideWinData.sideWinnersId.Count();
                     gameControl.UpdateLocalChips(changeValue);
                 }
@@ -2488,6 +2483,7 @@ public class GameView : MonoBehaviour
                 thisData.SideWinnerList.Add(sideWinnerId);
 
                 GamePlayerInfo player = GetPlayer(sideWinnerId);
+
                 player.IsOpenInfoMask = false;
                 player.IsWinnerActive = true;
 
@@ -2496,11 +2492,10 @@ public class GameView : MonoBehaviour
 
                 if (player.PlayerRoomChips != playerData.carryChips)
                 {
-                    // Chip winning object
+                    //獲勝籌碼物件
                     RectTransform rt = Instantiate(WinChipsObj, Pot_Img.transform).GetComponent<RectTransform>();
                     rt.anchoredPosition = Vector2.zero;
                     yield return new WaitForSeconds(0.5f);
-
                     ObjMoveUtils.ObjMoveToTarget(rt, winnerSeatPos, 0.5f, () =>
                     {
                         PlaySound("SoundWinPot");
@@ -2511,7 +2506,7 @@ public class GameView : MonoBehaviour
 
                 yield return new WaitForSeconds(2);
 
-                // Disable the poker outline
+                //關閉撲克外框
                 Poker[] handPoker = player.GetHandPoker;
                 if (CommunityPokerList != null && handPoker != null)
                 {
@@ -2526,7 +2521,7 @@ public class GameView : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
 
-        // Display returning chips
+        //顯示退回籌碼
         thisData.BackChipsDic = new Dictionary<int, double>();
         if (gameRoomData.sideWinData.backChipsData != null)
         {
@@ -2534,9 +2529,10 @@ public class GameView : MonoBehaviour
             {
                 if (backChipsData.backChipsValue > 0)
                 {
-                    // Local player
+                    //本地玩家
                     if (backChipsData.backUserId == DataManager.UserId)
                     {
+                        //更新用戶籌碼資料
                         double changeValue = backChipsData.backChipsValue;
                         gameControl.UpdateLocalChips(changeValue);
                     }
@@ -2561,8 +2557,9 @@ public class GameView : MonoBehaviour
             }
         }
 
-        // Save side pot record
-        if (thisData.LocalGamePlayerInfo.IsPlaying && thisData.SideWinnerList.Count > 0)
+        //邊池紀錄存檔
+        if (thisData.LocalGamePlayerInfo.IsPlaying &&
+            thisData.SideWinnerList.Count > 0)
         {
             ProcessStepHistoryData processStepHistoryData = AddNewStepHistory();
             processStepHistoryData.ActionPlayerIndex = -1;
@@ -2578,14 +2575,12 @@ public class GameView : MonoBehaviour
                     processStepHistoryData.SildWinnerSeatList.Add(sideWinSeat);
                 }
             }
-
             processStepHistoryData.SildWinChips = thisData.SideWinChips;
             processStepHistoryData.BackChipsDic = thisData.BackChipsDic;
 
             processHistoryData.processStepHistoryDataList.Add(processStepHistoryData);
         }
     }
-
 
     /// <summary>
     /// 關閉所有撲克效果
@@ -2753,7 +2748,9 @@ public class GameView : MonoBehaviour
 
                 thisData.LocalGamePlayerInfo.Init();
                 thisData.LocalGamePlayerInfo.IsOpenInfoMask = true;
-                WaitingTip_Txt.text = $"{LanguageManager.Instance.GetText("Waiting for the next round...")}";
+                //已從文字物件改為圖片
+                // WaitingTip_Txt.text = $"{LanguageManager.Instance.GetText("Waiting for the next round...")}";
+                WaitingTip_Txt.gameObject.SetActive(true);
             }
         }
         else if (RoomType == TableTypeEnum.IntegralTable)
@@ -3170,7 +3167,9 @@ public class GameView : MonoBehaviour
                     gamePlayerInfo.SetHandPoker(playerData.handPoker[0],
                                                 playerData.handPoker[1]);
 
-                    WaitingTip_Txt.text = "";
+                    //已從文字物件改為圖片
+                    //WaitingTip_Txt.text = "";
+                    WaitingTip_Txt.gameObject.SetActive(false);
 
                     //判斷牌行
                     if (gameRoomData.playingPlayersIdList.Contains(DataManager.UserId))
