@@ -67,7 +67,7 @@ public class QuestPageBtn : MonoBehaviour
             DataManager.CurrentBonusAmount += BonusAmount;
             info.Received = true;
             GameObject.FindFirstObjectByType<QuestBonus>().SetBonus();          //  查詢場景QuestBonus並更新
-            GameObject.FindFirstObjectByType<QuestView>().ReceiveMaskActive();  //  生成領取遮罩
+            GameObject.FindFirstObjectByType<QuestView>().ReceiveMaskActive(GameObject.Find("Floo3").transform);  //  生成領取遮罩
 
             Debug.Log($"你獲得了: {BonusAmount} 點數");
         });

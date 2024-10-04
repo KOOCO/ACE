@@ -74,8 +74,10 @@ public class CryptoTableBtnSample : MonoBehaviour
                 }
                 else
                 {
-                    DataManager.istipAppear = true;
-                    DataManager.TipText = LanguageManager.Instance.GetText("you dont have enough Ucoins Please buy from shop");
+                    //DataManager.istipAppear = true;
+                    //DataManager.TipText = LanguageManager.Instance.GetText("you dont have enough Ucoins Please buy from shop");
+                    ViewManager.Instance.OpenTipMsgView(GameObject.Find("Floo3").transform, messageStatus.Reminder,
+                                            LanguageManager.Instance.GetText("You don,t have enough Ucoins"));
                 }
             }
             else

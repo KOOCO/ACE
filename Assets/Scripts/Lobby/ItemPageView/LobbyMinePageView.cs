@@ -341,8 +341,8 @@ public class LobbyMinePageView : MonoBehaviour
         //帳戶餘額刷新
         AccountBalanceReflash_Btn.onClick.AddListener(() =>
         {
-
             //UpdatetAccountBalance("4,300 ETH", 40000, 3000, 5, 30);
+            FindAnyObjectByType<LobbyView>().UpdateUserData();
         });
 
         #endregion
@@ -544,6 +544,27 @@ public class LobbyMinePageView : MonoBehaviour
 
         UpdateScoreRecord(50, 60, 70, 80);
         UpdateInvitationCodeInfo();
+    }
+
+    //外部調用方法
+    ///<summary>
+    ///開啟交易報表
+    ///</summary>
+    public void openTransactionHistoryView()
+    {
+        Transform lobbyView = GameObject.Find("LobbyView").transform;
+        RectTransform transactionHistoryView = Instantiate(TransactionHistoryViewObj, lobbyView).GetComponent<RectTransform>();
+        ViewManager.Instance.InitViewTr(transactionHistoryView, "TransactionHistoryView");
+    }
+    ///<summary>
+    ///開啟設定選單
+    ///</summary>
+    public void openSettingsView()
+    {
+        isSettingExpand = !isSettingExpand;
+        StartCoroutine(ISwitchContent(isSettingExpand,
+                                      Settings_Obj,
+                                      settings_Img));
     }
 
     /// <summary>
@@ -764,8 +785,7 @@ public class LobbyMinePageView : MonoBehaviour
         JSBridgeManager.Instance.UpdateDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
                                                         dataDic);
 
-        ViewManager.Instance.OpenTipMsgView(transform,
-                                            LanguageManager.Instance.GetText("Binding Successful"));
+        ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Succesful, LanguageManager.Instance.GetText("Binding Successful"));
     }
 
     /// <summary>

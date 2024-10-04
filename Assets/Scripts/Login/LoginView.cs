@@ -109,9 +109,6 @@ public class LoginView : MonoBehaviour
     TextMeshProUGUI RegisterNumber_Txt, Account_Txt, RegisterNumberIf_Placeholder,
                     RegisterCode_Txt, RegisterOTPIf_Placeholder, RegisterOTPSendBtn_Txt,
                     RegisterPassword_Txt, RegisterPasswordIf_Placeholder,
-
-
-
                     RegisterSubmitBtn_Txt, AccountIf_Placeholder, fail_banner_Text;
 
 
@@ -856,6 +853,13 @@ public class LoginView : MonoBehaviour
             KybordEnterAction?.Invoke();
         }
 
+        //通知測試
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Reminder,
+                                            LanguageManager.Instance.GetText("Sent OTP to SMS"));
+        }
+
         //開始檢測資料重複
         if (isStartCheckData)
         {
@@ -955,7 +959,7 @@ public class LoginView : MonoBehaviour
     /// <param name="phoneNumber">手機號</param>
     private void SendOTP(string phoneNumber)
     {
-        ViewManager.Instance.OpenTipMsgView(transform,
+        ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Sending,
                                             LanguageManager.Instance.GetText("Sent OTP to SMS"));
         Debug.Log("Phone Number :: SendOTP");
         currVerifyPhoneNumber = phoneNumber;
@@ -2108,8 +2112,10 @@ public class LoginView : MonoBehaviour
         {
             if (loginData.online == true)
             {
-                DataManager.TipText = LanguageManager.Instance.GetText("You are already logged in from another device");
-                DataManager.istipAppear = true;
+                //DataManager.TipText = LanguageManager.Instance.GetText("You are already logged in from another device");
+                //DataManager.istipAppear = true;
+                ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Sending,
+                                            LanguageManager.Instance.GetText("You are already logged in from another device"));
                 //user logged in
                 Debug.Log("用戶帳號已登入，已在遊戲內");
                 /*ViewManager.Instance.OpenTipMsgView(transform,
@@ -2130,4 +2136,11 @@ public class LoginView : MonoBehaviour
     }
 
     #endregion
+
+    //外部調用
+    public void openTip(messageStatus status, string message)
+    {
+        ViewManager.Instance.OpenTipMsgView(transform, status,
+                                            LanguageManager.Instance.GetText(message));
+    }
 }

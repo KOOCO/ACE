@@ -151,8 +151,7 @@ public class LobbyMainPageView : MonoBehaviour
                 //籌碼不足
                 if (DataManager.UserAChips < DataManager.IntegralNeedChips)
                 {
-                    ViewManager.Instance.OpenTipMsgView(transform,
-                                                        LanguageManager.Instance.GetText("Not enough chips."));
+                    ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Failed, LanguageManager.Instance.GetText("Purchase Unsuccessful, Please Try Again!"));
                 }
                 else
                 {

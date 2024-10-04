@@ -88,8 +88,9 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
 
             if (errorJson == "Invalid username or password!")
             {
-                DataManager.TipText = LanguageManager.Instance.GetText("Invalid Username or Password!");
-                DataManager.istipAppear = true;
+                //DataManager.TipText = LanguageManager.Instance.GetText("Invalid Username or Password!");
+                //DataManager.istipAppear = true;
+                FindObjectOfType<LoginView>().openTip(messageStatus.Failed, "Invalid Username or Password!");
             }
             errCallback?.Invoke(request.responseCode.ToString());
         }

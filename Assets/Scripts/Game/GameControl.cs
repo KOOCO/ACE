@@ -1488,6 +1488,7 @@ public class GameControl : MonoBehaviour
         }
 
         player.ActionFrame = true;
+        //gameRoomData.actionCD = 1;
         player.CountDown(DataManager.StartCountDownTime,
                          gameRoomData.actionCD);
         if (player.UserId == DataManager.UserId)
@@ -2336,22 +2337,23 @@ public class GameControl : MonoBehaviour
             return new List<GameRoomPlayerData>();
         }
 
-        int maxResult = shapeDic.Values.Min(x => x.Item1);
-        Debug.Log($"Max result: {maxResult}");
+        // The lower the result, the better the hand (e.g., 1 is Royal Flush, 2 is Straight Flush, etc.)
+        int bestHandRank = shapeDic.Values.Min(x => x.Item1);
+        Debug.Log($"Best hand rank: {bestHandRank}");
 
-        var playersWithMaxResult = shapeDic.Where(x => x.Value.Item1 == maxResult).ToList();
-        Debug.Log($"Players with max result count: {playersWithMaxResult.Count}");
+        var playersWithBestHand = shapeDic.Where(x => x.Value.Item1 == bestHandRank).ToList();
+        Debug.Log($"Players with best hand count: {playersWithBestHand.Count}");
 
-        if (playersWithMaxResult.Count == 1)
+        if (playersWithBestHand.Count == 1)
         {
-            Debug.Log($"Single winner found: {playersWithMaxResult[0].Key.userId}");
-            return new List<GameRoomPlayerData>() { playersWithMaxResult[0].Key };
+            Debug.Log($"Single winner found: {playersWithBestHand[0].Key.userId}");
+            return new List<GameRoomPlayerData>() { playersWithBestHand[0].Key };
         }
         else
         {
-            // Multiple players with the same max result
+            // Multiple players with the same hand rank, compare by kickers
             Dictionary<GameRoomPlayerData, List<int>> sortedHands = new Dictionary<GameRoomPlayerData, List<int>>();
-            foreach (var player in playersWithMaxResult)
+            foreach (var player in playersWithBestHand)
             {
                 // Convert card values to ranks (Ace = 14, 2-10 = 2-10, J=11, Q=12, K=13)
                 List<int> sortedHand = player.Value.Item2.Select(x => x % 13 == 0 ? 14 : x % 13).ToList();
@@ -2360,8 +2362,8 @@ public class GameControl : MonoBehaviour
                 Debug.Log($"Player {player.Key.userId} sorted hand: {string.Join(",", sortedHand)}");
             }
 
-            // Compare hands by kicker
-            List<GameRoomPlayerData> winners = CompareByKickers(sortedHands);
+            // Compare hands by kickers
+            List<GameRoomPlayerData> winners = CompareByKickers(sortedHands, bestHandRank);
 
             if (winners.Count == 1)
             {
@@ -2376,14 +2378,13 @@ public class GameControl : MonoBehaviour
         }
     }
 
-    private List<GameRoomPlayerData> CompareByKickers(Dictionary<GameRoomPlayerData, List<int>> sortedHands)
+    private List<GameRoomPlayerData> CompareByKickers(Dictionary<GameRoomPlayerData, List<int>> sortedHands, int handRank)
     {
         List<GameRoomPlayerData> potentialWinners = sortedHands.Keys.ToList();
         int kickerIndex = 0;
 
         while (potentialWinners.Count > 1)
         {
-            // Check if all remaining players have enough cards for comparison at the current kicker index
             int maxKickerValue = int.MinValue;
             bool validComparison = false;
 
@@ -2403,7 +2404,7 @@ public class GameControl : MonoBehaviour
 
             if (!validComparison)
             {
-                // If no valid comparison was made, break the loop (e.g., all players ran out of cards to compare)
+                // If no valid comparison was made, break the loop
                 break;
             }
 
@@ -2418,6 +2419,7 @@ public class GameControl : MonoBehaviour
 
         return potentialWinners;
     }
+
 
 
 
