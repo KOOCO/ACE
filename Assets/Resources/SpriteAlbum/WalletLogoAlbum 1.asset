@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ede173b4f2d04194b8318a1957fdff40, type: 3}
+  m_Name: WalletLogoAlbum 1
+  m_EditorClassIdentifier: 
+  album:
+  - {fileID: 21300000, guid: 17f7849f4c30cd14aaecf63b34d744f5, type: 3}
+  - {fileID: 21300000, guid: 8a9a2abcfb1380f439020d61b5596177, type: 3}
+  - {fileID: 21300000, guid: 855acb1f55e313848aeb4b83e975a9f5, type: 3}
+  - {fileID: 21300000, guid: a41d6f3f7a1569448ad6ab9a4903fef3, type: 3}
+  - {fileID: 21300000, guid: 9b94b31f63854df42834d44f084b8b2d, type: 3}

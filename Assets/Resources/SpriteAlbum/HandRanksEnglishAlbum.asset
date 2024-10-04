@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ede173b4f2d04194b8318a1957fdff40, type: 3}
+  m_Name: HandRanksEnglishAlbum
+  m_EditorClassIdentifier: 
+  album:
+  - {fileID: 21300000, guid: afae646ef32fc47eea55d9dc469054e2, type: 3}
+  - {fileID: 21300000, guid: 1bd1baf00a64046118a70fd9ce947c0a, type: 3}
+  - {fileID: 21300000, guid: 89c0c3affe6b34d27885e94c25865e6f, type: 3}
+  - {fileID: 21300000, guid: b0b8a020b25d34547915553c7414e323, type: 3}
+  - {fileID: 21300000, guid: abaf0b84f3ae549d0abe2929ad2084d5, type: 3}
+  - {fileID: 21300000, guid: 048fa73c8610a4a7aa9f9b66016497b2, type: 3}
+  - {fileID: 21300000, guid: 048fa73c8610a4a7aa9f9b66016497b2, type: 3}
+  - {fileID: 21300000, guid: 4b504e8de243d476fa7a21f488fa5393, type: 3}
+  - {fileID: 21300000, guid: a9160f63071c1464c91788c7e6029508, type: 3}
+  - {fileID: 21300000, guid: 6321bd429bfb74aaab113ecd6da1d3d0, type: 3}
+  - {fileID: 21300000, guid: fc18c1375dbb444a8b415aceef0a281c, type: 3}
