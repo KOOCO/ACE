@@ -13,7 +13,7 @@ public class HistoryVideoView : MonoBehaviour
     [SerializeField]
     GamePlayerInfo[] Players;                                                               //所有玩家(0=本地玩家)
     [SerializeField]
-    Poker[] CommunityPokser;
+    Poker[] CommunityPokser;                   
     [SerializeField]
     TextMeshProUGUI HandNum_Txt, TotalPot_Txt, WinType_Txt;
     [SerializeField]
@@ -367,7 +367,7 @@ public class HistoryVideoView : MonoBehaviour
 
         //初始化
         foreach (var player in Players)
-        {
+        {            
             player.gameObject.SetActive(false);
             player.SetBackChips = 0;
         }
@@ -466,7 +466,7 @@ public class HistoryVideoView : MonoBehaviour
         {
             StopCoroutine(playVideoWinCoroutine);
             playVideoWinCoroutine = null;
-        }
+        } 
         playVideoWinCoroutine = StartCoroutine(OnWinner(processStepHistoryData.PotWinnerSeatList,
                                                         processStepHistoryData.PotWinChips,
                                                         $"{LanguageManager.Instance.GetText("Pot")}"));
@@ -554,7 +554,6 @@ public class HistoryVideoView : MonoBehaviour
             if (Players[seat].GetHandPoker[0].PokerNum < 0)
             {
                 Players[seat].SetPokerShapeTxtStr = "";
-                Players[seat].SetPokerShapeImg = null;
                 return;
             }
 
@@ -591,7 +590,7 @@ public class HistoryVideoView : MonoBehaviour
                                                    matchPokerList,
                                                    isShowWinEffect);
                 }
-            });
+            });            
         }
     }
 

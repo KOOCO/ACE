@@ -785,8 +785,7 @@ public class LobbyMinePageView : MonoBehaviour
         JSBridgeManager.Instance.UpdateDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
                                                         dataDic);
 
-        ViewManager.Instance.OpenTipMsgView(transform,
-                                            LanguageManager.Instance.GetText("Binding Successful"));
+        ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Succesful, LanguageManager.Instance.GetText("Binding Successful"));
     }
 
     /// <summary>

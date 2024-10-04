@@ -550,7 +550,7 @@ public class LobbyView : MonoBehaviour
     /// </summary>
     public void ShowMaxRoomTip()
     {
-        ViewManager.Instance.OpenTipMsgView(transform,
+        ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Warning,
                                             LanguageManager.Instance.GetText("MaxRoomTip"));
     }
 

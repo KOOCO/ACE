@@ -86,14 +86,14 @@ public class JoinRoomView : MonoBehaviour
             if (tableType == TableTypeEnum.Cash &&
                 newCarryChipsValue > DataManager.UserUChips)
             {
-                ViewManager.Instance.OpenTipMsgView(lobbyView.transform, LanguageManager.Instance.GetText("Not enough chips."));
+                ViewManager.Instance.OpenTipMsgView(lobbyView.transform, messageStatus.Failed, LanguageManager.Instance.GetText("Purchase Unsuccessful, Please Try Again!"));
                 gameObject.SetActive(false);
                 return;
             }
             else if (tableType == TableTypeEnum.VCTable &&
                      newCarryChipsValue > DataManager.UserAChips)
             {
-                ViewManager.Instance.OpenTipMsgView(lobbyView.transform, LanguageManager.Instance.GetText("Not enough chips."));
+                ViewManager.Instance.OpenTipMsgView(lobbyView.transform, messageStatus.Failed, LanguageManager.Instance.GetText("Purchase Unsuccessful, Please Try Again!"));
                 gameObject.SetActive(false);
                 return;
             }

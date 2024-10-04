@@ -365,6 +365,21 @@
     "zh_TW": "密碼無效，請重新輸入。"
   },
   {
+    "ID": "Invalid Username or Password!",
+    "English": "Invalid Username or Password!",
+    "zh_TW": "無效的帳號或密碼！"
+  },
+  {
+    "ID": "Network offline",
+    "English": "If you haven't playing the game for too long. The system will prompt you to exit the game.",
+    "zh_TW": "遊戲閒置過久，您已被踢線"
+  },
+  {
+    "ID": "You don,t have enough Ucoins",
+    "English": "You don,t have enough Ucoins",
+    "zh_TW": "您的U幣不足"
+  },
+  {
     "ID": "Please Agree To The Privacy Policy.",
     "English": "Please Agree To The Privacy Policy.",
     "zh_TW": "請同意隱私權政策。"

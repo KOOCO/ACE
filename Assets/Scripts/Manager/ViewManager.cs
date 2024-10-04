@@ -106,14 +106,14 @@ public class ViewManager : UnitySingleton<ViewManager>
     /// <param name="parent">產生介面</param>
     /// <param name="msg">訊息內容</param>
     /// <returns></returns>
-    public void OpenTipMsgView(Transform parent, string msg)
+    public void OpenTipMsgView(Transform parent, messageStatus status, string msg)
     {
         GameObject obj = Resources.Load<GameObject>("Prefab/CommonView/TipMsgView");
         RectTransform rt = Instantiate(obj, parent).GetComponent<RectTransform>();
         InitViewTr(rt);
 
         TipMsgView tipMsgView = rt.GetComponent<TipMsgView>();
-        tipMsgView.SetTipMsg(msg);
+        tipMsgView.SetTipMsg(status, msg);
     }
 
     #endregion
