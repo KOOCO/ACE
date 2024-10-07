@@ -319,19 +319,20 @@ public class GameControl : MonoBehaviour
             leaveRound.amount = gameRoomPlayerData.carryChips;
         }
         OnLeaveTable();
-        // string apiEndpoint = $"api/app/rounds/leave-table?memberId={leaveRound.memberId}&amount={leaveRound.amount}&type={leaveRound.type}&rankPoint={leaveRound.rankPoint}";
 
-        // SwaggerAPIManager.Instance.SendPostAPI<LeaveRound>(apiEndpoint, null, (data) =>
-        // {
-        //     Debug.Log("Player successfully left the room.");
-        //     DataManager.UserUChips += leaveRound.amount;
-        //     DataManager.DataUpdated = true;
-        //     OnLeaveTable();
-        // },
-        // (error) =>
-        // {
-        //     Debug.LogError($"Failed to leave the room. Error: {error}");
-        // }, true, true);
+        string apiEndpoint = $"api/app/rounds/leave-table?memberId={leaveRound.memberId}&amount={leaveRound.amount}&type={leaveRound.type}&rankPoint={leaveRound.rankPoint}";
+
+        SwaggerAPIManager.Instance.SendPostAPI<LeaveRound>(apiEndpoint, null, (data) =>
+        {
+            Debug.Log("Player successfully left the room.");
+            DataManager.UserUChips += leaveRound.amount;
+            DataManager.DataUpdated = true;
+            OnLeaveTable();
+        },
+        (error) =>
+        {
+            Debug.LogError($"Failed to leave the room. Error: {error}");
+        }, true, true);
     }
     void OnLeaveTable()
     {
@@ -384,7 +385,6 @@ public class GameControl : MonoBehaviour
             //移除玩家
             RemovePlayer(DataManager.UserId);
         }
-
         //本地玩家房間關閉
         GameRoomManager.Instance.RemoveGameRoom(transform.name);
     }
