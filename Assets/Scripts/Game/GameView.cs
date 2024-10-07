@@ -100,7 +100,6 @@ public class GameView : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI NotReadChat_Txt, NewMessageBtn_Txt,
                     ChatSendBtn_Txt, ChatIf_Placeholder;
-    bool isWating;
 
     [Header("手牌紀錄")]
     [SerializeField]
@@ -134,7 +133,7 @@ public class GameView : MonoBehaviour
     GameObject GamePause_Obj;
     [SerializeField]
     Button GameContinue_Btn;
-    
+
     [Header("遊戲音樂")]
     [SerializeField]
     AudioSource AudioSource_Obj;
@@ -467,9 +466,6 @@ public class GameView : MonoBehaviour
             gameControl.UpdataPlayerData(DataManager.UserId,
                                          data);
 
-            if(thisData.IsSitOut)
-                ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Succesful,
-                                            LanguageManager.Instance.GetText("Sit out next hand"));
             CloseMenu();
         });
 
@@ -1288,6 +1284,7 @@ public class GameView : MonoBehaviour
         foreach (var player in gamePlayerInfoList)
         {
             player.SetPokerShapeTxtStr = "";
+            player.SetPokerShapeImg = null;
             player.IsWinnerActive = false;
             player.SetBackChips = 0;
             player.GetHandPoker[0].gameObject.SetActive(false);
@@ -1801,6 +1798,7 @@ public class GameView : MonoBehaviour
                 gameRoomData.playingPlayersIdList.Contains(player.userId))
             {
                 gamePlayerInfo.SetPokerShapeTxtStr = "";
+                gamePlayerInfo.SetPokerShapeImg = null;
                 gamePlayerInfo.SetHandPoker(-1, -1);
             }
             else
@@ -1831,6 +1829,8 @@ public class GameView : MonoBehaviour
                 if ((PlayerStateEnum)player.gameState == PlayerStateEnum.Waiting)
                 {
                     gamePlayerInfo.SetPokerShapeTxtStr = "";
+                    gamePlayerInfo.SetPokerShapeImg = null;
+
                     gamePlayerInfo.GetHandPoker[0].gameObject.SetActive(false);
                     gamePlayerInfo.GetHandPoker[1].gameObject.SetActive(false);
                 }
@@ -2355,9 +2355,9 @@ public class GameView : MonoBehaviour
 
             player.IsWinnerActive = true;
             if (potWinnerId == DataManager.UserId)
-                player.setWinnerDisplay($"POT + ${changeValue:f2}");
+                player.setWinnerDisplay($"POT + ${changeValue}");
             else
-                player.setWinnerDisplay($"POT \n+ ${gameRoomData.potWinData.potWinChips / gameRoomData.potWinData.potWinnersId.Count():f2}");
+                player.setWinnerDisplay($"POT \n+ ${gameRoomData.potWinData.potWinChips / gameRoomData.potWinData.potWinnersId.Count()}");
 
             Vector2 winnerSeatPos = player.gameObject.transform.position;
 
@@ -2369,12 +2369,12 @@ public class GameView : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
 
             ObjMoveUtils.ObjMoveToTarget(rt, winnerSeatPos, 0.5f,
-            () =>
-            {
-                PlaySound("SoundWinPot");
-                player.PlayerRoomChips = playerData.carryChips;
-                Destroy(rt.gameObject);
-            });
+                                        () =>
+                                        {
+                                            PlaySound("SoundWinPot");
+                                            player.PlayerRoomChips = playerData.carryChips;
+                                            Destroy(rt.gameObject);
+                                        });
 
             yield return new WaitForSeconds(2);
         }
@@ -2500,9 +2500,9 @@ public class GameView : MonoBehaviour
                 player.IsOpenInfoMask = false;
                 player.IsWinnerActive = true;
                 if (sideWinnerId == DataManager.UserId)
-                    player.setWinnerDisplay($"SIDE POT + ${changeValue:f2}");
+                    player.setWinnerDisplay($"SIDE POT + ${changeValue}");
                 else
-                    player.setWinnerDisplay($"SIDE POT \n+ ${gameRoomData.sideWinData.sideWinChips / gameRoomData.sideWinData.sideWinnersId.Count():f2}");
+                    player.setWinnerDisplay($"SIDE POT \n+ ${gameRoomData.sideWinData.sideWinChips / gameRoomData.sideWinData.sideWinnersId.Count()}");
 
                 Vector2 winnerSeatPos = player.gameObject.transform.position;
                 JudgePokerShape(player, true, true);
@@ -2794,7 +2794,7 @@ public class GameView : MonoBehaviour
     public void BuyChips(double buyValue)
     {
         buyChipsView.gameObject.SetActive(false);
-        ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Sending,
+        ViewManager.Instance.OpenTipMsgView(transform,
                                             LanguageManager.Instance.GetText("Start replenishing chips for the next hand"));
         gameControl.PreBuyChipsValue = Math.Floor(buyValue);
     }
@@ -2836,31 +2836,31 @@ public class GameView : MonoBehaviour
     {
         Mask_Btn.gameObject.SetActive(false);
         StartCoroutine(UnityUtils.Instance.IViewSlide(false,
-        ChatPage_Tr,
-        DirectionEnum.Left,
-        PageMoveTime,
-        () =>
-        {
-            //判斷保留訊息數量
-            if (ChatContent_Tr.childCount > MaxChatCount)
-            {
-                int closeCount = ChatContent_Tr.childCount - MaxChatCount;
-                for (int i = 0; i < closeCount; i++)
-                {
-                    if (ChatContent_Tr.GetChild(2 + i).gameObject.activeSelf)
-                    {
-                        ChatContent_Tr.GetChild(2 + i).gameObject.SetActive(false);
-                        float chatHeight = ChatContent_Tr.GetChild(2 + i).GetComponent<RectTransform>().rect.height;
-                        float reduce = Mathf.Max(0, ChatContent_Tr.anchoredPosition.y - chatHeight);
-                        ChatContent_Tr.anchoredPosition = new Vector2(ChatContent_Tr.anchoredPosition.x,
-                                                                    reduce);
-                    }
-                }
-            }
+                                                      ChatPage_Tr,
+                                                      DirectionEnum.Left,
+                                                      PageMoveTime,
+                                                      () =>
+                                                      {
+                                                          //判斷保留訊息數量
+                                                          if (ChatContent_Tr.childCount > MaxChatCount)
+                                                          {
+                                                              int closeCount = ChatContent_Tr.childCount - MaxChatCount;
+                                                              for (int i = 0; i < closeCount; i++)
+                                                              {
+                                                                  if (ChatContent_Tr.GetChild(2 + i).gameObject.activeSelf)
+                                                                  {
+                                                                      ChatContent_Tr.GetChild(2 + i).gameObject.SetActive(false);
+                                                                      float chatHeight = ChatContent_Tr.GetChild(2 + i).GetComponent<RectTransform>().rect.height;
+                                                                      float reduce = Mathf.Max(0, ChatContent_Tr.anchoredPosition.y - chatHeight);
+                                                                      ChatContent_Tr.anchoredPosition = new Vector2(ChatContent_Tr.anchoredPosition.x,
+                                                                                                                    reduce);
+                                                                  }
+                                                              }
+                                                          }
 
-            StartCoroutine(IGoNewChatMessage());
-            GameRoomManager.Instance.IsCanMoveSwitch = true;
-        }));
+                                                          StartCoroutine(IGoNewChatMessage());
+                                                          GameRoomManager.Instance.IsCanMoveSwitch = true;
+                                                      }));
     }
 
     /// <summary>
@@ -2913,9 +2913,6 @@ public class GameView : MonoBehaviour
         float goPosY = Mathf.Max(0, currChatContentHeight - chatAreaHeight);
         ChatContent_Tr.anchoredPosition = new Vector2(ChatContent_Tr.anchoredPosition.x,
                                                       goPosY);
-
-        yield return new WaitForSeconds(3);
-        isWating = false;
     }
 
     /// <summary>
@@ -2940,13 +2937,6 @@ public class GameView : MonoBehaviour
             return;
         }
 
-        if (isWating)
-        {
-            ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Warning,
-                                            LanguageManager.Instance.GetText("Messages sent too frequently"));
-            return;
-        }
-
         gameControl.UpdateChatMsg(Chat_If.text);
         /* baseRequest.SendRequestRequest_Chat(Chat_If.text);
          CreateChatContent(DataManager.UserAvatarIndex,
@@ -2960,8 +2950,6 @@ public class GameView : MonoBehaviour
         {
             Chat_If.Select();
         }
-
-        isWating = true;
 
         StartCoroutine(IGoNewChatMessage());
     }
@@ -3213,6 +3201,8 @@ public class GameView : MonoBehaviour
                 //其他玩家
                 gamePlayerInfo.SetHandPoker(-1, -1);
                 gamePlayerInfo.SetPokerShapeTxtStr = "";
+                gamePlayerInfo.SetPokerShapeImg = null;
+
             }
         }
 
