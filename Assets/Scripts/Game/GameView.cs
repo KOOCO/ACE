@@ -134,7 +134,7 @@ public class GameView : MonoBehaviour
     GameObject GamePause_Obj;
     [SerializeField]
     Button GameContinue_Btn;
-    
+
     [Header("遊戲音樂")]
     [SerializeField]
     AudioSource AudioSource_Obj;
@@ -467,7 +467,7 @@ public class GameView : MonoBehaviour
             gameControl.UpdataPlayerData(DataManager.UserId,
                                          data);
 
-            if(thisData.IsSitOut)
+            if (thisData.IsSitOut)
                 ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Succesful,
                                             LanguageManager.Instance.GetText("Sit out next hand"));
             CloseMenu();
@@ -716,6 +716,7 @@ public class GameView : MonoBehaviour
             IsStartGameTest = true;
             gameControl.preUpdateGameFlow = GameFlowEnum.None;
             gameControl.preLocalGameFlow = GameFlowEnum.None;
+            Debug.Log("IStartGameFlow :: GameStartTest");
             StartCoroutine(gameControl.IStartGameFlow(GameFlowEnum.Licensing));
             IsOpenGameTestObj = false;
         });

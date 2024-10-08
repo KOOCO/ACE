@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using System;
 using UnityEngine.Events;
+using WalletConnectSharp.Crypto.Models;
 
 public class GameControl : MonoBehaviour
 {
@@ -140,6 +141,8 @@ public class GameControl : MonoBehaviour
                 gameRoomData.hostId == DataManager.UserId)
             {
                 isGameStart = true;
+                Debug.Log("IStartGameFlow :: Update Licensing");
+                isLicense = false;
                 StartCoroutine(IStartGameFlow(GameFlowEnum.Licensing));
             }
 
@@ -299,11 +302,13 @@ public class GameControl : MonoBehaviour
     /// </summary>
     public void ExitGame()
     {
-        if (DataManager.UserId == null)
+        if (string.IsNullOrEmpty(DataManager.UserId))
         {
+            Debug.LogError("UserId is null or empty. Cannot exit the game.");
             return;
         }
 
+        // Initialize leaveRound with user data
         LeaveRound leaveRound = new LeaveRound
         {
             memberId = DataManager.UserId,
@@ -312,90 +317,109 @@ public class GameControl : MonoBehaviour
             rankPoint = 10
         };
 
-        // Null and key existence check
+        // Check for valid game room and player data
         if (gameRoomData != null && gameRoomData.playerDataDic != null &&
             gameRoomData.playerDataDic.TryGetValue(DataManager.UserId, out GameRoomPlayerData gameRoomPlayerData))
         {
             leaveRound.amount = gameRoomPlayerData.carryChips;
         }
-        OnLeaveTable();
 
+        // Construct the API endpoint URL
         string apiEndpoint = $"api/app/rounds/leave-table?memberId={leaveRound.memberId}&amount={leaveRound.amount}&type={leaveRound.type}&rankPoint={leaveRound.rankPoint}";
 
+        // Send the API request to leave the room
         SwaggerAPIManager.Instance.SendPostAPI<LeaveRound>(apiEndpoint, null, (data) =>
         {
             Debug.Log("Player successfully left the room.");
+            // Update the player's total chips after leaving
             DataManager.UserUChips += leaveRound.amount;
             DataManager.DataUpdated = true;
-            OnLeaveTable();
+            OnLeaveTable(); // Ensure cleanup is properly executed after leaving
+
         },
         (error) =>
         {
             Debug.LogError($"Failed to leave the room. Error: {error}");
         }, true, true);
     }
+
     void OnLeaveTable()
     {
-        //移除倒數
-        if (cdCoroutine != null) StopCoroutine(cdCoroutine);
+        // Stop the countdown coroutine if it is running
+        if (cdCoroutine != null)
+        {
+            StopCoroutine(cdCoroutine);
+        }
 
-        //機器人數量
-        int robotCount = gameRoomData.playerDataDic.Where(x => x.Value.userId.StartsWith(FirebaseManager.ROBOT_ID))
-                                                   .Count();
-        //停止監聽遊戲房間資料
+        // Count the number of robot players
+        int robotCount = gameRoomData.playerDataDic.Where(x => x.Value.userId.StartsWith(FirebaseManager.ROBOT_ID)).Count();
+
+        // Stop listening for game room data changes
         JSBridgeManager.Instance.StopListeningForDataChanges($"{QueryRoomPath}");
 
-        //移除監測連線狀態
+        // Remove the listener for the player's connection state
         JSBridgeManager.Instance.RemoveListenerConnectState($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{DataManager.UserId}");
 
-        //移除房間判斷
-        if (gameRoomData.playerDataDic.Count - robotCount == 0 &&
-            RoomType != TableTypeEnum.IntegralTable)
+        // Check if all players except robots have left the room
+        if (gameRoomData.playerDataDic.Count - robotCount == 0 && RoomType != TableTypeEnum.IntegralTable)
         {
-            //房間剩下1名玩家
+            // Remove the entire room if no human players are left
             JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}");
         }
         else
         {
-            //積分房
+            // Handle cases where it's an "IntegralTable" (scored room)
             if (RoomType == TableTypeEnum.IntegralTable)
             {
                 if (gameRoomData.playerDataDic.Count == 1)
                 {
-                    //房間剩下1名玩家
+                    // Remove the room if only one player is left
                     JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}");
                     GameRoomManager.Instance.RemoveGameRoom(transform.name);
                     return;
                 }
                 else
                 {
-                    string newHostId = gameRoomData.playingPlayersIdList.Where(x => x != DataManager.UserId)
-                                                    .FirstOrDefault();
+                    // Filter out bots and select a non-bot player as the new host
+                    string newHostId = gameRoomData.playingPlayersIdList
+                        .Where(x => x != DataManager.UserId && !x.StartsWith(FirebaseManager.ROBOT_ID))
+                        .FirstOrDefault();
 
-                    //更新房主
-                    var dataDic = new Dictionary<string, object>()
+                    if (!string.IsNullOrEmpty(newHostId))
                     {
-                         { FirebaseManager.ROOM_HOST_ID, newHostId},
+                        // Update the new host ID in Firebase
+                        var dataDic = new Dictionary<string, object>()
+                    {
+                        { FirebaseManager.ROOM_HOST_ID, newHostId },
                     };
-                    JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}",
-                                                                    dataDic);
+                        JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}", dataDic);
+                    }
+                    else
+                    {
+                        // Handle the case where only bots remain
+                        Debug.LogWarning("No eligible human players left to assign as host.");
+                    }
                 }
             }
 
-            //移除玩家
+            // Remove the player from the game room
             RemovePlayer(DataManager.UserId);
         }
-        //本地玩家房間關閉
+
+        // Remove the local player data from the room
         GameRoomManager.Instance.RemoveGameRoom(transform.name);
     }
+
     /// <summary>
-    /// 移除玩家
+    /// Removes the player from the game room and updates Firebase accordingly
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="id">The ID of the player to be removed</param>
     private void RemovePlayer(string id)
     {
+        // Notify the game view that the player has exited the room
         gameView.PlayerExitRoom(id);
 
+        // Create a new list of playing player IDs excluding the one that is leaving
         List<string> playingPlayersId = new();
         foreach (var playerId in gameRoomData.playingPlayersIdList)
         {
@@ -405,19 +429,76 @@ public class GameControl : MonoBehaviour
             }
         }
 
-        //玩家列表中移除
+        // Remove the player from the playerDataDic in the gameRoomData
         if (gameRoomData.playerDataDic.ContainsKey(id))
         {
+            // Remove the player data from Firebase
             JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{id}");
         }
 
-        //更新房間資料
+        // Handle chip transfer in case of robot
+        TransferPlayerChipsToExistingPlayers(id);
+
+        // Update the room data to reflect the updated player list
         var data = new Dictionary<string, object>()
-        {
-            { FirebaseManager.PLAYING_PLAYER_ID, playingPlayersId},                 //遊戲中玩家ID
-        };
+    {
+        { FirebaseManager.PLAYING_PLAYER_ID, playingPlayersId },  // Updated list of playing player IDs
+    };
         UpdateGameRoomData(data);
     }
+
+    /// <summary>
+    /// Transfers the leaving player's chips to the remaining players (including robots) without causing NaN values.
+    /// </summary>
+    /// <param name="leavingPlayerId">The ID of the player leaving the game</param>
+    private void TransferPlayerChipsToExistingPlayers(string leavingPlayerId)
+    {
+        if (gameRoomData == null || !gameRoomData.playerDataDic.ContainsKey(leavingPlayerId))
+        {
+            Debug.LogWarning("Invalid game room data or player not found.");
+            return;
+        }
+
+        var leavingPlayer = gameRoomData.playerDataDic[leavingPlayerId];
+        double leavingPlayerChips = leavingPlayer.carryChips;
+
+        // Check if the player has any chips to distribute
+        if (leavingPlayerChips <= 0)
+        {
+            return;
+        }
+
+        // Get a list of all active players (excluding the one leaving)
+        var activePlayers = gameRoomData.playerDataDic.Values.Where(x => x.userId != leavingPlayerId).ToList();
+
+        // If no other players are left, no chips need to be distributed
+        if (activePlayers.Count == 0)
+        {
+            return;
+        }
+
+        // Distribute chips equally among remaining players
+        double chipsPerPlayer = leavingPlayerChips / activePlayers.Count;
+
+        foreach (var player in activePlayers)
+        {
+            if (double.IsNaN(chipsPerPlayer))
+            {
+                Debug.LogError("Chips per player calculation resulted in NaN. Skipping chip distribution.");
+                return;
+            }
+
+            player.carryChips += Math.Floor(chipsPerPlayer); // Safeguard against NaN
+
+            // Update each player's chips in Firebase
+            var data = new Dictionary<string, object>()
+        {
+            { FirebaseManager.CARRY_CHIPS, Math.Floor(player.carryChips) },  // Ensure carry chips are valid numbers
+        };
+            JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{player.userId}", data);
+        }
+    }
+
 
     #endregion
 
@@ -597,10 +678,11 @@ public class GameControl : MonoBehaviour
     /// <param name="gameFlow">遊戲流程</param>
     public IEnumerator IStartGameFlow(GameFlowEnum gameFlow)
     {
-        Debug.Log($"{nameof(IStartGameFlow)} :: {gameFlow}");
+        Debug.Log($"{nameof(IStartGameFlow)} :: {gameFlow} :: hostId :: {gameRoomData.hostId} :: {DataManager.UserId}");
         if (preUpdateGameFlow == gameFlow ||
             gameRoomData.hostId != DataManager.UserId)
         {
+            Debug.Log("Game Break Host Not found");
             yield break;
         }
         preUpdateGameFlow = gameFlow;
@@ -1083,6 +1165,7 @@ public class GameControl : MonoBehaviour
                     preUpdateGameFlow <= GameFlowEnum.Licensing &&
                     RoomType != TableTypeEnum.IntegralTable)
                 {
+                    Debug.Log("IStartGameFlow :: JudgePauseToStart Licensing");
                     StartCoroutine(IStartGameFlow(GameFlowEnum.Licensing));
                 }
             }
@@ -1105,6 +1188,7 @@ public class GameControl : MonoBehaviour
     /// <summary>
     /// 遊戲流程回傳
     /// </summary>
+    public bool isLicense = false;
     private IEnumerator ILocalGameFlowBehavior()
     {
         preLocalGameFlow = (GameFlowEnum)gameRoomData.currGameFlow;
@@ -1117,6 +1201,12 @@ public class GameControl : MonoBehaviour
         {
             //發牌
             case GameFlowEnum.Licensing:
+
+                // if (isLicense)
+                //     break;
+
+
+                // isLicense = true;
 
                 gameView.GameStartInit();
 
@@ -1180,8 +1270,10 @@ public class GameControl : MonoBehaviour
                 yield return new WaitForSeconds(1);
 
                 //房主執行
+                Debug.Log("IStartGameFlow :: Host ID" + gameRoomData.hostId + " User ID " + DataManager.UserId);
                 if (gameRoomData.hostId == DataManager.UserId)
                 {
+                    Debug.Log("IStartGameFlow :: Host ID" + gameRoomData.hostId + " User ID " + DataManager.UserId);
                     yield return new WaitForSeconds(1);
                     yield return IStartGameFlow(GameFlowEnum.SetBlind);
                 }
@@ -1259,6 +1351,7 @@ public class GameControl : MonoBehaviour
                     if (gameRoomData.potWinData.isHaveSide == true)
                     {
                         //有邊池贏家
+                        Debug.Log("IStartGameFlow :: Have Side");
                         yield return IStartGameFlow(GameFlowEnum.SideResult);
 
                         yield break;
@@ -1281,7 +1374,8 @@ public class GameControl : MonoBehaviour
                                 yield break;
                             }
                         }
-
+                        Debug.Log("IStartGameFlow :: Pot result Licensing");
+                        isLicense = false;
                         //重新遊戲流程
                         yield return IStartGameFlow(GameFlowEnum.Licensing);
                     }
@@ -1332,7 +1426,8 @@ public class GameControl : MonoBehaviour
                             yield break;
                         }
                     }
-
+                    Debug.Log("IStartGameFlow :: Side Result Licensing");
+                    isLicense = false;
                     //重新遊戲流程
                     yield return IStartGameFlow(GameFlowEnum.Licensing);
                 }
@@ -1370,7 +1465,8 @@ public class GameControl : MonoBehaviour
                         gameView.SetBattleResult(GetLocalPlayer().carryChips >= leastChips);
                         yield break;
                     }
-
+                    Debug.Log("IStartGameFlow :: one player left result licensing");
+                    isLicense = false;
                     //重新遊戲流程
                     yield return IStartGameFlow(GameFlowEnum.Licensing);
                 }
@@ -1668,6 +1764,7 @@ public class GameControl : MonoBehaviour
             {
                 int nextFlowIndex = (gameRoomData.currGameFlow + 1) % Enum.GetValues(typeof(GameFlowEnum)).Length;
                 GameFlowEnum nextFlow = (GameFlowEnum)Mathf.Max(1, nextFlowIndex);
+                Debug.Log("IStartGameFlow :: " + nextFlow.ToString() + " IJudge 2");
                 yield return IStartGameFlow(nextFlow);
                 yield break;
             }
@@ -1679,6 +1776,7 @@ public class GameControl : MonoBehaviour
             {
                 int nextFlowIndex = (gameRoomData.currGameFlow + 1) % Enum.GetValues(typeof(GameFlowEnum)).Length;
                 GameFlowEnum nextFlow = (GameFlowEnum)Mathf.Max(1, nextFlowIndex);
+                Debug.Log("IStartGameFlow :: " + nextFlow.ToString() + " IJudge 3");
                 yield return IStartGameFlow(nextFlow);
                 yield break;
             }
