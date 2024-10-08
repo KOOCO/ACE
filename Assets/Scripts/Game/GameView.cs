@@ -1289,6 +1289,7 @@ public class GameView : MonoBehaviour
         foreach (var player in gamePlayerInfoList)
         {
             player.SetPokerShapeTxtStr = "";
+            player.SetPokerShapeImage = null;
             player.IsWinnerActive = false;
             player.SetBackChips = 0;
             player.GetHandPoker[0].gameObject.SetActive(false);
@@ -1802,6 +1803,7 @@ public class GameView : MonoBehaviour
                 gameRoomData.playingPlayersIdList.Contains(player.userId))
             {
                 gamePlayerInfo.SetPokerShapeTxtStr = "";
+                gamePlayerInfo.SetPokerShapeImage = null;
                 gamePlayerInfo.SetHandPoker(-1, -1);
             }
             else
@@ -1832,6 +1834,8 @@ public class GameView : MonoBehaviour
                 if ((PlayerStateEnum)player.gameState == PlayerStateEnum.Waiting)
                 {
                     gamePlayerInfo.SetPokerShapeTxtStr = "";
+                    gamePlayerInfo.SetPokerShapeImage = null;
+
                     gamePlayerInfo.GetHandPoker[0].gameObject.SetActive(false);
                     gamePlayerInfo.GetHandPoker[1].gameObject.SetActive(false);
                 }
@@ -3214,6 +3218,8 @@ public class GameView : MonoBehaviour
                 //其他玩家
                 gamePlayerInfo.SetHandPoker(-1, -1);
                 gamePlayerInfo.SetPokerShapeTxtStr = "";
+                gamePlayerInfo.SetPokerShapeImage = null;
+
             }
         }
 
