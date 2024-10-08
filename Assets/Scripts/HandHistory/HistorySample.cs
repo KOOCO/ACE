@@ -67,7 +67,7 @@ public class HistorySample : MonoBehaviour
 
         TableName_Txt.text = LanguageManager.Instance.GetText(resultHistory.RoomType);
 
-        Index_Txt.text = $"{LanguageManager.Instance.GetText("Hand")}{index + 1}";
+        Index_Txt.text = $"{LanguageManager.Instance.GetText("No.")}{index + 1}";
         Blind_Txt.text = $"{StringUtils.SetChipsUnit(resultHistory.SmallBlind)}/{StringUtils.SetChipsUnit(resultHistory.SmallBlind * 2)}";
         Avatar_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[resultHistory.Avatar];
         Nicaname_Txt.text = resultHistory.NickName;

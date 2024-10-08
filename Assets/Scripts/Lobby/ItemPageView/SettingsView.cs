@@ -7,14 +7,23 @@ using System.Linq;
 
 public class SettingsView : MonoBehaviour
 {
+    //[SerializeField]
+    //Button Close_Btn;
+    //[SerializeField]
+    //TextMeshProUGUI Title_Txt;
+    [Header("選單")]
     [SerializeField]
-    Button Close_Btn;
+    Button language_Btn, contactUs_Btn, terms_Btn, privacy_Btn, logOut_Btn;
     [SerializeField]
-    TextMeshProUGUI Title_Txt;
+    TextMeshProUGUI language_Txt, contactUs_Txt, terms_Txt, privacy_Txt, logOut_Txt;
 
     [Header("語言")]
+    //[SerializeField]
+    //TMP_Dropdown Language_Dd;
     [SerializeField]
-    TMP_Dropdown Language_Dd;
+    GameObject languageArea;
+    [SerializeField]
+    Toggle en_Tog, zh_Tog;
     [SerializeField]
     TextMeshProUGUI LanguageTitle_Txt;
 
@@ -23,8 +32,12 @@ public class SettingsView : MonoBehaviour
     /// </summary>
     private void UpdateLanguage()
     {
-        Title_Txt.text = LanguageManager.Instance.GetText("SETTINGS");
-        LanguageTitle_Txt.text = LanguageManager.Instance.GetText("Language");
+        //Title_Txt.text = LanguageManager.Instance.GetText("SETTINGS");
+        language_Txt.text = LanguageTitle_Txt.text = LanguageManager.Instance.GetText("Language");
+        contactUs_Txt.text  = LanguageManager.Instance.GetText("Contact us");
+        terms_Txt.text  = LanguageManager.Instance.GetText("Terms");
+        privacy_Txt.text  = LanguageManager.Instance.GetText("Privacy Policy");
+        logOut_Txt.text  = LanguageManager.Instance.GetText("Log Out");
     }
 
     private void OnDestroy()
@@ -37,13 +50,15 @@ public class SettingsView : MonoBehaviour
         LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
         ListenerEvent();
 
-        Utils.SetOptionsToDropdown(Language_Dd,
-                                   LanguageManager.Instance.languageShowName.ToList());
+        //Utils.SetOptionsToDropdown(Language_Dd,
+        //                           LanguageManager.Instance.languageShowName.ToList());
     }
 
     private void OnEnable()
     {
-        Language_Dd.value = LanguageManager.Instance.GetCurrLanguageIndex();
+        //Language_Dd.value = LanguageManager.Instance.GetCurrLanguageIndex();
+        zh_Tog.isOn = true;
+        en_Tog.isOn = false;
     }
 
     /// <summary>
@@ -52,16 +67,33 @@ public class SettingsView : MonoBehaviour
     private void ListenerEvent()
     {
         //關閉按鈕
-        Close_Btn.onClick.AddListener(() =>
+        //Close_Btn.onClick.AddListener(() =>
+        //{
+        //    Destroy(gameObject);
+        //});
+
+        language_Btn.onClick.AddListener(() =>
         {
-            Destroy(gameObject);
+            languageArea.SetActive(true);
         });
 
         //更換語言
-        Language_Dd.onValueChanged.AddListener((value) =>
+        #region old
+        //Language_Dd.onValueChanged.AddListener((value) =>
+        //{
+        //    LanguageManager.Instance.ChangeLanguage(value);
+
+        //});
+        #endregion
+        en_Tog.onValueChanged.AddListener((value) =>
         {
-            LanguageManager.Instance.ChangeLanguage(value);
-           
+            en_Tog.isOn = value;
+            LanguageManager.Instance.ChangeLanguage(0);
+        });
+        zh_Tog.onValueChanged.AddListener((value) =>
+        {
+            zh_Tog.isOn = value;
+            LanguageManager.Instance.ChangeLanguage(1);
         });
     }
 }
