@@ -18,7 +18,7 @@ public class BuyChipsView : MonoBehaviour
     Button Close_Btn, Cancel_Btn, Buy_Btn, BuyPlus_Btn, BuyMinus_Btn;
     [SerializeField]
     TextMeshProUGUI Title_Txt, BuyChipsTip_Txt, BlindsTitle_Txt,
-                    Blind_Txt, PreBuyChips_Txt, 
+                    Blind_Txt, PreBuyChips_Txt,
                     MinBuyChips_Txt, MaxBuyChips_Txt,
                     CancelBtn_Txt, BuyBtn_Txt,
                     CountDownTip_Txt;
@@ -119,6 +119,8 @@ public class BuyChipsView : MonoBehaviour
         {
             CancelInvoke(nameof(SetCountDownTip));
             thisData.SendBuyChipsCallback(newValue);
+            DataManager.UserUChips -= newValue;
+            DataManager.DataUpdated = true;
         });
 
         //+按鈕
