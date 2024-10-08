@@ -360,6 +360,8 @@ public class GameControl : MonoBehaviour
         // Remove the listener for the player's connection state
         JSBridgeManager.Instance.RemoveListenerConnectState($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{DataManager.UserId}");
 
+        bool isHostLeaving = gameRoomData.hostId == DataManager.UserId;
+
         // Check if all players except robots have left the room
         if (gameRoomData.playerDataDic.Count - robotCount == 0 && RoomType != TableTypeEnum.IntegralTable)
         {
@@ -378,9 +380,9 @@ public class GameControl : MonoBehaviour
                     GameRoomManager.Instance.RemoveGameRoom(transform.name);
                     return;
                 }
-                else
+                else if (isHostLeaving)
                 {
-                    // Filter out bots and select a non-bot player as the new host
+                    // Filter out bots and select a non-bot player as the new host if the current host is leaving
                     string newHostId = gameRoomData.playingPlayersIdList
                         .Where(x => x != DataManager.UserId && !x.StartsWith(FirebaseManager.ROBOT_ID))
                         .FirstOrDefault();
@@ -392,6 +394,7 @@ public class GameControl : MonoBehaviour
                     {
                         { FirebaseManager.ROOM_HOST_ID, newHostId },
                     };
+                        hostUpdated = true;
                         JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}", dataDic);
                     }
                     else
@@ -409,6 +412,7 @@ public class GameControl : MonoBehaviour
         // Remove the local player data from the room
         GameRoomManager.Instance.RemoveGameRoom(transform.name);
     }
+
 
     /// <summary>
     /// Removes the player from the game room and updates Firebase accordingly
@@ -444,6 +448,7 @@ public class GameControl : MonoBehaviour
     {
         { FirebaseManager.PLAYING_PLAYER_ID, playingPlayersId },  // Updated list of playing player IDs
     };
+        Debug.Log("RemovePlayer :: Playing Player Count" + playingPlayersId.Count());
         UpdateGameRoomData(data);
     }
 
@@ -685,6 +690,7 @@ public class GameControl : MonoBehaviour
             Debug.Log("Game Break Host Not found");
             yield break;
         }
+        Debug.Log(nameof(IStartGameFlow) + " Setting New Game Flow");
         preUpdateGameFlow = gameFlow;
         bool isGameStarting = gameFlow == GameFlowEnum.Licensing || gameFlow == GameFlowEnum.SetBlind;
         //重製房間資料
@@ -789,7 +795,7 @@ public class GameControl : MonoBehaviour
 
             //遊戲結果_底池
             case GameFlowEnum.PotResult:
-                Debug.Log("Before gettting playing Players");
+                Debug.Log(nameof(IStartGameFlow) + " Before gettting playing Players");
                 //遊戲中玩家
                 playingPlayers = GetPlayingPlayer().OrderBy(x => x.allBetChips)
                                                    .ToList();
@@ -802,11 +808,11 @@ public class GameControl : MonoBehaviour
                 List<GameRoomPlayerData> potWinners = JudgeWinner(playingPlayers).OrderBy(x => x.allBetChips).ToList();
 
                 //底池贏得籌碼
-                Debug.Log("before finding potMin and PotWinChips");
+                Debug.Log(nameof(IStartGameFlow) + " before finding potMin and PotWinChips");
                 double potMin = playingPlayers[0].allBetChips;
                 double potWinChips = potMin * playingPlayers.Count();
 
-                Debug.Log("before potWinnerIdList");
+                Debug.Log(nameof(IStartGameFlow) + " before potWinnerIdList");
                 //更新底池贏家玩家籌碼
                 List<string> potWinnerIdList = new List<string>();
                 foreach (var potWinner in potWinners)
@@ -824,7 +830,7 @@ public class GameControl : MonoBehaviour
                 //是否有邊池
                 bool IsHaveSide = gameRoomData.potChips - potWinChips > 0;
 
-                Debug.Log("before data dictionary");
+                Debug.Log(nameof(IStartGameFlow) + " before data dictionary");
                 //更新遊戲流程
                 data = new Dictionary<string, object>()
                 {
@@ -832,7 +838,7 @@ public class GameControl : MonoBehaviour
                 };
                 UpdateGameRoomData(data);
 
-                Debug.Log("before finding potWinnersId");
+                Debug.Log(nameof(IStartGameFlow) + " before finding potWinnersId");
                 //更新底池獲勝資料
                 List<string> potWinnersId = potWinners.Select(x => x.userId).ToList();
                 data = new Dictionary<string, object>()
@@ -1124,13 +1130,15 @@ public class GameControl : MonoBehaviour
                 else
                 {
                     //剩下一名玩家在等待遊戲
-                    JudgePauseToStar();
+                    if (!hostUpdated)
+                        JudgePauseToStar();
                 }
             }
             else
             {
                 //剩下一名玩家在等待遊戲
-                JudgePauseToStar();
+                if (!hostUpdated)
+                    JudgePauseToStar();
             }
         }
 
@@ -1189,47 +1197,48 @@ public class GameControl : MonoBehaviour
     /// 遊戲流程回傳
     /// </summary>
     public bool isLicense = false;
+    public bool hostUpdated = false;
     private IEnumerator ILocalGameFlowBehavior()
     {
+        // Store the previous game flow
         preLocalGameFlow = (GameFlowEnum)gameRoomData.currGameFlow;
 
-        yield return gameView.IGameStage(gameRoomData,
-                                         SmallBlind);
+        Debug.Log($"{nameof(ILocalGameFlowBehavior)} Flow :: {preLocalGameFlow}");
 
+        // Start the game stage in the view
+        yield return gameView.IGameStage(gameRoomData, SmallBlind);
+
+        // Create a dictionary for updating data
         var data = new Dictionary<string, object>();
+
+        // Handle different game flow cases
         switch ((GameFlowEnum)gameRoomData.currGameFlow)
         {
-            //發牌
+            // Licensing (dealing cards)
             case GameFlowEnum.Licensing:
-
-                // if (isLicense)
-                //     break;
-
-
-                // isLicense = true;
-
+                Debug.Log(nameof(ILocalGameFlowBehavior) + " Licensing");
                 gameView.GameStartInit();
 
-                //本地玩家資料
+                // Get local player data
                 GameRoomPlayerData playerData = GetLocalPlayer();
 
-                //籌碼不足
-                if (playerData.carryChips < leastChips &&
-                    PreBuyChipsValue < leastChips)
+                Debug.Log(nameof(ILocalGameFlowBehavior) + " Licensing");
+                // Check if the player has insufficient chips
+                if (playerData.carryChips < leastChips && PreBuyChipsValue < leastChips)
                 {
                     gameView.OnInsufficientChips();
                     playerData.gameState = (int)PlayerStateEnum.Waiting;
                     data = new Dictionary<string, object>()
-                    {
-                        { FirebaseManager.GAME_STATE, (int)PlayerStateEnum.Waiting},//(PlayerStateEnum)遊戲狀態(等待/遊戲中/棄牌/All In/保留座位離開)
-                    };
-                    UpdataPlayerData(playerData.userId,
-                                     data);
+                {
+                    { FirebaseManager.GAME_STATE, (int)PlayerStateEnum.Waiting },
+                };
+                    UpdataPlayerData(playerData.userId, data);
                 }
 
-                //遊戲人數不足
-                if (gameRoomData.playingPlayersIdList != null &&
-                    gameRoomData.playingPlayersIdList.Count < 2)
+
+                Debug.Log($"{nameof(ILocalGameFlowBehavior)} :: Playing Players : {gameRoomData.playingPlayersIdList.Count()}");
+                // Check if there are enough players in the game
+                if (gameRoomData.playingPlayersIdList != null && gameRoomData.playingPlayersIdList.Count < 2)
                 {
                     if (gameRoomData.hostId == DataManager.UserId)
                     {
@@ -1237,29 +1246,26 @@ public class GameControl : MonoBehaviour
                         {
                             item.gameState = (int)PlayerStateEnum.Waiting;
                             data = new Dictionary<string, object>()
-                            {
-                                { FirebaseManager.GAME_STATE, (int)PlayerStateEnum.Waiting},//(PlayerStateEnum)遊戲狀態(等待/遊戲中/棄牌/All In/保留座位離開)
-                            };
-                            UpdataPlayerData(item.userId,
-                                             data);
+                        {
+                            { FirebaseManager.GAME_STATE, (int)PlayerStateEnum.Waiting },
+                        };
+                            UpdataPlayerData(item.userId, data);
                         }
                     }
-
                     preUpdateGameFlow = GameFlowEnum.None;
                     preLocalGameFlow = GameFlowEnum.None;
                     yield break;
                 }
 
-                //遊戲測試開啟
-                if (DataManager.IsOpenGameTest == true &&
-                    gameView.IsStartGameTest == false)
+                // Game test check
+                if (DataManager.IsOpenGameTest && !gameView.IsStartGameTest)
                 {
                     gameView.UpdateGameRoomInfo(gameRoomData);
                     gameView.IsOpenGameTestObj = true;
                     yield break;
                 }
-                //重製遊戲測試
-                if (DataManager.IsOpenGameTest == true)
+
+                if (DataManager.IsOpenGameTest)
                 {
                     gameView.IsStartGameTest = false;
                 }
@@ -1269,20 +1275,21 @@ public class GameControl : MonoBehaviour
 
                 yield return new WaitForSeconds(1);
 
-                //房主執行
-                Debug.Log("IStartGameFlow :: Host ID" + gameRoomData.hostId + " User ID " + DataManager.UserId);
+                // Host will start the next game flow
                 if (gameRoomData.hostId == DataManager.UserId)
                 {
-                    Debug.Log("IStartGameFlow :: Host ID" + gameRoomData.hostId + " User ID " + DataManager.UserId);
+                    Debug.Log($"{nameof(ILocalGameFlowBehavior)} :: Starting New Game : {gameRoomData.playingPlayersIdList}");
+
                     yield return new WaitForSeconds(1);
                     yield return IStartGameFlow(GameFlowEnum.SetBlind);
                 }
 
+                // Store local hand data for the local player
                 localHand = playerData.handPoker;
 
                 break;
 
-            //大小盲
+            // Set the blinds
             case GameFlowEnum.SetBlind:
 
                 gameView.OnBlindFlow(gameRoomData);
@@ -1290,105 +1297,86 @@ public class GameControl : MonoBehaviour
 
                 yield return new WaitForSeconds(1);
                 isCloseAllCdInfo = false;
-                //房主執行
+
+                // Host sets the next player action
                 if (gameRoomData.hostId == DataManager.UserId)
                 {
-                    //設置下位行動玩家
                     UpdateNextPlayer();
                 }
                 break;
 
-            //翻牌
+            // Flop
             case GameFlowEnum.Flop:
-
-                //開始公共牌翻牌流程
                 yield return IStartCommunityFlopSeason();
                 break;
 
-            //轉牌
+            // Turn
             case GameFlowEnum.Turn:
-
-                //開始公共牌翻牌流程
                 yield return IStartCommunityFlopSeason();
                 break;
 
-            //河牌
+            // River
             case GameFlowEnum.River:
-
-                //開始公共牌翻牌流程
                 yield return IStartCommunityFlopSeason();
                 break;
 
-            //底池結果
+            // Pot result (main pot)
             case GameFlowEnum.PotResult:
 
                 isCloseAllCdInfo = true;
                 yield return gameView.IPotResult(gameRoomData);
 
-                //購買籌碼
-                if (PreBuyChipsValue > 0 &&
-                    !gameRoomData.potWinData.isHaveSide)
+                // Handle chip purchase if necessary
+                if (PreBuyChipsValue > 0 && !gameRoomData.potWinData.isHaveSide)
                 {
                     UpdateCarryChips();
                 }
 
                 yield return new WaitForSeconds(2);
 
-                //是否有玩家籌碼不足
-                bool isPotIntefralResult = gameRoomData.potWinData.isHaveSide == false &&
-                                 gameRoomData.playerDataDic.Any(x => x.Value.carryChips < leastChips);
+                // Check if any player has insufficient chips
+                bool isPotIntegralResult = !gameRoomData.potWinData.isHaveSide &&
+                    gameRoomData.playerDataDic.Any(x => x.Value.carryChips < leastChips);
 
-                //顯示積分結果
-                if (RoomType == TableTypeEnum.IntegralTable &&
-                    isPotIntefralResult)
+                // Display result for an integral table
+                if (RoomType == TableTypeEnum.IntegralTable && isPotIntegralResult)
                 {
                     gameView.SetBattleResult(GetLocalPlayer().carryChips >= leastChips);
                 }
 
-                //房主執行
+                // Host will handle game flow continuation
                 if (gameRoomData.hostId == DataManager.UserId)
                 {
-                    if (gameRoomData.potWinData.isHaveSide == true)
+                    if (gameRoomData.potWinData.isHaveSide)
                     {
-                        //有邊池贏家
-                        Debug.Log("IStartGameFlow :: Have Side");
                         yield return IStartGameFlow(GameFlowEnum.SideResult);
-
                         yield break;
                     }
                     else
                     {
-                        //更新遊戲結束時間
                         data = new Dictionary<string, object>()
-                        {
-                            { FirebaseManager.GAME_END_TIME, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}, //遊戲結束時間
-                        };
+                    {
+                        { FirebaseManager.GAME_END_TIME, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") },
+                    };
                         UpdateGameRoomData(data);
 
-                        //積分房
-                        if (RoomType == TableTypeEnum.IntegralTable)
+                        if (RoomType == TableTypeEnum.IntegralTable && isPotIntegralResult)
                         {
-                            //有玩家籌碼不足
-                            if (isPotIntefralResult)
-                            {
-                                yield break;
-                            }
+                            yield break;
                         }
-                        Debug.Log("IStartGameFlow :: Pot result Licensing");
+
                         isLicense = false;
-                        //重新遊戲流程
                         yield return IStartGameFlow(GameFlowEnum.Licensing);
                     }
                 }
 
                 break;
 
-            //邊池結果
+            // Side pot result
             case GameFlowEnum.SideResult:
 
                 yield return gameView.SideResult(gameRoomData);
 
-                //購買籌碼
                 if (PreBuyChipsValue > 0)
                 {
                     UpdateCarryChips();
@@ -1396,50 +1384,37 @@ public class GameControl : MonoBehaviour
 
                 yield return new WaitForSeconds(2);
 
-
-                //是否有玩家籌碼不足
                 bool isSideIntegralResult = gameRoomData.playerDataDic.Any(x => x.Value.carryChips < leastChips);
 
-                //顯示積分結果
-                if (RoomType == TableTypeEnum.IntegralTable &&
-                    isSideIntegralResult)
+                if (RoomType == TableTypeEnum.IntegralTable && isSideIntegralResult)
                 {
                     gameView.SetBattleResult(GetLocalPlayer().carryChips >= leastChips);
                 }
 
-                //房主執行
                 if (gameRoomData.hostId == DataManager.UserId)
                 {
-                    //更新遊戲結束時間
                     data = new Dictionary<string, object>()
-                    {
-                        { FirebaseManager.GAME_END_TIME, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}, //遊戲結束時間
-                    };
+                {
+                    { FirebaseManager.GAME_END_TIME, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") },
+                };
                     UpdateGameRoomData(data);
 
-                    //積分房
-                    if (RoomType == TableTypeEnum.IntegralTable)
+                    if (RoomType == TableTypeEnum.IntegralTable && isSideIntegralResult)
                     {
-                        //有玩家籌碼不足
-                        if (isSideIntegralResult)
-                        {
-                            yield break;
-                        }
+                        yield break;
                     }
-                    Debug.Log("IStartGameFlow :: Side Result Licensing");
+
                     isLicense = false;
-                    //重新遊戲流程
                     yield return IStartGameFlow(GameFlowEnum.Licensing);
                 }
 
                 break;
 
-            //剩餘1名玩家結果
+            // One player left result
             case GameFlowEnum.OnePlayerLeftResult:
 
                 yield return gameView.IPotResult(gameRoomData);
 
-                //購買籌碼
                 if (PreBuyChipsValue > 0)
                 {
                     UpdateCarryChips();
@@ -1447,29 +1422,24 @@ public class GameControl : MonoBehaviour
 
                 yield return new WaitForSeconds(2);
 
-                //房主執行
                 if (gameRoomData.hostId == DataManager.UserId)
                 {
-                    //更新遊戲結束時間
                     data = new Dictionary<string, object>()
-                    {
-                        { FirebaseManager.GAME_END_TIME, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}, //遊戲結束時間
-                    };
+                {
+                    { FirebaseManager.GAME_END_TIME, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") },
+                };
                     UpdateGameRoomData(data);
 
-                    //積分房對手離開/斷線
-                    if (RoomType == TableTypeEnum.IntegralTable &&
-                        gameRoomData.playingPlayersIdList.Count() == 1)
+                    if (RoomType == TableTypeEnum.IntegralTable && gameRoomData.playingPlayersIdList.Count == 1)
                     {
-                        //顯示積分結果
                         gameView.SetBattleResult(GetLocalPlayer().carryChips >= leastChips);
                         yield break;
                     }
-                    Debug.Log("IStartGameFlow :: one player left result licensing");
+
                     isLicense = false;
-                    //重新遊戲流程
                     yield return IStartGameFlow(GameFlowEnum.Licensing);
                 }
+
                 break;
         }
     }
