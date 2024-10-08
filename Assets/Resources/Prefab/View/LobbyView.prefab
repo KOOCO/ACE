@@ -6503,6 +6503,7 @@ MonoBehaviour:
   LobbyRankingView: {fileID: 7532165618673014345, guid: 5b90ffcffb6e64a4d80acdef6b16c56f, type: 3}
   LobbyShopView: {fileID: 7532165618673014345, guid: 23d8bfa511521f544a6be501ad3cbe39, type: 3}
   LobbyActivityView: {fileID: 7532165618673014345, guid: fcb47a270d8332942938cc4fa9ccaf07, type: 3}
+  LobbySettingsView: {fileID: 7532165618673014345, guid: 91d287bcee72ab643b837f4ce72bad8b, type: 3}
   MineBtn_Txt: {fileID: 3518349737872176522}
   ShopBtn_Txt: {fileID: 0}
   ActivityBtn_Txt: {fileID: 0}

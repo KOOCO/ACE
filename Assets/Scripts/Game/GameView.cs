@@ -39,6 +39,8 @@ public class GameView : MonoBehaviour
     Button BackToSit_Btn;
     [SerializeField]
     TextMeshProUGUI RaiseBtn_Txt, CallBtn, FoldBtn_Txt, BackToSitBtn_Txt;
+    [SerializeField]
+    GameObject coinIconObj;
 
     [Header("加注操作")]
     [SerializeField]
@@ -521,6 +523,7 @@ public class GameView : MonoBehaviour
                                     $"\n{StringUtils.SetChipsUnit(thisData.LocalPlayerChips)}" :
                                     $"\n{StringUtils.SetChipsUnit(newRaiseValue)}";
             RaiseBtn_Txt.text = LanguageManager.Instance.GetText(strData.RaiseStr) + strData.RaiseValueStr;
+            coinIconObj.SetActive(true);
 
             SetRaiseToText = newRaiseValue;
             thisData.CurrRaiseValue = Math.Floor(newRaiseValue);
@@ -973,7 +976,7 @@ public class GameView : MonoBehaviour
         }
         else
         {
-            strData.FoldStr = "Check/Fold";
+            strData.FoldStr = "CheckOrFold";
             Debug.Log("Not blind phase, FoldStr set to 'Check/Fold'.");
         }
 
@@ -999,6 +1002,7 @@ public class GameView : MonoBehaviour
         // Set the Raise button to "CallAny"
         strData.RaiseStr = "CallAny";
         strData.RaiseValueStr = "";
+        coinIconObj.SetActive(false);
         RaiseBtn_Txt.text = LanguageManager.Instance.GetText(strData.RaiseStr) + strData.RaiseValueStr;
         Debug.Log($"Raise button text set to: {RaiseBtn_Txt.text}");
     }
@@ -1122,6 +1126,7 @@ public class GameView : MonoBehaviour
 
         // Update the call and raise button texts
         CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
+        coinIconObj.SetActive(false);
         RaiseBtn_Txt.text = LanguageManager.Instance.GetText("CallAny");
     }
 
@@ -1141,7 +1146,7 @@ public class GameView : MonoBehaviour
         {
             Debug.Log("PostFlop :: " + isRaised);
             // No bet raised, player can check
-            strData.FoldStr = "Check/Fold";
+            strData.FoldStr = "CheckOrFold";
             strData.CallStr = "Check";
             strData.CallValueStr = "";  // Clear the call value since it's 0
         }
@@ -1149,6 +1154,7 @@ public class GameView : MonoBehaviour
         // Update button texts accordingly
         FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
         CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
+        coinIconObj.SetActive(false);
         RaiseBtn_Txt.text = LanguageManager.Instance.GetText("CallAny");
     }
 
@@ -1271,6 +1277,7 @@ public class GameView : MonoBehaviour
         strData.RaiseStr = "CallAny";
         strData.RaiseValueStr = "";
         RaiseBtn_Txt.text = LanguageManager.Instance.GetText(strData.RaiseStr) + strData.RaiseValueStr;
+        coinIconObj.SetActive(false);
         SetTotalPot = 0;
 
         Raise_Tr.gameObject.SetActive(false);
@@ -1649,6 +1656,7 @@ public class GameView : MonoBehaviour
                                 $"\n${StringUtils.SetChipsUnit(thisData.LocalPlayerChips)}" :
                                 "";
         RaiseBtn_Txt.text = LanguageManager.Instance.GetText(strData.RaiseStr);
+        coinIconObj.SetActive(true);
 
         if (IsUnableRaise == true && isJustAllIn == false)
         {

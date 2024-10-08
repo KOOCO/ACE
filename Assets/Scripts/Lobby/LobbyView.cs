@@ -39,7 +39,7 @@ public class LobbyView : MonoBehaviour
     [SerializeField]
     Button Mine_Btn, Shop_Btn, Main_Btn, Activity_Btn, Ranking_Btn, t_History_Btn, Settings_Btn, Refresh_Btn;
     [SerializeField]
-    GameObject LobbyMainPageView, LobbyMinePageView, LobbyRankingView, LobbyShopView, LobbyActivityView;
+    GameObject LobbyMainPageView, LobbyMinePageView, LobbyRankingView, LobbyShopView, LobbyActivityView, LobbySettingsView;
     [SerializeField]
     TextMeshProUGUI MineBtn_Txt, ShopBtn_Txt, ActivityBtn_Txt, RankingBtn_Txt, t_HistoryBtn_Txt, SettingsBtn_Txt;
 
@@ -517,7 +517,7 @@ public class LobbyView : MonoBehaviour
                 itemObj = LobbyMinePageView;
                 break;
             case ItemType.Settings:
-                itemObj = LobbyMinePageView;
+                itemObj = LobbySettingsView;
                 break;
             default:
                 Debug.LogWarning("Unknown item type: " + itemType);
@@ -533,9 +533,6 @@ public class LobbyView : MonoBehaviour
             {
                 LobbyMinePageView mineView = Floor3.GetComponentInChildren<LobbyMinePageView>();
                 mineView.openTransactionHistoryView();
-            }else if(itemType == ItemType.Settings)
-            {
-                StartCoroutine(wait4MineLoad());
             }
         }
     }

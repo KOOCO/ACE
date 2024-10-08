@@ -630,6 +630,11 @@
     "zh_TW": "同意 <color=#79E84B><link=Terms><u>條款</u></link></color> & <color=#79E84B><link=Privacy Policy><u>隱私權政策</u></link></color>"
   },
   {
+    "ID": "Contact us",
+    "English": "Contact us",
+    "zh_TW": "聯繫我們"
+  },
+  {
     "ID": "Privacy Policy",
     "English": "Privacy Policy",
     "zh_TW": "隱私權政策"
@@ -1006,8 +1011,8 @@
   },
   {
     "ID": "CheckOrFold",
-    "English": "Check / Fold",
-    "zh_TW": "過牌 / 棄牌"
+    "English": "Fold / Check",
+    "zh_TW": "棄牌 / 過牌"
   },
   {
     "ID": "Winner",
