@@ -3173,8 +3173,8 @@ MonoBehaviour:
   Button_EN: {fileID: 5454857279497613999}
   Button_CH: {fileID: 8088825261261590505}
   PrivacyConfirm_Btn: {fileID: 6511291395884899237}
-  Term_Btn: {fileID: 8478469629689516469}
-  PrivacyPolicy_Btn: {fileID: 5898409816678261271}
+  Term_Btn: {fileID: 5898409816678261271}
+  PrivacyPolicy_Btn: {fileID: 8478469629689516469}
   PrivacyTitle_Txt: {fileID: 2833834682815102357}
   PrivacyContent_Txt: {fileID: 7475959142497942712}
   PrivacyConfirmBtn_Txt: {fileID: 4629093563685045697}

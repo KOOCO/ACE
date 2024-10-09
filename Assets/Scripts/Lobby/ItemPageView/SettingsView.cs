@@ -27,6 +27,14 @@ public class SettingsView : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI LanguageTitle_Txt;
 
+    [Header("隱私政策物件")]
+    [SerializeField]
+    GameObject Privacy_Obj, Privacy_text, Term_text, Privacy_obj_Scroll, Term_obj_Scroll,
+      Privacy_text_CH, Term_text_CH, Privacy_text_EN, Term_text_EN;
+    [SerializeField]
+    TextMeshProUGUI Privacy_Title, Term_Title,
+                    TermsConfirm_Btn_Txt, PrivacyConfirm_Btn_Txt;
+
     /// <summary>
     /// 更新文本翻譯
     /// </summary>
@@ -38,6 +46,39 @@ public class SettingsView : MonoBehaviour
         terms_Txt.text  = LanguageManager.Instance.GetText("Terms");
         privacy_Txt.text  = LanguageManager.Instance.GetText("Privacy Policy");
         logOut_Txt.text  = LanguageManager.Instance.GetText("Log Out");
+
+        #region 隱私政策物件
+
+        TermsConfirm_Btn_Txt.text = LanguageManager.Instance.GetText("i GOT IT");
+        PrivacyConfirm_Btn_Txt.text = LanguageManager.Instance.GetText("i GOT IT");
+        //PrivacyConfirmBtn_Txt.text = LanguageManager.Instance.GetText("Confirm");
+        Privacy_Title.text = LanguageManager.Instance.GetText("Asia Poker privacy policy");
+        Term_Title.text = LanguageManager.Instance.GetText("Asia Poker Terms of Service");
+        if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
+        {
+            Term_obj_Scroll.GetComponent<ScrollRect>().content = Term_text_EN.GetComponent<RectTransform>();
+
+
+            Privacy_obj_Scroll.GetComponent<ScrollRect>().content = Privacy_text_EN.GetComponent<RectTransform>();
+            Privacy_text_EN.SetActive(true);
+            Privacy_text_CH.SetActive(false);
+            Term_text_EN.SetActive(true);
+            Term_text_CH.SetActive(false);
+
+        }
+        else if (LanguageManager.Instance.GetCurrLanguageIndex() == 1)
+        {
+
+            Term_obj_Scroll.GetComponent<ScrollRect>().content = Term_text_CH.GetComponent<RectTransform>();
+
+            Privacy_obj_Scroll.GetComponent<ScrollRect>().content = Privacy_text_CH.GetComponent<RectTransform>();
+            Term_text_CH.SetActive(true);
+            Term_text_EN.SetActive(false);
+            Privacy_text_CH.SetActive(true);
+            Privacy_text_EN.SetActive(false);
+
+        }
+        #endregion
     }
 
     private void OnDestroy()
@@ -57,8 +98,19 @@ public class SettingsView : MonoBehaviour
     private void OnEnable()
     {
         //Language_Dd.value = LanguageManager.Instance.GetCurrLanguageIndex();
-        zh_Tog.isOn = true;
-        en_Tog.isOn = false;
+        int lan_Index = LanguageManager.Instance.GetCurrLanguageIndex();
+
+        switch (lan_Index)
+        {
+            case 0:
+                en_Tog.isOn = true;
+                zh_Tog.isOn = false;
+                break;
+            case 1:
+                en_Tog.isOn = false;
+                zh_Tog.isOn = true;
+                break;
+        }
     }
 
     /// <summary>
@@ -75,6 +127,23 @@ public class SettingsView : MonoBehaviour
         language_Btn.onClick.AddListener(() =>
         {
             languageArea.SetActive(true);
+        });
+
+        contactUs_Btn.onClick.AddListener(() =>
+        {
+            string authUrl = $"https://line.me/ti/p/@309jwned";
+            JSBridgeManager.Instance.onLineService(authUrl);
+        });
+
+        terms_Btn.onClick.AddListener(() =>
+        {
+            Term_text.SetActive(true);
+            Privacy_text.SetActive(false);
+        });
+        privacy_Btn.onClick.AddListener(() =>
+        {
+            Term_text.SetActive(false);
+            Privacy_text.SetActive(true);
         });
 
         //更換語言
