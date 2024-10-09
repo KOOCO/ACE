@@ -315,6 +315,17 @@
     "zh_TW": "設定"
   },
   {
+    "ID": "Game Rules",
+    "English": "Game Rules",
+    "zh_TW": "遊戲規則"
+  },
+  {
+    "ID": "Welcome to AISA POKER! Learn the rules and start playing right away!",
+    "English": "Welcome to ASIA POKER! Learn the rules and start playing right away!",
+    "zh_TW": "歡迎來到Asia Poker！
+了解規則後，馬上開始遊戲！"
+  },
+  {
     "ID": "Min Buy-In",
     "English": "Min Buy-In",
     "zh_TW": "最低買入額"

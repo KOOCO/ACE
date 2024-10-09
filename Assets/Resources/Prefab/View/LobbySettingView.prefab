@@ -681,7 +681,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1095971274578995343}
-  - {fileID: 1195076868526194591}
+  - {fileID: 4363048554908667812}
   m_Father: {fileID: 1070066645438271167}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2201,7 +2201,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4608807460682550338}
-  m_Father: {fileID: 2485681074481033563}
+  m_Father: {fileID: 1654801986087197955}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -4768,7 +4768,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3455910881665296388}
-  m_Father: {fileID: 1654801986087197955}
+  m_Father: {fileID: 2485681074481033563}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -6495,8 +6495,8 @@ MonoBehaviour:
   Term_obj_Scroll: {fileID: 8193004788391465583}
   Privacy_text_CH: {fileID: 5915955120153281018}
   Term_text_CH: {fileID: 4222838943046455449}
-  Privacy_text_EN: {fileID: 5353794013787880456}
-  Term_text_EN: {fileID: 2665672741160460652}
+  Privacy_text_EN: {fileID: 2665672741160460652}
+  Term_text_EN: {fileID: 5353794013787880456}
   Privacy_Title: {fileID: 6342469274683350329}
   Term_Title: {fileID: 837848372610046089}
   TermsConfirm_Btn_Txt: {fileID: 3164063613769717275}
@@ -7520,7 +7520,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5426053367149581644}
-  - {fileID: 4363048554908667812}
+  - {fileID: 1195076868526194591}
   m_Father: {fileID: 8922230236851120312}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
