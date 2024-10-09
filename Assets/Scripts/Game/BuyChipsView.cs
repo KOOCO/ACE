@@ -18,7 +18,7 @@ public class BuyChipsView : MonoBehaviour
     Button Close_Btn, Cancel_Btn, Buy_Btn, BuyPlus_Btn, BuyMinus_Btn;
     [SerializeField]
     TextMeshProUGUI Title_Txt, BuyChipsTip_Txt, BlindsTitle_Txt,
-                    Blind_Txt, PreBuyChips_Txt, 
+                    Blind_Txt, PreBuyChips_Txt,
                     MinBuyChips_Txt, MaxBuyChips_Txt,
                     CancelBtn_Txt, BuyBtn_Txt,
                     CountDownTip_Txt;
@@ -99,7 +99,7 @@ public class BuyChipsView : MonoBehaviour
             {
                 //籌碼不足須購買
                 thisData.gameControl.ExitGame();
-            }            
+            }
         });
 
         //購買Slider單位設定
@@ -119,6 +119,8 @@ public class BuyChipsView : MonoBehaviour
         {
             CancelInvoke(nameof(SetCountDownTip));
             thisData.SendBuyChipsCallback(newValue);
+            DataManager.UserUChips -= newValue;
+            DataManager.DataUpdated = true;
         });
 
         //+按鈕
@@ -158,7 +160,7 @@ public class BuyChipsView : MonoBehaviour
     /// <param name="roomName">房間名</param>
     /// <param name="tableTypeEnum">遊戲房間類型</param>
     /// <param name="sendBuyCallback">購買結果回傳</param>
-    public void SetBuyChipsViewInfo(GameControl gameControl, bool isJustBuyChips, double smallBlind, string roomName, 
+    public void SetBuyChipsViewInfo(GameControl gameControl, bool isJustBuyChips, double smallBlind, string roomName,
         TableTypeEnum tableTypeEnum, UnityAction<double> sendBuyCallback)
     {
         thisData.gameControl = gameControl;
