@@ -1555,6 +1555,7 @@ public class GameControl : MonoBehaviour
     /// </summary>
     public void ShowBetAction()
     {
+        gameView.UpdateActionBtns();
         if (gameRoomData.betActionDataDic == null ||
             string.IsNullOrEmpty(gameRoomData.betActionDataDic.betActionerId))
         {

@@ -953,26 +953,29 @@ public class GameView : MonoBehaviour
             thisData.isLocalPlayerTurn = value;
             Debug.Log($"isLocalPlayerTurn set to: {thisData.isLocalPlayerTurn}");
 
-            // Check if the acting button can be enabled
-            if (!SetActingButtonEnable)
-            {
-                Debug.Log("SetActingButtonEnable is false, exiting SetActionButton.");
-                return;
-            }
+            UpdateActionBtns();
+
+            // // Check if the acting button can be enabled
+            // if (!SetActingButtonEnable)
+            // {
+            //     Debug.Log("SetActingButtonEnable is false, exiting SetActionButton.");
+            //     return;
+            // }
 
             if (!value)
             {
                 Debug.Log("Player's turn ended, calling HandleInactivePlayerTurn.");
-                HandleInactivePlayerTurn();
+                //HandleInactivePlayerTurn();
+                coinIconObj.SetActive(false);
             }
-            else
-            {
-                Debug.Log("Player's turn started, setting Fold button text.");
-                // If it's the player's turn, they should always have the Fold option
-                strData.FoldStr = "Fold";
-                FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
-                Debug.Log($"Fold button text set to: {FoldBtn_Txt.text}");
-            }
+            // else
+            // {
+            //     Debug.Log("Player's turn started, setting Fold button text.");
+            //     // If it's the player's turn, they should always have the Fold option
+            //     strData.FoldStr = "Fold";
+            //     FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
+            //     Debug.Log($"Fold button text set to: {FoldBtn_Txt.text}");
+            // }
         }
     }
 
@@ -1089,90 +1092,219 @@ public class GameView : MonoBehaviour
     {
         Debug.Log($"UpdateActionBtns called. Player's turn: {thisData.isLocalPlayerTurn}");
 
-        if (!thisData.isLocalPlayerTurn)
+        var localPlayer = gameControl.GetLocalPlayer();
+        if (localPlayer == null || gameRoomData == null) return;
+
+        bool isRaised = gameRoomData.currCallValue >= gameRoomData.smallBlind * 2;  // Raised if currCallValue exceeds minimum bet
+        bool isBigBlind = localPlayer.seatCharacter == (int)SeatCharacterEnum.BB;
+        bool isSmallBlind = localPlayer.seatCharacter == (int)SeatCharacterEnum.SB;
+        bool isPreFlop = gameRoomData.currGameFlow == (int)GameFlowEnum.SetBlind;
+        bool isLocalPlayerTurn = thisData.isLocalPlayerTurn;
+        bool isLocalPlayer = localPlayer.userId == DataManager.UserId;
+
+        // Local player's turn
+        if (isLocalPlayerTurn)
         {
-            var localPlayer = gameControl.GetLocalPlayer();
-            if (localPlayer == null || gameRoomData == null) return;
-
-            bool isRaised = gameRoomData.currCallValue > gameRoomData.smallBlind * 2;
-            bool isBigBlind = localPlayer.seatCharacter == (int)SeatCharacterEnum.BB;
-            bool isPreFlop = gameRoomData.currGameFlow == (int)GameFlowEnum.SetBlind;
-
             if (isPreFlop)
             {
-                SetPreFlopActions(isBigBlind);
+                SetLocalPlayerPreFlopActions(isBigBlind, isSmallBlind, isRaised, localPlayer);
             }
             else
             {
-                SetPostFlopActions(isRaised);
+                SetLocalPlayerPostFlopActions(isRaised, localPlayer);
             }
         }
-    }
-
-    private void SetPreFlopActions(bool isBigBlind)
-    {
-        // Pre-Flop: Set Fold/Call/Check actions based on whether the player is Big Blind
-        strData.FoldStr = "Fold";
-        FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
-
-        // Handle Big Blind logic
-        if (isBigBlind)
-        {
-            if (gameRoomData.currCallValue == gameRoomData.smallBlind * 2)
-            {
-                strData.CallStr = "Check";
-                strData.CallValueStr = "";  // No amount to call, so clear the value
-            }
-            else
-            {
-                strData.CallStr = "Call";
-                strData.CallValueStr = $"\n{gameRoomData.currCallValue - gameControl.GetLocalPlayer().currAllBetChips}";
-            }
-        }
+        // Other players' turn
         else
         {
-            // Small Blind or other positions
-            strData.CallStr = gameRoomData.currCallValue - gameControl.GetLocalPlayer().currAllBetChips == 0 ? "" : "Call";
-
-            // If the call amount is 0, don't show a value
-            strData.CallValueStr = gameRoomData.currCallValue - gameControl.GetLocalPlayer().currAllBetChips == 0
-                ? ""
-                : $"\n{gameRoomData.currCallValue - gameControl.GetLocalPlayer().currAllBetChips}";
+            if (isPreFlop)
+            {
+                SetPreFlopActionsForOthers(isBigBlind, isSmallBlind, isRaised, localPlayer);
+            }
+            else
+            {
+                SetPostFlopActionsForOthers(isRaised, localPlayer);
+            }
         }
-
-        // Update the call and raise button texts
-        CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
-        coinIconObj.SetActive(false);
-        RaiseBtn_Txt.text = LanguageManager.Instance.GetText("CallAny");
     }
 
-    private void SetPostFlopActions(bool isRaised)
+    private void SetLocalPlayerPreFlopActions(bool isBigBlind, bool isSmallBlind, bool isRaised, GameRoomPlayerData localPlayer)
     {
         if (isRaised)
         {
-            // Player must call or fold
-            Debug.Log("PostFlop :: " + isRaised);
+            // If a raise has occurred, show Fold and Call with amount for the local player
             strData.FoldStr = "Fold";
-            strData.CallStr = gameRoomData.currCallValue - gameControl.GetLocalPlayer().currAllBetChips == 0 ? "" : "Call";
-            strData.CallValueStr = gameRoomData.currCallValue - gameControl.GetLocalPlayer().currAllBetChips == 0
-                ? ""
-                : $"\n{gameRoomData.currCallValue - gameControl.GetLocalPlayer().currAllBetChips}";
+            strData.CallStr = "Call";
+            strData.CallValueStr = $"\n{gameRoomData.currCallValue - localPlayer.currAllBetChips}";
         }
         else
         {
-            Debug.Log("PostFlop :: " + isRaised);
-            // No bet raised, player can check
-            strData.FoldStr = "CheckOrFold";
-            strData.CallStr = "Check";
-            strData.CallValueStr = "";  // Clear the call value since it's 0
+            if (isBigBlind)
+            {
+                // Big Blind sees Check/Fold and Check pre-flop with no raise
+                strData.FoldStr = "Fold";
+                strData.CallStr = "Check";
+                strData.CallValueStr = "";
+            }
+            else if (isSmallBlind)
+            {
+                // Small Blind sees Fold and Call + amount pre-flop
+                strData.FoldStr = "Fold";
+                strData.CallStr = "Call";
+                strData.CallValueStr = $"\n{gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+            }
+            else
+            {
+                // Other players see Fold and Call + amount pre-flop
+                strData.FoldStr = "Fold";
+                strData.CallStr = "Call";
+                strData.CallValueStr = $"\n{gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+            }
         }
 
-        // Update button texts accordingly
+        // Update button texts for the local player
+        UpdateActionButtonTexts(isRaised, true);
+    }
+
+    private void SetLocalPlayerPostFlopActions(bool isRaised, GameRoomPlayerData localPlayer)
+    {
+        if (isRaised)
+        {
+            if (localPlayer.currAllBetChips >= gameRoomData.currCallValue)
+            {
+                // Player who raised sees Fold and an empty Call text
+                strData.FoldStr = "Fold";
+                strData.CallStr = "Check";
+                strData.CallValueStr = "";
+            }
+            else
+            {
+                // Other players see Fold and Call + amount
+                strData.FoldStr = "Fold";
+                strData.CallStr = "Call";
+                strData.CallValueStr = $"\n{gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+            }
+        }
+        else
+        {
+            // No raise: Everyone sees Check/Fold and Check post-flop
+            if (localPlayer.userId == DataManager.UserId)
+            {
+                strData.FoldStr = "Fold";
+                strData.CallStr = "Check";
+                strData.CallValueStr = "";
+            }
+            else
+            {
+                strData.FoldStr = "Check/Fold";
+                strData.CallStr = "Check";
+                strData.CallValueStr = "";
+            }
+        }
+
+        // Update button texts for the local player
+        UpdateActionButtonTexts(isRaised, true);
+    }
+
+    private void SetPreFlopActionsForOthers(bool isBigBlind, bool isSmallBlind, bool isRaised, GameRoomPlayerData localPlayer)
+    {
+        if (isRaised)
+        {
+            // If raised, everyone sees Fold and Call + amount
+            bool check = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0;
+            strData.CallStr = check ? "" : "Call";
+            strData.CallValueStr = check ? "" : $"\n{gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+        }
+        else
+        {
+            if (isBigBlind)
+            {
+                // Big Blind sees Check/Fold and Check pre-flop with no raise
+                strData.FoldStr = "Check/Fold";
+                strData.CallStr = "Check";
+                strData.CallValueStr = "";
+            }
+            else if (isSmallBlind)
+            {
+                // Small Blind sees Fold and Call + amount pre-flop
+                strData.FoldStr = "Fold";
+                strData.CallStr = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0 ? "" : "Call";
+                strData.CallValueStr = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0
+                    ? ""
+                    : $"\n{gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+            }
+            else
+            {
+                // Other players see Fold and Call + amount pre-flop
+                strData.FoldStr = "Fold";
+                strData.CallStr = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0 ? "" : "Call";
+                strData.CallValueStr = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0
+                    ? ""
+                    : $"\n{gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+            }
+        }
+
+        // Update button texts for other players
+        UpdateActionButtonTexts(isRaised);
+    }
+
+    private void SetPostFlopActionsForOthers(bool isRaised, GameRoomPlayerData localPlayer)
+    {
+        if (isRaised)
+        {
+            if (localPlayer.currAllBetChips >= gameRoomData.currCallValue)
+            {
+                // Player who raised sees Fold and empty Call text
+                strData.FoldStr = "Fold";
+                strData.CallStr = "";
+                strData.CallValueStr = "";
+            }
+            else
+            {
+                // Other players see Fold and Call + amount post-flop
+                strData.FoldStr = "Fold";
+                strData.CallStr = "Call";
+                strData.CallValueStr = $"\n{gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+            }
+        }
+        else
+        {
+            // No raise: everyone sees Check/Fold and Check post-flop
+            strData.FoldStr = "Check/Fold";
+            strData.CallStr = "Check";
+            strData.CallValueStr = "";
+        }
+
+        // Update button texts for other players
+        UpdateActionButtonTexts(isRaised);
+    }
+
+    private void UpdateActionButtonTexts(bool isRaised, bool localPlayerTurn = false)
+    {
         FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
         CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
-        coinIconObj.SetActive(false);
-        RaiseBtn_Txt.text = LanguageManager.Instance.GetText("CallAny");
+        //coinIconObj.SetActive(false);
+        UpdateRaiseBtn(localPlayerTurn, isRaised);
     }
+
+    public void UpdateRaiseBtn(bool localPlayerTurn = false, bool isRaised = false)
+    {
+        if (gameControl.GetLocalPlayer().gameState != (int)PlayerStateEnum.AllIn)
+        {
+            if (localPlayerTurn)
+            {
+                // if (isRaised)
+                //     RaiseBtn_Txt.text = LanguageManager.Instance.GetText("RaiseTo");
+                // else
+                //     RaiseBtn_Txt.text = LanguageManager.Instance.GetText("BetTo");
+            }
+            else
+            {
+                RaiseBtn_Txt.text = LanguageManager.Instance.GetText("CallAny");
+            }
+        }
+    }
+
 
     /// <summary>
     /// 行動按鈕激活
