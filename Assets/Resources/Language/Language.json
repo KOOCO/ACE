@@ -322,8 +322,7 @@
   {
     "ID": "Welcome to AISA POKER! Learn the rules and start playing right away!",
     "English": "Welcome to ASIA POKER! Learn the rules and start playing right away!",
-    "zh_TW": "歡迎來到Asia Poker！
-了解規則後，馬上開始遊戲！"
+    "zh_TW": "歡迎來到Asia Poker！了解規則後，馬上開始遊戲！"
   },
   {
     "ID": "Min Buy-In",
@@ -1254,5 +1253,59 @@
     "ID": "目前用不到",
     "English": "Hide Points (MMR）： \ninitialMMR: New players participate in several placement matches,determine the initial value based on the winning rate and opponent’s strengthMMR. \nDynamic adjustment: After each game, the result will be adjusted according to the outcome and opponent.MMR Adjust player'sMMR, the specific calculation formula is as follows: NewMMR=old MMR+K×(match result−expected results) \nAmong them, the result of the competition is1(win) or0(failure), the expected result depends on the player and opponentMMR Differencevaluecalculate.",
     "zh_TW": "隱藏積分（MMR）： \n初始 MMR：新玩家進行若干定位賽，根據勝率和對手實力確定初始 MMR。 \n動態調整：每局比賽結束後根據勝負結果和對手 MMR 調整玩家的 MMR，\n具體計算公式如下： 新 MMR=舊 MMR+K×(比賽結果−預期結果) \n其中，比賽結果為1（勝利）或0（失敗），預期結果根據玩家和對手的 MMR 差值計算。"
+  },
+    {
+    "ID": "Royal Straight Flush",
+    "English": "ROYAL STRAIGHT FLUSH",
+    "zh_TW": "皇家同花順"
+  },
+    {
+    "ID": "Straight Flush",
+    "English": "STRAIGHT FLUSH",
+    "zh_TW": "同花順"
+  },
+    {
+    "ID": "Four of a kind",
+    "English": "FOUR OF A KIND",
+    "zh_TW": "鐵支"
+  },
+    {
+    "ID": "Full House",
+    "English": "FULL HOUSE",
+    "zh_TW": "葫蘆"
+  },
+    {
+    "ID": "Flush",
+    "English": "FLUSH",
+    "zh_TW": "同花"
+  },
+    {
+    "ID": "Straight",
+    "English": "STRAIGHT",
+    "zh_TW": "同花"
+  }
+  ,
+    {
+    "ID": "Three of a kind",
+    "English": "THREE OF A KIND",
+    "zh_TW": "三條"
+  }
+  ,
+    {
+    "ID": "Two Pair",
+    "English": "TWO PAIR",
+    "zh_TW": "兩對"
+  }
+  ,
+    {
+    "ID": "One Pair",
+    "English": "ONE PAIR",
+    "zh_TW": "一對"
+  }
+  ,
+    {
+    "ID": "High Card",
+    "English": "HIGH CARD",
+    "zh_TW": "高牌"
   }
 ]

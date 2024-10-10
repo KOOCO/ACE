@@ -553,7 +553,7 @@ public class HistoryVideoView : MonoBehaviour
         {
             if (Players[seat].GetHandPoker[0].PokerNum < 0)
             {
-                Players[seat].SetPokerShapeTxtStr = "";
+                //Players[seat].SetPokerShapeTxtStr = "";
                 Players[seat].SetPokerShapeImage = null;
                 return;
             }

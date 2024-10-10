@@ -20,3 +20,8 @@ public enum AlbumEnum
     HandRanksEnglishAlbum,
     HandRanksChineseAlbum
 }
+
+public enum StringAlbumEnum
+{
+    HandRanksStringAlbum
+}

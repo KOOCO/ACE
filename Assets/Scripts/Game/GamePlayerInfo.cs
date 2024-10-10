@@ -16,7 +16,7 @@ public class GamePlayerInfo : MonoBehaviour
     [SerializeField]
     Image CDMask_Img, Avatar_Img, ButtonCharacter_Img, PokerShape_img;
     [SerializeField]
-    TextMeshProUGUI Nickname_Txt, Chips_Txt, BackChips_Txt, PokerShape_Txt, BlindCharacter_Txt, countDown_Txt, Winner_Txt;
+    TextMeshProUGUI Nickname_Txt, Chips_Txt, BackChips_Txt, BlindCharacter_Txt, countDown_Txt, Winner_Txt;
 
     [Header("手牌")]
     [SerializeField]
@@ -118,17 +118,20 @@ public class GamePlayerInfo : MonoBehaviour
     /// </summary>
     private void UpdateLanguage()
     {
+        // if (PokerShape_img == null)
+        // {
+        //     SetPokerShapeTxtStr = LanguageManager.Instance.GetText(PokerShape.shapeStr[pokerShapeIndex]);
+        // }
+        // else
+        // {
         if (PokerShape_img == null)
-        {
-            SetPokerShapeTxtStr = LanguageManager.Instance.GetText(PokerShape.shapeStr[pokerShapeIndex]);
-        }
+            return;
+
+        if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
+            SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksEnglishAlbum).album[pokerShapeIndex];
         else
-        {
-            if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
-                SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksEnglishAlbum).album[pokerShapeIndex];
-            else
-                SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksChineseAlbum).album[pokerShapeIndex];
-        }
+            SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksChineseAlbum).album[pokerShapeIndex];
+        // }
 
 
     }
@@ -139,7 +142,7 @@ public class GamePlayerInfo : MonoBehaviour
         InitCountDown();
         Chat_Obj.SetActive(false);
         IsOpenInfoMask = true;
-        PokerShape_Txt?.gameObject.SetActive(false);
+        //PokerShape_Txt?.gameObject.SetActive(false);
         PokerShape_img?.gameObject.SetActive(false);
 
         Init();
@@ -166,7 +169,7 @@ public class GamePlayerInfo : MonoBehaviour
         HandPokers[1].gameObject.SetActive(false);
         Winner_Obj.SetActive(false);
         SetBackChips = 0;
-        SetPokerShapeTxtStr = "";
+        //SetPokerShapeTxtStr = "";
         SetPokerShapeImage = null;
         ShowHandPoker_Tr.gameObject.SetActive(false);
     }
@@ -174,17 +177,17 @@ public class GamePlayerInfo : MonoBehaviour
     /// <summary>
     /// 設置牌型文字元件文字
     /// </summary>
-    public string SetPokerShapeTxtStr
-    {
-        set
-        {
-            if (PokerShape_Txt != null)
-            {
-                PokerShape_Txt.gameObject.SetActive(true);
-                PokerShape_Txt.text = value;
-            }
-        }
-    }
+    // public string SetPokerShapeTxtStr
+    // {
+    //     set
+    //     {
+    //         if (PokerShape_Txt != null)
+    //         {
+    //             PokerShape_Txt.gameObject.SetActive(true);
+    //             PokerShape_Txt.text = value;
+    //         }
+    //     }
+    // }
     public Sprite SetPokerShapeImage
     {
         set
@@ -757,16 +760,12 @@ public class GamePlayerInfo : MonoBehaviour
 
         pokerShapeIndex = shapeIndex;
         if (PokerShape_img == null)
-        {
-            SetPokerShapeTxtStr = LanguageManager.Instance.GetText(PokerShape.shapeStr[pokerShapeIndex]);
-        }
+            return;
+
+        if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
+            SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksEnglishAlbum).album[pokerShapeIndex];
         else
-        {
-            if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
-                SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksEnglishAlbum).album[pokerShapeIndex];
-            else
-                SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksChineseAlbum).album[pokerShapeIndex];
-        }
+            SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksChineseAlbum).album[pokerShapeIndex];
     }
 
     private void OnDisable()

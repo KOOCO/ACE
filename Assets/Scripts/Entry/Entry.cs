@@ -12,7 +12,7 @@ public class Entry : UnitySingleton<Entry>
     #region 測試
     public static GameServer CurrGameServer;
     public static class TestInfoData
-    {      
+    {
         public static string LocalUserId = "LocalUser";
         public static string NickName = "LocalUserName";
 
@@ -32,7 +32,7 @@ public class Entry : UnitySingleton<Entry>
     public Vector2 resolution;
     [Header("Debug工具")]
     public bool isUsingDebug;
-    [SerializeField] 
+    [SerializeField]
     GameObject ReporterObj;
 
     public override void Awake()
@@ -62,6 +62,9 @@ public class Entry : UnitySingleton<Entry>
         LanguageManager.Instance.LoadLangageJson();
 
         yield return AssetsManager.Instance.ILoadAssets();
+        yield return AssetsManager.Instance.ILoadStringAssets();
+
+        Debug.Log(AssetsManager.Instance.GetStringAlbumAsset(StringAlbumEnum.HandRanksStringAlbum).strAlbum[0] + " String Album");
         AudioManager.Instance.StartLoadAudioAssets();
 
         LoadSceneManager.Instance.LoadScene(SceneEnum.Login);
@@ -166,9 +169,9 @@ public class Entry : UnitySingleton<Entry>
 
     }
 
-#endregion
+    #endregion
 
-#region 邀請碼
+    #region 邀請碼
 
     [System.Serializable]
     public class InvitationData
@@ -188,9 +191,9 @@ public class Entry : UnitySingleton<Entry>
         DataManager.GetInviterId = data.inviterId;
     }
 
-#endregion
+    #endregion
 
-#region 工具類 
+    #region 工具類 
 
     /// <summary>
     /// 獲取IP地址回傳
@@ -260,5 +263,5 @@ public class Entry : UnitySingleton<Entry>
         Debug.Log($"Browser Debug: {str}");
     }
 
-#endregion
+    #endregion
 }

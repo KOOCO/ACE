@@ -5,8 +5,6 @@ using UnityEngine.UI;
 using System;
 using System.Linq;
 using TMPro;
-using System.Threading.Tasks;
-
 using RequestBuf;
 
 public class GameView : MonoBehaviour
@@ -60,9 +58,9 @@ public class GameView : MonoBehaviour
 
     [Header("底池")]
     [SerializeField]
-    Image Pot_Img;
+    Image Pot_Img, winnerHandImage;
     [SerializeField]
-    TextMeshProUGUI TotalPot_Txt, WinType_Txt, roomID_Txt, sbBlinds_Txt;
+    TextMeshProUGUI TotalPot_Txt, WinType_Txt, roomID_Txt, sbBlinds_Txt, winnerText;
     [SerializeField]
     GameObject WaitingTip_Txt;
 
@@ -266,7 +264,25 @@ public class GameView : MonoBehaviour
         public string RaiseStr { get; set; }
         public string RaiseValueStr { get; set; }
     }
+    public string SetWinnerStringTxt
+    {
+        set
+        {
+            if (winnerText != null)
+            {
 
+                if (value != "")
+                {
+                    winnerHandImage?.gameObject.SetActive(true);
+                    winnerText.text = value;
+                }
+                else
+                {
+                    winnerHandImage.gameObject.SetActive(false);
+                }
+            }
+        }
+    }
     /// <summary>
     /// 更新文本翻譯
     /// </summary>
@@ -1295,7 +1311,7 @@ public class GameView : MonoBehaviour
         }
         foreach (var player in gamePlayerInfoList)
         {
-            player.SetPokerShapeTxtStr = "";
+            //player.SetPokerShapeTxtStr = "";
             player.SetPokerShapeImage = null;
             player.IsWinnerActive = false;
             player.SetBackChips = 0;
@@ -1810,7 +1826,7 @@ public class GameView : MonoBehaviour
                 gameRoomData.playingPlayersIdList.Count() >= 2 &&
                 gameRoomData.playingPlayersIdList.Contains(player.userId))
             {
-                gamePlayerInfo.SetPokerShapeTxtStr = "";
+                //gamePlayerInfo.SetPokerShapeTxtStr = "";
                 gamePlayerInfo.SetPokerShapeImage = null;
                 gamePlayerInfo.SetHandPoker(-1, -1);
             }
@@ -1841,7 +1857,7 @@ public class GameView : MonoBehaviour
 
                 if ((PlayerStateEnum)player.gameState == PlayerStateEnum.Waiting)
                 {
-                    gamePlayerInfo.SetPokerShapeTxtStr = "";
+                    //gamePlayerInfo.SetPokerShapeTxtStr = "";
                     gamePlayerInfo.SetPokerShapeImage = null;
 
                     gamePlayerInfo.GetHandPoker[0].gameObject.SetActive(false);
@@ -2287,6 +2303,11 @@ public class GameView : MonoBehaviour
                         PokerShape.OpenMatchPokerFrame(pokers,
                                                        matchPokerList,
                                                        isWinEffect);
+
+                        if (isWinEffect)
+                        {
+                            SetWinnerStringTxt = LanguageManager.Instance.GetText(AssetsManager.Instance.GetStringAlbumAsset(StringAlbumEnum.HandRanksStringAlbum).strAlbum[resultIndex]);
+                        }
                     }
                 }
             });
@@ -2457,7 +2478,8 @@ public class GameView : MonoBehaviour
 
             processHistoryData.processStepHistoryDataList.Add(processStepHistoryData);
         }
-
+        yield return new WaitForSeconds(4f);
+        SetWinnerStringTxt = "";
     }
 
     /// <summary>
@@ -3225,7 +3247,7 @@ public class GameView : MonoBehaviour
             {
                 //其他玩家
                 gamePlayerInfo.SetHandPoker(-1, -1);
-                gamePlayerInfo.SetPokerShapeTxtStr = "";
+                //gamePlayerInfo.SetPokerShapeTxtStr = "";
                 gamePlayerInfo.SetPokerShapeImage = null;
 
             }
