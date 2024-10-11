@@ -38,6 +38,7 @@ public class Entry : UnitySingleton<Entry>
     public override void Awake()
     {
 #if !UNITY_EDITOR
+        Debug.unityLogger.filterLogType = LogType.Error;
         JSBridgeManager.Instance.SetupRecaptchaVerifier();
 #endif
 
