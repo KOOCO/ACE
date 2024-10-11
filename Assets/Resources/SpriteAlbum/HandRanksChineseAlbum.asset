@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: HandRanksChineseAlbum
   m_EditorClassIdentifier: 
   album:
-  - {fileID: 21300000, guid: a5fed6a281c8141528f139995956dc25, type: 3}
-  - {fileID: 21300000, guid: 84935edf27bb34675b96f3afbe2affda, type: 3}
-  - {fileID: 21300000, guid: 155bd3889f6fe4c3c83669f3401471d9, type: 3}
-  - {fileID: 21300000, guid: e2d0ab08c8fec46d0921d4631956617e, type: 3}
-  - {fileID: 21300000, guid: 809f40ae1aa784c62b8610fe9a170404, type: 3}
-  - {fileID: 21300000, guid: 77a6a1232b5124b8288131db33a0f0c0, type: 3}
-  - {fileID: 21300000, guid: 77a6a1232b5124b8288131db33a0f0c0, type: 3}
-  - {fileID: 21300000, guid: c0afe63ebb72b47ceaf096938c13e838, type: 3}
-  - {fileID: 21300000, guid: 8b52bac9b0dbc411cbc7324cb7f9e8fa, type: 3}
-  - {fileID: 21300000, guid: 7e00113345a4a42b9951d9bdee0fc706, type: 3}
-  - {fileID: 21300000, guid: feaed669165664722a89c1c66d8ff9c3, type: 3}
+  - {fileID: 21300000, guid: fde932c7b515e4f03b9a8ddcd3485d07, type: 3}
+  - {fileID: 21300000, guid: 33ce3658c43d644d5a663b11ff77f0a6, type: 3}
+  - {fileID: 21300000, guid: c46d3efa300ee480c99a62de3a44be0c, type: 3}
+  - {fileID: 21300000, guid: 626440edf504a43cdb8d5587b04aa456, type: 3}
+  - {fileID: 21300000, guid: ec1eb3f0f7fdc4f3f86c6ffd96e71243, type: 3}
+  - {fileID: 21300000, guid: e455598c9677b49cd96c90bf54717e1a, type: 3}
+  - {fileID: 21300000, guid: e455598c9677b49cd96c90bf54717e1a, type: 3}
+  - {fileID: 21300000, guid: 0c2917263a1534e24b134b79da4764b1, type: 3}
+  - {fileID: 21300000, guid: 5c8a88cc3c55e4cbc9c568f856f7c7eb, type: 3}
+  - {fileID: 21300000, guid: 949188a0b12044f02b1ff268d6deca5a, type: 3}
+  - {fileID: 21300000, guid: 5668c9e50315643c899eed9972eea894, type: 3}
