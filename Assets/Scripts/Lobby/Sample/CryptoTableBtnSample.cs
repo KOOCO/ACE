@@ -49,8 +49,8 @@ public class CryptoTableBtnSample : MonoBehaviour
     public void SetCryptoTableBtnInfo(double smallBlind, LobbyView lobbyView, string _tableId)
     {
         tableId = _tableId;
-        Blinds_Txt.text = $"{StringUtils.SetChipsUnit(smallBlind)} / {StringUtils.SetChipsUnit(smallBlind * 2)}";
-        MinBuy_Txt.text = $"{StringUtils.SetChipsUnit(smallBlind * DataManager.MinMagnification)}";
+        Blinds_Txt.text = $"$ {StringUtils.SetChipsUnit(smallBlind)} / {StringUtils.SetChipsUnit(smallBlind * 2)}";
+        MinBuy_Txt.text = $"$ {StringUtils.SetChipsUnit((smallBlind * 2) * DataManager.MinMagnification)}";
 
         Launch_Btn.onClick.AddListener(() =>
         {
@@ -74,8 +74,10 @@ public class CryptoTableBtnSample : MonoBehaviour
                 }
                 else
                 {
-                    ViewManager.Instance.OpenTipMsgView(transform, LanguageManager.Instance.GetText("you dont have enough Ucoins Please buy from shop"));
                     //DataManager.istipAppear = true;
+                    //DataManager.TipText = LanguageManager.Instance.GetText("you dont have enough Ucoins Please buy from shop");
+                    ViewManager.Instance.OpenTipMsgView(GameObject.Find("Floo3").transform, messageStatus.Reminder,
+                                            LanguageManager.Instance.GetText("You don,t have enough Ucoins"));
                 }
             }
             else

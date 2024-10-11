@@ -4,13 +4,24 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+public enum messageStatus
+{
+    None,
+    Sending,
+    Failed,
+    Warning,
+    Succesful,
+    Reminder
+}
 
 public class TipMsgView : MonoBehaviour
 {
     [SerializeField]
     Image Bg_Img;
     [SerializeField]
-    TextMeshProUGUI Msg_Txt;
+    Sprite img_Send, img_Warn, img_Error, img_Sucess, img_Remind;
+    [SerializeField]
+    TextMeshProUGUI tittle_Txt, Msg_Txt;
 
     const float GradientTime = 0.5f;            //漸變時間
     const float ShowTime = 1f;                  //顯示時間
@@ -28,11 +39,34 @@ public class TipMsgView : MonoBehaviour
     /// 設置提示訊息
     /// </summary>
     /// <param name="msg">訊息內容</param>
-    public void SetTipMsg(string msg)
+    public void SetTipMsg(messageStatus status, string msg)
     {
         currPosY = 0;
         Msg_Txt.text = msg;
 
+        switch (status)
+        {
+            case messageStatus.Failed:
+                Bg_Img.sprite = img_Error;
+                break;
+            case messageStatus.Warning:
+                Bg_Img.sprite = img_Warn;
+                break;
+            case messageStatus.Sending:
+                Bg_Img.sprite = img_Send;
+                break;
+            case messageStatus.Succesful:
+                Bg_Img.sprite = img_Sucess;
+                break;
+            case messageStatus.Reminder:
+                Bg_Img.sprite = img_Remind;
+                break;
+        }
+
+        //if(status == messageStatus.Reminder)
+        //    tittle_Txt.text = "";
+        //else
+        //    tittle_Txt.text = status.ToString();
         StartCoroutine(IEffect());
     }
 

@@ -7,24 +7,78 @@ using System.Linq;
 
 public class SettingsView : MonoBehaviour
 {
+    //[SerializeField]
+    //Button Close_Btn;
+    //[SerializeField]
+    //TextMeshProUGUI Title_Txt;
+    [Header("選單")]
     [SerializeField]
-    Button Close_Btn;
+    Button language_Btn, contactUs_Btn, terms_Btn, privacy_Btn, logOut_Btn;
     [SerializeField]
-    TextMeshProUGUI Title_Txt;
+    TextMeshProUGUI language_Txt, contactUs_Txt, terms_Txt, privacy_Txt, logOut_Txt;
 
     [Header("語言")]
+    //[SerializeField]
+    //TMP_Dropdown Language_Dd;
     [SerializeField]
-    TMP_Dropdown Language_Dd;
+    GameObject languageArea;
+    [SerializeField]
+    Toggle en_Tog, zh_Tog;
     [SerializeField]
     TextMeshProUGUI LanguageTitle_Txt;
+
+    [Header("隱私政策物件")]
+    [SerializeField]
+    GameObject Privacy_Obj, Privacy_text, Term_text, Privacy_obj_Scroll, Term_obj_Scroll,
+      Privacy_text_CH, Term_text_CH, Privacy_text_EN, Term_text_EN;
+    [SerializeField]
+    TextMeshProUGUI Privacy_Title, Term_Title,
+                    TermsConfirm_Btn_Txt, PrivacyConfirm_Btn_Txt;
 
     /// <summary>
     /// 更新文本翻譯
     /// </summary>
     private void UpdateLanguage()
     {
-        Title_Txt.text = LanguageManager.Instance.GetText("SETTINGS");
-        LanguageTitle_Txt.text = LanguageManager.Instance.GetText("Language");
+        //Title_Txt.text = LanguageManager.Instance.GetText("SETTINGS");
+        language_Txt.text = LanguageTitle_Txt.text = LanguageManager.Instance.GetText("Language");
+        contactUs_Txt.text  = LanguageManager.Instance.GetText("Contact us");
+        terms_Txt.text  = LanguageManager.Instance.GetText("Terms");
+        privacy_Txt.text  = LanguageManager.Instance.GetText("Privacy Policy");
+        logOut_Txt.text  = LanguageManager.Instance.GetText("Log Out");
+
+        #region 隱私政策物件
+
+        TermsConfirm_Btn_Txt.text = LanguageManager.Instance.GetText("i GOT IT");
+        PrivacyConfirm_Btn_Txt.text = LanguageManager.Instance.GetText("i GOT IT");
+        //PrivacyConfirmBtn_Txt.text = LanguageManager.Instance.GetText("Confirm");
+        Privacy_Title.text = LanguageManager.Instance.GetText("Asia Poker privacy policy");
+        Term_Title.text = LanguageManager.Instance.GetText("Asia Poker Terms of Service");
+        if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
+        {
+            Term_obj_Scroll.GetComponent<ScrollRect>().content = Term_text_EN.GetComponent<RectTransform>();
+
+
+            Privacy_obj_Scroll.GetComponent<ScrollRect>().content = Privacy_text_EN.GetComponent<RectTransform>();
+            Privacy_text_EN.SetActive(true);
+            Privacy_text_CH.SetActive(false);
+            Term_text_EN.SetActive(true);
+            Term_text_CH.SetActive(false);
+
+        }
+        else if (LanguageManager.Instance.GetCurrLanguageIndex() == 1)
+        {
+
+            Term_obj_Scroll.GetComponent<ScrollRect>().content = Term_text_CH.GetComponent<RectTransform>();
+
+            Privacy_obj_Scroll.GetComponent<ScrollRect>().content = Privacy_text_CH.GetComponent<RectTransform>();
+            Term_text_CH.SetActive(true);
+            Term_text_EN.SetActive(false);
+            Privacy_text_CH.SetActive(true);
+            Privacy_text_EN.SetActive(false);
+
+        }
+        #endregion
     }
 
     private void OnDestroy()
@@ -37,13 +91,28 @@ public class SettingsView : MonoBehaviour
         LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
         ListenerEvent();
 
-        Utils.SetOptionsToDropdown(Language_Dd,
-                                   LanguageManager.Instance.languageShowName.ToList());
+        //Utils.SetOptionsToDropdown(Language_Dd,
+        //                           LanguageManager.Instance.languageShowName.ToList());
     }
 
     private void OnEnable()
     {
-        Language_Dd.value = LanguageManager.Instance.GetCurrLanguageIndex();
+        //Language_Dd.value = LanguageManager.Instance.GetCurrLanguageIndex();
+        int lan_Index = LanguageManager.Instance.GetCurrLanguageIndex();
+
+        switch (lan_Index)
+        {
+            case 0:
+                en_Tog.isOn = true;
+                zh_Tog.isOn = false;
+                break;
+            case 1:
+                en_Tog.isOn = false;
+                zh_Tog.isOn = true;
+                break;
+        }
+
+        getSelect(lan_Index);
     }
 
     /// <summary>
@@ -52,16 +121,69 @@ public class SettingsView : MonoBehaviour
     private void ListenerEvent()
     {
         //關閉按鈕
-        Close_Btn.onClick.AddListener(() =>
+        //Close_Btn.onClick.AddListener(() =>
+        //{
+        //    Destroy(gameObject);
+        //});
+
+        language_Btn.onClick.AddListener(() =>
         {
-            Destroy(gameObject);
+            languageArea.SetActive(true);
+            getSelect(LanguageManager.Instance.GetCurrLanguageIndex());
+        });
+
+        contactUs_Btn.onClick.AddListener(() =>
+        {
+            string authUrl = $"https://line.me/ti/p/@309jwned";
+            JSBridgeManager.Instance.onLineService(authUrl);
+        });
+
+        terms_Btn.onClick.AddListener(() =>
+        {
+            Term_text.SetActive(true);
+            Privacy_text.SetActive(false);
+        });
+        privacy_Btn.onClick.AddListener(() =>
+        {
+            Term_text.SetActive(false);
+            Privacy_text.SetActive(true);
         });
 
         //更換語言
-        Language_Dd.onValueChanged.AddListener((value) =>
+        #region old
+        //Language_Dd.onValueChanged.AddListener((value) =>
+        //{
+        //    LanguageManager.Instance.ChangeLanguage(value);
+
+        //});
+        #endregion
+        en_Tog.onValueChanged.AddListener((value) =>
         {
-            LanguageManager.Instance.ChangeLanguage(value);
-           
+            en_Tog.isOn = value;
+            LanguageManager.Instance.ChangeLanguage(0);
+            getSelect(LanguageManager.Instance.GetCurrLanguageIndex());
         });
+        zh_Tog.onValueChanged.AddListener((value) =>
+        {
+            zh_Tog.isOn = value;
+            LanguageManager.Instance.ChangeLanguage(1);
+            getSelect(LanguageManager.Instance.GetCurrLanguageIndex());
+        });
+    }
+
+    //偵測當前選中語言
+    void getSelect(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                en_Tog.OnSelect(null);
+                zh_Tog.OnDeselect(null);
+                break;
+            case 1:
+                en_Tog.OnDeselect(null);
+                zh_Tog.OnSelect(null);
+                break;
+        }
     }
 }

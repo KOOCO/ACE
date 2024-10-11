@@ -154,9 +154,11 @@ public class QuestView : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    public void ReceiveMaskActive()
+    public void ReceiveMaskActive(Transform parent)
     {
-        ReceivedMask.SetActive(!ReceivedMask.activeSelf);
+        //ReceivedMask.SetActive(!ReceivedMask.activeSelf);
+        ViewManager.Instance.OpenTipMsgView(parent, messageStatus.Succesful,
+                                            LanguageManager.Instance.GetText("Receive Successful"));
     }
 
 }

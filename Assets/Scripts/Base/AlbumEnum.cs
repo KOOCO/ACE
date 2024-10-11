@@ -17,4 +17,11 @@ public enum AlbumEnum
     Shop_StaminaAlbum,
     Shop_GoldAlbum,
     Shop_ExtraTimeAlbum,
+    HandRanksEnglishAlbum,
+    HandRanksChineseAlbum
+}
+
+public enum StringAlbumEnum
+{
+    HandRanksStringAlbum
 }

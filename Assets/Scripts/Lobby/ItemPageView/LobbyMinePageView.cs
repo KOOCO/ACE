@@ -18,6 +18,8 @@ public class LobbyMinePageView : MonoBehaviour
     [SerializeField]
     GameObject UserPorfile_Obj, WalletAddressBg_Obj;
     [SerializeField]
+    Image playerAvatar_Img;
+    [SerializeField]
     Button EditorAvatar_Btn, CopyWalletAddress_Btn;
     [SerializeField]
     TextMeshProUGUI Nickname_Txt, WalletAddress_Txt, CopiedWalletAddress_Txt;
@@ -250,8 +252,8 @@ public class LobbyMinePageView : MonoBehaviour
 
         ChangeAvatar_Tr.gameObject.SetActive(false);
 
-        //紀錄展開物件初始化
-        List<RectTransform> expandObjList = new()
+        //紀錄展開物件初始化(已拿掉)
+        /*List<RectTransform> expandObjList = new()
         {
             AccountBalance_Obj,     //帳戶餘額
             ScoreRecord_Obj,        //分數紀錄
@@ -266,7 +268,7 @@ public class LobbyMinePageView : MonoBehaviour
             expandObj.sizeDelta = new Vector2(expandObj.rect.width, TopBgObj.rect.height);
         }
         AccountBalanceExpand_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.ArrowAlbum).album[3];
-        ScoreRecordExpand_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.ArrowAlbum).album[3];
+        ScoreRecordExpand_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.ArrowAlbum).album[3];*/
     }
 
     /// <summary>
@@ -318,7 +320,7 @@ public class LobbyMinePageView : MonoBehaviour
                 $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}",
                 dataDic);
 
-            EditorAvatar_Btn.image.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[DataManager.UserAvatarIndex];
+            playerAvatar_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[DataManager.UserAvatarIndex];
             GameObject.FindAnyObjectByType<LobbyView>().UpdateUserData();
 
             UserPorfile_Obj.SetActive(true);
@@ -330,19 +332,19 @@ public class LobbyMinePageView : MonoBehaviour
         #region 帳戶餘額
 
         //帳戶餘額展開
-        AccountBalanceExpand_Btn.onClick.AddListener(() =>
-        {
-            isAccountBalanceExpand = !isAccountBalanceExpand;
-            StartCoroutine(ISwitchContent(isAccountBalanceExpand,
-                                          AccountBalance_Obj,
-                                          AccountBalanceExpand_Img));
-        });
+        //AccountBalanceExpand_Btn.onClick.AddListener(() =>
+        //{
+        //    isAccountBalanceExpand = !isAccountBalanceExpand;
+        //    StartCoroutine(ISwitchContent(isAccountBalanceExpand,
+        //                                  AccountBalance_Obj,
+        //                                  AccountBalanceExpand_Img));
+        //});
 
         //帳戶餘額刷新
         AccountBalanceReflash_Btn.onClick.AddListener(() =>
         {
-
             //UpdatetAccountBalance("4,300 ETH", 40000, 3000, 5, 30);
+            FindAnyObjectByType<LobbyView>().UpdateUserData();
         });
 
         #endregion
@@ -350,13 +352,13 @@ public class LobbyMinePageView : MonoBehaviour
         #region 分數紀錄
 
         //分數紀錄展開
-        ScoreRecordExpand_Btn.onClick.AddListener(() =>
-        {
-            isScoreRecordExpand = !isScoreRecordExpand;
-            StartCoroutine(ISwitchContent(isScoreRecordExpand,
-                                          ScoreRecord_Obj,
-                                          ScoreRecordExpand_Img));
-        });
+        //ScoreRecordExpand_Btn.onClick.AddListener(() =>
+        //{
+        //    isScoreRecordExpand = !isScoreRecordExpand;
+        //    StartCoroutine(ISwitchContent(isScoreRecordExpand,
+        //                                  ScoreRecord_Obj,
+        //                                  ScoreRecordExpand_Img));
+        //});
 
         //紀錄分數刷新
         ScoreRecordReflash_Btn.onClick.AddListener(() =>
@@ -534,7 +536,7 @@ public class LobbyMinePageView : MonoBehaviour
         SelectAvatarIcon_Tr.SetParent(avatarBtnList[DataManager.UserAvatarIndex].transform);
         SelectAvatarIcon_Tr.anchoredPosition = Vector2.zero;
 
-        Viewport.enabled = true;
+        //Viewport.enabled = true;
 
         UpdatetAccountBalance(string.IsNullOrEmpty(DataManager.UserWalletBalance) ? "0 " : DataManager.UserWalletBalance,
                               DataManager.UserAChips,
@@ -546,13 +548,34 @@ public class LobbyMinePageView : MonoBehaviour
         UpdateInvitationCodeInfo();
     }
 
+    //外部調用方法
+    ///<summary>
+    ///開啟交易報表
+    ///</summary>
+    public void openTransactionHistoryView()
+    {
+        Transform lobbyView = GameObject.Find("LobbyView").transform;
+        RectTransform transactionHistoryView = Instantiate(TransactionHistoryViewObj, lobbyView).GetComponent<RectTransform>();
+        ViewManager.Instance.InitViewTr(transactionHistoryView, "TransactionHistoryView");
+    }
+    ///<summary>
+    ///開啟設定選單
+    ///</summary>
+    public void openSettingsView()
+    {
+        isSettingExpand = !isSettingExpand;
+        StartCoroutine(ISwitchContent(isSettingExpand,
+                                      Settings_Obj,
+                                      settings_Img));
+    }
+
     /// <summary>
     /// 設置用戶訊息
     /// </summary>
     private void SetUserInfo()
     {
         //頭像
-        EditorAvatar_Btn.image.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[DataManager.UserAvatarIndex];
+        playerAvatar_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[DataManager.UserAvatarIndex];
 
         //暱稱
         Nickname_Txt.text = $"@{DataManager.UserNickname}";
@@ -764,8 +787,7 @@ public class LobbyMinePageView : MonoBehaviour
         JSBridgeManager.Instance.UpdateDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
                                                         dataDic);
 
-        ViewManager.Instance.OpenTipMsgView(transform,
-                                            LanguageManager.Instance.GetText("Binding Successful"));
+        ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Succesful, LanguageManager.Instance.GetText("Binding Successful"));
     }
 
     /// <summary>
