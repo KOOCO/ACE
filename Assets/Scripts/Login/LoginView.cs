@@ -752,7 +752,7 @@ public class LoginView : MonoBehaviour
 
         DataManager.IsNotFirstInLogin = true;
 
-       SoundToggleGroup.IsPlayAudio(AudioSource);
+        SoundToggleGroup.IsPlayAudio(AudioSource);
     }
 
     private void Update()
@@ -2107,7 +2107,7 @@ public class LoginView : MonoBehaviour
         ViewManager.Instance.CloseWaitingView(transform);
 
         AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
-        Debug.Log("User id :" + loginData.userId);
+        //        Debug.Log("User id :" + loginData.userId);
         if (loginData != null)
         {
             if (loginData.online == true)
