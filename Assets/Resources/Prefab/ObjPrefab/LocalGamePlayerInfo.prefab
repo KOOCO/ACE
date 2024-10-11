@@ -2002,7 +2002,6 @@ MonoBehaviour:
   Nickname_Txt: {fileID: 5692360153272519685}
   Chips_Txt: {fileID: 7190155709451056350}
   BackChips_Txt: {fileID: 3050555929480799815}
-  PokerShape_Txt: {fileID: 0}
   BlindCharacter_Txt: {fileID: 9133265238706687232}
   countDown_Txt: {fileID: 0}
   Winner_Txt: {fileID: 9128626508004737227}
@@ -4321,7 +4320,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 144.6, y: 57.8}
-  m_SizeDelta: {x: 150, y: 25}
+  m_SizeDelta: {x: 150, y: 24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6277024643534297685
 CanvasRenderer:
@@ -4351,7 +4350,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: fde932c7b515e4f03b9a8ddcd3485d07, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
