@@ -39,7 +39,7 @@ public class LobbyView : MonoBehaviour
     [SerializeField]
     Button Mine_Btn, Shop_Btn, Main_Btn, Activity_Btn, Ranking_Btn, t_History_Btn, Settings_Btn, Refresh_Btn;
     [SerializeField]
-    GameObject LobbyMainPageView, LobbyMinePageView, LobbyRankingView, LobbyShopView, LobbyActivityView, LobbySettingsView;
+    GameObject LobbyMainPageView, LobbyMinePageView, LobbyRankingView, LobbyShopView, LobbyActivityView, LobbySettingsView, LobbyT_HistoryView;
     [SerializeField]
     TextMeshProUGUI MineBtn_Txt, ShopBtn_Txt, ActivityBtn_Txt, RankingBtn_Txt, t_HistoryBtn_Txt, SettingsBtn_Txt;
 
@@ -514,7 +514,7 @@ public class LobbyView : MonoBehaviour
                 itemObj = LobbyActivityView;
                 break;
             case ItemType.t_History:
-                itemObj = LobbyMinePageView;
+                itemObj = LobbyT_HistoryView;
                 break;
             case ItemType.Settings:
                 itemObj = LobbySettingsView;
@@ -528,12 +528,6 @@ public class LobbyView : MonoBehaviour
         {
             RectTransform itemPageView = Instantiate(itemObj, Floor3).GetComponent<RectTransform>();
             ViewManager.Instance.InitViewTr(itemPageView, itemType.ToString());
-
-            if(itemType == ItemType.t_History)
-            {
-                LobbyMinePageView mineView = Floor3.GetComponentInChildren<LobbyMinePageView>();
-                mineView.openTransactionHistoryView();
-            }
         }
     }
 

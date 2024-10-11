@@ -111,6 +111,8 @@ public class SettingsView : MonoBehaviour
                 zh_Tog.isOn = true;
                 break;
         }
+
+        getSelect(lan_Index);
     }
 
     /// <summary>
@@ -127,6 +129,7 @@ public class SettingsView : MonoBehaviour
         language_Btn.onClick.AddListener(() =>
         {
             languageArea.SetActive(true);
+            getSelect(LanguageManager.Instance.GetCurrLanguageIndex());
         });
 
         contactUs_Btn.onClick.AddListener(() =>
@@ -158,11 +161,29 @@ public class SettingsView : MonoBehaviour
         {
             en_Tog.isOn = value;
             LanguageManager.Instance.ChangeLanguage(0);
+            getSelect(LanguageManager.Instance.GetCurrLanguageIndex());
         });
         zh_Tog.onValueChanged.AddListener((value) =>
         {
             zh_Tog.isOn = value;
             LanguageManager.Instance.ChangeLanguage(1);
+            getSelect(LanguageManager.Instance.GetCurrLanguageIndex());
         });
+    }
+
+    //偵測當前選中語言
+    void getSelect(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                en_Tog.OnSelect(null);
+                zh_Tog.OnDeselect(null);
+                break;
+            case 1:
+                en_Tog.OnDeselect(null);
+                zh_Tog.OnSelect(null);
+                break;
+        }
     }
 }

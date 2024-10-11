@@ -63,10 +63,10 @@ public class TipMsgView : MonoBehaviour
                 break;
         }
 
-        if(status == messageStatus.Reminder)
-            tittle_Txt.text = "";
-        else
-            tittle_Txt.text = status.ToString();
+        //if(status == messageStatus.Reminder)
+        //    tittle_Txt.text = "";
+        //else
+        //    tittle_Txt.text = status.ToString();
         StartCoroutine(IEffect());
     }
 
