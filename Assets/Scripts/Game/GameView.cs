@@ -1133,9 +1133,19 @@ public class GameView : MonoBehaviour
         if (isRaised)
         {
             // If a raise has occurred, show Fold and Call with amount for the local player
-            strData.FoldStr = "Fold";
-            strData.CallStr = "Call";
-            strData.CallValueStr = $"\n{gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+            if (isBigBlind)
+            {
+                // Big Blind sees Check/Fold and Check pre-flop with no raise
+                strData.FoldStr = "Fold";
+                strData.CallStr = "Check";
+                strData.CallValueStr = "";
+            }
+            else
+            {
+                strData.FoldStr = "Fold";
+                strData.CallStr = "Call";
+                strData.CallValueStr = $"\n{gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+            }
         }
         else
         {
@@ -1211,9 +1221,18 @@ public class GameView : MonoBehaviour
         if (isRaised)
         {
             // If raised, everyone sees Fold and Call + amount
-            bool check = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0;
-            strData.CallStr = check ? "" : "Call";
-            strData.CallValueStr = check ? "" : $"\n{gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+            if (isBigBlind)
+            {
+                strData.FoldStr = "Check/Fold";
+                strData.CallStr = "Check";
+                strData.CallValueStr = "";
+            }
+            else
+            {
+                bool check = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0;
+                strData.CallStr = check ? "" : "Call";
+                strData.CallValueStr = check ? "" : $"\n{gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+            }
         }
         else
         {
