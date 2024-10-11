@@ -197,7 +197,10 @@ public class GamePlayerInfo : MonoBehaviour
                 PokerShape_img.gameObject.SetActive(true);
 
                 if (value != null)
+                {
                     PokerShape_img.sprite = value;
+                    PokerShape_img.preserveAspect = true;
+                }
                 else
                     PokerShape_img.gameObject.SetActive(false);
             }
