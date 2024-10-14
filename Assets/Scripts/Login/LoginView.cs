@@ -752,7 +752,9 @@ public class LoginView : MonoBehaviour
 
         DataManager.IsNotFirstInLogin = true;
 
-        //       SoundToggleGroup.IsPlayAudio(AudioSource);
+        //SoundToggleGroup.IsPlayAudio(AudioSource);
+        AudioManager.Instance.playTittle();
+        MusicSwitchBtn.IsPlayAudio();
     }
 
     private void Update()
