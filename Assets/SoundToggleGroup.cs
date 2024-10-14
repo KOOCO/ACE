@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SoundToggleGroup : MonoBehaviour
 {
-    [SerializeField]public Toggle toggleOn;
+    [SerializeField] public Toggle toggleOn;
     [SerializeField] Toggle toggleOff;
     [SerializeField] public static bool isSoundOpen;
     // Start is called before the first frame update
@@ -24,30 +24,30 @@ public class SoundToggleGroup : MonoBehaviour
         toggleOn.onValueChanged.AddListener(
             (x) =>
             {
-                
+
                 if (x)
                 {
                     //為了讓第一次進入還沒有設定過音樂開關的玩家
                     //能撥放音樂 所以以0為撥放音樂的代號
                     //(未設定時getInt會回傳0)
-                    PlayerPrefs.SetInt(nameof(isSoundOpen),0);
+                    PlayerPrefs.SetInt(nameof(isSoundOpen), 0);
                 }
-                
+
                 if (!x)
                 {
-                    PlayerPrefs.SetInt(nameof(isSoundOpen),1);
+                    PlayerPrefs.SetInt(nameof(isSoundOpen), 1);
                 }
-                Debug.Log("toggleOn is On="+x+nameof(isSoundOpen)+"");
-                
-                
-                var lobbyView = GameObject.FindAnyObjectByType<LobbyView>();
-                SoundToggleGroup.IsPlayAudio(lobbyView.audioSource);
+                Debug.Log("toggleOn is On=" + x + nameof(isSoundOpen) + "");
+
+
+                //var lobbyView = GameObject.FindAnyObjectByType<LobbyView>();
+                //SoundToggleGroup.IsPlayAudio(lobbyView.audioSource);
             });
-        
+
         toggleOff.onValueChanged.AddListener(
             (x) =>
             {
-                Debug.Log("toggleOn is On="+x);
+                Debug.Log("toggleOn is On=" + x);
             });
 
     }
@@ -60,7 +60,7 @@ public class SoundToggleGroup : MonoBehaviour
             audioSource.Play();
         }
 
-        if (playsoundNum==1)
+        if (playsoundNum == 1)
         {
             audioSource.Stop();
         }

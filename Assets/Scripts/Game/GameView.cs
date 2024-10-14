@@ -135,9 +135,9 @@ public class GameView : MonoBehaviour
     [SerializeField]
     Button GameContinue_Btn;
 
-    [Header("遊戲音樂")]
-    [SerializeField]
-    AudioSource AudioSource_Obj;
+    // [Header("遊戲音樂")]
+    // [SerializeField]
+    // AudioSource AudioSource_Obj;
 
     [Header("遊戲測試用")]
     [SerializeField]
@@ -827,7 +827,7 @@ public class GameView : MonoBehaviour
         }
 
         #endregion
-        MusicSwitchBtn.IsPlayAudio(AudioSource_Obj);
+        //MusicSwitchBtn.IsPlayAudio(AudioSource_Obj);
     }
 
     private void Update()
