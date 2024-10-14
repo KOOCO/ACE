@@ -322,7 +322,7 @@ public class GameControl : MonoBehaviour
             leaveRound.amount = gameRoomPlayerData.carryChips;
         }
 
-        string apiEndpoint = $"api/app/rounds/leave-table?memberId={leaveRound.memberId}&amount={leaveRound.amount}&type={leaveRound.type}&rankPoint={leaveRound.rankPoint}";
+        string apiEndpoint = $"/api/app/rounds/leave-table?memberId={leaveRound.memberId}&amount={leaveRound.amount}&type={leaveRound.type}&rankPoint={leaveRound.rankPoint}";
 
         SwaggerAPIManager.Instance.SendPostAPI<LeaveRound>(apiEndpoint, null, (data) =>
         {

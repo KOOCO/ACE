@@ -348,8 +348,8 @@ public class LobbyMainPageView : MonoBehaviour
             });
             billboardList.Add(billbpard);
 
-            //初始廣告圖片設置
-            Image billboardBg_Img = billbpard.transform.Find("BillboardBg_Img").GetComponent<Image>();
+            //初始廣告圖片設置(多了一個Mask所以往下搜尋一個子層級)
+            Image billboardBg_Img = billbpard.transform.GetChild(0).Find("BillboardBg_Img").GetComponent<Image>();
             int billboardIndex = JudgeBillboardIndex(DataManager.CurrBillboardIndex + i, i);
             Sprite sp = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.BillboardAlbum).album[billboardIndex];
             billboardBg_Img.sprite = sp;

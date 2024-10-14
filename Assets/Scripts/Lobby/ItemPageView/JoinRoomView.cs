@@ -99,7 +99,8 @@ public class JoinRoomView : MonoBehaviour
             }
 
             ViewManager.Instance.OpenWaitingView(transform);
-            lobbyView.audioSource.Stop();
+            //進入房間停播音樂
+            //lobbyView.audioSource.Stop();
             JoinRound newRound = new JoinRound
             {
                 memberId = DataManager.UserId,
@@ -109,7 +110,7 @@ public class JoinRoomView : MonoBehaviour
             Debug.Log($"MemberId {newRound.memberId} :: TableId {newRound.tableId} :: Amount {newRound.amount}");
 
             //ViewManager.Instance.OpenWaitingView(transform);
-            SwaggerAPIManager.Instance.SendPostAPI<JoinRound>($"api/app/rounds/join-round?memberId={newRound.memberId}&tableId={newRound.tableId}&amount={newRound.amount}", newRound, (data) =>
+            SwaggerAPIManager.Instance.SendPostAPI<JoinRound>($"/api/app/rounds/join-round?memberId={newRound.memberId}&tableId={newRound.tableId}&amount={newRound.amount}", newRound, (data) =>
             {
                 Debug.Log("Join Round Response :: " + data);
                 GameRound gameRound = JsonConvert.DeserializeObject<GameRound>(data);

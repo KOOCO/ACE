@@ -9,11 +9,12 @@ using System;
 public class FirebaseManager : UnitySingleton<FirebaseManager>
 {
     [Header("資料路徑名稱")]
-    public const string USER_DATA_PATH = "user/";                                           //Database用戶資料路徑
+    public const string USER_DATA_PATH = "users/";                                           //Database用戶資料路徑
     public const string ROOM_DATA_PATH = "room/";                                           //房間資料路徑
 
     [Header("用戶資料內容路徑名稱")]
     public const string USER_ID = "userId";                                                 //用戶ID
+    public const string ONLINE = "online";                                                 //用戶ID
     public const string PHONE_NUMBER = "phoneNumber";                                       //登入手機號
     public const string PASSWORD = "password";                                              //登入密碼
     public const string NICKNAME = "nickname";                                              //暱稱

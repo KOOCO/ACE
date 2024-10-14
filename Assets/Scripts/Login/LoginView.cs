@@ -162,7 +162,7 @@ public class LoginView : MonoBehaviour
                     TermsConfirm_Btn_Txt, PrivacyConfirm_Btn_Txt;
 
     [Header("音樂撥放")]
-    public AudioSource AudioSource;
+    //public AudioSource AudioSource;
     [SerializeField]
     const int ErrorWalletConnectTime = 30;                                      //判定連接失敗等待時間
     const int codeCountDownTime = 60;                                           //發送OTP倒數時間
@@ -499,7 +499,7 @@ public class LoginView : MonoBehaviour
                 emailAddress = WalletEmail_If.text,
                 walletAddress = DataManager.UserWalletAddress,
             };
-            SwaggerAPIManager.Instance.SendPostAPI<register_passwordless>("api/app/ace-accounts/register-passwordless", walletRegister, WalletRegisterCallback);
+            SwaggerAPIManager.Instance.SendPostAPI<register_passwordless>("/api/app/ace-accounts/register-passwordless", walletRegister, WalletRegisterCallback);
         });
 
         #endregion
@@ -617,7 +617,7 @@ public class LoginView : MonoBehaviour
                 ipAddress = JsonStringIp,
                 machineCode = "123456789",
             };
-            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest>("api/app/ace-accounts/login", login, OnIntoLobby);
+            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest>("/api/app/ace-accounts/login", login, OnIntoLobby);
         });
 
         //註冊成功登入取消按鈕
@@ -752,7 +752,9 @@ public class LoginView : MonoBehaviour
 
         DataManager.IsNotFirstInLogin = true;
 
-        SoundToggleGroup.IsPlayAudio(AudioSource);
+        //SoundToggleGroup.IsPlayAudio(AudioSource);
+        AudioManager.Instance.playTittle();
+        MusicSwitchBtn.IsPlayAudio();
     }
 
     private void Update()
@@ -1284,6 +1286,8 @@ public class LoginView : MonoBehaviour
     /// </summary>
     private void WritePhoneNewUser(string data)
     {
+
+        Debug.Log("OnRegister Callback :: " + data);
         ViewManager.Instance.CloseWaitingView(transform);
 
         //註冊成功
@@ -1715,7 +1719,7 @@ public class LoginView : MonoBehaviour
             ipAddress = JsonStringIp,
             machineCode = "123456789",
         };
-        SwaggerAPIManager.Instance.SendPostAPI<passwordless_login>("api/app/ace-accounts/passwordless-login",
+        SwaggerAPIManager.Instance.SendPostAPI<passwordless_login>("/api/app/ace-accounts/passwordless-login",
                             wallLogin, WalletLoginCallback,
                             OpenWalletRigisterPage);
     }
@@ -1882,6 +1886,26 @@ public class LoginView : MonoBehaviour
                                                         dataDic,
                                                         gameObject.name,
                                                         nameof(WalletNewUerDataCallback));
+    }
+
+
+    private void RegisterPlayerToFirebase()
+    {
+        Dictionary<string, object> dataDic = new()
+        {
+            { FirebaseManager.ONLINE, false},
+            { FirebaseManager.PHONE_NUMBER,currVerifyPhoneNumber},                      //手機號
+            { FirebaseManager.INVITATION_CODE, currInviteCode },                        //邀請碼                            
+            { FirebaseManager.AVATAR_INDEX, 0},                                         //頭像編號
+            { FirebaseManager.A_CHIPS, DataManager.UserAChips},
+            { FirebaseManager.U_CHIPS, DataManager.UserUChips},
+            { FirebaseManager.GOLD, DataManager.UserGold},
+            { FirebaseManager.NICKNAME, ""},
+        };
+        JSBridgeManager.Instance.WriteDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{LoginType.phoneUser}/{DataManager.UserId}",
+                                                        dataDic,
+                                                        gameObject.name,
+                                                        nameof(IsUserRegistered));
     }
 
     /// <summary>
@@ -2098,6 +2122,21 @@ public class LoginView : MonoBehaviour
                                                        callBackFunName);
     }
 
+
+    private void IsUserRegistered(string data)
+    {
+        if (data == "true")
+        {
+            RegisterSuccessSignIn();
+            ReadUserData(nameof(JudgeLoggedIn));
+        }
+        else
+        {
+            ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Sending,
+                            LanguageManager.Instance.GetText("Something went wron please try again"));
+        }
+    }
+
     /// <summary>
     /// 帳號是否登入判斷
     /// </summary>
@@ -2105,7 +2144,7 @@ public class LoginView : MonoBehaviour
     private void JudgeLoggedIn(string jsonData)
     {
         ViewManager.Instance.CloseWaitingView(transform);
-
+        Debug.Log("Firebse Login :: " + jsonData);
         AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
         //        Debug.Log("User id :" + loginData.userId);
         if (loginData != null)
@@ -2130,6 +2169,7 @@ public class LoginView : MonoBehaviour
         }
         else
         {
+            RegisterPlayerToFirebase();
             //Not Find User
             Debug.Log("未找到用戶，錯誤");
         }

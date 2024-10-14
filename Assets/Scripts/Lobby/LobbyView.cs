@@ -64,7 +64,7 @@ public class LobbyView : MonoBehaviour
     public GameObject Notice;
     public TextMeshProUGUI noticeText;
 
-    [Header("背景音樂")][SerializeField] public AudioSource audioSource;
+    //[Header("背景音樂")][SerializeField] public AudioSource audioSource;
 
     bool isFirstIn;
     bool isListenered;
@@ -277,7 +277,9 @@ public class LobbyView : MonoBehaviour
 
         //刷新用戶資料
         //InvokeRepeating(nameof(UpdateUserData), 30, 30);*/
-        SoundToggleGroup.IsPlayAudio(audioSource);
+
+        //播放音樂
+        //SoundToggleGroup.IsPlayAudio(audioSource);
     }
 
     private void Update()

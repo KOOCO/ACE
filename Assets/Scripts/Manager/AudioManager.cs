@@ -10,10 +10,13 @@ public class AudioManager : UnitySingleton<AudioManager>
     readonly Dictionary<string, AudioClip> musicDic = new();
 
     AudioPool audioPool;
+    AudioSource tittleSourse;
+    AudioSource gameSourse;
 
     public override void Awake()
     {
         base.Awake();
+        tittleSourse = gameObject.AddComponent<AudioSource>();
     }
 
     private void Start()
@@ -105,6 +108,18 @@ public class AudioManager : UnitySingleton<AudioManager>
     }
 
     /// <summary>
+    /// 播放BGM
+    /// </summary>
+    /// <param name="source"></param>
+    public void playTittle()
+    {
+        tittleSourse.clip = GetMusic("爵士２");
+        tittleSourse.loop = true;
+        tittleSourse.volume = 0.5f;
+        tittleSourse.Play();
+    }
+    
+    /// <summary>
     /// 音效播放完畢
     /// </summary>
     /// <param name="source"></param>
@@ -128,5 +143,13 @@ public class AudioManager : UnitySingleton<AudioManager>
     public void PlayCancelClick()
     {
         audioPool.PlaySound("CancelClick");
+    }
+    
+    /// <summary>
+    /// 控制音樂音量
+    /// </summary>
+    public void setBGMValue(float value)
+    {
+        tittleSourse.volume = value;
     }
 }
