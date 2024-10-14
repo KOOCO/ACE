@@ -11,14 +11,14 @@ public class MusicSwitchBtn : MonoBehaviour
     [SerializeField] private Image _imageOff;
     [SerializeField] public Button btn;
     [SerializeField] public static bool isSoundOpen;
+    public bool isSFX;
     void Start()
     {
         showImg(false);
         btn.onClick.AddListener(() =>
             {
                 showImg(true);
-                var lobbyView = GameObject.FindAnyObjectByType<LobbyView>();
-                MusicSwitchBtn.IsPlayAudio(lobbyView.audioSource);
+                IsPlayAudio();
             }
             
         );
@@ -65,17 +65,17 @@ public class MusicSwitchBtn : MonoBehaviour
         return 0;
     }
     
-    public static void IsPlayAudio(AudioSource audioSource)
+    public static void IsPlayAudio()
     {
         int playsoundNum = PlayerPrefs.GetInt(nameof(isSoundOpen));
         if (playsoundNum == 0)
         {
-            audioSource.Play();
+            AudioManager.Instance.setBGMValue(0.5f);
         }
 
         if (playsoundNum==1)
         {
-            audioSource.Stop();
+            AudioManager.Instance.setBGMValue(0f);
         }
     }
 

@@ -99,7 +99,8 @@ public class JoinRoomView : MonoBehaviour
             }
 
             ViewManager.Instance.OpenWaitingView(transform);
-            lobbyView.audioSource.Stop();
+            //進入房間停播音樂
+            //lobbyView.audioSource.Stop();
             JoinRound newRound = new JoinRound
             {
                 memberId = DataManager.UserId,
