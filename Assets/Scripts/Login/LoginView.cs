@@ -499,7 +499,7 @@ public class LoginView : MonoBehaviour
                 emailAddress = WalletEmail_If.text,
                 walletAddress = DataManager.UserWalletAddress,
             };
-            SwaggerAPIManager.Instance.SendPostAPI<register_passwordless>("api/app/ace-accounts/register-passwordless", walletRegister, WalletRegisterCallback);
+            SwaggerAPIManager.Instance.SendPostAPI<register_passwordless>("/api/app/ace-accounts/register-passwordless", walletRegister, WalletRegisterCallback);
         });
 
         #endregion
@@ -617,7 +617,7 @@ public class LoginView : MonoBehaviour
                 ipAddress = JsonStringIp,
                 machineCode = "123456789",
             };
-            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest>("api/app/ace-accounts/login", login, OnIntoLobby);
+            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest>("/api/app/ace-accounts/login", login, OnIntoLobby);
         });
 
         //註冊成功登入取消按鈕
@@ -1715,7 +1715,7 @@ public class LoginView : MonoBehaviour
             ipAddress = JsonStringIp,
             machineCode = "123456789",
         };
-        SwaggerAPIManager.Instance.SendPostAPI<passwordless_login>("api/app/ace-accounts/passwordless-login",
+        SwaggerAPIManager.Instance.SendPostAPI<passwordless_login>("/api/app/ace-accounts/passwordless-login",
                             wallLogin, WalletLoginCallback,
                             OpenWalletRigisterPage);
     }
