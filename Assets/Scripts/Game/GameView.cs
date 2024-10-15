@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using TMPro;
 using RequestBuf;
+using Newtonsoft.Json;
 
 public class GameView : MonoBehaviour
 {
@@ -2910,6 +2911,7 @@ public class GameView : MonoBehaviour
                         show.gameObject.SetActive(true);
                     }
                 }
+                GetRoundCount();
                 //yield return IPotResult(pack);
                 break;
         }
@@ -3248,6 +3250,116 @@ public class GameView : MonoBehaviour
         //更新存檔資料
         HandHistoryView handHistoryView = GameObject.FindAnyObjectByType<HandHistoryView>();
         handHistoryView?.UpdateHitoryDate();
+    }
+    private int roundId = 0; // This could be loaded from Firebase if persistent
+
+    // Function to get the round count
+    public void GetRoundCount()
+    {
+        JSBridgeManager.Instance.ReadDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.ROUND_DATA_PATH}/{DataManager.RoomId}/roundCount", gameObject.name, nameof(OnGetRoundCount));
+    }
+
+    // Callback for getting the round count
+    public void OnGetRoundCount(string data)
+    {
+        if (int.TryParse(data, out int roundCount))
+        {
+            roundId = roundCount; // Set roundId to the current count
+            Debug.Log($"Current roundId set to: {roundId}");
+
+            // Now that we have the roundId, we can save the round end data
+            SaveRoundEndDataToFirebase();
+        }
+        else
+        {
+            roundId = 0;
+            SaveRoundEndDataToFirebase();
+            Debug.LogError("Failed to parse round count.");
+        }
+    }
+
+    // Save round end data function
+    public void SaveRoundEndDataToFirebase()
+    {
+        // Ensure the host is saving the data
+        if (gameRoomData != null && gameRoomData.hostId == DataManager.UserId)
+        {
+            // Create the RoundEndResult object
+            RoundEndResult roundEndResult = new RoundEndResult
+            {
+                dateTime = DateTime.UtcNow,
+                tableId = DataManager.TableId,
+                roomId = DataManager.RoomId,
+                roundId = roundId, // Use the current roundId
+                communityCards = gameRoomData.communityPoker,
+                playerHands = new List<PlayerHand>()
+            };
+
+            // Populate player hands...
+            foreach (var playerData in gameRoomData.playerDataDic.Values)
+            {
+                PlayerHand playerHand = new PlayerHand
+                {
+                    playerHand = playerData.handPoker,
+                    potWinAmount = gameRoomData.potWinData.potWinnersId.Contains(playerData.userId) ? gameRoomData.potWinData.potWinChips : 0,
+                    sideWinAmount = gameRoomData.sideWinData.sideWinnersId.Contains(playerData.userId) ? gameRoomData.sideWinData.sideWinChips : 0
+                };
+                roundEndResult.playerHands.Add(playerHand);
+            }
+            // Prepare data for Firebase
+            Dictionary<string, object> roundEndDataDic = new Dictionary<string, object>
+            {
+                { "dateTime", roundEndResult.dateTime.ToString("o") },
+                { "tableId", roundEndResult.tableId },
+                { "roomId", roundEndResult.roomId },
+                { "roundId", roundEndResult.roundId },
+                { "communityCards", roundEndResult.communityCards },
+                { "playerHands", roundEndResult.playerHands }
+            };
+
+            // Firebase path
+            string firebasePath = $"{Entry.Instance.releaseType}/{FirebaseManager.ROUND_DATA_PATH}/{DataManager.RoomId}/rounds/round_{roundId}";
+
+            // Save data to Firebase
+            JSBridgeManager.Instance.WriteDataFromFirebase(firebasePath, roundEndDataDic, gameObject.name, nameof(OnDataSaved));
+
+            // Increment round count in Firebase
+            IncrementRoundCount();
+
+            Debug.Log($"Round {roundId} data saved to Firebase.");
+        }
+        else
+        {
+            Debug.Log("Only the host can save the game data.");
+        }
+    }
+
+    // Function to increment the round count in Firebase
+    private void IncrementRoundCount()
+    {
+        int newCount = (roundId + 1) % 9999; // Increment and wrap around at 10000
+
+        // Prepare the new round count to update
+        Dictionary<string, object> roundCountUpdate = new Dictionary<string, object>
+    {
+        { "roundCount", newCount }
+    };
+
+        // Update the round count in Firebase
+        JSBridgeManager.Instance.UpdateDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.ROUND_DATA_PATH}/{DataManager.RoomId}", roundCountUpdate);
+
+        Debug.Log($"Round count updated to {newCount}.");
+    }
+
+    // Callback for when the round count is updated
+    public void OnRoundCountUpdated()
+    {
+        Debug.Log("Round count updated successfully.");
+    }
+
+    public void OnDataSaved()
+    {
+        Debug.Log($"Round {roundId} data saved to Firebase.");
     }
 
     /// <summary>

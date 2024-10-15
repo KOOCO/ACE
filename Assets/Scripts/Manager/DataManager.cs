@@ -112,6 +112,7 @@ public static class DataManager
     public static double UserGold { get; set; }                     //用戶Gold籌碼
     public static bool DataUpdated { get; set; }                     //DataUpdated
     public static string TableId { get; set; }
+    public static string RoomId { get; set; }
     public static string TableType { get; set; }
     #endregion
 

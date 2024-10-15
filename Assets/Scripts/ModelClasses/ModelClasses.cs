@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Org.BouncyCastle.Tls;
 
 #region Shop
 [Serializable]
@@ -216,5 +217,23 @@ public class Loser
     public bool isDeleted;
     public Member member;
 }
+
+public class RoundEndResult
+{
+    public DateTime dateTime;
+    public string tableId;
+    public string roomId;
+    public int roundId;
+    public List<PlayerHand> playerHands;
+    public List<int> communityCards;
+}
+public class PlayerHand
+{
+    public List<int> playerHand;
+    public double potWinAmount;
+    public double sideWinAmount;
+}
+
+
 
 #endregion

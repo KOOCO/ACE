@@ -117,6 +117,7 @@ public class JoinRoomView : MonoBehaviour
                 var _currencyType = DataManager.CurrencyType;
                 Debug.Log("Currency Type :: " + _currencyType);
                 DataManager.TableType = gameRound.tableType;
+                DataManager.RoomId = gameRound.roomId;
                 switch (_currencyType)
                 {
                     case CurrencyType.Gold:

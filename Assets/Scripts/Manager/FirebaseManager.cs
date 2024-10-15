@@ -1,9 +1,6 @@
 using UnityEngine;
-using UnityEngine.Networking;
-using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 
 public class FirebaseManager : UnitySingleton<FirebaseManager>
@@ -11,6 +8,7 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
     [Header("資料路徑名稱")]
     public const string USER_DATA_PATH = "users/";                                           //Database用戶資料路徑
     public const string ROOM_DATA_PATH = "room/";                                           //房間資料路徑
+    public const string ROUND_DATA_PATH = "gameRoundsData";                                           //房間資料路徑
 
     [Header("用戶資料內容路徑名稱")]
     public const string USER_ID = "userId";                                                 //用戶ID
