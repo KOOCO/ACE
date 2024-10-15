@@ -9,7 +9,7 @@ public class AudioManager : UnitySingleton<AudioManager>
     readonly Dictionary<string, AudioClip> soundDic = new();
     readonly Dictionary<string, AudioClip> musicDic = new();
 
-    AudioPool audioPool;
+    //AudioPool audioPool;
     AudioSource tittleSourse;
     AudioSource gameSourse;
 
@@ -17,11 +17,12 @@ public class AudioManager : UnitySingleton<AudioManager>
     {
         base.Awake();
         tittleSourse = gameObject.AddComponent<AudioSource>();
+        gameSourse = gameObject.AddComponent<AudioSource>();
     }
 
     private void Start()
     {
-        audioPool = new AudioPool(transform);
+        //audioPool = new AudioPool(transform);
     }
 
     /// <summary>
@@ -120,6 +121,17 @@ public class AudioManager : UnitySingleton<AudioManager>
     }
     
     /// <summary>
+    /// 播放SFX
+    /// </summary>
+    /// <param name="source"></param>
+    public void playSFX(string sfxName)
+    {
+        gameSourse.clip = GetSound(sfxName);
+        gameSourse.loop = false;
+        gameSourse.Play();
+    }
+    
+    /// <summary>
     /// 音效播放完畢
     /// </summary>
     /// <param name="source"></param>
@@ -134,7 +146,7 @@ public class AudioManager : UnitySingleton<AudioManager>
     /// </summary>
     public void PlayConfirmClick()
     {
-        audioPool.PlaySound("ConfirmClick");
+        playSFX("ConfirmClick");
     }
 
     /// <summary>
@@ -142,7 +154,7 @@ public class AudioManager : UnitySingleton<AudioManager>
     /// </summary>
     public void PlayCancelClick()
     {
-        audioPool.PlaySound("CancelClick");
+        playSFX("CancelClick");
     }
     
     /// <summary>
@@ -151,5 +163,12 @@ public class AudioManager : UnitySingleton<AudioManager>
     public void setBGMValue(float value)
     {
         tittleSourse.volume = value;
+    }
+    /// <summary>
+    /// 控制音效開關
+    /// </summary>
+    public void setSFXOnOff(float value)
+    {
+        gameSourse.volume = value;
     }
 }
