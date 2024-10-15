@@ -84,7 +84,7 @@ public class GameView : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI MenuCloseBtn_Txt, SitOutBtn_Txt, BuyChipsBtn_Txt, HandHistoryBtn_Txt,
                     GameSettingsBtn_Txt,
-                    MenuNickname_Txt, MenuWalletAddr_Txt, GameRules_Txt;
+                    MenuNickname_Txt, MenuWalletAddr_Txt, MenuWalletCoin_Txt, GameRules_Txt;
 
     [Header("聊天")]
     [SerializeField]
@@ -769,6 +769,7 @@ public class GameView : MonoBehaviour
         //選單玩家訊息
         StringUtils.StrExceedSize(DataManager.UserWalletAddress, MenuWalletAddr_Txt);
         MenuNickname_Txt.text = $"@{DataManager.UserNickname}";
+        MenuWalletCoin_Txt.text = $"${(float)DataManager.UserUChips}:f2";
         MenuAvatar_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[DataManager.UserAvatarIndex];
 
         SetNotReadChatCount = 0;
@@ -828,6 +829,7 @@ public class GameView : MonoBehaviour
 
         #endregion
         //MusicSwitchBtn.IsPlayAudio(AudioSource_Obj);
+        SFXSwitchBtn.IsPlaySFX();
     }
 
     private void Update()
@@ -875,7 +877,7 @@ public class GameView : MonoBehaviour
     /// <param name="soundName"></param>
     public void PlaySound(string soundName)
     {
-        audioPool.PlaySound(soundName);
+        AudioManager.Instance.playSFX(soundName);
     }
 
     /// <summary>
