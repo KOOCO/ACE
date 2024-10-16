@@ -7,6 +7,7 @@ using System.Linq;
 using TMPro;
 using RequestBuf;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Asn1.Misc;
 
 public class GameView : MonoBehaviour
 {
@@ -3223,6 +3224,7 @@ public class GameView : MonoBehaviour
 
     #endregion
 
+    bool previousRoundSaved = false;
     #region 記錄存檔
 
     /// <summary>
@@ -3230,32 +3232,59 @@ public class GameView : MonoBehaviour
     /// </summary>
     private void SavePreGame()
     {
-        //本地玩家有參與
-        if (thisData != null &&
-            thisData.LocalGamePlayerInfo != null &&
-            thisData.LocalGamePlayerInfo.IsPlaying &&
+        // Check if the local player is playing and all necessary data is available
+        if (thisData?.LocalGamePlayerInfo?.IsPlaying == true &&
             saveResultData != null &&
             gameInitHistoryData != null &&
             processHistoryData != null)
         {
+            // Save data locally
             HandHistoryManager.Instance.SaveResult(saveResultData);
             HandHistoryManager.Instance.SaveGameInit(gameInitHistoryData);
             HandHistoryManager.Instance.SaveProcess(processHistoryData);
+
+            // If the current player is the host, save data to Firebase
+            if (gameRoomData.hostId == DataManager.UserId && previousRoundSaved)
+            {
+                previousRoundSaved = false;
+                SaveToFirebase(nameof(saveResultData), saveResultData, nameof(GameResultDataSaveToFirebase));
+                SaveToFirebase(nameof(gameInitHistoryData), gameInitHistoryData, nameof(GameInitDataSaveToFirebase));
+                SaveToFirebase(nameof(processHistoryData), processHistoryData, nameof(GameProcessDataSaveToFirebase));
+            }
         }
 
+        // Reset exit player seat list and process history data
         exitPlayerSeatList = new List<int>();
-        processHistoryData = new ProcessHistoryData();
-        processHistoryData.processStepHistoryDataList = new List<ProcessStepHistoryData>();
+        processHistoryData = new ProcessHistoryData
+        {
+            processStepHistoryDataList = new List<ProcessStepHistoryData>()
+        };
 
-        //更新存檔資料
-        HandHistoryView handHistoryView = GameObject.FindAnyObjectByType<HandHistoryView>();
-        handHistoryView?.UpdateHitoryDate();
+        // Update hand history view if available
+        GameObject.FindAnyObjectByType<HandHistoryView>()?.UpdateHitoryDate();
     }
+
+    private void SaveToFirebase(string dataName, object data, string callbackMethodName)
+    {
+        string json = JsonConvert.SerializeObject(data);
+        JSBridgeManager.Instance.WriteDataToFirebase(
+            $"{Entry.Instance.releaseType}/{FirebaseManager.ROUND_DATA_PATH}/{DataManager.RoomId}/rounds/round_{roundId}/HandHistory/{dataName}",
+            json,
+            gameObject.name,
+            callbackMethodName, true);
+    }
+
+    // Callbacks for Firebase save completion
+    void GameInitDataSaveToFirebase() => Debug.Log("GameInitDataSavedToFirebase");
+    void GameProcessDataSaveToFirebase() => Debug.Log("GameProcessDataSavedToFirebase");
+    void GameResultDataSaveToFirebase() => Debug.Log("GameResultDataSavedToFirebase");
+
     private int roundId = 0; // This could be loaded from Firebase if persistent
 
     // Function to get the round count
     public void GetRoundCount()
     {
+        previousRoundSaved = true;
         JSBridgeManager.Instance.ReadDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.ROUND_DATA_PATH}/{DataManager.RoomId}/roundCount", gameObject.name, nameof(OnGetRoundCount));
     }
 
