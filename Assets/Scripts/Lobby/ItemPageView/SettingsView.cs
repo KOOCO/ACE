@@ -15,7 +15,7 @@ public class SettingsView : MonoBehaviour
     [SerializeField]
     Button language_Btn, contactUs_Btn, terms_Btn, privacy_Btn, logOut_Btn;
     [SerializeField]
-    TextMeshProUGUI language_Txt, contactUs_Txt, terms_Txt, privacy_Txt, logOut_Txt;
+    TextMeshProUGUI sound_Txt, language_Txt, contactUs_Txt, terms_Txt, privacy_Txt, logOut_Txt;
 
     [Header("語言")]
     //[SerializeField]
@@ -42,10 +42,11 @@ public class SettingsView : MonoBehaviour
     {
         //Title_Txt.text = LanguageManager.Instance.GetText("SETTINGS");
         language_Txt.text = LanguageTitle_Txt.text = LanguageManager.Instance.GetText("Language");
-        contactUs_Txt.text  = LanguageManager.Instance.GetText("Contact us");
-        terms_Txt.text  = LanguageManager.Instance.GetText("Terms");
-        privacy_Txt.text  = LanguageManager.Instance.GetText("Privacy Policy");
-        logOut_Txt.text  = LanguageManager.Instance.GetText("Log Out");
+        contactUs_Txt.text = LanguageManager.Instance.GetText("Contact us");
+        terms_Txt.text = LanguageManager.Instance.GetText("Terms");
+        privacy_Txt.text = LanguageManager.Instance.GetText("Privacy Policy");
+        logOut_Txt.text = LanguageManager.Instance.GetText("Log Out");
+        sound_Txt.text = LanguageManager.Instance.GetText("Sound");
 
         #region 隱私政策物件
 

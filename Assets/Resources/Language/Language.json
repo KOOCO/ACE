@@ -1328,5 +1328,10 @@
     "ID": "Offline",
     "English": "Offline",
     "zh_TW": "離線"
+  },
+  {
+    "ID": "Sound",
+    "English": "Sound",
+    "zh_TW": "音樂"
   }
 ]
