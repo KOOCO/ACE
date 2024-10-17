@@ -9,7 +9,7 @@ public class RankSample : MonoBehaviour
     [SerializeField]
     Image Avatar_Img;
     [SerializeField]
-    TextMeshProUGUI Nickname_Txt, Point_Txt, Award_Txt, Rank_Txt;
+    TextMeshProUGUI Nickname_Txt, status_Txt, Award_Txt, Rank_Txt;
 
     /// <summary>
     /// 設置排名資料
@@ -26,8 +26,9 @@ public class RankSample : MonoBehaviour
         Nickname_Txt.text = rankData.nickname == DataManager.UserNickname ?
                             $"<color=#E6C94E>{rankData.nickname}</color>" :
                             $"<color=#FFFFFF>{rankData.nickname}</color>";
-        Point_Txt.text = $"{rankData.point.ToString()}";
-        Award_Txt.text = rankData.award.ToString();
+        status_Txt.text = rankData.status ? $"<color=#36D982>{LanguageManager.Instance.GetText("Online")}</color>" : $"<color=#EC6273>{LanguageManager.Instance.GetText("Offline")}</color>";
+        Award_Txt.text = "$" + rankData.point.ToString();
         Rank_Txt.text = rank.ToString();
     }
+
 }

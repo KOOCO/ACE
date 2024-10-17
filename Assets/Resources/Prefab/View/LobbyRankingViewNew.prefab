@@ -606,7 +606,7 @@ GameObject:
   - component: {fileID: 7724325557637087182}
   - component: {fileID: 2268907448486509020}
   m_Layer: 5
-  m_Name: IntegralTog_Txt
+  m_Name: daily_Txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2601,7 +2601,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Avatar_Img: {fileID: 4420375251085271930}
   Nickname_Txt: {fileID: 4720437339997404925}
-  Point_Txt: {fileID: 8459962566787720202}
+  status_Txt: {fileID: 2685452769384939932}
   Award_Txt: {fileID: 2685452769384939932}
   Rank_Txt: {fileID: 7217746605757113977}
 --- !u!222 &7758269640777547467
@@ -3675,7 +3675,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Avatar_Img: {fileID: 3074658515805836588}
   Nickname_Txt: {fileID: 6734919304374834059}
-  Point_Txt: {fileID: 9011439060982515736}
+  status_Txt: {fileID: 3236850140403425302}
   Award_Txt: {fileID: 3236850140403425302}
   Rank_Txt: {fileID: 4167123531083418873}
 --- !u!222 &1010643552032618099
@@ -4420,7 +4420,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Avatar_Img: {fileID: 5803909002184738607}
   Nickname_Txt: {fileID: 8726206378261012387}
-  Point_Txt: {fileID: 8995849397781959422}
+  status_Txt: {fileID: 383627383181512099}
   Award_Txt: {fileID: 383627383181512099}
   Rank_Txt: {fileID: 1298338179557848708}
 --- !u!222 &7513444490305787607
@@ -5883,7 +5883,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Avatar_Img: {fileID: 1960905759472526713}
   Nickname_Txt: {fileID: 950107170192524313}
-  Point_Txt: {fileID: 4563141279189735653}
+  status_Txt: {fileID: 1441702948040609461}
   Award_Txt: {fileID: 1441702948040609461}
   Rank_Txt: {fileID: 2597164694402036546}
 --- !u!222 &434378407196185839
@@ -6298,8 +6298,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Avatar_Img: {fileID: 44716379781339548}
   Nickname_Txt: {fileID: 3581854843330470544}
-  Point_Txt: {fileID: 832024891338929517}
-  Award_Txt: {fileID: 694093481341323338}
+  status_Txt: {fileID: 694093481341323338}
+  Award_Txt: {fileID: 832024891338929517}
   Rank_Txt: {fileID: 402043217621509838}
 --- !u!222 &3413070094793133733
 CanvasRenderer:
@@ -7557,7 +7557,7 @@ GameObject:
   - component: {fileID: 7471283744053904966}
   - component: {fileID: 7028572363577011926}
   m_Layer: 5
-  m_Name: IntegralTog_Txt
+  m_Name: weekly_Txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10032,6 +10032,7 @@ MonoBehaviour:
   ChangeSeason_Btn: {fileID: 5681658488600003620}
   RefreshRank_Btn: {fileID: 2675298045707600204}
   RankSampleObj: {fileID: 8950665140025202355}
+  RankSampleObjLocal: {fileID: 4592978494413313216}
   RankContent: {fileID: 9070942925796218431}
   TopThreeData:
   - {fileID: 4335445165277993641}
@@ -10047,6 +10048,8 @@ MonoBehaviour:
   PlayerTag_Txt: {fileID: 8892935999275646051}
   Winnings_Txt: {fileID: 2543283784783195931}
   Status_Txt: {fileID: 7668237116095343058}
+  Daily_Txt: {fileID: 2268907448486509020}
+  Weekly_Txt: {fileID: 7028572363577011926}
   LocalUserRank_Txt: {fileID: 1472523776683564706}
   LocalUserPoint_Txt: {fileID: 1847655198361595452}
   LocalUserAward_Txt: {fileID: 5712707009752686322}
@@ -11965,10 +11968,10 @@ RectTransform:
   - {fileID: 6305855342942529093}
   m_Father: {fileID: 9070942925796218431}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 170.1417, y: -25}
-  m_SizeDelta: {x: 323.07, y: 40}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3062258542039552281
 MonoBehaviour:
@@ -11984,8 +11987,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Avatar_Img: {fileID: 9072852240207386546}
   Nickname_Txt: {fileID: 7130504610120002153}
-  Point_Txt: {fileID: 6476096301754420248}
-  Award_Txt: {fileID: 2796949734072806631}
+  status_Txt: {fileID: 2796949734072806631}
+  Award_Txt: {fileID: 6476096301754420248}
   Rank_Txt: {fileID: 35020113694127368}
 --- !u!222 &3690540852372289344
 CanvasRenderer:

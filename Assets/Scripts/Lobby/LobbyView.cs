@@ -187,19 +187,19 @@ public class LobbyView : MonoBehaviour
         {
             OpenItemPage(ItemType.Ranking);
         });
-        
+
         //報表
         t_History_Btn.onClick.AddListener(() =>
         {
             OpenItemPage(ItemType.t_History);
         });
-        
+
         //設定
         Settings_Btn.onClick.AddListener(() =>
         {
             OpenItemPage(ItemType.Settings);
         });
-        
+
         //刷新
         Refresh_Btn.onClick.AddListener(() =>
         {
@@ -339,6 +339,7 @@ public class LobbyView : MonoBehaviour
 
             DataManager.UserNickname = loginData.nickname;
             DataManager.UserAvatarIndex = loginData.avatarIndex;
+            DataManager.UserStatus = loginData.online;
 
 #if !UNITY_EDITOR
 
@@ -566,7 +567,7 @@ public class LobbyView : MonoBehaviour
     IEnumerator wait4MineLoad()
     {
         LobbyMinePageView mineView = Floor3.GetComponentInChildren<LobbyMinePageView>();
-        yield return new WaitUntil(() => mineView!=null);
+        yield return new WaitUntil(() => mineView != null);
 
         if (mineView != null)
         {
@@ -574,7 +575,7 @@ public class LobbyView : MonoBehaviour
             mineView.openSettingsView();
         }
     }
-    
+
     IEnumerator openRefreshBtn()
     {
         yield return new WaitForSeconds(5);
