@@ -168,7 +168,7 @@ public class GameView : MonoBehaviour
     //底池倍率
     readonly float[] PotPercentRate = new float[]
     {
-        33, 50, 80, 100,
+        2, 3, 4, 1,
     };
 
     //加註大盲倍率
@@ -1622,31 +1622,37 @@ public class GameView : MonoBehaviour
     /// <param name="btnIndex"></param>
     private void PotRaisePercent(int btnIndex)
     {
-        bool isBlindFirst = false;
-        if ((GameFlowEnum)gameRoomData.currGameFlow == GameFlowEnum.SetBlind &&
-            gameRoomData.playingPlayersIdList.Count > 3 &&
-            gameControl.GetLocalPlayer().seatCharacter != (int)SeatCharacterEnum.SB &&
-            gameControl.GetLocalPlayer().seatCharacter != (int)SeatCharacterEnum.BB)
+        float raiseValue = 0f;
+
+        // Calculate the raise value based on the button index
+        switch (btnIndex)
         {
-            isBlindFirst = true;
+            case 0:
+                // 2BB Raise
+                raiseValue = (float)((gameRoomData.smallBlind * 2) * 2);
+                break;
+            case 1:
+                // 3BB Raise
+                raiseValue = (float)((gameRoomData.smallBlind * 2) * 3);
+                break;
+            case 2:
+                // 4BB Raise
+                raiseValue = (float)((gameRoomData.smallBlind * 2) * 4);
+                break;
+            case 3:
+                // POT Raise (All-in)
+                raiseValue = (float)gameRoomData.potChips;
+                break;
+            default:
+                // Handle invalid button index if needed
+                raiseValue = 0f;
+                break;
         }
 
-        float raiseValue = isBlindFirst ?
-                          ((float)(gameRoomData.smallBlind * 2) * PotBbRate[btnIndex]) :
-                          ((float)gameRoomData.potChips * (PotPercentRate[btnIndex] / 100));
-        if (btnIndex == 3)
-        {
-            raiseValue = (float)gameRoomData.potChips;
-        }
-        else
-        {
-            raiseValue = isBlindFirst ?
-                          ((float)(gameRoomData.smallBlind * 2) * PotBbRate[btnIndex]) :
-                          ((float)gameRoomData.potChips * (PotPercentRate[btnIndex] / 100));
-        }
-
+        // Update the Raise Slider with the calculated raise value
         Raise_Sli.value = (int)raiseValue;
     }
+
 
     /// <summary>
     /// 輪到本地玩家檢查下注區域狀態
@@ -1903,29 +1909,25 @@ public class GameView : MonoBehaviour
             //最小加注值
             MinRaiseBtn_Txt.text = thisData.MinRaiseValue.ToString(); ;
 
-            //底池倍率
+            // Always display BB values and Pot for the raise options
             for (int i = 0; i < 4; i++)
             {
-                if (gameControl.GetLocalPlayer().seatCharacter != (int)SeatCharacterEnum.SB &&
-                    gameControl.GetLocalPlayer().seatCharacter != (int)SeatCharacterEnum.BB &&
-                    gameRoomData.playingPlayersIdList.Count > 3)
+                // Set BB values for the first three buttons
+                switch (i)
                 {
-                    PotPercentRaiseTxtList[i].text = $"{PotBbRate[i]}BB";
+                    case 0:
+                        PotPercentRaiseTxtList[i].text = "2BB";
+                        break;
+                    case 1:
+                        PotPercentRaiseTxtList[i].text = "3BB";
+                        break;
+                    case 2:
+                        PotPercentRaiseTxtList[i].text = "4BB";
+                        break;
+                    case 3:
+                        PotPercentRaiseTxtList[i].text = LanguageManager.Instance.GetText("Pot");
+                        break;
                 }
-                else
-                {
-                    PotPercentRaiseTxtList[i].text = $"{PotPercentRate[i]}%";
-                }
-            }
-            if (gameControl.GetLocalPlayer().seatCharacter != (int)SeatCharacterEnum.SB &&
-                gameControl.GetLocalPlayer().seatCharacter != (int)SeatCharacterEnum.BB &&
-                gameRoomData.playingPlayersIdList.Count > 3)
-            {
-                PotPercentRaiseTxtList[3].text = LanguageManager.Instance.GetText("Pot");
-            }
-            else
-            {
-                PotPercentRaiseTxtList[3].text = $"{PotPercentRate[3]}%";
             }
         }
     }
