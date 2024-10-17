@@ -2504,6 +2504,8 @@ public class GameView : MonoBehaviour
                     player.SetHandPoker(playerData.handPoker[0],
                                         playerData.handPoker[1]);
 
+                    playerData.playerHandShape = player.GetPokerShapeIndex();
+
                     JudgePokerShape(player, false);
                 }
             }
@@ -3333,7 +3335,8 @@ public class GameView : MonoBehaviour
                 {
                     playerHand = playerData.handPoker,
                     potWinAmount = gameRoomData.potWinData.potWinnersId.Contains(playerData.userId) ? gameRoomData.potWinData.potWinChips : 0,
-                    sideWinAmount = gameRoomData.sideWinData.sideWinnersId.Contains(playerData.userId) ? gameRoomData.sideWinData.sideWinChips : 0
+                    sideWinAmount = gameRoomData.sideWinData.sideWinnersId.Contains(playerData.userId) ? gameRoomData.sideWinData.sideWinChips : 0,
+                    playerCurrHandShape = playerData.playerHandShape,
                 };
                 roundEndResult.playerHands.Add(playerHand);
             }

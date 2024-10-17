@@ -230,6 +230,7 @@ public class RoundEndResult
 public class PlayerHand
 {
     public List<int> playerHand;
+    public int playerCurrHandShape;
     public double potWinAmount;
     public double sideWinAmount;
 }

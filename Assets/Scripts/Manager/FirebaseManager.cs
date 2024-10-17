@@ -252,6 +252,7 @@ public class GameRoomPlayerData
     public double allBetChips;                      //該局總下注籌碼
     public bool isBet;                              //該流程是否已下注
     public bool isSitOut;                           //是否保留座位離開
+    public int playerHandShape;
     public List<int> showHandPoker;                 //棄牌後顯示手牌
 }
 

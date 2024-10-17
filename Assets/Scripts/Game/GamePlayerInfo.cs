@@ -177,17 +177,10 @@ public class GamePlayerInfo : MonoBehaviour
     /// <summary>
     /// 設置牌型文字元件文字
     /// </summary>
-    // public string SetPokerShapeTxtStr
-    // {
-    //     set
-    //     {
-    //         if (PokerShape_Txt != null)
-    //         {
-    //             PokerShape_Txt.gameObject.SetActive(true);
-    //             PokerShape_Txt.text = value;
-    //         }
-    //     }
-    // }
+    public int GetPokerShapeIndex()
+    {
+        return pokerShapeIndex;
+    }
     public Sprite SetPokerShapeImage
     {
         set
