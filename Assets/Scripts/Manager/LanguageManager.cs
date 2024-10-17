@@ -31,7 +31,7 @@ public class LanguageManager
             return language;
         }
     }
-    private LanguageManager() 
+    private LanguageManager()
     {
         fontAssetList = Resources.LoadAll<TMP_FontAsset>("TmpFonts");
         thisData = new ThisData();
@@ -41,7 +41,7 @@ public class LanguageManager
     /// //字型資源
     /// 0 = 思源黑體-Medium
     /// </summary>
-    private TMP_FontAsset[] fontAssetList;          
+    private TMP_FontAsset[] fontAssetList;
 
     /// <summary>
     /// 紀錄翻譯文本
@@ -140,7 +140,10 @@ public class LanguageManager
         }
 
         //讀取紀錄語言資料
-        ChangeLanguage(PlayerPrefs.GetInt(LanguagePlayerPrefsKey));
+        if (!PlayerPrefs.HasKey(LanguagePlayerPrefsKey))
+            ChangeLanguage(1);
+        else
+            ChangeLanguage(PlayerPrefs.GetInt(LanguagePlayerPrefsKey));
     }
 
     /// <summary>
@@ -189,7 +192,7 @@ public class LanguageManager
         else
         {
             //Debug.LogError("未找到移除更新語言方法!!!");
-        }    
+        }
     }
 
     /// <summary>
@@ -216,7 +219,7 @@ public class LanguageManager
     /// <param name="index"></param>
     public void ChangeLanguage(int index)
     {
-        if (index >= languageId.Length || 
+        if (index >= languageId.Length ||
             index < 0)
         {
             //Debug.LogError($"Change Language Index:{index}:Error!!!");
@@ -228,6 +231,11 @@ public class LanguageManager
 
         ChangeFont();
         UpdateLanguage();
+    }
+
+    public string GetLangKey()
+    {
+        return LanguagePlayerPrefsKey;
     }
 
     /// <summary>
@@ -259,5 +267,5 @@ public class LanguageManager
     }
 
 
-   
+
 }

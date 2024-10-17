@@ -1308,5 +1308,30 @@
     "ID": "Winnings",
     "English": "Winnings",
     "zh_TW": "贏分"
+  },
+  {
+    "ID": "Daily",
+    "English": "Daily",
+    "zh_TW": "每日"
+  },
+  {
+    "ID": "Weekly",
+    "English": "Weekly",
+    "zh_TW": "每周"
+  },
+  {
+    "ID": "Online",
+    "English": "Online",
+    "zh_TW": "在線"
+  },
+  {
+    "ID": "Offline",
+    "English": "Offline",
+    "zh_TW": "離線"
+  },
+  {
+    "ID": "Sound",
+    "English": "Sound",
+    "zh_TW": "音樂"
   }
 ]

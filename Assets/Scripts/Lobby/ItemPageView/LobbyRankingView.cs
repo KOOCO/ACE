@@ -12,7 +12,7 @@ public class LobbyRankingView : MonoBehaviour
     [SerializeField]
     Button ChangeSeason_Btn, RefreshRank_Btn;
     [SerializeField]
-    GameObject RankSampleObj;
+    GameObject RankSampleObj, RankSampleObjLocal;
     [SerializeField]
     Transform RankContent;
     [SerializeField]
@@ -20,12 +20,11 @@ public class LobbyRankingView : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI IntegralTog_Txt, CashTog_Txt, GoldenTog_Txt,
                     Season_Txt, ChangeSeasonBtn_Txt,
-                    TimeLestTitle_Txt, TimeLest_Txt, PlayerTag_Txt, Winnings_Txt, Status_Txt;
+                    TimeLestTitle_Txt, TimeLest_Txt, PlayerTag_Txt, Winnings_Txt, Status_Txt, Daily_Txt, Weekly_Txt;
 
     [Header("本地玩家")]
     [SerializeField]
     TextMeshProUGUI LocalUserRank_Txt, LocalUserPoint_Txt, LocalUserAward_Txt;
-
     [Header("排行規則")]
     [SerializeField]
     GameObject Rule_Obj;
@@ -72,6 +71,9 @@ public class LobbyRankingView : MonoBehaviour
         PlayerTag_Txt.text = $"{LanguageManager.Instance.GetText("Player")}";
         Winnings_Txt.text = $"{LanguageManager.Instance.GetText("Winnings")}";
         Status_Txt.text = $"{LanguageManager.Instance.GetText("Status")}";
+        Daily_Txt.text = $"{LanguageManager.Instance.GetText("Daily")}";
+        Weekly_Txt.text = $"{LanguageManager.Instance.GetText("Weekly")}";
+
     }
 
     private void OnDestroy()
@@ -201,6 +203,7 @@ public class LobbyRankingView : MonoBehaviour
         currRankType = RankType.Integral;
 
         SetRank();
+        SetMyPlayerData();
     }
 
     private void Update()
@@ -215,6 +218,11 @@ public class LobbyRankingView : MonoBehaviour
         }
     }
 
+
+    private void SetMyPlayerData()
+    {
+        RankSampleObjLocal.GetComponent<RankSample>().SetRankData(new RankData() { avatar = DataManager.UserAvatarIndex, nickname = DataManager.UserNickname, point = (int)DataManager.UserUChips, status = DataManager.UserStatus }, 9, DataManager.UserUChips.ToString());
+    }
     /// <summary>
     /// 設置排名
     /// </summary>
@@ -288,7 +296,7 @@ public class LobbyRankingView : MonoBehaviour
                                  $"{LanguageManager.Instance.GetText("My Rank")}   #999+" :
                                  $"{LanguageManager.Instance.GetText("My Rank")}   #{localUserData.rank}";
         LocalUserPoint_Txt.text = $"{localUserData.point}";
-        LocalUserAward_Txt.text = $"{localUserData.award}";
+        LocalUserAward_Txt.text = $"{localUserData.status}";
 
         #endregion
     }
