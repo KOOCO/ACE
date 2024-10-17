@@ -1923,8 +1923,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4032190721928120212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.8934945}
-  m_AnchorMax: {x: 1, y: 0.9990251}
+  m_AnchorMin: {x: 0, y: 0.88215727}
+  m_AnchorMax: {x: 1, y: 0.9989214}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -19473,7 +19473,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6517979626484222015
 RectTransform:
   m_ObjectHideFlags: 0
@@ -19575,8 +19575,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4423295541201100303}
   m_HandleRect: {fileID: 3637236419212698876}
   m_Direction: 2
-  m_Value: 0.9989101
-  m_Size: 0.105530635
+  m_Value: 0.9987788
+  m_Size: 0.116764136
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -23996,7 +23996,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.14190674, y: 179.6}
+  m_AnchoredPosition: {x: 0.14190674, y: -10.150024}
   m_SizeDelta: {x: 290.6781, y: 3100.567}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8789326948496798598
@@ -24027,7 +24027,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3de9034f5bed7d64a9974435b4463110, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2d4942e1e5ed19c4594fcbe3a66d9d72, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -26138,7 +26138,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -19.2, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &8096491397042651624
 CanvasRenderer:
@@ -30324,7 +30324,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 2417172932802116850}
-  m_Horizontal: 1
+  m_Horizontal: 0
   m_Vertical: 1
   m_MovementType: 2
   m_Elasticity: 0.1
@@ -30333,7 +30333,7 @@ MonoBehaviour:
   m_ScrollSensitivity: 7.4
   m_Viewport: {fileID: 676902897302796788}
   m_HorizontalScrollbar: {fileID: 0}
-  m_VerticalScrollbar: {fileID: 5522720259757087457}
+  m_VerticalScrollbar: {fileID: 0}
   m_HorizontalScrollbarVisibility: 2
   m_VerticalScrollbarVisibility: 2
   m_HorizontalScrollbarSpacing: -3
@@ -55838,7 +55838,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -101.000015, y: 186}
-  m_SizeDelta: {x: 201.7162, y: 3461.1}
+  m_SizeDelta: {x: 201.7162, y: 3128.119}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &8377645881175659465
 GameObject:
