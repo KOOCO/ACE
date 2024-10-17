@@ -2632,8 +2632,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 2,000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 078675f65f8a9144e90348ab75bb07e7, type: 2}
-  m_sharedMaterial: {fileID: -6451935136126618428, guid: 078675f65f8a9144e90348ab75bb07e7, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -6423,7 +6423,7 @@ MonoBehaviour:
   Refresh_Btn: {fileID: 4114166848442823577}
   LobbyMainPageView: {fileID: 1550548926770612537, guid: e614b5f25a817bb46832e62767c4df0f, type: 3}
   LobbyMinePageView: {fileID: 6752597787101536108, guid: b33876997bb0a6a40962eea04ef1b32b, type: 3}
-  LobbyRankingView: {fileID: 7532165618673014345, guid: 5b90ffcffb6e64a4d80acdef6b16c56f, type: 3}
+  LobbyRankingView: {fileID: 7532165618673014345, guid: d316deb60db257e4b92dc2a205741c1c, type: 3}
   LobbyShopView: {fileID: 7532165618673014345, guid: 23d8bfa511521f544a6be501ad3cbe39, type: 3}
   LobbyActivityView: {fileID: 7532165618673014345, guid: fcb47a270d8332942938cc4fa9ccaf07, type: 3}
   LobbySettingsView: {fileID: 7532165618673014345, guid: 91d287bcee72ab643b837f4ce72bad8b, type: 3}
