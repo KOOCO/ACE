@@ -846,6 +846,12 @@ public class GameView : MonoBehaviour
             Chat_If.ActivateInputField();
             Chat_If.Select();
         }
+
+
+        if (Input.GetKey(KeyCode.Backspace))
+        {
+            PlayerPrefs.DeleteAll();
+        }
     }
 
     /// <summary>
@@ -2616,6 +2622,12 @@ public class GameView : MonoBehaviour
                                                     new List<int>() :
                                                     gameRoomData.currCommunityPoker;
                     saveResultData.WinChips = gameRoomData.potWinData.potWinChips;
+                    saveResultData.SideWinChips = gameRoomData.sideWinData.sideWinChips;
+                    saveResultData.DateTime = DateTime.UtcNow;
+                    saveResultData.RoomId = DataManager.RoomId;
+                    saveResultData.TableId = DataManager.TableId;
+                    saveResultData.RoundId = roundId;
+                    saveResultData.PlayerCurrHandShape = playerData.playerHandShape;
                 }
             }
         }
@@ -2916,7 +2928,7 @@ public class GameView : MonoBehaviour
                         show.gameObject.SetActive(true);
                     }
                 }
-                GetRoundCount();
+                //GetRoundCount();
                 //yield return IPotResult(pack);
                 break;
         }
@@ -3228,7 +3240,6 @@ public class GameView : MonoBehaviour
 
     #endregion
 
-    bool previousRoundSaved = false;
     #region 記錄存檔
 
     /// <summary>
@@ -3242,19 +3253,19 @@ public class GameView : MonoBehaviour
             gameInitHistoryData != null &&
             processHistoryData != null)
         {
+            // If the current player is the host, save data to Firebase
+            if (gameRoomData.hostId == DataManager.UserId)
+            {
+                GetRoundCount();
+                SaveToFirebase(nameof(saveResultData), saveResultData, nameof(GameResultDataSaveToFirebase));
+                SaveToFirebase(nameof(gameInitHistoryData), gameInitHistoryData, nameof(GameInitDataSaveToFirebase));
+                SaveToFirebase(nameof(processHistoryData), processHistoryData, nameof(GameProcessDataSaveToFirebase));
+                IncrementRoundCount();
+            }
             // Save data locally
             HandHistoryManager.Instance.SaveResult(saveResultData);
             HandHistoryManager.Instance.SaveGameInit(gameInitHistoryData);
             HandHistoryManager.Instance.SaveProcess(processHistoryData);
-
-            // If the current player is the host, save data to Firebase
-            if (gameRoomData.hostId == DataManager.UserId && previousRoundSaved)
-            {
-                previousRoundSaved = false;
-                SaveToFirebase(nameof(saveResultData), saveResultData, nameof(GameResultDataSaveToFirebase));
-                SaveToFirebase(nameof(gameInitHistoryData), gameInitHistoryData, nameof(GameInitDataSaveToFirebase));
-                SaveToFirebase(nameof(processHistoryData), processHistoryData, nameof(GameProcessDataSaveToFirebase));
-            }
         }
 
         // Reset exit player seat list and process history data
@@ -3272,7 +3283,7 @@ public class GameView : MonoBehaviour
     {
         string json = JsonConvert.SerializeObject(data);
         JSBridgeManager.Instance.WriteDataToFirebase(
-            $"{Entry.Instance.releaseType}/{FirebaseManager.ROUND_DATA_PATH}/{DataManager.RoomId}/rounds/round_{roundId}/HandHistory/{dataName}",
+            $"{Entry.Instance.releaseType}/{FirebaseManager.ROUND_DATA_PATH}/{DataManager.RoomId}/rounds/round_{roundId}/{dataName}",
             json,
             gameObject.name,
             callbackMethodName, true);
@@ -3288,7 +3299,7 @@ public class GameView : MonoBehaviour
     // Function to get the round count
     public void GetRoundCount()
     {
-        previousRoundSaved = true;
+        Debug.Log(nameof(GetRoundCount));
         JSBridgeManager.Instance.ReadDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.ROUND_DATA_PATH}/{DataManager.RoomId}/roundCount", gameObject.name, nameof(OnGetRoundCount));
     }
 
@@ -3299,15 +3310,11 @@ public class GameView : MonoBehaviour
         {
             roundId = roundCount; // Set roundId to the current count
             Debug.Log($"Current roundId set to: {roundId}");
-
-            // Now that we have the roundId, we can save the round end data
-            SaveRoundEndDataToFirebase();
         }
         else
         {
             roundId = 0;
-            SaveRoundEndDataToFirebase();
-            Debug.LogError("Failed to parse round count.");
+            Debug.Log("Failed to parse round count.");
         }
     }
 
@@ -3358,7 +3365,6 @@ public class GameView : MonoBehaviour
             JSBridgeManager.Instance.WriteDataFromFirebase(firebasePath, roundEndDataDic, gameObject.name, nameof(OnDataSaved));
 
             // Increment round count in Firebase
-            IncrementRoundCount();
 
             Debug.Log($"Round {roundId} data saved to Firebase.");
         }

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using Newtonsoft.Json;
+using System;
 
 /// <summary>
 /// 紀錄結果資料
 /// </summary>
 public class ResultHistoryData
 {
+    public DateTime DateTime;
     public string RoomType;                         //房間類型
     public double SmallBlind;                       //小盲注
     public string NickName;                         //獲勝玩家暱稱
@@ -16,6 +18,11 @@ public class ResultHistoryData
     public int[] HandPokers;                        //獲勝玩家手牌
     public List<int> CommunityPoker;                //公共牌
     public double WinChips;                         //贏得籌碼
+    public string TableId;
+    public string RoomId;
+    public int RoundId;
+    public int PlayerCurrHandShape;
+    public double SideWinChips;
 }
 
 /// <summary>
