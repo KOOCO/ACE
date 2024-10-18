@@ -7,7 +7,6 @@ using System.Linq;
 using TMPro;
 using RequestBuf;
 using Newtonsoft.Json;
-using Org.BouncyCastle.Asn1.Misc;
 
 public class GameView : MonoBehaviour
 {
@@ -1500,20 +1499,21 @@ public class GameView : MonoBehaviour
 
         if (isPreflop)
         {
+            Debug.Log("IsPreflop :: PotRaisePercent" + btnIndex);
             // Preflop: Calculate raise based on BB values
             switch (btnIndex)
             {
                 case 0:
                     // 2BB Raise
-                    raiseValue = (float)(gameRoomData.smallBlind * 2);
+                    raiseValue = (float)((gameRoomData.smallBlind * 2) * 2);
                     break;
                 case 1:
                     // 3BB Raise
-                    raiseValue = (float)(gameRoomData.smallBlind * 3);
+                    raiseValue = (float)((gameRoomData.smallBlind * 2) * 3);
                     break;
                 case 2:
                     // 4BB Raise
-                    raiseValue = (float)(gameRoomData.smallBlind * 4);
+                    raiseValue = (float)((gameRoomData.smallBlind * 2) * 4);
                     break;
                 case 3:
                     // POT Raise (All-in)
@@ -1526,6 +1526,8 @@ public class GameView : MonoBehaviour
         }
         else
         {
+            Debug.Log("!IsPreflop :: PotRaisePercent" + btnIndex);
+
             // Postflop: Calculate raise based on percentage of the pot
             raiseValue = (float)gameRoomData.potChips * (PotPercentRate[btnIndex] / 100);
 
