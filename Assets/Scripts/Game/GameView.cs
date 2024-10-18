@@ -14,7 +14,7 @@ public class GameView : MonoBehaviour
     [SerializeField]
     Request_GameView baseRequest;
 
-    [Header("Fahim")]
+    [Header("遊戲控制腳本")]
     [SerializeField]
     GameControl gameControl;
 
