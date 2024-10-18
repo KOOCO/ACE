@@ -168,7 +168,7 @@ public class GameView : MonoBehaviour
     //底池倍率
     readonly float[] PotPercentRate = new float[]
     {
-        2, 3, 4, 1,
+        33, 50, 80, 100,
     };
 
     //加註大盲倍率
@@ -737,7 +737,6 @@ public class GameView : MonoBehaviour
             IsStartGameTest = true;
             gameControl.preUpdateGameFlow = GameFlowEnum.None;
             gameControl.preLocalGameFlow = GameFlowEnum.None;
-            Debug.Log("IStartGameFlow :: GameStartTest");
             StartCoroutine(gameControl.IStartGameFlow(GameFlowEnum.Licensing));
             IsOpenGameTestObj = false;
         });
@@ -961,142 +960,16 @@ public class GameView : MonoBehaviour
             Debug.Log($"SetActionButton called with value: {value}");
 
             thisData.isLocalPlayerTurn = value;
-            Debug.Log($"isLocalPlayerTurn set to: {thisData.isLocalPlayerTurn}");
 
             UpdateActionBtns();
 
-            // // Check if the acting button can be enabled
-            // if (!SetActingButtonEnable)
-            // {
-            //     Debug.Log("SetActingButtonEnable is false, exiting SetActionButton.");
-            //     return;
-            // }
-
             if (!value)
             {
-                Debug.Log("Player's turn ended, calling HandleInactivePlayerTurn.");
                 //HandleInactivePlayerTurn();
                 coinIconObj.SetActive(false);
             }
-            // else
-            // {
-            //     Debug.Log("Player's turn started, setting Fold button text.");
-            //     // If it's the player's turn, they should always have the Fold option
-            //     strData.FoldStr = "Fold";
-            //     FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
-            //     Debug.Log($"Fold button text set to: {FoldBtn_Txt.text}");
-            // }
         }
     }
-
-    // private void HandleInactivePlayerTurn()
-    // {
-    //     Debug.Log("HandleInactivePlayerTurn called.");
-
-    //     // Deactivate the raise button
-    //     Raise_Tr.gameObject.SetActive(false);
-    //     Debug.Log("Raise button deactivated.");
-
-    //     // Determine whether to set the Fold button to "Fold" or "Check/Fold"
-    //     if (IsSetBlindPhase())
-    //     {
-    //         strData.FoldStr = "Fold";
-    //         Debug.Log("Blind phase detected, FoldStr set to 'Fold'.");
-    //     }
-    //     else
-    //     {
-    //         strData.FoldStr = "CheckOrFold";
-    //         Debug.Log("Not blind phase, FoldStr set to 'Check/Fold'.");
-    //     }
-
-    //     // Set Fold button text
-    //     FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
-    //     Debug.Log($"Fold button text set to: {FoldBtn_Txt.text}");
-
-    //     // Determine if the call button should be shown
-    //     if (ShouldShowCallOptions())
-    //     {
-    //         Debug.Log("Call options should be shown, calling SetCallButton.");
-    //         SetCallButton();
-    //     }
-    //     else
-    //     {
-    //         // If no bet, set Call button to "Check"
-    //         strData.CallStr = "Check";
-    //         strData.CallValueStr = "";
-    //         CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
-    //         Debug.Log($"Call button text set to: {CallBtn.text}");
-    //     }
-
-    //     // Set the Raise button to "CallAny"
-    //     strData.RaiseStr = "CallAny";
-    //     strData.RaiseValueStr = "";
-    //     coinIconObj.SetActive(false);
-    //     RaiseBtn_Txt.text = LanguageManager.Instance.GetText(strData.RaiseStr) + strData.RaiseValueStr;
-    //     Debug.Log($"Raise button text set to: {RaiseBtn_Txt.text}");
-    // }
-
-    // private bool IsSetBlindPhase()
-    // {
-    //     // Check if it's the Pre-Flop phase (blinds are being set)
-    //     return gameControl.GetLocalPlayer() != null &&
-    //            gameRoomData != null &&
-    //            gameRoomData.currGameFlow == (int)GameFlowEnum.SetBlind;
-    // }
-
-    // private bool ShouldShowCallOptions()
-    // {
-    //     // Show call options if the player has less than the current raise
-    //     return gameControl.GetLocalPlayer() != null &&
-    //            gameControl.GetLocalPlayer().currAllBetChips < gameRoomData.currCallValue &&
-    //            gameRoomData != null &&
-    //            gameRoomData.currCallValue > gameRoomData.smallBlind &&
-    //            (gameRoomData.currGameFlow == (int)GameFlowEnum.Licensing ||
-    //             gameRoomData.currGameFlow == (int)GameFlowEnum.SetBlind);
-    // }
-
-    // private void SetCallButton()
-    // {
-    //     var localPlayer = gameControl.GetLocalPlayer();
-    //     if (localPlayer == null)
-    //     {
-    //         Debug.Log("Local player is null. Exiting SetCallButton.");
-    //         return;
-    //     }
-
-    //     Debug.Log($"Local player found: SeatCharacter = {(SeatCharacterEnum)localPlayer.seatCharacter}, Current All Bet Chips = {localPlayer.currAllBetChips}");
-
-    //     // Set different call amounts based on the player's position (SB, BB, or otherwise)
-    //     switch ((SeatCharacterEnum)localPlayer.seatCharacter)
-    //     {
-    //         case SeatCharacterEnum.SB:
-    //             Debug.Log("Player is in Small Blind position.");
-    //             // SB can call the difference to match the big blind
-    //             strData.CallStr = "Call";
-    //             strData.CallValueStr = $"\n{(gameRoomData.smallBlind - localPlayer.currAllBetChips).ToString()}";
-    //             Debug.Log($"CallStr: {strData.CallStr}, CallValueStr: {strData.CallValueStr}");
-    //             break;
-    //         case SeatCharacterEnum.BB:
-    //             Debug.Log("Player is in Big Blind position.");
-    //             // BB can check if no one has raised
-    //             strData.CallStr = gameRoomData.currCallValue == gameRoomData.smallBlind * 2 ? "Check" : "Call";
-    //             strData.CallValueStr = gameRoomData.currCallValue == gameRoomData.smallBlind * 2
-    //                 ? ""
-    //                 : $"\n{(gameRoomData.currCallValue - localPlayer.currAllBetChips).ToString()}";
-    //             Debug.Log($"CallStr: {strData.CallStr}, CallValueStr: {strData.CallValueStr}");
-    //             break;
-    //         default:
-    //             Debug.Log("Player is in a position other than SB or BB.");
-    //             // Other players can call the current bet (or raise)
-    //             strData.CallStr = "Call";
-    //             strData.CallValueStr = $"\n{(gameRoomData.currCallValue - localPlayer.currAllBetChips).ToString()}";
-    //             Debug.Log($"CallStr: {strData.CallStr}, CallValueStr: {strData.CallValueStr}");
-    //             break;
-    //     }
-
-    //     CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
-    //     Debug.Log($"Call button text set to: {CallBtn.text}");
-    // }
 
     public void UpdateActionBtns()
     {
@@ -1526,24 +1399,19 @@ public class GameView : MonoBehaviour
     {
         double betValue = 0;
         BetActingEnum acting = BetActingEnum.Call;
-        Debug.Log("Check or Call :: Call On Start");
-        Debug.Log($"{thisData.CurrCallValue} currentCall :: {thisData.CurrRaiseValue} currentLocalRaise :: {thisData.LocalPlayerCurrBetValue} :: currentGlobalRaise {thisData.CurrRaiseValue} :: isCallOrRaise {thisData.isCanCall}");
         if (thisData.IsFirstRaisePlayer)
         {
             if (thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue)
             {
-                Debug.Log("thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue Check or Call :: Check");
                 acting = BetActingEnum.Check;
             }
             else if (thisData.LocalPlayerChips <= thisData.CurrCallValue)
             {
-                Debug.Log("thisData.LocalPlayerChips <= thisData.CurrCallValue Check or Call :: All in");
                 acting = BetActingEnum.AllIn;
                 betValue = thisData.LocalPlayerChips;
             }
             else
             {
-                Debug.Log("thisData.LocalPlayerChips <= thisData.CurrCallValue else Check or Call :: Call");
                 betValue = thisData.CurrCallValue;
             }
         }
@@ -1551,18 +1419,15 @@ public class GameView : MonoBehaviour
         {
             if (thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue)
             {
-                Debug.Log("thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue Check or Call :: Check");
                 acting = BetActingEnum.Check;
             }
             else if (thisData.LocalPlayerChips <= thisData.CurrCallValue)
             {
-                Debug.Log("thisData.LocalPlayerChips <= thisData.CurrCallValue Check or Call :: All in");
                 acting = BetActingEnum.AllIn;
                 betValue = thisData.LocalPlayerChips;
             }
             else
             {
-                Debug.Log("thisData.LocalPlayerChips <= thisData.CurrCallValue else Check or Call :: Call");
                 betValue = thisData.CurrCallValue;
             }
         }
@@ -1630,34 +1495,51 @@ public class GameView : MonoBehaviour
     {
         float raiseValue = 0f;
 
-        // Calculate the raise value based on the button index
-        switch (btnIndex)
+        // Check if the current game flow is in the Preflop stage
+        bool isPreflop = (GameFlowEnum)gameRoomData.currGameFlow == GameFlowEnum.SetBlind || (GameFlowEnum)gameRoomData.currGameFlow == GameFlowEnum.Licensing;
+
+        if (isPreflop)
         {
-            case 0:
-                // 2BB Raise
-                raiseValue = (float)((gameRoomData.smallBlind * 2) * 2);
-                break;
-            case 1:
-                // 3BB Raise
-                raiseValue = (float)((gameRoomData.smallBlind * 2) * 3);
-                break;
-            case 2:
-                // 4BB Raise
-                raiseValue = (float)((gameRoomData.smallBlind * 2) * 4);
-                break;
-            case 3:
-                // POT Raise (All-in)
+            // Preflop: Calculate raise based on BB values
+            switch (btnIndex)
+            {
+                case 0:
+                    // 2BB Raise
+                    raiseValue = (float)(gameRoomData.smallBlind * 2);
+                    break;
+                case 1:
+                    // 3BB Raise
+                    raiseValue = (float)(gameRoomData.smallBlind * 3);
+                    break;
+                case 2:
+                    // 4BB Raise
+                    raiseValue = (float)(gameRoomData.smallBlind * 4);
+                    break;
+                case 3:
+                    // POT Raise (All-in)
+                    raiseValue = (float)gameRoomData.potChips;
+                    break;
+                default:
+                    raiseValue = 0f;
+                    break;
+            }
+        }
+        else
+        {
+            // Postflop: Calculate raise based on percentage of the pot
+            raiseValue = (float)gameRoomData.potChips * (PotPercentRate[btnIndex] / 100);
+
+            // Handle All-In case for btnIndex == 3
+            if (btnIndex == 3)
+            {
                 raiseValue = (float)gameRoomData.potChips;
-                break;
-            default:
-                // Handle invalid button index if needed
-                raiseValue = 0f;
-                break;
+            }
         }
 
         // Update the Raise Slider with the calculated raise value
         Raise_Sli.value = (int)raiseValue;
     }
+
 
 
     /// <summary>
@@ -1713,7 +1595,6 @@ public class GameView : MonoBehaviour
         //首位加注玩家
         thisData.IsFirstRaisePlayer = isFirst;
         //當前跟注值
-        Debug.Log(gameRoomData.currCallValue + " :: Current Call value :: " + nameof(LocalPlayerRound));
         thisData.CurrCallValue = gameRoomData.currCallValue;
         //跟注差額
         thisData.CallDifference = gameRoomData.currCallValue - gameRoomPlayerData.currAllBetChips;
@@ -1853,36 +1734,33 @@ public class GameView : MonoBehaviour
         //跟注&過牌
         strData.CallStr = "Call";
         strData.CallValueStr = $"\n{StringUtils.SetChipsUnit(thisData.CurrCallValue - thisData.CallDifference)}";
-        Debug.Log($"{nameof(ShowBetArea)} {thisData.CurrCallValue} currentCall :: {thisData.CurrRaiseValue} currentLocalRaise :: {thisData.LocalPlayerCurrBetValue} :: currentGlobalRaise {thisData.CurrRaiseValue} :: isCallOrRaise {thisData.isCanCall} :: Total Pot {thisData.TotalPot}");
+        //Debug.Log($"{nameof(ShowBetArea)} {thisData.CurrCallValue} currentCall :: {thisData.CurrRaiseValue} currentLocalRaise :: {thisData.LocalPlayerCurrBetValue} :: currentGlobalRaise {thisData.CurrRaiseValue} :: isCallOrRaise {thisData.isCanCall} :: Total Pot {thisData.TotalPot}");
         if (thisData.IsFirstRaisePlayer == true)
         {
             if (thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue)
             {
-                Debug.Log($"{nameof(ShowBetArea)} :: check");
+                //Debug.Log($"{nameof(ShowBetArea)} :: check");
                 strData.CallStr = "Check";
                 strData.CallValueStr = "";
             }
             else
             {
-                Debug.Log($"{nameof(ShowBetArea)} :: call");
+                //Debug.Log($"{nameof(ShowBetArea)} :: call");
                 strData.CallStr = "Call";
                 strData.CallValueStr = $"\n{StringUtils.SetChipsUnit(thisData.CallDifference)}";
             }
-            // Debug.Log("Check " + nameof(ShowBetArea) + " " + thisData.IsFirstRaisePlayer + "First Player");
-            // strData.CallStr = "Check";
-            // strData.CallValueStr = "";
         }
         else
         {
             if (thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue)
             {
-                Debug.Log($"{nameof(ShowBetArea)} :: else check");
+                //Debug.Log($"{nameof(ShowBetArea)} :: else check");
                 strData.CallStr = "Check";
                 strData.CallValueStr = "";
             }
             else
             {
-                Debug.Log($"{nameof(ShowBetArea)} :: else call");
+                //Debug.Log($"{nameof(ShowBetArea)} :: else call");
                 strData.CallStr = "Call";
                 strData.CallValueStr = $"\n{StringUtils.SetChipsUnit(thisData.CallDifference)}";
             }
@@ -1916,23 +1794,34 @@ public class GameView : MonoBehaviour
             MinRaiseBtn_Txt.text = thisData.MinRaiseValue.ToString(); ;
 
             // Always display BB values and Pot for the raise options
+            // Check if the current game flow is in the Preflop stage
+            bool isPreflop = (GameFlowEnum)gameRoomData.currGameFlow == GameFlowEnum.Licensing || (GameFlowEnum)gameRoomData.currGameFlow == GameFlowEnum.SetBlind;
+
             for (int i = 0; i < 4; i++)
             {
-                // Set BB values for the first three buttons
-                switch (i)
+                if (isPreflop)
                 {
-                    case 0:
-                        PotPercentRaiseTxtList[i].text = "2BB";
-                        break;
-                    case 1:
-                        PotPercentRaiseTxtList[i].text = "3BB";
-                        break;
-                    case 2:
-                        PotPercentRaiseTxtList[i].text = "4BB";
-                        break;
-                    case 3:
-                        PotPercentRaiseTxtList[i].text = LanguageManager.Instance.GetText("Pot");
-                        break;
+                    // Preflop: Display BB-based values (2BB, 3BB, 4BB, and Pot)
+                    switch (i)
+                    {
+                        case 0:
+                            PotPercentRaiseTxtList[i].text = "2BB";
+                            break;
+                        case 1:
+                            PotPercentRaiseTxtList[i].text = "3BB";
+                            break;
+                        case 2:
+                            PotPercentRaiseTxtList[i].text = "4BB";
+                            break;
+                        case 3:
+                            PotPercentRaiseTxtList[i].text = LanguageManager.Instance.GetText("Pot");
+                            break;
+                    }
+                }
+                else
+                {
+                    // Postflop: Display percentage-based values
+                    PotPercentRaiseTxtList[i].text = $"{PotPercentRate[i]}%";
                 }
             }
         }
