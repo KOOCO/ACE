@@ -231,8 +231,9 @@ public class PlayerHand
 {
     public List<int> playerHand;
     public int playerCurrHandShape;
-    public double potWinAmount;
-    public double sideWinAmount;
+    public double potWinChips;
+    public double sideWinChips;
+    public bool isWinner;
 }
 
 

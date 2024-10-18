@@ -49,7 +49,7 @@ public class GamePlayerInfo : MonoBehaviour
     Coroutine cdCoroutine;              //倒數協程
     Coroutine chatCoroutine;            //聊天協程
 
-    int pokerShapeIndex;                //牌型編號
+    int pokerShapeIndex = -1;                //牌型編號
 
     Vector2 betChipsr_TrInitPos;         //下注籌碼物件初始位置
 

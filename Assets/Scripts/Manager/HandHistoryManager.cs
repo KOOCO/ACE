@@ -15,14 +15,15 @@ public class ResultHistoryData
     public double SmallBlind;                       //小盲注
     public string NickName;                         //獲勝玩家暱稱
     public int Avatar;                              //獲勝玩家頭像
-    public int[] HandPokers;                        //獲勝玩家手牌
     public List<int> CommunityPoker;                //公共牌
-    public double WinChips;                         //贏得籌碼
     public string TableId;
     public string RoomId;
     public int RoundId;
-    public int PlayerCurrHandShape;
-    public double SideWinChips;
+    //public int[] HandPokers;                        //獲勝玩家手牌
+    // public int PlayerCurrHandShape;
+    //public double WinChips;                         //贏得籌碼
+    // public double SideWinChips;
+    public List<PlayerHand> playerHands;
 }
 
 /// <summary>

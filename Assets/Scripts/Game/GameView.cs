@@ -2578,23 +2578,27 @@ public class GameView : MonoBehaviour
             yield return new WaitForSeconds(2);
         }
 
-        //記錄存檔
         int winIndex = 0;
+        saveResultData = new ResultHistoryData
+        {
+            playerHands = new List<PlayerHand>() // Initialize the playerHands list
+        };
+
+        // Loop through the list of pot winners
         foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
         {
             winIndex++;
-            //GamePlayerInfo player = GetPlayer(potWinnerId);
-            GameRoomPlayerData playerData = gameControl.GetPlayerData(potWinnerId);
+            GameRoomPlayerData winnerPlayerData = gameControl.GetPlayerData(potWinnerId); // Get the winner's player data
 
-            if (playerData == null)
+            if (winnerPlayerData == null)
             {
                 yield break;
             }
 
-            //本地玩家有參與
+            // Check if the local player has participated
             if (thisData.LocalGamePlayerInfo.IsPlaying)
             {
-                //獲勝牌局紀錄存檔
+                // Initialize the result data on the first win
                 if (winIndex == 1)
                 {
                     string roomName = "";
@@ -2611,25 +2615,28 @@ public class GameView : MonoBehaviour
                             break;
                     }
 
-                    saveResultData = new ResultHistoryData();
-                    saveResultData.RoomType = $"{roomName}";
+                    saveResultData.RoomType = roomName;
                     saveResultData.SmallBlind = gameRoomData.smallBlind;
-                    saveResultData.NickName = playerData.nickname;
-                    saveResultData.Avatar = playerData.avatarIndex;
-                    saveResultData.HandPokers = new int[] { playerData.handPoker[0],
-                                                            playerData.handPoker[1] };
-                    saveResultData.CommunityPoker = gameRoomData.currCommunityPoker == null ?
-                                                    new List<int>() :
-                                                    gameRoomData.currCommunityPoker;
-                    saveResultData.WinChips = gameRoomData.potWinData.potWinChips;
-                    saveResultData.SideWinChips = gameRoomData.sideWinData.sideWinChips;
+                    saveResultData.CommunityPoker = gameRoomData.currCommunityPoker ?? new List<int>(); // Use null-coalescing operator for safety
                     saveResultData.DateTime = DateTime.UtcNow;
                     saveResultData.RoomId = DataManager.RoomId;
                     saveResultData.TableId = DataManager.TableId;
                     saveResultData.RoundId = roundId;
-                    saveResultData.PlayerCurrHandShape = playerData.playerHandShape;
                 }
             }
+        }
+        // Add all players' hand data to the result
+        foreach (var player in gameRoomData.playerDataDic.Values) // Assuming this contains all players in the game
+        {
+            PlayerHand playerHand = new PlayerHand
+            {
+                playerHand = player.handPoker,
+                playerCurrHandShape = player.playerHandShape,
+                potWinChips = gameRoomData.potWinData.potWinnersId.Contains(player.userId) ? gameRoomData.potWinData.potWinChips : 0, // Check if the player won the pot
+                sideWinChips = gameRoomData.sideWinData.sideWinnersId.Contains(player.userId) ? gameRoomData.sideWinData.sideWinChips : 0, // Check if the player won the side pot
+                isWinner = gameRoomData.potWinData.potWinnersId.Contains(player.userId) // Check if this player is a pot winner
+            };
+            saveResultData.playerHands.Add(playerHand); // Add player's hand data to the result
         }
 
         //主池紀錄存檔
@@ -3319,60 +3326,60 @@ public class GameView : MonoBehaviour
     }
 
     // Save round end data function
-    public void SaveRoundEndDataToFirebase()
-    {
-        // Ensure the host is saving the data
-        if (gameRoomData != null && gameRoomData.hostId == DataManager.UserId)
-        {
-            // Create the RoundEndResult object
-            RoundEndResult roundEndResult = new RoundEndResult
-            {
-                dateTime = DateTime.UtcNow,
-                tableId = DataManager.TableId,
-                roomId = DataManager.RoomId,
-                roundId = roundId, // Use the current roundId
-                communityCards = gameRoomData.communityPoker,
-                playerHands = new List<PlayerHand>()
-            };
+    // public void SaveRoundEndDataToFirebase()
+    // {
+    //     // Ensure the host is saving the data
+    //     if (gameRoomData != null && gameRoomData.hostId == DataManager.UserId)
+    //     {
+    //         // Create the RoundEndResult object
+    //         RoundEndResult roundEndResult = new RoundEndResult
+    //         {
+    //             dateTime = DateTime.UtcNow,
+    //             tableId = DataManager.TableId,
+    //             roomId = DataManager.RoomId,
+    //             roundId = roundId, // Use the current roundId
+    //             communityCards = gameRoomData.communityPoker,
+    //             playerHands = new List<PlayerHand>()
+    //         };
 
-            // Populate player hands...
-            foreach (var playerData in gameRoomData.playerDataDic.Values)
-            {
-                PlayerHand playerHand = new PlayerHand
-                {
-                    playerHand = playerData.handPoker,
-                    potWinAmount = gameRoomData.potWinData.potWinnersId.Contains(playerData.userId) ? gameRoomData.potWinData.potWinChips : 0,
-                    sideWinAmount = gameRoomData.sideWinData.sideWinnersId.Contains(playerData.userId) ? gameRoomData.sideWinData.sideWinChips : 0,
-                    playerCurrHandShape = playerData.playerHandShape,
-                };
-                roundEndResult.playerHands.Add(playerHand);
-            }
-            // Prepare data for Firebase
-            Dictionary<string, object> roundEndDataDic = new Dictionary<string, object>
-            {
-                { "dateTime", roundEndResult.dateTime.ToString("o") },
-                { "tableId", roundEndResult.tableId },
-                { "roomId", roundEndResult.roomId },
-                { "roundId", roundEndResult.roundId },
-                { "communityCards", roundEndResult.communityCards },
-                { "playerHands", roundEndResult.playerHands }
-            };
+    //         // Populate player hands...
+    //         foreach (var playerData in gameRoomData.playerDataDic.Values)
+    //         {
+    //             PlayerHand playerHand = new PlayerHand
+    //             {
+    //                 playerHand = playerData.handPoker,
+    //                 potWinAmount = gameRoomData.potWinData.potWinnersId.Contains(playerData.userId) ? gameRoomData.potWinData.potWinChips : 0,
+    //                 sideWinAmount = gameRoomData.sideWinData.sideWinnersId.Contains(playerData.userId) ? gameRoomData.sideWinData.sideWinChips : 0,
+    //                 playerCurrHandShape = playerData.playerHandShape,
+    //             };
+    //             roundEndResult.playerHands.Add(playerHand);
+    //         }
+    //         // Prepare data for Firebase
+    //         Dictionary<string, object> roundEndDataDic = new Dictionary<string, object>
+    //         {
+    //             { "dateTime", roundEndResult.dateTime.ToString("o") },
+    //             { "tableId", roundEndResult.tableId },
+    //             { "roomId", roundEndResult.roomId },
+    //             { "roundId", roundEndResult.roundId },
+    //             { "communityCards", roundEndResult.communityCards },
+    //             { "playerHands", roundEndResult.playerHands }
+    //         };
 
-            // Firebase path
-            string firebasePath = $"{Entry.Instance.releaseType}/{FirebaseManager.ROUND_DATA_PATH}/{DataManager.RoomId}/rounds/round_{roundId}";
+    //         // Firebase path
+    //         string firebasePath = $"{Entry.Instance.releaseType}/{FirebaseManager.ROUND_DATA_PATH}/{DataManager.RoomId}/rounds/round_{roundId}";
 
-            // Save data to Firebase
-            JSBridgeManager.Instance.WriteDataFromFirebase(firebasePath, roundEndDataDic, gameObject.name, nameof(OnDataSaved));
+    //         // Save data to Firebase
+    //         JSBridgeManager.Instance.WriteDataFromFirebase(firebasePath, roundEndDataDic, gameObject.name, nameof(OnDataSaved));
 
-            // Increment round count in Firebase
+    //         // Increment round count in Firebase
 
-            Debug.Log($"Round {roundId} data saved to Firebase.");
-        }
-        else
-        {
-            Debug.Log("Only the host can save the game data.");
-        }
-    }
+    //         Debug.Log($"Round {roundId} data saved to Firebase.");
+    //     }
+    //     else
+    //     {
+    //         Debug.Log("Only the host can save the game data.");
+    //     }
+    // }
 
     // Function to increment the round count in Firebase
     private void IncrementRoundCount()
