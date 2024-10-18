@@ -71,8 +71,8 @@ public class LobbyRankingView : MonoBehaviour
         PlayerTag_Txt.text = $"{LanguageManager.Instance.GetText("Player")}";
         Winnings_Txt.text = $"{LanguageManager.Instance.GetText("Winnings")}";
         Status_Txt.text = $"{LanguageManager.Instance.GetText("Status")}";
-        Daily_Txt.text = $"{LanguageManager.Instance.GetText("Daily")}";
-        Weekly_Txt.text = $"{LanguageManager.Instance.GetText("Weekly")}";
+        Daily_Txt.text = $"{LanguageManager.Instance.GetText("DAILY")}";
+        Weekly_Txt.text = $"{LanguageManager.Instance.GetText("WEEKLY")}";
 
     }
 

@@ -1310,13 +1310,13 @@
     "zh_TW": "贏分"
   },
   {
-    "ID": "Daily",
-    "English": "Daily",
+    "ID": "DAILY",
+    "English": "DAILY",
     "zh_TW": "每日"
   },
   {
-    "ID": "Weekly",
-    "English": "Weekly",
+    "ID": "WEEKLY",
+    "English": "WEEKLY",
     "zh_TW": "每周"
   },
   {
