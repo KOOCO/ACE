@@ -3805,7 +3805,7 @@ PrefabInstance:
     - target: {fileID: 5229370384101048880, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: countDown_Txt
       value: 
-      objectReference: {fileID: 1016079080983085941}
+      objectReference: {fileID: 0}
     - target: {fileID: 5913275356508412434, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -13.499989
@@ -4054,7 +4054,7 @@ PrefabInstance:
     - target: {fileID: 5229370384101048880, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: countDown_Txt
       value: 
-      objectReference: {fileID: 8689091081600934477}
+      objectReference: {fileID: 0}
     - target: {fileID: 5696116052863979558, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4307,7 +4307,7 @@ PrefabInstance:
     - target: {fileID: 5229370384101048880, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: countDown_Txt
       value: 
-      objectReference: {fileID: 5841906098915412314}
+      objectReference: {fileID: 0}
     - target: {fileID: 5696116052863979558, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4930,7 +4930,7 @@ PrefabInstance:
     - target: {fileID: 5229370384101048880, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: countDown_Txt
       value: 
-      objectReference: {fileID: 281564386217709461}
+      objectReference: {fileID: 0}
     - target: {fileID: 5696116052863979558, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -5601,7 +5601,7 @@ PrefabInstance:
     - target: {fileID: 5229370384101048880, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: countDown_Txt
       value: 
-      objectReference: {fileID: 3237394032651796411}
+      objectReference: {fileID: 0}
     - target: {fileID: 5696116052863979558, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -6095,7 +6095,7 @@ PrefabInstance:
     - target: {fileID: 2224183459510731242, guid: 7f8b09ddbd41c3e44906d0638f0e5eb0, type: 3}
       propertyPath: countDown_Txt
       value: 
-      objectReference: {fileID: 2054928320023699421}
+      objectReference: {fileID: 0}
     - target: {fileID: 2669176180972818577, guid: 7f8b09ddbd41c3e44906d0638f0e5eb0, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0
