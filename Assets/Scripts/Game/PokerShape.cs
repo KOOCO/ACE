@@ -11,30 +11,29 @@ public static class PokerShape
     /// </summary>
     public static string[] shapeStr = new string[]
     {
-        "RoyalFlush",           //皇家同花順
-        "StraightFlush",        //同花順
-        "FourOfKind",           //四條
-        "FullHouse",            //葫蘆
-        "Flush",                //同花
-        "Straight",             //皇家大順
-        "Straight",             //順子
-        "ThreeOfAKind",         //三條
-        "TwoPairs",             //兩對
-        "OnePair",              //一對
-        "HightCard",            //高牌
+    "RoyalFlush",           // 皇家同花順
+    "StraightFlush",        // 同花順
+    "FourOfKind",           // 四條
+    "FullHouse",            // 葫蘆
+    "Flush",                // 同花
+    "Straight",             // 順子
+    "ThreeOfAKind",         // 三條
+    "TwoPairs",             // 兩對
+    "OnePair",              // 一對
+    "HighCard",             // 高牌
     };
 
     /// <summary>
-    /// 判斷牌型
+    /// 判斷牌型 (Evaluate Poker Hand)
     /// </summary>
-    /// <param name="judgePokerList"></param>
-    /// <param name="callBack">回傳(結果，符合的牌)</param>
+    /// <param name="judgePokerList">List of poker cards to evaluate</param>
+    /// <param name="callBack">Callback to return the result and matching cards</param>
     public static void JudgePokerShape(List<int> judgePokerList, UnityAction<int, List<int>> callBack)
     {
         // Group cards by rank
         Dictionary<int, List<int>> groupPoker = GroupPokerByRank(judgePokerList);
 
-        // Check for each poker hand, starting from the highest-ranked hand
+        // Check each hand from the highest ranked to lowest
         List<int> handResult = CheckRoyalFlush(groupPoker);
         if (handResult.Count == 5)
         {
@@ -49,7 +48,7 @@ public static class PokerShape
             return;
         }
 
-        handResult = CheckQuads(groupPoker);
+        handResult = CheckFourOfAKind(groupPoker);
         if (handResult.Count == 5)
         {
             callBack(2, handResult); // Four of a Kind
@@ -73,228 +72,339 @@ public static class PokerShape
         handResult = CheckStraight(groupPoker);
         if (handResult.Count == 5)
         {
-            callBack(6, handResult); // Straight
+            callBack(5, handResult); // Straight
             return;
         }
 
         handResult = CheckThreeOfAKind(groupPoker);
         if (handResult.Count == 5)
         {
-            callBack(7, handResult); // Three of a Kind
+            callBack(6, handResult); // Three of a Kind
             return;
         }
 
         handResult = CheckTwoPair(groupPoker);
         if (handResult.Count == 5)
         {
-            callBack(8, handResult); // Two Pair
+            callBack(7, handResult); // Two Pairs
             return;
         }
 
         handResult = CheckPair(groupPoker);
         if (handResult.Count == 5)
         {
-            callBack(9, handResult); // One Pair
+            callBack(8, handResult); // One Pair
             return;
         }
 
         handResult = CheckHighCard(groupPoker);
-        callBack(10, handResult); // High Card
+        callBack(9, handResult); // High Card
     }
 
-    // Helper Methods
-
-    private static Dictionary<int, List<int>> GroupPokerByRank(List<int> judgePokerList)
+    /// <summary>
+    /// Group cards by rank
+    /// </summary>
+    private static Dictionary<int, List<int>> GroupPokerByRank(List<int> pokerList)
     {
-        Dictionary<int, List<int>> groupPoker = new Dictionary<int, List<int>>();
+        Dictionary<int, List<int>> groupedByRank = new Dictionary<int, List<int>>();
 
-        foreach (var poker in judgePokerList)
+        foreach (var poker in pokerList)
         {
             int suit = poker / 13;
-            int rank = poker % 13 + 1;
+            int rank = poker % 13 + 1; // Rank from 1 (Ace) to 13 (King)
 
-            if (!groupPoker.ContainsKey(rank))
+            if (!groupedByRank.ContainsKey(rank))
             {
-                groupPoker[rank] = new List<int>();
+                groupedByRank[rank] = new List<int>();
             }
-
-            groupPoker[rank].Add(suit);
+            groupedByRank[rank].Add(suit);
         }
 
-        return groupPoker;
+        return groupedByRank;
     }
 
+    /// <summary>
+    /// Check for Royal Flush
+    /// </summary>
     private static List<int> CheckRoyalFlush(Dictionary<int, List<int>> groupPoker)
     {
-        return CheckStraightFlush(groupPoker, true);
-    }
-
-    private static List<int> CheckStraightFlush(Dictionary<int, List<int>> groupPoker, bool checkRoyal = false)
-    {
-        List<int> flushList = CheckFlush(groupPoker);
-        if (flushList.Count >= 5)
+        var straightFlush = CheckStraightFlush(groupPoker);
+        if (straightFlush.Count == 5)
         {
-            List<int> straightFlushList = CheckStraight(groupPoker, flushList);
-            if (straightFlushList.Count == 5 && (!checkRoyal || straightFlushList.Contains(0)))
+            // Check if the straight flush is 10-J-Q-K-A
+            var ranks = straightFlush.Select(card => (card % 13) + 1).OrderBy(x => x).ToList();
+            if (ranks.SequenceEqual(new List<int> { 1, 10, 11, 12, 13 })) // Ace is 1
             {
-                return straightFlushList;
+                return straightFlush;
             }
         }
         return new List<int>();
     }
 
-    private static List<int> CheckQuads(Dictionary<int, List<int>> groupPoker)
+    /// <summary>
+    /// Check for Straight Flush
+    /// </summary>
+    private static List<int> CheckStraightFlush(Dictionary<int, List<int>> groupPoker)
     {
-        var quads = JudgePairs(groupPoker, 4);
-        if (quads.Count == 4)
+        for (int suit = 0; suit < 4; suit++)
         {
-            // Add highest kicker
-            quads.Add(GetHighestRemainingCard(groupPoker, quads));
-        }
-        return quads;
-    }
+            // Get all cards of the same suit
+            var suitedCards = groupPoker
+                .Where(kv => kv.Value.Contains(suit))
+                .Select(kv => kv.Key)
+                .OrderByDescending(x => x)
+                .ToList();
 
-    private static List<int> CheckFullHouse(Dictionary<int, List<int>> groupPoker)
-    {
-        var triples = JudgePairs(groupPoker, 3);
-        var pairs = JudgePairs(groupPoker, 2);
-
-        if (triples.Count >= 3 && pairs.Count >= 2)
-        {
-            return triples.Take(3).Concat(pairs.Take(2)).ToList();
+            if (suitedCards.Count >= 5)
+            {
+                // Check for straight within the suited cards
+                var straightFlush = CheckStraightInRanks(suitedCards, suit, groupPoker);
+                if (straightFlush.Count == 5)
+                {
+                    return straightFlush;
+                }
+            }
         }
         return new List<int>();
     }
 
+    /// <summary>
+    /// Check for Four of a Kind
+    /// </summary>
+    private static List<int> CheckFourOfAKind(Dictionary<int, List<int>> groupPoker)
+    {
+        var quads = groupPoker.Where(kv => kv.Value.Count == 4).OrderByDescending(kv => kv.Key).FirstOrDefault();
+        if (quads.Value != null)
+        {
+            var quadCards = quads.Value.Select(suit => (quads.Key - 1) + (13 * suit)).ToList();
+            var kicker = GetHighestRemainingCards(groupPoker, quadCards, 1);
+            quadCards.AddRange(kicker);
+            return quadCards;
+        }
+        return new List<int>();
+    }
+
+    /// <summary>
+    /// Check for Full House
+    /// </summary>
+    private static List<int> CheckFullHouse(Dictionary<int, List<int>> groupPoker)
+    {
+        var threeOfAKinds = groupPoker.Where(kv => kv.Value.Count >= 3).OrderByDescending(kv => kv.Key).ToList();
+        if (threeOfAKinds.Count >= 1)
+        {
+            var bestTrip = threeOfAKinds[0];
+            var tripCards = bestTrip.Value.Take(3).Select(suit => (bestTrip.Key - 1) + (13 * suit)).ToList();
+
+            // Remove the trip rank to look for pairs
+            var remainingRanks = groupPoker.Where(kv => kv.Key != bestTrip.Key && kv.Value.Count >= 2)
+                .OrderByDescending(kv => kv.Key)
+                .ToList();
+
+            if (remainingRanks.Count >= 1)
+            {
+                var bestPair = remainingRanks[0];
+                var pairCards = bestPair.Value.Take(2).Select(suit => (bestPair.Key - 1) + (13 * suit)).ToList();
+                tripCards.AddRange(pairCards);
+                return tripCards;
+            }
+            else if (threeOfAKinds.Count >= 2)
+            {
+                // Use the second three of a kind as the pair
+                var secondTrip = threeOfAKinds[1];
+                var pairCards = secondTrip.Value.Take(2).Select(suit => (secondTrip.Key - 1) + (13 * suit)).ToList();
+                tripCards.AddRange(pairCards);
+                return tripCards;
+            }
+        }
+        return new List<int>();
+    }
+
+    /// <summary>
+    /// Check for Flush
+    /// </summary>
     private static List<int> CheckFlush(Dictionary<int, List<int>> groupPoker)
     {
-        List<int> flushList = new List<int>();
-
         for (int suit = 0; suit < 4; suit++)
         {
-            var suitedCards = groupPoker.Where(kv => kv.Value.Contains(suit)).OrderByDescending(kv => kv.Key).Select(kv => (kv.Key - 1) + (13 * suit)).ToList();
+            var suitedCards = groupPoker
+                .Where(kv => kv.Value.Contains(suit))
+                .OrderByDescending(kv => kv.Key)
+                .Select(kv => (kv.Key - 1) + (13 * suit))
+                .ToList();
+
             if (suitedCards.Count >= 5)
             {
                 return suitedCards.Take(5).ToList();
             }
         }
-        return flushList;
+        return new List<int>();
     }
 
-    private static List<int> CheckStraight(Dictionary<int, List<int>> groupPoker, List<int> flushList = null)
+    /// <summary>
+    /// Check for Straight
+    /// </summary>
+    private static List<int> CheckStraight(Dictionary<int, List<int>> groupPoker)
     {
-        List<int> straightList = new List<int>();
-        IEnumerable<int> ranks = flushList == null
-            ? groupPoker.Keys.OrderByDescending(x => x)
-            : flushList.Select(card => (card % 13) + 1).Distinct();
-
-        for (int i = 13; i >= 5; i--)
-        {
-            if (ranks.Contains(i) &&
-                ranks.Contains(i - 1) &&
-                ranks.Contains(i - 2) &&
-                ranks.Contains(i - 3) &&
-                ranks.Contains(i - 4))
-            {
-                for (int j = i; j >= i - 4; j--)
-                {
-                    int cardNum = (j - 1) + (13 * groupPoker[j][0]);
-                    straightList.Add(cardNum);
-                }
-                break;
-            }
-        }
-        return straightList;
+        var ranks = groupPoker.Keys.OrderByDescending(x => x).ToList();
+        var straight = CheckStraightInRanks(ranks, -1, groupPoker); // -1 indicates any suit
+        return straight;
     }
 
+    /// <summary>
+    /// Check for Three of a Kind
+    /// </summary>
     private static List<int> CheckThreeOfAKind(Dictionary<int, List<int>> groupPoker)
     {
-        var trips = JudgePairs(groupPoker, 3);
-        if (trips.Count == 3)
+        var trips = groupPoker.Where(kv => kv.Value.Count == 3).OrderByDescending(kv => kv.Key).FirstOrDefault();
+        if (trips.Value != null)
         {
-            // Add top 2 kickers
-            var kickers = GetHighestRemainingCards(groupPoker, trips, 2);
-            trips.AddRange(kickers);
+            var tripCards = trips.Value.Select(suit => (trips.Key - 1) + (13 * suit)).ToList();
+            var kickers = GetHighestRemainingCards(groupPoker, tripCards, 2);
+            tripCards.AddRange(kickers);
+            return tripCards;
         }
-        return trips;
+        return new List<int>();
     }
 
+    /// <summary>
+    /// Check for Two Pairs
+    /// </summary>
     private static List<int> CheckTwoPair(Dictionary<int, List<int>> groupPoker)
     {
-        var pairs = JudgePairs(groupPoker, 2);
-        if (pairs.Count >= 4)
+        var pairs = groupPoker.Where(kv => kv.Value.Count >= 2)
+                              .OrderByDescending(kv => kv.Key)
+                              .ToList();
+
+        if (pairs.Count >= 2)
         {
-            // Add kicker
-            pairs.Add(GetHighestRemainingCard(groupPoker, pairs));
+            var firstPair = pairs[0];
+            var secondPair = pairs[1];
+
+            var pairCards = firstPair.Value.Take(2)
+                .Select(suit => (firstPair.Key - 1) + (13 * suit)).ToList();
+
+            pairCards.AddRange(secondPair.Value.Take(2)
+                .Select(suit => (secondPair.Key - 1) + (13 * suit)).ToList());
+
+            var usedCards = pairCards.ToList();
+            var kicker = GetHighestRemainingCards(groupPoker, usedCards, 1);
+            pairCards.AddRange(kicker);
+            return pairCards;
         }
-        return pairs;
+        return new List<int>();
     }
 
+    /// <summary>
+    /// Check for One Pair
+    /// </summary>
     private static List<int> CheckPair(Dictionary<int, List<int>> groupPoker)
     {
-        var pair = JudgePairs(groupPoker, 2);
-        if (pair.Count == 2)
+        var pair = groupPoker.Where(kv => kv.Value.Count == 2)
+                             .OrderByDescending(kv => kv.Key)
+                             .FirstOrDefault();
+
+        if (pair.Value != null)
         {
-            // Add top 3 kickers
-            var kickers = GetHighestRemainingCards(groupPoker, pair, 3);
-            pair.AddRange(kickers);
+            var pairCards = pair.Value.Select(suit => (pair.Key - 1) + (13 * suit)).ToList();
+            var kickers = GetHighestRemainingCards(groupPoker, pairCards, 3);
+            pairCards.AddRange(kickers);
+            return pairCards;
         }
-        return pair;
+        return new List<int>();
     }
 
+    /// <summary>
+    /// Check for High Card
+    /// </summary>
     private static List<int> CheckHighCard(Dictionary<int, List<int>> groupPoker)
     {
-        List<int> highCardList = new List<int>();
+        var highCards = groupPoker
+            .OrderByDescending(kv => kv.Key)
+            .SelectMany(kv => kv.Value.Select(suit => (kv.Key - 1) + (13 * suit)))
+            .Take(5)
+            .ToList();
 
-        if (groupPoker.ContainsKey(1))
-        {
-            highCardList.Add(0 + (13 * groupPoker[1][0])); // Ace as high card
-        }
-        else
-        {
-            int max = groupPoker.Max(kv => kv.Key);
-            highCardList.Add((max - 1) + (13 * groupPoker[max][0]));
-        }
-
-        // Add the next highest cards to complete the hand
-        var remaining = GetHighestRemainingCards(groupPoker, highCardList, 4);
-        highCardList.AddRange(remaining);
-
-        return highCardList;
+        return highCards;
     }
 
-    // Utility to judge pairs, triples, quads
-    private static List<int> JudgePairs(Dictionary<int, List<int>> groupPoker, int pairSize)
+    /// <summary>
+    /// Check for a straight within given ranks and suit
+    /// </summary>
+    private static List<int> CheckStraightInRanks(List<int> ranks, int suit, Dictionary<int, List<int>> groupPoker)
     {
-        List<int> pokerList = new List<int>();
-        var matchingRanks = groupPoker.Where(kv => kv.Value.Count == pairSize).Select(kv => kv.Key).OrderByDescending(x => x).ToList();
-
-        foreach (var rank in matchingRanks)
+        // Handle Ace as both high and low
+        var extendedRanks = new List<int>(ranks);
+        if (ranks.Contains(1)) // Ace as 1
         {
-            for (int suit = 0; suit < 4; suit++)
+            extendedRanks.Add(14); // Ace as 14
+        }
+        extendedRanks = extendedRanks.OrderByDescending(x => x).ToList();
+
+        for (int i = 0; i < extendedRanks.Count - 4; i++)
+        {
+            if (extendedRanks[i] - 1 == extendedRanks[i + 1] &&
+                extendedRanks[i + 1] - 1 == extendedRanks[i + 2] &&
+                extendedRanks[i + 2] - 1 == extendedRanks[i + 3] &&
+                extendedRanks[i + 3] - 1 == extendedRanks[i + 4])
             {
-                if (groupPoker[rank].Contains(suit))
+                var straightRanks = new List<int> {
+                extendedRanks[i],
+                extendedRanks[i + 1],
+                extendedRanks[i + 2],
+                extendedRanks[i + 3],
+                extendedRanks[i + 4]
+            };
+
+                // Convert rank 14 back to Ace (1)
+                straightRanks = straightRanks.Select(r => r == 14 ? 1 : r).ToList();
+
+                var straightCards = new List<int>();
+                foreach (var rank in straightRanks)
                 {
-                    pokerList.Add((rank - 1) + (13 * suit));
+                    if (suit == -1)
+                    {
+                        // Any suit
+                        int cardSuit = groupPoker[rank][0]; // Use any available suit
+                        straightCards.Add((rank - 1) + (13 * cardSuit));
+                    }
+                    else
+                    {
+                        // Specific suit
+                        if (groupPoker[rank].Contains(suit))
+                        {
+                            straightCards.Add((rank - 1) + (13 * suit));
+                        }
+                        else
+                        {
+                            break; // This rank does not have the required suit
+                        }
+                    }
+                }
+
+                if (straightCards.Count == 5)
+                {
+                    return straightCards;
                 }
             }
         }
-        return pokerList;
+        return new List<int>();
     }
 
-    // Utility to get remaining high cards
-    private static int GetHighestRemainingCard(Dictionary<int, List<int>> groupPoker, List<int> excludedCards)
+    /// <summary>
+    /// Get the highest remaining cards that are not already in use
+    /// </summary>
+    private static List<int> GetHighestRemainingCards(Dictionary<int, List<int>> groupPoker, List<int> usedCards, int count)
     {
-        return GetHighestRemainingCards(groupPoker, excludedCards, 1).FirstOrDefault();
-    }
+        var usedCardSet = new HashSet<int>(usedCards);
+        var remainingCards = groupPoker
+            .SelectMany(kv => kv.Value.Select(suit => (kv.Key - 1) + (13 * suit)))
+            .Where(card => !usedCardSet.Contains(card))
+            .OrderByDescending(card => (card % 13) + 1 == 1 ? 14 : (card % 13) + 1)
+            .Take(count)
+            .ToList();
 
-    private static List<int> GetHighestRemainingCards(Dictionary<int, List<int>> groupPoker, List<int> excludedCards, int count)
-    {
-        var allCards = groupPoker.SelectMany(kv => kv.Value.Select(suit => (kv.Key - 1) + (13 * suit))).ToList();
-        var remainingCards = allCards.Except(excludedCards).OrderByDescending(n => (n % 13 == 0) ? int.MaxValue : (n % 13 + 1)).ToList();
-        return remainingCards.Take(count).ToList();
+        return remainingCards;
     }
-
 
     /// <summary>
     /// 開啟符合撲克外框
