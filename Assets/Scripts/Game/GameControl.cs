@@ -2278,14 +2278,11 @@ public class GameControl : MonoBehaviour
             return new List<GameRoomPlayerData>();
         }
 
-
-        // Dictionaries to store the hand rankings and corresponding cards for each player
-        Dictionary<GameRoomPlayerData, (int, List<int>)> shapeDic = new Dictionary<GameRoomPlayerData, (int, List<int>)>();
-        Dictionary<GameRoomPlayerData, (int, List<int>)> clientPokerDic = new Dictionary<GameRoomPlayerData, (int, List<int>)>();
+        // Dictionaries to store hand rankings and corresponding cards for each player
+        var shapeDic = new Dictionary<GameRoomPlayerData, (int, List<int>)>();
 
         foreach (var player in judgePlayers)
         {
-
             // Skip invalid players
             if (player.handPoker == null || player.handPoker.Count < 2)
             {
@@ -2306,7 +2303,6 @@ public class GameControl : MonoBehaviour
 
                     // Store the final hand for the player
                     shapeDic[player] = (result, finalHand);
-                    clientPokerDic[player] = (result, finalHand);
                 });
             }
         }
@@ -2325,32 +2321,17 @@ public class GameControl : MonoBehaviour
         if (playersWithBestHand.Count == 1)
         {
             // Single winner
-            return new List<GameRoomPlayerData>() { playersWithBestHand[0].Key };
+            return new List<GameRoomPlayerData> { playersWithBestHand[0].Key };
         }
-        else
-        {
-            Dictionary<GameRoomPlayerData, List<int>> sortedHands = new Dictionary<GameRoomPlayerData, List<int>>();
-            foreach (var player in playersWithBestHand)
-            {
-                // Sort the hand by poker ranking rules (Ace = 14)
-                List<int> sortedHand = player.Value.Item2.Select(x => x % 13 == 0 ? 14 : x % 13).ToList();
-                sortedHand.Sort(new TexasHoldemUtil.SpecialComparer());
-                sortedHands.Add(player.Key, sortedHand);
 
-            }
+        // Sort hands for kicker comparison
+        var sortedHands = playersWithBestHand.ToDictionary(
+            player => player.Key,
+            player => player.Value.Item2.Select(x => x % 13 == 0 ? 14 : x % 13).OrderByDescending(x => x).ToList()
+        );
 
-            // Compare the players' hands by kickers
-            List<GameRoomPlayerData> winners = CompareByKickers(sortedHands);
-
-            if (winners.Count == 1)
-            {
-                return winners;
-            }
-            else
-            {
-                return winners; // Return all tied players
-            }
-        }
+        // Compare the players' hands by kickers
+        return CompareByKickers(sortedHands);
     }
 
     // Helper to add kickers if the hand is less than 5 cards
