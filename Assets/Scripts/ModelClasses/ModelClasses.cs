@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Org.BouncyCastle.Tls;
+using UnityEditor;
 
 #region Shop
 [Serializable]
@@ -224,9 +225,16 @@ public class RoundEndResult
     public string tableId;
     public string roomId;
     public int roundId;
-    public List<PlayerHand> playerHands;
+    public List<PlayerDetails> playerDetails;
     public List<int> communityCards;
 }
+public class PlayerDetails
+{
+    public string playerId;
+    public string playerName;
+    public PlayerHand playerHandData;
+}
+
 public class PlayerHand
 {
     public List<int> playerHand;

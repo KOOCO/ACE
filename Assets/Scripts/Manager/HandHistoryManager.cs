@@ -23,7 +23,7 @@ public class ResultHistoryData
     // public int PlayerCurrHandShape;
     //public double WinChips;                         //贏得籌碼
     // public double SideWinChips;
-    public List<PlayerHand> playerHands;
+    public List<PlayerDetails> playerDetails;
 }
 
 /// <summary>

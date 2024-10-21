@@ -67,14 +67,14 @@ public class HistorySample : MonoBehaviour
         tempIndex = index;
 
         TableName_Txt.text = LanguageManager.Instance.GetText(resultHistory.RoomType);
-        var winner = resultHistory.playerHands.FirstOrDefault(x => x.isWinner);
+        var winner = resultHistory.playerDetails.FirstOrDefault(x => x.playerHandData.isWinner);
         Index_Txt.text = $"{LanguageManager.Instance.GetText("NO.")}{index + 1}";
         Blind_Txt.text = $"{StringUtils.SetChipsUnit(resultHistory.SmallBlind)}/{StringUtils.SetChipsUnit(resultHistory.SmallBlind * 2)}";
         Avatar_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[resultHistory.Avatar];
         Nicaname_Txt.text = resultHistory.NickName;
-        WinChips_Txt.text = StringUtils.SetChipsUnit(winner.potWinChips);
-        HandPokers[0].PokerNum = winner.playerHand[0];
-        HandPokers[1].PokerNum = winner.playerHand[1];
+        WinChips_Txt.text = StringUtils.SetChipsUnit(winner.playerHandData.potWinChips);
+        HandPokers[0].PokerNum = winner.playerHandData.playerHand[0];
+        HandPokers[1].PokerNum = winner.playerHandData.playerHand[1];
 
         foreach (var common in CommunityPokers)
         {
