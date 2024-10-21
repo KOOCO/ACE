@@ -2532,6 +2532,7 @@ public class GameView : MonoBehaviour
                     isWinner = gameRoomData.potWinData.potWinnersId.Contains(player.userId) // Check if this player is a pot winner
                 },
             };
+            saveResultData.playerDetails.Add(playerData);
         }
         //主池紀錄存檔
         if (thisData.LocalGamePlayerInfo.IsPlaying)
