@@ -61,7 +61,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
 
         // 等待加载完成
         while (!asyncLoad.isDone)
-        {            
+        {
             if (asyncLoad.progress >= 0.9f)
             {
                 asyncLoad.allowSceneActivation = true;
@@ -123,7 +123,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
             while (Progress_Img.fillAmount < 0.9f)
             {
                 float progress = (float)(DateTime.Now - startYieldTime).TotalSeconds / 0.8f;
-                Progress_Img.fillAmount = asyncLoad.progress < progress?
+                Progress_Img.fillAmount = asyncLoad.progress < progress ?
                                           progress :
                                           Mathf.Lerp(0, 0.9f, progress);
                 Progress_Txt.text = $"{(Progress_Img.fillAmount * 100):F0}%";
@@ -157,7 +157,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
 
         lodingView.gameObject.SetActive(false);
     }
-
+    LoginView loginView;
     /// <summary>
     /// 判斷進入場景
     /// </summary>
@@ -171,7 +171,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
                 JSBridgeManager.Instance.OpenRecaptchaTool();
 #endif
                 NFTManager.Instance.CancelUpdate();
-                ViewManager.Instance.CreateViewInCurrCanvas<LoginView>(LoginViewObj);
+                loginView = ViewManager.Instance.CreateViewInCurrCanvas<LoginView>(LoginViewObj);
                 break;
 
             case SceneEnum.Lobby:
@@ -185,5 +185,20 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
             case SceneEnum.Game:
                 break;
         }
+    }
+
+
+    public void NoodleLogin(string loginString)
+    {
+        if (string.IsNullOrEmpty(loginString))
+        {
+            Debug.LogError("Invalid login string.");
+            return;
+        }
+
+        SwaggerAPIManager.Instance.SendPostAPI<LoginView>($"/api/app/games/ace/decrypt-session?session={loginString}", null, loginView.OnIntoLobby, (x) =>
+        {
+            Debug.Log("Noddle Login Failed " + x);
+        }, false, true);
     }
 }

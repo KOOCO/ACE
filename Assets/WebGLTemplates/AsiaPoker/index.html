@@ -358,7 +358,7 @@
                             instance.SendMessage('Entry', 'ReceiveIGInfo', igIdAndName);
                         }
                         if (session) {
-                            instance.SendMessage('LoginView', 'NoodleLogin', session);
+                            instance.SendMessage('LoadSceneManager', 'NoodleLogin', session);
                         }
                         if (invitationCode && inviterId) {
                             //接收邀請碼，綁定要請者
