@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: BillboardAlbum
   m_EditorClassIdentifier: 
   album:
-  - {fileID: 21300000, guid: 88aea71e55923f34a9eaa05874eab85c, type: 3}
-  - {fileID: 21300000, guid: bbd743f294122494ab21cc9aec47477e, type: 3}
+  - {fileID: 21300000, guid: 8af0705bcbd38884e9ed6aee32f61386, type: 3}
+  - {fileID: 21300000, guid: 61963030b14290248be78816878c7678, type: 3}
