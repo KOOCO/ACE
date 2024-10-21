@@ -2081,6 +2081,7 @@ public class LoginView : MonoBehaviour
     /// </summary>
     public void OnIntoLobby(string data)
     {
+        Debug.Log("Noodle ::" + data);
         Services.PlayerService.SaveUser(data);
         Player player = Services.PlayerService.GetPlayer();
 
