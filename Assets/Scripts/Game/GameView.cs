@@ -2141,7 +2141,7 @@ public class GameView : MonoBehaviour
     /// 下注籌碼集中
     /// </summary>
     /// <returns></returns>
-    private IEnumerator IConcentrateBetChips()
+    public IEnumerator IConcentrateBetChips()
     {
         for (int i = 0; i < gamePlayerInfoList.Count; i++)
         {
