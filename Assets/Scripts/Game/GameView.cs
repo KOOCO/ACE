@@ -2516,25 +2516,23 @@ public class GameView : MonoBehaviour
                 }
             }
         }
-        int count = 0;
         // Add all players' hand data to the result
         foreach (var player in gameRoomData.playerDataDic.Values) // Assuming this contains all players in the game
         {
-            PlayerHand playerHand = new PlayerHand
+            PlayerDetails playerData = new PlayerDetails
             {
-                playerHand = player.handPoker,
-                playerCurrHandShape = player.playerHandShape,
-                potWinChips = gameRoomData.potWinData.potWinnersId.Contains(player.userId) ? gameRoomData.potWinData.potWinChips : 0, // Check if the player won the pot
-                sideWinChips = gameRoomData.sideWinData.sideWinnersId.Contains(player.userId) ? gameRoomData.sideWinData.sideWinChips : 0, // Check if the player won the side pot
-                isWinner = gameRoomData.potWinData.potWinnersId.Contains(player.userId) // Check if this player is a pot winner
+                playerId = player.userId,
+                playerName = player.nickname,
+                playerHandData = new PlayerHand
+                {
+                    playerHand = player.handPoker,
+                    playerCurrHandShape = player.playerHandShape,
+                    potWinChips = gameRoomData.potWinData.potWinnersId.Contains(player.userId) ? gameRoomData.potWinData.potWinChips : 0, // Check if the player won the pot
+                    sideWinChips = gameRoomData.sideWinData.sideWinnersId.Contains(player.userId) ? gameRoomData.sideWinData.sideWinChips : 0, // Check if the player won the side pot
+                    isWinner = gameRoomData.potWinData.potWinnersId.Contains(player.userId) // Check if this player is a pot winner
+                },
             };
-            saveResultData.playerDetails[count].playerId = player.userId;
-            saveResultData.playerDetails[count].playerName = player.nickname;
-            saveResultData.playerDetails[count].playerHandData = playerHand; // Add player's hand data to the result
-            count++;
         }
-        count = 0;
-
         //主池紀錄存檔
         if (thisData.LocalGamePlayerInfo.IsPlaying)
         {
