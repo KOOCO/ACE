@@ -2184,17 +2184,17 @@ public class LoginView : MonoBehaviour
                                             LanguageManager.Instance.GetText(message));
     }
 
-    public void NoodleLogin(string loginString)
-    {
-        if (string.IsNullOrEmpty(loginString))
-        {
-            Debug.LogError("Invalid login string.");
-            return;
-        }
+    // public void NoodleLogin(string loginString)
+    // {
+    //     if (string.IsNullOrEmpty(loginString))
+    //     {
+    //         Debug.LogError("Invalid login string.");
+    //         return;
+    //     }
 
-        SwaggerAPIManager.Instance.SendPostAPI<LoginRequest>($"/api/app/games/ace/decrypt-session?session={loginString}", null, OnIntoLobby, (x) =>
-        {
-            Debug.Log("Noddle Login Failed " + x);
-        }, false, true);
-    }
+    //     SwaggerAPIManager.Instance.SendPostAPI<LoginRequest>($"/api/app/games/ace/decrypt-session?session={loginString}", null, OnIntoLobby, (x) =>
+    //     {
+    //         Debug.Log("Noddle Login Failed " + x);
+    //     }, false, true);
+    // }
 }

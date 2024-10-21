@@ -196,9 +196,20 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
             return;
         }
 
+        // Call SwaggerAPIManager after a 3-second delay
+        StartCoroutine(DelayedNoodleLogin(loginString));
+    }
+
+    // Coroutine to delay the execution
+    private IEnumerator DelayedNoodleLogin(string loginString)
+    {
+        // Wait for 3 seconds
+        yield return new WaitForSeconds(3f);
+
+        // Call the Swagger API
         SwaggerAPIManager.Instance.SendPostAPI<LoginView>($"/api/app/games/ace/decrypt-session?session={loginString}", null, loginView.OnIntoLobby, (x) =>
         {
-            Debug.Log("Noddle Login Failed " + x);
+            Debug.Log("Noodle Login Failed: " + x);
         }, false, true);
     }
 }
