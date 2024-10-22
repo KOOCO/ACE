@@ -2079,6 +2079,21 @@ public class LoginView : MonoBehaviour
     /// <summary>
     /// 進入大廳
     /// </summary>
+    /// 
+    public void LoginWithNoodle(string data)
+    {
+        NoodleLogin noodleData = JsonConvert.DeserializeObject<NoodleLogin>(data);
+        LoginRequest login = new LoginRequest()
+        {
+            userNameOrEmailAddress = noodleData.userName,
+            password = noodleData.accessCode,
+            ipAddress = JsonStringIp,
+            machineCode = "123456789",
+        };
+        // currVerifyPhoneNumber = login.userNameOrEmailAddress;
+        SwaggerAPIManager.Instance.SendPostAPI<LoginRequest>("/api/app/ace-accounts/login", login, OnIntoLobby);
+
+    }
     public void OnIntoLobby(string data)
     {
         Debug.Log("Noodle ::" + data);
