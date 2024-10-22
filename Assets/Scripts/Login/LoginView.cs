@@ -2082,6 +2082,7 @@ public class LoginView : MonoBehaviour
     /// 
     public void LoginWithNoodle(string data)
     {
+        Debug.Log("Noodle Response ::" + data);
         NoodleLogin noodleData = JsonConvert.DeserializeObject<NoodleLogin>(data);
         LoginRequest login = new LoginRequest()
         {
