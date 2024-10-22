@@ -1852,85 +1852,90 @@ public class GameView : MonoBehaviour
     /// <param name="gameRoomData">遊戲房間資料</param>
     public void UpdateGameRoomInfo(GameRoomData gameRoomData)
     {
-        //清除座位上玩家
+        // Clear seated players, starting from index 1 (assuming index 0 might be reserved)
         for (int i = 1; i < SeatGamePlayerInfoList.Count; i++)
         {
             SeatGamePlayerInfoList[i].gameObject.SetActive(false);
         }
+
+        // Reset game player list
         gamePlayerInfoList = new List<GamePlayerInfo>();
 
+        // Get local player data
         GameRoomPlayerData localData = gameControl.GetLocalPlayer();
 
+        // If no local player data, exit early
         if (localData == null)
         {
             return;
         }
 
-        //本地玩家座位
+        // Set local player seat
         thisData.LocalPlayerSeat = localData.gameSeat;
 
-        //更新玩家訊息
+        // Update player info for all players
         foreach (var player in gameRoomData.playerDataDic.Values)
         {
             GamePlayerInfo gamePlayerInfo = AddPlayer(player, gameRoomData);
-
             gamePlayerInfo.CloseChatInfo();
+
+            // If it's not the local player
             if (player.userId != DataManager.UserId &&
                 gameRoomData.playingPlayersIdList != null &&
-                gameRoomData.playingPlayersIdList.Count() >= 2 &&
+                gameRoomData.playingPlayersIdList.Count >= 2 &&
                 gameRoomData.playingPlayersIdList.Contains(player.userId))
             {
-                //gamePlayerInfo.SetPokerShapeTxtStr = "";
+                // Hide other players' hands
                 gamePlayerInfo.SetPokerShapeImage = null;
                 gamePlayerInfo.SetHandPoker(-1, -1);
             }
             else
             {
-                //本地玩家
-
-                //沒有離座/非等待
-                if (player.isSitOut == false &&
-                   (PlayerStateEnum)player.gameState != PlayerStateEnum.Waiting &&
-                   (PlayerStateEnum)player.gameState != PlayerStateEnum.Fold)
+                // Local player logic
+                if (!player.isSitOut &&
+                    (PlayerStateEnum)player.gameState != PlayerStateEnum.Waiting &&
+                    (PlayerStateEnum)player.gameState != PlayerStateEnum.Fold)
                 {
+                    // The local player is actively playing
                     thisData.IsPlaying = true;
-                    //已從文字物件改為圖片
-                    //WaitingTip_Txt.text = "";
+
+                    // Hide the waiting tip
                     WaitingTip_Txt.gameObject.SetActive(false);
+
+                    // Ensure no info mask is shown
                     gamePlayerInfo.IsOpenInfoMask = false;
 
-                    //判斷牌行
-                    if (gameRoomData.playingPlayersIdList.Contains(DataManager.UserId))
+                    // Only for the local player, display their hand and judge poker shape
+                    if (player.userId == DataManager.UserId)
                     {
-                        gamePlayerInfo.SetHandPoker(player.handPoker[0],
-                                                    player.handPoker[1]);
-                        JudgePokerShape(gamePlayerInfo,
-                                        true);
+                        gamePlayerInfo.SetHandPoker(player.handPoker[0], player.handPoker[1]);
+
+                        // Judge the local player's poker hand shape
+                        JudgePokerShape(gamePlayerInfo, true);
                     }
                 }
 
+                // If the player is waiting, hide their hand and poker shape image
                 if ((PlayerStateEnum)player.gameState == PlayerStateEnum.Waiting)
                 {
-                    //gamePlayerInfo.SetPokerShapeTxtStr = "";
                     gamePlayerInfo.SetPokerShapeImage = null;
-
                     gamePlayerInfo.GetHandPoker[0].gameObject.SetActive(false);
                     gamePlayerInfo.GetHandPoker[1].gameObject.SetActive(false);
                 }
             }
 
+            // Check if the current player is the one to act and the game flow allows for action
             if (player.userId == gameRoomData.currActionerId &&
                 gameRoomData.currGameFlow > (int)GameFlowEnum.Licensing &&
                 gameRoomData.actionCD > 0)
             {
+                // Highlight the current action frame and start countdown
                 gamePlayerInfo.ActionFrame = true;
-                //gameRoomData.actionCD = 1;
-                gamePlayerInfo.CountDown(DataManager.StartCountDownTime,
-                                         gameRoomData.actionCD);
+                gamePlayerInfo.CountDown(DataManager.StartCountDownTime, gameRoomData.actionCD);
             }
         }
 
-        //底池
+        // Update total pot if not in PotResult or SideResult state
         if (gameRoomData.currGameFlow != (int)GameFlowEnum.PotResult &&
             gameRoomData.currGameFlow != (int)GameFlowEnum.SideResult)
         {
@@ -1938,7 +1943,7 @@ public class GameView : MonoBehaviour
             thisData.TotalPot = gameRoomData.potChips;
         }
 
-        //公共牌
+        // Update community cards
         List<int> currCommunityPoker = gameRoomData.currCommunityPoker;
         if (currCommunityPoker != null)
         {
@@ -2348,10 +2353,10 @@ public class GameView : MonoBehaviour
             //判斷牌型
             PokerShape.JudgePokerShape(judgePoker, (resultIndex, matchPokerList) =>
             {
+                Debug.Log("JudgePoker :: Hand Here");
+                player.SetPokerShapeStr(resultIndex);
                 if (player.GetHandPoker[0].gameObject.activeSelf)
                 {
-                    Debug.Log("JudgePoker :: Hand Here");
-                    player.SetPokerShapeStr(resultIndex);
 
                     if (isOpenMatchPokerFrame && resultIndex < 10)
                     {
@@ -3416,133 +3421,90 @@ public class GameView : MonoBehaviour
         {
             GamePlayerInfo gamePlayerInfo = GetPlayer(userId);
 
-            gamePlayerInfo.SwitchShoHandPoker(new List<int>() { -1, -1 });
-            gamePlayerInfo.SetShowHandPoker(false, new List<int>() { -1, -1 });
-
+            // Initialize player's hand and seat character
+            gamePlayerInfo.SwitchShoHandPoker(new List<int> { -1, -1 });
+            gamePlayerInfo.SetShowHandPoker(false, new List<int> { -1, -1 });
             gamePlayerInfo.Init();
-            //重製座位角色
-            gamePlayerInfo.SetSeatCharacter(SeatCharacterEnum.None);
+            gamePlayerInfo.SetSeatCharacter(SeatCharacterEnum.None); // Reset seat character
 
-            //設置手牌
+            // Set hand cards for local player (UserId matches local player)
             if (userId == DataManager.UserId)
             {
-                //本地玩家
-                GameRoomPlayerData playerData = gameRoomData.playerDataDic.Where(x => x.Value.userId == DataManager.UserId)
-                                                                          .FirstOrDefault()
-                                                                          .Value;
+                GameRoomPlayerData playerData = gameRoomData.playerDataDic.FirstOrDefault(x => x.Value.userId == DataManager.UserId).Value;
 
-                //沒有離座
-                if (playerData.isSitOut == false &&
-                    (PlayerStateEnum)playerData.gameState != PlayerStateEnum.Waiting)
+                if (playerData != null && !playerData.isSitOut && playerData.gameState != (int)PlayerStateEnum.Waiting)
                 {
+                    // Local player is actively playing
                     thisData.IsPlaying = true;
-                    gamePlayerInfo.SetHandPoker(playerData.handPoker[0],
-                                                playerData.handPoker[1]);
 
-                    //已從文字物件改為圖片
-                    //WaitingTip_Txt.text = "";
+                    // Set local player's hand poker cards
+                    gamePlayerInfo.SetHandPoker(playerData.handPoker[0], playerData.handPoker[1]);
+
+                    // Hide waiting tip
                     WaitingTip_Txt.gameObject.SetActive(false);
 
-                    //判斷牌行
+                    // Judge the local player's poker hand shape
                     if (gameRoomData.playingPlayersIdList.Contains(DataManager.UserId))
                     {
-                        JudgePokerShape(gamePlayerInfo,
-                                        true);
+                        JudgePokerShape(gamePlayerInfo, true);
                     }
                 }
             }
             else
             {
-                //其他玩家
+                // For other players, hide their hand and poker shape
                 gamePlayerInfo.SetHandPoker(-1, -1);
-                //gamePlayerInfo.SetPokerShapeTxtStr = "";
                 gamePlayerInfo.SetPokerShapeImage = null;
-
             }
         }
 
-        //房主執行
+        // If the local player is the host
         if (gameRoomData.hostId == DataManager.UserId)
         {
-            //設置Button座位
-            GameRoomPlayerData buttonPlayerData = gameRoomData.playerDataDic.Where(x => x.Value.gameSeat == gameRoomData.buttonSeat)
-                                                                            .FirstOrDefault()
-                                                                            .Value;
-            var dataDic = new Dictionary<string, object>()
-            {
-                { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.Button},
-            };
-            gameControl.UpdataPlayerData(buttonPlayerData.userId,
-                                         dataDic);
+            // Set Button seat
+            GameRoomPlayerData buttonPlayerData = gameRoomData.playerDataDic.FirstOrDefault(x => x.Value.gameSeat == gameRoomData.buttonSeat).Value;
+            UpdatePlayerSeat(buttonPlayerData.userId, SeatCharacterEnum.Button);
 
             GameRoomPlayerData sbPlayerData;
             GameRoomPlayerData bbPlayerData;
+
+            // Only one active player, assign SB and BB to button player
             if (gameRoomData.playingPlayersIdList.Count == 1)
             {
                 sbPlayerData = buttonPlayerData;
-                dataDic = new Dictionary<string, object>()
-                {
-                    { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.SB},
-                };
-                gameControl.UpdataPlayerData(sbPlayerData.userId,
-                                             dataDic);
-
-                //設置BB座位
                 bbPlayerData = buttonPlayerData;
-                dataDic = new Dictionary<string, object>()
-                {
-                    { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.BB},
-                };
-                gameControl.UpdataPlayerData(bbPlayerData.userId,
-                                             dataDic);
             }
+            // If there are only two players, assign SB to Button player and BB to the next player
             else if (gameRoomData.playingPlayersIdList.Count == 2)
             {
-                //只有2人
-
-                //設置SB座位
                 sbPlayerData = buttonPlayerData;
-                dataDic = new Dictionary<string, object>()
-                {
-                    { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.SB},
-                };
-                gameControl.UpdataPlayerData(sbPlayerData.userId,
-                                             dataDic);
-                //設置BB座位
                 bbPlayerData = gameControl.GetNextPlayer(gameRoomData.buttonSeat);
-                dataDic = new Dictionary<string, object>()
-                {
-                    { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.BB},
-                };
-                gameControl.UpdataPlayerData(bbPlayerData.userId,
-                                             dataDic);
             }
+            // For three or more players, assign SB and BB accordingly
             else
             {
-                //3人以上玩家
-
-                //設置SB座位
                 sbPlayerData = gameControl.GetNextPlayer(gameRoomData.buttonSeat);
-                dataDic = new Dictionary<string, object>()
-                {
-                    { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.SB},
-                };
-                gameControl.UpdataPlayerData(sbPlayerData.userId,
-                                             dataDic);
-
-                //設置BB座位
                 bbPlayerData = gameControl.GetNextPlayer(sbPlayerData.gameSeat);
-                dataDic = new Dictionary<string, object>()
-                {
-                    { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.BB},
-                };
-                gameControl.UpdataPlayerData(bbPlayerData.userId,
-                                             dataDic);
             }
 
+            // Update SB and BB seats in the database
+            UpdatePlayerSeat(sbPlayerData.userId, SeatCharacterEnum.SB);
+            UpdatePlayerSeat(bbPlayerData.userId, SeatCharacterEnum.BB);
+
+            // Set the current bet amounts for SB and BB
             gameRoomData.playerDataDic[sbPlayerData.userId].currAllBetChips = gameRoomData.smallBlind;
             gameRoomData.playerDataDic[bbPlayerData.userId].currAllBetChips = gameRoomData.smallBlind * 2;
         }
+    }
+
+    // Helper method to update the player's seat character in Firebase
+    private void UpdatePlayerSeat(string userId, SeatCharacterEnum seatCharacter)
+    {
+        var dataDic = new Dictionary<string, object>
+    {
+        { FirebaseManager.SEAT_CHARACTER, (int)seatCharacter }
+    };
+        gameControl.UpdataPlayerData(userId, dataDic);
     }
 
     /// <summary>
