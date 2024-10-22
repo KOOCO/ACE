@@ -92,7 +92,7 @@ public static class PokerShape
         }
 
         handResult = CheckPair(groupPoker);
-        if (handResult.Count == 5)
+        if (handResult.Count == 5) // Ensure pair plus 3 kickers
         {
             callBack(9, handResult); // One Pair
             return;
@@ -267,7 +267,10 @@ public static class PokerShape
     private static List<int> JudgePairs(Dictionary<int, List<int>> groupPoker, int pairSize)
     {
         List<int> pokerList = new List<int>();
-        var matchingRanks = groupPoker.Where(kv => kv.Value.Count == pairSize).Select(kv => kv.Key).OrderByDescending(x => x).ToList();
+        var matchingRanks = groupPoker.Where(kv => kv.Value.Count == pairSize)
+                                      .Select(kv => kv.Key)
+                                      .OrderByDescending(x => x)
+                                      .ToList();
 
         foreach (var rank in matchingRanks)
         {
@@ -276,6 +279,7 @@ public static class PokerShape
                 if (groupPoker[rank].Contains(suit))
                 {
                     pokerList.Add((rank - 1) + (13 * suit));
+                    if (pokerList.Count >= pairSize) break; // Ensure only pairSize number of cards are added
                 }
             }
         }

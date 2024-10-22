@@ -2350,6 +2350,7 @@ public class GameView : MonoBehaviour
             {
                 if (player.GetHandPoker[0].gameObject.activeSelf)
                 {
+                    Debug.Log("JudgePoker :: Hand Here");
                     player.SetPokerShapeStr(resultIndex);
 
                     if (isOpenMatchPokerFrame && resultIndex < 10)
