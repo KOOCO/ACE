@@ -204,7 +204,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
     private IEnumerator DelayedNoodleLogin(string loginString)
     {
         // Wait for 3 seconds
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
 
         // Call the Swagger API
         SwaggerAPIManager.Instance.SendPostAPI<LoginView>($"/api/app/games/ace/decrypt-session?session={loginString}", null, loginView.RegisterWithNoodle, (x) =>
