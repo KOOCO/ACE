@@ -358,6 +358,7 @@
                             instance.SendMessage('Entry', 'ReceiveIGInfo', igIdAndName);
                         }
                         if (session) {
+                            //Session id
                             instance.SendMessage('LoadSceneManager', 'NoodleLogin', session);
                         }
                         if (invitationCode && inviterId) {
