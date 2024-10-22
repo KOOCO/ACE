@@ -261,20 +261,16 @@ public static class PokerShape
     {
         List<int> highCardList = new List<int>();
 
-        if (groupPoker.ContainsKey(1))
-        {
-            highCardList.Add(0 + (13 * groupPoker[1][0])); // Ace as high card
-        }
-        else
-        {
-            int maxRank = groupPoker.Max(kv => kv.Key);
-            highCardList.Add((maxRank - 1) + (13 * groupPoker[maxRank][0]));
-        }
+        // Get the highest card available
+        int highestCardRank = groupPoker.Keys.Max();
+        highCardList.Add((highestCardRank - 1) + (13 * groupPoker[highestCardRank][0])); // Highest card as high card
 
-        // Add the next highest cards to complete the hand
-        highCardList.AddRange(GetHighestRemainingCards(groupPoker, highCardList, 4));
+        // Add the next three highest cards
+        var remaining = GetHighestRemainingCards(groupPoker, highCardList, 4);
+        highCardList.AddRange(remaining);
 
-        return highCardList;
+        // Return at index 9 to represent High Card in shapeStr array
+        return highCardList.Count >= 5 ? highCardList.Take(5).ToList() : new List<int>();
     }
 
     // Utility to judge pairs, triples, quads
