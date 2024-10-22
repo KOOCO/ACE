@@ -249,19 +249,32 @@ public class PlayerHand
 #endregion
 
 #region Noodle Login
-public class NoodleResponse
+public class NoodleUserData
 {
     public string memberId;
     public string userName;
     public decimal balance;
     public string accessCode;
 
-    public NoodleResponse(string memberId, string userName, decimal balance, string accessCode)
+    public NoodleUserData(string memberId, string userName, decimal balance, string accessCode)
     {
         this.memberId = memberId;
         this.userName = userName;
         this.balance = balance;
         this.accessCode = accessCode;
+    }
+}
+public class NoodleResponse
+{
+    public NoodleUserData data;
+    public string code;
+    public string[] messages;
+
+    public NoodleResponse(NoodleUserData data, string code, string[] messages)
+    {
+        this.data = data;
+        this.code = code;
+        this.messages = messages;
     }
 }
 #endregion

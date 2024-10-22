@@ -2084,12 +2084,12 @@ public class LoginView : MonoBehaviour
     {
         Debug.Log("Noodle Response ::" + data);
         NoodleResponse noodleData = JsonConvert.DeserializeObject<NoodleResponse>(data);
-        Debug.Log("Noodle UserName ::" + noodleData.userName);
+        Debug.Log("Noodle UserName ::" + noodleData.data.userName);
         Register register = new Register()
         {
             inviteCode = "",
             phoneNumber = "12345678",//把 RegisterNumber物件的匯入
-            userName = noodleData.userName,
+            userName = noodleData.data.userName,
             password = "Abcd@12345678",
             confirmPassword = "Abcd@12345678",
         };
