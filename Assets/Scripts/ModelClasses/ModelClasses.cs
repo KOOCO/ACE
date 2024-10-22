@@ -247,3 +247,21 @@ public class PlayerHand
 
 
 #endregion
+
+#region Noodle
+public class NoodleLogin
+{
+    public string memberId;
+    public string userName;
+    public decimal balance;
+    public string accessCode;
+
+    public NoodleLogin(string memberId, string userName, decimal balance, string accessCode)
+    {
+        this.memberId = memberId;
+        this.userName = userName;
+        this.balance = balance;
+        this.accessCode = accessCode;
+    }
+}
+#endregion
