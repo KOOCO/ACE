@@ -2144,6 +2144,7 @@ public class LoginView : MonoBehaviour
 
     private void IsUserRegistered(string data)
     {
+        Debug.Log(nameof(IsUserRegistered) + "::" + data);
         if (data == "true")
         {
             RegisterSuccessSignIn();
