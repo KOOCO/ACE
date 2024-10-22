@@ -2089,8 +2089,8 @@ public class LoginView : MonoBehaviour
             inviteCode = "",
             phoneNumber = "12345678",//把 RegisterNumber物件的匯入
             userName = noodleData.userName,
-            password = noodleData.accessCode,
-            confirmPassword = noodleData.accessCode,
+            password = "Abcd@12345678",
+            confirmPassword = "Abcd@12345678",
         };
         // currVerifyPhoneNumber = login.userNameOrEmailAddress;
         SwaggerAPIManager.Instance.SendPostAPI<Register>("/api/app/ace-accounts/register", register, IsUserRegistered);
