@@ -188,7 +188,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
     }
 
 
-    public void NoodleLogin(string loginString)
+    public void NoodleRegister(string loginString)
     {
         if (string.IsNullOrEmpty(loginString))
         {
@@ -204,10 +204,10 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
     private IEnumerator DelayedNoodleLogin(string loginString)
     {
         // Wait for 3 seconds
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
 
         // Call the Swagger API
-        SwaggerAPIManager.Instance.SendPostAPI<LoginView>($"/api/app/games/ace/decrypt-session?session={loginString}", null, loginView.LoginWithNoodle, (x) =>
+        SwaggerAPIManager.Instance.SendPostAPI<LoginView>($"/api/app/games/ace/decrypt-session?session={loginString}", null, loginView.RegisterWithNoodle, (x) =>
         {
             Debug.Log("Noodle Login Failed: " + x);
         }, false, true);

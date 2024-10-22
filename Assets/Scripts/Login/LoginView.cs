@@ -2080,19 +2080,20 @@ public class LoginView : MonoBehaviour
     /// 進入大廳
     /// </summary>
     /// 
-    public void LoginWithNoodle(string data)
+    public void RegisterWithNoodle(string data)
     {
         Debug.Log("Noodle Response ::" + data);
-        NoodleLogin noodleData = JsonConvert.DeserializeObject<NoodleLogin>(data);
-        LoginRequest login = new LoginRequest()
+        NoodleResponse noodleData = JsonConvert.DeserializeObject<NoodleResponse>(data);
+        Register register = new Register()
         {
-            userNameOrEmailAddress = noodleData.userName,
+            inviteCode = "",
+            phoneNumber = "12345678",//把 RegisterNumber物件的匯入
+            userName = noodleData.userName,
             password = noodleData.accessCode,
-            ipAddress = JsonStringIp,
-            machineCode = "123456789",
+            confirmPassword = noodleData.accessCode,
         };
         // currVerifyPhoneNumber = login.userNameOrEmailAddress;
-        SwaggerAPIManager.Instance.SendPostAPI<LoginRequest>("/api/app/ace-accounts/login", login, OnIntoLobby);
+        SwaggerAPIManager.Instance.SendPostAPI<Register>("/api/app/ace-accounts/register", register, IsUserRegistered);
 
     }
     public void OnIntoLobby(string data)
