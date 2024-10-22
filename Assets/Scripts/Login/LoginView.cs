@@ -2084,6 +2084,7 @@ public class LoginView : MonoBehaviour
     {
         Debug.Log("Noodle Response ::" + data);
         NoodleResponse noodleData = JsonConvert.DeserializeObject<NoodleResponse>(data);
+        Debug.Log("Noodle UserName ::" + noodleData.userName);
         Register register = new Register()
         {
             inviteCode = "",
