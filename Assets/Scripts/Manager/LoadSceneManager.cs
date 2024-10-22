@@ -188,7 +188,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
     }
 
 
-    public void NoodleRegister(string loginString)
+    public void NoodleLogin(string loginString)
     {
         if (string.IsNullOrEmpty(loginString))
         {
