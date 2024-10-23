@@ -37,11 +37,11 @@ public class LobbyView : MonoBehaviour
     [SerializeField]
     RectTransform Floor3;
     [SerializeField]
-    Button Mine_Btn, Shop_Btn, Main_Btn, Activity_Btn, Ranking_Btn, t_History_Btn, Settings_Btn, Refresh_Btn;
+    Button Mine_Btn, Shop_Btn, Main_Btn, Activity_Btn, Ranking_Btn, t_History_Btn, Settings_Btn, Refresh_Btn, Report_Btn;
     [SerializeField]
-    GameObject LobbyMainPageView, LobbyMinePageView, LobbyRankingView, LobbyShopView, LobbyActivityView, LobbySettingsView, LobbyT_HistoryView;
+    GameObject LobbyMainPageView, LobbyMinePageView, LobbyRankingView, LobbyShopView, LobbyActivityView, LobbySettingsView, LobbyT_HistoryView, LobbyReportView;
     [SerializeField]
-    TextMeshProUGUI MineBtn_Txt, ShopBtn_Txt, ActivityBtn_Txt, RankingBtn_Txt, t_HistoryBtn_Txt, SettingsBtn_Txt;
+    TextMeshProUGUI MineBtn_Txt, ShopBtn_Txt, ActivityBtn_Txt, RankingBtn_Txt, t_HistoryBtn_Txt, SettingsBtn_Txt, Report_Txt;
 
     [Header("任務介面")]
     [SerializeField]
@@ -83,7 +83,8 @@ public class LobbyView : MonoBehaviour
         Activity,
         Ranking,
         t_History,
-        Settings
+        Settings,
+        Report
     }
 
     bool isShowAssetList;               //是否顯示用戶資源列表
@@ -110,6 +111,7 @@ public class LobbyView : MonoBehaviour
         //ActivityBtn_Txt.text = LanguageManager.Instance.GetText("Activity");
         RankingBtn_Txt.text = LanguageManager.Instance.GetText("Ranking");
         t_HistoryBtn_Txt.text = LanguageManager.Instance.GetText("Transaction History");
+        Report_Txt.text = LanguageManager.Instance.GetText("Report");
         SettingsBtn_Txt.text = LanguageManager.Instance.GetText("Settings");
 
         #endregion
@@ -193,6 +195,10 @@ public class LobbyView : MonoBehaviour
         {
             OpenItemPage(ItemType.t_History);
         });
+        Report_Btn.onClick.AddListener(() =>
+       {
+           OpenItemPage(ItemType.Report);
+       });
 
         //設定
         Settings_Btn.onClick.AddListener(() =>
@@ -521,6 +527,9 @@ public class LobbyView : MonoBehaviour
                 break;
             case ItemType.Settings:
                 itemObj = LobbySettingsView;
+                break;
+            case ItemType.Report:
+                itemObj = LobbyReportView;
                 break;
             default:
                 Debug.LogWarning("Unknown item type: " + itemType);
