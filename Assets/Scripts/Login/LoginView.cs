@@ -2173,6 +2173,7 @@ public class LoginView : MonoBehaviour
         SwaggerAPIManager.Instance.SendPostAPI<LoginRequest>("/api/app/ace-accounts/login", login, (X) =>
         {
             Debug.Log("Success Login with Noodle" + X);
+            OnIntoLobby(X);
         });
 
     }
