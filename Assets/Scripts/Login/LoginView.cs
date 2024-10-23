@@ -14,6 +14,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using Nethereum.Contracts;
 public class LoginView : MonoBehaviour
 {
     [Header("切換/版本")]
@@ -2096,7 +2097,10 @@ public class LoginView : MonoBehaviour
             confirmPassword = "Abcd@12345678",
         };
         // currVerifyPhoneNumber = login.userNameOrEmailAddress;
-        SwaggerAPIManager.Instance.SendPostAPI<Register>("/api/app/ace-accounts/register", register, IsUserRegistered);
+        SwaggerAPIManager.Instance.SendPostAPI<Register>("/api/app/ace-accounts/register", register, IsUserRegistered, (x) =>
+        {
+            IsUserRegistered("false");
+        });
 
     }
     public void OnIntoLobby(string data)
