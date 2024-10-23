@@ -242,6 +242,7 @@ public class PlayerHand
     public double potWinChips;
     public double sideWinChips;
     public bool isWinner;
+    public int seat;
 }
 
 

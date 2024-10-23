@@ -2553,7 +2553,8 @@ public class GameView : MonoBehaviour
                     playerCurrHandShape = player.playerHandShape,
                     potWinChips = gameRoomData.potWinData.potWinnersId.Contains(player.userId) ? gameRoomData.potWinData.potWinChips : 0, // Check if the player won the pot
                     sideWinChips = gameRoomData.sideWinData.sideWinnersId.Contains(player.userId) ? gameRoomData.sideWinData.sideWinChips : 0, // Check if the player won the side pot
-                    isWinner = gameRoomData.potWinData.potWinnersId.Contains(player.userId) // Check if this player is a pot winner
+                    isWinner = gameRoomData.potWinData.potWinnersId.Contains(player.userId), // Check if this player is a pot winner
+                    seat = player.gameSeat
                 },
             };
             saveResultData.playerDetails.Add(playerData);
