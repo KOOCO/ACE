@@ -1333,5 +1333,10 @@
     "ID": "Sound",
     "English": "Sound",
     "zh_TW": "音樂"
+  },
+  {
+    "ID": "Report",
+    "English": "Report",
+    "zh_TW": "報表"
   }
 ]
