@@ -2080,10 +2080,12 @@ public class LoginView : MonoBehaviour
     /// 進入大廳
     /// </summary>
     /// 
+    private string noodleLoginData;
     public void RegisterWithNoodle(string data)
     {
         Debug.Log("Noodle Response ::" + data);
         NoodleResponse noodleData = JsonConvert.DeserializeObject<NoodleResponse>(data);
+        noodleLoginData = data;
         Debug.Log("Noodle UserName ::" + noodleData.data.userName);
         Register register = new Register()
         {
@@ -2152,10 +2154,29 @@ public class LoginView : MonoBehaviour
         }
         else
         {
-            ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Sending,
-                            LanguageManager.Instance.GetText("Something went wron please try again"));
+            // ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Sending,
+            //                 LanguageManager.Instance.GetText("Something went wron please try again"));
+            LoginWithNoodle(noodleLoginData);
         }
     }
+
+    public void LoginWithNoodle(string data)
+    {
+        Debug.Log("Noodle Response ::" + data);
+        NoodleResponse noodleData = JsonConvert.DeserializeObject<NoodleResponse>(data);
+        Debug.Log("Noodle UserName ::" + noodleData.data.userName);
+        LoginRequest login = new LoginRequest()
+        {
+            userNameOrEmailAddress = noodleData.data.userName,
+            password = "Abcd@12345678",
+        };
+        SwaggerAPIManager.Instance.SendPostAPI<LoginRequest>("/api/app/ace-accounts/login", login, (X) =>
+        {
+            Debug.Log("Success Login with Noodle" + X);
+        });
+
+    }
+
 
     /// <summary>
     /// 帳號是否登入判斷
