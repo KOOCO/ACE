@@ -190,7 +190,6 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
 
     public void NoodleLogin(string loginString)
     {
-        DataManager.SessionId = loginString;
 
         if (string.IsNullOrEmpty(loginString))
         {

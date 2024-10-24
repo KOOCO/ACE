@@ -348,9 +348,9 @@ public class LobbyMinePageView : MonoBehaviour
             LobbyView lobbyView = FindAnyObjectByType<LobbyView>();
             lobbyView.UpdateUserData();
             SwaggerAPIManager.Instance.SendGetAPI(
-                                                 $"/api/ace/balance/{lobbyView.NoodleBalanceApi(DataManager.SessionId)?.data?.memberId}/{lobbyView.NoodleBalanceApi(DataManager.SessionId)?.data?.accessCode}",
-                                                 RefreshBalance
-            );
+                                                   $"/api/ace/balance/{DataManager.MemberId}/{DataManager.AccessCode}",
+                                                   RefreshBalance
+             );
         });
 
         #endregion

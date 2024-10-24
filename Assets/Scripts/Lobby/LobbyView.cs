@@ -213,9 +213,8 @@ public class LobbyView : MonoBehaviour
             UpdateUserData();
             Refresh_Btn.interactable = false;
             StartCoroutine(openRefreshBtn());
-            NoodleBalanceApi(DataManager.SessionId);
             SwaggerAPIManager.Instance.SendGetAPI(
-                                                  $"/api/ace/balance/{NoodleBalanceApi(DataManager.SessionId)?.data?.memberId}/{NoodleBalanceApi(DataManager.SessionId)?.data?.accessCode}",
+                                                  $"/api/ace/balance/{DataManager.MemberId}/{DataManager.AccessCode}",
                                                   RefreshBalance
             );
         });
@@ -239,13 +238,7 @@ public class LobbyView : MonoBehaviour
             DisplayFloor4UI(Transfers_AnteView);
         });
     }
-    public NoodleResponse NoodleBalanceApi(string data)
-    {
-        Debug.Log("Noodle Response ::" + data);
-        NoodleResponse noodleData = JsonConvert.DeserializeObject<NoodleResponse>(data);
-        Debug.Log("Noodle UserName ::" + noodleData.data.userName);
-        return noodleData;
-    }
+
     void RefreshBalance(string balance)
     {
         if (string.IsNullOrEmpty(balance))
