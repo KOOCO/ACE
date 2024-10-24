@@ -347,10 +347,7 @@ public class LobbyMinePageView : MonoBehaviour
             //UpdatetAccountBalance("4,300 ETH", 40000, 3000, 5, 30);
             LobbyView lobbyView = FindAnyObjectByType<LobbyView>();
             lobbyView.UpdateUserData();
-            SwaggerAPIManager.Instance.SendGetAPI(
-                                                   $"/api/ace/balance/{DataManager.AccessCode}/{DataManager.MemberId}",
-                                                   RefreshBalance
-             );
+            NoodleApi.GetBalance(RefreshBalance);
         });
 
         #endregion
@@ -528,10 +525,10 @@ public class LobbyMinePageView : MonoBehaviour
         {
             NoodleBalanceResponse noodleBalanceData = JsonConvert.DeserializeObject<NoodleBalanceResponse>(balance);
 
-            if (noodleBalanceData != null && noodleBalanceData.Data != null)
+            if (noodleBalanceData != null && noodleBalanceData.data != null)
             {
                 // Display the balance in the UI
-                CryptoTable_Txt.text = noodleBalanceData.Data.Balance.ToString();
+                CryptoTable_Txt.text = noodleBalanceData.data.balance.ToString();
                 Debug.Log(nameof(RefreshBalance));
             }
             else

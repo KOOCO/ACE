@@ -213,10 +213,7 @@ public class LobbyView : MonoBehaviour
             UpdateUserData();
             Refresh_Btn.interactable = false;
             StartCoroutine(openRefreshBtn());
-            SwaggerAPIManager.Instance.SendGetAPI(
-                                                  $"/api/ace/balance/{DataManager.AccessCode}/{DataManager.MemberId}",
-                                                  RefreshBalance
-            );
+            NoodleApi.GetBalance(RefreshBalance);
         });
 
         //商店
@@ -253,10 +250,10 @@ public class LobbyView : MonoBehaviour
         {
             NoodleBalanceResponse noodleBalanceData = JsonConvert.DeserializeObject<NoodleBalanceResponse>(balance);
 
-            if (noodleBalanceData != null && noodleBalanceData.Data != null)
+            if (noodleBalanceData != null && noodleBalanceData.data != null)
             {
                 // Display the balance in the UI
-                CryptoChips_Txt.text = noodleBalanceData.Data.Balance.ToString();
+                CryptoChips_Txt.text = noodleBalanceData.data.balance.ToString();
                 Debug.Log(nameof(RefreshBalance));
             }
             else

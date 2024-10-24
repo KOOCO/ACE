@@ -322,6 +322,15 @@ public class GameControl : MonoBehaviour
             leaveRound.amount = gameRoomPlayerData.carryChips;
         }
 
+        NoodleApi.PostTableCashOut((data) =>
+        {
+            Debug.Log("Table CashOut SuccessFull.");
+        },
+        (error) =>
+        {
+            Debug.LogError($"Table CashOut Failed Error: {error}");
+        });
+
         string apiEndpoint = $"/api/app/rooms/leave-table?memberId={leaveRound.memberId}&amount={leaveRound.amount}&type={leaveRound.type}&rankPoint={leaveRound.rankPoint}";
 
         SwaggerAPIManager.Instance.SendPostAPI<LeaveRound>(apiEndpoint, null, (data) =>
