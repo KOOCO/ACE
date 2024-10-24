@@ -293,3 +293,82 @@ public class NoodleBalance
     public decimal Balance { get; set; }
 }
 #endregion
+
+#region  Table_Chips_Transaction 
+public class Data
+{
+    public int availableChips;
+
+    public Data(int availableChips)
+    {
+        this.availableChips = availableChips;
+    }
+}
+
+public class TableChipsTransactionResponse
+{
+    public Data data;
+    public string code;
+    public string[] messages;
+
+    public TableChipsTransactionResponse(Data data, string code, string[] messages)
+    {
+        this.data = data;
+        this.code = code;
+        this.messages = messages;
+    }
+}
+
+#endregion
+
+#region Table_Buy_in
+public class BuyInData
+{
+    public int availableChips;
+
+    public BuyInData(int availableChips)
+    {
+        this.availableChips = availableChips;
+    }
+}
+
+public class TableBuyInResponse
+{
+    public BuyInData data;
+    public string code;
+    public string[] messages;
+
+    public TableBuyInResponse(BuyInData data, string code, string[] messages)
+    {
+        this.data = data;
+        this.code = code;
+        this.messages = messages;
+    }
+}
+#endregion
+
+#region Table Cash Out Chips
+public class CashOutData
+{
+    public int cashOutChips;
+
+    public CashOutData(int cashOutChips)
+    {
+        this.cashOutChips = cashOutChips;
+    }
+}
+
+public class CashOutChipsResponse
+{
+    public CashOutData data;
+    public string code;
+    public string[] messages;
+
+    public CashOutChipsResponse(CashOutData data, string code, string[] messages)
+    {
+        this.data = data;
+        this.code = code;
+        this.messages = messages;
+    }
+}
+#endregion

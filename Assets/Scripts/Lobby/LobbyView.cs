@@ -214,7 +214,7 @@ public class LobbyView : MonoBehaviour
             Refresh_Btn.interactable = false;
             StartCoroutine(openRefreshBtn());
             SwaggerAPIManager.Instance.SendGetAPI(
-                                                  $"/api/ace/balance/{DataManager.MemberId}/{DataManager.AccessCode}",
+                                                  $"/api/ace/balance/{DataManager.AccessCode}/{DataManager.MemberId}",
                                                   RefreshBalance
             );
         });
