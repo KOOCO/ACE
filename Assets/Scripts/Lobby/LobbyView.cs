@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using TMPro;
+using Newtonsoft.Json;
 
 public class LobbyView : MonoBehaviour
 {
@@ -212,6 +213,8 @@ public class LobbyView : MonoBehaviour
             UpdateUserData();
             Refresh_Btn.interactable = false;
             StartCoroutine(openRefreshBtn());
+            NoodleBalanceApi(DataManager.SessionId);
+
         });
 
         //商店
@@ -233,7 +236,22 @@ public class LobbyView : MonoBehaviour
             DisplayFloor4UI(Transfers_AnteView);
         });
     }
+    public void NoodleBalanceApi(string data)
+    {
+        Debug.Log("Noodle Response ::" + data);
+        NoodleResponse noodleData = JsonConvert.DeserializeObject<NoodleResponse>(data);
+        Debug.Log("Noodle UserName ::" + noodleData.data.userName);
 
+        // currVerifyPhoneNumber = login.userNameOrEmailAddress;
+        SwaggerAPIManager.Instance.SendGetAPI($"/api/ace/balance/{noodleData.data.memberId}/{noodleData.data.accessCode}", RefreshBalance);
+
+    }
+    void RefreshBalance(string balance)
+    {
+        NoodleBalanceResponse noodleData = JsonConvert.DeserializeObject<NoodleBalanceResponse>(balance);
+        CryptoChips_Txt.text = noodleData.Data.Balance.ToString();
+        Debug.Log(nameof(RefreshBalance));
+    }
     private void OnEnable()
     {
         GameTest_Tog.gameObject.SetActive(false);

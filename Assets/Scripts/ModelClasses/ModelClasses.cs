@@ -279,3 +279,17 @@ public class NoodleResponse
     }
 }
 #endregion
+
+#region Noodle Balance inquiry
+public class NoodleBalanceResponse
+{
+    public NoodleBalance Data { get; set; }
+    public string Code { get; set; }
+    public List<string> Messages { get; set; }
+}
+
+public class NoodleBalance
+{
+    public decimal Balance { get; set; }
+}
+#endregion
