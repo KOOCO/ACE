@@ -283,14 +283,14 @@ public class NoodleResponse
 #region Noodle Balance inquiry
 public class NoodleBalanceResponse
 {
-    public NoodleBalance Data { get; set; }
-    public string Code { get; set; }
-    public List<string> Messages { get; set; }
+    public NoodleBalance data;
+    public string code;
+    public List<string> messages;
 }
 
 public class NoodleBalance
 {
-    public decimal Balance { get; set; }
+    public double balance;
 }
 #endregion
 
@@ -316,6 +316,28 @@ public class TableChipsTransactionResponse
         this.data = data;
         this.code = code;
         this.messages = messages;
+    }
+}
+
+public class TableChipsTransaction
+{
+    public string accessCode;
+    public string noodleMemberId;
+    public string tableId;
+    public string roundId;
+    public double amount;
+    public int chipTransactionType;
+    public string transferId;
+
+    public TableChipsTransaction(string accessCode, string noodleMemberId, string tableId, string roundId, double amount, int chipTransactionType, string transferId)
+    {
+        this.accessCode = accessCode;
+        this.noodleMemberId = noodleMemberId;
+        this.tableId = tableId;
+        this.roundId = roundId;
+        this.amount = amount;
+        this.chipTransactionType = chipTransactionType;
+        this.transferId = transferId;
     }
 }
 
@@ -345,6 +367,23 @@ public class TableBuyInResponse
         this.messages = messages;
     }
 }
+
+public class Tablebuyin
+{
+    public string accessCode;
+    public string noodleMemberId;
+    public string tableId;
+    public double amount;
+
+    public Tablebuyin(string accessCode, string noodleMemberId, string tableId, double amount)
+    {
+        this.accessCode = accessCode;
+        this.noodleMemberId = noodleMemberId;
+        this.tableId = tableId;
+        this.amount = amount;
+    }
+}
+
 #endregion
 
 #region Table Cash Out Chips
@@ -371,4 +410,19 @@ public class CashOutChipsResponse
         this.messages = messages;
     }
 }
+
+public class TableCashout
+{
+    public string accessCode;
+    public string noodleMemberId;
+    public string tableId;
+
+    public TableCashout(string accessCode, string noodleMemberId, string tableId)
+    {
+        this.accessCode = accessCode;
+        this.noodleMemberId = noodleMemberId;
+        this.tableId = tableId;
+    }
+}
+
 #endregion
