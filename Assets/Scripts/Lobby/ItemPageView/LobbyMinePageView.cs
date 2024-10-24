@@ -7,6 +7,7 @@ using UnityEngine.Events;
 using System.Linq;
 using TMPro;
 using Thirdweb;
+using Newtonsoft.Json;
 
 public class LobbyMinePageView : MonoBehaviour
 {
@@ -91,9 +92,9 @@ public class LobbyMinePageView : MonoBehaviour
                     BoundInviterTitle_Txt, BoundInviterIdf_Placeholder, InviationCodeSubmitBtn_Txt,
                     InviationCodeError_Txt, BringFriends_Text, InviteCodeTitle_Text, Copy_Text,
                     InvitCode_Txt;
-    
-   
-   
+
+
+
 
 
     [Header("交易紀錄")]
@@ -344,7 +345,9 @@ public class LobbyMinePageView : MonoBehaviour
         AccountBalanceReflash_Btn.onClick.AddListener(() =>
         {
             //UpdatetAccountBalance("4,300 ETH", 40000, 3000, 5, 30);
-            FindAnyObjectByType<LobbyView>().UpdateUserData();
+            LobbyView lobbyView = FindAnyObjectByType<LobbyView>();
+            lobbyView.UpdateUserData();
+            SwaggerAPIManager.Instance.SendGetAPI($"/api/ace/balance/{lobbyView.NoodleBalanceApi(DataManager.SessionId).data.memberId}/{lobbyView.NoodleBalanceApi(DataManager.SessionId).data.accessCode}", RefreshBalance);
         });
 
         #endregion
@@ -508,7 +511,12 @@ public class LobbyMinePageView : MonoBehaviour
 
         #endregion
     }
-
+    void RefreshBalance(string balance)
+    {
+        NoodleBalanceResponse noodleData = JsonConvert.DeserializeObject<NoodleBalanceResponse>(balance);
+        AccountBalanceReflashBtn_Txt.text = noodleData.Data.Balance.ToString();
+        Debug.Log(nameof(RefreshBalance));
+    }
     private void Start()
     {
         InviationCodeError_Txt.text = "";
