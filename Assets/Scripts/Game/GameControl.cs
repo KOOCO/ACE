@@ -2273,102 +2273,120 @@ public class GameControl : MonoBehaviour
     /// <returns></returns>
     private List<GameRoomPlayerData> JudgeWinner(List<GameRoomPlayerData> judgePlayers)
     {
-        // Return empty list if no players
-        if (judgePlayers == null || judgePlayers.Count == 0)
+        if (judgePlayers == null || !judgePlayers.Any())
         {
             return new List<GameRoomPlayerData>();
         }
 
-        // Dictionary to store the hand strength (poker hand rank) and the matching cards for each player
-        Dictionary<GameRoomPlayerData, (int handRank, List<int> bestHand)> handRankings = new Dictionary<GameRoomPlayerData, (int, List<int>)>();
-        Dictionary<GameRoomPlayerData, List<int>> playerAllCards = new Dictionary<GameRoomPlayerData, List<int>>();
+        // Dictionary to store the hand rankings and corresponding cards for each player
+        Dictionary<GameRoomPlayerData, (int rank, List<int> hand)> playerHands = new Dictionary<GameRoomPlayerData, (int, List<int>)>();
 
         foreach (var player in judgePlayers)
         {
-            // Combine player's hole cards with community cards
-            List<int> combinedCards = player.handPoker.Concat(gameRoomData.communityPoker).ToList();
-
-            // Evaluate the player's best hand and store the result
-            PokerShape.JudgePokerShape(combinedCards, (handRank, bestHand) =>
+            // Skip invalid players
+            if (player.handPoker == null || player.handPoker.Count < 2)
             {
-                handRankings[player] = (handRank, bestHand);
-                playerAllCards[player] = combinedCards;
+                continue;
+            }
+
+            // Concatenate player's hand with community cards
+            List<int> judgePoker = new List<int>(player.handPoker);
+            if (gameRoomData.communityPoker != null && gameRoomData.communityPoker.Count > 0)
+            {
+                judgePoker.AddRange(gameRoomData.communityPoker);
+            }
+
+            // Evaluate the poker hand
+            PokerShape.JudgePokerShape(judgePoker, (result, matchPoker) =>
+            {
+                // Ensure the best hand contains exactly 5 cards
+                List<int> finalHand = matchPoker.Count == 5 ? matchPoker : AddKickers(judgePoker, matchPoker);
+                playerHands[player] = (result, finalHand);
+
+                // Set the winner string text for the current player
+                // gameView.SetWinnerStringTxt = LanguageManager.Instance.GetText(
+                //     AssetsManager.Instance.GetStringAlbumAsset(StringAlbumEnum.HandRanksStringAlbum).strAlbum[result]);
             });
         }
 
-        // Find the highest hand rank among the players
-        int bestHandRank = handRankings.Values.Min(x => x.handRank);
+        if (!playerHands.Any())
+        {
+            return new List<GameRoomPlayerData>();
+        }
 
-        // Get the players with the best hand rank
-        var topPlayers = handRankings.Where(x => x.Value.handRank == bestHandRank).ToList();
+        // Get the best hand rank (lowest number is best)
+        int bestHandRank = playerHands.Values.Min(x => x.rank);
+
+        // Find all players with the best hand rank
+        var playersWithBestHand = playerHands.Where(x => x.Value.rank == bestHandRank).ToList();
 
         // If only one player has the best hand, they win
-        if (topPlayers.Count == 1)
+        if (playersWithBestHand.Count == 1)
         {
-            return new List<GameRoomPlayerData>() { topPlayers[0].Key };
+            return new List<GameRoomPlayerData> { playersWithBestHand[0].Key };
         }
 
-        // Multiple players have the same hand rank, need to break the tie
-        Dictionary<GameRoomPlayerData, List<int>> rankedHands = new Dictionary<GameRoomPlayerData, List<int>>();
+        // Compare kickers for tied players
+        Dictionary<GameRoomPlayerData, List<int>> sortedHands = playersWithBestHand.ToDictionary(
+            player => player.Key,
+            player => player.Value.hand.Select(x => x % 13 == 0 ? 14 : x % 13).OrderByDescending(x => x).ToList()
+        );
 
-        // Normalize the best hands (convert cards to ranking values: Ace is high or low)
-        foreach (var player in topPlayers)
-        {
-            List<int> rankedCards = player.Value.bestHand.Select(card => card % 13 == 0 ? 14 : card % 13).ToList();
-            rankedCards.Sort(new TexasHoldemUtil.SpecialComparer());
-            rankedHands[player.Key] = rankedCards;
-        }
-
-        // Handle special case for straights (1: straight, 6: straight flush)
-        if (bestHandRank == 1 || bestHandRank == 6)
-        {
-            foreach (var player in rankedHands)
-            {
-                // Check for the low Ace straight (A, 2, 3, 4, 5)
-                if (player.Value.Contains(14) && player.Value.Contains(2))
-                {
-                    player.Value[player.Value.IndexOf(14)] = 1;
-                }
-            }
-        }
-
-        // Compare the best hands and determine the winner(s)
-        return CompareHighCard(rankedHands);
+        // Determine the final winners based on kickers
+        return CompareByKickers(sortedHands);
     }
 
-    // Helper function to compare high cards among players and break ties
-    private List<GameRoomPlayerData> CompareHighCard(Dictionary<GameRoomPlayerData, List<int>> rankedHands)
+    // Helper to add kickers if the hand is less than 5 cards
+    private List<int> AddKickers(List<int> judgePoker, List<int> matchPoker)
     {
-        List<GameRoomPlayerData> winners = new List<GameRoomPlayerData>();
-        int maxCard = int.MinValue;
+        // Get remaining cards (those not in the match hand)
+        List<int> remainingCards = judgePoker.Except(matchPoker).ToList();
+        remainingCards.Sort(new TexasHoldemUtil.SpecialComparer());
 
-        // Iterate through each position in the sorted best hand, comparing highest cards
-        for (int i = 0; i < rankedHands.First().Value.Count; i++)
+        // Add the highest remaining cards (kickers) until we have 5 cards
+        List<int> finalHand = matchPoker.Concat(remainingCards.Take(5 - matchPoker.Count)).ToList();
+
+        return finalHand;
+    }
+
+    // Compare hands by kickers if multiple players have the same hand rank
+    private List<GameRoomPlayerData> CompareByKickers(Dictionary<GameRoomPlayerData, List<int>> sortedHands)
+    {
+        List<GameRoomPlayerData> potentialWinners = sortedHands.Keys.ToList();
+        int kickerIndex = 0;
+
+        while (potentialWinners.Count > 1 && kickerIndex < 5) // Compare up to 5 cards
         {
-            foreach (var player in rankedHands)
-            {
-                int currentCard = player.Value[i];
+            int maxKickerValue = int.MinValue;
+            bool validComparison = false;
 
-                if (currentCard > maxCard)
+            foreach (var player in potentialWinners)
+            {
+                if (kickerIndex < sortedHands[player].Count)
                 {
-                    winners.Clear();
-                    maxCard = currentCard;
-                    winners.Add(player.Key);
-                }
-                else if (currentCard == maxCard)
-                {
-                    winners.Add(player.Key);
+                    int currentKickerValue = sortedHands[player][kickerIndex];
+                    if (currentKickerValue > maxKickerValue)
+                    {
+                        maxKickerValue = currentKickerValue;
+                        validComparison = true;
+                    }
                 }
             }
 
-            // If we have only one winner at this point, return the result
-            if (winners.Count == 1)
+            if (!validComparison)
             {
-                return winners;
+                break; // No valid comparison, exit
             }
+
+            // Filter players whose kicker value matches the maximum kicker value
+            potentialWinners = potentialWinners
+                .Where(player => kickerIndex < sortedHands[player].Count && sortedHands[player][kickerIndex] == maxKickerValue)
+                .ToList();
+
+            kickerIndex++;
         }
 
-        return winners;
+        return potentialWinners;
     }
 
     #endregion

@@ -2327,70 +2327,63 @@ public class GameView : MonoBehaviour
     /// <param name="isWinEffect">贏家效果</param>
     private void JudgePokerShape(GamePlayerInfo player, bool isOpenMatchPokerFrame, bool isWinEffect = false)
     {
-        // 手牌
+        // Get hand cards
         Poker[] handPoker = player.GetHandPoker;
-        List<int> judgePoker = new List<int>();
-        foreach (var poker in handPoker)
+        List<int> judgePoker = handPoker.Select(p => p.PokerNum).ToList();
+
+        Debug.Log("Player: " + player.name + " | Hand Poker: " + string.Join(", ", judgePoker));
+
+        if (judgePoker != null && thisData.CurrCommunityPoker != null)
         {
-            judgePoker.Add(poker.PokerNum);
-        }
-
-        // Log the initial hand poker numbers
-        Debug.Log("JudgePokerShape :: Initial Hand Poker Numbers: " + string.Join(", ", judgePoker));
-
-        if (judgePoker != null && thisData.CurrCommunityPoker != null && handPoker != null)
-        {
-            // 公共牌
-            judgePoker = judgePoker.Concat(thisData.CurrCommunityPoker).ToList();
-
-            // Log the community poker numbers
-            Debug.Log("JudgePokerShape :: Community Poker Numbers: ");
+            // Combine with community cards
+            judgePoker.AddRange(thisData.CurrCommunityPoker);
+            Debug.Log("Combined Judge Poker: " + string.Join(", ", judgePoker));
 
             List<Poker> pokers = CommunityPokerList.Concat(handPoker.ToList()).ToList();
+            Debug.Log("Total Pokers (Community + Hand): " + pokers.Count);
 
-            // 關閉公共牌撲克效果
+            // Disable effects for the community cards
             foreach (var poker in pokers)
             {
                 poker.PokerEffectEnable = false;
             }
 
-            // Log the pokers after effects have been disabled
-            Debug.Log("JudgePokerShape :: Pokers after disabling effects: " + string.Join(", ", pokers.Select(p => p.PokerNum)));
-
-            // 判斷牌型
+            // Determine hand shape
             PokerShape.JudgePokerShape(judgePoker, (resultIndex, matchPokerList) =>
             {
-                Debug.Log("JudgePoker :: Hand Here, Result Index: " + resultIndex);
-                player.SetPokerShapeStr(resultIndex);
-
-                // Log the player's hand shape string
-                Debug.Log("JudgePokerShape :: Player Hand Shape Set to: " + resultIndex);
-
                 if (player.GetHandPoker[0].gameObject.activeSelf)
                 {
-                    if (isOpenMatchPokerFrame && resultIndex < 10)
+                    Debug.Log("Result Index :: " + resultIndex);
+                    player.SetPokerShapeStr(resultIndex);
+
+                    if (isOpenMatchPokerFrame && resultIndex < 10) // Only show for valid hands
                     {
+                        Debug.Log("Opening Match Poker Frame for Result Index: " + resultIndex);
                         PokerShape.OpenMatchPokerFrame(pokers, matchPokerList, isWinEffect);
 
                         if (isWinEffect)
                         {
-                            SetWinnerStringTxt = LanguageManager.Instance.GetText(AssetsManager.Instance.GetStringAlbumAsset(StringAlbumEnum.HandRanksStringAlbum).strAlbum[resultIndex]);
-                            // Log the winner string text
-                            Debug.Log("JudgePokerShape :: Winner String Text Set to: ");
+                            SetWinnerStringTxt = LanguageManager.Instance.GetText(
+                                AssetsManager.Instance.GetStringAlbumAsset(StringAlbumEnum.HandRanksStringAlbum).strAlbum[resultIndex]);
+                            Debug.Log("Winner String Set to: ");
                         }
                     }
+                    else if (resultIndex >= 10)
+                    {
+                        Debug.Log("Result Index " + resultIndex + " is not a valid hand, not opening Match Poker Frame.");
+                    }
+                }
+                else
+                {
+                    Debug.Log("Player's hand is not active. Skipping shape judgment.");
                 }
             });
         }
         else
         {
-            // Log when inputs are null
-            Debug.LogWarning("JudgePokerShape :: One or more inputs are null: judgePoker: " + (judgePoker == null) +
-                             ", CurrCommunityPoker: " + (thisData.CurrCommunityPoker == null) +
-                             ", handPoker: " + (handPoker == null));
+            Debug.LogError("judgePoker or CurrCommunityPoker is null.");
         }
     }
-
 
     /// <summary>
     /// 主池結果
