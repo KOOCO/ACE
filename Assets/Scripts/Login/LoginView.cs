@@ -2087,6 +2087,8 @@ public class LoginView : MonoBehaviour
         Debug.Log("Noodle Response ::" + data);
         NoodleResponse noodleData = JsonConvert.DeserializeObject<NoodleResponse>(data);
         noodleLoginData = data;
+        DataManager.AccessCode = noodleData.data.accessCode;
+        DataManager.MemberId = noodleData.data.memberId;
         Debug.Log("Noodle UserName ::" + noodleData.data.userName);
         Register register = new Register()
         {

@@ -347,7 +347,10 @@ public class LobbyMinePageView : MonoBehaviour
             //UpdatetAccountBalance("4,300 ETH", 40000, 3000, 5, 30);
             LobbyView lobbyView = FindAnyObjectByType<LobbyView>();
             lobbyView.UpdateUserData();
-            SwaggerAPIManager.Instance.SendGetAPI($"/api/ace/balance/{lobbyView.NoodleBalanceApi(DataManager.SessionId).data.memberId}/{lobbyView.NoodleBalanceApi(DataManager.SessionId).data.accessCode}", RefreshBalance);
+            SwaggerAPIManager.Instance.SendGetAPI(
+                                                   $"/api/ace/balance/{DataManager.MemberId}/{DataManager.AccessCode}",
+                                                   RefreshBalance
+             );
         });
 
         #endregion
@@ -513,9 +516,33 @@ public class LobbyMinePageView : MonoBehaviour
     }
     void RefreshBalance(string balance)
     {
-        NoodleBalanceResponse noodleData = JsonConvert.DeserializeObject<NoodleBalanceResponse>(balance);
-        AccountBalanceReflashBtn_Txt.text = noodleData.Data.Balance.ToString();
-        Debug.Log(nameof(RefreshBalance));
+        if (string.IsNullOrEmpty(balance))
+        {
+            Debug.LogError("The balance data is null or empty.");
+            return;
+        }
+
+        Debug.Log("Balance Response: " + balance);
+
+        try
+        {
+            NoodleBalanceResponse noodleBalanceData = JsonConvert.DeserializeObject<NoodleBalanceResponse>(balance);
+
+            if (noodleBalanceData != null && noodleBalanceData.Data != null)
+            {
+                // Display the balance in the UI
+                CryptoTable_Txt.text = noodleBalanceData.Data.Balance.ToString();
+                Debug.Log(nameof(RefreshBalance));
+            }
+            else
+            {
+                Debug.LogWarning("The noodleBalanceData or noodleBalanceData.Data is null.");
+            }
+        }
+        catch (JsonReaderException e)
+        {
+            Debug.LogError("Failed to deserialize NoodleBalanceResponse: " + e.Message);
+        }
     }
     private void Start()
     {

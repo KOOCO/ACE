@@ -213,9 +213,10 @@ public class LobbyView : MonoBehaviour
             UpdateUserData();
             Refresh_Btn.interactable = false;
             StartCoroutine(openRefreshBtn());
-            NoodleBalanceApi(DataManager.SessionId);
-            SwaggerAPIManager.Instance.SendGetAPI($"/api/ace/balance/{NoodleBalanceApi(DataManager.SessionId).data.memberId}/{NoodleBalanceApi(DataManager.SessionId).data.accessCode}", RefreshBalance);
-
+            SwaggerAPIManager.Instance.SendGetAPI(
+                                                  $"/api/ace/balance/{DataManager.MemberId}/{DataManager.AccessCode}",
+                                                  RefreshBalance
+            );
         });
 
         //商店
@@ -237,18 +238,36 @@ public class LobbyView : MonoBehaviour
             DisplayFloor4UI(Transfers_AnteView);
         });
     }
-    public NoodleResponse NoodleBalanceApi(string data)
-    {
-        Debug.Log("Noodle Response ::" + data);
-        NoodleResponse noodleData = JsonConvert.DeserializeObject<NoodleResponse>(data);
-        Debug.Log("Noodle UserName ::" + noodleData.data.userName);
-        return noodleData;
-    }
+
     void RefreshBalance(string balance)
     {
-        NoodleBalanceResponse noodleData = JsonConvert.DeserializeObject<NoodleBalanceResponse>(balance);
-        CryptoChips_Txt.text = noodleData.Data.Balance.ToString();
-        Debug.Log(nameof(RefreshBalance));
+        if (string.IsNullOrEmpty(balance))
+        {
+            Debug.LogError("The balance data is null or empty.");
+            return;
+        }
+
+        Debug.Log("Balance Response: " + balance);
+
+        try
+        {
+            NoodleBalanceResponse noodleBalanceData = JsonConvert.DeserializeObject<NoodleBalanceResponse>(balance);
+
+            if (noodleBalanceData != null && noodleBalanceData.Data != null)
+            {
+                // Display the balance in the UI
+                CryptoChips_Txt.text = noodleBalanceData.Data.Balance.ToString();
+                Debug.Log(nameof(RefreshBalance));
+            }
+            else
+            {
+                Debug.LogWarning("The noodleBalanceData or noodleBalanceData.Data is null.");
+            }
+        }
+        catch (JsonReaderException e)
+        {
+            Debug.LogError("Failed to deserialize NoodleBalanceResponse: " + e.Message);
+        }
     }
     private void OnEnable()
     {
