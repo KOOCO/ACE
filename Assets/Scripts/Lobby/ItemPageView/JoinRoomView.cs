@@ -101,7 +101,7 @@ public class JoinRoomView : MonoBehaviour
             ViewManager.Instance.OpenWaitingView(transform);
             //進入房間停播音樂
             //lobbyView.audioSource.Stop();
-            JoinRound newRound = new JoinRound
+            JoinRoom newRound = new JoinRoom
             {
                 memberId = DataManager.UserId,
                 tableId = DataManager.TableId,
@@ -110,10 +110,10 @@ public class JoinRoomView : MonoBehaviour
             Debug.Log($"MemberId {newRound.memberId} :: TableId {newRound.tableId} :: Amount {newRound.amount}");
 
             //ViewManager.Instance.OpenWaitingView(transform);
-            SwaggerAPIManager.Instance.SendPostAPI<JoinRound>($"/api/app/rooms/join-round?memberId={newRound.memberId}&tableId={newRound.tableId}&amount={newRound.amount}", newRound, (data) =>
+            AppApi.OnJoinRoom(newRound, (data) =>
             {
                 Debug.Log("Join Round Response :: " + data);
-                GameRound gameRound = JsonConvert.DeserializeObject<GameRound>(data);
+                GameRoom gameRound = JsonConvert.DeserializeObject<GameRoom>(data);
                 var _currencyType = DataManager.CurrencyType;
                 Debug.Log("Currency Type :: " + _currencyType);
                 DataManager.TableType = gameRound.tableType;
@@ -142,7 +142,7 @@ public class JoinRoomView : MonoBehaviour
                         break;
                 }
                 DataManager.DataUpdated = true;
-            }, null, true, true);
+            }, null);
 
 #if UNITY_EDITOR
 

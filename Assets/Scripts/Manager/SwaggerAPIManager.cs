@@ -144,23 +144,3 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         }
     }
 }
-
-/// <summary>
-/// 錢包登入資料
-/// </summary>
-public class passwordless_login
-{
-    public string walletAddress;
-    public string ipAddress;
-    public string machineCode;
-}
-
-/// <summary>
-/// 錢包註冊資料
-/// </summary>
-public class register_passwordless
-{
-    public string memberName;
-    public string emailAddress;
-    public string walletAddress;
-}

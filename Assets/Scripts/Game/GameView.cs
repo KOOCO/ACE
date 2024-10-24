@@ -3177,6 +3177,7 @@ public class GameView : MonoBehaviour
             if (gameRoomData.hostId == DataManager.UserId)
             {
                 GetRoundCount();
+                AppApi.OnRoundFinish(saveResultData);
                 SaveToFirebase(nameof(saveResultData), saveResultData, nameof(GameResultDataSaveToFirebase));
                 SaveToFirebase(nameof(gameInitHistoryData), gameInitHistoryData, nameof(GameInitDataSaveToFirebase));
                 SaveToFirebase(nameof(processHistoryData), processHistoryData, nameof(GameProcessDataSaveToFirebase));

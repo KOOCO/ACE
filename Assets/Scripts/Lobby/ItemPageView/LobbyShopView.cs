@@ -437,7 +437,7 @@ public class LobbyShopView : MonoBehaviour
             }
             else
             {
-                SwaggerAPIManager.Instance.SendPostAPI<PurchaseItem>($"/api/app/items/purchase-item?itemId={itemToPurchase.itemId}&playerId={itemToPurchase.playerId}&maxCount={1000}", null, (data) =>
+                AppApi.OnPurchaseItem(itemToPurchase, (data) =>
                 {
                     Debug.Log(data);
                     PurchaseSuccessUI.SetActive(!PurchaseSuccessUI.activeSelf);
@@ -481,13 +481,8 @@ public class LobbyShopView : MonoBehaviour
                 }, (errMsg) =>
                 {
                     Debug.LogError(errMsg);
-                }, true, true);
-
-                //Debug.Log($"您已購買 {itemName} {shopData.BuffAmount}");
-                //DataManager.UserAChips -= shopData.price;
-                //Debug.Log($"餘額 {DataManager.UserVCChips}");
+                });
             }
-
         });
     }
 

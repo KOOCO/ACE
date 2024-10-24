@@ -494,13 +494,13 @@ public class LoginView : MonoBehaviour
         //錢包註冊提交
         WalletRegisterSubmit_Btn.onClick.AddListener(() =>
         {
-            register_passwordless walletRegister = new register_passwordless()
+            RegisterPasswordLess walletRegister = new RegisterPasswordLess()
             {
                 memberName = WalletRegister_If.text,
                 emailAddress = WalletEmail_If.text,
                 walletAddress = DataManager.UserWalletAddress,
             };
-            SwaggerAPIManager.Instance.SendPostAPI<register_passwordless>("/api/app/ace-accounts/register-passwordless", walletRegister, WalletRegisterCallback);
+            AppApi.RegisterPasswordLess(walletRegister, WalletRegisterCallback);
         });
 
         #endregion
@@ -530,9 +530,7 @@ public class LoginView : MonoBehaviour
                 machineCode = "123456789",
             };
             currVerifyPhoneNumber = login.userNameOrEmailAddress;
-            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest>("/api/app/ace-accounts/login", login, OnIntoLobby);
-
-            //MobileSignInSubmit();
+            AppApi.LoginRequest(login, OnIntoLobby);
         });
 
         //手機登入密碼顯示
@@ -618,7 +616,7 @@ public class LoginView : MonoBehaviour
                 ipAddress = JsonStringIp,
                 machineCode = "123456789",
             };
-            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest>("/api/app/ace-accounts/login", login, OnIntoLobby);
+            AppApi.LoginRequest(login, OnIntoLobby);
         });
 
         //註冊成功登入取消按鈕
@@ -1212,23 +1210,6 @@ public class LoginView : MonoBehaviour
             RegisterPasswordError_Txt.text = "";
         }
     }
-
-    public class Register
-    {
-        public string inviteCode;
-        public string phoneNumber;
-        public string userName;
-        public string password;
-        public string confirmPassword;
-    }
-
-    public class LoginRequest
-    {
-        public string userNameOrEmailAddress;
-        public string password;
-        public string ipAddress;
-        public string machineCode;
-    }
     /// <summary>
     /// 手機註冊OTP驗證
     /// </summary>
@@ -1276,10 +1257,7 @@ public class LoginView : MonoBehaviour
             confirmPassword = RegisterPassword_If.text,
 
         };
-        SwaggerAPIManager.Instance.SendPostAPI<Register>("/api/app/ace-accounts/register", register, WritePhoneNewUser);
-
-        //checkDataCallbackFunc = WritePhoneNewUser;
-        //SetUniqueData();
+        AppApi.RegisterRequest(register, WritePhoneNewUser);
     }
 
     /// <summary>
@@ -1714,15 +1692,13 @@ public class LoginView : MonoBehaviour
     /// </summary>
     private void WalletLogin()
     {
-        passwordless_login wallLogin = new passwordless_login()
+        PasswordLessLogin wallLogin = new PasswordLessLogin()
         {
             walletAddress = DataManager.UserWalletAddress,
             ipAddress = JsonStringIp,
             machineCode = "123456789",
         };
-        SwaggerAPIManager.Instance.SendPostAPI<passwordless_login>("/api/app/ace-accounts/passwordless-login",
-                            wallLogin, WalletLoginCallback,
-                            OpenWalletRigisterPage);
+        AppApi.PasswordLessLogin(wallLogin, WalletLoginCallback, OpenWalletRigisterPage);
     }
 
     /// <summary>
@@ -2098,12 +2074,10 @@ public class LoginView : MonoBehaviour
             password = "Abcd@12345678",
             confirmPassword = "Abcd@12345678",
         };
-        // currVerifyPhoneNumber = login.userNameOrEmailAddress;
-        SwaggerAPIManager.Instance.SendPostAPI<Register>("/api/app/ace-accounts/register", register, IsUserRegistered, (x) =>
+        AppApi.RegisterRequest(register, IsUserRegistered, (x) =>
         {
             IsUserRegistered("false");
         });
-
     }
     public void OnIntoLobby(string data)
     {
@@ -2176,12 +2150,11 @@ public class LoginView : MonoBehaviour
             userNameOrEmailAddress = noodleData.data.userName,
             password = "Abcd@12345678",
         };
-        SwaggerAPIManager.Instance.SendPostAPI<LoginRequest>("/api/app/ace-accounts/login", login, (X) =>
+        AppApi.LoginRequest(login, (X) =>
         {
             Debug.Log("Success Login with Noodle" + X);
             OnIntoLobby(X);
         });
-
     }
 
 

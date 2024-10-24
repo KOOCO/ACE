@@ -86,21 +86,21 @@ public class TableItemList
 #endregion
 
 #region Join Round
-public class JoinRound
+public class JoinRoom
 {
     public string memberId;
     public string tableId;
     public double amount;
     public int rankPoint;
 }
-public class LeaveRound
+public class LeaveRoom
 {
     public string memberId;
     public double amount;
     public string type;
     public int rankPoint;
 }
-public class GameRound
+public class GameRoom
 {
     public string id;
     public string roomId;
@@ -425,4 +425,39 @@ public class TableCashout
     }
 }
 
+#endregion
+
+#region Auth
+public class Register
+{
+    public string inviteCode;
+    public string phoneNumber;
+    public string userName;
+    public string password;
+    public string confirmPassword;
+}
+
+public class LoginRequest
+{
+    public string userNameOrEmailAddress;
+    public string password;
+    public string ipAddress;
+    public string machineCode;
+}
+public class PasswordLessLogin
+{
+    public string walletAddress;
+    public string ipAddress;
+    public string machineCode;
+}
+
+/// <summary>
+/// 錢包註冊資料
+/// </summary>
+public class RegisterPasswordLess
+{
+    public string memberName;
+    public string emailAddress;
+    public string walletAddress;
+}
 #endregion

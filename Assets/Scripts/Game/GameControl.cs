@@ -307,7 +307,7 @@ public class GameControl : MonoBehaviour
             return;
         }
 
-        LeaveRound leaveRound = new LeaveRound
+        LeaveRoom leaveRoom = new LeaveRoom
         {
             memberId = DataManager.UserId,
             amount = 0,
@@ -319,7 +319,7 @@ public class GameControl : MonoBehaviour
         if (gameRoomData != null && gameRoomData.playerDataDic != null &&
             gameRoomData.playerDataDic.TryGetValue(DataManager.UserId, out GameRoomPlayerData gameRoomPlayerData))
         {
-            leaveRound.amount = gameRoomPlayerData.carryChips;
+            leaveRoom.amount = gameRoomPlayerData.carryChips;
         }
 
         NoodleApi.PostTableCashOut((data) =>
@@ -331,19 +331,17 @@ public class GameControl : MonoBehaviour
             Debug.LogError($"Table CashOut Failed Error: {error}");
         });
 
-        string apiEndpoint = $"/api/app/rooms/leave-table?memberId={leaveRound.memberId}&amount={leaveRound.amount}&type={leaveRound.type}&rankPoint={leaveRound.rankPoint}";
-
-        SwaggerAPIManager.Instance.SendPostAPI<LeaveRound>(apiEndpoint, null, (data) =>
+        AppApi.OnLeaveRoom(leaveRoom, (data) =>
         {
             Debug.Log("Player successfully left the room.");
-            DataManager.UserUChips += leaveRound.amount;
+            DataManager.UserUChips += leaveRoom.amount;
             DataManager.DataUpdated = true;
             OnLeaveTable();
         },
         (error) =>
         {
             Debug.LogError($"Failed to leave the room. Error: {error}");
-        }, true, true);
+        });
     }
     void OnLeaveTable()
     {

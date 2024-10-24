@@ -206,11 +206,9 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
     {
         // Wait for 3 seconds
         yield return new WaitForSeconds(3f);
-
-        // Call the Swagger API
-        SwaggerAPIManager.Instance.SendPostAPI<LoginView>($"/api/app/games/ace/decrypt-session?session={loginString}", null, loginView.RegisterWithNoodle, (x) =>
+        AppApi.DecryptSession(loginString, loginView.RegisterWithNoodle, (x) =>
         {
             Debug.Log("Noodle Login Failed: " + x);
-        }, false, true);
+        });
     }
 }
