@@ -10,15 +10,15 @@ using System;
 /// </summary>
 public class ResultHistoryData
 {
-    public DateTime DateTime;
-    public string RoomType;                         //房間類型
-    public double SmallBlind;                       //小盲注
-    public string NickName;                         //獲勝玩家暱稱
-    public int Avatar;                              //獲勝玩家頭像
-    public List<int> CommunityPoker;                //公共牌
-    public string TableId;
-    public string RoomId;
-    public int RoundId;
+    public DateTime dateTime;
+    public string roomType;                         //房間類型
+    public double smallBlind;                       //小盲注
+    public string nickName;                         //獲勝玩家暱稱
+    public int avatar;                              //獲勝玩家頭像
+    public List<int> communityPoker;                //公共牌
+    public string tableId;
+    public string roomId;
+    public int roundId;
     //public int[] HandPokers;                        //獲勝玩家手牌
     // public int PlayerCurrHandShape;
     //public double WinChips;                         //贏得籌碼

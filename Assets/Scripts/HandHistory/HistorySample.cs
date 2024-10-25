@@ -54,24 +54,24 @@ public class HistorySample : MonoBehaviour
             return;
         }
 
-        WinACoin_Img.gameObject.SetActive(resultHistory.RoomType == "Classic Battle");
-        WinUCoin_Img.gameObject.SetActive(resultHistory.RoomType == "High Roller Battleground");
-        CoinType_Txt.text = resultHistory.RoomType == "Classic Battle" ?
+        WinACoin_Img.gameObject.SetActive(resultHistory.roomType == "Classic Battle");
+        WinUCoin_Img.gameObject.SetActive(resultHistory.roomType == "High Roller Battleground");
+        CoinType_Txt.text = resultHistory.roomType == "Classic Battle" ?
                             "A COIN" :
                             "U COIN";
 
-        BlindACoin_Img.gameObject.SetActive(resultHistory.RoomType == "Classic Battle");
-        BlindUCoin_Img.gameObject.SetActive(resultHistory.RoomType == "High Roller Battleground");
+        BlindACoin_Img.gameObject.SetActive(resultHistory.roomType == "Classic Battle");
+        BlindUCoin_Img.gameObject.SetActive(resultHistory.roomType == "High Roller Battleground");
 
         tempResultHistory = resultHistory;
         tempIndex = index;
 
-        TableName_Txt.text = LanguageManager.Instance.GetText(resultHistory.RoomType);
+        TableName_Txt.text = LanguageManager.Instance.GetText(resultHistory.roomType);
         var winner = resultHistory.playerDetails.FirstOrDefault(x => x.playerHandData.isWinner);
         Index_Txt.text = $"{LanguageManager.Instance.GetText("NO.")}{index + 1}";
-        Blind_Txt.text = $"{StringUtils.SetChipsUnit(resultHistory.SmallBlind)}/{StringUtils.SetChipsUnit(resultHistory.SmallBlind * 2)}";
-        Avatar_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[resultHistory.Avatar];
-        Nicaname_Txt.text = resultHistory.NickName;
+        Blind_Txt.text = $"{StringUtils.SetChipsUnit(resultHistory.smallBlind)}/{StringUtils.SetChipsUnit(resultHistory.smallBlind * 2)}";
+        Avatar_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[resultHistory.avatar];
+        Nicaname_Txt.text = resultHistory.nickName;
         WinChips_Txt.text = StringUtils.SetChipsUnit(winner.playerHandData.potWinChips);
         HandPokers[0].PokerNum = winner.playerHandData.playerHand[0];
         HandPokers[1].PokerNum = winner.playerHandData.playerHand[1];
@@ -80,9 +80,9 @@ public class HistorySample : MonoBehaviour
         {
             common.PokerNum = -1;
         }
-        for (int i = 0; i < resultHistory.CommunityPoker.Count; i++)
+        for (int i = 0; i < resultHistory.communityPoker.Count; i++)
         {
-            CommunityPokers[i].PokerNum = resultHistory.CommunityPoker[i];
+            CommunityPokers[i].PokerNum = resultHistory.communityPoker[i];
         }
 
         Play_Btn.onClick.AddListener(() =>
