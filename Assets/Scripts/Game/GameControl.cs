@@ -333,7 +333,7 @@ public class GameControl : MonoBehaviour
         AppApi.OnLeaveRoom(leaveRoom, (data) =>
         {
             Debug.Log("Player successfully left the room.");
-            DataManager.UserUChips += leaveRoom.amount;
+            DataManager.UserChips += leaveRoom.amount;
             DataManager.DataUpdated = true;
             OnLeaveTable();
         },
@@ -1989,7 +1989,7 @@ public class GameControl : MonoBehaviour
         if (RoomType == TableTypeEnum.Cash)
         {
             //現金房
-            newChips = DataManager.UserUChips + changeValue;
+            newChips = DataManager.UserChips + changeValue;
             data = new Dictionary<string, object>()
             {
                 { FirebaseManager.U_CHIPS, Math.Round(newChips) },

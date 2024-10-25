@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class NoodleApi
 {
+    public static void SetUserBalance(string _balance)
+    {
+        NoodleBalanceResponse noodleBalanceData = JsonConvert.DeserializeObject<NoodleBalanceResponse>(_balance);
+        DataManager.UserChips = noodleBalanceData.data.balance;
+        DataManager.DataUpdated = true;
+    }
     public static void GetBalance(UnityAction<string> _success = null, UnityAction _error = null)
     {
-        SwaggerAPIManager.Instance.SendGetAPI($"/api/app/games/ace/balance/{DataManager.MemberId}/{DataManager.AccessCode}", _success, _error);
+        SwaggerAPIManager.Instance.SendGetAPI($"/api/app/games/ace/balance/{DataManager.MemberId}/{DataManager.AccessCode}", SetUserBalance, _error);
     }
 
     public static void GetTableAvailableChips(UnityAction<string> _success = null, UnityAction _error = null)

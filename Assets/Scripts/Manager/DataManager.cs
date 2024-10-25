@@ -108,7 +108,7 @@ public static class DataManager
     public static int UserMaxEnrtgy { get; set; }                   //用戶最大耐力
     public static int UserTimer { get; set; }                       //用戶加時道具數量
     public static int UserTools { get; set; }                       //用戶加時道具數量
-    public static double UserUChips { get; set; }                   //用戶U籌碼
+    public static double UserChips { get; set; }                   //用戶U籌碼
     public static double UserAChips { get; set; }                   //用戶A籌碼
     public static double UserGold { get; set; }                     //用戶Gold籌碼
     public static bool DataUpdated { get; set; }                     //DataUpdated

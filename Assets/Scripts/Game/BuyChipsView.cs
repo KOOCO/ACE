@@ -119,7 +119,7 @@ public class BuyChipsView : MonoBehaviour
         {
             CancelInvoke(nameof(SetCountDownTip));
             thisData.SendBuyChipsCallback(newValue);
-            DataManager.UserUChips -= newValue;
+            DataManager.UserChips -= newValue;
             DataManager.DataUpdated = true;
             NoodleApi.PostTableBuyIn(newValue, (data) =>
             {

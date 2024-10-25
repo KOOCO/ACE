@@ -59,7 +59,7 @@ public class CryptoTableBtnSample : MonoBehaviour
 
             if (GameRoomManager.Instance.JudgeIsCanBeCreateRoom())
             {
-                if (DataManager.UserUChips > ((smallBlind * 2) * DataManager.MinMagnification))
+                if (DataManager.UserChips > ((smallBlind * 2) * DataManager.MinMagnification))
                 {
                     if (joinRoomView == null)
                     {

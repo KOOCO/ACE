@@ -213,7 +213,7 @@ public class LobbyView : MonoBehaviour
             UpdateUserData();
             Refresh_Btn.interactable = false;
             StartCoroutine(openRefreshBtn());
-            NoodleApi.GetBalance(RefreshBalance);
+            NoodleApi.GetBalance();
         });
 
         //商店
@@ -234,37 +234,6 @@ public class LobbyView : MonoBehaviour
         {
             DisplayFloor4UI(Transfers_AnteView);
         });
-    }
-
-    void RefreshBalance(string balance)
-    {
-        if (string.IsNullOrEmpty(balance))
-        {
-            Debug.LogError("The balance data is null or empty.");
-            return;
-        }
-
-        Debug.Log("Balance Response: " + balance);
-
-        try
-        {
-            NoodleBalanceResponse noodleBalanceData = JsonConvert.DeserializeObject<NoodleBalanceResponse>(balance);
-
-            if (noodleBalanceData != null && noodleBalanceData.data != null)
-            {
-                // Display the balance in the UI
-                CryptoChips_Txt.text = noodleBalanceData.data.balance.ToString();
-                Debug.Log(nameof(RefreshBalance));
-            }
-            else
-            {
-                Debug.LogWarning("The noodleBalanceData or noodleBalanceData.Data is null.");
-            }
-        }
-        catch (JsonReaderException e)
-        {
-            Debug.LogError("Failed to deserialize NoodleBalanceResponse: " + e.Message);
-        }
     }
     private void OnEnable()
     {
@@ -473,7 +442,7 @@ public class LobbyView : MonoBehaviour
         Avatar_Btn.image.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[DataManager.UserAvatarIndex];
         Stamina_Txt.text = $"{DataManager.UserEnergy}/{DataManager.UserMaxEnrtgy}";
 
-        Assets_CryptoChipsValue_Txt.text = $"${StringUtils.SetChipsUnit(DataManager.UserUChips)}";
+        Assets_CryptoChipsValue_Txt.text = $"${StringUtils.SetChipsUnit(DataManager.UserChips)}";
         Assets_VCValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserAChips);
         Assets_GoldValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserGold);
         Assets_StaminaValue_Txt.text = $"{DataManager.UserEnergy}/{DataManager.UserMaxEnrtgy}";

@@ -347,7 +347,7 @@ public class LobbyMinePageView : MonoBehaviour
             //UpdatetAccountBalance("4,300 ETH", 40000, 3000, 5, 30);
             LobbyView lobbyView = FindAnyObjectByType<LobbyView>();
             lobbyView.UpdateUserData();
-            NoodleApi.GetBalance(RefreshBalance);
+            NoodleApi.GetBalance();
         });
 
         #endregion
@@ -511,36 +511,6 @@ public class LobbyMinePageView : MonoBehaviour
 
         #endregion
     }
-    void RefreshBalance(string balance)
-    {
-        if (string.IsNullOrEmpty(balance))
-        {
-            Debug.LogError("The balance data is null or empty.");
-            return;
-        }
-
-        Debug.Log("Balance Response: " + balance);
-
-        try
-        {
-            NoodleBalanceResponse noodleBalanceData = JsonConvert.DeserializeObject<NoodleBalanceResponse>(balance);
-
-            if (noodleBalanceData != null && noodleBalanceData.data != null)
-            {
-                // Display the balance in the UI
-                CryptoTable_Txt.text = noodleBalanceData.data.balance.ToString();
-                Debug.Log(nameof(RefreshBalance));
-            }
-            else
-            {
-                Debug.LogWarning("The noodleBalanceData or noodleBalanceData.Data is null.");
-            }
-        }
-        catch (JsonReaderException e)
-        {
-            Debug.LogError("Failed to deserialize NoodleBalanceResponse: " + e.Message);
-        }
-    }
     private void Start()
     {
         InviationCodeError_Txt.text = "";
@@ -665,7 +635,7 @@ public class LobbyMinePageView : MonoBehaviour
         DataManager.UserEnergy = Stamina;
         DataManager.UserTimer = ot;
 
-        CryptoTableValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserUChips);
+        CryptoTableValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserChips);
         VCTableValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserAChips);
         GoldValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserGold);
         StaminaValue_Txt.text = $"{DataManager.UserEnergy}/{DataManager.UserMaxEnrtgy}";

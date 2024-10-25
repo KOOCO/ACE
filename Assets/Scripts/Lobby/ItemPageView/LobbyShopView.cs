@@ -469,7 +469,7 @@ public class LobbyShopView : MonoBehaviour
                             break;
                         case 1:
                             Debug.Log("UCoin");
-                            DataManager.UserUChips -= (int)shopData.price;
+                            DataManager.UserChips -= (int)shopData.price;
                             break;
                         case 2:
                             Debug.Log("ACoin");

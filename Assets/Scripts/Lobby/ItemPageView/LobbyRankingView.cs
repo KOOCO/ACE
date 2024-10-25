@@ -221,7 +221,7 @@ public class LobbyRankingView : MonoBehaviour
 
     private void SetMyPlayerData()
     {
-        RankSampleObjLocal.GetComponent<RankSample>().SetRankData(new RankData() { avatar = DataManager.UserAvatarIndex, nickname = DataManager.UserNickname, point = (int)DataManager.UserUChips, status = DataManager.UserStatus }, 9, DataManager.UserUChips.ToString());
+        RankSampleObjLocal.GetComponent<RankSample>().SetRankData(new RankData() { avatar = DataManager.UserAvatarIndex, nickname = DataManager.UserNickname, point = (int)DataManager.UserChips, status = DataManager.UserStatus }, 9, DataManager.UserChips.ToString());
     }
     /// <summary>
     /// 設置排名

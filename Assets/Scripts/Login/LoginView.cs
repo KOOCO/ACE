@@ -155,6 +155,10 @@ public class LoginView : MonoBehaviour
     [SerializeField]
     GameObject Privacy_Obj, Privacy_text, Term_text, Privacy_obj_Scroll, Term_obj_Scroll,
       Privacy_text_CH, Term_text_CH, Privacy_text_EN, Term_text_EN, Button_EN, Button_CH;
+
+    [SerializeField]
+    TMP_InputField loginWithURL;
+
     [SerializeField]
     Button PrivacyConfirm_Btn, Term_Btn, PrivacyPolicy_Btn;
     [SerializeField]
@@ -517,6 +521,14 @@ public class LoginView : MonoBehaviour
         //手機登入提交
         SignIn_Btn.onClick.AddListener(() =>
         {
+#if UNITY_EDITOR
+            AppApi.DecryptSession(loginWithURL.text, RegisterWithNoodle, (x) =>
+            {
+                Debug.Log("Noodle Login Failed: " + x);
+            });
+            return;
+#endif
+
             ViewManager.Instance.OpenWaitingView(transform);
 
             recodePhoneNumber = SingInAccount_If.text;
@@ -754,6 +766,13 @@ public class LoginView : MonoBehaviour
         //SoundToggleGroup.IsPlayAudio(AudioSource);
         AudioManager.Instance.playTittle();
         MusicSwitchBtn.IsPlayAudio();
+
+
+#if UNITY_EDITOR
+        loginWithURL.gameObject.SetActive(true);
+#else
+        loginWithURL.gameObject.SetActive(false);
+#endif
     }
 
     private void Update()
@@ -1875,7 +1894,7 @@ public class LoginView : MonoBehaviour
             { FirebaseManager.INVITATION_CODE, currInviteCode },                        //邀請碼                            
             { FirebaseManager.AVATAR_INDEX, 0},                                         //頭像編號
             { FirebaseManager.A_CHIPS, DataManager.UserAChips},
-            { FirebaseManager.U_CHIPS, DataManager.UserUChips},
+            { FirebaseManager.U_CHIPS, DataManager.UserChips},
             { FirebaseManager.GOLD, DataManager.UserGold},
             { FirebaseManager.NICKNAME, ""},
         };
@@ -2091,7 +2110,7 @@ public class LoginView : MonoBehaviour
 
         DataManager.UserId = player.memberId;
         DataManager.UserAChips = player.promotionCoin;
-        DataManager.UserUChips = player.walletAmount;
+        DataManager.UserChips = player.walletAmount;
         DataManager.UserGold = player.gold;
         DataManager.UserInvitationCode = player.inviteCode;
         DataManager.UserTimer = player.timer;

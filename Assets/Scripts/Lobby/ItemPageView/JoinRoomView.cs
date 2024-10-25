@@ -84,7 +84,7 @@ public class JoinRoomView : MonoBehaviour
         {
             //籌碼不足
             if (tableType == TableTypeEnum.Cash &&
-                newCarryChipsValue > DataManager.UserUChips)
+                newCarryChipsValue > DataManager.UserChips)
             {
                 ViewManager.Instance.OpenTipMsgView(lobbyView.transform, messageStatus.Failed, LanguageManager.Instance.GetText("Purchase Unsuccessful, Please Try Again!"));
                 gameObject.SetActive(false);
@@ -138,7 +138,7 @@ public class JoinRoomView : MonoBehaviour
                         break;
                     case CurrencyType.UCoin:
                         Debug.Log(_currencyType);
-                        DataManager.UserUChips -= newCarryChipsValue;
+                        DataManager.UserChips -= newCarryChipsValue;
                         break;
                 }
                 DataManager.DataUpdated = true;
@@ -242,7 +242,7 @@ public class JoinRoomView : MonoBehaviour
         if (isClassic)
             TexasHoldemUtil.SetBuySlider(this.smallBlind * 2, DataManager.UserAChips < ((this.smallBlind * 2) * DataManager.MaxMagnification) ? DataManager.UserAChips : (this.smallBlind * 2) * DataManager.MaxMagnification, BuyChips_Sli, tableType);
         else
-            TexasHoldemUtil.SetBuySlider(this.smallBlind * 2, DataManager.UserUChips < ((this.smallBlind * 2) * DataManager.MaxMagnification) ? DataManager.UserUChips : (this.smallBlind * 2) * DataManager.MaxMagnification, BuyChips_Sli, tableType);
+            TexasHoldemUtil.SetBuySlider(this.smallBlind * 2, DataManager.UserChips < ((this.smallBlind * 2) * DataManager.MaxMagnification) ? DataManager.UserChips : (this.smallBlind * 2) * DataManager.MaxMagnification, BuyChips_Sli, tableType);
 
         MinBuyChips_Txt.text = $"{StringUtils.SetChipsUnit((this.smallBlind * 2) * DataManager.MinMagnification)}";
         MaxBuyChips_Txt.text = $"{StringUtils.SetChipsUnit((this.smallBlind * 2) * DataManager.MaxMagnification)}"; ;
