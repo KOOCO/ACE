@@ -2528,13 +2528,13 @@ public class GameView : MonoBehaviour
                             break;
                     }
 
-                    saveResultData.RoomType = roomName;
-                    saveResultData.SmallBlind = gameRoomData.smallBlind;
-                    saveResultData.CommunityPoker = gameRoomData.currCommunityPoker ?? new List<int>(); // Use null-coalescing operator for safety
-                    saveResultData.DateTime = DateTime.UtcNow;
-                    saveResultData.RoomId = DataManager.RoomId;
-                    saveResultData.TableId = DataManager.TableId;
-                    saveResultData.RoundId = roundId;
+                    saveResultData.roomType = roomName;
+                    saveResultData.smallBlind = gameRoomData.smallBlind;
+                    saveResultData.communityPoker = gameRoomData.currCommunityPoker ?? new List<int>(); // Use null-coalescing operator for safety
+                    saveResultData.dateTime = DateTime.UtcNow;
+                    saveResultData.roomId = DataManager.RoomId;
+                    saveResultData.tableId = DataManager.TableId;
+                    saveResultData.roundId = roundId;
                 }
             }
         }
