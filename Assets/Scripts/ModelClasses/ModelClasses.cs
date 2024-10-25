@@ -252,14 +252,14 @@ public class PlayerHand
 #region Noodle Login
 public class NoodleUserData
 {
-    public string memberId;
+    public string noodleMemberId;
     public string userName;
     public decimal balance;
     public string accessCode;
 
-    public NoodleUserData(string memberId, string userName, decimal balance, string accessCode)
+    public NoodleUserData(string noodleMemberId, string userName, decimal balance, string accessCode)
     {
-        this.memberId = memberId;
+        this.noodleMemberId = noodleMemberId;
         this.userName = userName;
         this.balance = balance;
         this.accessCode = accessCode;
