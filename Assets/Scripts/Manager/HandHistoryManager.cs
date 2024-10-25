@@ -13,7 +13,6 @@ public class ResultHistoryData
     public DateTime dateTime;
     public string roomType;                         //房間類型
     public double smallBlind;                       //小盲注
-    public string nickName;                         //獲勝玩家暱稱
     public int avatar;                              //獲勝玩家頭像
     public List<int> communityPoker;                //公共牌
     public string tableId;

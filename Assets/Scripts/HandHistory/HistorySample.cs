@@ -71,7 +71,7 @@ public class HistorySample : MonoBehaviour
         Index_Txt.text = $"{LanguageManager.Instance.GetText("NO.")}{index + 1}";
         Blind_Txt.text = $"{StringUtils.SetChipsUnit(resultHistory.smallBlind)}/{StringUtils.SetChipsUnit(resultHistory.smallBlind * 2)}";
         Avatar_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[resultHistory.avatar];
-        Nicaname_Txt.text = resultHistory.nickName;
+        Nicaname_Txt.text = winner.playerName;
         WinChips_Txt.text = StringUtils.SetChipsUnit(winner.playerHandData.potWinChips);
         HandPokers[0].PokerNum = winner.playerHandData.playerHand[0];
         HandPokers[1].PokerNum = winner.playerHandData.playerHand[1];

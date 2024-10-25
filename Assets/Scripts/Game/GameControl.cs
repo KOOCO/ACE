@@ -4,7 +4,6 @@ using UnityEngine;
 using System.Linq;
 using System;
 using UnityEngine.Events;
-using WalletConnectSharp.Crypto.Models;
 
 public class GameControl : MonoBehaviour
 {
@@ -2310,9 +2309,8 @@ public class GameControl : MonoBehaviour
                 List<int> finalHand = matchPoker.Count == 5 ? matchPoker : AddKickers(judgePoker, matchPoker);
                 playerHands[player] = (result, finalHand);
 
-                // Set the winner string text for the current player
-                // gameView.SetWinnerStringTxt = LanguageManager.Instance.GetText(
-                //     AssetsManager.Instance.GetStringAlbumAsset(StringAlbumEnum.HandRanksStringAlbum).strAlbum[result]);
+                // Debugging to check each player's hand rank and final hand
+                Debug.Log($"Player: {player.nickname}, Rank: {result}, Hand: {string.Join(", ", finalHand)}");
             });
         }
 
@@ -2330,6 +2328,7 @@ public class GameControl : MonoBehaviour
         // If only one player has the best hand, they win
         if (playersWithBestHand.Count == 1)
         {
+            Debug.Log($"Winner by rank: {playersWithBestHand[0].Key.nickname}");
             return new List<GameRoomPlayerData> { playersWithBestHand[0].Key };
         }
 
@@ -2340,7 +2339,11 @@ public class GameControl : MonoBehaviour
         );
 
         // Determine the final winners based on kickers
-        return CompareByKickers(sortedHands);
+        List<GameRoomPlayerData> winners = CompareByKickers(sortedHands);
+
+        // Debugging to list final winners after kicker comparison
+        Debug.Log($"Winners after kicker comparison: {string.Join(", ", winners.Select(w => w.nickname))}");
+        return winners;
     }
 
     // Helper to add kickers if the hand is less than 5 cards

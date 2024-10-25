@@ -7,7 +7,6 @@ using System.Linq;
 using TMPro;
 using RequestBuf;
 using Newtonsoft.Json;
-using UnityEditor.Search;
 
 public class GameView : MonoBehaviour
 {
