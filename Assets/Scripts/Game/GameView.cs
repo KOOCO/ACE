@@ -556,6 +556,14 @@ public class GameView : MonoBehaviour
         AllIn_Btn.onClick.AddListener(() =>
         {
             Raise_Sli.value = (float)thisData.LocalPlayerChips;
+            NoodleApi.PostTableChipsTransaction("0", thisData.CurrCallValue, 6, " ", (x) =>
+              {
+                  Debug.Log("Call Table ChipsTransaction Success");
+              },
+              (error) =>
+              {
+                  Debug.LogError($"Call Table ChipsTransaction Failed Error: {error}");
+              });
         });
 
         //底池百分比加註
@@ -3564,6 +3572,14 @@ public class GameView : MonoBehaviour
         sbPlayer.PlayerAction(BetActingEnum.Blind,
                               gameRoomData.smallBlind,
                               sbPlayerData.carryChips - gameRoomData.smallBlind);
+        NoodleApi.PostTableChipsTransaction("0", thisData.SmallBlindValue, 3, " ", (x) =>
+             {
+                 Debug.Log("SB Table ChipsTransaction Success");
+             },
+             (error) =>
+             {
+                 Debug.LogError($"SB Table ChipsTransaction Failed Error: {error}");
+             });
         if (DataManager.UserId == sbPlayerData.userId)
         {
             gameControl.UpdateLocalChips(-gameRoomData.smallBlind);
@@ -3582,6 +3598,14 @@ public class GameView : MonoBehaviour
         bbPlayer.PlayerAction(BetActingEnum.Blind,
                               gameRoomData.smallBlind * 2,
                               bbPlayerData.carryChips - (gameRoomData.smallBlind * 2));
+        NoodleApi.PostTableChipsTransaction("0", thisData.SmallBlindValue * 2, 2, " ", (x) =>
+            {
+                Debug.Log("BB Table ChipsTransaction Success");
+            },
+            (error) =>
+            {
+                Debug.LogError($"Call Table ChipsTransaction Failed Error: {error}");
+            });
         if (DataManager.UserId == sbPlayerData.userId)
         {
             gameControl.UpdateLocalChips(-gameRoomData.smallBlind * 2);
