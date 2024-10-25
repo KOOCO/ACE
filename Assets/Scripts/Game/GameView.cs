@@ -597,6 +597,14 @@ public class GameView : MonoBehaviour
             }
             Raise_Tr.gameObject.SetActive(false);
             SetActionButton = false;
+            NoodleApi.PostTableChipsTransaction("0", thisData.CurrCallValue, 4, " ", (x) =>
+               {
+                   Debug.Log("Call Table ChipsTransaction Success");
+               },
+               (error) =>
+               {
+                   Debug.LogError($"Call Table ChipsTransaction Failed Error: {error}");
+               });
         });
 
         //加注/All In
@@ -643,6 +651,10 @@ public class GameView : MonoBehaviour
                 NoodleApi.PostTableChipsTransaction("0", thisData.CurrRaiseValue, 9, " ", (x) =>
                 {
                     Debug.Log("Raise Table ChipsTransaction Success");
+                },
+                (error) =>
+                {
+                    Debug.LogError($"Raise Table ChipsTransaction Failed Error: {error}");
                 });
             }
             else
