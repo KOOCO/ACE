@@ -1,4 +1,6 @@
+using Newtonsoft.Json;
 using UnityEngine.Events;
+using UnityEngine;
 
 public class NoodleApi
 {
@@ -14,6 +16,8 @@ public class NoodleApi
     public static void PostTableBuyIn(double amount, UnityAction<string> _success = null, UnityAction<string> _error = null)
     {
         Tablebuyin tablebuyin = new Tablebuyin(DataManager.AccessCode, DataManager.MemberId, DataManager.TableId, amount);
+        string data = JsonConvert.SerializeObject(tablebuyin);
+        Debug.Log("TableBuyIn Data :: " + data);
         SwaggerAPIManager.Instance.SendPostAPI($"/api/app/games/ace/table-buy-in", tablebuyin, _success, _error);
     }
     public static void PostTableCashOut(UnityAction<string> _success = null, UnityAction<string> _error = null)

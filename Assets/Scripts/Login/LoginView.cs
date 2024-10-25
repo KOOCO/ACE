@@ -2060,12 +2060,9 @@ public class LoginView : MonoBehaviour
     private string noodleLoginData;
     public void RegisterWithNoodle(string data)
     {
-        Debug.Log("Noodle Response ::" + data);
+        Debug.Log("Noodle Response Register::" + data);
         NoodleResponse noodleData = JsonConvert.DeserializeObject<NoodleResponse>(data);
         noodleLoginData = data;
-        DataManager.AccessCode = noodleData.data.accessCode;
-        DataManager.MemberId = noodleData.data.noodleMemberId;
-        Debug.Log("Noodle UserName ::" + noodleData.data.userName);
         Register register = new Register()
         {
             inviteCode = "",
@@ -2142,9 +2139,10 @@ public class LoginView : MonoBehaviour
 
     public void LoginWithNoodle(string data)
     {
-        Debug.Log("Noodle Response ::" + data);
+        Debug.Log("Noodle Response Login::" + data);
         NoodleResponse noodleData = JsonConvert.DeserializeObject<NoodleResponse>(data);
-        Debug.Log("Noodle UserName ::" + noodleData.data.userName);
+        DataManager.AccessCode = noodleData.data.accessCode;
+        DataManager.MemberId = noodleData.data.noodleMemberId;
         LoginRequest login = new LoginRequest()
         {
             userNameOrEmailAddress = noodleData.data.userName,
@@ -2152,7 +2150,6 @@ public class LoginView : MonoBehaviour
         };
         AppApi.LoginRequest(login, (X) =>
         {
-            Debug.Log("Success Login with Noodle" + X);
             OnIntoLobby(X);
         });
     }
