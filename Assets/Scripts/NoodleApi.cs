@@ -4,7 +4,7 @@ public class NoodleApi
 {
     public static void GetBalance(UnityAction<string> _success = null, UnityAction _error = null)
     {
-        SwaggerAPIManager.Instance.SendGetAPI($"/api/ace/balance/{DataManager.AccessCode}/{DataManager.MemberId}", _success, _error);
+        SwaggerAPIManager.Instance.SendGetAPI($"/api/app/games/ace/balance/{DataManager.AccessCode}/{DataManager.MemberId}", _success, _error);
     }
 
     public static void GetTableAvailableChips(UnityAction<string> _success = null, UnityAction _error = null)

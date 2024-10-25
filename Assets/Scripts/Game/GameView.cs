@@ -7,6 +7,7 @@ using System.Linq;
 using TMPro;
 using RequestBuf;
 using Newtonsoft.Json;
+using UnityEditor.Search;
 
 public class GameView : MonoBehaviour
 {
@@ -640,6 +641,10 @@ public class GameView : MonoBehaviour
                     strData.RaiseValueStr = $"\n{StringUtils.SetChipsUnit(thisData.CurrRaiseValue)}";
                     //RaiseBtn_Txt.text = LanguageManager.Instance.GetText(strData.RaiseStr) + strData.RaiseValueStr;
                 }
+                NoodleApi.PostTableChipsTransaction("0", thisData.CurrRaiseValue, 9, " ", (x) =>
+                {
+                    Debug.Log("Raise Table ChipsTransaction Success");
+                });
             }
             else
             {
