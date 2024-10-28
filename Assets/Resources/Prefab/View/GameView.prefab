@@ -42362,6 +42362,7 @@ GameObject:
   - component: {fileID: 1760406042036180758}
   - component: {fileID: 1220671225630884339}
   - component: {fileID: 2579460822892401376}
+  - component: {fileID: 4709059296033471225}
   m_Layer: 0
   m_Name: 'ToggleGroup '
   m_TagString: Untagged
@@ -42472,6 +42473,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4709059296033471225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6572525629718201825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ad2d6aa526a34e43a736082a7d9ebb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _imageoOn: {fileID: 4679749178120112802}
+  _imageOff: {fileID: 8279491127295308338}
+  btn: {fileID: 2579460822892401376}
 --- !u!1 &6577083101527306948
 GameObject:
   m_ObjectHideFlags: 0

@@ -266,6 +266,8 @@ public class LobbyView : MonoBehaviour
         DataManager.ReciveRankData();
         UpdateUserData();
 
+        Refresh_Btn.onClick.Invoke();
+
         /*
 #if UNITY_EDITOR
 

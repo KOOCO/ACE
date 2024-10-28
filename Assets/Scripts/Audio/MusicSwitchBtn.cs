@@ -11,7 +11,6 @@ public class MusicSwitchBtn : MonoBehaviour
     [SerializeField] private Image _imageOff;
     [SerializeField] public Button btn;
     [SerializeField] public static bool isSoundOpen;
-    public bool isSFX;
     void Start()
     {
         showImg(false);

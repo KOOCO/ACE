@@ -15,6 +15,8 @@ using UnityEngine.Events;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Nethereum.Contracts;
+using UnityEngine.Networking;
+
 public class LoginView : MonoBehaviour
 {
     [Header("切換/版本")]
@@ -166,8 +168,13 @@ public class LoginView : MonoBehaviour
                     PrivacyConfirmBtn_Txt, Privacy_Title, Term_Title,
                     TermsConfirm_Btn_Txt, PrivacyConfirm_Btn_Txt;
 
-    [Header("音樂撥放")]
+    //[Header("音樂撥放")]
     //public AudioSource AudioSource;
+
+    [Header("Session Account")]
+    [SerializeField]
+    string Operator, secretKey;
+
     [SerializeField]
     const int ErrorWalletConnectTime = 30;                                      //判定連接失敗等待時間
     const int codeCountDownTime = 60;                                           //發送OTP倒數時間
@@ -522,10 +529,12 @@ public class LoginView : MonoBehaviour
         SignIn_Btn.onClick.AddListener(() =>
         {
 #if UNITY_EDITOR
-            AppApi.DecryptSession(loginWithURL.text, RegisterWithNoodle, (x) =>
-            {
-                Debug.Log("Noodle Login Failed: " + x);
-            });
+            //AppApi.DecryptSession(loginWithURL.text, RegisterWithNoodle, (x) =>
+            //{
+            //    Debug.Log("Noodle Login Failed: " + x);
+            //});
+            //StartCoroutine(GetLobbyData(loginWithURL.text));
+            StartCoroutine(GetAuthorData());
             return;
 #endif
 
@@ -769,7 +778,7 @@ public class LoginView : MonoBehaviour
 
 
 #if UNITY_EDITOR
-        loginWithURL.gameObject.SetActive(true);
+        loginWithURL.gameObject.SetActive(false);
 #else
         loginWithURL.gameObject.SetActive(false);
 #endif
@@ -2220,6 +2229,111 @@ public class LoginView : MonoBehaviour
         ViewManager.Instance.OpenTipMsgView(transform, status,
                                             LanguageManager.Instance.GetText(message));
     }
+    #region Get all sesseion
+    ///<summary>
+    ///Get auhtorize Session
+    /// </summary>
+    IEnumerator GetAuthorData()
+    {
+        // 建立 UnityWebRequest，設定請求的 URL
+        string url = $"https://noodle-dev.azurewebsites.net/api/authorize";
+        UnityWebRequest request = UnityWebRequest.Get(url);
+
+        // 設定請求頭
+        request.SetRequestHeader("accept", "application/json");
+        request.SetRequestHeader("Operator", Operator);
+        request.SetRequestHeader("SecretKey", secretKey);
+        request.SetRequestHeader("RequestVerificationToken", "CfDJ8LFzIbsr735Dofa_0sFAIEosFVjQldc81reOa8sHc5iXtzrFEVMuypibJHs7pcsEnjsQM8WCuU9mQCzIWo17KmSKKzSvPU_SlvqeXTlAtpes7VZCCw6rQRz6sCfKI9tFFG8opdHZflZ2i2SMXfRKr9M");
+        request.SetRequestHeader("X-Requested-With", "XMLHttpRequest");
+
+        // 發送請求並等待回應
+        yield return request.SendWebRequest();
+
+        // 檢查請求是否出現錯誤
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError("Error: " + request.error);
+        }
+        else
+        {
+            // 輸出請求結果
+            //Debug.Log("Response: " + request.downloadHandler.text);
+
+            string jsonResponse = request.downloadHandler.text;
+
+            // 使用 JsonUtility 解析 JSON
+            GeneralResponse responseData = JsonUtility.FromJson<GeneralResponse>(jsonResponse);
+            string sessionValue = responseData.data.session;
+
+            //Start get Lobby session
+            yield return new WaitUntil(() =>sessionValue != "");
+
+            StartCoroutine(GetLobbyData(sessionValue));
+        }
+    }
+
+    /// <summary>
+    /// Get Lobby Session
+    ///</summary>
+    IEnumerator GetLobbyData(string authorSession)
+    {
+        // 建立 UnityWebRequest，設定請求的 URL
+        string url = $"https://noodle-dev.azurewebsites.net/api/lobby/{SingInAccount_If.text}/1";
+        UnityWebRequest request = UnityWebRequest.Get(url);
+
+        // 設定請求頭
+        request.SetRequestHeader("accept", "application/json");
+        request.SetRequestHeader("Session", authorSession);
+        request.SetRequestHeader("RequestVerificationToken", "CfDJ8LFzIbsr735Dofa_0sFAIEosFVjQldc81reOa8sHc5iXtzrFEVMuypibJHs7pcsEnjsQM8WCuU9mQCzIWo17KmSKKzSvPU_SlvqeXTlAtpes7VZCCw6rQRz6sCfKI9tFFG8opdHZflZ2i2SMXfRKr9M");
+        request.SetRequestHeader("X-Requested-With", "XMLHttpRequest");
+
+        // 發送請求並等待回應
+        yield return request.SendWebRequest();
+
+        // 檢查請求是否出現錯誤
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError("Error: " + request.error);
+        }
+        else
+        {
+            // 輸出請求結果
+            //Debug.Log("Response: " + request.downloadHandler.text);
+
+            string jsonResponse = request.downloadHandler.text;
+
+            // 使用 JsonUtility 解析 JSON
+            GeneralResponse response = JsonUtility.FromJson<GeneralResponse>(jsonResponse);
+            print(response.data.url);
+
+            // 提取 URL 中的 session 值
+            string sessionValue = ExtractSessionValue(response.data.url);
+            //Debug.Log("Session Value: " + sessionValue);
+
+            //Start LogIn
+            AppApi.DecryptSession(sessionValue, RegisterWithNoodle, (x) =>
+            {
+                Debug.Log("Noodle Login Failed: " + x);
+            });
+        }
+    }
+
+    // 提取 session 值的方法
+    string ExtractSessionValue(string url)
+    {
+        //print(url);
+        Uri uri = new Uri(url);
+        string query = uri.Query; // 获取 URL 中的查询字符串部分 "?session=..."
+
+        // 确保 URL 包含 "session=" 参数
+        if (query.Contains("session="))
+        {
+            string sessionParam = query.Substring(query.IndexOf("session=") + "session=".Length);
+            return sessionParam;  // 返回 session 值
+        }
+        return null; // 如果未找到 session 参数，返回 null
+    }
+    #endregion
 
     // public void NoodleLogin(string loginString)
     // {
@@ -2234,4 +2348,18 @@ public class LoginView : MonoBehaviour
     //         Debug.Log("Noddle Login Failed " + x);
     //     }, false, true);
     // }
+}
+
+// 用于匹配 JSON 结构的数据类
+[Serializable]
+public class GeneralResponse
+{
+    public GeneralData data;
+}
+
+[Serializable]
+public class GeneralData
+{
+    public string url;     // 如果有 URL 的话会解析
+    public string session; // 如果有 Session 的话会解析
 }
