@@ -644,6 +644,14 @@ public class GameView : MonoBehaviour
                                                 acting,
                                                 betValue);
 
+                    NoodleApi.PostTableChipsTransaction("0", thisData.CurrRaiseValue, 9, " ", (x) =>
+                    {
+                        Debug.Log("Raise Table ChipsTransaction Success");
+                    },
+                    (error) =>
+                    {
+                        Debug.LogError($"Raise Table ChipsTransaction Failed Error: {error}");
+                    });
                     Raise_Tr.gameObject.SetActive(false);
                     SetActionButton = false;
                 }
@@ -655,17 +663,6 @@ public class GameView : MonoBehaviour
                                        "RaiseTo";
                     strData.RaiseValueStr = $"\n{StringUtils.SetChipsUnit(thisData.CurrRaiseValue)}";
                     //RaiseBtn_Txt.text = LanguageManager.Instance.GetText(strData.RaiseStr) + strData.RaiseValueStr;
-                }
-                if (Raise_Tr.gameObject.activeInHierarchy)
-                {
-                    NoodleApi.PostTableChipsTransaction("0", thisData.CurrRaiseValue, 9, " ", (x) =>
-                    {
-                        Debug.Log("Raise Table ChipsTransaction Success");
-                    },
-                    (error) =>
-                    {
-                        Debug.LogError($"Raise Table ChipsTransaction Failed Error: {error}");
-                    });
                 }
             }
             else
