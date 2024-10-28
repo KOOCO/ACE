@@ -745,6 +745,51 @@
     "zh_TW": "僅顯示最近 3 個月的交易。"
   },
   {
+    "ID": "BETS RECORD",
+    "English": "BETS RECORD",
+    "zh_TW": "下注紀錄"
+  },
+  {
+    "ID": "TRANSACTION LIST",
+    "English": "TRANSACTION LIST",
+    "zh_TW": "額度紀錄"
+  },
+  {
+    "ID": "HAND HISTORY",
+    "English": "HAND HISTORY",
+    "zh_TW": "手牌紀錄"
+  },
+  {
+    "ID": "All Wins：",
+    "English": "All Wins：",
+    "zh_TW": "總輸贏："
+  },
+  {
+    "ID": "All Valid Bet：",
+    "English": "All Valid Bet：",
+    "zh_TW": "總有效投注："
+  },
+  {
+    "ID": "All Bets：",
+    "English": "All Bets：",
+    "zh_TW": "總投注："
+  },
+  {
+    "ID": "Total         Record(S)",
+    "English": "Total         Record(S)",
+    "zh_TW": "總計         筆"
+  },
+  {
+    "ID": "Date",
+    "English": "Date",
+    "zh_TW": "日期"
+  },
+  {
+    "ID": "Game",
+    "English": "Game",
+    "zh_TW": "遊戲"
+  },
+  {
     "ID": "VIRTUAL CODE",
     "English": "VIRTUAL CODE",
     "zh_TW": "虛擬程式碼"
@@ -755,14 +800,24 @@
     "zh_TW": "日期範圍"
   },
   {
-    "ID": "Start Date",
-    "English": "Start Date",
-    "zh_TW": "開始日期"
+    "ID": "Start Time",
+    "English": "Start Time",
+    "zh_TW": "開始時間"
   },
   {
-    "ID": "End Date",
-    "English": "End Date",
-    "zh_TW": "結束日期"
+    "ID": "End Time",
+    "English": "End Time",
+    "zh_TW": "結束時間"
+  },
+  {
+    "ID": "Start",
+    "English": "Start",
+    "zh_TW": "開始"
+  },
+  {
+    "ID": "End",
+    "English": "End",
+    "zh_TW": "結束"
   },
   {
     "ID": "All Type",
