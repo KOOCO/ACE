@@ -1236,7 +1236,7 @@ GameObject:
   - component: {fileID: 2283763856417467446}
   - component: {fileID: 2385905738217536501}
   - component: {fileID: 4703769551040275994}
-  - component: {fileID: 2325917937855420612}
+  - component: {fileID: 3615048423187305313}
   m_Layer: 0
   m_Name: ToggleGroup
   m_TagString: Untagged
@@ -1360,7 +1360,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &2325917937855420612
+--- !u!114 &3615048423187305313
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1369,7 +1369,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1574802771889425739}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b7d65a0a0a0ab5458d12b8b3ca81cb0, type: 3}
+  m_Script: {fileID: 11500000, guid: ba7ba06a893514ae59f0101b7a4b8c38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _imageoOn: {fileID: 3582875005276666454}
@@ -1839,7 +1839,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1847935969524924500
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7309,7 +7309,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &216833704959174834
 RectTransform:
   m_ObjectHideFlags: 0

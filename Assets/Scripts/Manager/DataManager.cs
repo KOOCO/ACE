@@ -111,7 +111,8 @@ public static class DataManager
     public static double UserChips { get; set; }                   //用戶U籌碼
     public static double UserAChips { get; set; }                   //用戶A籌碼
     public static double UserGold { get; set; }                     //用戶Gold籌碼
-    public static bool DataUpdated { get; set; }                     //DataUpdated
+    public static double Rebate { get; set; }
+    public static bool DataUpdated { get; set; }
     public static string TableId { get; set; }
     public static string RoomId { get; set; }
     public static string TableType { get; set; }
