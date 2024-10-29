@@ -229,7 +229,7 @@ public class LanguageManager
         thisData.CurrLanguageIndex = index;
         PlayerPrefs.SetInt(LanguagePlayerPrefsKey, thisData.CurrLanguageIndex);
 
-        ChangeFont();
+        //ChangeFont();
         UpdateLanguage();
     }
 

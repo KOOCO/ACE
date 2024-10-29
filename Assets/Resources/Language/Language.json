@@ -10,6 +10,11 @@
     "zh_TW": "亞洲撲克"
   },
   {
+    "ID": "ACE",
+    "English": "ACE",
+    "zh_TW": "亞洲撲克"
+  },
+  {
     "ID": "Retry",
     "English": "RETRY",
     "zh_TW": "重新嘗試"
@@ -270,6 +275,11 @@
     "zh_TW": "我的 NFT"
   },
   {
+    "ID": "My History",
+    "English": "My History(Last Three Month)",
+    "zh_TW": "我的歷史紀錄(最近3個月)"
+  },
+  {
     "ID": "Transaction History",
     "English": "Transaction History",
     "zh_TW": "交易紀錄"
@@ -278,6 +288,11 @@
     "ID": "Change Avatar",
     "English": "Change Avatar",
     "zh_TW": "更換頭像"
+  },
+  {
+    "ID": "PersonalInformation",
+    "English": "PersonalInformation",
+    "zh_TW": "個人資料"
   },
   {
     "ID": "Account Balance",
@@ -303,6 +318,41 @@
     "ID": "Hand History",
     "English": "Hand History",
     "zh_TW": "手牌紀錄"
+  },
+  {
+    "ID": "TOTAL HANDS PLAYED",
+    "English": "TOTAL HANDS PLAYED",
+    "zh_TW": "總局數"
+  },
+  {
+    "ID": "AVERAGE WINNING",
+    "English": "AVERAGE WINNING",
+    "zh_TW": "平均獲勝率"
+  },
+  {
+    "ID": "WIN RATE",
+    "English": "WIN RATE",
+    "zh_TW": "獲勝率"
+  },
+  {
+    "ID": "BIGGEST POT WON",
+    "English": "BIGGEST POT WON",
+    "zh_TW": "最高獲勝金額"
+  },
+  {
+    "ID": "TOTAL EARNINGS",
+    "English": "TOTAL EARNINGS",
+    "zh_TW": "總收入"
+  },
+  {
+    "ID": "HANDS PLAYED",
+    "English": "HANDS PLAYED",
+    "zh_TW": "玩過的手牌"
+  },
+  {
+    "ID": "HANDS WON",
+    "English": "HANDS WON",
+    "zh_TW": "手牌獲勝數"
   },
   {
     "ID": "Settings",
@@ -785,6 +835,11 @@
     "zh_TW": "日期"
   },
   {
+    "ID": "Game Date",
+    "English": "Date",
+    "zh_TW": "遊戲日期"
+  },
+  {
     "ID": "Game",
     "English": "Game",
     "zh_TW": "遊戲"
@@ -820,6 +875,66 @@
     "zh_TW": "結束"
   },
   {
+    "ID": "Room ID",
+    "English": "Room ID",
+    "zh_TW": "房號"
+  },
+  {
+    "ID": "Room rate",
+    "English": "Room rate",
+    "zh_TW": "房費"
+  },
+  {
+    "ID": "Bets",
+    "English": "Bets",
+    "zh_TW": "下注金額"
+  },
+  {
+    "ID": "Valid Bet",
+    "English": "Valid Bet",
+    "zh_TW": "有效投注"
+  },
+  {
+    "ID": "Wins",
+    "English": "Wins",
+    "zh_TW": "獲勝金額"
+  },
+  {
+    "ID": "Profit",
+    "English": "Profit",
+    "zh_TW": "勝負"
+  },
+  {
+    "ID": "Transaction Number",
+    "English": "Transaction Number",
+    "zh_TW": "交易編號"
+  },
+  {
+    "ID": "Time",
+    "English": "Time",
+    "zh_TW": "時間"
+  },
+  {
+    "ID": "Types",
+    "English": "Types",
+    "zh_TW": "類型"
+  },
+  {
+    "ID": "Amount",
+    "English": "Amount",
+    "zh_TW": "金額"
+  },
+  {
+    "ID": "Transfer In",
+    "English": "Transfer In",
+    "zh_TW": "轉入"
+  },
+  {
+    "ID": "Transfer Out",
+    "English": "Transfer Out",
+    "zh_TW": "轉出"
+  },
+  {
     "ID": "All Type",
     "English": "All Type",
     "zh_TW": "所有類型"
@@ -835,8 +950,8 @@
     "zh_TW": "賭注"
   },
   {
-    "ID": "ALL",
-    "English": "ALL",
+    "ID": "All",
+    "English": "All",
     "zh_TW": "全部"
   },
   {
@@ -1273,6 +1388,11 @@
     "ID": "Player",
     "English": "Player",
     "zh_TW": "玩家"
+  },
+  {
+    "ID": "Player ID",
+    "English": "PLAYER ID: ",
+    "zh_TW": "玩家暱稱"
   },
   {
     "ID": "Rank",

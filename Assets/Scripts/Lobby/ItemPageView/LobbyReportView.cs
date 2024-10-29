@@ -18,7 +18,7 @@ public class LobbyReportView : MonoBehaviour
     [Header("日期選擇")]
     public GameObject dateSelect_Obj;
     [SerializeField]
-    Button startTime_Btn, endTime_Btn;
+    Button startTime_Btn, endTime_Btn, startIcon_Btn, endIcon_Btn;
     [SerializeField]
     TextMeshProUGUI StartTime_Txt, EndTime_Txt;
     [SerializeField]
@@ -29,11 +29,15 @@ public class LobbyReportView : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI startTime_Txt, endTime_Txt;
     [SerializeField]
-    Button Confirm_Btn;
+    Button Confirm_Btn, Submit_Btn;
 
     [Header("文本")]
-    public TextMeshProUGUI betRecord_Txt, transactionList_Txt, handHistory_Txt, allWins_Txt, allValidBet_Txt, allBets_Txt, totalRecords_Txt, StartTime_Text, startTime_Text, EndTime_Text, endTime_Text, Game_Txt,
-        Date_Txt, Cancel_Txt, Confirm_Txt,
+    public TextMeshProUGUI betRecord_Txt, transactionList_Txt, handHistory_Txt,
+        allWins_Txt, allValidBet_Txt, allBets_Txt, totalRecords_Txt, totalRecords_Txt1,
+        StartTime_Text, startTime_Text, EndTime_Text, endTime_Text, Game_Txt,
+        All_Txt, asiaPoker_Txt,
+        Date_Txt, Cancel_Txt, Confirm_Txt, Submit_Txt,
+        T_Number_Txt, Time_Txt, Types_Txt, Amount_Txt,
         hadH_Tip_Txt;
 
     // Start is called before the first frame update
@@ -41,6 +45,8 @@ public class LobbyReportView : MonoBehaviour
     {
         ListenEvent();
         LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
+        StartTime_Txt.text = System.DateTime.Today.ToShortDateString();
+        EndTime_Txt.text = System.DateTime.Today.ToShortDateString();
     }
 
     /// <summary>
@@ -59,6 +65,7 @@ public class LobbyReportView : MonoBehaviour
         allValidBet_Txt.text = LanguageManager.Instance.GetText("All Valid Bet：");
         allBets_Txt.text = LanguageManager.Instance.GetText("All Bets：");
         totalRecords_Txt.text = LanguageManager.Instance.GetText("Total         Record(S)");
+        totalRecords_Txt1.text = LanguageManager.Instance.GetText("Total         Record(S)");
         #endregion
 
         #region 日期選擇
@@ -70,6 +77,16 @@ public class LobbyReportView : MonoBehaviour
         Date_Txt.text = LanguageManager.Instance.GetText("Date");
         Cancel_Txt.text = LanguageManager.Instance.GetText("Cancel");
         Confirm_Txt.text = LanguageManager.Instance.GetText("Confirm");
+        Submit_Txt.text = LanguageManager.Instance.GetText("SUBMIT");
+        Game_Drop.options[0].text = LanguageManager.Instance.GetText("All");
+        Game_Drop.options[1].text = LanguageManager.Instance.GetText("Asia Poker");
+        #endregion
+
+        #region 額度紀錄
+        T_Number_Txt.text = LanguageManager.Instance.GetText("Transaction Number");
+        Time_Txt.text = LanguageManager.Instance.GetText("Time");
+        Types_Txt.text = LanguageManager.Instance.GetText("Types");
+        Amount_Txt.text = LanguageManager.Instance.GetText("Amount");
         #endregion
 
         hadH_Tip_Txt.text = LanguageManager.Instance.GetText("Show last 20 hands");
@@ -82,6 +99,8 @@ public class LobbyReportView : MonoBehaviour
             if (isOn)
                 selectObj(betRecord_Obj);
             dateSelect_Obj.SetActive(true);
+            StartTime_Txt.text = System.DateTime.Today.ToShortDateString();
+            EndTime_Txt.text = System.DateTime.Today.ToShortDateString();
             Game_Drop.gameObject.SetActive(true);
         });
         transactionList_Tog.onValueChanged.AddListener((isOn) =>
@@ -89,6 +108,8 @@ public class LobbyReportView : MonoBehaviour
             if (isOn)
                 selectObj(transactionList_Obj);
             dateSelect_Obj.SetActive(true);
+            StartTime_Txt.text = System.DateTime.Today.ToShortDateString();
+            EndTime_Txt.text = System.DateTime.Today.ToShortDateString();
             Game_Drop.gameObject.SetActive(false);
         });
         handHistory_Tog.onValueChanged.AddListener((isOn) =>
@@ -105,6 +126,14 @@ public class LobbyReportView : MonoBehaviour
         endTime_Btn.onClick.AddListener(() =>{
             Calendar_Obj.SetActive(true);
             StartCoroutine(selectToday(System.DateTime.Today.Day));
+        });
+        startIcon_Btn.onClick.AddListener(() =>
+        {
+            startTime_Btn.onClick.Invoke();
+        });
+        endIcon_Btn.onClick.AddListener(() =>
+        {
+            endTime_Btn.onClick.Invoke();
         });
 
         Confirm_Btn.onClick.AddListener(() =>
@@ -149,9 +178,14 @@ public class LobbyReportView : MonoBehaviour
             //print(dTrans.transform.GetChild(2).GetComponent<Text>().text);
             if (day.ToString() == dTrans.transform.GetChild(2).GetComponent<Text>().text)
             {
-                print(day);
-                dTrans.GetComponent<Button>().onClick.Invoke();
-                break;
+                if (dTrans.GetComponent<Button>().interactable == false)
+                    continue;
+                else
+                {
+                    print(day);
+                    dTrans.GetComponent<Button>().onClick.Invoke();
+                    break;
+                }
             }
         }
     }
