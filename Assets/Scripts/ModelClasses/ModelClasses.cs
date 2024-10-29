@@ -461,3 +461,24 @@ public class RegisterPasswordLess
     public string walletAddress;
 }
 #endregion
+
+#region Player Statistics
+public class PlayerStatistics
+{
+    public int totalHandsPlayed;
+    public int averageWinning;
+    public int winRate;
+    public int biggestPotWon;
+    public int totalEarnings;
+
+    public PlayerStatistics(int totalHandsPlayed, int averageWinning, int winRate, int biggestPotWon, int totalEarnings)
+    {
+        this.totalHandsPlayed = totalHandsPlayed;
+        this.averageWinning = averageWinning;
+        this.winRate = winRate;
+        this.biggestPotWon = biggestPotWon;
+        this.totalEarnings = totalEarnings;
+    }
+}
+
+#endregion

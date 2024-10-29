@@ -136,6 +136,9 @@ public class LobbyMinePageView : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI SettingsTitle_Txt;
 
+    [SerializeField]
+    TextMeshProUGUI Text_totalTimesValue, Text_averageVicRateValue, Text_vicRateValue, Text_highestVicPriceValue, Text_totalRevenueValue;
+
     const string expandContentName = "Content";                                 //展開內容物件名稱
     const string expandTopBgName = "TopBg";                                     //收起上方物件名稱
     const float expandTIme = 0.1f;                                              //內容展開時間
@@ -232,6 +235,7 @@ public class LobbyMinePageView : MonoBehaviour
         #endregion
 
         SetUserInfo();
+        AppApi.PlayerStatistics(UpdatePlayerStatistics);
     }
 
     private void OnDestroy()
@@ -820,4 +824,14 @@ public class LobbyMinePageView : MonoBehaviour
     }
 
     #endregion
+
+    public void UpdatePlayerStatistics(string _playerData)
+    {
+        PlayerStatistics playerData = JsonConvert.DeserializeObject<PlayerStatistics>(_playerData);
+        Text_totalTimesValue.text = playerData.totalHandsPlayed.ToString();
+        Text_averageVicRateValue.text = playerData.averageWinning.ToString();
+        Text_vicRateValue.text = playerData.winRate.ToString();
+        Text_highestVicPriceValue.text = playerData.biggestPotWon.ToString();
+        Text_totalRevenueValue.text = playerData.totalEarnings.ToString();
+    }
 }
