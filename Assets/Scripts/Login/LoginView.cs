@@ -398,7 +398,7 @@ public class LoginView : MonoBehaviour
         Privacy_text.SetActive(false);
 
         recordConnect = new RecordConnect();
-        ListenerEvent();
+        // ListenerEvent();
     }
 
     /// <summary>
@@ -1475,7 +1475,7 @@ public class LoginView : MonoBehaviour
     /// </summary>
     private void OnSwlwctWalletInit()
     {
-        Wallet_Obj.SetActive(true);
+        // Wallet_Obj.SetActive(true);
         Mobile_Obj.SetActive(false);
         SelectWalletPage_Obj.SetActive(true);
         ConnectingWallet_Obj.SetActive(false);
@@ -2091,6 +2091,7 @@ public class LoginView : MonoBehaviour
         Debug.Log("Noodle Response Register::" + data);
         NoodleResponse noodleData = JsonConvert.DeserializeObject<NoodleResponse>(data);
         noodleLoginData = data;
+        DataManager.UserNickname = noodleData.data.userName;
         Register register = new Register()
         {
             inviteCode = "",
@@ -2266,7 +2267,7 @@ public class LoginView : MonoBehaviour
             string sessionValue = responseData.data.session;
 
             //Start get Lobby session
-            yield return new WaitUntil(() =>sessionValue != "");
+            yield return new WaitUntil(() => sessionValue != "");
 
             StartCoroutine(GetLobbyData(sessionValue));
         }

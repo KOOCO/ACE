@@ -382,10 +382,10 @@ public class LobbyView : MonoBehaviour
                 nameof(UpdateUserData));
 
             //開啟設置暱稱
-            if (isFirstIn)
-            {
-                Instantiate(SetNicknameViewObj, transform);
-            }
+            // if (isFirstIn)
+            // {
+            //     Instantiate(SetNicknameViewObj, transform);
+            // }
         }
 
         //使用邀請碼登入
