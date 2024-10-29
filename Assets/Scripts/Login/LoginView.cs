@@ -173,7 +173,7 @@ public class LoginView : MonoBehaviour
 
     [Header("Session Account")]
     [SerializeField]
-    string Operator, secretKey;
+    string Operator, secretKey, userName;
 
     [SerializeField]
     const int ErrorWalletConnectTime = 30;                                      //判定連接失敗等待時間
@@ -784,6 +784,11 @@ public class LoginView : MonoBehaviour
 #endif
     }
 
+    [EButton]
+    public void LoginInEditor()
+    {
+        StartCoroutine(GetAuthorData());
+    }
     private void Update()
     {
         SingInAccount = false;
@@ -2279,7 +2284,7 @@ public class LoginView : MonoBehaviour
     IEnumerator GetLobbyData(string authorSession)
     {
         // 建立 UnityWebRequest，設定請求的 URL
-        string url = $"https://noodle-dev.azurewebsites.net/api/lobby/{SingInAccount_If.text}/1";
+        string url = $"https://noodle-dev.azurewebsites.net/api/lobby/{userName}/1";
         UnityWebRequest request = UnityWebRequest.Get(url);
 
         // 設定請求頭

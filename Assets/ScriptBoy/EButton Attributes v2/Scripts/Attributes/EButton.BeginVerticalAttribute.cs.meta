@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 339a9ceee946f5d4baae9e2a38c929c3
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 196880
+  packageName: EButton Attributes v2
+  packageVersion: 2.0.1
+  assetPath: Assets/ScriptBoy/EButton Attributes v2/Scripts/Attributes/EButton.BeginVerticalAttribute.cs
+  uploadId: 636886

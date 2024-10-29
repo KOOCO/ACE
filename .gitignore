@@ -66,3 +66,5 @@ crashlytics-build.properties
 
 # My Fild
 Assets/Scenes/Entry.unity
+Assets/Scripts/Services/LoginService.cs
+Assets/Scripts/Services/LoginService.cs.meta

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 0660eb301a1f100489777f8305d966d3
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 196880
+  packageName: EButton Attributes v2
+  packageVersion: 2.0.1
+  assetPath: Assets/ScriptBoy/EButton Attributes v2/Documentation/Changelog.txt
+  uploadId: 636886

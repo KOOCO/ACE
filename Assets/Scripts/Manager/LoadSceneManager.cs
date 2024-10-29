@@ -27,7 +27,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
         base.Awake();
 
         Loading_Txt.text = "Now Loading...";
-        lodingView.gameObject.SetActive(false);
+        lodingView.gameObject.SetActive(true);
     }
 
     /// <summary>
