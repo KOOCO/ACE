@@ -14823,7 +14823,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Background Music
+  m_text: Sound
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
   m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
@@ -34140,8 +34140,8 @@ GameObject:
   - component: {fileID: 3313648968655726872}
   - component: {fileID: 1353012779019737249}
   - component: {fileID: 8658857808240218104}
-  - component: {fileID: 7515314709566395217}
   - component: {fileID: 4427778215065637322}
+  - component: {fileID: 5763281685574220276}
   m_Layer: 0
   m_Name: ToggleGroup
   m_TagString: Untagged
@@ -34208,22 +34208,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7515314709566395217
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5241549843625555121}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 613df52cee37ce548a0a3eb198cde5f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _imageoOn: {fileID: 3429675029454436374}
-  _imageOff: {fileID: 7040380153046635207}
-  btn: {fileID: 4427778215065637322}
-  isSFX: 0
 --- !u!114 &4427778215065637322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34268,6 +34252,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5763281685574220276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5241549843625555121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b7d65a0a0a0ab5458d12b8b3ca81cb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _imageoOn: {fileID: 3429675029454436374}
+  _imageOff: {fileID: 7040380153046635207}
+  btn: {fileID: 4427778215065637322}
 --- !u!1 &5247781855161740934
 GameObject:
   m_ObjectHideFlags: 0
@@ -42362,7 +42361,7 @@ GameObject:
   - component: {fileID: 1760406042036180758}
   - component: {fileID: 1220671225630884339}
   - component: {fileID: 2579460822892401376}
-  - component: {fileID: 4709059296033471225}
+  - component: {fileID: 5512843836690490144}
   m_Layer: 0
   m_Name: 'ToggleGroup '
   m_TagString: Untagged
@@ -42473,7 +42472,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &4709059296033471225
+--- !u!114 &5512843836690490144
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42482,7 +42481,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6572525629718201825}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ad2d6aa526a34e43a736082a7d9ebb6, type: 3}
+  m_Script: {fileID: 11500000, guid: e2b3d4569eef62e40a157bf532024dd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _imageoOn: {fileID: 4679749178120112802}
