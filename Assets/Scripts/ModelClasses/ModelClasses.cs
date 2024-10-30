@@ -232,6 +232,13 @@ public class PlayerDetails
 {
     public string playerId;
     public string playerName;
+    public string playerHandId;
+    public double playerValidBetAmount;
+    public double playerRoomFee;
+    public string roundInsuranceResult;
+    public double roundInsurancePayRate;
+    public double roundInsurancePayAmount;
+    public bool isBot;
     public PlayerHand playerHandData;
 }
 
@@ -242,7 +249,7 @@ public class PlayerHand
     public double potWinChips;
     public double sideWinChips;
     public bool isWinner;
-    public int seat;
+    public string seat;
 }
 
 

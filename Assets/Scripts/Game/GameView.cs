@@ -2564,6 +2564,13 @@ public class GameView : MonoBehaviour
             {
                 playerId = player.userId,
                 playerName = player.nickname,
+                playerHandId = "",
+                playerValidBetAmount = 0,
+                playerRoomFee = 0,
+                roundInsuranceResult = "",
+                roundInsurancePayAmount = 0,
+                roundInsurancePayRate = 0,
+                isBot = DataManager.UserId.StartsWith(FirebaseManager.ROBOT_ID),
                 playerHandData = new PlayerHand
                 {
                     playerHand = player.handPoker,
@@ -2571,7 +2578,7 @@ public class GameView : MonoBehaviour
                     potWinChips = gameRoomData.potWinData.potWinnersId.Contains(player.userId) ? gameRoomData.potWinData.potWinChips : 0, // Check if the player won the pot
                     sideWinChips = gameRoomData.sideWinData.sideWinnersId.Contains(player.userId) ? gameRoomData.sideWinData.sideWinChips : 0, // Check if the player won the side pot
                     isWinner = gameRoomData.potWinData.potWinnersId.Contains(player.userId), // Check if this player is a pot winner
-                    seat = player.gameSeat
+                    seat = player.gameSeat.ToString(),
                 },
             };
             saveResultData.playerDetails.Add(playerData);

@@ -734,7 +734,12 @@ public class GameControl : MonoBehaviour
                 foreach (var potWinner in potWinners)
                 {
                     potWinnerIdList.Add(potWinner.userId);
-                    newCarryChips = potWinner.carryChips + (potWinChips / potWinners.Count);
+
+                    double winnerShare = potWinChips / potWinners.Count;
+                    double roomFee = winnerShare * (DataManager.Rebate / 100);
+                    double finalWinnings = winnerShare - roomFee;
+                    newCarryChips = potWinner.carryChips + Math.Floor(finalWinnings);
+
                     data = new Dictionary<string, object>()
                     {
                         { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips)},   //攜帶籌碼
