@@ -15,6 +15,8 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
 {
     private const string BASE_URL = "https://admin-d.jf588.com";           //API Base Url
 
+    private string url = BASE_URL;
+
     public override void Awake()
     {
         base.Awake();
@@ -39,7 +41,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     }
     public string GetBaseUrl()
     {
-        return BASE_URL;
+        return url;
     }
 
     /// <summary>

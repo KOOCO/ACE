@@ -35,6 +35,9 @@ public class Entry : UnitySingleton<Entry>
     [SerializeField]
     GameObject ReporterObj;
 
+    [Header("發布環境")]
+    public ReleaseEnvironment releaseEnv;
+
     public override void Awake()
     {
 #if !UNITY_EDITOR

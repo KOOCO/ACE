@@ -205,7 +205,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
             return;
         }
 
-        if (SwaggerAPIManager.Instance.GetBaseUrl() == "https://admin-d.jf588.com")
+        if (Entry.Instance.releaseEnv == ReleaseEnvironment.DEV)
         {
             StartCoroutine(DelayedNoodleLogin(loginString, true));
         }
