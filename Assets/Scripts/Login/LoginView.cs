@@ -784,14 +784,18 @@ public class LoginView : MonoBehaviour
 #endif
     }
 
-    [EButton]
-    public void LoginInEditor(string _userName = "")
+    public void LoginWithUserName(string _userName)
     {
         if (_userName != "")
         {
             userName = _userName;
         }
+        LoginInEditor();
+    }
 
+    [EButton]
+    public void LoginInEditor()
+    {
         StartCoroutine(GetAuthorData());
     }
     private void Update()

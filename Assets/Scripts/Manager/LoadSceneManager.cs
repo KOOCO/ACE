@@ -192,6 +192,11 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
                 break;
         }
     }
+    [EButton]
+    public void Ahoo()
+    {
+        NoodleLogin("Shoaib007");
+    }
     public void NoodleLogin(string loginString)
     {
         if (string.IsNullOrEmpty(loginString))
@@ -204,9 +209,6 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
         {
             StartCoroutine(DelayedNoodleLogin(loginString, true));
         }
-
-
-        // Call SwaggerAPIManager after a 3-second delay
     }
 
     public void NoodleSession(string loginString)
@@ -235,7 +237,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
         }
         else
         {
-            loginView.LoginInEditor(loginString);
+            loginView.LoginWithUserName(loginString);
         }
     }
 }
