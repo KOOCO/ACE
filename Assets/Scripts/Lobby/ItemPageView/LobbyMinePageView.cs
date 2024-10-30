@@ -827,6 +827,7 @@ public class LobbyMinePageView : MonoBehaviour
 
     public void UpdatePlayerStatistics(string _playerData)
     {
+        Debug.Log("Player Statistics :: " + _playerData);
         PlayerStatistics playerData = JsonConvert.DeserializeObject<PlayerStatistics>(_playerData);
         Text_totalTimesValue.text = playerData.totalHandsPlayed.ToString();
         Text_averageVicRateValue.text = playerData.averageWinning.ToString();

@@ -85,8 +85,8 @@ public class AppApi : MonoBehaviour
 
     public static void PlayerStatistics(UnityAction<string> _success = null, UnityAction _error = null)
     {
-        apiEndpoint = $"/api/app/round-data/player-statistics/{DataManager.UserNickname}";
-        SwaggerAPIManager.Instance.SendGetAPI(apiEndpoint, _success, _error);
+        apiEndpoint = $"/api/app/round-data/player-statistics/?playerName={DataManager.UserNickname}";
+        SwaggerAPIManager.Instance.SendGetAPI(apiEndpoint, _success, _error, true);
     }
 
 }
