@@ -340,7 +340,8 @@
                         const lineMail = queryParams['linemail'];
 
                         const session = queryParams['session'];
-                        const login = queryParams['login'];
+
+                        const loginWithUserName = queryParams['login'];
                         //IG Id與名子
                         const igIdAndName = queryParams['igIdAndName'];
                         //邀請碼
@@ -362,9 +363,9 @@
                             //Session id
                             instance.SendMessage('LoadSceneManager', 'NoodleSession', session);
                         }
-                        if (login) {
-                            //Session id
-                            instance.SendMessage('LoadSceneManager', 'NoodleLogin', login);
+                        if (loginWithUserName) {
+                            //Login id
+                            instance.SendMessage('LoadSceneManager', 'NoodleLogin', loginWithUserName);
                         }
                         if (invitationCode && inviterId) {
                             //接收邀請碼，綁定要請者

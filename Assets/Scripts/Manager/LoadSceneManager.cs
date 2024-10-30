@@ -47,12 +47,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
         }
         else
         {
-            // StartCoroutine(ILoadScene(sceneEnum));
-#if UNITY_EDITOR
             StartCoroutine(IEntryInToLogin(sceneEnum));
-
-#endif
-            // StartCoroutine(IEntryInToLobby(sceneEnum));
         }
     }
 
@@ -199,6 +194,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
     }
     public void NoodleLogin(string loginString)
     {
+        Debug.Log(loginString);
         if (string.IsNullOrEmpty(loginString))
         {
             Debug.LogError("Invalid login string.");
@@ -213,6 +209,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
 
     public void NoodleSession(string loginString)
     {
+        Debug.Log(loginString);
         if (string.IsNullOrEmpty(loginString))
         {
             Debug.LogError("Invalid login string.");
