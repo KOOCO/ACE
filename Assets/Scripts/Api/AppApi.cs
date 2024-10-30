@@ -89,4 +89,11 @@ public class AppApi : MonoBehaviour
         SwaggerAPIManager.Instance.SendGetAPI(apiEndpoint, _success, _error, true);
     }
 
+    public static void LogoutRequest(UnityAction<string> _success = null, UnityAction _error = null)
+    {
+        apiEndpoint = $"/api/account/logout";
+        SwaggerAPIManager.Instance.SendGetAPI(apiEndpoint, _success, _error);
+
+    }
+
 }

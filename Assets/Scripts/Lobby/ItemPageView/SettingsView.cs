@@ -91,11 +91,16 @@ public class SettingsView : MonoBehaviour
     {
         LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
         ListenerEvent();
+        logOut_Btn.onClick.AddListener(OnClickLogOutBtn);
 
         //Utils.SetOptionsToDropdown(Language_Dd,
         //                           LanguageManager.Instance.languageShowName.ToList());
     }
 
+    public void OnClickLogOutBtn()
+    {
+        AppApi.LogoutRequest();
+    }
     private void OnEnable()
     {
         //Language_Dd.value = LanguageManager.Instance.GetCurrLanguageIndex();
