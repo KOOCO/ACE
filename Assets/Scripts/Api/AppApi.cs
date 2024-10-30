@@ -80,7 +80,7 @@ public class AppApi : MonoBehaviour
     public static void OnRoundFinish(ResultHistoryData resultHistoryData, UnityAction<string> _success = null, UnityAction<string> _error = null)
     {
         apiEndpoint = $"/api/app/rooms/finish-round";
-        SwaggerAPIManager.Instance.SendPostAPI<ResultHistoryData>(apiEndpoint, resultHistoryData, _success, _error);
+        SwaggerAPIManager.Instance.SendPostAPI<ResultHistoryData>(apiEndpoint, resultHistoryData, _success, _error, true);
     }
 
     public static void PlayerStatistics(UnityAction<string> _success = null, UnityAction _error = null)
