@@ -27,7 +27,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
         base.Awake();
 
         Loading_Txt.text = "Now Loading...";
-        lodingView.gameObject.SetActive(true);
+        lodingView.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -42,11 +42,17 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
         }
         else if (SceneManager.GetActiveScene().name == "Login")
         {
+
             StartCoroutine(IEntryInToLobby(sceneEnum));
         }
         else
         {
+            // StartCoroutine(ILoadScene(sceneEnum));
+#if UNITY_EDITOR
             StartCoroutine(IEntryInToLogin(sceneEnum));
+
+#endif
+            // StartCoroutine(IEntryInToLobby(sceneEnum));
         }
     }
 
@@ -186,11 +192,25 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
                 break;
         }
     }
-
-
     public void NoodleLogin(string loginString)
     {
+        if (string.IsNullOrEmpty(loginString))
+        {
+            Debug.LogError("Invalid login string.");
+            return;
+        }
 
+        if (SwaggerAPIManager.Instance.GetBaseUrl() == "https://admin-d.jf588.com")
+        {
+            StartCoroutine(DelayedNoodleLogin(loginString, true));
+        }
+
+
+        // Call SwaggerAPIManager after a 3-second delay
+    }
+
+    public void NoodleSession(string loginString)
+    {
         if (string.IsNullOrEmpty(loginString))
         {
             Debug.LogError("Invalid login string.");
@@ -202,13 +222,20 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
     }
 
     // Coroutine to delay the execution
-    private IEnumerator DelayedNoodleLogin(string loginString)
+    private IEnumerator DelayedNoodleLogin(string loginString, bool isDev = false)
     {
         // Wait for 3 seconds
         yield return new WaitForSeconds(3f);
-        AppApi.DecryptSession(loginString, loginView.RegisterWithNoodle, (x) =>
+        if (!isDev)
         {
-            Debug.Log("Noodle Login Failed: " + x);
-        });
+            AppApi.DecryptSession(loginString, loginView.RegisterWithNoodle, (x) =>
+            {
+                Debug.Log("Noodle Login Failed: " + x);
+            });
+        }
+        else
+        {
+            loginView.LoginInEditor(loginString);
+        }
     }
 }

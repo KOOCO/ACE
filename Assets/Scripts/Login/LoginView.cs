@@ -21,7 +21,7 @@ public class LoginView : MonoBehaviour
 {
     [Header("切換/版本")]
     [SerializeField]
-    TextMeshProUGUI Vrsion_Txt;
+    TextMeshProUGUI Vrsion_Txt, processing_Txt;
     [SerializeField]
     Toggle Wallet_Tog, Mobile_Tog;
     [SerializeField]
@@ -785,8 +785,13 @@ public class LoginView : MonoBehaviour
     }
 
     [EButton]
-    public void LoginInEditor()
+    public void LoginInEditor(string _userName = "")
     {
+        if (_userName != "")
+        {
+            userName = _userName;
+        }
+
         StartCoroutine(GetAuthorData());
     }
     private void Update()
@@ -2113,6 +2118,7 @@ public class LoginView : MonoBehaviour
     public void OnIntoLobby(string data)
     {
         Debug.Log("Noodle ::" + data);
+        processing_Txt.text = "We are working on your Login Request Please Wait....";
         Services.PlayerService.SaveUser(data);
         Player player = Services.PlayerService.GetPlayer();
 

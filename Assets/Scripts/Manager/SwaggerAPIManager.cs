@@ -37,6 +37,10 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     {
         StartCoroutine(ISendGetRequest(apiUrl, callback, errCallback, addHeader));
     }
+    public string GetBaseUrl()
+    {
+        return BASE_URL;
+    }
 
     /// <summary>
     /// 發送POST請求
