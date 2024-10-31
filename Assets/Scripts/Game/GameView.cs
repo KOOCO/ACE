@@ -2560,6 +2560,7 @@ public class GameView : MonoBehaviour
                 }
             }
         }
+        Debug.Log("Game Room Details  ::" + gameRoomData);
         // Add all players' hand data to the result
         foreach (var player in gameRoomData.playerDataDic.Values) // Assuming this contains all players in the game
         {
