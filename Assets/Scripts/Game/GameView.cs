@@ -2562,12 +2562,16 @@ public class GameView : MonoBehaviour
         }
         Debug.Log("Game Room Details ::" + JsonUtility.ToJson(gameRoomData, true));
         // Add all players' hand data to the result
-        foreach (var player in gameRoomData.playerDataDic.Values) // Assuming this contains all players in the game
+        foreach (var player in gameRoomData.playingPlayersIdList) // Assuming this contains all players in the game
+        // foreach (var player in gameRoomData.playerDataDic.Values) // Assuming this contains all players in the game
         {
+            GameRoomPlayerData playerNew = gameRoomData.playerDataDic.Where(x => x.Value.userId == player)
+                                                                          .FirstOrDefault()
+                                                                          .Value;
             PlayerDetails playerData = new PlayerDetails
             {
-                playerId = player.userId,
-                playerName = player.nickname,
+                playerId = playerNew.userId,
+                playerName = playerNew.nickname,
                 playerHandId = "",
                 playerValidBetAmount = 0,
                 playerRoomFee = 0,
@@ -2577,15 +2581,16 @@ public class GameView : MonoBehaviour
                 isBot = DataManager.UserId.StartsWith(FirebaseManager.ROBOT_ID),
                 playerHandData = new PlayerHand
                 {
-                    playerHand = player.handPoker,
-                    playerCurrHandShape = player.playerHandShape,
-                    potWinChips = gameRoomData.potWinData.potWinnersId.Contains(player.userId) ? gameRoomData.potWinData.potWinChips : 0, // Check if the player won the pot
-                    sideWinChips = gameRoomData.sideWinData.sideWinnersId.Contains(player.userId) ? gameRoomData.sideWinData.sideWinChips : 0, // Check if the player won the side pot
-                    isWinner = gameRoomData.potWinData.potWinnersId.Contains(player.userId), // Check if this player is a pot winner
-                    seat = player.gameSeat.ToString(),
+                    playerHand = playerNew.handPoker,
+                    playerCurrHandShape = playerNew.playerHandShape,
+                    potWinChips = gameRoomData.potWinData.potWinnersId.Contains(playerNew.userId) ? gameRoomData.potWinData.potWinChips : 0, // Check if the player won the pot
+                    sideWinChips = gameRoomData.sideWinData.sideWinnersId.Contains(playerNew.userId) ? gameRoomData.sideWinData.sideWinChips : 0, // Check if the player won the side pot
+                    isWinner = gameRoomData.potWinData.potWinnersId.Contains(playerNew.userId), // Check if this player is a pot winner
+                    seat = playerNew.gameSeat.ToString(),
                 },
             };
             saveResultData.playerDetails.Add(playerData);
+            Debug.Log("Player Details ::" + JsonUtility.ToJson(playerData, true));
         }
         //主池紀錄存檔
         if (thisData.LocalGamePlayerInfo.IsPlaying)
