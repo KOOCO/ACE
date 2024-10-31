@@ -2552,6 +2552,9 @@ public class GameView : MonoBehaviour
                     saveResultData.communityPoker = gameRoomData.currCommunityPoker ?? new List<int>(); // Use null-coalescing operator for safety
                     saveResultData.dateTime = DateTime.UtcNow;
                     saveResultData.roomId = DataManager.RoomId;
+                    saveResultData.roundInsuranceResult = "";
+                    saveResultData.roundInsurancePayAmount = 0;
+                    saveResultData.roundInsurancePayRate = 0;
                     saveResultData.tableId = DataManager.TableId;
                     saveResultData.roundId = roundId;
                 }
@@ -2567,9 +2570,9 @@ public class GameView : MonoBehaviour
                 playerHandId = "",
                 playerValidBetAmount = 0,
                 playerRoomFee = 0,
-                roundInsuranceResult = "",
-                roundInsurancePayAmount = 0,
-                roundInsurancePayRate = 0,
+                // roundInsuranceResult = "",
+                // roundInsurancePayAmount = 0,
+                // roundInsurancePayRate = 0,
                 isBot = DataManager.UserId.StartsWith(FirebaseManager.ROBOT_ID),
                 playerHandData = new PlayerHand
                 {

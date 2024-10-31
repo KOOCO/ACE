@@ -18,6 +18,9 @@ public class ResultHistoryData
     public string tableId;
     public string roomId;
     public int roundId;
+    public string roundInsuranceResult;
+    public double roundInsurancePayRate;
+    public double roundInsurancePayAmount;
     //public int[] HandPokers;                        //獲勝玩家手牌
     // public int PlayerCurrHandShape;
     //public double WinChips;                         //贏得籌碼
