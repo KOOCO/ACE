@@ -11,7 +11,7 @@ using System;
 [System.Serializable]
 public class ResultHistoryData
 {
-    public DateTime dateTime;
+    public string dateTime;
     public string roomType;                         //房間類型
     public double smallBlind;                       //小盲注
     public int avatar;                              //獲勝玩家頭像

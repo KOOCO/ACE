@@ -2550,7 +2550,7 @@ public class GameView : MonoBehaviour
                     saveResultData.roomType = roomName;
                     saveResultData.smallBlind = gameRoomData.smallBlind;
                     saveResultData.communityPoker = gameRoomData.currCommunityPoker ?? new List<int>(); // Use null-coalescing operator for safety
-                    saveResultData.dateTime = DateTime.UtcNow;
+                    saveResultData.dateTime = DateTime.UtcNow.ToString();
                     saveResultData.roomId = DataManager.RoomId;
                     saveResultData.roundInsuranceResult = "";
                     saveResultData.roundInsurancePayAmount = 0;
