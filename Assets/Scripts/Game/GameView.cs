@@ -2565,10 +2565,14 @@ public class GameView : MonoBehaviour
         foreach (var player in gameRoomData.playingPlayersIdList) // Assuming this contains all players in the game
         // foreach (var player in gameRoomData.playerDataDic.Values) // Assuming this contains all players in the game
         {
-            saveResultData.playerDetails = new List<PlayerDetails>();
             GameRoomPlayerData playerNew = gameRoomData.playerDataDic.Where(x => x.Value.userId == player)
                                                                           .FirstOrDefault()
                                                                           .Value;
+            if (playerNew == null)
+            {
+                Debug.LogWarning("Player not found in playerDataDic for userId: " + player);
+                continue;
+            }
             PlayerDetails playerData = new PlayerDetails
             {
                 playerId = playerNew.userId,
@@ -2591,7 +2595,8 @@ public class GameView : MonoBehaviour
                 },
             };
             saveResultData.playerDetails.Add(playerData);
-            Debug.Log("Saved Result Player Details ::" + JsonUtility.ToJson(saveResultData.playerDetails, true));
+            Debug.Log("Added PlayerDetails. Total count: " + saveResultData.playerDetails.Count);
+            // Debug.Log("Saved Result Player Details ::" + JsonUtility.ToJson(saveResultData.playerDetails, true));
             Debug.Log("Player Details ::" + JsonUtility.ToJson(playerData, true));
         }
         //主池紀錄存檔
