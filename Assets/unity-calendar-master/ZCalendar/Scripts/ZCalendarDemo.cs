@@ -46,7 +46,11 @@ public class ZCalendarDemo : MonoBehaviour
     {
         Debug.Log($"選擇的時間區間：{arg1.Month}/{arg1.Day}到{arg2.Month}/{arg2.Day}");
 
-        lobbyReport.confirmDateRange($"{arg1.Year}/{arg1.Month}/{arg1.Day}", $"{arg2.Year}/{arg2.Month}/{arg2.Day}");
+        //print(arg2.dateTime - arg1.dateTime);
+        if ((arg2.dateTime - arg1.dateTime).TotalDays <= 90)
+            lobbyReport.confirmDateRange($"{arg1.Year}/{arg1.Month}/{arg1.Day}", $"{arg2.Year}/{arg2.Month}/{arg2.Day}");
+        else
+            ViewManager.Instance.OpenTipMsgView(lobbyReport.transform, messageStatus.Sending, LanguageManager.Instance.GetText("Exceeded maximum selection date range"));
     }
 
     /// <summary>

@@ -107,7 +107,13 @@ public class ZCalendarDayItem : MonoBehaviour, IPointerEnterHandler, IPointerExi
         {
             btn.onClick.AddListener(() =>
             {
-                IsOn = true;
+                if (dateTime > DateTime.Today)
+                {
+                    print("Invalid select day");
+                    return;
+                }
+                else
+                    IsOn = true;
             });
             zCalendarController.zCalendar.ChoiceDayEvent += ChangeState;
         }

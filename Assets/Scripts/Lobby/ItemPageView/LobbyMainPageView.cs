@@ -213,7 +213,7 @@ public class LobbyMainPageView : MonoBehaviour
         //檢查目前廣告畫面
         #region 廣告刊版切換
 
-        if (!GameRoomManager.Instance.IsShow &&
+        /*if (!GameRoomManager.Instance.IsShow &&
             Input.GetMouseButtonDown(0) &&
             Utils.GetTouchUIObj() != null &&
             Utils.GetTouchUIObj().name == BillbpardBtnName)
@@ -266,7 +266,7 @@ public class LobbyMainPageView : MonoBehaviour
         //{
         //    billboardStartTime = DateTime.Now;
         //    StartCoroutine(IChangeBillboard(-1));
-        //}
+        //}*/
 
         #endregion
         if (Input.GetKeyDown(KeyCode.H))
