@@ -136,8 +136,15 @@ public class LobbyMinePageView : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI SettingsTitle_Txt;
 
+    [Header("個人資料")]
     [SerializeField]
     TextMeshProUGUI Text_totalTimesValue, Text_averageVicRateValue, Text_vicRateValue, Text_highestVicPriceValue, Text_totalRevenueValue;
+    [SerializeField]
+    TextMeshProUGUI playerID_Txt, P_Info_Txt, Text_totalTimes_Txt, Text_averageVicRate, Text_vicRate, Text_highestVicPrice, Text_totalRevenue, Text_bestHandcard;
+
+    [Header("我的歷史")]
+    [SerializeField]
+    TextMeshProUGUI myHistory_Txt, handsPlayed_Txt, handsWon_Txt, bestGame_Txt, worstGame_Txt;
 
     const string expandContentName = "Content";                                 //展開內容物件名稱
     const string expandTopBgName = "TopBg";                                     //收起上方物件名稱
@@ -159,6 +166,7 @@ public class LobbyMinePageView : MonoBehaviour
         #region 用戶訊息
 
         CopiedWalletAddress_Txt.text = LanguageManager.Instance.GetText("Copied!");
+        playerID_Txt.text = LanguageManager.Instance.GetText("Player ID");
 
         #endregion
 
@@ -231,6 +239,28 @@ public class LobbyMinePageView : MonoBehaviour
         #region 設定
 
         SettingsTitle_Txt.text = LanguageManager.Instance.GetText("Settings");
+
+        #endregion
+
+        #region 個人資料
+
+        P_Info_Txt.text = LanguageManager.Instance.GetText("Personal Information");
+        Text_totalTimes_Txt.text = LanguageManager.Instance.GetText("TOTAL HANDS PLAYED");
+        Text_averageVicRate.text = LanguageManager.Instance.GetText("AVERAGE WINNING");
+        Text_vicRate.text = LanguageManager.Instance.GetText("WIN RATE");
+        Text_highestVicPrice.text = LanguageManager.Instance.GetText("BIGGEST POT WON");
+        Text_totalRevenue.text = LanguageManager.Instance.GetText("TOTAL EARNINGS");
+        Text_bestHandcard.text = LanguageManager.Instance.GetText("BEST HANDCARD");
+
+        #endregion
+
+        #region 我的歷史
+
+        myHistory_Txt.text = LanguageManager.Instance.GetText("My History");
+        handsPlayed_Txt.text = LanguageManager.Instance.GetText("HANDS PLAYED");
+        handsWon_Txt.text = LanguageManager.Instance.GetText("HANDS WON");
+        bestGame_Txt.text = LanguageManager.Instance.GetText("BEST HAND");
+        worstGame_Txt.text = LanguageManager.Instance.GetText("WORST HAND");
 
         #endregion
 
@@ -829,10 +859,10 @@ public class LobbyMinePageView : MonoBehaviour
     {
         Debug.Log("Player Statistics :: " + _playerData);
         PlayerStatistics playerData = JsonConvert.DeserializeObject<PlayerStatistics>(_playerData);
-        Text_totalTimesValue.text = playerData.totalHandsPlayed.ToString();
-        Text_averageVicRateValue.text = playerData.averageWinning.ToString();
-        Text_vicRateValue.text = playerData.winRate.ToString();
-        Text_highestVicPriceValue.text = playerData.biggestPotWon.ToString();
-        Text_totalRevenueValue.text = playerData.totalEarnings.ToString();
+        Text_totalTimesValue.text = playerData.totalHandsPlayed.ToString("F2");
+        Text_averageVicRateValue.text = $"{playerData.averageWinning.ToString("F2")} / {LanguageManager.Instance.GetText("Hand")}";
+        Text_vicRateValue.text = $"{playerData.winRate.ToString("F2")}%";
+        Text_highestVicPriceValue.text = playerData.biggestPotWon.ToString("F2");
+        Text_totalRevenueValue.text = playerData.totalEarnings.ToString("F2");
     }
 }

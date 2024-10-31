@@ -10,6 +10,11 @@
     "zh_TW": "亞洲撲克"
   },
   {
+    "ID": "Texas hold'em",
+    "English": "Texas hold'em ",
+    "zh_TW": "德州撲克"
+  },
+  {
     "ID": "ACE",
     "English": "ACE",
     "zh_TW": "亞洲撲克"
@@ -290,7 +295,7 @@
     "zh_TW": "更換頭像"
   },
   {
-    "ID": "PersonalInformation",
+    "ID": "Personal Information",
     "English": "PersonalInformation",
     "zh_TW": "個人資料"
   },
@@ -345,14 +350,29 @@
     "zh_TW": "總收入"
   },
   {
+    "ID": "BEST HANDCARD",
+    "English": "BEST HANDCARD",
+    "zh_TW": "最佳手牌"
+  },
+  {
     "ID": "HANDS PLAYED",
-    "English": "HANDS PLAYED",
-    "zh_TW": "玩過的手牌"
+    "English": "HANDS PLAYED: ",
+    "zh_TW": "玩過的手牌："
   },
   {
     "ID": "HANDS WON",
-    "English": "HANDS WON",
-    "zh_TW": "手牌獲勝數"
+    "English": "HANDS WON: ",
+    "zh_TW": "手牌獲勝數："
+  },
+  {
+    "ID": "BEST HAND",
+    "English": "BEST HAND ",
+    "zh_TW": "最佳牌局"
+  },
+  {
+    "ID": "WORST HAND",
+    "English": "WORST HAND ",
+    "zh_TW": "最差牌局"
   },
   {
     "ID": "Settings",
@@ -473,6 +493,11 @@
     "ID": "Not enough chips.",
     "English": "Not enough chips.",
     "zh_TW": "籌碼不足。"
+  },
+  {
+    "ID": "Exceeded maximum selection date range",
+    "English": "Exceeded maximum selection date range",
+    "zh_TW": "超過最大選取範圍"
   },
   {
     "ID": "登入(LoginView)",
@@ -1392,7 +1417,7 @@
   {
     "ID": "Player ID",
     "English": "PLAYER ID: ",
-    "zh_TW": "玩家暱稱"
+    "zh_TW": "玩家暱稱："
   },
   {
     "ID": "Rank",

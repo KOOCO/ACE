@@ -79,7 +79,7 @@ public class LobbyReportView : MonoBehaviour
         Confirm_Txt.text = LanguageManager.Instance.GetText("Confirm");
         Submit_Txt.text = LanguageManager.Instance.GetText("SUBMIT");
         Game_Drop.options[0].text = LanguageManager.Instance.GetText("All");
-        Game_Drop.options[1].text = LanguageManager.Instance.GetText("Asia Poker");
+        Game_Drop.options[1].text = LanguageManager.Instance.GetText("Texas hold'em");
         #endregion
 
         #region ÃB«×¬ö¿ý

@@ -228,7 +228,6 @@ public class RoundEndResult
     public List<PlayerDetails> playerDetails;
     public List<int> communityCards;
 }
-[System.Serializable]
 public class PlayerDetails
 {
     public string playerId;
@@ -236,14 +235,13 @@ public class PlayerDetails
     public string playerHandId;
     public double playerValidBetAmount;
     public double playerRoomFee;
-    // public string roundInsuranceResult;
-    // public double roundInsurancePayRate;
-    // public double roundInsurancePayAmount;
+    public string roundInsuranceResult;
+    public double roundInsurancePayRate;
+    public double roundInsurancePayAmount;
     public bool isBot;
     public PlayerHand playerHandData;
 }
 
-[System.Serializable]
 public class PlayerHand
 {
     public List<int> playerHand;
@@ -474,11 +472,11 @@ public class RegisterPasswordLess
 #region Player Statistics
 public class PlayerStatistics
 {
-    public int totalHandsPlayed;
-    public int averageWinning;
-    public int winRate;
-    public int biggestPotWon;
-    public int totalEarnings;
+    public decimal totalHandsPlayed;
+    public decimal averageWinning;
+    public decimal winRate;
+    public decimal biggestPotWon;
+    public decimal totalEarnings;
 
     public PlayerStatistics(int totalHandsPlayed, int averageWinning, int winRate, int biggestPotWon, int totalEarnings)
     {
