@@ -228,6 +228,7 @@ public class RoundEndResult
     public List<PlayerDetails> playerDetails;
     public List<int> communityCards;
 }
+[System.Serializable]
 public class PlayerDetails
 {
     public string playerId;
@@ -242,6 +243,7 @@ public class PlayerDetails
     public PlayerHand playerHandData;
 }
 
+[System.Serializable]
 public class PlayerHand
 {
     public List<int> playerHand;

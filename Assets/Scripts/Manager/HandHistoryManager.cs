@@ -8,6 +8,7 @@ using System;
 /// <summary>
 /// 紀錄結果資料
 /// </summary>
+[System.Serializable]
 public class ResultHistoryData
 {
     public DateTime dateTime;
