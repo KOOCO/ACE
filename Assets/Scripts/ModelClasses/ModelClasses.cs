@@ -96,6 +96,7 @@ public class JoinRoom
 public class LeaveRoom
 {
     public string memberId;
+    public long roomId;
     public double amount;
     public string type;
     public int rankPoint;

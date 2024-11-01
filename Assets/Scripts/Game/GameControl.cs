@@ -309,6 +309,7 @@ public class GameControl : MonoBehaviour
         LeaveRoom leaveRoom = new LeaveRoom
         {
             memberId = DataManager.UserId,
+            roomId = long.Parse(DataManager.RoomId),
             amount = 0,
             type = DataManager.CurrencyType.ToString(),
             rankPoint = 10
