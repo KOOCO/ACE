@@ -264,13 +264,17 @@ public class NoodleUserData
     public string userName;
     public decimal balance;
     public string accessCode;
+    public string tenantId;
+    public string tenantName;
 
-    public NoodleUserData(string noodleMemberId, string userName, decimal balance, string accessCode)
+    public NoodleUserData(string noodleMemberId, string userName, decimal balance, string accessCode, string tenantId, string tenantName)
     {
         this.noodleMemberId = noodleMemberId;
         this.userName = userName;
         this.balance = balance;
         this.accessCode = accessCode;
+        this.tenantId = tenantId;
+        this.tenantName = tenantName;
     }
 }
 public class NoodleResponse
@@ -331,21 +335,23 @@ public class TableChipsTransaction
 {
     public string accessCode;
     public string noodleMemberId;
+    public string memberId;
+    public int roomId;
     public string tableId;
     public string roundId;
     public double amount;
     public int chipTransactionType;
-    public string transferId;
 
-    public TableChipsTransaction(string accessCode, string noodleMemberId, string tableId, string roundId, double amount, int chipTransactionType, string transferId)
+    public TableChipsTransaction(string accessCode, string noodleMemberId, string memberId, int roomId, string tableId, string roundId, double amount, int chipTransactionType)
     {
         this.accessCode = accessCode;
         this.noodleMemberId = noodleMemberId;
+        this.memberId = memberId;
+        this.roomId = roomId;
         this.tableId = tableId;
         this.roundId = roundId;
         this.amount = amount;
         this.chipTransactionType = chipTransactionType;
-        this.transferId = transferId;
     }
 }
 
@@ -380,13 +386,15 @@ public class Tablebuyin
 {
     public string accessCode;
     public string noodleMemberId;
+    public int roomId;
     public string tableId;
     public double amount;
 
-    public Tablebuyin(string accessCode, string noodleMemberId, string tableId, double amount)
+    public Tablebuyin(string accessCode, string noodleMemberId, int roomId, string tableId, double amount)
     {
         this.accessCode = accessCode;
         this.noodleMemberId = noodleMemberId;
+        this.roomId = roomId;
         this.tableId = tableId;
         this.amount = amount;
     }
@@ -423,12 +431,14 @@ public class TableCashout
 {
     public string accessCode;
     public string noodleMemberId;
+    public int roomId;
     public string tableId;
 
-    public TableCashout(string accessCode, string noodleMemberId, string tableId)
+    public TableCashout(string accessCode, string noodleMemberId, int roomId, string tableId)
     {
         this.accessCode = accessCode;
         this.noodleMemberId = noodleMemberId;
+        this.roomId = roomId;
         this.tableId = tableId;
     }
 }
@@ -436,6 +446,7 @@ public class TableCashout
 #endregion
 
 #region Auth
+[System.Serializable]
 public class Register
 {
     public string inviteCode;
@@ -443,6 +454,8 @@ public class Register
     public string userName;
     public string password;
     public string confirmPassword;
+    public string tenantId;
+    public string tenantName;
 }
 
 public class LoginRequest

@@ -2113,6 +2113,8 @@ public class LoginView : MonoBehaviour
             userName = noodleData.data.userName,
             password = "Abcd@12345678",
             confirmPassword = "Abcd@12345678",
+            tenantId = noodleData.data.tenantId,
+            tenantName = noodleData.data.tenantName,
         };
         AppApi.RegisterRequest(register, IsUserRegistered, (x) =>
         {
@@ -2186,7 +2188,7 @@ public class LoginView : MonoBehaviour
         Debug.Log("Noodle Response Login::" + data);
         NoodleResponse noodleData = JsonConvert.DeserializeObject<NoodleResponse>(data);
         DataManager.AccessCode = noodleData.data.accessCode;
-        DataManager.MemberId = noodleData.data.noodleMemberId;
+        DataManager.NoodleMemberId = noodleData.data.noodleMemberId;
         LoginRequest login = new LoginRequest()
         {
             userNameOrEmailAddress = noodleData.data.userName,

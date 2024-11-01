@@ -118,6 +118,7 @@ public class JoinRoomView : MonoBehaviour
                 Debug.Log("Currency Type :: " + _currencyType);
                 DataManager.TableType = gameRound.tableType;
                 DataManager.Rebate = gameRound.table.rebateSetting;
+                DataManager.RoundId = gameRound.roundId;
                 NoodleApi.PostTableBuyIn(newCarryChipsValue, (data) =>
                 {
                     Debug.Log("Table BuyIn SuccessFull.");

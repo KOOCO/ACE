@@ -117,7 +117,8 @@ public static class DataManager
     public static string RoomId { get; set; }
     public static string TableType { get; set; }
     public static string AccessCode { get; set; }
-    public static string MemberId { get; set; }
+    public static string NoodleMemberId { get; set; }
+    public static string RoundId { get; set; }
     #endregion
 
     #region 大廳
