@@ -34,7 +34,7 @@ public class NoodleApi
 
     public static void PostTableChipsTransaction(string memberId, string roundId, double amount, int chipTransactionType, UnityAction<string> _success = null, UnityAction<string> _error = null)
     {
-        TableChipsTransaction tableChipsTransaction = new TableChipsTransaction(DataManager.AccessCode, DataManager.NoodleMemberId, memberId, long.Parse(DataManager.RoomId), DataManager.TableId, roundId, amount, chipTransactionType);
+        TableChipsTransaction tableChipsTransaction = new TableChipsTransaction(DataManager.AccessCode, DataManager.NoodleMemberId, memberId, long.Parse(DataManager.RoomId), DataManager.TableId, roundId, -amount, chipTransactionType);
         SwaggerAPIManager.Instance.SendPostAPI($"/api/app/games/ace/table-chips-transaction", tableChipsTransaction, _success, _error);
     }
 

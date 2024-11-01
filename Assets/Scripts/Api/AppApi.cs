@@ -8,7 +8,7 @@ public class AppApi : MonoBehaviour
     static string apiEndpoint = "";
     public static void OnLeaveRoom(LeaveRoom leaveRoom, UnityAction<string> _success = null, UnityAction<string> _error = null)
     {
-        apiEndpoint = $"/api/app/rooms/leave-table?memberId={leaveRoom.memberId}&amount={leaveRoom.amount}&type={leaveRoom.type}&rankPoint={leaveRoom.rankPoint}";
+        apiEndpoint = $"/api/app/rooms/leave-table?memberId={leaveRoom.memberId}&amount={leaveRoom.roomId}&amount={leaveRoom.amount}&type={leaveRoom.type}&rankPoint={leaveRoom.rankPoint}";
 
         SwaggerAPIManager.Instance.SendPostAPI<LeaveRoom>(apiEndpoint, null, _success, _error, true, true);
         //  ) (data) =>
