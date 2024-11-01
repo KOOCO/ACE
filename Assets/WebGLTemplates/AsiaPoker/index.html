@@ -334,6 +334,9 @@
                             }
                             return params;
                         }
+                        function CloseTab() {
+                            window.top.close();
+                        }
                         //新開頁面解析URL
                         const queryParams = getQueryParams();
                         //Line郵箱

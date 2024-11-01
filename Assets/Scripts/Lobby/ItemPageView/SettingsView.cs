@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 public class SettingsView : MonoBehaviour
 {
@@ -96,10 +97,12 @@ public class SettingsView : MonoBehaviour
         //Utils.SetOptionsToDropdown(Language_Dd,
         //                           LanguageManager.Instance.languageShowName.ToList());
     }
-
+    [DllImport("__Internal")]
+    private static extern void CloseTab();
     public void OnClickLogOutBtn()
     {
         AppApi.LogoutRequest();
+        CloseTab();
     }
     private void OnEnable()
     {
