@@ -788,7 +788,7 @@ public class GameView : MonoBehaviour
         BattleResultView.gameObject.SetActive(false);
         BackToSit_Btn.gameObject.SetActive(false);
         RuleView.SetActive(false);
-        TotalPot_Txt.text = $"{StringUtils.SetChipsUnit(0)}";
+        TotalPot_Txt.text = $"${StringUtils.SetChipsUnit(0)}";
 
         //選單玩家訊息
         StringUtils.StrExceedSize(DataManager.UserWalletAddress, MenuWalletAddr_Txt);
@@ -1328,7 +1328,7 @@ public class GameView : MonoBehaviour
         {
             if (TotalPot_Txt.text != StringUtils.SetChipsUnit(value))
             {
-                StringUtils.ChipsChangeEffect(TotalPot_Txt, Math.Floor(value));
+                StringUtils.ChipsChangeEffect(TotalPot_Txt, Math.Floor(value), "$");
             }
             thisData.TotalPot = value;
         }
@@ -1963,7 +1963,7 @@ public class GameView : MonoBehaviour
         if (gameRoomData.currGameFlow != (int)GameFlowEnum.PotResult &&
             gameRoomData.currGameFlow != (int)GameFlowEnum.SideResult)
         {
-            TotalPot_Txt.text = $"{StringUtils.SetChipsUnit(Math.Floor(gameRoomData.potChips))}";
+            TotalPot_Txt.text = $"${StringUtils.SetChipsUnit(Math.Floor(gameRoomData.potChips))}";
             thisData.TotalPot = gameRoomData.potChips;
         }
 
@@ -2460,7 +2460,8 @@ public class GameView : MonoBehaviour
         }
 
         //贏得類型顯示
-        WinType_Txt.text = LanguageManager.Instance.GetText("Pot");
+        //WinType_Txt.text = LanguageManager.Instance.GetText("Pot");
+        TotalPot_Txt.text = LanguageManager.Instance.GetText("Pot") + " " + TotalPot_Txt.text;
         SetTotalPot = gameRoomData.potWinData.potWinChips;
 
         //贏家效果
@@ -2642,7 +2643,8 @@ public class GameView : MonoBehaviour
 
         if (gameRoomData.sideWinData.sideWinChips > 0)
         {
-            WinType_Txt.text = LanguageManager.Instance.GetText("Side");
+            //WinType_Txt.text = LanguageManager.Instance.GetText("Side");
+            TotalPot_Txt.text = LanguageManager.Instance.GetText("Side") + " " + TotalPot_Txt.text;
             SetTotalPot = gameRoomData.sideWinData.sideWinChips;
 
             foreach (var sideWinnerId in gameRoomData.sideWinData.sideWinnersId)
@@ -3448,7 +3450,7 @@ public class GameView : MonoBehaviour
         {
             if (TotalPot_Txt.text != StringUtils.SetChipsUnit(Math.Floor(gameRoomData.potChips)))
             {
-                StringUtils.ChipsChangeEffect(TotalPot_Txt, Math.Floor(gameRoomData.potChips));
+                StringUtils.ChipsChangeEffect(TotalPot_Txt, Math.Floor(gameRoomData.potChips), "$");
             }
         }
 

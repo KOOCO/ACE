@@ -658,18 +658,18 @@ public class GamePlayerInfo : MonoBehaviour
                 {
                     StringUtils.ChipsChangeEffect(Action_Txt,
                                               betValue,
-                                              $"{LanguageManager.Instance.GetText($"{betActionEnum}")} ");
+                                              $"{LanguageManager.Instance.GetText($"{betActionEnum}")} $");
                 }
                 else
                 {
                     StringUtils.ChipsChangeEffect(Action_Txt,
                                               betValue,
-                                              $"{LanguageManager.Instance.GetText($"{betActionEnum}")} ");
+                                              $"{LanguageManager.Instance.GetText($"{betActionEnum}")} $");
                 }
             }
             else
             {
-                Action_Txt.text = $"{LanguageManager.Instance.GetText($"{betActionEnum}")} {StringUtils.SetChipsUnit(betValue)}";
+                Action_Txt.text = $"{LanguageManager.Instance.GetText($"{betActionEnum}")} ${StringUtils.SetChipsUnit(betValue)}";
             }
         }
         else
