@@ -119,6 +119,7 @@ public class JoinRoomView : MonoBehaviour
                 DataManager.TableType = gameRound.tableType;
                 DataManager.Rebate = gameRound.table.rebateSetting;
                 DataManager.RoundId = gameRound.roundId;
+                DataManager.RoomId = gameRound.roomId;
                 NoodleApi.PostTableBuyIn(newCarryChipsValue, (data) =>
                 {
                     Debug.Log("Table BuyIn SuccessFull.");
@@ -127,7 +128,6 @@ public class JoinRoomView : MonoBehaviour
                 {
                     Debug.LogError($"Table BuyIn Failed Error: {error}");
                 });
-                DataManager.RoomId = gameRound.roomId;
                 switch (_currencyType)
                 {
                     case CurrencyType.Gold:

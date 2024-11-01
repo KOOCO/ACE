@@ -336,13 +336,13 @@ public class TableChipsTransaction
     public string accessCode;
     public string noodleMemberId;
     public string memberId;
-    public int roomId;
+    public long roomId;
     public string tableId;
     public string roundId;
     public double amount;
     public int chipTransactionType;
 
-    public TableChipsTransaction(string accessCode, string noodleMemberId, string memberId, int roomId, string tableId, string roundId, double amount, int chipTransactionType)
+    public TableChipsTransaction(string accessCode, string noodleMemberId, string memberId, long roomId, string tableId, string roundId, double amount, int chipTransactionType)
     {
         this.accessCode = accessCode;
         this.noodleMemberId = noodleMemberId;
@@ -386,11 +386,11 @@ public class Tablebuyin
 {
     public string accessCode;
     public string noodleMemberId;
-    public int roomId;
+    public long roomId;
     public string tableId;
     public double amount;
 
-    public Tablebuyin(string accessCode, string noodleMemberId, int roomId, string tableId, double amount)
+    public Tablebuyin(string accessCode, string noodleMemberId, long roomId, string tableId, double amount)
     {
         this.accessCode = accessCode;
         this.noodleMemberId = noodleMemberId;
@@ -431,10 +431,10 @@ public class TableCashout
 {
     public string accessCode;
     public string noodleMemberId;
-    public int roomId;
+    public long roomId;
     public string tableId;
 
-    public TableCashout(string accessCode, string noodleMemberId, int roomId, string tableId)
+    public TableCashout(string accessCode, string noodleMemberId, long roomId, string tableId)
     {
         this.accessCode = accessCode;
         this.noodleMemberId = noodleMemberId;
