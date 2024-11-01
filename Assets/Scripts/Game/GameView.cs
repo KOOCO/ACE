@@ -2595,6 +2595,15 @@ public class GameView : MonoBehaviour
                     seat = playerNew.gameSeat.ToString(),
                 },
             };
+            NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, gameRoomData.potWinData.potWinChips, 12, (x) =>
+                     {
+                         Debug.Log("Player Win  ChipsTransaction Success");
+                     },
+                     (error) =>
+                     {
+                         Debug.LogError($"Player Win ChipsTransaction Failed Error: {error}");
+                     });
+
             saveResultData.playerDetails.Add(playerData);
             Debug.Log("Added PlayerDetails. Total count: " + saveResultData.playerDetails.Count);
             // Debug.Log("Saved Result Player Details ::" + JsonUtility.ToJson(saveResultData.playerDetails, true));
