@@ -556,7 +556,7 @@ public class GameView : MonoBehaviour
         AllIn_Btn.onClick.AddListener(() =>
         {
             Raise_Sli.value = (float)thisData.LocalPlayerChips;
-            NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, -thisData.CurrCallValue, 6, (x) =>
+            NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.CurrCallValue, 6, (x) =>
               {
                   Debug.Log("AllIn Table ChipsTransaction Success");
               },
@@ -605,7 +605,7 @@ public class GameView : MonoBehaviour
             }
             Raise_Tr.gameObject.SetActive(false);
             SetActionButton = false;
-            NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, -thisData.CurrCallValue, 4, (x) =>
+            NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.CurrCallValue, 4, (x) =>
                {
                    Debug.Log("Call Table ChipsTransaction Success");
                },
@@ -644,7 +644,7 @@ public class GameView : MonoBehaviour
                                                 acting,
                                                 betValue);
 
-                    NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, -thisData.CurrRaiseValue, 9, (x) =>
+                    NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.CurrRaiseValue, 9, (x) =>
                     {
                         Debug.Log("Raise Table ChipsTransaction Success");
                     },
@@ -3597,7 +3597,7 @@ public class GameView : MonoBehaviour
         sbPlayer.PlayerAction(BetActingEnum.Blind,
                               gameRoomData.smallBlind,
                               sbPlayerData.carryChips - gameRoomData.smallBlind);
-        NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, -thisData.SmallBlindValue, 3, (x) =>
+        NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.SmallBlindValue, 3, (x) =>
              {
                  Debug.Log("SB Table ChipsTransaction Success");
              },
@@ -3623,7 +3623,7 @@ public class GameView : MonoBehaviour
         bbPlayer.PlayerAction(BetActingEnum.Blind,
                               gameRoomData.smallBlind * 2,
                               bbPlayerData.carryChips - (gameRoomData.smallBlind * 2));
-        NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, -thisData.SmallBlindValue * 2, 2, (x) =>
+        NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.SmallBlindValue * 2, 2, (x) =>
             {
                 Debug.Log("BB Table ChipsTransaction Success");
             },
