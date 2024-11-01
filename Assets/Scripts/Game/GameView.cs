@@ -793,7 +793,7 @@ public class GameView : MonoBehaviour
         //選單玩家訊息
         StringUtils.StrExceedSize(DataManager.UserWalletAddress, MenuWalletAddr_Txt);
         MenuNickname_Txt.text = $"@{DataManager.UserNickname}";
-        MenuWalletCoin_Txt.text = $"${(float)DataManager.UserChips}:f2";
+        MenuWalletCoin_Txt.text = DataManager.UserChips.ToString("F2");
         MenuAvatar_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[DataManager.UserAvatarIndex];
 
         SetNotReadChatCount = 0;
@@ -2488,7 +2488,7 @@ public class GameView : MonoBehaviour
             if (potWinnerId == DataManager.UserId)
                 player.setWinnerDisplay($"POT + ${changeValue:f2}");
             else
-                player.setWinnerDisplay($"POT \n+ ${gameRoomData.potWinData.potWinChips / gameRoomData.potWinData.potWinnersId.Count():f2}");
+                player.setWinnerDisplay($"POT  + ${gameRoomData.potWinData.potWinChips / gameRoomData.potWinData.potWinnersId.Count():f2}");
 
             Vector2 winnerSeatPos = player.gameObject.transform.position;
 
@@ -2675,7 +2675,7 @@ public class GameView : MonoBehaviour
                 if (sideWinnerId == DataManager.UserId)
                     player.setWinnerDisplay($"SIDE POT + ${changeValue:f2}");
                 else
-                    player.setWinnerDisplay($"SIDE POT \n+ ${gameRoomData.sideWinData.sideWinChips / gameRoomData.sideWinData.sideWinnersId.Count():f2}");
+                    player.setWinnerDisplay($"SIDE POT  + ${gameRoomData.sideWinData.sideWinChips / gameRoomData.sideWinData.sideWinnersId.Count():f2}");
 
                 Vector2 winnerSeatPos = player.gameObject.transform.position;
                 JudgePokerShape(player, true, true);
