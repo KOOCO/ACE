@@ -1538,5 +1538,26 @@
     "ID": "Report",
     "English": "Report",
     "zh_TW": "報表"
+  },
+  {
+    "ID": "MAINTENANCE",
+    "English": "MAINTENANCE",
+    "zh_TW": "維護"
+  },
+  {
+    "ID": "Maintenance content",
+    "English": "Dear players:
+
+Our Texas Hold'em poker tables are about to undergo routine maintenance to ensure the smoothest gaming experience for you! You can take a short break during the maintenance period, and we will prepare more exciting poker challenges for you later.
+
+Thank you for your understanding and support! After the maintenance is over, we will invite you back to the battlefield immediately!
+
+ASIA POKER TEAM",
+    "zh_TW": "緊急通知：
+各位玩家請注意，我們需要進行一次臨時維護，以確保您的撲克之旅始終保持最佳狀態。維護期間遊戲將暫時無法進行，但我們會盡快完成，讓您重返桌上風雲！
+
+感謝您的耐心等候，我們隨時為您準備好牌桌！
+
+ASIA POKER 團隊"
   }
 ]

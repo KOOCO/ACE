@@ -221,6 +221,7 @@ public class LoginView : MonoBehaviour
     UnityAction KybordEnterAction;                                              //Enter鍵執行方法
 
     public bool isCorrect = true;
+    public MaintenanceView maintenance;
     /*
     
 
@@ -392,6 +393,8 @@ public class LoginView : MonoBehaviour
 
     private void Awake()
     {
+        maintenance.gameObject.SetActive(Entry.Instance.isMaintenance);
+
         LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
 
         Term_text.SetActive(false);
