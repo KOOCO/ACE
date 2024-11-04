@@ -871,7 +871,7 @@ public class GameControl : MonoBehaviour
                         GetPlayerData(player.userId).carryChips = newCarryChips;
                     }
                 }
-
+                double totalProfit = 0;
                 // Distribute the side pot proportionally among the winners
                 List<string> sideWinnerIdList = new List<string>();
                 foreach (var sideWinner in sideWinners)
@@ -890,10 +890,11 @@ public class GameControl : MonoBehaviour
                     Debug.Log($"{nameof(IStartGameFlow)} All Players Chips :: {newCarryChips}");
                     if (profit > 0)
                     {
+                        totalProfit += profit;
                         data = new Dictionary<string, object>()
                     {
                         { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips) },
-                        {FirebaseManager.SIDE_PROFIT,Math.Floor(profit)},  // Update carry chips
+                        {FirebaseManager.SIDE_PROFIT,Math.Floor(totalProfit)},  // Update carry chips
                     };
                     }
                     else
