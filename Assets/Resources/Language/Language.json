@@ -402,7 +402,7 @@
   {
     "ID": "LAUNCH",
     "English": "LAUNCH",
-    "zh_TW": "發射"
+    "zh_TW": "入桌"
   },
   {
     "ID": "詢問彈窗",
@@ -1113,6 +1113,11 @@
     "ID": "Binding Successful",
     "English": "Binding Successful",
     "zh_TW": "綁定成功"
+  },
+  {
+    "ID": "Copy Success!",
+    "English": "Copy Successful",
+    "zh_TW": "複製成功！"
   },
   {
     "ID": "Copy",

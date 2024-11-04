@@ -752,6 +752,18 @@ public class GameView : MonoBehaviour
 
         #endregion
 
+        roomID_Txt.GetComponent<Button>().onClick.AddListener(() =>
+        {
+            TextEditor editor = new TextEditor
+            {
+                text = roomID_Txt.text.Substring(3)
+            };
+            editor.SelectAll();
+            editor.Copy();
+
+            ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Succesful, LanguageManager.Instance.GetText("Copy Success!"));
+        });
+
         #region 遊戲測試
 
         //測試開始
@@ -811,8 +823,7 @@ public class GameView : MonoBehaviour
         MenuPage_Tr.gameObject.SetActive(false);
         ChatPage_Tr.gameObject.SetActive(false);
         HandHistoryPage_Tr.gameObject.SetActive(false);
-        //後臺未加房間ID欄位
-        //roomID_Txt.text = $"ID: {gameRoomData.hostId}";
+        roomID_Txt.text = $"ID: {DataManager.RoomId}";
 
         //清除座位上玩家
         for (int i = 1; i < SeatGamePlayerInfoList.Count; i++)
