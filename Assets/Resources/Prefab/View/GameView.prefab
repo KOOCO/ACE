@@ -2415,7 +2415,7 @@ GameObject:
   - component: {fileID: 3293370637937461748}
   - component: {fileID: 1663679101340104466}
   m_Layer: 5
-  m_Name: Game RulesBtn_Txt
+  m_Name: Audio_Txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14843,7 +14843,7 @@ GameObject:
   - component: {fileID: 62262197385108687}
   - component: {fileID: 782557633167539594}
   m_Layer: 5
-  m_Name: Game RulesBtn_Txt
+  m_Name: Sound_Txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28919,6 +28919,8 @@ MonoBehaviour:
   BuyChipsBtn_Txt: {fileID: 6912386848046429537}
   HandHistoryBtn_Txt: {fileID: 8370710027419231943}
   GameSettingsBtn_Txt: {fileID: 1646863608274377459}
+  soundSwitch_Txt: {fileID: 782557633167539594}
+  audioSettings_Txt: {fileID: 1663679101340104466}
   MenuNickname_Txt: {fileID: 7645453557826017615}
   MenuWalletAddr_Txt: {fileID: 6228956401512909656}
   MenuWalletCoin_Txt: {fileID: 5610928042755898657}

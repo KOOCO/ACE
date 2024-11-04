@@ -335,6 +335,7 @@ public class TableChipsTransactionResponse
 public class TableChipsTransaction
 {
     public string accessCode;
+    public string uniqueSerial;
     public string noodleMemberId;
     public string memberId;
     public long roomId;
@@ -343,9 +344,10 @@ public class TableChipsTransaction
     public double amount;
     public int chipTransactionType;
 
-    public TableChipsTransaction(string accessCode, string noodleMemberId, string memberId, long roomId, string tableId, string roundId, double amount, int chipTransactionType)
+    public TableChipsTransaction(string accessCode, string uniqueSerial, string noodleMemberId, string memberId, long roomId, string tableId, string roundId, double amount, int chipTransactionType)
     {
         this.accessCode = accessCode;
+        this.uniqueSerial = uniqueSerial;
         this.noodleMemberId = noodleMemberId;
         this.memberId = memberId;
         this.roomId = roomId;
@@ -353,6 +355,16 @@ public class TableChipsTransaction
         this.roundId = roundId;
         this.amount = amount;
         this.chipTransactionType = chipTransactionType;
+    }
+}
+
+public class encData
+{
+    public string enc;
+
+    public encData(string enc)
+    {
+        this.enc = enc;
     }
 }
 
@@ -493,7 +505,7 @@ public class PlayerStatistics
     public decimal biggestPotWon;
     public decimal totalEarnings;
 
-    public PlayerStatistics(int totalHandsPlayed, int averageWinning, int winRate, int biggestPotWon, int totalEarnings)
+    public PlayerStatistics(decimal totalHandsPlayed, decimal averageWinning, decimal winRate, decimal biggestPotWon, decimal totalEarnings)
     {
         this.totalHandsPlayed = totalHandsPlayed;
         this.averageWinning = averageWinning;

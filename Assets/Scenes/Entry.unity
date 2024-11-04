@@ -1198,6 +1198,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4486474359657938648, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
+      propertyPath: isMaintenance
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486474359657938648, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
       propertyPath: numSimulations
       value: 1
       objectReference: {fileID: 0}

@@ -859,10 +859,10 @@ public class LobbyMinePageView : MonoBehaviour
     {
         Debug.Log("Player Statistics :: " + _playerData);
         PlayerStatistics playerData = JsonConvert.DeserializeObject<PlayerStatistics>(_playerData);
-        Text_totalTimesValue.text = playerData.totalHandsPlayed.ToString("F2");
-        Text_averageVicRateValue.text = $"{playerData.averageWinning.ToString("F2")} / {LanguageManager.Instance.GetText("Hand")}";
-        Text_vicRateValue.text = $"{playerData.winRate.ToString("F2")}%";
-        Text_highestVicPriceValue.text = playerData.biggestPotWon.ToString("F2");
-        Text_totalRevenueValue.text = playerData.totalEarnings.ToString("F2");
+        Text_totalTimesValue.text = playerData.totalHandsPlayed.ToString();
+        Text_averageVicRateValue.text = $"$ {playerData.averageWinning.ToString("F2")} / {LanguageManager.Instance.GetText("Hand")}";
+        Text_vicRateValue.text = $"{playerData.winRate.ToString("F2")} %";
+        Text_highestVicPriceValue.text = $"$ {playerData.biggestPotWon.ToString("F2")}";
+        Text_totalRevenueValue.text = $"$ {playerData.totalEarnings.ToString("F2")}";
     }
 }

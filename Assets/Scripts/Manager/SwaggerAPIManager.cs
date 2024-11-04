@@ -10,6 +10,7 @@ using System;
 using HtmlAgilityPack;
 using System.Web;
 using static LobbyMainPageView;
+using System.Security.Cryptography;
 
 public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
 {
@@ -73,11 +74,24 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
             // Serialize data to JSON if not using URL parameters
             string jsonData = JsonUtility.ToJson(data);
             byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
-            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            if(apiUrl== $"/api/app/games/ace/table-chips-dec-demo")
+            {
+                string en = AppApi.EncryptJson(bodyRaw);
+                string enJsonData = JsonUtility.ToJson(new encData("enc=" + en));
+                byte[] postData = Encoding.Default.GetBytes(enJsonData);
+                request.uploadHandler = new UploadHandlerRaw(postData);
+                print("JsonData: " + enJsonData);
+                print("AES加密字串(Encrypt): " + BitConverter.ToString(postData));
+            }
+            else
+                request.uploadHandler = new UploadHandlerRaw(bodyRaw);
         }
 
         request.downloadHandler = new DownloadHandlerBuffer();
-        request.SetRequestHeader("Content-Type", useParams ? "application/x-www-form-urlencoded" : "application/json");
+        if (apiUrl == $"/api/app/games/ace/table-chips-dec-demo")
+            request.SetRequestHeader("Content-Type", useParams ? "application/x-www-form-urlencoded" : "multipart/form-data");
+        else
+            request.SetRequestHeader("Content-Type", useParams ? "application/x-www-form-urlencoded" : "application/json");
 
         if (addHeader)
         {

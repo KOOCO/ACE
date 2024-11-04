@@ -84,7 +84,7 @@ public class GameView : MonoBehaviour
     Image MenuAvatar_Img;
     [SerializeField]
     TextMeshProUGUI MenuCloseBtn_Txt, SitOutBtn_Txt, BuyChipsBtn_Txt, HandHistoryBtn_Txt,
-                    GameSettingsBtn_Txt,
+                    GameSettingsBtn_Txt, soundSwitch_Txt, audioSettings_Txt,
                     MenuNickname_Txt, MenuWalletAddr_Txt, MenuWalletCoin_Txt, GameRules_Txt;
 
     [Header("聊天")]
@@ -302,13 +302,14 @@ public class GameView : MonoBehaviour
         #endregion
 
         #region 選單
-
         MenuCloseBtn_Txt.text = LanguageManager.Instance.GetText("MENU");
         BuyChipsBtn_Txt.text = LanguageManager.Instance.GetText("Buy Chips");
         HandHistoryBtn_Txt.text = LanguageManager.Instance.GetText("Hand History");
         LogOutBtn_Txt.text = LanguageManager.Instance.GetText("Log Out");
         GameSettingsBtn_Txt.text = LanguageManager.Instance.GetText("Game Settings");
         GameRules_Txt.text = LanguageManager.Instance.GetText("Game Rules");
+        soundSwitch_Txt.text = LanguageManager.Instance.GetText("Sound");
+        audioSettings_Txt.text = LanguageManager.Instance.GetText("Audio Settings");
         #endregion
 
         #region 規則

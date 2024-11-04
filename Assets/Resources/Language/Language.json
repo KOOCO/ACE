@@ -1540,6 +1540,11 @@
     "zh_TW": "音樂"
   },
   {
+    "ID": "Audio Settings",
+    "English": "Audio Settings",
+    "zh_TW": "音效開關"
+  },
+  {
     "ID": "Report",
     "English": "Report",
     "zh_TW": "報表"

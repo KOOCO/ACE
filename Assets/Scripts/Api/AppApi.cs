@@ -1,5 +1,8 @@
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -96,4 +99,50 @@ public class AppApi : MonoBehaviour
 
     }
 
+    #region Generate Aes
+    public static Aes CreateAes()
+    {
+        // 指定的 Key 和 IV
+        byte[] key = new byte[]
+        {
+            0x5d, 0xb2, 0x3a, 0xe7, 0xc9, 0x88, 0x16, 0xf3, 0x7e, 0x41,
+            0x2d, 0xac, 0x5f, 0x9b, 0x64, 0x3c, 0x8a, 0x72, 0x19, 0xeb,
+            0x4c, 0xfd, 0x0b, 0x38, 0xa7, 0x51, 0x6e, 0x24, 0xc1, 0xda,
+            0x93, 0x80
+        };
+
+        byte[] iv = new byte[]
+        {
+            0x7e, 0x41, 0x2d, 0xac, 0x5f, 0x9b, 0x64, 0x3c, 0x8a, 0x72,
+            0x19, 0xeb, 0x4c, 0xfd, 0x0b, 0x38
+        };
+
+        // 使用 Aes.Create() 来生成 AES 对象
+        Aes aes = Aes.Create();
+        // 设置加密密钥和向量（可以根据需求配置或生成）
+        aes.KeySize = 256;               // 设置密钥大小
+        aes.Key = key;
+        aes.IV = iv;
+
+        return aes;
+    }
+    #endregion
+
+    #region Encrypt
+    public static string EncryptJson(byte[] byteRaw)
+    {
+        // 創建 AES 實例
+        using (Aes aes = CreateAes())
+        {
+            // 創建加密器
+            ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+
+            // 加密 JSON 字符串
+            byte[] encryptedBytes = encryptor.TransformFinalBlock(byteRaw, 0, byteRaw.Length);
+
+            // 將加密後的位元組數組轉換為 Base64 字串
+            return Convert.ToBase64String(encryptedBytes);
+        }
+    }
+    #endregion
 }
