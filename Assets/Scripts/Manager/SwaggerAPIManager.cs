@@ -72,12 +72,12 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         else
         {
             // Serialize data to JSON if not using URL parameters
-            string jsonData = JsonUtility.ToJson(data);
+            string jsonData = JsonConvert.SerializeObject(data);
             byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
-            if(apiUrl== $"/api/app/games/ace/table-chips-dec-demo")
+            if (apiUrl == $"/api/app/games/ace/table-chips-dec-demo")
             {
                 string en = AppApi.EncryptJson(bodyRaw);
-                string enJsonData = JsonUtility.ToJson(new encData("enc=" + en));
+                string enJsonData = JsonConvert.SerializeObject(new encData("enc=" + en));
                 byte[] postData = Encoding.Default.GetBytes(enJsonData);
                 request.uploadHandler = new UploadHandlerRaw(postData);
                 print("JsonData: " + enJsonData);
