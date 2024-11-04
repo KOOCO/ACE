@@ -739,12 +739,24 @@ public class GameControl : MonoBehaviour
                     double winnerShare = potWinChips / potWinners.Count;
                     double roomFee = winnerShare * (DataManager.Rebate / 100);
                     double finalWinnings = winnerShare - roomFee;
+                    double profit = winnerShare - potWinner.allBetChips;
                     newCarryChips = potWinner.carryChips + Math.Floor(finalWinnings);
-
-                    data = new Dictionary<string, object>()
+                    if (profit > 0)
                     {
-                        { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips)},   //攜帶籌碼
+                        data = new Dictionary<string, object>()
+                    {
+                        { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips)},
+                        { FirebaseManager.MAIN_PROFIT, Math.Floor(profit)},  //攜帶籌碼
                     };
+                    }
+                    else
+                    {
+                        data = new Dictionary<string, object>()
+                    {
+                        { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips)}, //攜帶籌碼
+                       
+                    };
+                    }
                     UpdataPlayerData(potWinner.userId, data);
                 }
 
@@ -869,14 +881,29 @@ public class GameControl : MonoBehaviour
                     // Calculate this winner's proportional share of the side pot
                     double winnerContribution = Math.Min(sideWinner.allBetChips - potMinChips, totalSidePot);
                     double winnerShare = (winnerContribution / totalSidePot) * totalSidePot;
-
+                    double roomFee = winnerShare * (DataManager.Rebate / 100);
+                    double finalWinnings = winnerShare - roomFee;
+                    double profit = winnerShare - winnerContribution;
+                    newCarryChips = sideWinner.carryChips + Math.Floor(finalWinnings);
                     // Update player's chips with their side pot winnings
-                    newCarryChips = sideWinner.carryChips + Math.Floor(winnerShare);
+                    // newCarryChips = sideWinner.carryChips + Math.Floor(winnerShare);
                     Debug.Log($"{nameof(IStartGameFlow)} All Players Chips :: {newCarryChips}");
-                    data = new Dictionary<string, object>()
+                    if (profit > 0)
                     {
-                        { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips) },  // Update carry chips
+                        data = new Dictionary<string, object>()
+                    {
+                        { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips) },
+                        {FirebaseManager.SIDE_PROFIT,Math.Floor(profit)},  // Update carry chips
                     };
+                    }
+                    else
+                    {
+                        data = new Dictionary<string, object>()
+                    {
+                        { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips) },
+                          // Update carry chips
+                    };
+                    }
                     UpdataPlayerData(sideWinner.userId, data);
 
                     // Update local side winner data
