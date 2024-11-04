@@ -394,6 +394,10 @@ public class LoginView : MonoBehaviour
     private void Awake()
     {
         maintenance.gameObject.SetActive(Entry.Instance.isMaintenance);
+        if (!Entry.Instance.isMaintenance)
+        {
+            LoadSceneManager.Instance.DoShowView();
+        }
 
         LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
 
