@@ -18,6 +18,9 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
     [SerializeField]
     GameObject LoginViewObj, LobbyViewObj;
 
+    [SerializeField]
+    TextMeshProUGUI version_Txt; //login場景要顯示的板號
+
     public bool isGetUserData { get; set; }
 
     DateTime startYieldTime;
@@ -236,5 +239,15 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
         {
             loginView.LoginWithUserName(loginString);
         }
+    }
+
+
+    /// <summary>
+    /// Login場景單純show畫面用
+    /// </summary>
+    public void DoShowView()
+    {
+        lodingView.gameObject.SetActive(true);
+        version_Txt.text = Entry.Instance.version;
     }
 }
