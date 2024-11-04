@@ -51,7 +51,9 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
     [Header("遊戲玩家資料路徑名稱")]
     public const string ROOM_NAME = "room_";                                                //房間名
     public const string CURR_GAME_FLOW = "currGameFlow";                                    //(GameFlowEnum)當前遊戲流程(發牌/盲注/翻牌/轉牌/河牌/遊戲結果(主池/邊池))
-    public const string CARRY_CHIPS = "carryChips";                                         //攜帶籌碼
+    public const string CARRY_CHIPS = "carryChips";   //攜帶籌碼
+    public const string MAIN_PROFIT = "mainprofit";
+    public const string SIDE_PROFIT = "sideprofit";
     public const string SEAT_CHARACTER = "seatCharacter";                                   //(SeatCharacterEnum)座位角色(Button/SB/BB)
     public const string GAME_SEAT = "gameSeat";                                             //遊戲座位
     public const string GAME_STATE = "gameState";                                           //遊戲狀態(等待/遊戲中/棄牌/All In)
