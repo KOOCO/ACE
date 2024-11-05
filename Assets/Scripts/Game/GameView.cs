@@ -604,7 +604,7 @@ public class GameView : MonoBehaviour
                              AutoActingEnum.None :
                              AutoActingEnum.Check;
             }
-            CalculateEffectiveBets();
+            // CalculateEffectiveBets();
             Raise_Tr.gameObject.SetActive(false);
             SetActionButton = false;
 
@@ -641,7 +641,7 @@ public class GameView : MonoBehaviour
                 {
                     acting = BetActingEnum.Bet;
                 }
-                CalculateEffectiveBets();
+                // CalculateEffectiveBets();
                 if (Raise_Tr.gameObject.activeSelf || isAllIn == true)
                 {
                     double betValue = isAllIn == true ?
@@ -993,7 +993,19 @@ public class GameView : MonoBehaviour
     }
     public void CalculateEffectiveBets()
     {
-        Debug.Log(nameof(CalculateEffectiveBets));
+        // Check if playerDetails or playerDataDic is null to avoid null reference issues
+        if (saveResultData.playerDetails == null)
+        {
+            Debug.Log("Error: playerDetails in saveResultData is null.");
+            return;
+        }
+
+        if (gameRoomData.playerDataDic == null)
+        {
+            Debug.Log("Error: playerDataDic in gameRoomData is null.");
+            return;
+        }
+
         // Get a list of all players' `allBetChips` and sort it in descending order
         List<double> allBetChipsList = saveResultData.playerDetails
                                                       .Select(player =>
@@ -1044,6 +1056,7 @@ public class GameView : MonoBehaviour
             }
         }
     }
+
 
     /// <summary>
     /// 設置行動按鈕文字(是否為玩家回合)
@@ -2944,6 +2957,7 @@ public class GameView : MonoBehaviour
             //發牌
             case GameFlowEnum.Licensing:
                 SavePreGame();
+                CalculateEffectiveBets();
                 //GameInit();
 
                 //HandPokerLicensing(pack.LicensingStagePack.HandPokerDic);
