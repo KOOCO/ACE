@@ -119,6 +119,7 @@ public static class DataManager
     public static string AccessCode { get; set; }
     public static string NoodleMemberId { get; set; }
     public static string RoundId { get; set; }
+    public static double RoomFee { get; set; }
     #endregion
 
     #region 大廳

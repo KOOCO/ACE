@@ -2592,7 +2592,7 @@ public class GameView : MonoBehaviour
                 playerName = playerNew.nickname,
                 playerHandId = "",
                 playerValidBetAmount = 0,
-                playerRoomFee = 0,
+                playerRoomFee = DataManager.RoomFee,
                 // roundInsuranceResult = "",
                 // roundInsurancePayAmount = 0,
                 // roundInsurancePayRate = 0,

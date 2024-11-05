@@ -729,7 +729,6 @@ public class GameControl : MonoBehaviour
                 double potWinChips = potMin * playingPlayers.Count();
 
                 Debug.Log(nameof(IStartGameFlow) + " before potWinnerIdList");
-
                 // Update the chips for the winning players
                 List<string> potWinnerIdList = new List<string>();
                 foreach (var potWinner in potWinners)
@@ -743,6 +742,7 @@ public class GameControl : MonoBehaviour
                     newCarryChips = potWinner.carryChips + Math.Floor(finalWinnings);
                     if (profit > 0)
                     {
+                        DataManager.RoomFee = roomFee;
                         data = new Dictionary<string, object>()
                     {
                         { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips)},
@@ -882,6 +882,7 @@ public class GameControl : MonoBehaviour
                     double winnerContribution = Math.Min(sideWinner.allBetChips - potMinChips, totalSidePot);
                     double winnerShare = (winnerContribution / totalSidePot) * totalSidePot;
                     double roomFee = winnerShare * (DataManager.Rebate / 100);
+
                     double finalWinnings = winnerShare - roomFee;
                     double profit = winnerShare - winnerContribution;
                     newCarryChips = sideWinner.carryChips + Math.Floor(finalWinnings);
@@ -890,6 +891,7 @@ public class GameControl : MonoBehaviour
                     Debug.Log($"{nameof(IStartGameFlow)} All Players Chips :: {newCarryChips}");
                     if (profit > 0)
                     {
+                        DataManager.RoomFee = roomFee;
                         totalProfit += profit;
                         data = new Dictionary<string, object>()
                     {
