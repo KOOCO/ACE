@@ -92,17 +92,16 @@ public class SettingsView : MonoBehaviour
     {
         LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
         ListenerEvent();
-        logOut_Btn.onClick.AddListener(OnClickLogOutBtn);
 
         //Utils.SetOptionsToDropdown(Language_Dd,
         //                           LanguageManager.Instance.languageShowName.ToList());
     }
     [DllImport("__Internal")]
-    private static extern void CloseTab();
+    private static extern void JS_WindowClose();
     public void OnClickLogOutBtn()
     {
         AppApi.LogoutRequest();
-        CloseTab();
+        JS_WindowClose();
     }
     private void OnEnable()
     {
@@ -157,6 +156,8 @@ public class SettingsView : MonoBehaviour
             Term_text.SetActive(false);
             Privacy_text.SetActive(true);
         });
+
+        logOut_Btn.onClick.AddListener(OnClickLogOutBtn);
 
         //更換語言
         #region old
