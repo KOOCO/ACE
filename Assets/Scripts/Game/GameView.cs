@@ -2562,12 +2562,18 @@ public class GameView : MonoBehaviour
                 Destroy(rt.gameObject);
             });
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(2f);
+            Debug.Log("Room Fee ::" + playerDetails[int.Parse(potWinnerId)].playerRoomFee);
             if (potWinnerId == DataManager.UserId)
             {
-                if (playerDetails[int.Parse(potWinnerId)].playerRoomFee > 0)
+                if (playerDetails[int.Parse(potWinnerId)].playerRoomFee > 0 && playerDetails[int.Parse(potWinnerId)].playerRoomFee != null)
                 {
+                    Debug.Log("Room Fee > 0 ::" + playerDetails[int.Parse(potWinnerId)].playerRoomFee);
                     player.SetRoomFee($"Room Fee + ${playerDetails[int.Parse(potWinnerId)].playerRoomFee:f2}");
+                }
+                else
+                {
+                    Debug.Log("Room Fee Vaue is Null");
                 }
             }
         }
