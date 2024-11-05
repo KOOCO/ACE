@@ -1679,9 +1679,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2067200713715578078}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 47.2546, y: -13.4}
   m_SizeDelta: {x: 86.5092, y: 26.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1048071797552908771
@@ -11753,7 +11753,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1983644398446752210
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11772,7 +11772,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: -70, y: -41}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 90.6878, y: 26.784}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &2020447617482971780
 CanvasRenderer:
@@ -15807,7 +15807,7 @@ GameObject:
   - component: {fileID: 599922610339298611}
   - component: {fileID: 342106349452161618}
   m_Layer: 5
-  m_Name: potCoin_Txt
+  m_Name: roomfee_Txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15827,9 +15827,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4044178893650246728}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 47.02265, y: -14.25}
   m_SizeDelta: {x: 86.0453, y: 28.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &599922610339298611
@@ -17667,7 +17667,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6031017431355097669
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17686,7 +17686,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: -54.587307, y: -26.5}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 96.9766, y: 28.5}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &1184181480031055933
 CanvasRenderer:
@@ -21209,9 +21209,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1915892488634376105}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 47.1734, y: -14.25}
   m_SizeDelta: {x: 86.3468, y: 28.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3788734942987694627
@@ -31200,9 +31200,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6031017431355097669}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 50.4883, y: -14.25}
   m_SizeDelta: {x: 92.9766, y: 28.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4363297239125955970
@@ -33795,7 +33795,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1915892488634376105
 RectTransform:
   m_ObjectHideFlags: 0
@@ -33814,7 +33814,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 46.2, y: -51.3}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 90.3468, y: 28.5}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &3362988941713375833
 CanvasRenderer:
@@ -40605,9 +40605,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1983644398446752210}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 47.3439, y: -13.392}
   m_SizeDelta: {x: 86.6878, y: 26.784}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2781700317318440448
@@ -47981,7 +47981,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7014965204648995998
 RectTransform:
   m_ObjectHideFlags: 0
@@ -56255,7 +56255,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2067200713715578078
 RectTransform:
   m_ObjectHideFlags: 0
@@ -56274,7 +56274,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 69.8, y: -41.2}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 90.5092, y: 26.8}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &9178685869901480678
 CanvasRenderer:
@@ -59427,7 +59427,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4044178893650246728
 RectTransform:
   m_ObjectHideFlags: 0
@@ -59446,7 +59446,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: -53.4, y: -51.2}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 90.0453, y: 28.5}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &7799384597324486410
 CanvasRenderer:
@@ -62901,6 +62901,10 @@ PrefabInstance:
       propertyPath: foldColor.r
       value: 0.83921576
       objectReference: {fileID: 0}
+    - target: {fileID: 2224183459510731242, guid: 7f8b09ddbd41c3e44906d0638f0e5eb0, type: 3}
+      propertyPath: roomFee_Obj
+      value: 
+      objectReference: {fileID: 7211042507917567075}
     - target: {fileID: 2224183459510731242, guid: 7f8b09ddbd41c3e44906d0638f0e5eb0, type: 3}
       propertyPath: allInColor.b
       value: 1
@@ -66407,6 +66411,10 @@ PrefabInstance:
       value: 0.83921576
       objectReference: {fileID: 0}
     - target: {fileID: 5229370384101048880, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
+      propertyPath: roomFee_Obj
+      value: 
+      objectReference: {fileID: 8229832400390994321}
+    - target: {fileID: 5229370384101048880, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: allInColor.b
       value: 1
       objectReference: {fileID: 0}
@@ -67537,6 +67545,10 @@ PrefabInstance:
       value: 0.83921576
       objectReference: {fileID: 0}
     - target: {fileID: 5229370384101048880, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
+      propertyPath: roomFee_Obj
+      value: 
+      objectReference: {fileID: 1734661355370766683}
+    - target: {fileID: 5229370384101048880, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: allInColor.b
       value: 1
       objectReference: {fileID: 0}
@@ -68301,6 +68313,10 @@ PrefabInstance:
       propertyPath: foldColor.r
       value: 0.83921576
       objectReference: {fileID: 0}
+    - target: {fileID: 5229370384101048880, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
+      propertyPath: roomFee_Obj
+      value: 
+      objectReference: {fileID: 8708024670676427601}
     - target: {fileID: 5229370384101048880, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: allInColor.b
       value: 1
@@ -69067,6 +69083,10 @@ PrefabInstance:
       value: 0.83921576
       objectReference: {fileID: 0}
     - target: {fileID: 5229370384101048880, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
+      propertyPath: roomFee_Obj
+      value: 
+      objectReference: {fileID: 4995880867410101295}
+    - target: {fileID: 5229370384101048880, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: allInColor.b
       value: 1
       objectReference: {fileID: 0}
@@ -69791,6 +69811,10 @@ PrefabInstance:
       propertyPath: foldColor.r
       value: 0.83921576
       objectReference: {fileID: 0}
+    - target: {fileID: 5229370384101048880, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
+      propertyPath: roomFee_Obj
+      value: 
+      objectReference: {fileID: 2480248378137374977}
     - target: {fileID: 5229370384101048880, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: allInColor.b
       value: 1
