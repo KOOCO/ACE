@@ -67,7 +67,8 @@ public class LobbyMainPageView : MonoBehaviour
     LobbyView lobbyView;
 
     List<RectTransform> billboardList;                      //廣告刊版
-    public List<Image> billboardImgList;                    //廣告刊版圖片
+    public List<Image> billboardImgList;                    //廣告刊版圖片物件
+    public List<Sprite> billboardSprList;                    //廣告刊版圖片
     List<Image> billboardPointList;                         //廣告刊版點
     List<int> billboardDisplayIndexList;                    //廣告刊版顯示
     QuestView questView;
@@ -204,6 +205,7 @@ public class LobbyMainPageView : MonoBehaviour
             CreateRoomBtn();
         }, null, true);
 
+        billboardImgList[1].sprite = billboardSprList[LanguageManager.Instance.GetCurrLanguageIndex()];
     }
 
     private void Update()
@@ -211,7 +213,7 @@ public class LobbyMainPageView : MonoBehaviour
         //檢查目前廣告畫面
         #region 廣告刊版切換
 
-        if (!GameRoomManager.Instance.IsShow &&
+        /*if (!GameRoomManager.Instance.IsShow &&
             Input.GetMouseButtonDown(0) &&
             Utils.GetTouchUIObj() != null &&
             Utils.GetTouchUIObj().name == BillbpardBtnName)
@@ -256,15 +258,15 @@ public class LobbyMainPageView : MonoBehaviour
             {
                 dir = -1;
             }
-            StartCoroutine(IChangeBillboard(dir));
+            //StartCoroutine(IChangeBillboard(dir));
         }
 
         //輪播廣告
-        if ((DateTime.Now - billboardStartTime).TotalSeconds >= BillboardChangeTime)
-        {
-            billboardStartTime = DateTime.Now;
-            StartCoroutine(IChangeBillboard(-1));
-        }
+        //if ((DateTime.Now - billboardStartTime).TotalSeconds >= BillboardChangeTime)
+        //{
+        //    billboardStartTime = DateTime.Now;
+        //    StartCoroutine(IChangeBillboard(-1));
+        //}*/
 
         #endregion
         if (Input.GetKeyDown(KeyCode.H))

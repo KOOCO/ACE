@@ -119,8 +119,16 @@ public class BuyChipsView : MonoBehaviour
         {
             CancelInvoke(nameof(SetCountDownTip));
             thisData.SendBuyChipsCallback(newValue);
-            DataManager.UserUChips -= newValue;
+            DataManager.UserChips -= newValue;
             DataManager.DataUpdated = true;
+            NoodleApi.PostTableBuyIn(newValue, (data) =>
+            {
+                Debug.Log("Table BuyIn SuccessFull.");
+            },
+           (error) =>
+            {
+                Debug.LogError($"Table BuyIn Failed Error: {error}");
+            });
         });
 
         //+按鈕

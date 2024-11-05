@@ -35,6 +35,12 @@ public class Entry : UnitySingleton<Entry>
     [SerializeField]
     GameObject ReporterObj;
 
+    [Header("發布環境")]
+    public ReleaseEnvironment releaseEnv;
+
+    [Header("是否維護")]
+    public bool isMaintenance;
+
     public override void Awake()
     {
 #if !UNITY_EDITOR

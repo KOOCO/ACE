@@ -4,7 +4,6 @@ using UnityEngine;
 using System.Linq;
 using System;
 using UnityEngine.Events;
-using WalletConnectSharp.Crypto.Models;
 
 public class GameControl : MonoBehaviour
 {
@@ -307,9 +306,10 @@ public class GameControl : MonoBehaviour
             return;
         }
 
-        LeaveRound leaveRound = new LeaveRound
+        LeaveRoom leaveRoom = new LeaveRoom
         {
             memberId = DataManager.UserId,
+            roomId = long.Parse(DataManager.RoomId),
             amount = 0,
             type = DataManager.CurrencyType.ToString(),
             rankPoint = 10
@@ -319,22 +319,29 @@ public class GameControl : MonoBehaviour
         if (gameRoomData != null && gameRoomData.playerDataDic != null &&
             gameRoomData.playerDataDic.TryGetValue(DataManager.UserId, out GameRoomPlayerData gameRoomPlayerData))
         {
-            leaveRound.amount = gameRoomPlayerData.carryChips;
+            leaveRoom.amount = gameRoomPlayerData.carryChips;
         }
 
-        string apiEndpoint = $"/api/app/rounds/leave-table?memberId={leaveRound.memberId}&amount={leaveRound.amount}&type={leaveRound.type}&rankPoint={leaveRound.rankPoint}";
+        NoodleApi.PostTableCashOut((data) =>
+        {
+            Debug.Log("Table CashOut SuccessFull.");
+        },
+        (error) =>
+        {
+            Debug.LogError($"Table CashOut Failed Error: {error}");
+        });
 
-        SwaggerAPIManager.Instance.SendPostAPI<LeaveRound>(apiEndpoint, null, (data) =>
+        AppApi.OnLeaveRoom(leaveRoom, (data) =>
         {
             Debug.Log("Player successfully left the room.");
-            DataManager.UserUChips += leaveRound.amount;
+            DataManager.UserChips += leaveRoom.amount;
             DataManager.DataUpdated = true;
             OnLeaveTable();
         },
         (error) =>
         {
             Debug.LogError($"Failed to leave the room. Error: {error}");
-        }, true, true);
+        });
     }
     void OnLeaveTable()
     {
@@ -722,17 +729,34 @@ public class GameControl : MonoBehaviour
                 double potWinChips = potMin * playingPlayers.Count();
 
                 Debug.Log(nameof(IStartGameFlow) + " before potWinnerIdList");
-
                 // Update the chips for the winning players
                 List<string> potWinnerIdList = new List<string>();
                 foreach (var potWinner in potWinners)
                 {
                     potWinnerIdList.Add(potWinner.userId);
-                    newCarryChips = potWinner.carryChips + (potWinChips / potWinners.Count);
-                    data = new Dictionary<string, object>()
+
+                    double winnerShare = potWinChips / potWinners.Count;
+                    double roomFee = winnerShare * (DataManager.Rebate / 100);
+                    double finalWinnings = winnerShare - roomFee;
+                    double profit = winnerShare - potWinner.allBetChips;
+                    newCarryChips = potWinner.carryChips + Math.Floor(finalWinnings);
+                    if (profit > 0)
                     {
-                        { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips)},   //攜帶籌碼
+                        DataManager.RoomFee = roomFee;
+                        data = new Dictionary<string, object>()
+                    {
+                        { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips)},
+                        { FirebaseManager.MAIN_PROFIT, Math.Floor(profit)},  //攜帶籌碼
                     };
+                    }
+                    else
+                    {
+                        data = new Dictionary<string, object>()
+                    {
+                        { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips)}, //攜帶籌碼
+                       
+                    };
+                    }
                     UpdataPlayerData(potWinner.userId, data);
                 }
 
@@ -847,7 +871,7 @@ public class GameControl : MonoBehaviour
                         GetPlayerData(player.userId).carryChips = newCarryChips;
                     }
                 }
-
+                double totalProfit = 0;
                 // Distribute the side pot proportionally among the winners
                 List<string> sideWinnerIdList = new List<string>();
                 foreach (var sideWinner in sideWinners)
@@ -857,14 +881,32 @@ public class GameControl : MonoBehaviour
                     // Calculate this winner's proportional share of the side pot
                     double winnerContribution = Math.Min(sideWinner.allBetChips - potMinChips, totalSidePot);
                     double winnerShare = (winnerContribution / totalSidePot) * totalSidePot;
+                    double roomFee = winnerShare * (DataManager.Rebate / 100);
 
+                    double finalWinnings = winnerShare - roomFee;
+                    double profit = winnerShare - winnerContribution;
+                    newCarryChips = sideWinner.carryChips + Math.Floor(finalWinnings);
                     // Update player's chips with their side pot winnings
-                    newCarryChips = sideWinner.carryChips + Math.Floor(winnerShare);
+                    // newCarryChips = sideWinner.carryChips + Math.Floor(winnerShare);
                     Debug.Log($"{nameof(IStartGameFlow)} All Players Chips :: {newCarryChips}");
-                    data = new Dictionary<string, object>()
+                    if (profit > 0)
                     {
-                        { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips) },  // Update carry chips
+                        DataManager.RoomFee = roomFee;
+                        totalProfit += profit;
+                        data = new Dictionary<string, object>()
+                    {
+                        { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips) },
+                        {FirebaseManager.SIDE_PROFIT,Math.Floor(totalProfit)},  // Update carry chips
                     };
+                    }
+                    else
+                    {
+                        data = new Dictionary<string, object>()
+                    {
+                        { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips) },
+                          // Update carry chips
+                    };
+                    }
                     UpdataPlayerData(sideWinner.userId, data);
 
                     // Update local side winner data
@@ -1983,7 +2025,7 @@ public class GameControl : MonoBehaviour
         if (RoomType == TableTypeEnum.Cash)
         {
             //現金房
-            newChips = DataManager.UserUChips + changeValue;
+            newChips = DataManager.UserChips + changeValue;
             data = new Dictionary<string, object>()
             {
                 { FirebaseManager.U_CHIPS, Math.Round(newChips) },
@@ -2278,132 +2320,161 @@ public class GameControl : MonoBehaviour
             return new List<GameRoomPlayerData>();
         }
 
+        var shapeDic = EvaluatePlayerHands(judgePlayers);
+        int maxResult = shapeDic.Values.Min(x => x.Item1);
+        int matchCount = shapeDic.Values.Count(x => x.Item1 == maxResult);
 
-        // Dictionaries to store the hand rankings and corresponding cards for each player
-        Dictionary<GameRoomPlayerData, (int, List<int>)> shapeDic = new Dictionary<GameRoomPlayerData, (int, List<int>)>();
-        Dictionary<GameRoomPlayerData, (int, List<int>)> clientPokerDic = new Dictionary<GameRoomPlayerData, (int, List<int>)>();
+        return matchCount == 1
+            ? GetSingleWinner(shapeDic, maxResult)
+            : DetermineTieWinners(shapeDic, maxResult);
+    }
+
+    private Dictionary<GameRoomPlayerData, (int, List<int>)> EvaluatePlayerHands(List<GameRoomPlayerData> judgePlayers)
+    {
+        var shapeDic = new Dictionary<GameRoomPlayerData, (int, List<int>)>();
 
         foreach (var player in judgePlayers)
         {
+            var judgePoker = new List<int> { player.handPoker[0], player.handPoker[1] };
+            judgePoker = judgePoker.Concat(gameRoomData.communityPoker).ToList();
 
-            // Skip invalid players
-            if (player.handPoker == null || player.handPoker.Count < 2)
+            PokerShape.JudgePokerShape(judgePoker, (result, matchPoker) =>
             {
-                continue;
-            }
-
-            // Concatenate player's hand with community cards
-            List<int> judgePoker = new List<int>(player.handPoker);
-            if (gameRoomData.communityPoker != null && gameRoomData.communityPoker.Count > 0)
-            {
-                judgePoker.AddRange(gameRoomData.communityPoker);
-
-                // Evaluate the poker hand
-                PokerShape.JudgePokerShape(judgePoker, (result, matchPoker) =>
-                {
-                    // Ensure the best hand contains exactly 5 cards
-                    List<int> finalHand = matchPoker.Count == 5 ? matchPoker : AddKickers(judgePoker, matchPoker);
-
-                    // Store the final hand for the player
-                    shapeDic[player] = (result, finalHand);
-                    clientPokerDic[player] = (result, finalHand);
-                });
-            }
+                shapeDic.Add(player, (result, matchPoker));
+            });
         }
 
-        if (!shapeDic.Any())
-        {
-            return new List<GameRoomPlayerData>();
-        }
-
-        // Get the best hand rank (lowest number is best)
-        int bestHandRank = shapeDic.Values.Min(x => x.Item1);
-
-        // Find all players with the best hand rank
-        var playersWithBestHand = shapeDic.Where(x => x.Value.Item1 == bestHandRank).ToList();
-
-        if (playersWithBestHand.Count == 1)
-        {
-            // Single winner
-            return new List<GameRoomPlayerData>() { playersWithBestHand[0].Key };
-        }
-        else
-        {
-            Dictionary<GameRoomPlayerData, List<int>> sortedHands = new Dictionary<GameRoomPlayerData, List<int>>();
-            foreach (var player in playersWithBestHand)
-            {
-                // Sort the hand by poker ranking rules (Ace = 14)
-                List<int> sortedHand = player.Value.Item2.Select(x => x % 13 == 0 ? 14 : x % 13).ToList();
-                sortedHand.Sort(new TexasHoldemUtil.SpecialComparer());
-                sortedHands.Add(player.Key, sortedHand);
-
-            }
-
-            // Compare the players' hands by kickers
-            List<GameRoomPlayerData> winners = CompareByKickers(sortedHands);
-
-            if (winners.Count == 1)
-            {
-                return winners;
-            }
-            else
-            {
-                return winners; // Return all tied players
-            }
-        }
+        return shapeDic;
     }
 
-    // Helper to add kickers if the hand is less than 5 cards
-    private List<int> AddKickers(List<int> judgePoker, List<int> matchPoker)
+    private List<GameRoomPlayerData> GetSingleWinner(Dictionary<GameRoomPlayerData, (int, List<int>)> shapeDic, int maxResult)
     {
-        // Get remaining cards (those not in the match hand)
-        List<int> remainingCards = judgePoker.Except(matchPoker).ToList();
-        remainingCards.Sort(new TexasHoldemUtil.SpecialComparer());
-
-        // Add the highest remaining cards (kickers) until we have 5 cards
-        List<int> finalHand = matchPoker.Concat(remainingCards.Take(5 - matchPoker.Count)).ToList();
-
-        return finalHand;
+        return new List<GameRoomPlayerData>
+    {
+        shapeDic.FirstOrDefault(x => x.Value.Item1 == maxResult).Key
+    };
     }
 
-    // Compare hands by kickers if multiple players have the same hand rank
-    private List<GameRoomPlayerData> CompareByKickers(Dictionary<GameRoomPlayerData, List<int>> sortedHands)
+    private List<GameRoomPlayerData> DetermineTieWinners(Dictionary<GameRoomPlayerData, (int, List<int>)> shapeDic, int maxResult)
     {
-        List<GameRoomPlayerData> potentialWinners = sortedHands.Keys.ToList();
-        int kickerIndex = 0;
+        var pairPlayer = BuildPairPlayerData(shapeDic, maxResult);
+        var maxResultPlayers = FindMaxResultPlayers(pairPlayer, maxResult);
 
-        while (potentialWinners.Count > 1 && kickerIndex < 5) // Compare up to 5 cards
+        return maxResultPlayers.Count == 1
+            ? maxResultPlayers
+            : HandleHighCardComparison(pairPlayer, maxResultPlayers, maxResult);
+    }
+
+    private Dictionary<GameRoomPlayerData, List<int>> BuildPairPlayerData(Dictionary<GameRoomPlayerData, (int, List<int>)> shapeDic, int maxResult)
+    {
+        var pairPlayer = new Dictionary<GameRoomPlayerData, List<int>>();
+
+        foreach (var shape in shapeDic.Where(s => s.Value.Item1 == maxResult))
         {
-            int maxKickerValue = int.MinValue;
-            bool validComparison = false;
+            var numList = shape.Value.Item2.Select(x => x % 13 == 0 ? 14 : x % 13).ToList();
+            numList.Sort(new TexasHoldemUtil.SpecialComparer());
+            pairPlayer.Add(shape.Key, numList);
+        }
 
-            foreach (var player in potentialWinners)
+        return pairPlayer;
+    }
+
+    private List<GameRoomPlayerData> FindMaxResultPlayers(Dictionary<GameRoomPlayerData, List<int>> pairPlayer, int maxResult)
+    {
+        var maxResultPlayers = new List<GameRoomPlayerData>();
+        int maxValue = int.MinValue;
+
+        foreach (var playerPair in pairPlayer)
+        {
+            int max = DetermineMaxCardValue(playerPair.Value, maxResult);
+
+            if (max > maxValue)
             {
-                if (kickerIndex < sortedHands[player].Count)
+                maxValue = max;
+                maxResultPlayers.Clear();
+                maxResultPlayers.Add(playerPair.Key);
+            }
+            else if (max == maxValue)
+            {
+                maxResultPlayers.Add(playerPair.Key);
+            }
+        }
+
+        return maxResultPlayers;
+    }
+
+    private int DetermineMaxCardValue(List<int> playerCards, int maxResult)
+    {
+        if (maxResult == 1 || maxResult == 6)
+        {
+            return (playerCards.Contains(14) && playerCards.Contains(1) &&
+                    playerCards.Contains(2) && playerCards.Contains(3) && playerCards.Contains(4)) ? 4 : playerCards.Max();
+        }
+        return playerCards.Max();
+    }
+
+    private List<GameRoomPlayerData> HandleHighCardComparison(Dictionary<GameRoomPlayerData, List<int>> pairPlayer, List<GameRoomPlayerData> maxResultPlayers, int maxResult)
+    {
+        if (maxResult == 10)
+        {
+            return CompareHighCards(pairPlayer, maxResultPlayers);
+        }
+
+        return CompareSingleCards(pairPlayer);
+    }
+
+    private List<GameRoomPlayerData> CompareHighCards(Dictionary<GameRoomPlayerData, List<int>> pairPlayer, List<GameRoomPlayerData> maxResultPlayers)
+    {
+        foreach (var player in maxResultPlayers)
+        {
+            if (player.handPoker[0] % 13 > 0 && player.handPoker[0] % 13 < player.handPoker[1] % 13)
+            {
+                (player.handPoker[0], player.handPoker[1]) = (player.handPoker[1], player.handPoker[0]);
+            }
+        }
+
+        var maxHand0PokerPlayer = maxResultPlayers.OrderByDescending(x => (x.handPoker[0] % 13 == 0 ? int.MinValue : x.handPoker[0] % 13) + 1).FirstOrDefault();
+        var maxHandPokerClientList = maxResultPlayers.Where(x => x.handPoker[0] % 13 == maxHand0PokerPlayer.handPoker[0] % 13).ToList();
+
+        return maxHandPokerClientList.Count == 1 ? maxHandPokerClientList : CompareSecondaryHighCards(maxResultPlayers);
+    }
+
+    private List<GameRoomPlayerData> CompareSecondaryHighCards(List<GameRoomPlayerData> maxResultPlayers)
+    {
+        var maxHand1PokerPlayer = maxResultPlayers.OrderByDescending(x => (x.handPoker[1] % 13 == 0 ? int.MinValue : x.handPoker[1] % 13) + 1).FirstOrDefault();
+        return maxHand1PokerPlayer == null
+            ? maxResultPlayers
+            : maxResultPlayers.Where(x => x.handPoker[1] % 13 == maxHand1PokerPlayer.handPoker[1] % 13).ToList();
+    }
+
+    private List<GameRoomPlayerData> CompareSingleCards(Dictionary<GameRoomPlayerData, List<int>> pairPlayer)
+    {
+        var winPlayers = new List<GameRoomPlayerData>();
+
+        for (int i = 0; i < pairPlayer.FirstOrDefault().Value.Count; i++)
+        {
+            int max = int.MinValue;
+
+            foreach (var item in pairPlayer)
+            {
+                if (item.Value[i] > max)
                 {
-                    int currentKickerValue = sortedHands[player][kickerIndex];
-                    if (currentKickerValue > maxKickerValue)
-                    {
-                        maxKickerValue = currentKickerValue;
-                        validComparison = true;
-                    }
+                    winPlayers = new List<GameRoomPlayerData> { item.Key };
+                    max = item.Value[i];
+                }
+                else if (item.Value[i] == max)
+                {
+                    winPlayers.Add(item.Key);
                 }
             }
 
-            if (!validComparison)
+            if (winPlayers.Count == 1)
             {
-                break; // No valid comparison, exit
+                return winPlayers;
             }
-
-            // Filter players whose kicker value matches the maximum kicker value
-            potentialWinners = potentialWinners
-                .Where(player => kickerIndex < sortedHands[player].Count && sortedHands[player][kickerIndex] == maxKickerValue)
-                .ToList();
-
-            kickerIndex++;
         }
 
-        return potentialWinners;
+        return winPlayers;
     }
 
     #endregion

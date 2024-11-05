@@ -68,14 +68,14 @@ public class JoinRoomView : MonoBehaviour
         //關閉
         Close_Btn.onClick.AddListener(() =>
         {
-            GameRoomManager.Instance.IsCanMoveSwitch = false;
+            GameRoomManager.Instance.IsCanMoveSwitch = true;
             gameObject.SetActive(false);
         });
 
         //取消
         Cancel_Btn.onClick.AddListener(() =>
         {
-            GameRoomManager.Instance.IsCanMoveSwitch = false;
+            GameRoomManager.Instance.IsCanMoveSwitch = true;
             gameObject.SetActive(false);
         });
 
@@ -84,7 +84,7 @@ public class JoinRoomView : MonoBehaviour
         {
             //籌碼不足
             if (tableType == TableTypeEnum.Cash &&
-                newCarryChipsValue > DataManager.UserUChips)
+                newCarryChipsValue > DataManager.UserChips)
             {
                 ViewManager.Instance.OpenTipMsgView(lobbyView.transform, messageStatus.Failed, LanguageManager.Instance.GetText("Purchase Unsuccessful, Please Try Again!"));
                 gameObject.SetActive(false);
@@ -101,7 +101,7 @@ public class JoinRoomView : MonoBehaviour
             ViewManager.Instance.OpenWaitingView(transform);
             //進入房間停播音樂
             //lobbyView.audioSource.Stop();
-            JoinRound newRound = new JoinRound
+            JoinRoom newRound = new JoinRoom
             {
                 memberId = DataManager.UserId,
                 tableId = DataManager.TableId,
@@ -110,13 +110,24 @@ public class JoinRoomView : MonoBehaviour
             Debug.Log($"MemberId {newRound.memberId} :: TableId {newRound.tableId} :: Amount {newRound.amount}");
 
             //ViewManager.Instance.OpenWaitingView(transform);
-            SwaggerAPIManager.Instance.SendPostAPI<JoinRound>($"/api/app/rounds/join-round?memberId={newRound.memberId}&tableId={newRound.tableId}&amount={newRound.amount}", newRound, (data) =>
+            AppApi.OnJoinRoom(newRound, (data) =>
             {
                 Debug.Log("Join Round Response :: " + data);
-                GameRound gameRound = JsonConvert.DeserializeObject<GameRound>(data);
+                GameRoom gameRound = JsonConvert.DeserializeObject<GameRoom>(data);
                 var _currencyType = DataManager.CurrencyType;
                 Debug.Log("Currency Type :: " + _currencyType);
                 DataManager.TableType = gameRound.tableType;
+                DataManager.Rebate = gameRound.table.rebateSetting;
+                DataManager.RoundId = gameRound.roundId;
+                DataManager.RoomId = gameRound.roomId;
+                NoodleApi.PostTableBuyIn(newCarryChipsValue, (data) =>
+                {
+                    Debug.Log("Table BuyIn SuccessFull.");
+                },
+               (error) =>
+                {
+                    Debug.LogError($"Table BuyIn Failed Error: {error}");
+                });
                 switch (_currencyType)
                 {
                     case CurrencyType.Gold:
@@ -129,11 +140,11 @@ public class JoinRoomView : MonoBehaviour
                         break;
                     case CurrencyType.UCoin:
                         Debug.Log(_currencyType);
-                        DataManager.UserUChips -= newCarryChipsValue;
+                        DataManager.UserChips -= newCarryChipsValue;
                         break;
                 }
                 DataManager.DataUpdated = true;
-            }, null, true, true);
+            }, null);
 
 #if UNITY_EDITOR
 
@@ -233,7 +244,7 @@ public class JoinRoomView : MonoBehaviour
         if (isClassic)
             TexasHoldemUtil.SetBuySlider(this.smallBlind * 2, DataManager.UserAChips < ((this.smallBlind * 2) * DataManager.MaxMagnification) ? DataManager.UserAChips : (this.smallBlind * 2) * DataManager.MaxMagnification, BuyChips_Sli, tableType);
         else
-            TexasHoldemUtil.SetBuySlider(this.smallBlind * 2, DataManager.UserUChips < ((this.smallBlind * 2) * DataManager.MaxMagnification) ? DataManager.UserUChips : (this.smallBlind * 2) * DataManager.MaxMagnification, BuyChips_Sli, tableType);
+            TexasHoldemUtil.SetBuySlider(this.smallBlind * 2, DataManager.UserChips < ((this.smallBlind * 2) * DataManager.MaxMagnification) ? DataManager.UserChips : (this.smallBlind * 2) * DataManager.MaxMagnification, BuyChips_Sli, tableType);
 
         MinBuyChips_Txt.text = $"{StringUtils.SetChipsUnit((this.smallBlind * 2) * DataManager.MinMagnification)}";
         MaxBuyChips_Txt.text = $"{StringUtils.SetChipsUnit((this.smallBlind * 2) * DataManager.MaxMagnification)}"; ;

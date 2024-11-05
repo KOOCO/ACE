@@ -147,6 +147,10 @@
             border-radius: 5px;
             display: inline-block;
         }
+        #unity-logo {
+            width: 390px;
+            height: 203px;
+        }
     </style>
 </head>
 
@@ -334,10 +338,17 @@
                             }
                             return params;
                         }
+                        function CloseTab() {
+                            window.top.close();
+                        }
                         //新開頁面解析URL
                         const queryParams = getQueryParams();
                         //Line郵箱
                         const lineMail = queryParams['linemail'];
+
+                        const session = queryParams['session'];
+
+                        const loginWithUserName = queryParams['login'];
                         //IG Id與名子
                         const igIdAndName = queryParams['igIdAndName'];
                         //邀請碼
@@ -354,6 +365,14 @@
                         if (igIdAndName) {
                             //IG
                             instance.SendMessage('Entry', 'ReceiveIGInfo', igIdAndName);
+                        }
+                        if (session) {
+                            //Session id
+                            instance.SendMessage('LoadSceneManager', 'NoodleSession', session);
+                        }
+                        if (loginWithUserName) {
+                            //Login id
+                            instance.SendMessage('LoadSceneManager', 'NoodleLogin', loginWithUserName);
                         }
                         if (invitationCode && inviterId) {
                             //接收邀請碼，綁定要請者

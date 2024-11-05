@@ -18,6 +18,9 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
     [SerializeField]
     GameObject LoginViewObj, LobbyViewObj;
 
+    [SerializeField]
+    TextMeshProUGUI version_Txt; //login場景要顯示的板號
+
     public bool isGetUserData { get; set; }
 
     DateTime startYieldTime;
@@ -42,6 +45,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
         }
         else if (SceneManager.GetActiveScene().name == "Login")
         {
+
             StartCoroutine(IEntryInToLobby(sceneEnum));
         }
         else
@@ -61,7 +65,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
 
         // 等待加载完成
         while (!asyncLoad.isDone)
-        {            
+        {
             if (asyncLoad.progress >= 0.9f)
             {
                 asyncLoad.allowSceneActivation = true;
@@ -123,7 +127,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
             while (Progress_Img.fillAmount < 0.9f)
             {
                 float progress = (float)(DateTime.Now - startYieldTime).TotalSeconds / 0.8f;
-                Progress_Img.fillAmount = asyncLoad.progress < progress?
+                Progress_Img.fillAmount = asyncLoad.progress < progress ?
                                           progress :
                                           Mathf.Lerp(0, 0.9f, progress);
                 Progress_Txt.text = $"{(Progress_Img.fillAmount * 100):F0}%";
@@ -157,7 +161,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
 
         lodingView.gameObject.SetActive(false);
     }
-
+    LoginView loginView;
     /// <summary>
     /// 判斷進入場景
     /// </summary>
@@ -171,7 +175,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
                 JSBridgeManager.Instance.OpenRecaptchaTool();
 #endif
                 NFTManager.Instance.CancelUpdate();
-                ViewManager.Instance.CreateViewInCurrCanvas<LoginView>(LoginViewObj);
+                loginView = ViewManager.Instance.CreateViewInCurrCanvas<LoginView>(LoginViewObj);
                 break;
 
             case SceneEnum.Lobby:
@@ -185,5 +189,65 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
             case SceneEnum.Game:
                 break;
         }
+    }
+    [EButton]
+    public void Ahoo()
+    {
+        NoodleLogin("Shoaib007");
+    }
+    public void NoodleLogin(string loginString)
+    {
+        Debug.Log(loginString);
+        if (string.IsNullOrEmpty(loginString))
+        {
+            Debug.LogError("Invalid login string.");
+            return;
+        }
+
+        if (Entry.Instance.releaseEnv == ReleaseEnvironment.DEV)
+        {
+            StartCoroutine(DelayedNoodleLogin(loginString, true));
+        }
+    }
+
+    public void NoodleSession(string loginString)
+    {
+        Debug.Log(loginString);
+        if (string.IsNullOrEmpty(loginString))
+        {
+            Debug.LogError("Invalid login string.");
+            return;
+        }
+
+        // Call SwaggerAPIManager after a 3-second delay
+        StartCoroutine(DelayedNoodleLogin(loginString));
+    }
+
+    // Coroutine to delay the execution
+    private IEnumerator DelayedNoodleLogin(string loginString, bool isDev = false)
+    {
+        // Wait for 3 seconds
+        yield return new WaitForSeconds(3f);
+        if (!isDev)
+        {
+            AppApi.DecryptSession(loginString, loginView.RegisterWithNoodle, (x) =>
+            {
+                Debug.Log("Noodle Login Failed: " + x);
+            });
+        }
+        else
+        {
+            loginView.LoginWithUserName(loginString);
+        }
+    }
+
+
+    /// <summary>
+    /// Login場景單純show畫面用
+    /// </summary>
+    public void DoShowView()
+    {
+        lodingView.gameObject.SetActive(true);
+        version_Txt.text = Entry.Instance.version;
     }
 }

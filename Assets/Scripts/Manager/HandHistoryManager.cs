@@ -3,19 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using Newtonsoft.Json;
+using System;
 
 /// <summary>
 /// 紀錄結果資料
 /// </summary>
+[System.Serializable]
 public class ResultHistoryData
 {
-    public string RoomType;                         //房間類型
-    public double SmallBlind;                       //小盲注
-    public string NickName;                         //獲勝玩家暱稱
-    public int Avatar;                              //獲勝玩家頭像
-    public int[] HandPokers;                        //獲勝玩家手牌
-    public List<int> CommunityPoker;                //公共牌
-    public double WinChips;                         //贏得籌碼
+    public string dateTime;
+    public string roomType;                         //房間類型
+    public double smallBlind;                       //小盲注
+    public int avatar;                              //獲勝玩家頭像
+    public List<int> communityPoker;                //公共牌
+    public string tableId;
+    public string roomId;
+    public int roundId;
+    public string roundInsuranceResult;
+    public double roundInsurancePayRate;
+    public double roundInsurancePayAmount;
+    //public int[] HandPokers;                        //獲勝玩家手牌
+    // public int PlayerCurrHandShape;
+    //public double WinChips;                         //贏得籌碼
+    // public double SideWinChips;
+    public List<PlayerDetails> playerDetails;
 }
 
 /// <summary>

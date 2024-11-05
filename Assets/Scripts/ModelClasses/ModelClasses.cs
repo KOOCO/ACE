@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Org.BouncyCastle.Tls;
+using UnityEditor;
 
 #region Shop
 [Serializable]
@@ -84,21 +86,22 @@ public class TableItemList
 #endregion
 
 #region Join Round
-public class JoinRound
+public class JoinRoom
 {
     public string memberId;
     public string tableId;
     public double amount;
     public int rankPoint;
 }
-public class LeaveRound
+public class LeaveRoom
 {
     public string memberId;
+    public long roomId;
     public double amount;
     public string type;
     public int rankPoint;
 }
-public class GameRound
+public class GameRoom
 {
     public string id;
     public string roomId;
@@ -215,6 +218,301 @@ public class Loser
     public double lostAmount;
     public bool isDeleted;
     public Member member;
+}
+
+public class RoundEndResult
+{
+    public DateTime dateTime;
+    public string tableId;
+    public string roomId;
+    public int roundId;
+    public List<PlayerDetails> playerDetails;
+    public List<int> communityCards;
+}
+[System.Serializable]
+public class PlayerDetails
+{
+    public string playerId;
+    public string playerName;
+    public string playerHandId;
+    public double playerValidBetAmount;
+    public double playerRoomFee;
+    public string roundInsuranceResult;
+    public double roundInsurancePayRate;
+    public double roundInsurancePayAmount;
+    public bool isBot;
+    public PlayerHand playerHandData;
+}
+[System.Serializable]
+public class PlayerHand
+{
+    public List<int> playerHand;
+    public int playerCurrHandShape;
+    public double potWinChips;
+    public double sideWinChips;
+    public bool isWinner;
+    public string seat;
+}
+
+
+
+#endregion
+
+#region Noodle Login
+public class NoodleUserData
+{
+    public string noodleMemberId;
+    public string userName;
+    public decimal balance;
+    public string accessCode;
+    public string tenantId;
+    public string tenantName;
+
+    public NoodleUserData(string noodleMemberId, string userName, decimal balance, string accessCode, string tenantId, string tenantName)
+    {
+        this.noodleMemberId = noodleMemberId;
+        this.userName = userName;
+        this.balance = balance;
+        this.accessCode = accessCode;
+        this.tenantId = tenantId;
+        this.tenantName = tenantName;
+    }
+}
+public class NoodleResponse
+{
+    public NoodleUserData data;
+    public string code;
+    public string[] messages;
+
+    public NoodleResponse(NoodleUserData data, string code, string[] messages)
+    {
+        this.data = data;
+        this.code = code;
+        this.messages = messages;
+    }
+}
+#endregion
+
+#region Noodle Balance inquiry
+public class NoodleBalanceResponse
+{
+    public NoodleBalance data;
+    public string code;
+    public List<string> messages;
+}
+
+public class NoodleBalance
+{
+    public double balance;
+}
+#endregion
+
+#region  Table_Chips_Transaction 
+public class Data
+{
+    public int availableChips;
+
+    public Data(int availableChips)
+    {
+        this.availableChips = availableChips;
+    }
+}
+
+public class TableChipsTransactionResponse
+{
+    public Data data;
+    public string code;
+    public string[] messages;
+
+    public TableChipsTransactionResponse(Data data, string code, string[] messages)
+    {
+        this.data = data;
+        this.code = code;
+        this.messages = messages;
+    }
+}
+
+public class TableChipsTransaction
+{
+    public string accessCode;
+    public string uniqueSerial;
+    public string noodleMemberId;
+    public string memberId;
+    public long roomId;
+    public string tableId;
+    public string roundId;
+    public double amount;
+    public int chipTransactionType;
+
+    public TableChipsTransaction(string accessCode, string uniqueSerial, string noodleMemberId, string memberId, long roomId, string tableId, string roundId, double amount, int chipTransactionType)
+    {
+        this.accessCode = accessCode;
+        this.uniqueSerial = uniqueSerial;
+        this.noodleMemberId = noodleMemberId;
+        this.memberId = memberId;
+        this.roomId = roomId;
+        this.tableId = tableId;
+        this.roundId = roundId;
+        this.amount = amount;
+        this.chipTransactionType = chipTransactionType;
+    }
+}
+
+public class encData
+{
+    public string enc;
+
+    public encData(string enc)
+    {
+        this.enc = enc;
+    }
+}
+
+#endregion
+
+#region Table_Buy_in
+public class BuyInData
+{
+    public int availableChips;
+
+    public BuyInData(int availableChips)
+    {
+        this.availableChips = availableChips;
+    }
+}
+
+public class TableBuyInResponse
+{
+    public BuyInData data;
+    public string code;
+    public string[] messages;
+
+    public TableBuyInResponse(BuyInData data, string code, string[] messages)
+    {
+        this.data = data;
+        this.code = code;
+        this.messages = messages;
+    }
+}
+
+public class Tablebuyin
+{
+    public string accessCode;
+    public string noodleMemberId;
+    public long roomId;
+    public string tableId;
+    public double amount;
+
+    public Tablebuyin(string accessCode, string noodleMemberId, long roomId, string tableId, double amount)
+    {
+        this.accessCode = accessCode;
+        this.noodleMemberId = noodleMemberId;
+        this.roomId = roomId;
+        this.tableId = tableId;
+        this.amount = amount;
+    }
+}
+
+#endregion
+
+#region Table Cash Out Chips
+public class CashOutData
+{
+    public int cashOutChips;
+
+    public CashOutData(int cashOutChips)
+    {
+        this.cashOutChips = cashOutChips;
+    }
+}
+
+public class CashOutChipsResponse
+{
+    public CashOutData data;
+    public string code;
+    public string[] messages;
+
+    public CashOutChipsResponse(CashOutData data, string code, string[] messages)
+    {
+        this.data = data;
+        this.code = code;
+        this.messages = messages;
+    }
+}
+
+public class TableCashout
+{
+    public string accessCode;
+    public string noodleMemberId;
+    public long roomId;
+    public string tableId;
+
+    public TableCashout(string accessCode, string noodleMemberId, long roomId, string tableId)
+    {
+        this.accessCode = accessCode;
+        this.noodleMemberId = noodleMemberId;
+        this.roomId = roomId;
+        this.tableId = tableId;
+    }
+}
+
+#endregion
+
+#region Auth
+[System.Serializable]
+public class Register
+{
+    public string inviteCode;
+    public string phoneNumber;
+    public string userName;
+    public string password;
+    public string confirmPassword;
+    public string tenantId;
+    public string tenantName;
+}
+
+public class LoginRequest
+{
+    public string userNameOrEmailAddress;
+    public string password;
+    public string ipAddress;
+    public string machineCode;
+}
+public class PasswordLessLogin
+{
+    public string walletAddress;
+    public string ipAddress;
+    public string machineCode;
+}
+
+/// <summary>
+/// 錢包註冊資料
+/// </summary>
+public class RegisterPasswordLess
+{
+    public string memberName;
+    public string emailAddress;
+    public string walletAddress;
+}
+#endregion
+
+#region Player Statistics
+public class PlayerStatistics
+{
+    public decimal totalHandsPlayed;
+    public decimal averageWinning;
+    public decimal winRate;
+    public decimal biggestPotWon;
+    public decimal totalEarnings;
+
+    public PlayerStatistics(decimal totalHandsPlayed, decimal averageWinning, decimal winRate, decimal biggestPotWon, decimal totalEarnings)
+    {
+        this.totalHandsPlayed = totalHandsPlayed;
+        this.averageWinning = averageWinning;
+        this.winRate = winRate;
+        this.biggestPotWon = biggestPotWon;
+        this.totalEarnings = totalEarnings;
+    }
 }
 
 #endregion

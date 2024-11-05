@@ -42,14 +42,14 @@ public class GamePlayerInfo : MonoBehaviour
 
     [Header("聊天訊息")]
     [SerializeField]
-    GameObject Chat_Obj;
+    GameObject Chat_Obj, roomFee_Obj;
     [SerializeField]
     TextMeshProUGUI Chat_Txt;
 
     Coroutine cdCoroutine;              //倒數協程
     Coroutine chatCoroutine;            //聊天協程
 
-    int pokerShapeIndex;                //牌型編號
+    int pokerShapeIndex = -1;                //牌型編號
 
     Vector2 betChipsr_TrInitPos;         //下注籌碼物件初始位置
 
@@ -177,17 +177,10 @@ public class GamePlayerInfo : MonoBehaviour
     /// <summary>
     /// 設置牌型文字元件文字
     /// </summary>
-    // public string SetPokerShapeTxtStr
-    // {
-    //     set
-    //     {
-    //         if (PokerShape_Txt != null)
-    //         {
-    //             PokerShape_Txt.gameObject.SetActive(true);
-    //             PokerShape_Txt.text = value;
-    //         }
-    //     }
-    // }
+    public int GetPokerShapeIndex()
+    {
+        return pokerShapeIndex;
+    }
     public Sprite SetPokerShapeImage
     {
         set
@@ -261,6 +254,12 @@ public class GamePlayerInfo : MonoBehaviour
     public void setWinnerDisplay(string Result)
     {
         Winner_Txt.text = Result;
+    }
+
+    public void SetRoomFee(string Result)
+    {
+        roomFee_Obj.gameObject.SetActive(true);
+        roomFee_Obj.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = Result;
     }
 
     /// <summary>
@@ -665,18 +664,18 @@ public class GamePlayerInfo : MonoBehaviour
                 {
                     StringUtils.ChipsChangeEffect(Action_Txt,
                                               betValue,
-                                              $"{LanguageManager.Instance.GetText($"{betActionEnum}")}\n");
+                                              $"{LanguageManager.Instance.GetText($"{betActionEnum}")} $");
                 }
                 else
                 {
                     StringUtils.ChipsChangeEffect(Action_Txt,
                                               betValue,
-                                              $"{LanguageManager.Instance.GetText($"{betActionEnum}")} ");
+                                              $"{LanguageManager.Instance.GetText($"{betActionEnum}")} $");
                 }
             }
             else
             {
-                Action_Txt.text = $"{LanguageManager.Instance.GetText($"{betActionEnum}")}\n{StringUtils.SetChipsUnit(betValue)}";
+                Action_Txt.text = $"{LanguageManager.Instance.GetText($"{betActionEnum}")} ${StringUtils.SetChipsUnit(betValue)}";
             }
         }
         else

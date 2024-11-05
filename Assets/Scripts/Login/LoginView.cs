@@ -14,11 +14,14 @@ using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using Nethereum.Contracts;
+using UnityEngine.Networking;
+
 public class LoginView : MonoBehaviour
 {
     [Header("切換/版本")]
     [SerializeField]
-    TextMeshProUGUI Vrsion_Txt;
+    TextMeshProUGUI Vrsion_Txt, processing_Txt;
     [SerializeField]
     Toggle Wallet_Tog, Mobile_Tog;
     [SerializeField]
@@ -154,6 +157,10 @@ public class LoginView : MonoBehaviour
     [SerializeField]
     GameObject Privacy_Obj, Privacy_text, Term_text, Privacy_obj_Scroll, Term_obj_Scroll,
       Privacy_text_CH, Term_text_CH, Privacy_text_EN, Term_text_EN, Button_EN, Button_CH;
+
+    [SerializeField]
+    TMP_InputField loginWithURL;
+
     [SerializeField]
     Button PrivacyConfirm_Btn, Term_Btn, PrivacyPolicy_Btn;
     [SerializeField]
@@ -161,8 +168,13 @@ public class LoginView : MonoBehaviour
                     PrivacyConfirmBtn_Txt, Privacy_Title, Term_Title,
                     TermsConfirm_Btn_Txt, PrivacyConfirm_Btn_Txt;
 
-    [Header("音樂撥放")]
+    //[Header("音樂撥放")]
     //public AudioSource AudioSource;
+
+    [Header("Session Account")]
+    [SerializeField]
+    string Operator, secretKey, userName;
+
     [SerializeField]
     const int ErrorWalletConnectTime = 30;                                      //判定連接失敗等待時間
     const int codeCountDownTime = 60;                                           //發送OTP倒數時間
@@ -209,6 +221,7 @@ public class LoginView : MonoBehaviour
     UnityAction KybordEnterAction;                                              //Enter鍵執行方法
 
     public bool isCorrect = true;
+    public MaintenanceView maintenance;
     /*
     
 
@@ -380,13 +393,19 @@ public class LoginView : MonoBehaviour
 
     private void Awake()
     {
+        maintenance.gameObject.SetActive(Entry.Instance.isMaintenance);
+        if (!Entry.Instance.isMaintenance)
+        {
+            LoadSceneManager.Instance.DoShowView();
+        }
+
         LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
 
         Term_text.SetActive(false);
         Privacy_text.SetActive(false);
 
         recordConnect = new RecordConnect();
-        ListenerEvent();
+        // ListenerEvent();
     }
 
     /// <summary>
@@ -493,13 +512,13 @@ public class LoginView : MonoBehaviour
         //錢包註冊提交
         WalletRegisterSubmit_Btn.onClick.AddListener(() =>
         {
-            register_passwordless walletRegister = new register_passwordless()
+            RegisterPasswordLess walletRegister = new RegisterPasswordLess()
             {
                 memberName = WalletRegister_If.text,
                 emailAddress = WalletEmail_If.text,
                 walletAddress = DataManager.UserWalletAddress,
             };
-            SwaggerAPIManager.Instance.SendPostAPI<register_passwordless>("/api/app/ace-accounts/register-passwordless", walletRegister, WalletRegisterCallback);
+            AppApi.RegisterPasswordLess(walletRegister, WalletRegisterCallback);
         });
 
         #endregion
@@ -516,6 +535,16 @@ public class LoginView : MonoBehaviour
         //手機登入提交
         SignIn_Btn.onClick.AddListener(() =>
         {
+#if UNITY_EDITOR
+            //AppApi.DecryptSession(loginWithURL.text, RegisterWithNoodle, (x) =>
+            //{
+            //    Debug.Log("Noodle Login Failed: " + x);
+            //});
+            //StartCoroutine(GetLobbyData(loginWithURL.text));
+            StartCoroutine(GetAuthorData());
+            return;
+#endif
+
             ViewManager.Instance.OpenWaitingView(transform);
 
             recodePhoneNumber = SingInAccount_If.text;
@@ -529,9 +558,7 @@ public class LoginView : MonoBehaviour
                 machineCode = "123456789",
             };
             currVerifyPhoneNumber = login.userNameOrEmailAddress;
-            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest>("/api/app/ace-accounts/login", login, OnIntoLobby);
-
-            //MobileSignInSubmit();
+            AppApi.LoginRequest(login, OnIntoLobby);
         });
 
         //手機登入密碼顯示
@@ -617,7 +644,7 @@ public class LoginView : MonoBehaviour
                 ipAddress = JsonStringIp,
                 machineCode = "123456789",
             };
-            SwaggerAPIManager.Instance.SendPostAPI<LoginRequest>("/api/app/ace-accounts/login", login, OnIntoLobby);
+            AppApi.LoginRequest(login, OnIntoLobby);
         });
 
         //註冊成功登入取消按鈕
@@ -755,8 +782,29 @@ public class LoginView : MonoBehaviour
         //SoundToggleGroup.IsPlayAudio(AudioSource);
         AudioManager.Instance.playTittle();
         MusicSwitchBtn.IsPlayAudio();
+
+
+#if UNITY_EDITOR
+        loginWithURL.gameObject.SetActive(false);
+#else
+        loginWithURL.gameObject.SetActive(false);
+#endif
     }
 
+    public void LoginWithUserName(string _userName)
+    {
+        if (_userName != "")
+        {
+            userName = _userName;
+        }
+        LoginInEditor();
+    }
+
+    [EButton]
+    public void LoginInEditor()
+    {
+        StartCoroutine(GetAuthorData());
+    }
     private void Update()
     {
         SingInAccount = false;
@@ -1211,23 +1259,6 @@ public class LoginView : MonoBehaviour
             RegisterPasswordError_Txt.text = "";
         }
     }
-
-    public class Register
-    {
-        public string inviteCode;
-        public string phoneNumber;
-        public string userName;
-        public string password;
-        public string confirmPassword;
-    }
-
-    public class LoginRequest
-    {
-        public string userNameOrEmailAddress;
-        public string password;
-        public string ipAddress;
-        public string machineCode;
-    }
     /// <summary>
     /// 手機註冊OTP驗證
     /// </summary>
@@ -1275,10 +1306,7 @@ public class LoginView : MonoBehaviour
             confirmPassword = RegisterPassword_If.text,
 
         };
-        SwaggerAPIManager.Instance.SendPostAPI<Register>("/api/app/ace-accounts/register", register, WritePhoneNewUser);
-
-        //checkDataCallbackFunc = WritePhoneNewUser;
-        //SetUniqueData();
+        AppApi.RegisterRequest(register, WritePhoneNewUser);
     }
 
     /// <summary>
@@ -1468,7 +1496,7 @@ public class LoginView : MonoBehaviour
     /// </summary>
     private void OnSwlwctWalletInit()
     {
-        Wallet_Obj.SetActive(true);
+        // Wallet_Obj.SetActive(true);
         Mobile_Obj.SetActive(false);
         SelectWalletPage_Obj.SetActive(true);
         ConnectingWallet_Obj.SetActive(false);
@@ -1713,15 +1741,13 @@ public class LoginView : MonoBehaviour
     /// </summary>
     private void WalletLogin()
     {
-        passwordless_login wallLogin = new passwordless_login()
+        PasswordLessLogin wallLogin = new PasswordLessLogin()
         {
             walletAddress = DataManager.UserWalletAddress,
             ipAddress = JsonStringIp,
             machineCode = "123456789",
         };
-        SwaggerAPIManager.Instance.SendPostAPI<passwordless_login>("/api/app/ace-accounts/passwordless-login",
-                            wallLogin, WalletLoginCallback,
-                            OpenWalletRigisterPage);
+        AppApi.PasswordLessLogin(wallLogin, WalletLoginCallback, OpenWalletRigisterPage);
     }
 
     /// <summary>
@@ -1898,7 +1924,7 @@ public class LoginView : MonoBehaviour
             { FirebaseManager.INVITATION_CODE, currInviteCode },                        //邀請碼                            
             { FirebaseManager.AVATAR_INDEX, 0},                                         //頭像編號
             { FirebaseManager.A_CHIPS, DataManager.UserAChips},
-            { FirebaseManager.U_CHIPS, DataManager.UserUChips},
+            { FirebaseManager.U_CHIPS, DataManager.UserChips},
             { FirebaseManager.GOLD, DataManager.UserGold},
             { FirebaseManager.NICKNAME, ""},
         };
@@ -2079,8 +2105,33 @@ public class LoginView : MonoBehaviour
     /// <summary>
     /// 進入大廳
     /// </summary>
-    private void OnIntoLobby(string data)
+    /// 
+    private string noodleLoginData;
+    public void RegisterWithNoodle(string data)
     {
+        Debug.Log("Noodle Response Register::" + data);
+        NoodleResponse noodleData = JsonConvert.DeserializeObject<NoodleResponse>(data);
+        noodleLoginData = data;
+        DataManager.UserNickname = noodleData.data.userName;
+        Register register = new Register()
+        {
+            inviteCode = "",
+            phoneNumber = "12345678",//把 RegisterNumber物件的匯入
+            userName = noodleData.data.userName,
+            password = "Abcd@12345678",
+            confirmPassword = "Abcd@12345678",
+            tenantId = noodleData.data.tenantId,
+            tenantName = noodleData.data.tenantName,
+        };
+        AppApi.RegisterRequest(register, IsUserRegistered, (x) =>
+        {
+            IsUserRegistered("false");
+        });
+    }
+    public void OnIntoLobby(string data)
+    {
+        Debug.Log("Noodle ::" + data);
+        processing_Txt.text = "We are working on your Login Request Please Wait....";
         Services.PlayerService.SaveUser(data);
         Player player = Services.PlayerService.GetPlayer();
 
@@ -2093,7 +2144,7 @@ public class LoginView : MonoBehaviour
 
         DataManager.UserId = player.memberId;
         DataManager.UserAChips = player.promotionCoin;
-        DataManager.UserUChips = player.walletAmount;
+        DataManager.UserChips = player.walletAmount;
         DataManager.UserGold = player.gold;
         DataManager.UserInvitationCode = player.inviteCode;
         DataManager.UserTimer = player.timer;
@@ -2125,17 +2176,37 @@ public class LoginView : MonoBehaviour
 
     private void IsUserRegistered(string data)
     {
-        if (data == "true")
+        Debug.Log(nameof(IsUserRegistered) + "::" + data);
+        if (data == "true" || data == "SUCCESS")
         {
             RegisterSuccessSignIn();
             ReadUserData(nameof(JudgeLoggedIn));
         }
         else
         {
-            ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Sending,
-                            LanguageManager.Instance.GetText("Something went wron please try again"));
+            // ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Sending,
+            //                 LanguageManager.Instance.GetText("Something went wron please try again"));
+            LoginWithNoodle(noodleLoginData);
         }
     }
+
+    public void LoginWithNoodle(string data)
+    {
+        Debug.Log("Noodle Response Login::" + data);
+        NoodleResponse noodleData = JsonConvert.DeserializeObject<NoodleResponse>(data);
+        DataManager.AccessCode = noodleData.data.accessCode;
+        DataManager.NoodleMemberId = noodleData.data.noodleMemberId;
+        LoginRequest login = new LoginRequest()
+        {
+            userNameOrEmailAddress = noodleData.data.userName,
+            password = "Abcd@12345678",
+        };
+        AppApi.LoginRequest(login, (X) =>
+        {
+            OnIntoLobby(X);
+        });
+    }
+
 
     /// <summary>
     /// 帳號是否登入判斷
@@ -2183,4 +2254,137 @@ public class LoginView : MonoBehaviour
         ViewManager.Instance.OpenTipMsgView(transform, status,
                                             LanguageManager.Instance.GetText(message));
     }
+    #region Get all sesseion
+    ///<summary>
+    ///Get auhtorize Session
+    /// </summary>
+    IEnumerator GetAuthorData()
+    {
+        // 建立 UnityWebRequest，設定請求的 URL
+        string url = $"https://noodle-dev.azurewebsites.net/api/authorize";
+        UnityWebRequest request = UnityWebRequest.Get(url);
+
+        // 設定請求頭
+        request.SetRequestHeader("accept", "application/json");
+        request.SetRequestHeader("Operator", Operator);
+        request.SetRequestHeader("SecretKey", secretKey);
+        request.SetRequestHeader("RequestVerificationToken", "CfDJ8LFzIbsr735Dofa_0sFAIEosFVjQldc81reOa8sHc5iXtzrFEVMuypibJHs7pcsEnjsQM8WCuU9mQCzIWo17KmSKKzSvPU_SlvqeXTlAtpes7VZCCw6rQRz6sCfKI9tFFG8opdHZflZ2i2SMXfRKr9M");
+        request.SetRequestHeader("X-Requested-With", "XMLHttpRequest");
+
+        // 發送請求並等待回應
+        yield return request.SendWebRequest();
+
+        // 檢查請求是否出現錯誤
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError("Error: " + request.error);
+        }
+        else
+        {
+            // 輸出請求結果
+            //Debug.Log("Response: " + request.downloadHandler.text);
+
+            string jsonResponse = request.downloadHandler.text;
+
+            // 使用 JsonUtility 解析 JSON
+            GeneralResponse responseData = JsonUtility.FromJson<GeneralResponse>(jsonResponse);
+            string sessionValue = responseData.data.session;
+
+            //Start get Lobby session
+            yield return new WaitUntil(() => sessionValue != "");
+
+            StartCoroutine(GetLobbyData(sessionValue));
+        }
+    }
+
+    /// <summary>
+    /// Get Lobby Session
+    ///</summary>
+    IEnumerator GetLobbyData(string authorSession)
+    {
+        // 建立 UnityWebRequest，設定請求的 URL
+        string url = $"https://noodle-dev.azurewebsites.net/api/lobby/{userName}/1";
+        UnityWebRequest request = UnityWebRequest.Get(url);
+
+        // 設定請求頭
+        request.SetRequestHeader("accept", "application/json");
+        request.SetRequestHeader("Session", authorSession);
+        request.SetRequestHeader("RequestVerificationToken", "CfDJ8LFzIbsr735Dofa_0sFAIEosFVjQldc81reOa8sHc5iXtzrFEVMuypibJHs7pcsEnjsQM8WCuU9mQCzIWo17KmSKKzSvPU_SlvqeXTlAtpes7VZCCw6rQRz6sCfKI9tFFG8opdHZflZ2i2SMXfRKr9M");
+        request.SetRequestHeader("X-Requested-With", "XMLHttpRequest");
+
+        // 發送請求並等待回應
+        yield return request.SendWebRequest();
+
+        // 檢查請求是否出現錯誤
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError("Error: " + request.error);
+        }
+        else
+        {
+            // 輸出請求結果
+            //Debug.Log("Response: " + request.downloadHandler.text);
+
+            string jsonResponse = request.downloadHandler.text;
+
+            // 使用 JsonUtility 解析 JSON
+            GeneralResponse response = JsonUtility.FromJson<GeneralResponse>(jsonResponse);
+            print(response.data.url);
+
+            // 提取 URL 中的 session 值
+            string sessionValue = ExtractSessionValue(response.data.url);
+            //Debug.Log("Session Value: " + sessionValue);
+
+            //Start LogIn
+            AppApi.DecryptSession(sessionValue, RegisterWithNoodle, (x) =>
+            {
+                Debug.Log("Noodle Login Failed: " + x);
+            });
+        }
+    }
+
+    // 提取 session 值的方法
+    string ExtractSessionValue(string url)
+    {
+        //print(url);
+        Uri uri = new Uri(url);
+        string query = uri.Query; // 获取 URL 中的查询字符串部分 "?session=..."
+
+        // 确保 URL 包含 "session=" 参数
+        if (query.Contains("session="))
+        {
+            string sessionParam = query.Substring(query.IndexOf("session=") + "session=".Length);
+            return sessionParam;  // 返回 session 值
+        }
+        return null; // 如果未找到 session 参数，返回 null
+    }
+    #endregion
+
+    // public void NoodleLogin(string loginString)
+    // {
+    //     if (string.IsNullOrEmpty(loginString))
+    //     {
+    //         Debug.LogError("Invalid login string.");
+    //         return;
+    //     }
+
+    //     SwaggerAPIManager.Instance.SendPostAPI<LoginRequest>($"/api/app/games/ace/decrypt-session?session={loginString}", null, OnIntoLobby, (x) =>
+    //     {
+    //         Debug.Log("Noddle Login Failed " + x);
+    //     }, false, true);
+    // }
+}
+
+// 用于匹配 JSON 结构的数据类
+[Serializable]
+public class GeneralResponse
+{
+    public GeneralData data;
+}
+
+[Serializable]
+public class GeneralData
+{
+    public string url;     // 如果有 URL 的话会解析
+    public string session; // 如果有 Session 的话会解析
 }

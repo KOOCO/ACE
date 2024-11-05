@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using TMPro;
+using Newtonsoft.Json;
 
 public class LobbyView : MonoBehaviour
 {
@@ -37,11 +38,11 @@ public class LobbyView : MonoBehaviour
     [SerializeField]
     RectTransform Floor3;
     [SerializeField]
-    Button Mine_Btn, Shop_Btn, Main_Btn, Activity_Btn, Ranking_Btn, t_History_Btn, Settings_Btn, Refresh_Btn;
+    Button Mine_Btn, Shop_Btn, Main_Btn, Activity_Btn, Ranking_Btn, t_History_Btn, Settings_Btn, Refresh_Btn, Report_Btn;
     [SerializeField]
-    GameObject LobbyMainPageView, LobbyMinePageView, LobbyRankingView, LobbyShopView, LobbyActivityView, LobbySettingsView, LobbyT_HistoryView;
+    GameObject LobbyMainPageView, LobbyMinePageView, LobbyRankingView, LobbyShopView, LobbyActivityView, LobbySettingsView, LobbyT_HistoryView, LobbyReportView;
     [SerializeField]
-    TextMeshProUGUI MineBtn_Txt, ShopBtn_Txt, ActivityBtn_Txt, RankingBtn_Txt, t_HistoryBtn_Txt, SettingsBtn_Txt;
+    TextMeshProUGUI MineBtn_Txt, ShopBtn_Txt, ActivityBtn_Txt, RankingBtn_Txt, t_HistoryBtn_Txt, SettingsBtn_Txt, Report_Txt;
 
     [Header("任務介面")]
     [SerializeField]
@@ -83,7 +84,8 @@ public class LobbyView : MonoBehaviour
         Activity,
         Ranking,
         t_History,
-        Settings
+        Settings,
+        Report
     }
 
     bool isShowAssetList;               //是否顯示用戶資源列表
@@ -110,6 +112,7 @@ public class LobbyView : MonoBehaviour
         //ActivityBtn_Txt.text = LanguageManager.Instance.GetText("Activity");
         RankingBtn_Txt.text = LanguageManager.Instance.GetText("Ranking");
         t_HistoryBtn_Txt.text = LanguageManager.Instance.GetText("Transaction History");
+        Report_Txt.text = LanguageManager.Instance.GetText("Report");
         SettingsBtn_Txt.text = LanguageManager.Instance.GetText("Settings");
 
         #endregion
@@ -187,25 +190,30 @@ public class LobbyView : MonoBehaviour
         {
             OpenItemPage(ItemType.Ranking);
         });
-        
+
         //報表
         t_History_Btn.onClick.AddListener(() =>
         {
             OpenItemPage(ItemType.t_History);
         });
-        
+        Report_Btn.onClick.AddListener(() =>
+       {
+           OpenItemPage(ItemType.Report);
+       });
+
         //設定
         Settings_Btn.onClick.AddListener(() =>
         {
             OpenItemPage(ItemType.Settings);
         });
-        
+
         //刷新
         Refresh_Btn.onClick.AddListener(() =>
         {
             UpdateUserData();
             Refresh_Btn.interactable = false;
             StartCoroutine(openRefreshBtn());
+            NoodleApi.GetBalance();
         });
 
         //商店
@@ -227,7 +235,6 @@ public class LobbyView : MonoBehaviour
             DisplayFloor4UI(Transfers_AnteView);
         });
     }
-
     private void OnEnable()
     {
         GameTest_Tog.gameObject.SetActive(false);
@@ -258,6 +265,8 @@ public class LobbyView : MonoBehaviour
         ViewManager.Instance.OpenWaitingView(transform);
         DataManager.ReciveRankData();
         UpdateUserData();
+
+        Refresh_Btn.onClick.Invoke();
 
         /*
 #if UNITY_EDITOR
@@ -339,6 +348,7 @@ public class LobbyView : MonoBehaviour
 
             DataManager.UserNickname = loginData.nickname;
             DataManager.UserAvatarIndex = loginData.avatarIndex;
+            DataManager.UserStatus = loginData.online;
 
 #if !UNITY_EDITOR
 
@@ -372,10 +382,10 @@ public class LobbyView : MonoBehaviour
                 nameof(UpdateUserData));
 
             //開啟設置暱稱
-            if (isFirstIn)
-            {
-                Instantiate(SetNicknameViewObj, transform);
-            }
+            // if (isFirstIn)
+            // {
+            //     Instantiate(SetNicknameViewObj, transform);
+            // }
         }
 
         //使用邀請碼登入
@@ -434,7 +444,7 @@ public class LobbyView : MonoBehaviour
         Avatar_Btn.image.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[DataManager.UserAvatarIndex];
         Stamina_Txt.text = $"{DataManager.UserEnergy}/{DataManager.UserMaxEnrtgy}";
 
-        Assets_CryptoChipsValue_Txt.text = $"${StringUtils.SetChipsUnit(DataManager.UserUChips)}";
+        Assets_CryptoChipsValue_Txt.text = $"${StringUtils.SetChipsUnit(DataManager.UserChips)}";
         Assets_VCValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserAChips);
         Assets_GoldValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserGold);
         Assets_StaminaValue_Txt.text = $"{DataManager.UserEnergy}/{DataManager.UserMaxEnrtgy}";
@@ -521,6 +531,9 @@ public class LobbyView : MonoBehaviour
             case ItemType.Settings:
                 itemObj = LobbySettingsView;
                 break;
+            case ItemType.Report:
+                itemObj = LobbyReportView;
+                break;
             default:
                 Debug.LogWarning("Unknown item type: " + itemType);
                 return; // Early exit for unknown types
@@ -566,7 +579,7 @@ public class LobbyView : MonoBehaviour
     IEnumerator wait4MineLoad()
     {
         LobbyMinePageView mineView = Floor3.GetComponentInChildren<LobbyMinePageView>();
-        yield return new WaitUntil(() => mineView!=null);
+        yield return new WaitUntil(() => mineView != null);
 
         if (mineView != null)
         {
@@ -574,7 +587,7 @@ public class LobbyView : MonoBehaviour
             mineView.openSettingsView();
         }
     }
-    
+
     IEnumerator openRefreshBtn()
     {
         yield return new WaitForSeconds(5);

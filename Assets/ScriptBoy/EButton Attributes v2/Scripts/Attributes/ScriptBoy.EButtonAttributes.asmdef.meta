@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a90d92a9e5ca14c4792606b4b9ad97c9
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 196880
+  packageName: EButton Attributes v2
+  packageVersion: 2.0.1
+  assetPath: Assets/ScriptBoy/EButton Attributes v2/Scripts/Attributes/ScriptBoy.EButtonAttributes.asmdef
+  uploadId: 636886

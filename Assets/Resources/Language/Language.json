@@ -10,6 +10,16 @@
     "zh_TW": "亞洲撲克"
   },
   {
+    "ID": "Texas hold'em",
+    "English": "Texas hold'em ",
+    "zh_TW": "德州撲克"
+  },
+  {
+    "ID": "ACE",
+    "English": "ACE",
+    "zh_TW": "亞洲撲克"
+  },
+  {
     "ID": "Retry",
     "English": "RETRY",
     "zh_TW": "重新嘗試"
@@ -270,6 +280,11 @@
     "zh_TW": "我的 NFT"
   },
   {
+    "ID": "My History",
+    "English": "My History(Last Three Month)",
+    "zh_TW": "我的歷史紀錄(最近3個月)"
+  },
+  {
     "ID": "Transaction History",
     "English": "Transaction History",
     "zh_TW": "交易紀錄"
@@ -278,6 +293,11 @@
     "ID": "Change Avatar",
     "English": "Change Avatar",
     "zh_TW": "更換頭像"
+  },
+  {
+    "ID": "Personal Information",
+    "English": "PersonalInformation",
+    "zh_TW": "個人資料"
   },
   {
     "ID": "Account Balance",
@@ -303,6 +323,56 @@
     "ID": "Hand History",
     "English": "Hand History",
     "zh_TW": "手牌紀錄"
+  },
+  {
+    "ID": "TOTAL HANDS PLAYED",
+    "English": "TOTAL HANDS PLAYED",
+    "zh_TW": "總局數"
+  },
+  {
+    "ID": "AVERAGE WINNING",
+    "English": "AVERAGE WINNING",
+    "zh_TW": "平均獲勝率"
+  },
+  {
+    "ID": "WIN RATE",
+    "English": "WIN RATE",
+    "zh_TW": "獲勝率"
+  },
+  {
+    "ID": "BIGGEST POT WON",
+    "English": "BIGGEST POT WON",
+    "zh_TW": "最高獲勝金額"
+  },
+  {
+    "ID": "TOTAL EARNINGS",
+    "English": "TOTAL EARNINGS",
+    "zh_TW": "總收入"
+  },
+  {
+    "ID": "BEST HANDCARD",
+    "English": "BEST HANDCARD",
+    "zh_TW": "最佳手牌"
+  },
+  {
+    "ID": "HANDS PLAYED",
+    "English": "HANDS PLAYED: ",
+    "zh_TW": "玩過的手牌："
+  },
+  {
+    "ID": "HANDS WON",
+    "English": "HANDS WON: ",
+    "zh_TW": "手牌獲勝數："
+  },
+  {
+    "ID": "BEST HAND",
+    "English": "BEST HAND ",
+    "zh_TW": "最佳牌局"
+  },
+  {
+    "ID": "WORST HAND",
+    "English": "WORST HAND ",
+    "zh_TW": "最差牌局"
   },
   {
     "ID": "Settings",
@@ -332,7 +402,7 @@
   {
     "ID": "LAUNCH",
     "English": "LAUNCH",
-    "zh_TW": "發射"
+    "zh_TW": "入桌"
   },
   {
     "ID": "詢問彈窗",
@@ -423,6 +493,11 @@
     "ID": "Not enough chips.",
     "English": "Not enough chips.",
     "zh_TW": "籌碼不足。"
+  },
+  {
+    "ID": "Exceeded maximum selection date range",
+    "English": "Exceeded maximum selection date range",
+    "zh_TW": "超過最大選取範圍"
   },
   {
     "ID": "登入(LoginView)",
@@ -745,6 +820,56 @@
     "zh_TW": "僅顯示最近 3 個月的交易。"
   },
   {
+    "ID": "BETS RECORD",
+    "English": "BETS RECORD",
+    "zh_TW": "下注紀錄"
+  },
+  {
+    "ID": "TRANSACTION LIST",
+    "English": "TRANSACTION LIST",
+    "zh_TW": "額度紀錄"
+  },
+  {
+    "ID": "HAND HISTORY",
+    "English": "HAND HISTORY",
+    "zh_TW": "手牌紀錄"
+  },
+  {
+    "ID": "All Wins：",
+    "English": "All Wins：",
+    "zh_TW": "總輸贏："
+  },
+  {
+    "ID": "All Valid Bet：",
+    "English": "All Valid Bet：",
+    "zh_TW": "總有效投注："
+  },
+  {
+    "ID": "All Bets：",
+    "English": "All Bets：",
+    "zh_TW": "總投注："
+  },
+  {
+    "ID": "Total         Record(S)",
+    "English": "Total         Record(S)",
+    "zh_TW": "總計         筆"
+  },
+  {
+    "ID": "Date",
+    "English": "Date",
+    "zh_TW": "日期"
+  },
+  {
+    "ID": "Game Date",
+    "English": "Date",
+    "zh_TW": "遊戲日期"
+  },
+  {
+    "ID": "Game",
+    "English": "Game",
+    "zh_TW": "遊戲"
+  },
+  {
     "ID": "VIRTUAL CODE",
     "English": "VIRTUAL CODE",
     "zh_TW": "虛擬程式碼"
@@ -755,14 +880,84 @@
     "zh_TW": "日期範圍"
   },
   {
-    "ID": "Start Date",
-    "English": "Start Date",
-    "zh_TW": "開始日期"
+    "ID": "Start Time",
+    "English": "Start Time",
+    "zh_TW": "開始時間"
   },
   {
-    "ID": "End Date",
-    "English": "End Date",
-    "zh_TW": "結束日期"
+    "ID": "End Time",
+    "English": "End Time",
+    "zh_TW": "結束時間"
+  },
+  {
+    "ID": "Start",
+    "English": "Start",
+    "zh_TW": "開始"
+  },
+  {
+    "ID": "End",
+    "English": "End",
+    "zh_TW": "結束"
+  },
+  {
+    "ID": "Room ID",
+    "English": "Room ID",
+    "zh_TW": "房號"
+  },
+  {
+    "ID": "Room rate",
+    "English": "Room rate",
+    "zh_TW": "房費"
+  },
+  {
+    "ID": "Bets",
+    "English": "Bets",
+    "zh_TW": "下注金額"
+  },
+  {
+    "ID": "Valid Bet",
+    "English": "Valid Bet",
+    "zh_TW": "有效投注"
+  },
+  {
+    "ID": "Wins",
+    "English": "Wins",
+    "zh_TW": "獲勝金額"
+  },
+  {
+    "ID": "Profit",
+    "English": "Profit",
+    "zh_TW": "勝負"
+  },
+  {
+    "ID": "Transaction Number",
+    "English": "Transaction Number",
+    "zh_TW": "交易編號"
+  },
+  {
+    "ID": "Time",
+    "English": "Time",
+    "zh_TW": "時間"
+  },
+  {
+    "ID": "Types",
+    "English": "Types",
+    "zh_TW": "類型"
+  },
+  {
+    "ID": "Amount",
+    "English": "Amount",
+    "zh_TW": "金額"
+  },
+  {
+    "ID": "Transfer In",
+    "English": "Transfer In",
+    "zh_TW": "轉入"
+  },
+  {
+    "ID": "Transfer Out",
+    "English": "Transfer Out",
+    "zh_TW": "轉出"
   },
   {
     "ID": "All Type",
@@ -780,8 +975,8 @@
     "zh_TW": "賭注"
   },
   {
-    "ID": "ALL",
-    "English": "ALL",
+    "ID": "All",
+    "English": "All",
     "zh_TW": "全部"
   },
   {
@@ -918,6 +1113,11 @@
     "ID": "Binding Successful",
     "English": "Binding Successful",
     "zh_TW": "綁定成功"
+  },
+  {
+    "ID": "Copy Success!",
+    "English": "Copy Successful",
+    "zh_TW": "複製成功！"
   },
   {
     "ID": "Copy",
@@ -1220,6 +1420,11 @@
     "zh_TW": "玩家"
   },
   {
+    "ID": "Player ID",
+    "English": "PLAYER ID: ",
+    "zh_TW": "玩家暱稱："
+  },
+  {
     "ID": "Rank",
     "English": "Rank",
     "zh_TW": "積分"
@@ -1254,58 +1459,115 @@
     "English": "Hide Points (MMR）： \ninitialMMR: New players participate in several placement matches,determine the initial value based on the winning rate and opponent’s strengthMMR. \nDynamic adjustment: After each game, the result will be adjusted according to the outcome and opponent.MMR Adjust player'sMMR, the specific calculation formula is as follows: NewMMR=old MMR+K×(match result−expected results) \nAmong them, the result of the competition is1(win) or0(failure), the expected result depends on the player and opponentMMR Differencevaluecalculate.",
     "zh_TW": "隱藏積分（MMR）： \n初始 MMR：新玩家進行若干定位賽，根據勝率和對手實力確定初始 MMR。 \n動態調整：每局比賽結束後根據勝負結果和對手 MMR 調整玩家的 MMR，\n具體計算公式如下： 新 MMR=舊 MMR+K×(比賽結果−預期結果) \n其中，比賽結果為1（勝利）或0（失敗），預期結果根據玩家和對手的 MMR 差值計算。"
   },
-    {
+  {
     "ID": "Royal Straight Flush",
     "English": "ROYAL STRAIGHT FLUSH",
     "zh_TW": "皇家同花順"
   },
-    {
+  {
     "ID": "Straight Flush",
     "English": "STRAIGHT FLUSH",
     "zh_TW": "同花順"
   },
-    {
+  {
     "ID": "Four of a kind",
     "English": "FOUR OF A KIND",
     "zh_TW": "鐵支"
   },
-    {
+  {
     "ID": "Full House",
     "English": "FULL HOUSE",
     "zh_TW": "葫蘆"
   },
-    {
+  {
     "ID": "Flush",
     "English": "FLUSH",
     "zh_TW": "同花"
   },
-    {
+  {
     "ID": "Straight",
     "English": "STRAIGHT",
     "zh_TW": "同花"
-  }
-  ,
-    {
+  },
+  {
     "ID": "Three of a kind",
     "English": "THREE OF A KIND",
     "zh_TW": "三條"
-  }
-  ,
-    {
+  },
+  {
     "ID": "Two Pair",
     "English": "TWO PAIR",
     "zh_TW": "兩對"
-  }
-  ,
-    {
+  },
+  {
     "ID": "One Pair",
     "English": "ONE PAIR",
     "zh_TW": "一對"
-  }
-  ,
-    {
+  },
+  {
     "ID": "High Card",
     "English": "HIGH CARD",
     "zh_TW": "高牌"
+  },
+  {
+    "ID": "Winnings",
+    "English": "Winnings",
+    "zh_TW": "贏分"
+  },
+  {
+    "ID": "DAILY",
+    "English": "DAILY",
+    "zh_TW": "每日"
+  },
+  {
+    "ID": "WEEKLY",
+    "English": "WEEKLY",
+    "zh_TW": "每周"
+  },
+  {
+    "ID": "Online",
+    "English": "Online",
+    "zh_TW": "在線"
+  },
+  {
+    "ID": "Offline",
+    "English": "Offline",
+    "zh_TW": "離線"
+  },
+  {
+    "ID": "Sound",
+    "English": "Sound",
+    "zh_TW": "音樂"
+  },
+  {
+    "ID": "Audio Settings",
+    "English": "Audio Settings",
+    "zh_TW": "音效開關"
+  },
+  {
+    "ID": "Report",
+    "English": "Report",
+    "zh_TW": "報表"
+  },
+  {
+    "ID": "MAINTENANCE",
+    "English": "MAINTENANCE",
+    "zh_TW": "維護"
+  },
+  {
+    "ID": "Maintenance content",
+    "English": "Dear players:
+
+Our Texas Hold'em poker tables are about to undergo routine maintenance to ensure the smoothest gaming experience for you! You can take a short break during the maintenance period, and we will prepare more exciting poker challenges for you later.
+
+Thank you for your understanding and support! After the maintenance is over, we will invite you back to the battlefield immediately!
+
+ASIA POKER TEAM",
+    "zh_TW": "緊急通知：
+各位玩家請注意，我們需要進行一次臨時維護，以確保您的撲克之旅始終保持最佳狀態。維護期間遊戲將暫時無法進行，但我們會盡快完成，讓您重返桌上風雲！
+
+感謝您的耐心等候，我們隨時為您準備好牌桌！
+
+ASIA POKER 團隊"
   }
 ]

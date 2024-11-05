@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using TMPro;
 using RequestBuf;
+using Newtonsoft.Json;
 
 public class GameView : MonoBehaviour
 {
@@ -83,8 +84,8 @@ public class GameView : MonoBehaviour
     Image MenuAvatar_Img;
     [SerializeField]
     TextMeshProUGUI MenuCloseBtn_Txt, SitOutBtn_Txt, BuyChipsBtn_Txt, HandHistoryBtn_Txt,
-                    GameSettingsBtn_Txt,
-                    MenuNickname_Txt, MenuWalletAddr_Txt, GameRules_Txt;
+                    GameSettingsBtn_Txt, soundSwitch_Txt, audioSettings_Txt,
+                    MenuNickname_Txt, MenuWalletAddr_Txt, MenuWalletCoin_Txt, GameRules_Txt;
 
     [Header("聊天")]
     [SerializeField]
@@ -301,13 +302,14 @@ public class GameView : MonoBehaviour
         #endregion
 
         #region 選單
-
         MenuCloseBtn_Txt.text = LanguageManager.Instance.GetText("MENU");
         BuyChipsBtn_Txt.text = LanguageManager.Instance.GetText("Buy Chips");
         HandHistoryBtn_Txt.text = LanguageManager.Instance.GetText("Hand History");
         LogOutBtn_Txt.text = LanguageManager.Instance.GetText("Log Out");
         GameSettingsBtn_Txt.text = LanguageManager.Instance.GetText("Game Settings");
         GameRules_Txt.text = LanguageManager.Instance.GetText("Game Rules");
+        soundSwitch_Txt.text = LanguageManager.Instance.GetText("Sound");
+        audioSettings_Txt.text = LanguageManager.Instance.GetText("Audio Settings");
         #endregion
 
         #region 規則
@@ -555,6 +557,14 @@ public class GameView : MonoBehaviour
         AllIn_Btn.onClick.AddListener(() =>
         {
             Raise_Sli.value = (float)thisData.LocalPlayerChips;
+            NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.CurrCallValue, 6, (x) =>
+              {
+                  Debug.Log("AllIn Table ChipsTransaction Success");
+              },
+              (error) =>
+              {
+                  Debug.LogError($"AllIn Table ChipsTransaction Failed Error: {error}");
+              });
         });
 
         //底池百分比加註
@@ -596,6 +606,14 @@ public class GameView : MonoBehaviour
             }
             Raise_Tr.gameObject.SetActive(false);
             SetActionButton = false;
+            NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.CurrCallValue, 4, (x) =>
+               {
+                   Debug.Log("Call Table ChipsTransaction Success");
+               },
+               (error) =>
+               {
+                   Debug.LogError($"Call Table ChipsTransaction Failed Error: {error}");
+               });
         });
 
         //加注/All In
@@ -627,6 +645,14 @@ public class GameView : MonoBehaviour
                                                 acting,
                                                 betValue);
 
+                    NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.CurrRaiseValue, 9, (x) =>
+                    {
+                        Debug.Log("Raise Table ChipsTransaction Success");
+                    },
+                    (error) =>
+                    {
+                        Debug.LogError($"Raise Table ChipsTransaction Failed Error: {error}");
+                    });
                     Raise_Tr.gameObject.SetActive(false);
                     SetActionButton = false;
                 }
@@ -727,6 +753,18 @@ public class GameView : MonoBehaviour
 
         #endregion
 
+        roomID_Txt.GetComponent<Button>().onClick.AddListener(() =>
+        {
+            TextEditor editor = new TextEditor
+            {
+                text = roomID_Txt.text.Substring(3)
+            };
+            editor.SelectAll();
+            editor.Copy();
+
+            ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Succesful, LanguageManager.Instance.GetText("Copy Success!"));
+        });
+
         #region 遊戲測試
 
         //測試開始
@@ -735,7 +773,6 @@ public class GameView : MonoBehaviour
             IsStartGameTest = true;
             gameControl.preUpdateGameFlow = GameFlowEnum.None;
             gameControl.preLocalGameFlow = GameFlowEnum.None;
-            Debug.Log("IStartGameFlow :: GameStartTest");
             StartCoroutine(gameControl.IStartGameFlow(GameFlowEnum.Licensing));
             IsOpenGameTestObj = false;
         });
@@ -764,11 +801,12 @@ public class GameView : MonoBehaviour
         BattleResultView.gameObject.SetActive(false);
         BackToSit_Btn.gameObject.SetActive(false);
         RuleView.SetActive(false);
-        TotalPot_Txt.text = $"{StringUtils.SetChipsUnit(0)}";
+        TotalPot_Txt.text = $"${StringUtils.SetChipsUnit(0)}";
 
         //選單玩家訊息
         StringUtils.StrExceedSize(DataManager.UserWalletAddress, MenuWalletAddr_Txt);
         MenuNickname_Txt.text = $"@{DataManager.UserNickname}";
+        MenuWalletCoin_Txt.text = DataManager.UserChips.ToString("F2");
         MenuAvatar_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[DataManager.UserAvatarIndex];
 
         SetNotReadChatCount = 0;
@@ -786,8 +824,7 @@ public class GameView : MonoBehaviour
         MenuPage_Tr.gameObject.SetActive(false);
         ChatPage_Tr.gameObject.SetActive(false);
         HandHistoryPage_Tr.gameObject.SetActive(false);
-        //後臺未加房間ID欄位
-        //roomID_Txt.text = $"ID: {gameRoomData.hostId}";
+        roomID_Txt.text = $"ID: {DataManager.RoomId}";
 
         //清除座位上玩家
         for (int i = 1; i < SeatGamePlayerInfoList.Count; i++)
@@ -828,6 +865,7 @@ public class GameView : MonoBehaviour
 
         #endregion
         //MusicSwitchBtn.IsPlayAudio(AudioSource_Obj);
+        SFXSwitchBtn.IsPlaySFX();
     }
 
     private void Update()
@@ -841,6 +879,12 @@ public class GameView : MonoBehaviour
             SendChat();
             Chat_If.ActivateInputField();
             Chat_If.Select();
+        }
+
+
+        if (Input.GetKey(KeyCode.Backspace))
+        {
+            PlayerPrefs.DeleteAll();
         }
     }
 
@@ -875,7 +919,7 @@ public class GameView : MonoBehaviour
     /// <param name="soundName"></param>
     public void PlaySound(string soundName)
     {
-        audioPool.PlaySound(soundName);
+        AudioManager.Instance.playSFX(soundName);
     }
 
     /// <summary>
@@ -951,142 +995,16 @@ public class GameView : MonoBehaviour
             Debug.Log($"SetActionButton called with value: {value}");
 
             thisData.isLocalPlayerTurn = value;
-            Debug.Log($"isLocalPlayerTurn set to: {thisData.isLocalPlayerTurn}");
 
             UpdateActionBtns();
 
-            // // Check if the acting button can be enabled
-            // if (!SetActingButtonEnable)
-            // {
-            //     Debug.Log("SetActingButtonEnable is false, exiting SetActionButton.");
-            //     return;
-            // }
-
             if (!value)
             {
-                Debug.Log("Player's turn ended, calling HandleInactivePlayerTurn.");
                 //HandleInactivePlayerTurn();
                 coinIconObj.SetActive(false);
             }
-            // else
-            // {
-            //     Debug.Log("Player's turn started, setting Fold button text.");
-            //     // If it's the player's turn, they should always have the Fold option
-            //     strData.FoldStr = "Fold";
-            //     FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
-            //     Debug.Log($"Fold button text set to: {FoldBtn_Txt.text}");
-            // }
         }
     }
-
-    // private void HandleInactivePlayerTurn()
-    // {
-    //     Debug.Log("HandleInactivePlayerTurn called.");
-
-    //     // Deactivate the raise button
-    //     Raise_Tr.gameObject.SetActive(false);
-    //     Debug.Log("Raise button deactivated.");
-
-    //     // Determine whether to set the Fold button to "Fold" or "Check/Fold"
-    //     if (IsSetBlindPhase())
-    //     {
-    //         strData.FoldStr = "Fold";
-    //         Debug.Log("Blind phase detected, FoldStr set to 'Fold'.");
-    //     }
-    //     else
-    //     {
-    //         strData.FoldStr = "CheckOrFold";
-    //         Debug.Log("Not blind phase, FoldStr set to 'Check/Fold'.");
-    //     }
-
-    //     // Set Fold button text
-    //     FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
-    //     Debug.Log($"Fold button text set to: {FoldBtn_Txt.text}");
-
-    //     // Determine if the call button should be shown
-    //     if (ShouldShowCallOptions())
-    //     {
-    //         Debug.Log("Call options should be shown, calling SetCallButton.");
-    //         SetCallButton();
-    //     }
-    //     else
-    //     {
-    //         // If no bet, set Call button to "Check"
-    //         strData.CallStr = "Check";
-    //         strData.CallValueStr = "";
-    //         CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
-    //         Debug.Log($"Call button text set to: {CallBtn.text}");
-    //     }
-
-    //     // Set the Raise button to "CallAny"
-    //     strData.RaiseStr = "CallAny";
-    //     strData.RaiseValueStr = "";
-    //     coinIconObj.SetActive(false);
-    //     RaiseBtn_Txt.text = LanguageManager.Instance.GetText(strData.RaiseStr) + strData.RaiseValueStr;
-    //     Debug.Log($"Raise button text set to: {RaiseBtn_Txt.text}");
-    // }
-
-    // private bool IsSetBlindPhase()
-    // {
-    //     // Check if it's the Pre-Flop phase (blinds are being set)
-    //     return gameControl.GetLocalPlayer() != null &&
-    //            gameRoomData != null &&
-    //            gameRoomData.currGameFlow == (int)GameFlowEnum.SetBlind;
-    // }
-
-    // private bool ShouldShowCallOptions()
-    // {
-    //     // Show call options if the player has less than the current raise
-    //     return gameControl.GetLocalPlayer() != null &&
-    //            gameControl.GetLocalPlayer().currAllBetChips < gameRoomData.currCallValue &&
-    //            gameRoomData != null &&
-    //            gameRoomData.currCallValue > gameRoomData.smallBlind &&
-    //            (gameRoomData.currGameFlow == (int)GameFlowEnum.Licensing ||
-    //             gameRoomData.currGameFlow == (int)GameFlowEnum.SetBlind);
-    // }
-
-    // private void SetCallButton()
-    // {
-    //     var localPlayer = gameControl.GetLocalPlayer();
-    //     if (localPlayer == null)
-    //     {
-    //         Debug.Log("Local player is null. Exiting SetCallButton.");
-    //         return;
-    //     }
-
-    //     Debug.Log($"Local player found: SeatCharacter = {(SeatCharacterEnum)localPlayer.seatCharacter}, Current All Bet Chips = {localPlayer.currAllBetChips}");
-
-    //     // Set different call amounts based on the player's position (SB, BB, or otherwise)
-    //     switch ((SeatCharacterEnum)localPlayer.seatCharacter)
-    //     {
-    //         case SeatCharacterEnum.SB:
-    //             Debug.Log("Player is in Small Blind position.");
-    //             // SB can call the difference to match the big blind
-    //             strData.CallStr = "Call";
-    //             strData.CallValueStr = $"\n{(gameRoomData.smallBlind - localPlayer.currAllBetChips).ToString()}";
-    //             Debug.Log($"CallStr: {strData.CallStr}, CallValueStr: {strData.CallValueStr}");
-    //             break;
-    //         case SeatCharacterEnum.BB:
-    //             Debug.Log("Player is in Big Blind position.");
-    //             // BB can check if no one has raised
-    //             strData.CallStr = gameRoomData.currCallValue == gameRoomData.smallBlind * 2 ? "Check" : "Call";
-    //             strData.CallValueStr = gameRoomData.currCallValue == gameRoomData.smallBlind * 2
-    //                 ? ""
-    //                 : $"\n{(gameRoomData.currCallValue - localPlayer.currAllBetChips).ToString()}";
-    //             Debug.Log($"CallStr: {strData.CallStr}, CallValueStr: {strData.CallValueStr}");
-    //             break;
-    //         default:
-    //             Debug.Log("Player is in a position other than SB or BB.");
-    //             // Other players can call the current bet (or raise)
-    //             strData.CallStr = "Call";
-    //             strData.CallValueStr = $"\n{(gameRoomData.currCallValue - localPlayer.currAllBetChips).ToString()}";
-    //             Debug.Log($"CallStr: {strData.CallStr}, CallValueStr: {strData.CallValueStr}");
-    //             break;
-    //     }
-
-    //     CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
-    //     Debug.Log($"Call button text set to: {CallBtn.text}");
-    // }
 
     public void UpdateActionBtns()
     {
@@ -1422,7 +1340,7 @@ public class GameView : MonoBehaviour
         {
             if (TotalPot_Txt.text != StringUtils.SetChipsUnit(value))
             {
-                StringUtils.ChipsChangeEffect(TotalPot_Txt, Math.Floor(value));
+                StringUtils.ChipsChangeEffect(TotalPot_Txt, Math.Floor(value), "$");
             }
             thisData.TotalPot = value;
         }
@@ -1516,24 +1434,19 @@ public class GameView : MonoBehaviour
     {
         double betValue = 0;
         BetActingEnum acting = BetActingEnum.Call;
-        Debug.Log("Check or Call :: Call On Start");
-        Debug.Log($"{thisData.CurrCallValue} currentCall :: {thisData.CurrRaiseValue} currentLocalRaise :: {thisData.LocalPlayerCurrBetValue} :: currentGlobalRaise {thisData.CurrRaiseValue} :: isCallOrRaise {thisData.isCanCall}");
         if (thisData.IsFirstRaisePlayer)
         {
             if (thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue)
             {
-                Debug.Log("thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue Check or Call :: Check");
                 acting = BetActingEnum.Check;
             }
             else if (thisData.LocalPlayerChips <= thisData.CurrCallValue)
             {
-                Debug.Log("thisData.LocalPlayerChips <= thisData.CurrCallValue Check or Call :: All in");
                 acting = BetActingEnum.AllIn;
                 betValue = thisData.LocalPlayerChips;
             }
             else
             {
-                Debug.Log("thisData.LocalPlayerChips <= thisData.CurrCallValue else Check or Call :: Call");
                 betValue = thisData.CurrCallValue;
             }
         }
@@ -1541,18 +1454,15 @@ public class GameView : MonoBehaviour
         {
             if (thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue)
             {
-                Debug.Log("thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue Check or Call :: Check");
                 acting = BetActingEnum.Check;
             }
             else if (thisData.LocalPlayerChips <= thisData.CurrCallValue)
             {
-                Debug.Log("thisData.LocalPlayerChips <= thisData.CurrCallValue Check or Call :: All in");
                 acting = BetActingEnum.AllIn;
                 betValue = thisData.LocalPlayerChips;
             }
             else
             {
-                Debug.Log("thisData.LocalPlayerChips <= thisData.CurrCallValue else Check or Call :: Call");
                 betValue = thisData.CurrCallValue;
             }
         }
@@ -1618,31 +1528,57 @@ public class GameView : MonoBehaviour
     /// <param name="btnIndex"></param>
     private void PotRaisePercent(int btnIndex)
     {
-        bool isBlindFirst = false;
-        if ((GameFlowEnum)gameRoomData.currGameFlow == GameFlowEnum.SetBlind &&
-            gameRoomData.playingPlayersIdList.Count > 3 &&
-            gameControl.GetLocalPlayer().seatCharacter != (int)SeatCharacterEnum.SB &&
-            gameControl.GetLocalPlayer().seatCharacter != (int)SeatCharacterEnum.BB)
-        {
-            isBlindFirst = true;
-        }
+        float raiseValue = 0f;
 
-        float raiseValue = isBlindFirst ?
-                          ((float)(gameRoomData.smallBlind * 2) * PotBbRate[btnIndex]) :
-                          ((float)gameRoomData.potChips * (PotPercentRate[btnIndex] / 100));
-        if (btnIndex == 3)
+        // Check if the current game flow is in the Preflop stage
+        bool isPreflop = (GameFlowEnum)gameRoomData.currGameFlow == GameFlowEnum.SetBlind || (GameFlowEnum)gameRoomData.currGameFlow == GameFlowEnum.Licensing;
+
+        if (isPreflop)
         {
-            raiseValue = (float)gameRoomData.potChips;
+            Debug.Log("IsPreflop :: PotRaisePercent" + btnIndex);
+            // Preflop: Calculate raise based on BB values
+            switch (btnIndex)
+            {
+                case 0:
+                    // 2BB Raise
+                    raiseValue = (float)((gameRoomData.smallBlind * 2) * 2);
+                    break;
+                case 1:
+                    // 3BB Raise
+                    raiseValue = (float)((gameRoomData.smallBlind * 2) * 3);
+                    break;
+                case 2:
+                    // 4BB Raise
+                    raiseValue = (float)((gameRoomData.smallBlind * 2) * 4);
+                    break;
+                case 3:
+                    // POT Raise (All-in)
+                    raiseValue = (float)gameRoomData.potChips;
+                    break;
+                default:
+                    raiseValue = 0f;
+                    break;
+            }
         }
         else
         {
-            raiseValue = isBlindFirst ?
-                          ((float)(gameRoomData.smallBlind * 2) * PotBbRate[btnIndex]) :
-                          ((float)gameRoomData.potChips * (PotPercentRate[btnIndex] / 100));
+            Debug.Log("!IsPreflop :: PotRaisePercent" + btnIndex);
+
+            // Postflop: Calculate raise based on percentage of the pot
+            raiseValue = (float)gameRoomData.potChips * (PotPercentRate[btnIndex] / 100);
+
+            // Handle All-In case for btnIndex == 3
+            if (btnIndex == 3)
+            {
+                raiseValue = (float)gameRoomData.potChips;
+            }
         }
 
+        // Update the Raise Slider with the calculated raise value
         Raise_Sli.value = (int)raiseValue;
     }
+
+
 
     /// <summary>
     /// 輪到本地玩家檢查下注區域狀態
@@ -1697,7 +1633,6 @@ public class GameView : MonoBehaviour
         //首位加注玩家
         thisData.IsFirstRaisePlayer = isFirst;
         //當前跟注值
-        Debug.Log(gameRoomData.currCallValue + " :: Current Call value :: " + nameof(LocalPlayerRound));
         thisData.CurrCallValue = gameRoomData.currCallValue;
         //跟注差額
         thisData.CallDifference = gameRoomData.currCallValue - gameRoomPlayerData.currAllBetChips;
@@ -1837,36 +1772,33 @@ public class GameView : MonoBehaviour
         //跟注&過牌
         strData.CallStr = "Call";
         strData.CallValueStr = $"\n{StringUtils.SetChipsUnit(thisData.CurrCallValue - thisData.CallDifference)}";
-        Debug.Log($"{nameof(ShowBetArea)} {thisData.CurrCallValue} currentCall :: {thisData.CurrRaiseValue} currentLocalRaise :: {thisData.LocalPlayerCurrBetValue} :: currentGlobalRaise {thisData.CurrRaiseValue} :: isCallOrRaise {thisData.isCanCall} :: Total Pot {thisData.TotalPot}");
+        //Debug.Log($"{nameof(ShowBetArea)} {thisData.CurrCallValue} currentCall :: {thisData.CurrRaiseValue} currentLocalRaise :: {thisData.LocalPlayerCurrBetValue} :: currentGlobalRaise {thisData.CurrRaiseValue} :: isCallOrRaise {thisData.isCanCall} :: Total Pot {thisData.TotalPot}");
         if (thisData.IsFirstRaisePlayer == true)
         {
             if (thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue)
             {
-                Debug.Log($"{nameof(ShowBetArea)} :: check");
+                //Debug.Log($"{nameof(ShowBetArea)} :: check");
                 strData.CallStr = "Check";
                 strData.CallValueStr = "";
             }
             else
             {
-                Debug.Log($"{nameof(ShowBetArea)} :: call");
+                //Debug.Log($"{nameof(ShowBetArea)} :: call");
                 strData.CallStr = "Call";
                 strData.CallValueStr = $"\n{StringUtils.SetChipsUnit(thisData.CallDifference)}";
             }
-            // Debug.Log("Check " + nameof(ShowBetArea) + " " + thisData.IsFirstRaisePlayer + "First Player");
-            // strData.CallStr = "Check";
-            // strData.CallValueStr = "";
         }
         else
         {
             if (thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue)
             {
-                Debug.Log($"{nameof(ShowBetArea)} :: else check");
+                //Debug.Log($"{nameof(ShowBetArea)} :: else check");
                 strData.CallStr = "Check";
                 strData.CallValueStr = "";
             }
             else
             {
-                Debug.Log($"{nameof(ShowBetArea)} :: else call");
+                //Debug.Log($"{nameof(ShowBetArea)} :: else call");
                 strData.CallStr = "Call";
                 strData.CallValueStr = $"\n{StringUtils.SetChipsUnit(thisData.CallDifference)}";
             }
@@ -1899,29 +1831,36 @@ public class GameView : MonoBehaviour
             //最小加注值
             MinRaiseBtn_Txt.text = thisData.MinRaiseValue.ToString(); ;
 
-            //底池倍率
+            // Always display BB values and Pot for the raise options
+            // Check if the current game flow is in the Preflop stage
+            bool isPreflop = (GameFlowEnum)gameRoomData.currGameFlow == GameFlowEnum.Licensing || (GameFlowEnum)gameRoomData.currGameFlow == GameFlowEnum.SetBlind;
+
             for (int i = 0; i < 4; i++)
             {
-                if (gameControl.GetLocalPlayer().seatCharacter != (int)SeatCharacterEnum.SB &&
-                    gameControl.GetLocalPlayer().seatCharacter != (int)SeatCharacterEnum.BB &&
-                    gameRoomData.playingPlayersIdList.Count > 3)
+                if (isPreflop)
                 {
-                    PotPercentRaiseTxtList[i].text = $"{PotBbRate[i]}BB";
+                    // Preflop: Display BB-based values (2BB, 3BB, 4BB, and Pot)
+                    switch (i)
+                    {
+                        case 0:
+                            PotPercentRaiseTxtList[i].text = "2BB";
+                            break;
+                        case 1:
+                            PotPercentRaiseTxtList[i].text = "3BB";
+                            break;
+                        case 2:
+                            PotPercentRaiseTxtList[i].text = "4BB";
+                            break;
+                        case 3:
+                            PotPercentRaiseTxtList[i].text = LanguageManager.Instance.GetText("Pot");
+                            break;
+                    }
                 }
                 else
                 {
+                    // Postflop: Display percentage-based values
                     PotPercentRaiseTxtList[i].text = $"{PotPercentRate[i]}%";
                 }
-            }
-            if (gameControl.GetLocalPlayer().seatCharacter != (int)SeatCharacterEnum.SB &&
-                gameControl.GetLocalPlayer().seatCharacter != (int)SeatCharacterEnum.BB &&
-                gameRoomData.playingPlayersIdList.Count > 3)
-            {
-                PotPercentRaiseTxtList[3].text = LanguageManager.Instance.GetText("Pot");
-            }
-            else
-            {
-                PotPercentRaiseTxtList[3].text = $"{PotPercentRate[3]}%";
             }
         }
     }
@@ -1949,93 +1888,98 @@ public class GameView : MonoBehaviour
     /// <param name="gameRoomData">遊戲房間資料</param>
     public void UpdateGameRoomInfo(GameRoomData gameRoomData)
     {
-        //清除座位上玩家
+        // Clear seated players, starting from index 1 (assuming index 0 might be reserved)
         for (int i = 1; i < SeatGamePlayerInfoList.Count; i++)
         {
             SeatGamePlayerInfoList[i].gameObject.SetActive(false);
         }
+
+        // Reset game player list
         gamePlayerInfoList = new List<GamePlayerInfo>();
 
+        // Get local player data
         GameRoomPlayerData localData = gameControl.GetLocalPlayer();
 
+        // If no local player data, exit early
         if (localData == null)
         {
             return;
         }
 
-        //本地玩家座位
+        // Set local player seat
         thisData.LocalPlayerSeat = localData.gameSeat;
 
-        //更新玩家訊息
+        // Update player info for all players
         foreach (var player in gameRoomData.playerDataDic.Values)
         {
             GamePlayerInfo gamePlayerInfo = AddPlayer(player, gameRoomData);
-
             gamePlayerInfo.CloseChatInfo();
+
+            // If it's not the local player
             if (player.userId != DataManager.UserId &&
                 gameRoomData.playingPlayersIdList != null &&
-                gameRoomData.playingPlayersIdList.Count() >= 2 &&
+                gameRoomData.playingPlayersIdList.Count >= 2 &&
                 gameRoomData.playingPlayersIdList.Contains(player.userId))
             {
-                //gamePlayerInfo.SetPokerShapeTxtStr = "";
+                // Hide other players' hands
                 gamePlayerInfo.SetPokerShapeImage = null;
                 gamePlayerInfo.SetHandPoker(-1, -1);
             }
             else
             {
-                //本地玩家
-
-                //沒有離座/非等待
-                if (player.isSitOut == false &&
-                   (PlayerStateEnum)player.gameState != PlayerStateEnum.Waiting &&
-                   (PlayerStateEnum)player.gameState != PlayerStateEnum.Fold)
+                // Local player logic
+                if (!player.isSitOut &&
+                    (PlayerStateEnum)player.gameState != PlayerStateEnum.Waiting &&
+                    (PlayerStateEnum)player.gameState != PlayerStateEnum.Fold)
                 {
+                    // The local player is actively playing
                     thisData.IsPlaying = true;
-                    //已從文字物件改為圖片
-                    //WaitingTip_Txt.text = "";
+
+                    // Hide the waiting tip
                     WaitingTip_Txt.gameObject.SetActive(false);
+
+                    // Ensure no info mask is shown
                     gamePlayerInfo.IsOpenInfoMask = false;
 
-                    //判斷牌行
-                    if (gameRoomData.playingPlayersIdList.Contains(DataManager.UserId))
+                    // Only for the local player, display their hand and judge poker shape
+                    if (player.userId == DataManager.UserId)
                     {
-                        gamePlayerInfo.SetHandPoker(player.handPoker[0],
-                                                    player.handPoker[1]);
-                        JudgePokerShape(gamePlayerInfo,
-                                        true);
+                        gamePlayerInfo.SetHandPoker(player.handPoker[0], player.handPoker[1]);
+
+                        // Judge the local player's poker hand shape
+                        JudgePokerShape(gamePlayerInfo, true);
                     }
                 }
 
+                // If the player is waiting, hide their hand and poker shape image
                 if ((PlayerStateEnum)player.gameState == PlayerStateEnum.Waiting)
                 {
-                    //gamePlayerInfo.SetPokerShapeTxtStr = "";
                     gamePlayerInfo.SetPokerShapeImage = null;
-
                     gamePlayerInfo.GetHandPoker[0].gameObject.SetActive(false);
                     gamePlayerInfo.GetHandPoker[1].gameObject.SetActive(false);
                 }
             }
 
+            // Check if the current player is the one to act and the game flow allows for action
             if (player.userId == gameRoomData.currActionerId &&
                 gameRoomData.currGameFlow > (int)GameFlowEnum.Licensing &&
                 gameRoomData.actionCD > 0)
             {
+                // Highlight the current action frame and start countdown
                 gamePlayerInfo.ActionFrame = true;
-                //gameRoomData.actionCD = 1;
-                gamePlayerInfo.CountDown(DataManager.StartCountDownTime,
-                                         gameRoomData.actionCD);
+                gamePlayerInfo.CountDown(DataManager.StartCountDownTime, gameRoomData.actionCD);
             }
         }
 
-        //底池
+        // Update total pot if not in PotResult or SideResult state
         if (gameRoomData.currGameFlow != (int)GameFlowEnum.PotResult &&
             gameRoomData.currGameFlow != (int)GameFlowEnum.SideResult)
         {
-            TotalPot_Txt.text = $"{StringUtils.SetChipsUnit(Math.Floor(gameRoomData.potChips))}";
+            TotalPot_Txt.text = $"${StringUtils.SetChipsUnit(Math.Floor(gameRoomData.potChips))}";
             thisData.TotalPot = gameRoomData.potChips;
         }
 
-        //公共牌
+        // Update community cards
         List<int> currCommunityPoker = gameRoomData.currCommunityPoker;
         if (currCommunityPoker != null)
         {
@@ -2238,7 +2182,7 @@ public class GameView : MonoBehaviour
     /// 下注籌碼集中
     /// </summary>
     /// <returns></returns>
-    private IEnumerator IConcentrateBetChips()
+    public IEnumerator IConcentrateBetChips()
     {
         for (int i = 0; i < gamePlayerInfoList.Count; i++)
         {
@@ -2419,49 +2363,61 @@ public class GameView : MonoBehaviour
     /// <param name="isWinEffect">贏家效果</param>
     private void JudgePokerShape(GamePlayerInfo player, bool isOpenMatchPokerFrame, bool isWinEffect = false)
     {
-        //手牌
+        // Get hand cards
         Poker[] handPoker = player.GetHandPoker;
-        List<int> judgePoker = new List<int>();
-        foreach (var poker in handPoker)
-        {
-            judgePoker.Add(poker.PokerNum);
-        }
+        List<int> judgePoker = handPoker.Select(p => p.PokerNum).ToList();
 
-        if (judgePoker != null &&
-            thisData.CurrCommunityPoker != null &&
-            handPoker != null)
+        Debug.Log("Player: " + player.name + " | Hand Poker: " + string.Join(", ", judgePoker));
+
+        if (judgePoker != null && thisData.CurrCommunityPoker != null)
         {
-            //公共牌
-            judgePoker = judgePoker.Concat(thisData.CurrCommunityPoker).ToList();
+            // Combine with community cards
+            judgePoker.AddRange(thisData.CurrCommunityPoker);
+            Debug.Log("Combined Judge Poker: " + string.Join(", ", judgePoker));
 
             List<Poker> pokers = CommunityPokerList.Concat(handPoker.ToList()).ToList();
+            Debug.Log("Total Pokers (Community + Hand): " + pokers.Count);
 
-            //關閉公共牌撲克效果
+            // Disable effects for the community cards
             foreach (var poker in pokers)
             {
                 poker.PokerEffectEnable = false;
             }
 
-            //判斷牌型
+            // Determine hand shape
             PokerShape.JudgePokerShape(judgePoker, (resultIndex, matchPokerList) =>
             {
                 if (player.GetHandPoker[0].gameObject.activeSelf)
                 {
+                    Debug.Log("Result Index :: " + resultIndex);
                     player.SetPokerShapeStr(resultIndex);
 
-                    if (isOpenMatchPokerFrame && resultIndex < 10)
+                    if (isOpenMatchPokerFrame && resultIndex < 10) // Only show for valid hands
                     {
-                        PokerShape.OpenMatchPokerFrame(pokers,
-                                                       matchPokerList,
-                                                       isWinEffect);
+                        Debug.Log("Opening Match Poker Frame for Result Index: " + resultIndex);
+                        PokerShape.OpenMatchPokerFrame(pokers, matchPokerList, isWinEffect);
 
                         if (isWinEffect)
                         {
-                            SetWinnerStringTxt = LanguageManager.Instance.GetText(AssetsManager.Instance.GetStringAlbumAsset(StringAlbumEnum.HandRanksStringAlbum).strAlbum[resultIndex]);
+                            SetWinnerStringTxt = LanguageManager.Instance.GetText(
+                                AssetsManager.Instance.GetStringAlbumAsset(StringAlbumEnum.HandRanksStringAlbum).strAlbum[resultIndex]);
+                            Debug.Log("Winner String Set to: ");
                         }
                     }
+                    else if (resultIndex >= 10)
+                    {
+                        Debug.Log("Result Index " + resultIndex + " is not a valid hand, not opening Match Poker Frame.");
+                    }
+                }
+                else
+                {
+                    Debug.Log("Player's hand is not active. Skipping shape judgment.");
                 }
             });
+        }
+        else
+        {
+            Debug.LogError("judgePoker or CurrCommunityPoker is null.");
         }
     }
 
@@ -2498,6 +2454,8 @@ public class GameView : MonoBehaviour
                     player.SetHandPoker(playerData.handPoker[0],
                                         playerData.handPoker[1]);
 
+                    playerData.playerHandShape = player.GetPokerShapeIndex();
+
                     JudgePokerShape(player, false);
                 }
             }
@@ -2514,7 +2472,8 @@ public class GameView : MonoBehaviour
         }
 
         //贏得類型顯示
-        WinType_Txt.text = LanguageManager.Instance.GetText("Pot");
+        //WinType_Txt.text = LanguageManager.Instance.GetText("Pot");
+        TotalPot_Txt.text = LanguageManager.Instance.GetText("Pot") + " " + TotalPot_Txt.text;
         SetTotalPot = gameRoomData.potWinData.potWinChips;
 
         //贏家效果
@@ -2533,6 +2492,8 @@ public class GameView : MonoBehaviour
             GameRoomPlayerData playerData = gameRoomData.playerDataDic.Where(x => x.Value.userId == potWinnerId)
                                                                       .FirstOrDefault()
                                                                       .Value;
+
+            List<PlayerDetails> playerDetails = saveResultData.playerDetails;
             GamePlayerInfo player = GetPlayer(potWinnerId);
             player.IsOpenInfoMask = false;
 
@@ -2542,7 +2503,7 @@ public class GameView : MonoBehaviour
             if (potWinnerId == DataManager.UserId)
                 player.setWinnerDisplay($"POT + ${changeValue:f2}");
             else
-                player.setWinnerDisplay($"POT \n+ ${gameRoomData.potWinData.potWinChips / gameRoomData.potWinData.potWinnersId.Count():f2}");
+                player.setWinnerDisplay($"POT  + ${gameRoomData.potWinData.potWinChips / gameRoomData.potWinData.potWinnersId.Count():f2}");
 
             Vector2 winnerSeatPos = player.gameObject.transform.position;
 
@@ -2561,26 +2522,37 @@ public class GameView : MonoBehaviour
                 Destroy(rt.gameObject);
             });
 
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(0.5f);
+            if (potWinnerId == DataManager.UserId)
+            {
+                if (playerDetails[int.Parse(DataManager.UserId)].playerRoomFee > 0)
+                {
+                    player.SetRoomFee($"Room Fee + ${playerDetails[int.Parse(DataManager.UserId)].playerRoomFee:f2}");
+                }
+            }
         }
 
-        //記錄存檔
         int winIndex = 0;
+        saveResultData = new ResultHistoryData
+        {
+            playerDetails = new List<PlayerDetails>() // Initialize the playerHands list
+        };
+
+        // Loop through the list of pot winners
         foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
         {
             winIndex++;
-            //GamePlayerInfo player = GetPlayer(potWinnerId);
-            GameRoomPlayerData playerData = gameControl.GetPlayerData(potWinnerId);
+            GameRoomPlayerData winnerPlayerData = gameControl.GetPlayerData(potWinnerId); // Get the winner's player data
 
-            if (playerData == null)
+            if (winnerPlayerData == null)
             {
                 yield break;
             }
 
-            //本地玩家有參與
+            // Check if the local player has participated
             if (thisData.LocalGamePlayerInfo.IsPlaying)
             {
-                //獲勝牌局紀錄存檔
+                // Initialize the result data on the first win
                 if (winIndex == 1)
                 {
                     string roomName = "";
@@ -2597,21 +2569,67 @@ public class GameView : MonoBehaviour
                             break;
                     }
 
-                    saveResultData = new ResultHistoryData();
-                    saveResultData.RoomType = $"{roomName}";
-                    saveResultData.SmallBlind = gameRoomData.smallBlind;
-                    saveResultData.NickName = playerData.nickname;
-                    saveResultData.Avatar = playerData.avatarIndex;
-                    saveResultData.HandPokers = new int[] { playerData.handPoker[0],
-                                                            playerData.handPoker[1] };
-                    saveResultData.CommunityPoker = gameRoomData.currCommunityPoker == null ?
-                                                    new List<int>() :
-                                                    gameRoomData.currCommunityPoker;
-                    saveResultData.WinChips = gameRoomData.potWinData.potWinChips;
+                    saveResultData.roomType = roomName;
+                    saveResultData.smallBlind = gameRoomData.smallBlind;
+                    saveResultData.communityPoker = gameRoomData.currCommunityPoker ?? new List<int>(); // Use null-coalescing operator for safety
+                    saveResultData.dateTime = DateTime.UtcNow.ToString();
+                    saveResultData.roomId = DataManager.RoomId;
+                    saveResultData.roundInsuranceResult = "";
+                    saveResultData.roundInsurancePayAmount = 0;
+                    saveResultData.roundInsurancePayRate = 0;
+                    saveResultData.tableId = DataManager.TableId;
+                    saveResultData.roundId = roundId;
                 }
             }
         }
+        Debug.Log("Game Room Details ::" + JsonUtility.ToJson(gameRoomData, true));
+        // Add all players' hand data to the result
+        foreach (var player in gameRoomData.playingPlayersIdList) // Assuming this contains all players in the game
+        // foreach (var player in gameRoomData.playerDataDic.Values) // Assuming this contains all players in the game
+        {
+            GameRoomPlayerData playerNew = gameRoomData.playerDataDic.Where(x => x.Value.userId == player)
+                                                                          .FirstOrDefault()
+                                                                          .Value;
+            if (playerNew == null)
+            {
+                Debug.LogWarning("Player not found in playerDataDic for userId: " + player);
+                continue;
+            }
+            PlayerDetails playerData = new PlayerDetails
+            {
+                playerId = playerNew.userId,
+                playerName = playerNew.nickname,
+                playerHandId = "",
+                playerValidBetAmount = 0,
+                playerRoomFee = DataManager.RoomFee,
+                // roundInsuranceResult = "",
+                // roundInsurancePayAmount = 0,
+                // roundInsurancePayRate = 0,
+                isBot = DataManager.UserId.StartsWith(FirebaseManager.ROBOT_ID),
+                playerHandData = new PlayerHand
+                {
+                    playerHand = playerNew.handPoker,
+                    playerCurrHandShape = playerNew.playerHandShape,
+                    potWinChips = gameRoomData.potWinData.potWinnersId.Contains(playerNew.userId) ? gameRoomData.potWinData.potWinChips : 0, // Check if the player won the pot
+                    sideWinChips = gameRoomData.sideWinData.sideWinnersId.Contains(playerNew.userId) ? gameRoomData.sideWinData.sideWinChips : 0, // Check if the player won the side pot
+                    isWinner = gameRoomData.potWinData.potWinnersId.Contains(playerNew.userId), // Check if this player is a pot winner
+                    seat = playerNew.gameSeat.ToString(),
+                },
+            };
+            NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, gameRoomData.potWinData.potWinChips, 12, (x) =>
+                     {
+                         Debug.Log("Player Win  ChipsTransaction Success");
+                     },
+                     (error) =>
+                     {
+                         Debug.LogError($"Player Win ChipsTransaction Failed Error: {error}");
+                     });
 
+            saveResultData.playerDetails.Add(playerData);
+            Debug.Log("Added PlayerDetails. Total count: " + saveResultData.playerDetails.Count);
+            // Debug.Log("Saved Result Player Details ::" + JsonUtility.ToJson(saveResultData.playerDetails, true));
+            Debug.Log("Player Details ::" + JsonUtility.ToJson(playerData, true));
+        }
         //主池紀錄存檔
         if (thisData.LocalGamePlayerInfo.IsPlaying)
         {
@@ -2655,7 +2673,8 @@ public class GameView : MonoBehaviour
 
         if (gameRoomData.sideWinData.sideWinChips > 0)
         {
-            WinType_Txt.text = LanguageManager.Instance.GetText("Side");
+            //WinType_Txt.text = LanguageManager.Instance.GetText("Side");
+            TotalPot_Txt.text = LanguageManager.Instance.GetText("Side") + " " + TotalPot_Txt.text;
             SetTotalPot = gameRoomData.sideWinData.sideWinChips;
 
             foreach (var sideWinnerId in gameRoomData.sideWinData.sideWinnersId)
@@ -2688,7 +2707,7 @@ public class GameView : MonoBehaviour
                 if (sideWinnerId == DataManager.UserId)
                     player.setWinnerDisplay($"SIDE POT + ${changeValue:f2}");
                 else
-                    player.setWinnerDisplay($"SIDE POT \n+ ${gameRoomData.sideWinData.sideWinChips / gameRoomData.sideWinData.sideWinnersId.Count():f2}");
+                    player.setWinnerDisplay($"SIDE POT  + ${gameRoomData.sideWinData.sideWinChips / gameRoomData.sideWinData.sideWinnersId.Count():f2}");
 
                 Vector2 winnerSeatPos = player.gameObject.transform.position;
                 JudgePokerShape(player, true, true);
@@ -2908,6 +2927,7 @@ public class GameView : MonoBehaviour
                         show.gameObject.SetActive(true);
                     }
                 }
+                //GetRoundCount();
                 //yield return IPotResult(pack);
                 break;
         }
@@ -3226,26 +3246,160 @@ public class GameView : MonoBehaviour
     /// </summary>
     private void SavePreGame()
     {
-        //本地玩家有參與
-        if (thisData != null &&
-            thisData.LocalGamePlayerInfo != null &&
-            thisData.LocalGamePlayerInfo.IsPlaying &&
+        // Check if the local player is playing and all necessary data is available
+        if (thisData?.LocalGamePlayerInfo?.IsPlaying == true &&
             saveResultData != null &&
             gameInitHistoryData != null &&
             processHistoryData != null)
         {
+            // If the current player is the host, save data to Firebase
+            if (gameRoomData.hostId == DataManager.UserId)
+            {
+                GetRoundCount();
+                AppApi.OnRoundFinish(saveResultData);
+                SaveToFirebase(nameof(saveResultData), saveResultData, nameof(GameResultDataSaveToFirebase));
+                SaveToFirebase(nameof(gameInitHistoryData), gameInitHistoryData, nameof(GameInitDataSaveToFirebase));
+                SaveToFirebase(nameof(processHistoryData), processHistoryData, nameof(GameProcessDataSaveToFirebase));
+                IncrementRoundCount();
+            }
+            // Save data locally
             HandHistoryManager.Instance.SaveResult(saveResultData);
             HandHistoryManager.Instance.SaveGameInit(gameInitHistoryData);
             HandHistoryManager.Instance.SaveProcess(processHistoryData);
         }
 
+        // Reset exit player seat list and process history data
         exitPlayerSeatList = new List<int>();
-        processHistoryData = new ProcessHistoryData();
-        processHistoryData.processStepHistoryDataList = new List<ProcessStepHistoryData>();
+        processHistoryData = new ProcessHistoryData
+        {
+            processStepHistoryDataList = new List<ProcessStepHistoryData>()
+        };
 
-        //更新存檔資料
-        HandHistoryView handHistoryView = GameObject.FindAnyObjectByType<HandHistoryView>();
-        handHistoryView?.UpdateHitoryDate();
+        // Update hand history view if available
+        GameObject.FindAnyObjectByType<HandHistoryView>()?.UpdateHitoryDate();
+    }
+
+    private void SaveToFirebase(string dataName, object data, string callbackMethodName)
+    {
+        string json = JsonConvert.SerializeObject(data);
+        JSBridgeManager.Instance.WriteDataToFirebase(
+            $"{Entry.Instance.releaseType}/{FirebaseManager.ROUND_DATA_PATH}/{DataManager.RoomId}/rounds/round_{roundId}/{dataName}",
+            json,
+            gameObject.name,
+            callbackMethodName, true);
+    }
+
+    // Callbacks for Firebase save completion
+    void GameInitDataSaveToFirebase() => Debug.Log("GameInitDataSavedToFirebase");
+    void GameProcessDataSaveToFirebase() => Debug.Log("GameProcessDataSavedToFirebase");
+    void GameResultDataSaveToFirebase() => Debug.Log("GameResultDataSavedToFirebase");
+
+    private int roundId = 0; // This could be loaded from Firebase if persistent
+
+    // Function to get the round count
+    public void GetRoundCount()
+    {
+        Debug.Log(nameof(GetRoundCount));
+        JSBridgeManager.Instance.ReadDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.ROUND_DATA_PATH}/{DataManager.RoomId}/roundCount", gameObject.name, nameof(OnGetRoundCount));
+    }
+
+    // Callback for getting the round count
+    public void OnGetRoundCount(string data)
+    {
+        if (int.TryParse(data, out int roundCount))
+        {
+            roundId = roundCount; // Set roundId to the current count
+            Debug.Log($"Current roundId set to: {roundId}");
+        }
+        else
+        {
+            roundId = 0;
+            Debug.Log("Failed to parse round count.");
+        }
+    }
+
+    // Save round end data function
+    // public void SaveRoundEndDataToFirebase()
+    // {
+    //     // Ensure the host is saving the data
+    //     if (gameRoomData != null && gameRoomData.hostId == DataManager.UserId)
+    //     {
+    //         // Create the RoundEndResult object
+    //         RoundEndResult roundEndResult = new RoundEndResult
+    //         {
+    //             dateTime = DateTime.UtcNow,
+    //             tableId = DataManager.TableId,
+    //             roomId = DataManager.RoomId,
+    //             roundId = roundId, // Use the current roundId
+    //             communityCards = gameRoomData.communityPoker,
+    //             playerHands = new List<PlayerHand>()
+    //         };
+
+    //         // Populate player hands...
+    //         foreach (var playerData in gameRoomData.playerDataDic.Values)
+    //         {
+    //             PlayerHand playerHand = new PlayerHand
+    //             {
+    //                 playerHand = playerData.handPoker,
+    //                 potWinAmount = gameRoomData.potWinData.potWinnersId.Contains(playerData.userId) ? gameRoomData.potWinData.potWinChips : 0,
+    //                 sideWinAmount = gameRoomData.sideWinData.sideWinnersId.Contains(playerData.userId) ? gameRoomData.sideWinData.sideWinChips : 0,
+    //                 playerCurrHandShape = playerData.playerHandShape,
+    //             };
+    //             roundEndResult.playerHands.Add(playerHand);
+    //         }
+    //         // Prepare data for Firebase
+    //         Dictionary<string, object> roundEndDataDic = new Dictionary<string, object>
+    //         {
+    //             { "dateTime", roundEndResult.dateTime.ToString("o") },
+    //             { "tableId", roundEndResult.tableId },
+    //             { "roomId", roundEndResult.roomId },
+    //             { "roundId", roundEndResult.roundId },
+    //             { "communityCards", roundEndResult.communityCards },
+    //             { "playerHands", roundEndResult.playerHands }
+    //         };
+
+    //         // Firebase path
+    //         string firebasePath = $"{Entry.Instance.releaseType}/{FirebaseManager.ROUND_DATA_PATH}/{DataManager.RoomId}/rounds/round_{roundId}";
+
+    //         // Save data to Firebase
+    //         JSBridgeManager.Instance.WriteDataFromFirebase(firebasePath, roundEndDataDic, gameObject.name, nameof(OnDataSaved));
+
+    //         // Increment round count in Firebase
+
+    //         Debug.Log($"Round {roundId} data saved to Firebase.");
+    //     }
+    //     else
+    //     {
+    //         Debug.Log("Only the host can save the game data.");
+    //     }
+    // }
+
+    // Function to increment the round count in Firebase
+    private void IncrementRoundCount()
+    {
+        int newCount = (roundId + 1) % 9999; // Increment and wrap around at 10000
+
+        // Prepare the new round count to update
+        Dictionary<string, object> roundCountUpdate = new Dictionary<string, object>
+    {
+        { "roundCount", newCount }
+    };
+
+        // Update the round count in Firebase
+        JSBridgeManager.Instance.UpdateDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.ROUND_DATA_PATH}/{DataManager.RoomId}", roundCountUpdate);
+
+        Debug.Log($"Round count updated to {newCount}.");
+    }
+
+    // Callback for when the round count is updated
+    public void OnRoundCountUpdated()
+    {
+        Debug.Log("Round count updated successfully.");
+    }
+
+    public void OnDataSaved()
+    {
+        Debug.Log($"Round {roundId} data saved to Firebase.");
     }
 
     /// <summary>
@@ -3326,7 +3480,7 @@ public class GameView : MonoBehaviour
         {
             if (TotalPot_Txt.text != StringUtils.SetChipsUnit(Math.Floor(gameRoomData.potChips)))
             {
-                StringUtils.ChipsChangeEffect(TotalPot_Txt, Math.Floor(gameRoomData.potChips));
+                StringUtils.ChipsChangeEffect(TotalPot_Txt, Math.Floor(gameRoomData.potChips), "$");
             }
         }
 
@@ -3359,133 +3513,90 @@ public class GameView : MonoBehaviour
         {
             GamePlayerInfo gamePlayerInfo = GetPlayer(userId);
 
-            gamePlayerInfo.SwitchShoHandPoker(new List<int>() { -1, -1 });
-            gamePlayerInfo.SetShowHandPoker(false, new List<int>() { -1, -1 });
-
+            // Initialize player's hand and seat character
+            gamePlayerInfo.SwitchShoHandPoker(new List<int> { -1, -1 });
+            gamePlayerInfo.SetShowHandPoker(false, new List<int> { -1, -1 });
             gamePlayerInfo.Init();
-            //重製座位角色
-            gamePlayerInfo.SetSeatCharacter(SeatCharacterEnum.None);
+            gamePlayerInfo.SetSeatCharacter(SeatCharacterEnum.None); // Reset seat character
 
-            //設置手牌
+            // Set hand cards for local player (UserId matches local player)
             if (userId == DataManager.UserId)
             {
-                //本地玩家
-                GameRoomPlayerData playerData = gameRoomData.playerDataDic.Where(x => x.Value.userId == DataManager.UserId)
-                                                                          .FirstOrDefault()
-                                                                          .Value;
+                GameRoomPlayerData playerData = gameRoomData.playerDataDic.FirstOrDefault(x => x.Value.userId == DataManager.UserId).Value;
 
-                //沒有離座
-                if (playerData.isSitOut == false &&
-                    (PlayerStateEnum)playerData.gameState != PlayerStateEnum.Waiting)
+                if (playerData != null && !playerData.isSitOut && playerData.gameState != (int)PlayerStateEnum.Waiting)
                 {
+                    // Local player is actively playing
                     thisData.IsPlaying = true;
-                    gamePlayerInfo.SetHandPoker(playerData.handPoker[0],
-                                                playerData.handPoker[1]);
 
-                    //已從文字物件改為圖片
-                    //WaitingTip_Txt.text = "";
+                    // Set local player's hand poker cards
+                    gamePlayerInfo.SetHandPoker(playerData.handPoker[0], playerData.handPoker[1]);
+
+                    // Hide waiting tip
                     WaitingTip_Txt.gameObject.SetActive(false);
 
-                    //判斷牌行
+                    // Judge the local player's poker hand shape
                     if (gameRoomData.playingPlayersIdList.Contains(DataManager.UserId))
                     {
-                        JudgePokerShape(gamePlayerInfo,
-                                        true);
+                        JudgePokerShape(gamePlayerInfo, true);
                     }
                 }
             }
             else
             {
-                //其他玩家
+                // For other players, hide their hand and poker shape
                 gamePlayerInfo.SetHandPoker(-1, -1);
-                //gamePlayerInfo.SetPokerShapeTxtStr = "";
                 gamePlayerInfo.SetPokerShapeImage = null;
-
             }
         }
 
-        //房主執行
+        // If the local player is the host
         if (gameRoomData.hostId == DataManager.UserId)
         {
-            //設置Button座位
-            GameRoomPlayerData buttonPlayerData = gameRoomData.playerDataDic.Where(x => x.Value.gameSeat == gameRoomData.buttonSeat)
-                                                                            .FirstOrDefault()
-                                                                            .Value;
-            var dataDic = new Dictionary<string, object>()
-            {
-                { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.Button},
-            };
-            gameControl.UpdataPlayerData(buttonPlayerData.userId,
-                                         dataDic);
+            // Set Button seat
+            GameRoomPlayerData buttonPlayerData = gameRoomData.playerDataDic.FirstOrDefault(x => x.Value.gameSeat == gameRoomData.buttonSeat).Value;
+            UpdatePlayerSeat(buttonPlayerData.userId, SeatCharacterEnum.Button);
 
             GameRoomPlayerData sbPlayerData;
             GameRoomPlayerData bbPlayerData;
+
+            // Only one active player, assign SB and BB to button player
             if (gameRoomData.playingPlayersIdList.Count == 1)
             {
                 sbPlayerData = buttonPlayerData;
-                dataDic = new Dictionary<string, object>()
-                {
-                    { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.SB},
-                };
-                gameControl.UpdataPlayerData(sbPlayerData.userId,
-                                             dataDic);
-
-                //設置BB座位
                 bbPlayerData = buttonPlayerData;
-                dataDic = new Dictionary<string, object>()
-                {
-                    { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.BB},
-                };
-                gameControl.UpdataPlayerData(bbPlayerData.userId,
-                                             dataDic);
             }
+            // If there are only two players, assign SB to Button player and BB to the next player
             else if (gameRoomData.playingPlayersIdList.Count == 2)
             {
-                //只有2人
-
-                //設置SB座位
                 sbPlayerData = buttonPlayerData;
-                dataDic = new Dictionary<string, object>()
-                {
-                    { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.SB},
-                };
-                gameControl.UpdataPlayerData(sbPlayerData.userId,
-                                             dataDic);
-                //設置BB座位
                 bbPlayerData = gameControl.GetNextPlayer(gameRoomData.buttonSeat);
-                dataDic = new Dictionary<string, object>()
-                {
-                    { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.BB},
-                };
-                gameControl.UpdataPlayerData(bbPlayerData.userId,
-                                             dataDic);
             }
+            // For three or more players, assign SB and BB accordingly
             else
             {
-                //3人以上玩家
-
-                //設置SB座位
                 sbPlayerData = gameControl.GetNextPlayer(gameRoomData.buttonSeat);
-                dataDic = new Dictionary<string, object>()
-                {
-                    { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.SB},
-                };
-                gameControl.UpdataPlayerData(sbPlayerData.userId,
-                                             dataDic);
-
-                //設置BB座位
                 bbPlayerData = gameControl.GetNextPlayer(sbPlayerData.gameSeat);
-                dataDic = new Dictionary<string, object>()
-                {
-                    { FirebaseManager.SEAT_CHARACTER, (int)SeatCharacterEnum.BB},
-                };
-                gameControl.UpdataPlayerData(bbPlayerData.userId,
-                                             dataDic);
             }
 
+            // Update SB and BB seats in the database
+            UpdatePlayerSeat(sbPlayerData.userId, SeatCharacterEnum.SB);
+            UpdatePlayerSeat(bbPlayerData.userId, SeatCharacterEnum.BB);
+
+            // Set the current bet amounts for SB and BB
             gameRoomData.playerDataDic[sbPlayerData.userId].currAllBetChips = gameRoomData.smallBlind;
             gameRoomData.playerDataDic[bbPlayerData.userId].currAllBetChips = gameRoomData.smallBlind * 2;
         }
+    }
+
+    // Helper method to update the player's seat character in Firebase
+    private void UpdatePlayerSeat(string userId, SeatCharacterEnum seatCharacter)
+    {
+        var dataDic = new Dictionary<string, object>
+    {
+        { FirebaseManager.SEAT_CHARACTER, (int)seatCharacter }
+    };
+        gameControl.UpdataPlayerData(userId, dataDic);
     }
 
     /// <summary>
@@ -3516,6 +3627,14 @@ public class GameView : MonoBehaviour
         sbPlayer.PlayerAction(BetActingEnum.Blind,
                               gameRoomData.smallBlind,
                               sbPlayerData.carryChips - gameRoomData.smallBlind);
+        NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.SmallBlindValue, 3, (x) =>
+             {
+                 Debug.Log("SB Table ChipsTransaction Success");
+             },
+             (error) =>
+             {
+                 Debug.LogError($"SB Table ChipsTransaction Failed Error: {error}");
+             });
         if (DataManager.UserId == sbPlayerData.userId)
         {
             gameControl.UpdateLocalChips(-gameRoomData.smallBlind);
@@ -3534,6 +3653,14 @@ public class GameView : MonoBehaviour
         bbPlayer.PlayerAction(BetActingEnum.Blind,
                               gameRoomData.smallBlind * 2,
                               bbPlayerData.carryChips - (gameRoomData.smallBlind * 2));
+        NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.SmallBlindValue * 2, 2, (x) =>
+            {
+                Debug.Log("BB Table ChipsTransaction Success");
+            },
+            (error) =>
+            {
+                Debug.LogError($"Call Table ChipsTransaction Failed Error: {error}");
+            });
         if (DataManager.UserId == sbPlayerData.userId)
         {
             gameControl.UpdateLocalChips(-gameRoomData.smallBlind * 2);

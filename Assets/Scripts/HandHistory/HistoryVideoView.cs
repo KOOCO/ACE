@@ -33,7 +33,7 @@ public class HistoryVideoView : MonoBehaviour
     ProcessStepHistoryData currProcessStepHistoryData;                                      //當前行動紀錄資料
 
     float switchVideoMoveDictance;                                                          //切換影片列表移動距離
-
+    GameView gameView;
 
     Coroutine playVideoWinCoroutine;                                                        //影片播放獲勝Coroutine
 
@@ -50,6 +50,7 @@ public class HistoryVideoView : MonoBehaviour
 
     private void Awake()
     {
+        gameView = GameObject.Find("GameView").GetComponent<GameView>();
         ListenerEvent();
 
         //切換影片列表移動距離
@@ -403,7 +404,8 @@ public class HistoryVideoView : MonoBehaviour
                                                     false);
             }
         }
-
+        Debug.Log("Show Chips");
+        yield return gameView.IConcentrateBetChips();
         if (processStepHistoryData.CommunityPoker == null ||
             processStepHistoryData.CommunityPoker.Count == 0)
         {
@@ -471,7 +473,6 @@ public class HistoryVideoView : MonoBehaviour
                                                         processStepHistoryData.PotWinChips,
                                                         $"{LanguageManager.Instance.GetText("Pot")}"));
         yield return playVideoWinCoroutine;
-
         //邊池贏家
         if (playVideoWinCoroutine != null)
         {

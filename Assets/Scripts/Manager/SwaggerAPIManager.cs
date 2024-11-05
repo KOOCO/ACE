@@ -10,10 +10,13 @@ using System;
 using HtmlAgilityPack;
 using System.Web;
 using static LobbyMainPageView;
+using System.Security.Cryptography;
 
 public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
 {
     private const string BASE_URL = "https://admin.asiapoker.cc/";           //API Base Url
+
+    private string url = BASE_URL;
 
     public override void Awake()
     {
@@ -36,6 +39,10 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     public void SendGetAPI(string apiUrl, UnityAction<string> callback = null, UnityAction errCallback = null, bool addHeader = false)
     {
         StartCoroutine(ISendGetRequest(apiUrl, callback, errCallback, addHeader));
+    }
+    public string GetBaseUrl()
+    {
+        return url;
     }
 
     /// <summary>
@@ -65,13 +72,26 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         else
         {
             // Serialize data to JSON if not using URL parameters
-            string jsonData = JsonUtility.ToJson(data);
+            string jsonData = JsonConvert.SerializeObject(data);
             byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
-            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            if (apiUrl == $"/api/app/games/ace/table-chips-dec-demo")
+            {
+                string en = AppApi.EncryptJson(bodyRaw);
+                string enJsonData = JsonConvert.SerializeObject(new encData("enc=" + en));
+                byte[] postData = Encoding.Default.GetBytes(enJsonData);
+                request.uploadHandler = new UploadHandlerRaw(postData);
+                print("JsonData: " + enJsonData);
+                print("AES加密字串(Encrypt): " + BitConverter.ToString(postData));
+            }
+            else
+                request.uploadHandler = new UploadHandlerRaw(bodyRaw);
         }
 
         request.downloadHandler = new DownloadHandlerBuffer();
-        request.SetRequestHeader("Content-Type", useParams ? "application/x-www-form-urlencoded" : "application/json");
+        if (apiUrl == $"/api/app/games/ace/table-chips-dec-demo")
+            request.SetRequestHeader("Content-Type", useParams ? "application/x-www-form-urlencoded" : "multipart/form-data");
+        else
+            request.SetRequestHeader("Content-Type", useParams ? "application/x-www-form-urlencoded" : "application/json");
 
         if (addHeader)
         {
@@ -142,24 +162,4 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
             callback?.Invoke(response);
         }
     }
-}
-
-/// <summary>
-/// 錢包登入資料
-/// </summary>
-public class passwordless_login
-{
-    public string walletAddress;
-    public string ipAddress;
-    public string machineCode;
-}
-
-/// <summary>
-/// 錢包註冊資料
-/// </summary>
-public class register_passwordless
-{
-    public string memberName;
-    public string emailAddress;
-    public string walletAddress;
 }

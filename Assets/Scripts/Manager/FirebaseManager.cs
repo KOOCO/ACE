@@ -1,9 +1,6 @@
 using UnityEngine;
-using UnityEngine.Networking;
-using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 
 public class FirebaseManager : UnitySingleton<FirebaseManager>
@@ -11,6 +8,7 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
     [Header("資料路徑名稱")]
     public const string USER_DATA_PATH = "users/";                                           //Database用戶資料路徑
     public const string ROOM_DATA_PATH = "room/";                                           //房間資料路徑
+    public const string ROUND_DATA_PATH = "gameRoundsData";                                           //房間資料路徑
 
     [Header("用戶資料內容路徑名稱")]
     public const string USER_ID = "userId";                                                 //用戶ID
@@ -53,7 +51,9 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
     [Header("遊戲玩家資料路徑名稱")]
     public const string ROOM_NAME = "room_";                                                //房間名
     public const string CURR_GAME_FLOW = "currGameFlow";                                    //(GameFlowEnum)當前遊戲流程(發牌/盲注/翻牌/轉牌/河牌/遊戲結果(主池/邊池))
-    public const string CARRY_CHIPS = "carryChips";                                         //攜帶籌碼
+    public const string CARRY_CHIPS = "carryChips";   //攜帶籌碼
+    public const string MAIN_PROFIT = "mainprofit";
+    public const string SIDE_PROFIT = "sideprofit";
     public const string SEAT_CHARACTER = "seatCharacter";                                   //(SeatCharacterEnum)座位角色(Button/SB/BB)
     public const string GAME_SEAT = "gameSeat";                                             //遊戲座位
     public const string GAME_STATE = "gameState";                                           //遊戲狀態(等待/遊戲中/棄牌/All In)
@@ -254,6 +254,7 @@ public class GameRoomPlayerData
     public double allBetChips;                      //該局總下注籌碼
     public bool isBet;                              //該流程是否已下注
     public bool isSitOut;                           //是否保留座位離開
+    public int playerHandShape;
     public List<int> showHandPoker;                 //棄牌後顯示手牌
 }
 
