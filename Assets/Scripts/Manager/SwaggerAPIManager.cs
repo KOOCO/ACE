@@ -14,7 +14,7 @@ using System.Security.Cryptography;
 
 public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
 {
-    private const string BASE_URL = "https://admin.asiapoker.cc/";           //API Base Url
+    private const string BASE_URL = "https://api.ap88.io/";           //API Base Url
 
     private string url = BASE_URL;
 
