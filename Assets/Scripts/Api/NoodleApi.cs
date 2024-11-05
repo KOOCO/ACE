@@ -36,7 +36,8 @@ public class NoodleApi
     {
         //Debug.Log(DataManager.RoomId);
         TableChipsTransaction tableChipsTransaction = new TableChipsTransaction(DataManager.AccessCode, System.Guid.NewGuid().ToString(), DataManager.NoodleMemberId, memberId, long.Parse(DataManager.RoomId), DataManager.TableId, roundId, -amount, chipTransactionType);
-        SwaggerAPIManager.Instance.SendPostAPI($"/api/app/games/ace/table-chips-dec-demo", tableChipsTransaction, _success, _error);
+        //SwaggerAPIManager.Instance.(, tableChipsTransaction, _success, _error);
+        SwaggerAPIManager.Instance.SendPostEncryptAPI(tableChipsTransaction, _success , _error);
     }
 
 }

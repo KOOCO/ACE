@@ -36,6 +36,11 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     {
         StartCoroutine(ISendPOSTRequest(apiUrl, data, callback, errCallback, addHeader, useParams));
     }
+    public void SendPostEncryptAPI<T1>(T1 data, UnityAction<string> callback = null, UnityAction<string> errCallback = null)
+        where T1 : class
+    {
+        StartCoroutine(ISendPostEncryptRequest(data, callback, errCallback));
+    }
     public void SendGetAPI(string apiUrl, UnityAction<string> callback = null, UnityAction errCallback = null, bool addHeader = false)
     {
         StartCoroutine(ISendGetRequest(apiUrl, callback, errCallback, addHeader));
@@ -74,24 +79,11 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
             // Serialize data to JSON if not using URL parameters
             string jsonData = JsonConvert.SerializeObject(data);
             byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
-            if (apiUrl == $"/api/app/games/ace/table-chips-dec-demo")
-            {
-                string en = AppApi.EncryptJson(bodyRaw);
-                string enJsonData = JsonConvert.SerializeObject(new encData("enc=" + en));
-                byte[] postData = Encoding.Default.GetBytes(enJsonData);
-                request.uploadHandler = new UploadHandlerRaw(postData);
-                print("JsonData: " + enJsonData);
-                print("AES加密字串(Encrypt): " + BitConverter.ToString(postData));
-            }
-            else
-                request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
         }
 
         request.downloadHandler = new DownloadHandlerBuffer();
-        if (apiUrl == $"/api/app/games/ace/table-chips-dec-demo")
-            request.SetRequestHeader("Content-Type", useParams ? "application/x-www-form-urlencoded" : "multipart/form-data");
-        else
-            request.SetRequestHeader("Content-Type", useParams ? "application/x-www-form-urlencoded" : "application/json");
+        request.SetRequestHeader("Content-Type", useParams ? "application/x-www-form-urlencoded" : "application/json");
 
         if (addHeader)
         {
@@ -122,6 +114,48 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
             callback?.Invoke(Response);
         }
     }
+
+    IEnumerator ISendPostEncryptRequest<T1>(T1 data, UnityAction<string> callback = null, UnityAction<string> errCallback = null) 
+    {
+        // API 的 URL
+        string url = "https://ace-admin-devs.azurewebsites.net/api/app/games/ace/table-chips-transaction";
+
+        WWWForm form = new WWWForm();
+        string jsonData = JsonConvert.SerializeObject(data);
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
+        var encrypt = AppApi.EncryptJson(bodyRaw);
+        form.AddField("text", encrypt);
+        //print(encrypt);
+
+        // 建立請求
+        UnityWebRequest request = UnityWebRequest.Post(url, form);
+
+        // 添加標頭
+        request.SetRequestHeader("accept", "text/plain");
+        request.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        request.SetRequestHeader("RequestVerificationToken", "CfDJ8CdPAbU--ddBv_k4FpyUwXTR6hWzVqZqA8QsA9JWz-wCNfg04hMxdUjSlBQXqrhix_HA_LFkSOHEenlNNASRwIfMx-Wsgf9DzBadMnvjIhiKQFXHFlLL5Zh6bR7EuyqSuIZecuwzPkMWwOZSjHZBY9ACxPLlDaVYgGLjmeuSdWOMw_WcnqOvqsBW116SVFy4rQ");
+        request.SetRequestHeader("X-Requested-With", "XMLHttpRequest");
+
+        // 發送請求並等待回應
+        yield return request.SendWebRequest();
+
+        // 檢查請求狀態
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            Debug.Log("Response: " + request.downloadHandler.text);
+            string Response = request.downloadHandler.text;
+
+            // Callback execution
+            callback?.Invoke(Response);
+        }
+        else
+        {
+            string errorJson = request.downloadHandler.text;
+            errCallback?.Invoke(request.responseCode.ToString());
+            Debug.Log($"Error: {request.error}\nError Details: {errorJson}");
+        }
+    }
+
     public string ConvertHtmlToJson(string htmlString)
     {
         // 对HTML字符串进行编码，以防止特殊字符引起的JSON格式错误

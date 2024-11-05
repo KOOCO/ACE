@@ -37,7 +37,7 @@ public class GameView : MonoBehaviour
     [SerializeField]
     Button BackToSit_Btn;
     [SerializeField]
-    TextMeshProUGUI RaiseBtn_Txt, CallBtn, FoldBtn_Txt, BackToSitBtn_Txt;
+    TextMeshProUGUI RaiseBtn_Txt, CallBtn_Txt, FoldBtn_Txt, BackToSitBtn_Txt;
     [SerializeField]
     GameObject coinIconObj;
 
@@ -294,7 +294,7 @@ public class GameView : MonoBehaviour
         if (strData != null)
         {
             FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
-            CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
+            CallBtn_Txt.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
             RaiseBtn_Txt.text = LanguageManager.Instance.GetText(strData.RaiseStr) + strData.RaiseValueStr;
         }
         BackToSitBtn_Txt.text = LanguageManager.Instance.GetText("Back To Sit");
@@ -606,14 +606,20 @@ public class GameView : MonoBehaviour
             }
             Raise_Tr.gameObject.SetActive(false);
             SetActionButton = false;
-            NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.CurrCallValue, 4, (x) =>
-               {
-                   Debug.Log("Call Table ChipsTransaction Success");
-               },
+
+            if (CallBtn_Txt.text != LanguageManager.Instance.GetText("Check"))
+            {
+                NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.CurrCallValue, 4, (x) =>
+                {
+                    Debug.Log("Call Table ChipsTransaction Success");
+                },
                (error) =>
                {
                    Debug.LogError($"Call Table ChipsTransaction Failed Error: {error}");
                });
+            }
+            else
+                print("Player Action: " + LanguageManager.Instance.GetText("Check"));
         });
 
         //加注/All In
@@ -1219,7 +1225,7 @@ public class GameView : MonoBehaviour
     private void UpdateActionButtonTexts(bool isRaised, bool localPlayerTurn = false)
     {
         FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
-        CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
+        CallBtn_Txt.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
         //coinIconObj.SetActive(false);
         UpdateRaiseBtn(localPlayerTurn, isRaised);
     }
@@ -1358,7 +1364,7 @@ public class GameView : MonoBehaviour
         FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
         strData.CallStr = "Check";
         strData.CallValueStr = "";
-        CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
+        CallBtn_Txt.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
         strData.RaiseStr = "CallAny";
         strData.RaiseValueStr = "";
         RaiseBtn_Txt.text = LanguageManager.Instance.GetText(strData.RaiseStr) + strData.RaiseValueStr;
@@ -1803,7 +1809,7 @@ public class GameView : MonoBehaviour
                 strData.CallValueStr = $"\n{StringUtils.SetChipsUnit(thisData.CallDifference)}";
             }
         }
-        CallBtn.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
+        CallBtn_Txt.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
 
         if (IsUnableRaise == true && isJustAllIn == false && isCanCall == true)
         {
@@ -3623,18 +3629,22 @@ public class GameView : MonoBehaviour
         }
 
         GamePlayerInfo sbPlayer = GetPlayer(sbPlayerData.userId);
-        sbPlayer.SetSeatCharacter(SeatCharacterEnum.SB);
+        sbPlayer.SetSeatCharacter(SeatCharacterEnum.SB); 
         sbPlayer.PlayerAction(BetActingEnum.Blind,
-                              gameRoomData.smallBlind,
-                              sbPlayerData.carryChips - gameRoomData.smallBlind);
-        NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.SmallBlindValue, 3, (x) =>
-             {
-                 Debug.Log("SB Table ChipsTransaction Success");
-             },
-             (error) =>
-             {
-                 Debug.LogError($"SB Table ChipsTransaction Failed Error: {error}");
-             });
+                               gameRoomData.smallBlind,
+                               sbPlayerData.carryChips - gameRoomData.smallBlind);
+        if (sbPlayer.UserId == DataManager.UserId)
+        {
+            NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.SmallBlindValue, 3, (x) =>
+            {
+                Debug.Log("SB Table ChipsTransaction Success");
+            },
+                 (error) =>
+                 {
+                     Debug.LogError($"SB Table ChipsTransaction Failed Error: {error}");
+                 });
+        }        
+
         if (DataManager.UserId == sbPlayerData.userId)
         {
             gameControl.UpdateLocalChips(-gameRoomData.smallBlind);
@@ -3653,15 +3663,19 @@ public class GameView : MonoBehaviour
         bbPlayer.PlayerAction(BetActingEnum.Blind,
                               gameRoomData.smallBlind * 2,
                               bbPlayerData.carryChips - (gameRoomData.smallBlind * 2));
-        NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.SmallBlindValue * 2, 2, (x) =>
+        if (bbPlayer.UserId == DataManager.UserId)
+        {
+            NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.SmallBlindValue * 2, 2, (x) =>
             {
                 Debug.Log("BB Table ChipsTransaction Success");
             },
-            (error) =>
-            {
-                Debug.LogError($"Call Table ChipsTransaction Failed Error: {error}");
-            });
-        if (DataManager.UserId == sbPlayerData.userId)
+                (error) =>
+                {
+                    Debug.LogError($"Call Table ChipsTransaction Failed Error: {error}");
+                });
+        }
+        
+        if (DataManager.UserId == bbPlayerData.userId)
         {
             gameControl.UpdateLocalChips(-gameRoomData.smallBlind * 2);
         }
