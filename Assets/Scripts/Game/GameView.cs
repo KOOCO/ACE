@@ -2524,7 +2524,12 @@ public class GameView : MonoBehaviour
 
             yield return new WaitForSeconds(0.5f);
             if (potWinnerId == DataManager.UserId)
-                player.SetRoomFee($"Room Fee + ${playerDetails[int.Parse(DataManager.UserId)].playerRoomFee:f2}");
+            {
+                if (playerDetails[int.Parse(DataManager.UserId)].playerRoomFee > 0)
+                {
+                    player.SetRoomFee($"Room Fee + ${playerDetails[int.Parse(DataManager.UserId)].playerRoomFee:f2}");
+                }
+            }
         }
 
         int winIndex = 0;
