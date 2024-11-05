@@ -993,17 +993,29 @@ public class GameView : MonoBehaviour
     }
     public void CalculateEffectiveBets()
     {
+        Debug.Log(nameof(CalculateEffectiveBets));
         // Get a list of all players' `allBetChips` and sort it in descending order
         List<double> allBetChipsList = saveResultData.playerDetails
                                                       .Select(player =>
-                                                          gameRoomData.playerDataDic
-                                                                      .FirstOrDefault(x => x.Value.userId == player.playerId)
-                                                                      .Value.allBetChips)
+                                                      {
+                                                          var playerData = gameRoomData.playerDataDic
+                                                                                       .FirstOrDefault(x => x.Value.userId == player.playerId)
+                                                                                       .Value;
+                                                          return playerData != null ? playerData.allBetChips : 0.0;
+                                                      })
                                                       .OrderByDescending(chips => chips)
                                                       .ToList();
 
+        // Debugging: Print the entire allBetChipsList after sorting
+        Debug.Log("All Bet Chips List (Descending Order):");
+        foreach (var chips in allBetChipsList)
+        {
+            Debug.Log("Bet Chips: " + chips);
+        }
+
         // Identify the second highest bet if there are at least two players
         double secondHighestBet = allBetChipsList.Count > 1 ? allBetChipsList[1] : 0;
+        Debug.Log("Second Highest Bet: " + secondHighestBet);
 
         // Calculate the effective bet for each player
         foreach (var player in saveResultData.playerDetails)
@@ -1020,11 +1032,19 @@ public class GameView : MonoBehaviour
                                       ? secondHighestBet
                                       : playerNew.allBetChips;
 
+                // Debugging: Log the effective bet for each player
+                Debug.Log($"Player ID: {player.playerId}, All Bet Chips: {playerNew.allBetChips}, Effective Bet: {effectiveBet}");
+
                 // Set the effective bet in the player's details
                 saveResultData.playerDetails[int.Parse(player.playerId)].playerValidBetAmount = effectiveBet;
             }
+            else
+            {
+                Debug.LogWarning($"Player ID: {player.playerId} not found in gameRoomData.");
+            }
         }
     }
+
     /// <summary>
     /// 設置行動按鈕文字(是否為玩家回合)
     /// </summary>
