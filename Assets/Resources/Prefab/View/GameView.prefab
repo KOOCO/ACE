@@ -29648,7 +29648,7 @@ MonoBehaviour:
   - {fileID: 8007092420552672186}
   BackToSit_Btn: {fileID: 1598480768956187184}
   RaiseBtn_Txt: {fileID: 6015941751485632776}
-  CallBtn_Txt: {fileID: 0}
+  CallBtn_Txt: {fileID: 4521782613114109918}
   FoldBtn_Txt: {fileID: 8475580012239651252}
   BackToSitBtn_Txt: {fileID: 6619515098594045456}
   coinIconObj: {fileID: 2083196681583221917}
