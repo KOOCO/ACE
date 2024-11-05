@@ -16,7 +16,7 @@ public class GamePlayerInfo : MonoBehaviour
     [SerializeField]
     Image CDMask_Img, Avatar_Img, ButtonCharacter_Img, PokerShape_img;
     [SerializeField]
-    TextMeshProUGUI Nickname_Txt, Chips_Txt, BackChips_Txt, BlindCharacter_Txt, countDown_Txt, Winner_Txt;
+    TextMeshProUGUI Nickname_Txt, Chips_Txt, BackChips_Txt, BlindCharacter_Txt, countDown_Txt, Winner_Txt, RoomFee_Txt;
 
     [Header("手牌")]
     [SerializeField]
@@ -254,6 +254,11 @@ public class GamePlayerInfo : MonoBehaviour
     public void setWinnerDisplay(string Result)
     {
         Winner_Txt.text = Result;
+    }
+
+    public void SetRoomFee(string Result)
+    {
+        RoomFee_Txt.text = Result;
     }
 
     /// <summary>

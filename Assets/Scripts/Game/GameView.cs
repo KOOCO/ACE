@@ -2492,6 +2492,8 @@ public class GameView : MonoBehaviour
             GameRoomPlayerData playerData = gameRoomData.playerDataDic.Where(x => x.Value.userId == potWinnerId)
                                                                       .FirstOrDefault()
                                                                       .Value;
+
+            List<PlayerDetails> playerDetails = saveResultData.playerDetails;
             GamePlayerInfo player = GetPlayer(potWinnerId);
             player.IsOpenInfoMask = false;
 
@@ -2520,7 +2522,9 @@ public class GameView : MonoBehaviour
                 Destroy(rt.gameObject);
             });
 
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(0.5f);
+            if (potWinnerId == DataManager.UserId)
+                player.SetRoomFee($"Room Fee + ${playerDetails[int.Parse(DataManager.UserId)].playerRoomFee:f2}");
         }
 
         int winIndex = 0;
