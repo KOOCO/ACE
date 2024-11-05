@@ -604,6 +604,7 @@ public class GameView : MonoBehaviour
                              AutoActingEnum.None :
                              AutoActingEnum.Check;
             }
+            CalculateEffectiveBets();
             Raise_Tr.gameObject.SetActive(false);
             SetActionButton = false;
 
@@ -640,7 +641,7 @@ public class GameView : MonoBehaviour
                 {
                     acting = BetActingEnum.Bet;
                 }
-
+                CalculateEffectiveBets();
                 if (Raise_Tr.gameObject.activeSelf || isAllIn == true)
                 {
                     double betValue = isAllIn == true ?
@@ -990,7 +991,40 @@ public class GameView : MonoBehaviour
             }
         }
     }
+    public void CalculateEffectiveBets()
+    {
+        // Get a list of all players' `allBetChips` and sort it in descending order
+        List<double> allBetChipsList = saveResultData.playerDetails
+                                                      .Select(player =>
+                                                          gameRoomData.playerDataDic
+                                                                      .FirstOrDefault(x => x.Value.userId == player.playerId)
+                                                                      .Value.allBetChips)
+                                                      .OrderByDescending(chips => chips)
+                                                      .ToList();
 
+        // Identify the second highest bet if there are at least two players
+        double secondHighestBet = allBetChipsList.Count > 1 ? allBetChipsList[1] : 0;
+
+        // Calculate the effective bet for each player
+        foreach (var player in saveResultData.playerDetails)
+        {
+            // Find the matching GameRoomPlayerData for each player
+            GameRoomPlayerData playerNew = gameRoomData.playerDataDic
+                                                       .FirstOrDefault(x => x.Value.userId == player.playerId)
+                                                       .Value;
+
+            if (playerNew != null)
+            {
+                // Determine the effective bet amount for the player
+                double effectiveBet = playerNew.allBetChips > secondHighestBet
+                                      ? secondHighestBet
+                                      : playerNew.allBetChips;
+
+                // Set the effective bet in the player's details
+                saveResultData.playerDetails[int.Parse(player.playerId)].playerValidBetAmount = effectiveBet;
+            }
+        }
+    }
     /// <summary>
     /// 設置行動按鈕文字(是否為玩家回合)
     /// </summary>
@@ -3629,7 +3663,7 @@ public class GameView : MonoBehaviour
         }
 
         GamePlayerInfo sbPlayer = GetPlayer(sbPlayerData.userId);
-        sbPlayer.SetSeatCharacter(SeatCharacterEnum.SB); 
+        sbPlayer.SetSeatCharacter(SeatCharacterEnum.SB);
         sbPlayer.PlayerAction(BetActingEnum.Blind,
                                gameRoomData.smallBlind,
                                sbPlayerData.carryChips - gameRoomData.smallBlind);
@@ -3643,7 +3677,7 @@ public class GameView : MonoBehaviour
                  {
                      Debug.LogError($"SB Table ChipsTransaction Failed Error: {error}");
                  });
-        }        
+        }
 
         if (DataManager.UserId == sbPlayerData.userId)
         {
@@ -3674,7 +3708,7 @@ public class GameView : MonoBehaviour
                     Debug.LogError($"Call Table ChipsTransaction Failed Error: {error}");
                 });
         }
-        
+
         if (DataManager.UserId == bbPlayerData.userId)
         {
             gameControl.UpdateLocalChips(-gameRoomData.smallBlind * 2);
