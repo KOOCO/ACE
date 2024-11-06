@@ -2607,7 +2607,7 @@ public class GameView : MonoBehaviour
             Debug.Log("Room Fee ::" + playerDetails[int.Parse(potWinnerId)].playerRoomFee);
             if (potWinnerId == DataManager.UserId)
             {
-                if (playerDetails[int.Parse(potWinnerId)].playerRoomFee > 0 && playerDetails[int.Parse(potWinnerId)].playerRoomFee != null)
+                if (playerDetails[int.Parse(potWinnerId)].playerRoomFee > 0 && playerDetails[int.Parse(potWinnerId)].playerRoomFee != 0)
                 {
                     Debug.Log("Room Fee > 0 ::" + playerDetails[int.Parse(potWinnerId)].playerRoomFee);
                     player.SetRoomFee($"Room Fee + ${playerDetails[int.Parse(potWinnerId)].playerRoomFee:f2}");
@@ -2657,9 +2657,9 @@ public class GameView : MonoBehaviour
                     saveResultData.communityPoker = gameRoomData.currCommunityPoker ?? new List<int>(); // Use null-coalescing operator for safety
                     saveResultData.dateTime = DateTime.UtcNow.ToString();
                     saveResultData.roomId = DataManager.RoomId;
-                    saveResultData.roundInsuranceResult = "";
-                    saveResultData.roundInsurancePayAmount = 0;
-                    saveResultData.roundInsurancePayRate = 0;
+                    // saveResultData.roundInsuranceResult = "";
+                    // saveResultData.roundInsurancePayAmount = 0;
+                    // saveResultData.roundInsurancePayRate = 0;
                     saveResultData.tableId = DataManager.TableId;
                     saveResultData.roundId = roundId;
                 }
@@ -2684,7 +2684,11 @@ public class GameView : MonoBehaviour
                 playerName = playerNew.nickname,
                 playerHandId = "",
                 playerValidBetAmount = 0,
-                playerRoomFee = DataManager.RoomFee,
+                playerRoomFee = gameControl.mainPotWinnersRoomFee.ContainsKey(playerNew.userId)
+                ? gameControl.mainPotWinnersRoomFee[playerNew.userId]
+                : gameControl.sidePotWinnersRoomFee.ContainsKey(playerNew.userId)
+                    ? gameControl.sidePotWinnersRoomFee[playerNew.userId]
+                    : 0,
                 // roundInsuranceResult = "",
                 // roundInsurancePayAmount = 0,
                 // roundInsurancePayRate = 0,
