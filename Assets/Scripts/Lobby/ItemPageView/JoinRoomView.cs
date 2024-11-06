@@ -36,6 +36,7 @@ public class JoinRoomView : MonoBehaviour
     double newCarryChipsValue;           //更新後的購買籌碼
 
     bool isClassic;
+    GameRoom previousRoom;
 
     /// <summary>
     /// 更新文本翻譯
@@ -59,6 +60,7 @@ public class JoinRoomView : MonoBehaviour
 
         lobbyView = GameObject.FindAnyObjectByType<LobbyView>();
     }
+
 
     /// <summary>
     /// 事件聆聽
@@ -112,14 +114,29 @@ public class JoinRoomView : MonoBehaviour
             //ViewManager.Instance.OpenWaitingView(transform);
             AppApi.OnJoinRoom(newRound, (data) =>
             {
-                Debug.Log("Join Round Response :: " + data);
                 GameRoom gameRound = JsonConvert.DeserializeObject<GameRoom>(data);
+                Debug.Log("Join Round Response :: " + data);
+                if (previousRoom == null || previousRoom.id == gameRound.id)
+                {
+                    previousRoom = gameRound;
+                    Debug.Log("same Room id ");
+                }
+                else
+                {
+                    CreateNewRoom();
+                    Debug.Log("Room id different");
+                    return;
+                }
+
+
                 var _currencyType = DataManager.CurrencyType;
                 Debug.Log("Currency Type :: " + _currencyType);
                 DataManager.TableType = gameRound.tableType;
                 DataManager.Rebate = gameRound.table.rebateSetting;
                 DataManager.RoundId = gameRound.roundId;
                 DataManager.RoomId = gameRound.roomId;
+
+
                 NoodleApi.PostTableBuyIn(newCarryChipsValue, (data) =>
                 {
                     Debug.Log("Table BuyIn SuccessFull.");
@@ -198,6 +215,18 @@ public class JoinRoomView : MonoBehaviour
             BuyChips_Sli.value = (float)(newCarryChipsValue - smallBlind * 2);
         });
     }
+
+
+    public void CreateNewRoom()
+    {
+        JSBridgeManager.Instance.JoinRoomQueryData($"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}",
+                                                               $"{DataManager.MaxPlayerCount}",
+                                                               $"{DataManager.UserId}",
+                                                               gameObject.name,
+                                                               nameof(JoinRoomQueryCallback));
+    }
+
+
 
     /// <summary>
     /// 設定創建房間介面
