@@ -762,13 +762,16 @@ public class GameView : MonoBehaviour
 
         roomID_Txt.GetComponent<Button>().onClick.AddListener(() =>
         {
+#if UNITY_EDITOR
             TextEditor editor = new TextEditor
             {
                 text = roomID_Txt.text.Substring(3)
             };
             editor.SelectAll();
             editor.Copy();
+#endif
 
+            JSBridgeManager.Instance.CopyString(roomID_Txt.text.Substring(3));
             ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Succesful, LanguageManager.Instance.GetText("Copy Success!"));
         });
 
@@ -1480,6 +1483,11 @@ public class GameView : MonoBehaviour
         thisData.IsPlaying = false;
         thisData.isFold = false;
         thisData.CurrCommunityPoker = new List<int>();
+
+        saveResultData = new ResultHistoryData
+        {
+            playerDetails = new List<PlayerDetails>() // Initialize the playerHands list
+        };
     }
 
     /// <summary>
@@ -2612,10 +2620,6 @@ public class GameView : MonoBehaviour
         }
 
         int winIndex = 0;
-        saveResultData = new ResultHistoryData
-        {
-            playerDetails = new List<PlayerDetails>() // Initialize the playerHands list
-        };
 
         // Loop through the list of pot winners
         foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
