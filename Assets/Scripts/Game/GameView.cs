@@ -3558,6 +3558,10 @@ public class GameView : MonoBehaviour
     {
         this.gameRoomData = gameRoomData;
 
+        //當前小盲值
+        thisData.SmallBlindValue = gameRoomData.smallBlind;
+        sbBlinds_Txt.text = $"BLINDS: ${thisData.SmallBlindValue}/{thisData.SmallBlindValue * 2}";
+
         //底池
         if (gameRoomData.currGameFlow != (int)GameFlowEnum.PotResult &&
             gameRoomData.currGameFlow != (int)GameFlowEnum.SideResult)
