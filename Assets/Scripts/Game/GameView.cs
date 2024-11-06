@@ -2620,11 +2620,14 @@ public class GameView : MonoBehaviour
             }
         }
 
+        Debug.Log("PlayerDetailsLoop :: ");
         // Add player details to result data
         foreach (var playerId in gameRoomData.playingPlayersIdList)
         {
+            Debug.Log("PlayerDetailsLoop :: " + playerId);
             if (gameRoomData.playerDataDic.TryGetValue(playerId, out GameRoomPlayerData playerNew))
             {
+                Debug.Log("PlayerDetailsLoop :: " + playerNew);
                 PlayerDetails playerData = new PlayerDetails
                 {
                     playerId = playerNew.userId,
@@ -2642,6 +2645,7 @@ public class GameView : MonoBehaviour
                         seat = playerNew.gameSeat.ToString(),
                     }
                 };
+                Debug.Log("PlayerDetailsLoop :: " + playerData);
 
                 saveResultData.playerDetails.Add(playerData);
                 NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId,
