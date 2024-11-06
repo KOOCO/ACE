@@ -101,7 +101,9 @@ public class SettingsView : MonoBehaviour
     public void OnClickLogOutBtn()
     {
         AppApi.LogoutRequest();
-        JS_WindowClose();
+#if UNITY_WEBGL && !UNITY_EDITOR
+    JS_WindowClose();
+#endif
     }
     private void OnEnable()
     {
