@@ -2621,43 +2621,51 @@ public class GameView : MonoBehaviour
 
         Debug.Log("PlayerDetailsLoop :: ");
         // Add player details to result data
-        foreach (var playerId in gameRoomData.playingPlayersIdList)
+        foreach (var playerId in gameRoomData.playingPlayersIdList ?? Enumerable.Empty<string>())
         {
             Debug.Log("PlayerDetailsLoop :: " + playerId);
-            if (gameRoomData.playerDataDic.TryGetValue(playerId, out GameRoomPlayerData playerNew))
+
+            if (gameRoomData.playerDataDic.TryGetValue(playerId, out GameRoomPlayerData playerNew) && playerNew != null)
             {
                 Debug.Log("PlayerDetailsLoop :: " + playerNew);
+
+                var potWinChips = gameRoomData.potWinData?.potWinChips ?? 0;
+                var sideWinChips = gameRoomData.sideWinData?.sideWinChips ?? 0;
+                var isWinner = gameRoomData.potWinData?.potWinnersId?.Contains(playerNew.userId) ?? false;
+                Debug.Log("PlayerDetailsLoop :: " + gameControl.mainPotWinnersRoomFee.Count());
+                Debug.Log("PlayerDetailsLoop :: " + gameControl.sidePotWinnersRoomFee.Count());
                 PlayerDetails playerData = new PlayerDetails
                 {
                     playerId = playerNew.userId,
                     playerName = playerNew.nickname,
                     playerRoomFee = gameControl.mainPotWinnersRoomFee.GetValueOrDefault(playerNew.userId,
-                                 gameControl.sidePotWinnersRoomFee.GetValueOrDefault(playerNew.userId, 0)),
+                                     gameControl.sidePotWinnersRoomFee.GetValueOrDefault(playerNew.userId, 0)),
                     isBot = DataManager.UserId.StartsWith(FirebaseManager.ROBOT_ID),
                     playerHandData = new PlayerHand
                     {
-                        playerHand = playerNew.handPoker,
+                        playerHand = playerNew.handPoker ?? new List<int>(),  // Ensure `handPoker` is not null
                         playerCurrHandShape = playerNew.playerHandShape,
-                        potWinChips = gameRoomData.potWinData.potWinnersId.Contains(playerNew.userId) ? gameRoomData.potWinData.potWinChips : 0,
-                        sideWinChips = gameRoomData.sideWinData.sideWinnersId.Contains(playerNew.userId) ? gameRoomData.sideWinData.sideWinChips : 0,
-                        isWinner = gameRoomData.potWinData.potWinnersId.Contains(playerNew.userId),
+                        potWinChips = isWinner ? potWinChips : 0,
+                        sideWinChips = gameRoomData.sideWinData?.sideWinnersId.Contains(playerNew.userId) == true ? sideWinChips : 0,
+                        isWinner = isWinner,
                         seat = playerNew.gameSeat.ToString(),
                     }
                 };
-                Debug.Log("PlayerDetailsLoop :: " + playerData);
 
+                Debug.Log("PlayerDetailsLoop :: " + playerData);
                 saveResultData.playerDetails.Add(playerData);
-                NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId,
-                    gameRoomData.potWinData.potWinChips, 12, (x) =>
-                {
-                    Debug.Log("Player Win ChipsTransaction Success");
-                },
-                (error) =>
-                {
-                    Debug.LogError($"Player Win ChipsTransaction Failed Error: {error}");
-                });
             }
         }
+
+        NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId,
+            gameRoomData.potWinData.potWinChips, 12, (x) =>
+        {
+            Debug.Log("Player Win ChipsTransaction Success");
+        },
+        (error) =>
+        {
+            Debug.LogError($"Player Win ChipsTransaction Failed Error: {error}");
+        });
 
         yield return new WaitForSeconds(2f);
 
