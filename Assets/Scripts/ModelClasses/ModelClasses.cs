@@ -237,9 +237,9 @@ public class PlayerDetails
     public string playerHandId;
     public double playerValidBetAmount;
     public double playerRoomFee;
-    public string roundInsuranceResult;
-    public double roundInsurancePayRate;
-    public double roundInsurancePayAmount;
+    public string roundInsuranceResult = "";
+    public double roundInsurancePayRate = 0;
+    public double roundInsurancePayAmount = 0;
     public bool isBot;
     public PlayerHand playerHandData;
 }
