@@ -114,6 +114,7 @@ public static class DataManager
     public static double Rebate { get; set; }
     public static bool DataUpdated { get; set; }
     public static string TableId { get; set; }
+    public static bool isInRoom  { get; set; }
     public static string RoomId { get; set; }
     public static string TableType { get; set; }
     public static string AccessCode { get; set; }

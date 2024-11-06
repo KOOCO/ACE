@@ -325,6 +325,7 @@ public class LobbyView : MonoBehaviour
     /// </summary>
     public void UpdateUserData()
     {
+        print("Get user Data");
         //讀取用戶資料
         JSBridgeManager.Instance.ReadDataFromFirebase(
             $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}",
@@ -379,7 +380,7 @@ public class LobbyView : MonoBehaviour
                 $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}",
                 data,
                 gameObject.name,
-                nameof(UpdateUserData));
+                nameof(getUserData));
 
             //開啟設置暱稱
             // if (isFirstIn)
@@ -433,6 +434,18 @@ public class LobbyView : MonoBehaviour
         HandHistoryManager.Instance.LoadHandHistoryData();
 
         isFirstIn = false;
+    }
+    //Test callBack
+    void getUserData(string jsonData)
+    {
+        AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
+
+        print(loginData.userId);
+        print(loginData.nickname);
+        print(loginData.password);
+        print(loginData.UChips);
+        print(loginData.online);
+        print(loginData.phoneNumber);
     }
 
     /// <summary>

@@ -1531,8 +1531,13 @@ public class GameControl : MonoBehaviour
 
         player.ActionFrame = true;
         //gameRoomData.actionCD = 1;
-        player.CountDown(DataManager.StartCountDownTime,
-                         gameRoomData.actionCD);
+        if(player.UserId == DataManager.UserId)
+        {
+            print("GameCtrl 執行倒數");
+            player.CountDown(DataManager.StartCountDownTime,
+                             gameRoomData.actionCD);
+        }
+        
         if (player.UserId == DataManager.UserId)
         {
             gameView.CheckActionArea(gameRoomData);

@@ -68,14 +68,14 @@ public class JoinRoomView : MonoBehaviour
         //關閉
         Close_Btn.onClick.AddListener(() =>
         {
-            GameRoomManager.Instance.IsCanMoveSwitch = true;
+            GameRoomManager.Instance.IsCanMoveSwitch = DataManager.isInRoom;
             gameObject.SetActive(false);
         });
 
         //取消
         Cancel_Btn.onClick.AddListener(() =>
         {
-            GameRoomManager.Instance.IsCanMoveSwitch = true;
+            GameRoomManager.Instance.IsCanMoveSwitch = DataManager.isInRoom;
             gameObject.SetActive(false);
         });
 
