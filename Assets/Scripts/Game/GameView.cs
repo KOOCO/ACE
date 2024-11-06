@@ -1483,11 +1483,6 @@ public class GameView : MonoBehaviour
         thisData.IsPlaying = false;
         thisData.isFold = false;
         thisData.CurrCommunityPoker = new List<int>();
-
-        saveResultData = new ResultHistoryData
-        {
-            playerDetails = new List<PlayerDetails>() // Initialize the playerHands list
-        };
     }
 
     /// <summary>
@@ -2590,6 +2585,10 @@ public class GameView : MonoBehaviour
         }
 
         int winIndex = 0;
+        saveResultData = new ResultHistoryData
+        {
+            playerDetails = new List<PlayerDetails>() // Initialize the playerHands list
+        };
 
         // Loop through pot winners to save data
         foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
