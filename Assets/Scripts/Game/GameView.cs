@@ -2514,29 +2514,26 @@ public class GameView : MonoBehaviour
         SetActingButtonEnable = false;
         thisData.CurrCommunityPoker = new List<int>();
 
+        // Execute betting and reveal community cards
         yield return IConcentrateBetChips();
         yield return IFlopCommunityPoker(gameRoomData.currCommunityPoker);
 
-        //是否所有人都棄牌
+        // Check if only one player remains (all others have folded)
         bool isOnePlayerLeft = gameRoomData.playingPlayersIdList.Count() - gameControl.GetFoldPlayer().Count() == 1;
 
-        if (isOnePlayerLeft == false)
+        if (!isOnePlayerLeft)
         {
-            //顯示手牌牌型
+            // Show each player's hand and evaluate hand shapes if more than one player remains
             foreach (var playerId in gameRoomData.playingPlayersIdList)
             {
-                GameRoomPlayerData playerData = gameRoomData.playerDataDic.Where(x => x.Value.userId == playerId)
-                                                                          .FirstOrDefault()
-                                                                          .Value;
-                if ((PlayerStateEnum)playerData.gameState != PlayerStateEnum.Waiting &&
-                    (PlayerStateEnum)playerData.gameState != PlayerStateEnum.Fold)
+                if (gameRoomData.playerDataDic.TryGetValue(playerId, out GameRoomPlayerData playerData) &&
+                    playerData.gameState != (int)PlayerStateEnum.Waiting &&
+                    playerData.gameState != (int)PlayerStateEnum.Fold)
                 {
                     GamePlayerInfo player = GetPlayer(playerId);
-                    player.SetHandPoker(playerData.handPoker[0],
-                                        playerData.handPoker[1]);
+                    player.SetHandPoker(playerData.handPoker[0], playerData.handPoker[1]);
 
                     playerData.playerHandShape = player.GetPokerShapeIndex();
-
                     JudgePokerShape(player, false);
                 }
             }
@@ -2544,59 +2541,47 @@ public class GameView : MonoBehaviour
 
         yield return new WaitForSeconds(1);
 
+        // Set the main pot win chips value
         thisData.PowWinChips = gameRoomData.potWinData.potWinChips;
 
-        //開啟遮罩
+        // Open player info masks and display total pot
         foreach (var player in gamePlayerInfoList)
         {
             player.IsOpenInfoMask = true;
         }
-
-        //贏得類型顯示
-        //WinType_Txt.text = LanguageManager.Instance.GetText("Pot");
-        TotalPot_Txt.text = LanguageManager.Instance.GetText("Pot") + " " + TotalPot_Txt.text;
+        TotalPot_Txt.text = $"{LanguageManager.Instance.GetText("Pot")} {gameRoomData.potWinData.potWinChips}";
         SetTotalPot = gameRoomData.potWinData.potWinChips;
 
-        //贏家效果
+        // Display the winning players and distribute the pot
         foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
         {
-            //本地玩家
             if (potWinnerId == DataManager.UserId)
             {
-                //更新用戶籌碼資料
+                // Update local player's chips if they are a winner
                 changeValue = gameRoomData.potWinData.potWinChips / gameRoomData.potWinData.potWinnersId.Count();
                 gameControl.UpdateLocalChips(changeValue);
             }
 
             CloseAllPokerEffect();
 
-            GameRoomPlayerData playerData = gameRoomData.playerDataDic.Where(x => x.Value.userId == potWinnerId)
-                                                                      .FirstOrDefault()
-                                                                      .Value;
-
-            //List<PlayerDetails> playerDetails = saveResultData.playerDetails;
+            GameRoomPlayerData playerData = gameRoomData.playerDataDic[potWinnerId];
             GamePlayerInfo player = GetPlayer(potWinnerId);
             player.IsOpenInfoMask = false;
 
             JudgePokerShape(player, true, true);
 
             player.IsWinnerActive = true;
-            if (potWinnerId == DataManager.UserId)
-                player.setWinnerDisplay($"POT + ${changeValue:f2}");
-            else
-                player.setWinnerDisplay($"POT  + ${gameRoomData.potWinData.potWinChips / gameRoomData.potWinData.potWinnersId.Count():f2}");
+            player.setWinnerDisplay($"POT + ${changeValue:f2}");
 
             Vector2 winnerSeatPos = player.gameObject.transform.position;
 
-            //產生贏得籌碼物件            
             RectTransform rt = Instantiate(WinChipsObj, Pot_Img.transform).GetComponent<RectTransform>();
             rt.anchoredPosition = Vector2.zero;
             SetPotActive = false;
 
             yield return new WaitForSeconds(0.5f);
 
-            ObjMoveUtils.ObjMoveToTarget(rt, winnerSeatPos, 0.5f,
-            () =>
+            ObjMoveUtils.ObjMoveToTarget(rt, winnerSeatPos, 0.5f, () =>
             {
                 PlaySound("SoundWinPot");
                 player.PlayerRoomChips = playerData.carryChips;
@@ -2606,145 +2591,99 @@ public class GameView : MonoBehaviour
 
         int winIndex = 0;
 
-        // Loop through the list of pot winners
+        // Loop through pot winners to save data
         foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
         {
             winIndex++;
-            GameRoomPlayerData winnerPlayerData = gameControl.GetPlayerData(potWinnerId); // Get the winner's player data
+            GameRoomPlayerData winnerPlayerData = gameControl.GetPlayerData(potWinnerId);
 
             if (winnerPlayerData == null)
-            {
                 yield break;
-            }
 
-            // Check if the local player has participated
-            if (thisData.LocalGamePlayerInfo.IsPlaying)
+            if (thisData.LocalGamePlayerInfo.IsPlaying && winIndex == 1)
             {
-                // Initialize the result data on the first win
-                if (winIndex == 1)
+                string roomName = roomType switch
                 {
-                    string roomName = "";
-                    switch (roomType)
-                    {
-                        case TableTypeEnum.IntegralTable:
-                            roomName = "Integral";
-                            break;
-                        case TableTypeEnum.Cash:
-                            roomName = "High Roller Battleground";
-                            break;
-                        case TableTypeEnum.VCTable:
-                            roomName = "Classic Battle";
-                            break;
-                    }
+                    TableTypeEnum.IntegralTable => "Integral",
+                    TableTypeEnum.Cash => "High Roller Battleground",
+                    TableTypeEnum.VCTable => "Classic Battle",
+                    _ => "Unknown Room"
+                };
 
-                    saveResultData.roomType = roomName;
-                    saveResultData.smallBlind = gameRoomData.smallBlind;
-                    saveResultData.communityPoker = gameRoomData.currCommunityPoker ?? new List<int>(); // Use null-coalescing operator for safety
-                    saveResultData.dateTime = DateTime.UtcNow.ToString();
-                    saveResultData.roomId = DataManager.RoomId;
-                    // saveResultData.roundInsuranceResult = "";
-                    // saveResultData.roundInsurancePayAmount = 0;
-                    // saveResultData.roundInsurancePayRate = 0;
-                    saveResultData.tableId = DataManager.TableId;
-                    saveResultData.roundId = roundId;
-                }
+                saveResultData.roomType = roomName;
+                saveResultData.smallBlind = gameRoomData.smallBlind;
+                saveResultData.communityPoker = gameRoomData.currCommunityPoker ?? new List<int>();
+                saveResultData.dateTime = DateTime.UtcNow.ToString();
+                saveResultData.roomId = DataManager.RoomId;
+                saveResultData.tableId = DataManager.TableId;
+                saveResultData.roundId = roundId;
             }
         }
-        Debug.Log("Game Room Details ::" + JsonUtility.ToJson(gameRoomData, true));
-        // Add all players' hand data to the result
-        foreach (var player in gameRoomData.playingPlayersIdList) // Assuming this contains all players in the game
-        // foreach (var player in gameRoomData.playerDataDic.Values) // Assuming this contains all players in the game
-        {
-            GameRoomPlayerData playerNew = gameRoomData.playerDataDic.Where(x => x.Value.userId == player)
-                                                                          .FirstOrDefault()
-                                                                          .Value;
-            if (playerNew == null)
-            {
-                Debug.LogWarning("Player not found in playerDataDic for userId: " + player);
-                continue;
-            }
-            PlayerDetails playerData = new PlayerDetails
-            {
-                playerId = playerNew.userId,
-                playerName = playerNew.nickname,
-                playerHandId = "",
-                playerValidBetAmount = 0,
-                playerRoomFee = gameControl.mainPotWinnersRoomFee.ContainsKey(playerNew.userId)
-                ? gameControl.mainPotWinnersRoomFee[playerNew.userId]
-                : gameControl.sidePotWinnersRoomFee.ContainsKey(playerNew.userId)
-                    ? gameControl.sidePotWinnersRoomFee[playerNew.userId]
-                    : 0,
-                roundInsuranceResult = "",
-                roundInsurancePayAmount = 0,
-                roundInsurancePayRate = 0,
-                isBot = DataManager.UserId.StartsWith(FirebaseManager.ROBOT_ID),
-                playerHandData = new PlayerHand
-                {
-                    playerHand = playerNew.handPoker,
-                    playerCurrHandShape = playerNew.playerHandShape,
-                    potWinChips = gameRoomData.potWinData.potWinnersId.Contains(playerNew.userId) ? gameRoomData.potWinData.potWinChips : 0, // Check if the player won the pot
-                    sideWinChips = gameRoomData.sideWinData.sideWinnersId.Contains(playerNew.userId) ? gameRoomData.sideWinData.sideWinChips : 0, // Check if the player won the side pot
-                    isWinner = gameRoomData.potWinData.potWinnersId.Contains(playerNew.userId), // Check if this player is a pot winner
-                    seat = playerNew.gameSeat.ToString(),
-                },
-            };
-            NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, gameRoomData.potWinData.potWinChips, 12, (x) =>
-                     {
-                         Debug.Log("Player Win  ChipsTransaction Success");
-                     },
-                     (error) =>
-                     {
-                         Debug.LogError($"Player Win ChipsTransaction Failed Error: {error}");
-                     });
 
-            saveResultData.playerDetails.Add(playerData);
-            Debug.Log("Added PlayerDetails. Total count: " + saveResultData.playerDetails.Count);
-            // Debug.Log("Saved Result Player Details ::" + JsonUtility.ToJson(saveResultData.playerDetails, true));
-            Debug.Log("Player Details ::" + JsonUtility.ToJson(playerData, true));
+        // Add player details to result data
+        foreach (var playerId in gameRoomData.playingPlayersIdList)
+        {
+            if (gameRoomData.playerDataDic.TryGetValue(playerId, out GameRoomPlayerData playerNew))
+            {
+                PlayerDetails playerData = new PlayerDetails
+                {
+                    playerId = playerNew.userId,
+                    playerName = playerNew.nickname,
+                    playerRoomFee = gameControl.mainPotWinnersRoomFee.GetValueOrDefault(playerNew.userId,
+                                 gameControl.sidePotWinnersRoomFee.GetValueOrDefault(playerNew.userId, 0)),
+                    isBot = DataManager.UserId.StartsWith(FirebaseManager.ROBOT_ID),
+                    playerHandData = new PlayerHand
+                    {
+                        playerHand = playerNew.handPoker,
+                        playerCurrHandShape = playerNew.playerHandShape,
+                        potWinChips = gameRoomData.potWinData.potWinnersId.Contains(playerNew.userId) ? gameRoomData.potWinData.potWinChips : 0,
+                        sideWinChips = gameRoomData.sideWinData.sideWinnersId.Contains(playerNew.userId) ? gameRoomData.sideWinData.sideWinChips : 0,
+                        isWinner = gameRoomData.potWinData.potWinnersId.Contains(playerNew.userId),
+                        seat = playerNew.gameSeat.ToString(),
+                    }
+                };
+
+                saveResultData.playerDetails.Add(playerData);
+                NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId,
+                    gameRoomData.potWinData.potWinChips, 12, (x) =>
+                {
+                    Debug.Log("Player Win ChipsTransaction Success");
+                },
+                (error) =>
+                {
+                    Debug.LogError($"Player Win ChipsTransaction Failed Error: {error}");
+                });
+            }
         }
 
         yield return new WaitForSeconds(2f);
+
+        // Display room fee for local player winners
         foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
         {
-
             var testPlayer = saveResultData.playerDetails.FirstOrDefault(x => x.playerId == potWinnerId);
-            GamePlayerInfo player = GetPlayer(potWinnerId);
-            Debug.Log("Room Fee ::" + testPlayer);
-            if (testPlayer != null)
+            if (testPlayer != null && testPlayer.playerId == DataManager.UserId && testPlayer.playerRoomFee > 0)
             {
-                if (testPlayer.playerId == DataManager.UserId)
-                {
-                    if (saveResultData.playerDetails.FirstOrDefault(x => x.playerId == potWinnerId).playerRoomFee > 0 && saveResultData.playerDetails.FirstOrDefault(x => x.playerId == potWinnerId).playerRoomFee != 0)
-                    {
-                        Debug.Log("Room Fee > 0 ::" + testPlayer.playerRoomFee);
-                        player.SetRoomFee($"Room Fee + ${testPlayer.playerRoomFee:f2}");
-                    }
-                    else
-                    {
-                        Debug.Log("Room Fee Vaue is 0");
-                    }
-                }
+                GamePlayerInfo player = GetPlayer(potWinnerId);
+                player.SetRoomFee($"Room Fee + ${testPlayer.playerRoomFee:f2}");
             }
-            //主池紀錄存檔
+
             if (thisData.LocalGamePlayerInfo.IsPlaying)
             {
                 ProcessStepHistoryData processStepHistoryData = AddNewStepHistory();
                 processStepHistoryData.ActionPlayerIndex = -1;
                 processStepHistoryData.ActionIndex = -1;
 
-                processStepHistoryData.PotWinnerSeatList = new List<int>();
-                foreach (var id in gameRoomData.potWinData.potWinnersId)
-                {
-                    int potWinSeat = GetPlayer(id).SeatIndex;
-                    processStepHistoryData.PotWinnerSeatList.Add(potWinSeat);
-                }
+                processStepHistoryData.PotWinnerSeatList = gameRoomData.potWinData.potWinnersId
+                    .Select(id => GetPlayer(id).SeatIndex).ToList();
                 processStepHistoryData.PotWinChips = thisData.PowWinChips;
 
                 processHistoryData.processStepHistoryDataList.Add(processStepHistoryData);
             }
-            yield return new WaitForSeconds(4f);
-            SetWinnerStringTxt = "";
         }
+
+        yield return new WaitForSeconds(4f);
+        SetWinnerStringTxt = "";
     }
 
     /// <summary>
