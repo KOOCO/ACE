@@ -1051,7 +1051,7 @@ public class GameView : MonoBehaviour
                 Debug.Log($"Player ID: {player.playerId}, All Bet Chips: {playerNew.allBetChips}, Effective Bet: {effectiveBet}");
 
                 // Set the effective bet in the player's details
-                saveResultData.playerDetails[int.Parse(player.playerId)].playerValidBetAmount = effectiveBet;
+                //saveResultData.playerDetails[int.Parse(player.playerId)].playerValidBetAmount = effectiveBet;
             }
             else
             {
@@ -2574,7 +2574,7 @@ public class GameView : MonoBehaviour
                                                                       .FirstOrDefault()
                                                                       .Value;
 
-            List<PlayerDetails> playerDetails = saveResultData.playerDetails;
+            //List<PlayerDetails> playerDetails = saveResultData.playerDetails;
             GamePlayerInfo player = GetPlayer(potWinnerId);
             player.IsOpenInfoMask = false;
 
@@ -2602,21 +2602,6 @@ public class GameView : MonoBehaviour
                 player.PlayerRoomChips = playerData.carryChips;
                 Destroy(rt.gameObject);
             });
-
-            yield return new WaitForSeconds(2f);
-            Debug.Log("Room Fee ::" + playerDetails[int.Parse(potWinnerId)].playerRoomFee);
-            if (potWinnerId == DataManager.UserId)
-            {
-                if (playerDetails[int.Parse(potWinnerId)].playerRoomFee > 0 && playerDetails[int.Parse(potWinnerId)].playerRoomFee != 0)
-                {
-                    Debug.Log("Room Fee > 0 ::" + playerDetails[int.Parse(potWinnerId)].playerRoomFee);
-                    player.SetRoomFee($"Room Fee + ${playerDetails[int.Parse(potWinnerId)].playerRoomFee:f2}");
-                }
-                else
-                {
-                    Debug.Log("Room Fee Vaue is Null");
-                }
-            }
         }
 
         int winIndex = 0;
@@ -2717,25 +2702,49 @@ public class GameView : MonoBehaviour
             // Debug.Log("Saved Result Player Details ::" + JsonUtility.ToJson(saveResultData.playerDetails, true));
             Debug.Log("Player Details ::" + JsonUtility.ToJson(playerData, true));
         }
-        //主池紀錄存檔
-        if (thisData.LocalGamePlayerInfo.IsPlaying)
+
+        yield return new WaitForSeconds(2f);
+        foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
         {
-            ProcessStepHistoryData processStepHistoryData = AddNewStepHistory();
-            processStepHistoryData.ActionPlayerIndex = -1;
-            processStepHistoryData.ActionIndex = -1;
 
-            processStepHistoryData.PotWinnerSeatList = new List<int>();
-            foreach (var id in gameRoomData.potWinData.potWinnersId)
+            var testPlayer = saveResultData.playerDetails.FirstOrDefault(x => x.playerId == potWinnerId);
+            GamePlayerInfo player = GetPlayer(potWinnerId);
+            Debug.Log("Room Fee ::" + testPlayer);
+            if (testPlayer != null)
             {
-                int potWinSeat = GetPlayer(id).SeatIndex;
-                processStepHistoryData.PotWinnerSeatList.Add(potWinSeat);
+                if (testPlayer.playerId == DataManager.UserId)
+                {
+                    if (saveResultData.playerDetails.FirstOrDefault(x => x.playerId == potWinnerId).playerRoomFee > 0 && saveResultData.playerDetails.FirstOrDefault(x => x.playerId == potWinnerId).playerRoomFee != 0)
+                    {
+                        Debug.Log("Room Fee > 0 ::" + testPlayer.playerRoomFee);
+                        player.SetRoomFee($"Room Fee + ${testPlayer.playerRoomFee:f2}");
+                    }
+                    else
+                    {
+                        Debug.Log("Room Fee Vaue is 0");
+                    }
+                }
             }
-            processStepHistoryData.PotWinChips = thisData.PowWinChips;
+            //主池紀錄存檔
+            if (thisData.LocalGamePlayerInfo.IsPlaying)
+            {
+                ProcessStepHistoryData processStepHistoryData = AddNewStepHistory();
+                processStepHistoryData.ActionPlayerIndex = -1;
+                processStepHistoryData.ActionIndex = -1;
 
-            processHistoryData.processStepHistoryDataList.Add(processStepHistoryData);
+                processStepHistoryData.PotWinnerSeatList = new List<int>();
+                foreach (var id in gameRoomData.potWinData.potWinnersId)
+                {
+                    int potWinSeat = GetPlayer(id).SeatIndex;
+                    processStepHistoryData.PotWinnerSeatList.Add(potWinSeat);
+                }
+                processStepHistoryData.PotWinChips = thisData.PowWinChips;
+
+                processHistoryData.processStepHistoryDataList.Add(processStepHistoryData);
+            }
+            yield return new WaitForSeconds(4f);
+            SetWinnerStringTxt = "";
         }
-        yield return new WaitForSeconds(4f);
-        SetWinnerStringTxt = "";
     }
 
     /// <summary>
