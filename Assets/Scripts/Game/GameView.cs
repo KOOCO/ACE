@@ -2616,6 +2616,9 @@ public class GameView : MonoBehaviour
                 saveResultData.roomId = DataManager.RoomId;
                 saveResultData.tableId = DataManager.TableId;
                 saveResultData.roundId = roundId;
+                saveResultData.roundInsurancePayAmount = 0;
+                saveResultData.roundInsurancePayRate = 0;
+                saveResultData.roundInsuranceResult = "";
             }
         }
 
@@ -2638,6 +2641,8 @@ public class GameView : MonoBehaviour
                 {
                     playerId = playerNew.userId,
                     playerName = playerNew.nickname,
+                    playerHandId = "",
+                    playerValidBetAmount = 0,
                     playerRoomFee = gameControl.mainPotWinnersRoomFee.GetValueOrDefault(playerNew.userId,
                                      gameControl.sidePotWinnersRoomFee.GetValueOrDefault(playerNew.userId, 0)),
                     isBot = DataManager.UserId.StartsWith(FirebaseManager.ROBOT_ID),
