@@ -2689,9 +2689,9 @@ public class GameView : MonoBehaviour
                 : gameControl.sidePotWinnersRoomFee.ContainsKey(playerNew.userId)
                     ? gameControl.sidePotWinnersRoomFee[playerNew.userId]
                     : 0,
-                // roundInsuranceResult = "",
-                // roundInsurancePayAmount = 0,
-                // roundInsurancePayRate = 0,
+                roundInsuranceResult = "",
+                roundInsurancePayAmount = 0,
+                roundInsurancePayRate = 0,
                 isBot = DataManager.UserId.StartsWith(FirebaseManager.ROBOT_ID),
                 playerHandData = new PlayerHand
                 {
