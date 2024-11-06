@@ -46,7 +46,7 @@
         function handleSwipeGesture() {
             console.log('handleSwipeGesture')
             const swipeDistance = touchEndX - touchStartX;
-            console.log("touchEndX:" + touchEndX + ",touchStartX:" + touchStartX);
+
             // Check if the swipe is long enough
             if (Math.abs(swipeDistance) > threshold) {
                 // Swipe from the left side (right swipe)
