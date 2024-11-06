@@ -523,7 +523,7 @@ public class GamePlayerInfo : MonoBehaviour
     private IEnumerator ICountDown(int cdTime, int cd)
     {
         #region 舊的不是答辯
-        float target = ((float)cdTime - (cd - 1)) / (float)cdTime;
+        /*float target = ((float)cdTime - (cd - 1)) / (float)cdTime;
         float curr = ((float)cdTime - cd) / (float)cdTime;
         print($"{cdTime}, {cd}, {target}");
 
@@ -539,11 +539,11 @@ public class GamePlayerInfo : MonoBehaviour
             countDown_Txt.gameObject.SetActive(true);
             countDown_Txt.text = ((int)value).ToString();
             yield return null;
-        }
+        }*/
         #endregion
 
         #region 新的答辯
-        /*while (cd > 0)  // 當cd大於0時持續倒數
+        while (cd > 0)  // 當cd大於0時持續倒數
         {
             Debug.Log($"{Nickname}倒數剩餘時間：{cd}秒");
 
@@ -556,7 +556,10 @@ public class GamePlayerInfo : MonoBehaviour
         }
 
         // 當倒數結束時，執行完成的操作
-        Debug.Log("倒數結束");*/
+        Debug.Log("倒數結束");
+
+        CDMask_Img.fillAmount = cdTime;
+        yield break;
         #endregion
     }
 
