@@ -40,7 +40,7 @@ public class NoodleApi
         else
             amount = -amount;
 
-        TableChipsTransaction tableChipsTransaction = new TableChipsTransaction(DataManager.AccessCode, System.Guid.NewGuid().ToString(), DataManager.NoodleMemberId, memberId, long.Parse(DataManager.RoomId), DataManager.TableId, roundId, amount, chipTransactionType);
+        TableChipsTransaction tableChipsTransaction = new TableChipsTransaction(DataManager.AccessCode, System.Guid.NewGuid().ToString(), DataManager.NoodleMemberId, memberId, long.Parse(DataManager.RoomId), DataManager.TableId, roundId.ToString(), amount, chipTransactionType);
         //SwaggerAPIManager.Instance.(, tableChipsTransaction, _success, _error);
         SwaggerAPIManager.Instance.SendPostEncryptAPI(tableChipsTransaction, _success , _error);
     }
