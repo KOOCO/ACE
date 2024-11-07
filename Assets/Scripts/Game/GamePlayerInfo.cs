@@ -6,9 +6,6 @@ using System;
 using System.Linq;
 using TMPro;
 
-using RequestBuf;
-using UnityEngine.VspAttribution.MetaMask;
-
 public class GamePlayerInfo : MonoBehaviour
 {
     [Header("用戶訊息")]
