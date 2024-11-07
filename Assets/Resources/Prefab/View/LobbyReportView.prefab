@@ -4690,8 +4690,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 160, y: 0}
-  m_SizeDelta: {x: 320, y: 42}
+  m_AnchoredPosition: {x: 169, y: 0}
+  m_SizeDelta: {x: 338, y: 42}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &6480039158461950048
 MonoBehaviour:
@@ -13517,7 +13517,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7301498747254406892}
   - component: {fileID: 8142527048855863103}
-  - component: {fileID: 365673597259961827}
+  - component: {fileID: 1830472378183253722}
   - component: {fileID: 8436198551380972984}
   m_Layer: 5
   m_Name: Template
@@ -13555,7 +13555,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8128708019449086010}
   m_CullTransparentMesh: 1
---- !u!114 &365673597259961827
+--- !u!114 &1830472378183253722
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -13568,14 +13568,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19312921, g: 0.20530437, b: 0.26415092, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: 7b96261c062bfba468dc09b4835e7b35, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -14227,7 +14227,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2537044896544728784
 RectTransform:
   m_ObjectHideFlags: 0
