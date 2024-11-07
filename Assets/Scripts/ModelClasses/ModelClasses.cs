@@ -338,11 +338,11 @@ public class TableChipsTransaction
     public string memberId;
     public long roomId;
     public string tableId;
-    public int roundId;
+    public string roundId;
     public double amount;
     public int chipTransactionType;
 
-    public TableChipsTransaction(string accessCode, string uniqueSerial, string noodleMemberId, string memberId, long roomId, string tableId, int roundId, double amount, int chipTransactionType)
+    public TableChipsTransaction(string accessCode, string uniqueSerial, string noodleMemberId, string memberId, long roomId, string tableId, string roundId, double amount, int chipTransactionType)
     {
         this.accessCode = accessCode;
         this.uniqueSerial = uniqueSerial;

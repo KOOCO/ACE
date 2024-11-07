@@ -32,7 +32,7 @@ public class NoodleApi
         SwaggerAPIManager.Instance.SendPostAPI($"/api/app/games/ace/table-cash-out", tableCashout, _success, _error);
     }
 
-    public static void PostTableChipsTransaction(string memberId, int roundId, double amount, int chipTransactionType, ChipTransactionType transacType, UnityAction<string> _success = null, UnityAction<string> _error = null)
+    public static void PostTableChipsTransaction(string memberId, string roundId, double amount, int chipTransactionType, ChipTransactionType transacType, UnityAction<string> _success = null, UnityAction<string> _error = null)
     {
         //Debug.Log(DataManager.RoomId);
         if (transacType == ChipTransactionType.Win)
