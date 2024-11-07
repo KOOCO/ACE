@@ -267,16 +267,16 @@ public class JoinRoomView : MonoBehaviour
         }
         Title_Txt.text = LanguageManager.Instance.GetText(titleStr);
 
-        Blind_Txt.text = $"{StringUtils.SetChipsUnit(smallBlind)} / " +
-                         $"{StringUtils.SetChipsUnit(smallBlind * 2)}";
+        Blind_Txt.text = $"${StringUtils.SetChipsUnit(smallBlind)} / " +
+                         $"${StringUtils.SetChipsUnit(smallBlind * 2)}";
 
         if (isClassic)
             TexasHoldemUtil.SetBuySlider(this.smallBlind * 2, DataManager.UserAChips < ((this.smallBlind * 2) * DataManager.MaxMagnification) ? DataManager.UserAChips : (this.smallBlind * 2) * DataManager.MaxMagnification, BuyChips_Sli, tableType);
         else
             TexasHoldemUtil.SetBuySlider(this.smallBlind * 2, DataManager.UserChips < ((this.smallBlind * 2) * DataManager.MaxMagnification) ? DataManager.UserChips : (this.smallBlind * 2) * DataManager.MaxMagnification, BuyChips_Sli, tableType);
 
-        MinBuyChips_Txt.text = $"{StringUtils.SetChipsUnit((this.smallBlind * 2) * DataManager.MinMagnification)}";
-        MaxBuyChips_Txt.text = $"{StringUtils.SetChipsUnit((this.smallBlind * 2) * DataManager.MaxMagnification)}"; ;
+        MinBuyChips_Txt.text = $"${StringUtils.SetChipsUnit((this.smallBlind * 2) * DataManager.MinMagnification)}";
+        MaxBuyChips_Txt.text = $"${StringUtils.SetChipsUnit((this.smallBlind * 2) * DataManager.MaxMagnification)}"; ;
     }
 
     /// <summary>
