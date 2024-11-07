@@ -268,6 +268,10 @@ public class GamePlayerInfo : MonoBehaviour
         roomFee_Obj.gameObject.SetActive(true);
         roomFee_Obj.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = Result;
     }
+    public void HideRoomFee()
+    {
+        roomFee_Obj.gameObject.SetActive(false);
+    }
 
     /// <summary>
     /// 設定本地玩家手牌位置

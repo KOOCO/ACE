@@ -2712,6 +2712,8 @@ public class GameView : MonoBehaviour
                     Debug.Log("Show Game UI :: " + testPlayer.playerId);
                     GamePlayerInfo player = GetPlayer(potWinnerId);
                     player.SetRoomFee($"Room Fee + ${testPlayer.playerRoomFee:f2}");
+                    yield return new WaitForSeconds(0.5f);
+                    player.HideRoomFee();
                 }
             }
         }
@@ -2869,24 +2871,20 @@ public class GameView : MonoBehaviour
 
             processHistoryData.processStepHistoryDataList.Add(processStepHistoryData);
         }
-        foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
+
+        IEnumerable<string> allWinners = gameRoomData.potWinData.potWinnersId
+                                          .Concat(gameRoomData.sideWinData.sideWinnersId);
+
+        foreach (var winnerId in allWinners)
         {
-            var testPlayer = saveResultData.playerDetails.FirstOrDefault(x => x.playerId == potWinnerId);
+            var testPlayer = saveResultData.playerDetails.FirstOrDefault(x => x.playerId == winnerId);
             if (testPlayer != null && testPlayer.playerId == DataManager.UserId && testPlayer.playerRoomFee > 0)
             {
                 Debug.Log("Show Game UI :: " + testPlayer.playerId);
-                GamePlayerInfo player = GetPlayer(potWinnerId);
+                GamePlayerInfo player = GetPlayer(winnerId);
                 player.SetRoomFee($"Room Fee + ${testPlayer.playerRoomFee:f2}");
-            }
-        }
-        foreach (var potWinnerId in gameRoomData.sideWinData.sideWinnersId)
-        {
-            var testPlayer = saveResultData.playerDetails.FirstOrDefault(x => x.playerId == potWinnerId);
-            if (testPlayer != null && testPlayer.playerId == DataManager.UserId && testPlayer.playerRoomFee > 0)
-            {
-                Debug.Log("Show Game UI :: " + testPlayer.playerId);
-                GamePlayerInfo player = GetPlayer(potWinnerId);
-                player.SetRoomFee($"Room Fee + ${testPlayer.playerRoomFee:f2}");
+                yield return new WaitForSeconds(0.5f);
+                player.HideRoomFee();
             }
         }
     }
