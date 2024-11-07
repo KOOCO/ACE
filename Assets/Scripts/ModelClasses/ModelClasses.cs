@@ -513,3 +513,12 @@ public class PlayerStatistics
 }
 
 #endregion
+
+#region Hand History
+public class HandHistory
+{
+    public List<GameInitHistoryData> gameInitHistoryDataList;      //遊戲初始資料紀錄
+    public List<ProcessHistoryData> processHistoryDataList;        //遊戲過程資料
+    public List<ResultHistoryData> resultDataList;                 //遊戲結果紀錄
+}
+#endregion

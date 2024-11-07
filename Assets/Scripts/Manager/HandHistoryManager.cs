@@ -1,9 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
 using Newtonsoft.Json;
-using System;
 
 /// <summary>
 /// 紀錄結果資料
@@ -102,13 +99,32 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
     /// </summary>
     public void LoadHandHistoryData()
     {
-        ResultHistoryPlayerPrefsKey = $"AsiaPoker_ResultHistoryDataList_{DataManager.UserId}";
-        GameInitHistoryPlayerPrefsKey = $"AsiaPoker_GameInifHistoryDataList_{DataManager.UserId}";
-        ProcessHistoryPlayerPrefsKey = $"AsiaPoker_ProcessHistoryDataList_{DataManager.UserId}";
+        // ResultHistoryPlayerPrefsKey = $"AsiaPoker_ResultHistoryDataList_{DataManager.UserId}";
+        // GameInitHistoryPlayerPrefsKey = $"AsiaPoker_GameInifHistoryDataList_{DataManager.UserId}";
+        // ProcessHistoryPlayerPrefsKey = $"AsiaPoker_ProcessHistoryDataList_{DataManager.UserId}";
 
-        LoadResultData();
-        LoadGameInitData();
-        LoadProcessData();
+        JSBridgeManager.Instance.ReadDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}/HandHistory",
+                                               gameObject.name,
+                                               nameof(LoadHandHistory));
+
+        // LoadResultData();
+        // LoadGameInitData();
+        // LoadProcessData();
+    }
+
+    void LoadHandHistory(string data)
+    {
+        HandHistory handHistory = new HandHistory()
+        {
+            gameInitHistoryDataList = new(),
+            resultDataList = new(),
+            processHistoryDataList = new(),
+        };
+        handHistory = JsonConvert.DeserializeObject<HandHistory>(data);
+        resultDataList = handHistory.resultDataList;
+        gameInitHistoryDataList = handHistory.gameInitHistoryDataList;
+        processHistoryDataList = handHistory.processHistoryDataList;
+
     }
 
     /// <summary>
@@ -150,6 +166,7 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
     /// </summary>
     private void LoadResultData()
     {
+
         string json = PlayerPrefs.GetString(ResultHistoryPlayerPrefsKey, "[]");
         resultDataList = JsonConvert.DeserializeObject<List<ResultHistoryData>>(json) ?? new List<ResultHistoryData>();
     }
