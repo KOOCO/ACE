@@ -2644,7 +2644,9 @@ public class GameView : MonoBehaviour
                     playerHandId = "",
                     playerValidBetAmount = 0,
                     playerRoomFee = gameControl.mainPotWinnersRoomFee.GetValueOrDefault(playerNew.userId,
-                                     gameControl.sidePotWinnersRoomFee.GetValueOrDefault(playerNew.userId, 0)),
+                    gameControl.sidePotWinnersRoomFee.GetValueOrDefault(playerNew.userId,
+                    gameControl.playersWithTheirRoomFee.GetValueOrDefault(playerNew.userId, 0))),
+
                     isBot = DataManager.UserId.StartsWith(FirebaseManager.ROBOT_ID),
                     playerHandData = new PlayerHand
                     {

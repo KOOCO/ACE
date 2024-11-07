@@ -5,6 +5,13 @@ using System.Linq;
 using System;
 using UnityEngine.Events;
 
+public enum WinnerEnum
+{
+    MAIN,
+    SIDE,
+    BOTH
+}
+
 public class GameControl : MonoBehaviour
 {
     [SerializeField]
@@ -1002,12 +1009,13 @@ public class GameControl : MonoBehaviour
                     var data = new Dictionary<string, object>()
                     {
                         { FirebaseManager.CARRY_CHIPS, Math.Floor(playerWithBoth.carryChips+finalWinnings) },  // Update carry chips
-                        {FirebaseManager.SIDE_PROFIT,Math.Floor(totalProfit)},  // Update carry chips
+                        {FirebaseManager.MAIN_PROFIT,Math.Floor(totalProfit)},  // Update carry chips
                     };
-                    _mainPotWinnersRoomFee[player] = roomFee;
-
+                    //_mainPotWinnersRoomFee[player] = roomFee;
+                    playersWithTheirRoomFee.Add(player, roomFee);
+                    _sidePotWinnersRoomFee?.Remove(player);
+                    _mainPotWinnersRoomFee?.Remove(player);
                     // Optionally, you can also remove the player from the sidePotWinnersRoomFee if no longer needed
-                    //_sidePotWinnersRoomFee.Remove(player);
                 }
             }
         }
