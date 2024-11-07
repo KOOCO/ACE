@@ -2581,6 +2581,7 @@ public class GameView : MonoBehaviour
                 PlaySound("SoundWinPot");
                 player.PlayerRoomChips = playerData.carryChips;
                 Destroy(rt.gameObject);
+                player.IsWinnerActive = false;
             });
         }
 
@@ -2702,14 +2703,17 @@ public class GameView : MonoBehaviour
 
         yield return new WaitForSeconds(4f);
         SetWinnerStringTxt = "";
-        foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
+        if (gameRoomData.sideWinData.sideWinnersId.Count == 0)
         {
-            var testPlayer = saveResultData.playerDetails.FirstOrDefault(x => x.playerId == potWinnerId);
-            if (testPlayer != null && testPlayer.playerId == DataManager.UserId && testPlayer.playerRoomFee > 0)
+            foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
             {
-                Debug.Log("Show Game UI :: " + testPlayer.playerId);
-                GamePlayerInfo player = GetPlayer(potWinnerId);
-                player.SetRoomFee($"Room Fee + ${testPlayer.playerRoomFee:f2}");
+                var testPlayer = saveResultData.playerDetails.FirstOrDefault(x => x.playerId == potWinnerId);
+                if (testPlayer != null && testPlayer.playerId == DataManager.UserId && testPlayer.playerRoomFee > 0)
+                {
+                    Debug.Log("Show Game UI :: " + testPlayer.playerId);
+                    GamePlayerInfo player = GetPlayer(potWinnerId);
+                    player.SetRoomFee($"Room Fee + ${testPlayer.playerRoomFee:f2}");
+                }
             }
         }
     }
@@ -2786,6 +2790,7 @@ public class GameView : MonoBehaviour
                         PlaySound("SoundWinPot");
                         player.PlayerRoomChips = playerData.carryChips; // Correctly update chips
                         Destroy(rt.gameObject);
+                        player.IsWinnerActive = false;
                     });
                 }
 
@@ -2864,6 +2869,26 @@ public class GameView : MonoBehaviour
             processStepHistoryData.BackChipsDic = thisData.BackChipsDic;
 
             processHistoryData.processStepHistoryDataList.Add(processStepHistoryData);
+        }
+        foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
+        {
+            var testPlayer = saveResultData.playerDetails.FirstOrDefault(x => x.playerId == potWinnerId);
+            if (testPlayer != null && testPlayer.playerId == DataManager.UserId && testPlayer.playerRoomFee > 0)
+            {
+                Debug.Log("Show Game UI :: " + testPlayer.playerId);
+                GamePlayerInfo player = GetPlayer(potWinnerId);
+                player.SetRoomFee($"Room Fee + ${testPlayer.playerRoomFee:f2}");
+            }
+        }
+        foreach (var potWinnerId in gameRoomData.sideWinData.sideWinnersId)
+        {
+            var testPlayer = saveResultData.playerDetails.FirstOrDefault(x => x.playerId == potWinnerId);
+            if (testPlayer != null && testPlayer.playerId == DataManager.UserId && testPlayer.playerRoomFee > 0)
+            {
+                Debug.Log("Show Game UI :: " + testPlayer.playerId);
+                GamePlayerInfo player = GetPlayer(potWinnerId);
+                player.SetRoomFee($"Room Fee + ${testPlayer.playerRoomFee:f2}");
+            }
         }
     }
 
