@@ -2467,6 +2467,7 @@ public class GameView : MonoBehaviour
                 {
                     Debug.Log("Result Index :: " + resultIndex);
                     player.SetPokerShapeStr(resultIndex);
+                    player.PokerShapeIndex = resultIndex;
 
                     if (isOpenMatchPokerFrame && resultIndex < 10) // Only show for valid hands
                     {
@@ -2527,8 +2528,6 @@ public class GameView : MonoBehaviour
                 {
                     GamePlayerInfo player = GetPlayer(playerId);
                     player.SetHandPoker(playerData.handPoker[0], playerData.handPoker[1]);
-
-                    playerData.playerHandShape = player.GetPokerShapeIndex();
                     JudgePokerShape(player, false);
                 }
             }

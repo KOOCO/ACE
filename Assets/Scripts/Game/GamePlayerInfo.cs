@@ -7,6 +7,7 @@ using System.Linq;
 using TMPro;
 
 using RequestBuf;
+using UnityEngine.VspAttribution.MetaMask;
 
 public class GamePlayerInfo : MonoBehaviour
 {
@@ -179,9 +180,16 @@ public class GamePlayerInfo : MonoBehaviour
     /// <summary>
     /// 設置牌型文字元件文字
     /// </summary>
-    public int GetPokerShapeIndex()
+    public int PokerShapeIndex
     {
-        return pokerShapeIndex;
+        set
+        {
+            pokerShapeIndex = value;
+        }
+        get
+        {
+            return pokerShapeIndex;
+        }
     }
     public Sprite SetPokerShapeImage
     {
