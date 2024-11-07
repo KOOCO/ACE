@@ -104,6 +104,7 @@ public class LeaveRoom
 public class GameRoom
 {
     public string id;
+    public string actionType;
     public string roomId;
     public string tableId;
     public string tableType;
@@ -112,7 +113,7 @@ public class GameRoom
     public double tableCommission;
     public string name;
     public string tenantId;
-    public string roundId;
+    public int roundId;
     //public DateTime creationTime;
     public Table table;
     public List<RoundMember> roundMembers;
@@ -337,11 +338,11 @@ public class TableChipsTransaction
     public string memberId;
     public long roomId;
     public string tableId;
-    public string roundId;
+    public int roundId;
     public double amount;
     public int chipTransactionType;
 
-    public TableChipsTransaction(string accessCode, string uniqueSerial, string noodleMemberId, string memberId, long roomId, string tableId, string roundId, double amount, int chipTransactionType)
+    public TableChipsTransaction(string accessCode, string uniqueSerial, string noodleMemberId, string memberId, long roomId, string tableId, int roundId, double amount, int chipTransactionType)
     {
         this.accessCode = accessCode;
         this.uniqueSerial = uniqueSerial;
