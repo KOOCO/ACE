@@ -2677,13 +2677,13 @@ public class GameView : MonoBehaviour
         // Display room fee for local player winners
         foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
         {
-            var testPlayer = saveResultData.playerDetails.FirstOrDefault(x => x.playerId == potWinnerId);
-            if (testPlayer != null && testPlayer.playerId == DataManager.UserId && testPlayer.playerRoomFee > 0)
-            {
-                GamePlayerInfo player = GetPlayer(potWinnerId);
-                player.SetRoomFee($"Room Fee + ${testPlayer.playerRoomFee:f2}");
-            }
-
+            // var testPlayer = saveResultData.playerDetails.FirstOrDefault(x => x.playerId == potWinnerId);
+            // if (testPlayer != null && testPlayer.playerId == DataManager.UserId && testPlayer.playerRoomFee > 0)
+            // {
+            //     Debug.Log("Show Game UI :: " + testPlayer.playerId);
+            //     GamePlayerInfo player = GetPlayer(potWinnerId);
+            //     player.SetRoomFee($"Room Fee + ${testPlayer.playerRoomFee:f2}");
+            // }
             if (thisData.LocalGamePlayerInfo.IsPlaying)
             {
                 ProcessStepHistoryData processStepHistoryData = AddNewStepHistory();
@@ -2700,6 +2700,16 @@ public class GameView : MonoBehaviour
 
         yield return new WaitForSeconds(4f);
         SetWinnerStringTxt = "";
+        foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
+        {
+            var testPlayer = saveResultData.playerDetails.FirstOrDefault(x => x.playerId == potWinnerId);
+            if (testPlayer != null && testPlayer.playerId == DataManager.UserId && testPlayer.playerRoomFee > 0)
+            {
+                Debug.Log("Show Game UI :: " + testPlayer.playerId);
+                GamePlayerInfo player = GetPlayer(potWinnerId);
+                player.SetRoomFee($"Room Fee + ${testPlayer.playerRoomFee:f2}");
+            }
+        }
     }
 
     /// <summary>

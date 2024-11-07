@@ -927,7 +927,7 @@ public class GameControl : MonoBehaviour
                                                                 gameObject.name,
                                                                 nameof(SideWinDataCallback));
 
-                //ReCalculateProfitForPlayersWhoHaveBothSideAndMainPot(mainPotWinnersRoomFee, sidePotWinnersRoomFee);
+                ReCalculateProfitForPlayersWhoHaveBothSideAndMainPot(mainPotWinnersRoomFee, sidePotWinnersRoomFee);
                 //CalCulateRoomFeeWithSidePot(potWinners, sideWinners, mainPotWinChips, sidePotWinChips);
 
 
@@ -980,14 +980,40 @@ public class GameControl : MonoBehaviour
 
     public void ReCalculateProfitForPlayersWhoHaveBothSideAndMainPot(Dictionary<string, double> _mainPotWinnersRoomFee, Dictionary<string, double> _sidePotWinnersRoomFee)
     {
-        // if (mainPotWinnersRoomFee != null && sidePotWinnersRoomFee != null)
-        // {
-        //     foreach (var withBothMainAndSide in _mainPotWinnersRoomFee)
-        //     {
-        //         withBothMainAndSide.
-        //     }
-        // }
+        if (_mainPotWinnersRoomFee != null && _sidePotWinnersRoomFee != null)
+        {
+            foreach (var mainPotEntry in _mainPotWinnersRoomFee)
+            {
+                string player = mainPotEntry.Key;
+
+                // Check if the player also exists in the side pot winners dictionary
+                if (_sidePotWinnersRoomFee.ContainsKey(player))
+                {
+                    // If the player exists in both, add their side pot fee to their main pot fee
+                    double totalProfit = mainPotEntry.Value + _sidePotWinnersRoomFee[player];
+                    var playerWithBoth = GetPlayerData(player);
+
+                    roomFee = totalProfit * (DataManager.Rebate / 100);
+
+                    double finalWinnings = totalProfit - roomFee;
+
+                    // You can update the main pot fee or store this in another dictionary
+                    // For example, if you want to update the mainPotWinnersRoomFee:
+                    var data = new Dictionary<string, object>()
+                    {
+                        { FirebaseManager.CARRY_CHIPS, Math.Floor(playerWithBoth.carryChips+finalWinnings) },  // Update carry chips
+                        {FirebaseManager.SIDE_PROFIT,Math.Floor(totalProfit)},  // Update carry chips
+                    };
+                    _mainPotWinnersRoomFee[player] = roomFee;
+
+                    // Optionally, you can also remove the player from the sidePotWinnersRoomFee if no longer needed
+                    //_sidePotWinnersRoomFee.Remove(player);
+                }
+            }
+        }
     }
+
+
 
 
     /// <summary>
@@ -1531,13 +1557,13 @@ public class GameControl : MonoBehaviour
 
         player.ActionFrame = true;
         //gameRoomData.actionCD = 1;
-        if(player.UserId == DataManager.UserId)
+        if (player.UserId == DataManager.UserId)
         {
             print("GameCtrl 執行倒數");
             player.CountDown(DataManager.StartCountDownTime,
                              gameRoomData.actionCD);
         }
-        
+
         if (player.UserId == DataManager.UserId)
         {
             gameView.CheckActionArea(gameRoomData);
