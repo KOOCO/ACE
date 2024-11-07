@@ -2703,7 +2703,7 @@ public class GameView : MonoBehaviour
 
         yield return new WaitForSeconds(4f);
         SetWinnerStringTxt = "";
-        if (gameRoomData.sideWinData.sideWinnersId.Count == 0)
+        if (gameControl.sidePotWinnersRoomFee.Count == 0 || gameControl.sidePotWinnersRoomFee == null)
         {
             foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
             {

@@ -726,6 +726,7 @@ public class GameControl : MonoBehaviour
             //遊戲結果_底池
             case GameFlowEnum.PotResult:
                 potWinners.Clear();
+                mainPotWinnersRoomFee.Clear();
                 Debug.Log(nameof(IStartGameFlow) + " Before getting playing Players");
                 // Get the players still in the game and order by their total bet chips
                 playingPlayers = GetPlayingPlayer().OrderBy(x => x.allBetChips).ToList();
@@ -804,7 +805,7 @@ public class GameControl : MonoBehaviour
 
             //邊池結果
             case GameFlowEnum.SideResult:
-
+                sidePotWinnersRoomFee.Clear();
                 // Update game flow
                 data = new Dictionary<string, object>()
                 {
@@ -987,6 +988,7 @@ public class GameControl : MonoBehaviour
 
     public void ReCalculateProfitForPlayersWhoHaveBothSideAndMainPot(Dictionary<string, double> _mainPotWinnersRoomFee, Dictionary<string, double> _sidePotWinnersRoomFee)
     {
+        playersWithTheirRoomFee.Clear();
         if (_mainPotWinnersRoomFee != null && _sidePotWinnersRoomFee != null)
         {
             foreach (var mainPotEntry in _mainPotWinnersRoomFee)
