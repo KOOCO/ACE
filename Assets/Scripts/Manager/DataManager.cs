@@ -119,7 +119,7 @@ public static class DataManager
     public static string TableType { get; set; }
     public static string AccessCode { get; set; }
     public static string NoodleMemberId { get; set; }
-    public static string RoundId { get; set; }
+    public static int RoundId { get; set; }
     public static double RoomFee { get; set; }
     #endregion
 

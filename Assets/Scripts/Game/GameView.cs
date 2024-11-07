@@ -557,7 +557,7 @@ public class GameView : MonoBehaviour
         AllIn_Btn.onClick.AddListener(() =>
         {
             Raise_Sli.value = (float)thisData.LocalPlayerChips;
-            NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.CurrCallValue, 6, (x) =>
+            NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.CurrCallValue, 6, ChipTransactionType.AllIn, (x) =>
               {
                   Debug.Log("AllIn Table ChipsTransaction Success");
               },
@@ -610,7 +610,7 @@ public class GameView : MonoBehaviour
 
             if (CallBtn_Txt.text != LanguageManager.Instance.GetText("Check"))
             {
-                NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.CurrCallValue, 4, (x) =>
+                NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.CurrCallValue, 4, ChipTransactionType.Call, (x) =>
                 {
                     Debug.Log("Call Table ChipsTransaction Success");
                 },
@@ -652,7 +652,7 @@ public class GameView : MonoBehaviour
                                                 acting,
                                                 betValue);
 
-                    NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.CurrRaiseValue, 9, (x) =>
+                    NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.CurrRaiseValue, 9, ChipTransactionType.Raise, (x) =>
                     {
                         Debug.Log("Raise Table ChipsTransaction Success");
                     },
@@ -2665,7 +2665,7 @@ public class GameView : MonoBehaviour
         }
 
         NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId,
-            gameRoomData.potWinData.potWinChips, 12, (x) =>
+            gameRoomData.potWinData.potWinChips, 12, ChipTransactionType.Win, (x) =>
         {
             Debug.Log("Player Win ChipsTransaction Success");
         },
@@ -2909,21 +2909,6 @@ public class GameView : MonoBehaviour
         {
             poker.PokerEffectEnable = false;
         }
-    }
-
-    /// <summary>
-    /// 判斷勝率
-    /// </summary>
-    private void JudgeWinRate()
-    {
-        DateTime startTime = DateTime.Now;
-        List<int> judgeHand = thisData.LocalGamePlayerInfo.GetHandPoker.Select(x => x.PokerNum).ToList();
-        PokerWinRateCalculator pokerWinRateCalculator = new PokerWinRateCalculator(judgeHand, thisData.CurrCommunityPoker);
-        pokerWinRateCalculator.CalculateWinRate((winRate) =>
-        {
-            //Debug.Log($"Judge Win Rate Time : {(DateTime.Now - startTime).TotalSeconds}");
-            //Debug.Log($"Win Rate : {winRate}");
-        });
     }
 
     /// <summary>
@@ -3721,7 +3706,7 @@ public class GameView : MonoBehaviour
                                sbPlayerData.carryChips - gameRoomData.smallBlind);
         if (sbPlayer.UserId == DataManager.UserId)
         {
-            NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.SmallBlindValue, 3, (x) =>
+            NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.SmallBlindValue, 3, ChipTransactionType.SmallBlind, (x) =>
             {
                 Debug.Log("SB Table ChipsTransaction Success");
             },
@@ -3751,7 +3736,7 @@ public class GameView : MonoBehaviour
                               bbPlayerData.carryChips - (gameRoomData.smallBlind * 2));
         if (bbPlayer.UserId == DataManager.UserId)
         {
-            NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.SmallBlindValue * 2, 2, (x) =>
+            NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId, thisData.SmallBlindValue * 2, 2, ChipTransactionType.BigBlind, (x) =>
             {
                 Debug.Log("BB Table ChipsTransaction Success");
             },

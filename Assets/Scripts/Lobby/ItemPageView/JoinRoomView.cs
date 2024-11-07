@@ -36,6 +36,8 @@ public class JoinRoomView : MonoBehaviour
     double newCarryChipsValue;           //更新後的購買籌碼
 
     bool isClassic;
+
+    string actionType;
     GameRoom previousRoom;
 
     /// <summary>
@@ -116,17 +118,17 @@ public class JoinRoomView : MonoBehaviour
             {
                 GameRoom gameRound = JsonConvert.DeserializeObject<GameRoom>(data);
                 Debug.Log("Join Round Response :: " + data);
-                if (previousRoom == null || previousRoom.id == gameRound.id)
-                {
-                    previousRoom = gameRound;
-                    Debug.Log("same Room id ");
-                }
-                else
-                {
-                    CreateNewRoom();
-                    Debug.Log("Room id different");
-                    return;
-                }
+                //if (previousRoom == null || previousRoom.id == gameRound.id)
+                //{
+                //    previousRoom = gameRound;
+                //    Debug.Log("same Room id ");
+                //}
+                //else
+                //{
+                //    CreateNewRoom();
+                //    Debug.Log("Room id different");
+                //    return;
+                //}
 
 
                 var _currencyType = DataManager.CurrencyType;
@@ -135,6 +137,7 @@ public class JoinRoomView : MonoBehaviour
                 DataManager.Rebate = gameRound.table.rebateSetting;
                 DataManager.RoundId = gameRound.roundId;
                 DataManager.RoomId = gameRound.roomId;
+                actionType = gameRound.actionType;
 
 
                 NoodleApi.PostTableBuyIn(newCarryChipsValue, (data) =>
@@ -161,11 +164,12 @@ public class JoinRoomView : MonoBehaviour
                         break;
                 }
                 DataManager.DataUpdated = true;
-            }, null);
+            }, 
+            null);
 
 #if UNITY_EDITOR
 
-            dataRoomName = "EditorRoom";
+            /*dataRoomName = "EditorRoom";
             //創新房間資料
             var dataDic = new Dictionary<string, object>()
             {
@@ -179,7 +183,8 @@ public class JoinRoomView : MonoBehaviour
                 $"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}/{dataRoomName}",
                 dataDic,
                 gameObject.name,
-                nameof(CreateNewRoomCallback));
+                nameof(CreateNewRoomCallback));*/
+            print("Cause Editor can't play game, so cancel join/create room, please 'Build First'.");
             return;
 #endif
 
@@ -188,7 +193,6 @@ public class JoinRoomView : MonoBehaviour
                                                         $"{DataManager.UserId}",
                                                         gameObject.name,
                                                         nameof(JoinRoomQueryCallback));
-
         });
 
         //購買Slider單位設定
@@ -294,7 +298,7 @@ public class JoinRoomView : MonoBehaviour
             return;
         }
 
-        if (queryRoom.getRoomName == "false")
+        if (queryRoom.getRoomName == "false" || actionType == "Create")
         {
             //沒有找到房間
             Debug.Log($"沒有找到房間:{queryRoom.roomCount}");
@@ -316,7 +320,7 @@ public class JoinRoomView : MonoBehaviour
                 gameObject.name,
                 nameof(CreateNewRoomCallback));
         }
-        else
+        else if(actionType == "Join")
         {
             //有房間
             dataRoomName = queryRoom.getRoomName;
