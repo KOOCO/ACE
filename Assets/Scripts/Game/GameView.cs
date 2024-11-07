@@ -2463,11 +2463,11 @@ public class GameView : MonoBehaviour
             // Determine hand shape
             PokerShape.JudgePokerShape(judgePoker, (resultIndex, matchPokerList) =>
             {
+                player.PokerShapeIndex = resultIndex;
                 if (player.GetHandPoker[0].gameObject.activeSelf)
                 {
                     Debug.Log("Result Index :: " + resultIndex);
                     player.SetPokerShapeStr(resultIndex);
-                    player.PokerShapeIndex = resultIndex;
 
                     if (isOpenMatchPokerFrame && resultIndex < 10) // Only show for valid hands
                     {
