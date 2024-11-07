@@ -2971,7 +2971,7 @@ public class GameView : MonoBehaviour
                 //HandPokerLicensing(pack.LicensingStagePack.HandPokerDic);
                 //SetButtonSeat(pack.LicensingStagePack.ButtonSeatId);
                 SetSitOutDisplay();
-                JudgeWinRate();
+                //JudgeWinRate();
                 break;
 
             //大小盲
