@@ -102,7 +102,9 @@ public class SettingsView : MonoBehaviour
 
     private void CallJSWindowClose(string unused)
     {
+        #if UNITY_WEBGL && !UNITY_EDITOR
         JS_WindowClose();
+        #endif
     }
 
     public void OnClickLogOutBtn()
