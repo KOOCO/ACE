@@ -257,6 +257,23 @@ public class GameRoomPlayerData
     public bool isSitOut;                           //是否保留座位離開
     public int playerHandShape;
     public List<int> showHandPoker;                 //棄牌後顯示手牌
+    public WinnerEnum winType;
+    public double playerValidBetAmount;
+    public double roomFee;
+}
+
+
+public class RoomFee
+{
+    public string userId;                           //用戶ID
+    public WinnerEnum winType;
+    public double playerValidBetAmount;
+    public double roomFee;
+    public double potWinAmount;
+    public double carryChips;
+    public double sidePotAmount;
+    public double allBetChips;
+    public double extraContribution;
 }
 
 /// <summary>

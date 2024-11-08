@@ -4,7 +4,6 @@ using UnityEngine;
 using System.Linq;
 using System;
 using UnityEngine.Events;
-
 public enum WinnerEnum
 {
     MAIN,
@@ -607,10 +606,7 @@ public class GameControl : MonoBehaviour
     /// </summary>
     /// <param name="gameFlow">遊戲流程</param>
     /// 
-    List<GameRoomPlayerData> potWinners;
     double mainPotWinChips = 0;
-    double roomFee = 0;
-
     public IEnumerator IStartGameFlow(GameFlowEnum gameFlow)
     {
         Debug.Log($"{nameof(IStartGameFlow)} :: {gameFlow} :: hostId :: {gameRoomData.hostId} :: {DataManager.UserId}");
@@ -725,8 +721,6 @@ public class GameControl : MonoBehaviour
 
             //遊戲結果_底池
             case GameFlowEnum.PotResult:
-                potWinners.Clear();
-                mainPotWinnersRoomFee.Clear();
                 Debug.Log(nameof(IStartGameFlow) + " Before getting playing Players");
                 // Get the players still in the game and order by their total bet chips
                 playingPlayers = GetPlayingPlayer().OrderBy(x => x.allBetChips).ToList();
@@ -736,7 +730,7 @@ public class GameControl : MonoBehaviour
                     break;
 
                 // Judge the winners based on the remaining players
-                potWinners = JudgeWinner(playingPlayers).OrderBy(x => x.allBetChips).ToList();
+                var potWinners = JudgeWinner(playingPlayers).OrderBy(x => x.allBetChips).ToList();
 
                 // Calculate the minimum amount in the pot and the total winning chips
                 double potMin = playingPlayers[0].allBetChips;
@@ -754,30 +748,37 @@ public class GameControl : MonoBehaviour
                 List<string> potWinnerIdList = new List<string>();
                 foreach (var potWinner in potWinners)
                 {
+                    potWinner.winType = WinnerEnum.MAIN;
                     potWinnerIdList.Add(potWinner.userId);
-                    //newCarryChips = potWinner.carryChips + (mainPotWinChips / potWinners.Count);
                     double winnerShare = mainPotWinChips / potWinners.Count;
-                    double _roomFee = winnerShare * (DataManager.Rebate / 100);
-                    this.roomFee = _roomFee;
-                    double profit = winnerShare - potWinner.allBetChips;
-                    double finalWinnings = winnerShare;
-                    if (profit > 0)
+                    //newCarryChips = potWinner.carryChips + (mainPotWinChips / potWinners.Count);
+                    // double _roomFee = winnerShare * (DataManager.Rebate / 100);
+                    // this.roomFee = _roomFee;
+                    // double profit = winnerShare - potWinner.allBetChips;
+                    // double finalWinnings = winnerShare;
+                    // if (profit > 0)
+                    // {
+                    //     finalWinnings -= _roomFee;
+                    //     if (_roomFee > 0)
+                    //     {
+                    //         mainPotWinnersRoomFee.Add(potWinner.userId, roomFee);
+                    //     }
+                    // }
+                    //newCarryChips = potWinner.carryChips + Math.Floor(finalWinnings);
+                    RoomFee roomFeeObj = new RoomFee()
                     {
-                        finalWinnings -= _roomFee;
-                        if (_roomFee > 0)
-                        {
-                            mainPotWinnersRoomFee.Add(potWinner.userId, roomFee);
-                        }
-                    }
-                    newCarryChips = potWinner.carryChips + Math.Floor(finalWinnings);
-                    data = new Dictionary<string, object>()
-                    {
-                        { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips)},   //攜帶籌碼
-                        { FirebaseManager.MAIN_PROFIT, Math.Floor(profit)},  //攜帶籌碼
+                        userId = potWinner.userId,
+                        winType = WinnerEnum.MAIN,
+                        potWinAmount = winnerShare,
+                        allBetChips = potWinner.allBetChips,
+                        carryChips = potWinner.carryChips,
                     };
-                    UpdataPlayerData(potWinner.userId, data);
+                    winnersRoomFee.Add(roomFeeObj);
                 }
-
+                if (!IsHaveSide)
+                {
+                    CalculateRoomFee();
+                }
                 Debug.Log(nameof(IStartGameFlow) + " before data dictionary");
 
                 // Update the game room data (e.g., community cards)
@@ -805,7 +806,6 @@ public class GameControl : MonoBehaviour
 
             //邊池結果
             case GameFlowEnum.SideResult:
-                sidePotWinnersRoomFee.Clear();
                 // Update game flow
                 data = new Dictionary<string, object>()
                 {
@@ -886,43 +886,63 @@ public class GameControl : MonoBehaviour
 
                 // Distribute the side pot proportionally among the winners
                 List<string> sideWinnerIdList = new List<string>();
+                List<GameRoomPlayerData> temp = new();
                 foreach (var sideWinner in sideWinners)
                 {
-                    sideWinnerIdList.Add(sideWinner.userId);
-                    // Calculate this winner's proportional share of the side pot
+                    // // Find the winner in pokerWinners list that matches sideWinner.userId
+                    // var existingWinner = pokerWinners.FirstOrDefault(x => x.userId == sideWinner.userId);
 
+                    // // If a winner is found in pokerWinners, set their win type to BOTH
+                    // if (existingWinner != null)
+                    // {
+                    //     existingWinner.winType = WinnerEnum.BOTH;
+                    // }
+                    // // If no winner is found, set the sideWinner's win type to SIDE
+                    // else
+                    // {
+                    //     temp.Add(sideWinner);
+                    //     sideWinner.winType = WinnerEnum.SIDE;
+                    // }
+                    // sideWinnerIdList.Add(sideWinner.userId);
+
+                    // Calculate this winner's proportional share of the side pot
                     double winnerContribution = Math.Min(sideWinner.allBetChips - potMinChips, totalSidePot);
                     double winnerShare = (winnerContribution / totalSidePot) * totalSidePot;
-                    // if (mainPotWinnersRoomFee.TryGetValue(sideWinner.userId, out double playerWithBoth))
-                    // {
 
-                    // }
-                    double roomFee = winnerShare * (DataManager.Rebate / 100);
-                    double profit = winnerShare - winnerContribution;
-                    double finalWinnings = winnerShare;
-                    if (profit > 0)
-                    {
-                        finalWinnings -= roomFee;
-                    }
-                    else
-                    {
-                        finalWinnings = winnerShare;
-                    }
-
-                    sidePotWinnersRoomFee.Add(sideWinner.userId, roomFee);
                     // Update player's chips with their side pot winnings
-                    newCarryChips = sideWinner.carryChips + Math.Floor(finalWinnings);
-                    Debug.Log($"{nameof(IStartGameFlow)} All Players Chips :: {newCarryChips}");
-                    data = new Dictionary<string, object>()
+                    newCarryChips = sideWinner.carryChips + Math.Floor(winnerShare);
+
+                    foreach (var roomFeePlayer in winnersRoomFee)
                     {
-                        { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips) },  // Update carry chips
-                        {FirebaseManager.SIDE_PROFIT,Math.Floor(profit)},  // Update carry chips
-                    };
-                    UpdataPlayerData(sideWinner.userId, data);
+                        if (roomFeePlayer.userId == sideWinner.userId)
+                        {
+                            roomFeePlayer.winType = WinnerEnum.BOTH;
+                            roomFeePlayer.sidePotAmount = winnerShare;
+                        }
+                        else
+                        {
+                            RoomFee newRoomFeeObj = new()
+                            {
+                                sidePotAmount = winnerShare,
+                                winType = WinnerEnum.SIDE,
+                                extraContribution = winnerContribution,
+                            };
+                            winnersRoomFee.Add(newRoomFeeObj);
+                        }
+                    }
+
+                    Debug.Log($"{nameof(IStartGameFlow)} All Players Chips :: {newCarryChips}");
+                    // data = new Dictionary<string, object>()
+                    // {
+                    //     { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips) },  // Update carry chips
+                    // };
+                    // UpdataPlayerData(sideWinner.userId, data);
 
                     // Update local side winner data
                     GetPlayerData(sideWinner.userId).carryChips = newCarryChips;
                 }
+
+                CalculateRoomFee();
 
                 // Update Firebase with the side pot data and the list of winners
                 var sidePotData = new Dictionary<string, object>()
@@ -934,9 +954,6 @@ public class GameControl : MonoBehaviour
                                                                 sidePotData,
                                                                 gameObject.name,
                                                                 nameof(SideWinDataCallback));
-
-                ReCalculateProfitForPlayersWhoHaveBothSideAndMainPot(mainPotWinnersRoomFee, sidePotWinnersRoomFee);
-                //CalCulateRoomFeeWithSidePot(potWinners, sideWinners, mainPotWinChips, sidePotWinChips);
 
 
                 break;
@@ -982,46 +999,134 @@ public class GameControl : MonoBehaviour
 
         }
     }
-    public Dictionary<string, double> playersWithTheirRoomFee = new();
-    public Dictionary<string, double> mainPotWinnersRoomFee = new();
-    public Dictionary<string, double> sidePotWinnersRoomFee = new();
 
-    public void ReCalculateProfitForPlayersWhoHaveBothSideAndMainPot(Dictionary<string, double> _mainPotWinnersRoomFee, Dictionary<string, double> _sidePotWinnersRoomFee)
+    public List<RoomFee> winnersRoomFee;
+
+    public void CalculateRoomFee()
     {
-        playersWithTheirRoomFee.Clear();
-        if (_mainPotWinnersRoomFee != null && _sidePotWinnersRoomFee != null)
+        foreach (var winner in winnersRoomFee)
         {
-            foreach (var mainPotEntry in _mainPotWinnersRoomFee)
+            double winAmount = winner.potWinAmount;
+            double sidePotAmount = winner.sidePotAmount;
+            double carryChips = winner.carryChips;
+            double roomRate = DataManager.Rebate / 100;
+
+            // Calculate winAmount based on winType
+            if (winner.winType == WinnerEnum.BOTH || winner.winType == WinnerEnum.SIDE)
             {
-                string player = mainPotEntry.Key;
+                winAmount += sidePotAmount;
+            }
 
-                // Check if the player also exists in the side pot winners dictionary
-                if (_sidePotWinnersRoomFee.ContainsKey(player))
+            double roomFee = winAmount * roomRate;
+            winner.roomFee = roomFee;
+            double finalWinnings = winAmount - roomFee;
+            double profit = winAmount - winner.allBetChips;
+
+            // Determine carry chips based on profit
+            double newCarryChips = profit > 0 ? carryChips + Math.Floor(finalWinnings) : carryChips + winAmount;
+
+            // Prepare data to update based on winType
+            var newData = new Dictionary<string, object>
+            {
+                { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips) }
+            };
+
+            // Add profit type-specific data
+            switch (winner.winType)
+            {
+                case WinnerEnum.BOTH:
+                    newData[FirebaseManager.MAIN_PROFIT] = Math.Floor(profit);
+                    break;
+                case WinnerEnum.MAIN:
+                    newData[FirebaseManager.MAIN_PROFIT] = Math.Floor(profit);
+                    break;
+                case WinnerEnum.SIDE:
+                    newData[FirebaseManager.SIDE_PROFIT] = Math.Floor(profit);
+                    break;
+            }
+
+            // Update player data
+            UpdataPlayerData(winner.userId, newData);
+        }
+        CalculateValidBets();
+    }
+    void CalculateValidBets()
+    {
+        List<double> allBetChipsList = gameRoomData.playerDataDic
+            .Where(x => x.Value != null)
+            .Select(x => x.Value.allBetChips)
+            .OrderByDescending(chips => chips)
+            .ToList();
+
+        foreach (var player in gameRoomData.playerDataDic)
+        {
+            GameRoomPlayerData playerData = GetPlayerData(player.Value.userId);
+            if (playerData != null)
+            {
+                double effectiveBet = 0;
+
+                // Calculate effective bet by summing only up to the player's total bet amount
+                foreach (var level in allBetChipsList)
                 {
-                    // If the player exists in both, add their side pot fee to their main pot fee
-                    double totalProfit = mainPotEntry.Value + _sidePotWinnersRoomFee[player];
-                    var playerWithBoth = GetPlayerData(player);
-
-                    roomFee = totalProfit * (DataManager.Rebate / 100);
-
-                    double finalWinnings = totalProfit - roomFee;
-
-                    // You can update the main pot fee or store this in another dictionary
-                    // For example, if you want to update the mainPotWinnersRoomFee:
-                    var data = new Dictionary<string, object>()
+                    if (playerData.allBetChips > level)
                     {
-                        { FirebaseManager.CARRY_CHIPS, Math.Floor(playerWithBoth.carryChips+finalWinnings) },  // Update carry chips
-                        {FirebaseManager.MAIN_PROFIT,Math.Floor(totalProfit)},  // Update carry chips
-                    };
-                    //_mainPotWinnersRoomFee[player] = roomFee;
-                    playersWithTheirRoomFee.Add(player, roomFee);
-                    _sidePotWinnersRoomFee?.Remove(player);
-                    _mainPotWinnersRoomFee?.Remove(player);
-                    // Optionally, you can also remove the player from the sidePotWinnersRoomFee if no longer needed
+                        effectiveBet += level;
+                    }
+                    else
+                    {
+                        effectiveBet += playerData.allBetChips;
+                        break;
+                    }
                 }
+
+                // Assign effective bet after calculation completes
+                playerData.playerValidBetAmount = effectiveBet;
+
+                Debug.Log($"Player ID: {player.Value.userId}, All Bet Chips: {playerData.allBetChips}, Effective Bet: {effectiveBet}");
+            }
+            else
+            {
+                Debug.Log($"Player ID: {player.Value.userId} not found in gameRoomData.");
             }
         }
     }
+
+    // public void ReCalculateProfitForPlayersWhoHaveBothSideAndMainPot(Dictionary<string, double> _mainPotWinnersRoomFee, Dictionary<string, double> _sidePotWinnersRoomFee)
+    // {
+    //     playersWithTheirRoomFee.Clear();
+    //     if (_mainPotWinnersRoomFee != null && _sidePotWinnersRoomFee != null)
+    //     {
+    //         foreach (var mainPotEntry in _mainPotWinnersRoomFee)
+    //         {
+    //             string player = mainPotEntry.Key;
+
+    //             // Check if the player also exists in the side pot winners dictionary
+    //             if (_sidePotWinnersRoomFee.ContainsKey(player))
+    //             {
+    //                 // If the player exists in both, add their side pot fee to their main pot fee
+    //                 double totalProfit = mainPotEntry.Value + _sidePotWinnersRoomFee[player];
+    //                 var playerWithBoth = GetPlayerData(player);
+
+    //                 roomFee = totalProfit * (DataManager.Rebate / 100);
+
+    //                 double finalWinnings = totalProfit - roomFee;
+
+    //                 // You can update the main pot fee or store this in another dictionary
+    //                 // For example, if you want to update the mainPotWinnersRoomFee:
+    //                 var data = new Dictionary<string, object>()
+    //                 {
+    //                     { FirebaseManager.CARRY_CHIPS, Math.Floor(playerWithBoth.carryChips+finalWinnings) },  // Update carry chips
+    //                     {FirebaseManager.MAIN_PROFIT,Math.Floor(totalProfit)},  // Update carry chips
+    //                 };
+    //                 //_mainPotWinnersRoomFee[player] = roomFee;
+    //                 playersWithTheirRoomFee.Add(player, roomFee);
+    //                 _sidePotWinnersRoomFee?.Remove(player);
+    //                 _mainPotWinnersRoomFee?.Remove(player);
+    //                 // Optionally, you can also remove the player from the sidePotWinnersRoomFee if no longer needed
+    //             }
+    //         }
+    //     }
+    // }
 
 
 

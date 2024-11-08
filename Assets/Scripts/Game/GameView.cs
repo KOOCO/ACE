@@ -994,55 +994,55 @@ public class GameView : MonoBehaviour
             }
         }
     }
-    public void CalculateEffectiveBets()
-    {
-        if (saveResultData.playerDetails == null || gameRoomData.playerDataDic == null)
-        {
-            Debug.LogError("Error: Missing data in saveResultData or gameRoomData.");
-            return;
-        }
+    // public void CalculateEffectiveBets()
+    // {
+    //     if (saveResultData.playerDetails == null || gameRoomData.playerDataDic == null)
+    //     {
+    //         Debug.LogError("Error: Missing data in saveResultData or gameRoomData.");
+    //         return;
+    //     }
 
-        // Sort `allBetChipsList` in descending order for calculating levels
-        List<double> allBetChipsList = saveResultData.playerDetails
-                                                      .Select(player => gameRoomData.playerDataDic
-                                                                                     .FirstOrDefault(x => x.Value.userId == player.playerId)
-                                                                                     .Value?.allBetChips ?? 0.0)
-                                                      .OrderByDescending(chips => chips)
-                                                      .ToList();
+    //     // Sort `allBetChipsList` in descending order for calculating levels
+    //     List<double> allBetChipsList = saveResultData.playerDetails
+    //                                                   .Select(player => gameRoomData.playerDataDic
+    //                                                                                  .FirstOrDefault(x => x.Value.userId == player.playerId)
+    //                                                                                  .Value?.allBetChips ?? 0.0)
+    //                                                   .OrderByDescending(chips => chips)
+    //                                                   .ToList();
 
-        foreach (var player in saveResultData.playerDetails)
-        {
-            // Match player data in gameRoomData
-            GameRoomPlayerData playerData = gameRoomData.playerDataDic
-                                                        .FirstOrDefault(x => x.Value.userId == player.playerId)
-                                                        .Value;
+    //     foreach (var player in saveResultData.playerDetails)
+    //     {
+    //         // Match player data in gameRoomData
+    //         GameRoomPlayerData playerData = gameRoomData.playerDataDic
+    //                                                     .FirstOrDefault(x => x.Value.userId == player.playerId)
+    //                                                     .Value;
 
-            if (playerData != null)
-            {
-                // Determine effective bet by comparing with each decreasing level of bet
-                double effectiveBet = 0;
-                foreach (var level in allBetChipsList)
-                {
-                    if (playerData.allBetChips > level)
-                        effectiveBet += level;
-                    else
-                    {
-                        effectiveBet += playerData.allBetChips;
-                        break;
-                    }
-                }
+    //         if (playerData != null)
+    //         {
+    //             // Determine effective bet by comparing with each decreasing level of bet
+    //             double effectiveBet = 0;
+    //             foreach (var level in allBetChipsList)
+    //             {
+    //                 if (playerData.allBetChips > level)
+    //                     effectiveBet += level;
+    //                 else
+    //                 {
+    //                     effectiveBet += playerData.allBetChips;
+    //                     break;
+    //                 }
+    //             }
 
-                Debug.Log($"Player ID: {player.playerId}, All Bet Chips: {playerData.allBetChips}, Effective Bet: {effectiveBet}");
+    //             Debug.Log($"Player ID: {player.playerId}, All Bet Chips: {playerData.allBetChips}, Effective Bet: {effectiveBet}");
 
-                // Store effective bet back to Firebase result data
-                saveResultData.playerDetails.FirstOrDefault(x => x.playerId == player.playerId).playerValidBetAmount = effectiveBet;
-            }
-            else
-            {
-                Debug.LogWarning($"Player ID: {player.playerId} not found in gameRoomData.");
-            }
-        }
-    }
+    //             // Store effective bet back to Firebase result data
+    //             saveResultData.playerDetails.FirstOrDefault(x => x.playerId == player.playerId).playerValidBetAmount = effectiveBet;
+    //         }
+    //         else
+    //         {
+    //             Debug.LogWarning($"Player ID: {player.playerId} not found in gameRoomData.");
+    //         }
+    //     }
+    // }
 
     /// <summary>
     /// 設置行動按鈕文字(是否為玩家回合)
@@ -2564,8 +2564,9 @@ public class GameView : MonoBehaviour
                 PlaySound("SoundWinPot");
                 player.PlayerRoomChips = playerData.carryChips;
                 Destroy(rt.gameObject);
-                player.IsWinnerActive = false;
             });
+            yield return new WaitForSeconds(1f);
+            player.IsWinnerActive = false;
         }
 
         int winIndex = 0;
@@ -2618,18 +2619,14 @@ public class GameView : MonoBehaviour
                 var potWinChips = gameRoomData.potWinData?.potWinChips ?? 0;
                 var sideWinChips = gameRoomData.sideWinData?.sideWinChips ?? 0;
                 var isWinner = gameRoomData.potWinData?.potWinnersId?.Contains(playerNew.userId) ?? false;
-                Debug.Log("PlayerDetailsLoop :: " + gameControl.mainPotWinnersRoomFee.Count());
-                Debug.Log("PlayerDetailsLoop :: " + gameControl.sidePotWinnersRoomFee.Count());
+                Debug.Log("PlayerDetailsLoop :: " + gameControl.winnersRoomFee.Count());
                 PlayerDetails playerData = new PlayerDetails
                 {
                     playerId = playerNew.userId,
                     playerName = playerNew.nickname,
                     playerHandId = "",
-                    playerValidBetAmount = 0,
-                    playerRoomFee = gameControl.mainPotWinnersRoomFee.GetValueOrDefault(playerNew.userId,
-                    gameControl.sidePotWinnersRoomFee.GetValueOrDefault(playerNew.userId,
-                    gameControl.playersWithTheirRoomFee.GetValueOrDefault(playerNew.userId, 0))),
-
+                    playerValidBetAmount = playerNew.roomFee,
+                    playerRoomFee = playerNew.playerValidBetAmount,
                     isBot = DataManager.UserId.StartsWith(FirebaseManager.ROBOT_ID),
                     playerHandData = new PlayerHand
                     {
@@ -2641,7 +2638,6 @@ public class GameView : MonoBehaviour
                         seat = playerNew.gameSeat.ToString(),
                     }
                 };
-
                 Debug.Log("PlayerDetailsLoop :: " + playerData);
                 saveResultData.playerDetails.Add(playerData);
             }
@@ -2685,19 +2681,16 @@ public class GameView : MonoBehaviour
 
         yield return new WaitForSeconds(4f);
         SetWinnerStringTxt = "";
-        if (gameControl.sidePotWinnersRoomFee.Count == 0 || gameControl.sidePotWinnersRoomFee == null)
+        foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
         {
-            foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
+            var testPlayer = saveResultData.playerDetails.FirstOrDefault(x => x.playerId == potWinnerId);
+            if (testPlayer != null && testPlayer.playerId == DataManager.UserId && testPlayer.playerRoomFee > 0)
             {
-                var testPlayer = saveResultData.playerDetails.FirstOrDefault(x => x.playerId == potWinnerId);
-                if (testPlayer != null && testPlayer.playerId == DataManager.UserId && testPlayer.playerRoomFee > 0)
-                {
-                    Debug.Log("Show Game UI :: " + testPlayer.playerId);
-                    GamePlayerInfo player = GetPlayer(potWinnerId);
-                    player.SetRoomFee($"Room Fee + ${testPlayer.playerRoomFee:f2}");
-                    yield return new WaitForSeconds(0.5f);
-                    player.HideRoomFee();
-                }
+                Debug.Log("Show Game UI :: " + testPlayer.playerId);
+                GamePlayerInfo player = GetPlayer(potWinnerId);
+                player.SetRoomFee($"Room Fee + ${testPlayer.playerRoomFee:f2}");
+                yield return new WaitForSeconds(1f);
+                player.HideRoomFee();
             }
         }
     }
@@ -2866,7 +2859,7 @@ public class GameView : MonoBehaviour
                 Debug.Log("Show Game UI :: " + testPlayer.playerId);
                 GamePlayerInfo player = GetPlayer(winnerId);
                 player.SetRoomFee($"Room Fee + ${testPlayer.playerRoomFee:f2}");
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(1f);
                 player.HideRoomFee();
             }
         }
@@ -2930,7 +2923,6 @@ public class GameView : MonoBehaviour
         {
             //發牌
             case GameFlowEnum.Licensing:
-                CalculateEffectiveBets();
                 SavePreGame();
                 //GameInit();
 
