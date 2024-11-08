@@ -771,7 +771,7 @@ public class GamePlayerInfo : MonoBehaviour
     public void SetPokerShapeStr(int shapeIndex)
     {
 
-        pokerShapeIndex = shapeIndex;
+        //pokerShapeIndex = shapeIndex;
         if (PokerShape_img == null)
             return;
 

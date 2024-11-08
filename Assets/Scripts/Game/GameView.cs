@@ -2475,10 +2475,11 @@ public class GameView : MonoBehaviour
 
                         if (isWinEffect)
                         {
+                            player.PokerShapeIndex = resultIndex;
                             SetWinnerStringTxt = LanguageManager.Instance.GetText(
                                 AssetsManager.Instance.GetStringAlbumAsset(StringAlbumEnum.HandRanksStringAlbum).strAlbum[resultIndex]);
-                            player.PokerShapeIndex = resultIndex;
-                            Debug.Log("Winner String Set to: ");
+
+                            Debug.Log("Winner String Set to: " + resultIndex);
                         }
                     }
                     else if (resultIndex >= 10)
@@ -2627,7 +2628,6 @@ public class GameView : MonoBehaviour
         foreach (var playerId in gameRoomData.playingPlayersIdList ?? Enumerable.Empty<string>())
         {
             Debug.Log("PlayerDetailsLoop :: " + playerId);
-
             if (gameRoomData.playerDataDic.TryGetValue(playerId, out GameRoomPlayerData playerNew) && playerNew != null)
             {
                 Debug.Log("PlayerDetailsLoop :: " + playerNew);
@@ -2651,7 +2651,7 @@ public class GameView : MonoBehaviour
                     playerHandData = new PlayerHand
                     {
                         playerHand = playerNew.handPoker ?? new List<int>(),  // Ensure `handPoker` is not null
-                        playerCurrHandShape = playerNew.playerHandShape,
+                        playerCurrHandShape = GetPlayer(playerNew.userId).PokerShapeIndex,
                         potWinChips = isWinner ? potWinChips : 0,
                         sideWinChips = gameRoomData.sideWinData?.sideWinnersId.Contains(playerNew.userId) == true ? sideWinChips : 0,
                         isWinner = isWinner,
