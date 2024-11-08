@@ -1021,6 +1021,11 @@ public class GameControl : MonoBehaviour
             double finalWinnings = winAmount - roomFee;
             double profit = winAmount - winner.allBetChips;
 
+            if (profit <= 0)
+            {
+                roomFee = 0;
+            }
+
             // Determine carry chips based on profit
             double newCarryChips = profit > 0 ? carryChips + Math.Floor(finalWinnings) : carryChips + winAmount;
 
@@ -1028,9 +1033,9 @@ public class GameControl : MonoBehaviour
             var newData = new Dictionary<string, object>
             {
                 { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips) },
-                { FirebaseManager.ROOM_FEE, Math.Floor(roomFee) }
+                { FirebaseManager.ROOM_FEE, roomFee }
             };
-
+            Debug.Log("Player ID: " + winner.userId + " with room fee: " + Math.Floor(roomFee));
             // Add profit type-specific data
             switch (winner.winType)
             {
@@ -1092,7 +1097,7 @@ public class GameControl : MonoBehaviour
                 UpdataPlayerData(playerData.userId, newData);
 
                 // Assign effective bet after calculation completes
-                playerData.playerValidBetAmount = effectiveBet;
+                //playerData.playerValidBetAmount = effectiveBet;
 
                 Debug.Log($"Player ID: {player.Value.userId}, All Bet Chips: {playerData.allBetChips}, Effective Bet: {effectiveBet}");
             }

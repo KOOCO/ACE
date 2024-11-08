@@ -2625,8 +2625,8 @@ public class GameView : MonoBehaviour
                     playerId = playerNew.userId,
                     playerName = playerNew.nickname,
                     playerHandId = "",
-                    playerValidBetAmount = playerNew.roomFee,
-                    playerRoomFee = playerNew.playerValidBetAmount,
+                    playerValidBetAmount = playerNew.playerValidBetAmount,
+                    playerRoomFee = playerNew.roomFee,
                     isBot = DataManager.UserId.StartsWith(FirebaseManager.ROBOT_ID),
                     playerHandData = new PlayerHand
                     {
@@ -2688,7 +2688,7 @@ public class GameView : MonoBehaviour
             {
                 Debug.Log("Show Game UI :: " + testPlayer.playerId);
                 GamePlayerInfo player = GetPlayer(potWinnerId);
-                player.SetRoomFee($"Room Fee + ${testPlayer.playerRoomFee:f2}");
+                player.SetRoomFee($"Room Fee - ${testPlayer.playerRoomFee:f2}");
                 yield return new WaitForSeconds(1f);
                 player.HideRoomFee();
             }
@@ -2858,7 +2858,7 @@ public class GameView : MonoBehaviour
             {
                 Debug.Log("Show Game UI :: " + testPlayer.playerId);
                 GamePlayerInfo player = GetPlayer(winnerId);
-                player.SetRoomFee($"Room Fee + ${testPlayer.playerRoomFee:f2}");
+                player.SetRoomFee($"Room Fee - ${testPlayer.playerRoomFee:f2}");
                 yield return new WaitForSeconds(1f);
                 player.HideRoomFee();
             }
