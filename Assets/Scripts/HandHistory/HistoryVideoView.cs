@@ -304,7 +304,7 @@ public class HistoryVideoView : MonoBehaviour
                 PokerShape.JudgePokerShape(judgePoker, (resultIndex, matchPokerList) =>
                 {
                     Players[seatIndex].SetPokerShapeStr(resultIndex);
-                    Players[seatIndex].PokerShapeIndex = (resultIndex);
+                    //Players[seatIndex].PokerShapeIndex = (resultIndex);
 
                     List<Poker> pokers = new List<Poker>()
                     {
@@ -558,7 +558,7 @@ public class HistoryVideoView : MonoBehaviour
             {
                 //Players[seat].SetPokerShapeTxtStr = "";
                 Players[seat].SetPokerShapeImage = null;
-                Players[seat].PokerShapeIndex = 0;
+                //Players[seat].PokerShapeIndex = 0;
                 return;
             }
 
@@ -576,7 +576,7 @@ public class HistoryVideoView : MonoBehaviour
             PokerShape.JudgePokerShape(judgePoker, (resultIndex, matchPokerList) =>
             {
                 Players[seat].SetPokerShapeStr(resultIndex);
-                Players[seat].PokerShapeIndex = (resultIndex);
+                //Players[seat].PokerShapeIndex = (resultIndex);
 
                 if (resultIndex < 10)
                 {

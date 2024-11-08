@@ -2463,7 +2463,6 @@ public class GameView : MonoBehaviour
             // Determine hand shape
             PokerShape.JudgePokerShape(judgePoker, (resultIndex, matchPokerList) =>
             {
-                player.PokerShapeIndex = resultIndex;
                 if (player.GetHandPoker[0].gameObject.activeSelf)
                 {
                     Debug.Log("Result Index :: " + resultIndex);
@@ -2478,6 +2477,7 @@ public class GameView : MonoBehaviour
                         {
                             SetWinnerStringTxt = LanguageManager.Instance.GetText(
                                 AssetsManager.Instance.GetStringAlbumAsset(StringAlbumEnum.HandRanksStringAlbum).strAlbum[resultIndex]);
+                            player.PokerShapeIndex = resultIndex;
                             Debug.Log("Winner String Set to: ");
                         }
                     }
