@@ -48,6 +48,7 @@ public class GamePlayerInfo : MonoBehaviour
     Coroutine chatCoroutine;            //聊天協程
 
     int pokerShapeIndex = -1;                //牌型編號
+    int pokerCurrShapeIndex = -1;                //牌型編號
 
     Vector2 betChipsr_TrInitPos;         //下注籌碼物件初始位置
 
@@ -125,11 +126,11 @@ public class GamePlayerInfo : MonoBehaviour
         if (PokerShape_img == null)
             return;
 
-        if (LanguageManager.Instance.GetCurrLanguageIndex() == 0 && pokerShapeIndex != -1)
-            SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksEnglishAlbum).album[pokerShapeIndex];
-        else if (LanguageManager.Instance.GetCurrLanguageIndex() == 1 && pokerShapeIndex != -1)
+        if (LanguageManager.Instance.GetCurrLanguageIndex() == 0 && pokerCurrShapeIndex != -1)
+            SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksEnglishAlbum).album[pokerCurrShapeIndex];
+        else if (LanguageManager.Instance.GetCurrLanguageIndex() == 1 && pokerCurrShapeIndex != -1)
         {
-            SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksChineseAlbum).album[pokerShapeIndex];
+            SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksChineseAlbum).album[pokerCurrShapeIndex];
         }
         // }
 
@@ -771,14 +772,14 @@ public class GamePlayerInfo : MonoBehaviour
     public void SetPokerShapeStr(int shapeIndex)
     {
 
-        //pokerShapeIndex = shapeIndex;
+        pokerCurrShapeIndex = shapeIndex;
         if (PokerShape_img == null)
             return;
 
         if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
-            SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksEnglishAlbum).album[pokerShapeIndex];
+            SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksEnglishAlbum).album[pokerCurrShapeIndex];
         else
-            SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksChineseAlbum).album[pokerShapeIndex];
+            SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksChineseAlbum).album[pokerCurrShapeIndex];
     }
 
     private void OnDisable()
