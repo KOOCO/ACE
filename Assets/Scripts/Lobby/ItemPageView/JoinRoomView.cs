@@ -319,15 +319,18 @@ public class JoinRoomView : MonoBehaviour
                 dataDic,
                 gameObject.name,
                 nameof(CreateNewRoomCallback));
+            actionType = "";
         }
         else if(actionType == "Join")
         {
             //有房間
+            print("已有房間(Has other room)");
             dataRoomName = queryRoom.getRoomName;
             JSBridgeManager.Instance.ReadDataFromFirebase(
                 $"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}/{dataRoomName}",
                 gameObject.name,
                 nameof(JoinRoomCallback));
+            actionType = "";
         }
     }
 

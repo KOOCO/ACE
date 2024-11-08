@@ -557,7 +557,7 @@ public class GameView : MonoBehaviour
         AllIn_Btn.onClick.AddListener(() =>
         {
             Raise_Sli.value = (float)thisData.LocalPlayerChips;
-            NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(), thisData.CurrCallValue, 6, ChipTransactionType.AllIn, (x) =>
+            NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(), thisData.LocalPlayerChips, 6, ChipTransactionType.AllIn, (x) =>
               {
                   Debug.Log("AllIn Table ChipsTransaction Success");
               },
@@ -610,7 +610,7 @@ public class GameView : MonoBehaviour
 
             if (CallBtn_Txt.text != LanguageManager.Instance.GetText("Check"))
             {
-                NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId.ToString(), thisData.CurrCallValue, 4, ChipTransactionType.Call, (x) =>
+                NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(), thisData.CurrCallValue, 4, ChipTransactionType.Call, (x) =>
                 {
                     Debug.Log("Call Table ChipsTransaction Success");
                 },
@@ -652,7 +652,7 @@ public class GameView : MonoBehaviour
                                                 acting,
                                                 betValue);
 
-                    NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId.ToString(), thisData.CurrRaiseValue, 9, ChipTransactionType.Raise, (x) =>
+                    NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(), thisData.CurrRaiseValue, 9, ChipTransactionType.Raise, (x) =>
                     {
                         Debug.Log("Raise Table ChipsTransaction Success");
                     },
