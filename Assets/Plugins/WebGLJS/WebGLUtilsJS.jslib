@@ -65,8 +65,10 @@ mergeInto(LibraryManager.library, {
 
     //關閉頁面
     JS_WindowClose: function(){
-        window.open("","_self").close();
+        window.open('url', '_self', '');
+        window.close();
     },
+
 
     //重新整理頁面
     JS_Reload: function() {
