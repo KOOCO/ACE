@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using System;
 using UnityEngine.Events;
+using System.Runtime.InteropServices;
 public enum WinnerEnum
 {
     MAIN,
@@ -343,12 +344,26 @@ public class GameControl : MonoBehaviour
             DataManager.UserChips += leaveRoom.amount;
             DataManager.DataUpdated = true;
             OnLeaveTable();
+            ClearRoomDataFromJS();
         },
         (error) =>
         {
             Debug.LogError($"Failed to leave the room. Error: {error}");
         });
     }
+
+    [DllImport("__Internal")]
+    private static extern void JS_ClearLeaveRoomData();
+
+    public void ClearRoomDataFromJS()
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        Application.ExternalEval($"JS_ClearLeaveRoomData();");
+#else
+        Debug.Log("This function only works in a WebGL build.");
+#endif
+    }
+
     void OnLeaveTable()
     {
         //移除倒數

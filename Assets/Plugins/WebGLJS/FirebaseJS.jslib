@@ -207,6 +207,60 @@ mergeInto(LibraryManager.library, {
         window.removePresenceListener(id);
     },
 
+
+    JS_ReceiveUnityData: function(memberId, roomId, amount, type, rankPoint) {
+        leaveRoom.memberId = memberId;
+        leaveRoom.roomId = roomId;
+        leaveRoom.amount = amount;
+        leaveRoom.type = type;
+        leaveRoom.rankPoint = rankPoint;
+
+        console.log("Received data from Unity:", leaveRoom);
+    },
+
+    JS_ClearLeaveRoomData: function() {
+        leaveRoom.memberId = null;
+        leaveRoom.roomId = null;
+        leaveRoom.amount = null;
+        leaveRoom.type = null;
+        leaveRoom.rankPoint = null;
+
+        console.log("Leave room data cleared:", leaveRoom);
+    },
+
+    JS_SendTabCloseData: function() {
+        if (!leaveRoom.memberId || !leaveRoom.roomId) {
+            console.log("No data to send, skipping.");
+            return;
+        }
+
+        const apiEndpoint = `/api/app/rooms/leave-table?memberId=${leaveRoom.memberId}&roomId=${leaveRoom.roomId}&amount=${leaveRoom.amount}&type=${leaveRoom.type}&rankPoint=${leaveRoom.rankPoint}`;
+        const baseUrl = "https://admin-d.jf588.com";
+        const fullUrl = `${baseUrl}${apiEndpoint}`;
+        const data = JSON.stringify({});
+
+        // Use sendBeacon to send the data when the page is about to unload
+        const isBeaconSent = navigator.sendBeacon(fullUrl, data);
+        if (isBeaconSent) {
+            console.log("sendBeacon request sent successfully.");
+        } else {
+            console.log("Failed to send sendBeacon request.");
+        }
+
+        // Optionally, clear the data after sending the request
+        JS_ClearLeaveRoomData();
+    },
+
+    JS_AddBeforeUnloadListener: function() {
+        console.log('JS_AddBeforeUnloadListener called');
+        window.addEventListener('beforeunload', function(event) {
+            console.log('Tab is closing or refreshing');
+            JS_SendTabCloseData();
+        });
+    },
+
+    
+
     // 加入遊戲房間查詢
     // pathPtr = 查詢路徑
     // maxPlayerPtr = 最大遊戲人數

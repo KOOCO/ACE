@@ -8,6 +8,7 @@ using System;
 using Proyecto26;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Runtime.InteropServices;
 
 public class JoinRoomView : MonoBehaviour
 {
@@ -139,6 +140,7 @@ public class JoinRoomView : MonoBehaviour
                 DataManager.RoomId = gameRound.roomId;
                 actionType = gameRound.actionType;
 
+                SendRoomDataToJS(DataManager.UserId, long.Parse(DataManager.RoomId), 0, DataManager.CurrencyType.ToString(), 10);
 
                 NoodleApi.PostTableBuyIn(newCarryChipsValue, (data) =>
                 {
@@ -220,6 +222,18 @@ public class JoinRoomView : MonoBehaviour
         });
     }
 
+    [DllImport("__Internal")]
+    private static extern void JS_AddBeforeUnloadListener();
+    public void SendRoomDataToJS(string memberId, long roomId, double amount, string type, int rankPoint)
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        Application.ExternalEval($"JS_AddBeforeUnloadListener();");
+        // For WebGL, you can use the `Application.ExternalCall` method (older Unity) or directly call `SendMessage`.
+        Application.ExternalEval($"JS_ReceiveUnityData('{memberId}', '{roomId}', {amount}, '{type}', {rankPoint});");
+#else
+        Debug.Log("This function only works in a WebGL build.");
+#endif
+    }
 
     public void CreateNewRoom()
     {
