@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System;
 
 public class SettingsView : MonoBehaviour
 {
@@ -98,13 +99,19 @@ public class SettingsView : MonoBehaviour
     }
     [DllImport("__Internal")]
     private static extern void JS_WindowClose();
+
+    private void CallJSWindowClose(string unused)
+    {
+        #if UNITY_WEBGL && !UNITY_EDITOR
+        JS_WindowClose();
+        #endif
+    }
+
     public void OnClickLogOutBtn()
     {
-        AppApi.LogoutRequest();
-#if UNITY_WEBGL && !UNITY_EDITOR
-    JS_WindowClose();
-#endif
+        AppApi.LogoutRequest(CallJSWindowClose);
     }
+
     private void OnEnable()
     {
         //Language_Dd.value = LanguageManager.Instance.GetCurrLanguageIndex();
