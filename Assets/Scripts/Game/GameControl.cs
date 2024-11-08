@@ -1027,7 +1027,8 @@ public class GameControl : MonoBehaviour
             // Prepare data to update based on winType
             var newData = new Dictionary<string, object>
             {
-                { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips) }
+                { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips) },
+                { FirebaseManager.ROOM_FEE, Math.Floor(roomFee) }
             };
 
             // Add profit type-specific data
@@ -1043,11 +1044,11 @@ public class GameControl : MonoBehaviour
                     newData[FirebaseManager.SIDE_PROFIT] = Math.Floor(profit);
                     break;
             }
-            GameRoomPlayerData playerData = GetPlayerData(winner.userId);
-            if (playerData != null)
-            {
-                playerData.roomFee = roomFee;
-            }
+            // GameRoomPlayerData playerData = GetPlayerData(winner.userId);
+            // if (playerData != null)
+            // {
+            //     playerData.roomFee = roomFee;
+            // }
             // Update player data
             UpdataPlayerData(winner.userId, newData);
         }
@@ -1080,7 +1081,15 @@ public class GameControl : MonoBehaviour
                         effectiveBet += playerData.allBetChips;
                         break;
                     }
+
+
                 }
+
+                var newData = new Dictionary<string, object>
+                    {
+                        { FirebaseManager.VALID_BET, Math.Floor(effectiveBet) },
+                    };
+                UpdataPlayerData(playerData.userId, newData);
 
                 // Assign effective bet after calculation completes
                 playerData.playerValidBetAmount = effectiveBet;
