@@ -996,62 +996,46 @@ public class GameView : MonoBehaviour
     }
     public void CalculateEffectiveBets()
     {
-        // Check if playerDetails or playerDataDic is null to avoid null reference issues
-        if (saveResultData.playerDetails == null)
+        if (saveResultData.playerDetails == null || gameRoomData.playerDataDic == null)
         {
-            Debug.Log("Error: playerDetails in saveResultData is null.");
+            Debug.LogError("Error: Missing data in saveResultData or gameRoomData.");
             return;
         }
 
-        if (gameRoomData.playerDataDic == null)
-        {
-            Debug.Log("Error: playerDataDic in gameRoomData is null.");
-            return;
-        }
-
-        // Get a list of all players' `allBetChips` and sort it in descending order
+        // Sort `allBetChipsList` in descending order for calculating levels
         List<double> allBetChipsList = saveResultData.playerDetails
-                                                      .Select(player =>
-                                                      {
-                                                          var playerData = gameRoomData.playerDataDic
-                                                                                       .FirstOrDefault(x => x.Value.userId == player.playerId)
-                                                                                       .Value;
-                                                          return playerData != null ? playerData.allBetChips : 0.0;
-                                                      })
+                                                      .Select(player => gameRoomData.playerDataDic
+                                                                                     .FirstOrDefault(x => x.Value.userId == player.playerId)
+                                                                                     .Value?.allBetChips ?? 0.0)
                                                       .OrderByDescending(chips => chips)
                                                       .ToList();
 
-        // Debugging: Print the entire allBetChipsList after sorting
-        Debug.Log("All Bet Chips List (Descending Order):");
-        foreach (var chips in allBetChipsList)
-        {
-            Debug.Log("Bet Chips: " + chips);
-        }
-
-        // Identify the second highest bet if there are at least two players
-        double secondHighestBet = allBetChipsList.Count > 1 ? allBetChipsList[1] : 0;
-        Debug.Log("Second Highest Bet: " + secondHighestBet);
-
-        // Calculate the effective bet for each player
         foreach (var player in saveResultData.playerDetails)
         {
-            // Find the matching GameRoomPlayerData for each player
-            GameRoomPlayerData playerNew = gameRoomData.playerDataDic
-                                                       .FirstOrDefault(x => x.Value.userId == player.playerId)
-                                                       .Value;
+            // Match player data in gameRoomData
+            GameRoomPlayerData playerData = gameRoomData.playerDataDic
+                                                        .FirstOrDefault(x => x.Value.userId == player.playerId)
+                                                        .Value;
 
-            if (playerNew != null)
+            if (playerData != null)
             {
-                // Determine the effective bet amount for the player
-                double effectiveBet = playerNew.allBetChips > secondHighestBet
-                                      ? secondHighestBet
-                                      : playerNew.allBetChips;
+                // Determine effective bet by comparing with each decreasing level of bet
+                double effectiveBet = 0;
+                foreach (var level in allBetChipsList)
+                {
+                    if (playerData.allBetChips > level)
+                        effectiveBet += level;
+                    else
+                    {
+                        effectiveBet += playerData.allBetChips;
+                        break;
+                    }
+                }
 
-                // Debugging: Log the effective bet for each player
-                Debug.Log($"Player ID: {player.playerId}, All Bet Chips: {playerNew.allBetChips}, Effective Bet: {effectiveBet}");
+                Debug.Log($"Player ID: {player.playerId}, All Bet Chips: {playerData.allBetChips}, Effective Bet: {effectiveBet}");
 
-                // Set the effective bet in the player's details
-                //saveResultData.playerDetails[int.Parse(player.playerId)].playerValidBetAmount = effectiveBet;
+                // Store effective bet back to Firebase result data
+                saveResultData.playerDetails.FirstOrDefault(x => x.playerId == player.playerId).playerValidBetAmount = effectiveBet;
             }
             else
             {
@@ -1059,7 +1043,6 @@ public class GameView : MonoBehaviour
             }
         }
     }
-
 
     /// <summary>
     /// 設置行動按鈕文字(是否為玩家回合)
@@ -2947,8 +2930,8 @@ public class GameView : MonoBehaviour
         {
             //發牌
             case GameFlowEnum.Licensing:
-                SavePreGame();
                 CalculateEffectiveBets();
+                SavePreGame();
                 //GameInit();
 
                 //HandPokerLicensing(pack.LicensingStagePack.HandPokerDic);
