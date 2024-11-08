@@ -1000,7 +1000,7 @@ public class GameControl : MonoBehaviour
         }
     }
 
-    public List<RoomFee> winnersRoomFee;
+    public List<RoomFee> winnersRoomFee = new();
 
     public void CalculateRoomFee()
     {
