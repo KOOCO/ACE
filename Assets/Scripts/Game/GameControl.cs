@@ -1018,7 +1018,6 @@ public class GameControl : MonoBehaviour
             }
 
             double roomFee = winAmount * roomRate;
-            winner.roomFee = roomFee;
             double finalWinnings = winAmount - roomFee;
             double profit = winAmount - winner.allBetChips;
 
@@ -1044,7 +1043,11 @@ public class GameControl : MonoBehaviour
                     newData[FirebaseManager.SIDE_PROFIT] = Math.Floor(profit);
                     break;
             }
-
+            GameRoomPlayerData playerData = GetPlayerData(winner.userId);
+            if (playerData != null)
+            {
+                playerData.roomFee = roomFee;
+            }
             // Update player data
             UpdataPlayerData(winner.userId, newData);
         }
