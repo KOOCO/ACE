@@ -205,51 +205,7 @@ mergeInto(LibraryManager.library, {
     JS_RemoveListenerConnectState: function(idPtr) {
         const id = UTF8ToString(idPtr);
         window.removePresenceListener(id);
-    },
-
-   // var leaveRoomURL = "";  // Declare the global variable outside of any function.
-    JS_ReceiveUnityData: function(leaveRoomURLString) {
-        leaveRoomURL = leaveRoomURLString;
-
-        console.log("Received data from Unity:", leaveRoomURL);
-    },
-
-    JS_ClearLeaveRoomData: function() {
-        leaveRoomURL = null;
-
-        console.log("Leave room data cleared:", leaveRoomURL);
-    },
-
-    JS_SendTabCloseData: function() {
-        if (!leaveRoomURL) {
-            console.log("No data to send, skipping.");
-            return;
-        }
-
-        const fullUrl = leaveRoomURL;
-        const data = JSON.stringify({});
-
-        // Use sendBeacon to send the data when the page is about to unload
-        const isBeaconSent = navigator.sendBeacon(fullUrl, data);
-        if (isBeaconSent) {
-            console.log("sendBeacon request sent successfully.");
-        } else {
-            console.log("Failed to send sendBeacon request.");
-        }
-
-        // Optionally, clear the data after sending the request
-        JS_ClearLeaveRoomData();
-    },
-
-    JS_AddBeforeUnloadListener: function() {
-        console.log('JS_AddBeforeUnloadListener called');
-        window.addEventListener('beforeunload', function(event) {
-            console.log('Tab is closing or refreshing');
-            JS_SendTabCloseData();
-        });
-    },
-
-    
+    },    
 
     // 加入遊戲房間查詢
     // pathPtr = 查詢路徑
