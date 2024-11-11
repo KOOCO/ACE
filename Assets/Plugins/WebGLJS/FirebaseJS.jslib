@@ -207,7 +207,7 @@ mergeInto(LibraryManager.library, {
         window.removePresenceListener(id);
     },
 
-
+    var leaveRoom = {};
     JS_ReceiveUnityData: function(memberId, roomId, amount, type, rankPoint) {
         leaveRoom.memberId = memberId;
         leaveRoom.roomId = roomId;
