@@ -224,12 +224,21 @@ public class JoinRoomView : MonoBehaviour
 
     [DllImport("__Internal")]
     private static extern void JS_AddBeforeUnloadListener();
+    [DllImport("__Internal")]
+    private static extern void JS_ReceiveUnityData(string memberId, string roomId, string amount, string type, string rankPoint);
     public void SendRoomDataToJS(string memberId, long roomId, double amount, string type, int rankPoint)
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
         JS_AddBeforeUnloadListener();
         // For WebGL, you can use the `Application.ExternalCall` method (older Unity) or directly call `SendMessage`.
-        JS_ReceiveUnityData('{memberId}', '{roomId}', {amount}, '{type}', {rankPoint});
+        try
+        {
+            JS_ReceiveUnityData(memberId.ToString(), roomId.ToString(), amount.ToString(), type.ToString(), rankPoint.ToString());
+        }
+        catch (EntryPointNotFoundException e)
+        {
+            Debug.LogError("JS function not found: " + e.Message);
+        }
 #else
         Debug.Log("This function only works in a WebGL build.");
 #endif
