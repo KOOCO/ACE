@@ -383,6 +383,8 @@ public class GameControl : MonoBehaviour
             RoomType != TableTypeEnum.IntegralTable)
         {
             //房間剩下1名玩家
+            Debug.Log("OnLeaveTable :: Single Player : " + QueryRoomPath);
+
             JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}");
         }
         else
@@ -400,6 +402,8 @@ public class GameControl : MonoBehaviour
             {
                 string newHostId = gameRoomData.playingPlayersIdList.Where(x => x != DataManager.UserId && !x.StartsWith(FirebaseManager.ROBOT_ID))
                                                 .FirstOrDefault();
+
+                Debug.Log("OnLeaveTable :: more then one Player : " + QueryRoomPath);
 
                 //更新房主
                 var dataDic = new Dictionary<string, object>()

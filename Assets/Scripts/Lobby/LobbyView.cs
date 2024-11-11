@@ -325,7 +325,7 @@ public class LobbyView : MonoBehaviour
     /// </summary>
     public void UpdateUserData()
     {
-        print("Get user Data");
+        print("Get user Data :: " + DataManager.UserId);
         //讀取用戶資料
         JSBridgeManager.Instance.ReadDataFromFirebase(
             $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}",
@@ -339,6 +339,7 @@ public class LobbyView : MonoBehaviour
     /// <param name="jsonData">回傳資料</param>
     public void GetDataCallback(string jsonData)
     {
+        Debug.Log($"{nameof(JoinRoomView)} :: {nameof(GetDataCallback)} : {jsonData}");
         AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
 
         if (loginData != null &&
@@ -438,14 +439,15 @@ public class LobbyView : MonoBehaviour
     //Test callBack
     void getUserData(string jsonData)
     {
-        AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
+        Debug.Log($"{nameof(JoinRoomView)} :: {nameof(getUserData)} : {jsonData}");
+        // AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
 
-        print(loginData.userId);
-        print(loginData.nickname);
-        print(loginData.password);
-        print(loginData.UChips);
-        print(loginData.online);
-        print(loginData.phoneNumber);
+        // print(loginData.userId);
+        // print(loginData.nickname);
+        // print(loginData.password);
+        // print(loginData.UChips);
+        // print(loginData.online);
+        // print(loginData.phoneNumber);
     }
 
     /// <summary>
