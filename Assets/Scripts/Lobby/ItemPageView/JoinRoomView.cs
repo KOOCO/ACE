@@ -140,7 +140,7 @@ public class JoinRoomView : MonoBehaviour
                 DataManager.RoomId = gameRound.roomId;
                 actionType = gameRound.actionType;
 
-                SendRoomDataToJS(DataManager.UserId, long.Parse(DataManager.RoomId), 0, DataManager.CurrencyType.ToString(), 10);
+                //SendRoomDataToJS(DataManager.UserId, DataManager.RoomId, 0, DataManager.CurrencyType.ToString(), 10);
 
                 NoodleApi.PostTableBuyIn(newCarryChipsValue, (data) =>
                 {
@@ -222,28 +222,28 @@ public class JoinRoomView : MonoBehaviour
         });
     }
 
-    [DllImport("__Internal")]
-    private static extern void JS_AddBeforeUnloadListener();
-    [DllImport("__Internal")]
-    private static extern void JS_ReceiveUnityData(string memberId, string roomId, string amount, string type, string rankPoint);
-    public void SendRoomDataToJS(string memberId, long roomId, double amount, string type, int rankPoint)
-    {
-#if UNITY_WEBGL && !UNITY_EDITOR
-        Debug.Log("Join Room View :: SendRoomDataToJS");
-        JS_AddBeforeUnloadListener();
-        // For WebGL, you can use the `Application.ExternalCall` method (older Unity) or directly call `SendMessage`.
-        try
-        {
-            JS_ReceiveUnityData(memberId.ToString(), roomId.ToString(), amount.ToString(), type.ToString(), rankPoint.ToString());
-        }
-        catch (EntryPointNotFoundException e)
-        {
-            Debug.LogError("JS function not found: " + e.Message);
-        }
-#else
-        Debug.Log("This function only works in a WebGL build.");
-#endif
-    }
+    //     private string BASE_URL = "https://admin-d.jf588.com";  // API Base URL
+
+    //     [DllImport("__Internal")]
+    //     private static extern void JS_AddBeforeUnloadListener();
+    //     [DllImport("__Internal")]
+    //     private static extern void JS_ReceiveUnityData(string leaveRoomURL);
+
+    //     public void SendRoomDataToJS(string memberId, string roomId, double amount, string type, int rankPoint)
+    //     {
+    // #if UNITY_WEBGL && !UNITY_EDITOR
+    //         // Ensure the JavaScript listener is set
+    //         JS_AddBeforeUnloadListener();
+
+    //         string apiEndpoint = $"/api/app/rooms/leave-table?memberId={memberId}&roomId={roomId}&amount={amount}&type={type}&rankPoint={rankPoint}";
+    //         string fullUrl = BASE_URL + apiEndpoint;
+
+    //         // Send data to JavaScript
+    //         JS_ReceiveUnityData(fullUrl);
+    // #else
+    //         Debug.Log("This function only works in a WebGL build.");
+    // #endif
+    //     }
 
     public void CreateNewRoom()
     {
@@ -365,8 +365,6 @@ public class JoinRoomView : MonoBehaviour
     public void CreateNewRoomCallback(string isSuccess)
     {
         //錯誤
-        Debug.Log("Join Room View :: CreateNewRoomCallback : " + isSuccess);
-
         if (isSuccess == "false")
         {
             ViewManager.Instance.CloseWaitingView(transform);
@@ -383,7 +381,6 @@ public class JoinRoomView : MonoBehaviour
     /// <returns></returns>
     private IEnumerator IYieldInCreateRoom()
     {
-        Debug.Log("Join Room View :: IYieldInCreateRoom");
         yield return new WaitForSeconds(0.2f);
 
         GameRoomManager.Instance.CreateGameRoom(tableType,
@@ -404,7 +401,6 @@ public class JoinRoomView : MonoBehaviour
     /// <param name="jsonData">房間資料</param>
     public void JoinRoomCallback(string jsonData)
     {
-        Debug.Log("Join Room View :: JoinRoomCallback :: " + jsonData);
         var gameRoomData = FirebaseManager.Instance.OnFirebaseDataRead<GameRoomData>(jsonData);
         int seat = TexasHoldemUtil.SetGameSeat(gameRoomData);
 
