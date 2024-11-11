@@ -229,6 +229,7 @@ public class JoinRoomView : MonoBehaviour
     public void SendRoomDataToJS(string memberId, long roomId, double amount, string type, int rankPoint)
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
+        Debug.Log("Join Room View :: SendRoomDataToJS");
         JS_AddBeforeUnloadListener();
         // For WebGL, you can use the `Application.ExternalCall` method (older Unity) or directly call `SendMessage`.
         try
@@ -364,6 +365,8 @@ public class JoinRoomView : MonoBehaviour
     public void CreateNewRoomCallback(string isSuccess)
     {
         //錯誤
+        Debug.Log("Join Room View :: CreateNewRoomCallback : " + isSuccess);
+
         if (isSuccess == "false")
         {
             ViewManager.Instance.CloseWaitingView(transform);
@@ -380,6 +383,7 @@ public class JoinRoomView : MonoBehaviour
     /// <returns></returns>
     private IEnumerator IYieldInCreateRoom()
     {
+        Debug.Log("Join Room View :: IYieldInCreateRoom");
         yield return new WaitForSeconds(0.2f);
 
         GameRoomManager.Instance.CreateGameRoom(tableType,
@@ -400,6 +404,7 @@ public class JoinRoomView : MonoBehaviour
     /// <param name="jsonData">房間資料</param>
     public void JoinRoomCallback(string jsonData)
     {
+        Debug.Log("Join Room View :: JoinRoomCallback :: " + jsonData);
         var gameRoomData = FirebaseManager.Instance.OnFirebaseDataRead<GameRoomData>(jsonData);
         int seat = TexasHoldemUtil.SetGameSeat(gameRoomData);
 
