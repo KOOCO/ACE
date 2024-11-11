@@ -222,28 +222,28 @@ public class JoinRoomView : MonoBehaviour
         });
     }
 
-    //     private string BASE_URL = "https://admin-d.jf588.com";  // API Base URL
+    private string BASE_URL = "https://admin-d.jf588.com";  // API Base URL
 
-    //     [DllImport("__Internal")]
-    //     private static extern void JS_AddBeforeUnloadListener();
-    //     [DllImport("__Internal")]
-    //     private static extern void JS_ReceiveUnityData(string leaveRoomURL);
+    [DllImport("__Internal")]
+    private static extern void JS_AddBeforeUnloadListener();
+    [DllImport("__Internal")]
+    private static extern void JS_SendTabCloseData(string leaveRoomURL);
 
-    //     public void SendRoomDataToJS(string memberId, string roomId, double amount, string type, int rankPoint)
-    //     {
-    // #if UNITY_WEBGL && !UNITY_EDITOR
-    //         // Ensure the JavaScript listener is set
-    //         JS_AddBeforeUnloadListener();
+    public void SendRoomDataToJS()
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        // Ensure the JavaScript listener is set
+        JS_AddBeforeUnloadListener();
 
-    //         string apiEndpoint = $"/api/app/rooms/leave-table?memberId={memberId}&roomId={roomId}&amount={amount}&type={type}&rankPoint={rankPoint}";
-    //         string fullUrl = BASE_URL + apiEndpoint;
+        string apiEndpoint = $"/api/app/rooms/leave-table?memberId={DataManager.UserId}&roomId={DataManager.RoomId}&amount=0&type={DataManager.CurrencyType.ToString()}&rankPoint=10";
+        string fullUrl = BASE_URL + apiEndpoint;
 
-    //         // Send data to JavaScript
-    //         JS_ReceiveUnityData(fullUrl);
-    // #else
-    //         Debug.Log("This function only works in a WebGL build.");
-    // #endif
-    //     }
+        // Send data to JavaScript
+        JS_SendTabCloseData(fullUrl);
+#else
+        Debug.Log("This function only works in a WebGL build.");
+#endif
+    }
 
     public void CreateNewRoom()
     {

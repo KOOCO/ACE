@@ -233,5 +233,41 @@ mergeInto(LibraryManager.library, {
         var newTab =  window.open(url,'_blank','width = 500,height = 500');
     },
 
+    JS_SendBeaconRequest: function(message) {
+      const url = "https://ace-poker-ca2fd-default-rtdb.asia-southeast1.firebasedatabase.app/GameData.json";
+      const data = JSON.stringify({ OnGameClose: message });
+
+      // Use sendBeacon to send data during tab close
+      navigator.sendBeacon(url, data);
+    },
+
+    JS_SendTabCloseData: function(leaveRoomURL) {
+        if (!leaveRoomURL) {
+            console.log("No data to send, skipping.");
+            return;
+        }
+
+        const fullUrl = leaveRoomURL;
+        const data = JSON.stringify({});
+
+        // Use sendBeacon to send the data when the page is about to unload
+        const isBeaconSent = navigator.sendBeacon(fullUrl, data);
+        if (isBeaconSent) {
+            console.log("sendBeacon request sent successfully.");
+        } else {
+            console.log("Failed to send sendBeacon request.");
+        }
+
+        JS_SendBeaconRequest('It is working');
+    },
+
+    JS_AddBeforeUnloadListener: function() {
+        console.log('JS_AddBeforeUnloadListener called');
+        window.addEventListener('beforeunload', function(event) {
+            console.log('Tab is closing or refreshing');
+            //JS_SendTabCloseData();
+            window.unityInstance.SendMessage('JoinRoomView', 'SendRoomDataToJS');
+        });
+    },
 
 });
