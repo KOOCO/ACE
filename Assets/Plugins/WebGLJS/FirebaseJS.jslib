@@ -207,41 +207,26 @@ mergeInto(LibraryManager.library, {
         window.removePresenceListener(id);
     },
 
-    mergeInto(LibraryManager.library, {
-        JS_ReceiveUnityData: function(memberId, roomId, amount, type, rankPoint) {
-            // Ensure leaveRoom is a global object
-            window.leaveRoom = window.leaveRoom || {};
+   // var leaveRoomURL = "";  // Declare the global variable outside of any function.
+    JS_ReceiveUnityData: function(leaveRoomURLString) {
+        leaveRoomURL = leaveRoomURLString;
 
-            // Assign values
-            window.leaveRoom.memberId = UTF8ToString(memberId);
-            window.leaveRoom.roomId = UTF8ToString(roomId);
-            window.leaveRoom.amount = parseFloat(amount);
-            window.leaveRoom.type = UTF8ToString(type);
-            window.leaveRoom.rankPoint = parseFloat(rankPoint);
-
-            console.log("Received data from Unity:", window.leaveRoom);
-        }
-    });
+        console.log("Received data from Unity:", leaveRoomURL);
+    },
 
     JS_ClearLeaveRoomData: function() {
-        leaveRoom.memberId = null;
-        leaveRoom.roomId = null;
-        leaveRoom.amount = null;
-        leaveRoom.type = null;
-        leaveRoom.rankPoint = null;
+        leaveRoomURL = null;
 
-        console.log("Leave room data cleared:", leaveRoom);
+        console.log("Leave room data cleared:", leaveRoomURL);
     },
 
     JS_SendTabCloseData: function() {
-        if (!leaveRoom.memberId || !leaveRoom.roomId) {
+        if (!leaveRoomURL) {
             console.log("No data to send, skipping.");
             return;
         }
 
-        const apiEndpoint = `/api/app/rooms/leave-table?memberId=${leaveRoom.memberId}&roomId=${leaveRoom.roomId}&amount=${leaveRoom.amount}&type=${leaveRoom.type}&rankPoint=${leaveRoom.rankPoint}`;
-        const baseUrl = "https://admin-d.jf588.com";
-        const fullUrl = `${baseUrl}${apiEndpoint}`;
+        const fullUrl = leaveRoomURL;
         const data = JSON.stringify({});
 
         // Use sendBeacon to send the data when the page is about to unload

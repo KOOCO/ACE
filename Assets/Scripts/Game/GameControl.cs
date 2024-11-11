@@ -344,7 +344,7 @@ public class GameControl : MonoBehaviour
             DataManager.UserChips += leaveRoom.amount;
             DataManager.DataUpdated = true;
             OnLeaveTable();
-            ClearRoomDataFromJS();
+            // ClearRoomDataFromJS();
         },
         (error) =>
         {
@@ -352,17 +352,17 @@ public class GameControl : MonoBehaviour
         });
     }
 
-    [DllImport("__Internal")]
-    private static extern void JS_ClearLeaveRoomData();
+    //     [DllImport("__Internal")]
+    //     private static extern void JS_ClearLeaveRoomData();
 
-    public void ClearRoomDataFromJS()
-    {
-#if UNITY_WEBGL && !UNITY_EDITOR
-       JS_ClearLeaveRoomData();
-#else
-        Debug.Log("This function only works in a WebGL build.");
-#endif
-    }
+    //     public void ClearRoomDataFromJS()
+    //     {
+    // #if UNITY_WEBGL && !UNITY_EDITOR
+    //        JS_ClearLeaveRoomData();
+    // #else
+    //         Debug.Log("This function only works in a WebGL build.");
+    // #endif
+    //     }
 
     void OnLeaveTable()
     {
