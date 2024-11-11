@@ -358,7 +358,7 @@ public class GameControl : MonoBehaviour
     public void ClearRoomDataFromJS()
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
-        Application.ExternalEval($"JS_ClearLeaveRoomData();");
+       JS_ClearLeaveRoomData();
 #else
         Debug.Log("This function only works in a WebGL build.");
 #endif

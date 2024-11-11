@@ -166,7 +166,7 @@ public class JoinRoomView : MonoBehaviour
                         break;
                 }
                 DataManager.DataUpdated = true;
-            }, 
+            },
             null);
 
 #if UNITY_EDITOR
@@ -227,9 +227,9 @@ public class JoinRoomView : MonoBehaviour
     public void SendRoomDataToJS(string memberId, long roomId, double amount, string type, int rankPoint)
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
-        Application.ExternalEval($"JS_AddBeforeUnloadListener();");
+        JS_AddBeforeUnloadListener();
         // For WebGL, you can use the `Application.ExternalCall` method (older Unity) or directly call `SendMessage`.
-        Application.ExternalEval($"JS_ReceiveUnityData('{memberId}', '{roomId}', {amount}, '{type}', {rankPoint});");
+        JS_ReceiveUnityData('{memberId}', '{roomId}', {amount}, '{type}', {rankPoint});
 #else
         Debug.Log("This function only works in a WebGL build.");
 #endif
@@ -335,7 +335,7 @@ public class JoinRoomView : MonoBehaviour
                 nameof(CreateNewRoomCallback));
             actionType = "";
         }
-        else if(actionType == "Join")
+        else if (actionType == "Join")
         {
             //有房間
             print("已有房間(Has other room)");
