@@ -364,6 +364,7 @@ public class JoinRoomView : MonoBehaviour
     /// <param name="isSuccess">創建/加入房間回傳結果</param>
     public void CreateNewRoomCallback(string isSuccess)
     {
+        Debug.Log($"JoinRoomView :: {nameof(CreateNewRoomCallback)} : {isSuccess}");
         //錯誤
         if (isSuccess == "false")
         {
@@ -381,6 +382,7 @@ public class JoinRoomView : MonoBehaviour
     /// <returns></returns>
     private IEnumerator IYieldInCreateRoom()
     {
+        Debug.Log($"JoinRoomView :: {nameof(IYieldInCreateRoom)}");
         yield return new WaitForSeconds(0.2f);
 
         GameRoomManager.Instance.CreateGameRoom(tableType,
@@ -403,6 +405,8 @@ public class JoinRoomView : MonoBehaviour
     {
         var gameRoomData = FirebaseManager.Instance.OnFirebaseDataRead<GameRoomData>(jsonData);
         int seat = TexasHoldemUtil.SetGameSeat(gameRoomData);
+
+        Debug.Log($"JoinRoomView :: {nameof(CreateNewRoomCallback)} : {jsonData}");
 
         //本地創建房間
         GameRoomManager.Instance.CreateGameRoom(tableType,
