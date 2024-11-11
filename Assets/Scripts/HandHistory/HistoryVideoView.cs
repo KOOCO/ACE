@@ -50,13 +50,13 @@ public class HistoryVideoView : MonoBehaviour
 
     private void Awake()
     {
-        gameView = GameObject.Find("GameView").GetComponent<GameView>();
+        //gameView = GameObject.Find("GameView").GetComponent<GameView>();
         ListenerEvent();
 
         //切換影片列表移動距離
         VerticalLayoutGroup verticalLayout = HandHistoryViewParent.GetComponent<VerticalLayoutGroup>();
-        float sampleHeight = HistorySample.rect.height;
-        switchVideoMoveDictance = verticalLayout.spacing + sampleHeight;
+        //float sampleHeight = HistorySample.rect.height;
+        //switchVideoMoveDictance = verticalLayout.spacing + sampleHeight;
     }
 
     /// <summary>
@@ -407,7 +407,7 @@ public class HistoryVideoView : MonoBehaviour
             }
         }
         Debug.Log("Show Chips");
-        yield return gameView.IConcentrateBetChips();
+        //yield return gameView.IConcentrateBetChips();
         if (processStepHistoryData.CommunityPoker == null ||
             processStepHistoryData.CommunityPoker.Count == 0)
         {
