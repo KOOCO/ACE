@@ -622,6 +622,8 @@ public class GameControl : MonoBehaviour
     /// <param name="gameFlow">遊戲流程</param>
     /// 
     double mainPotWinChips = 0;
+    public List<RoomFee> winnersRoomFee = new();
+
     public IEnumerator IStartGameFlow(GameFlowEnum gameFlow)
     {
         Debug.Log($"{nameof(IStartGameFlow)} :: {gameFlow} :: hostId :: {gameRoomData.hostId} :: {DataManager.UserId}");
@@ -736,6 +738,7 @@ public class GameControl : MonoBehaviour
 
             //遊戲結果_底池
             case GameFlowEnum.PotResult:
+                winnersRoomFee.Clear();
                 Debug.Log(nameof(IStartGameFlow) + " Before getting playing Players");
                 // Get the players still in the game and order by their total bet chips
                 playingPlayers = GetPlayingPlayer().OrderBy(x => x.allBetChips).ToList();
@@ -1014,9 +1017,6 @@ public class GameControl : MonoBehaviour
 
         }
     }
-
-    public List<RoomFee> winnersRoomFee = new();
-
     public void CalculateRoomFee()
     {
         foreach (var winner in winnersRoomFee)
@@ -1985,6 +1985,9 @@ public class GameControl : MonoBehaviour
                 { FirebaseManager.GAME_STATE, (int)playerState},                        //(PlayerStateEnum)遊戲狀態(等待/遊戲中/棄牌/All In/保留座位離開)
                 { FirebaseManager.ALL_BET_CHIPS, 0},                                    //該局總下注籌碼
                 { FirebaseManager.SHOW_HAND_POKER, new List<int>(){ -1, -1} },          //棄牌後顯示手牌
+                { FirebaseManager.ROOM_FEE, 0 },
+                { FirebaseManager.VALID_BET, 0 },
+                { FirebaseManager.PLAYER_HAND_SHAPE, -1 },
             };
             UpdataPlayerData(id,
                              data);

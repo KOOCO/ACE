@@ -2619,7 +2619,7 @@ public class GameView : MonoBehaviour
                 var potWinChips = gameRoomData.potWinData?.potWinChips ?? 0;
                 var sideWinChips = gameRoomData.sideWinData?.sideWinChips ?? 0;
                 var isWinner = gameRoomData.potWinData?.potWinnersId?.Contains(playerNew.userId) ?? false;
-                Debug.Log("PlayerDetailsLoop :: " + gameControl.winnersRoomFee.Count());
+                Debug.Log("PlayerDetailsLoop :: " + potWinChips);
                 PlayerDetails playerData = new PlayerDetails
                 {
                     playerId = playerNew.userId,
@@ -3308,7 +3308,7 @@ public class GameView : MonoBehaviour
                 SaveToFirebase(nameof(processHistoryData), processHistoryData, nameof(GameProcessDataSaveToFirebase));
                 IncrementRoundCount();
             }
-            // Save data locally
+            // Save data by player on Firebase
             HandHistoryManager.Instance.SaveResult(saveResultData);
             HandHistoryManager.Instance.SaveGameInit(gameInitHistoryData);
             HandHistoryManager.Instance.SaveProcess(processHistoryData);
@@ -3432,7 +3432,7 @@ public class GameView : MonoBehaviour
     };
 
         // Update the round count in Firebase
-        JSBridgeManager.Instance.UpdateDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.ROUND_DATA_PATH}/{DataManager.RoomId}", roundCountUpdate);
+        JSBridgeManager.Instance.UpdateDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.ROUND_DATA_PATH}/{DataManager.RoomId}", roundCountUpdate, nameof(OnRoundCountUpdated));
 
         Debug.Log($"Round count updated to {newCount}.");
     }
