@@ -207,16 +207,21 @@ mergeInto(LibraryManager.library, {
         window.removePresenceListener(id);
     },
 
-    var leaveRoom = {};
-    JS_ReceiveUnityData: function(memberId, roomId, amount, type, rankPoint) {
-        leaveRoom.memberId = memberId;
-        leaveRoom.roomId = roomId;
-        leaveRoom.amount = amount;
-        leaveRoom.type = type;
-        leaveRoom.rankPoint = rankPoint;
+    mergeInto(LibraryManager.library, {
+        JS_ReceiveUnityData: function(memberId, roomId, amount, type, rankPoint) {
+            // Ensure leaveRoom is a global object
+            window.leaveRoom = window.leaveRoom || {};
 
-        console.log("Received data from Unity:", leaveRoom);
-    },
+            // Assign values
+            window.leaveRoom.memberId = UTF8ToString(memberId);
+            window.leaveRoom.roomId = UTF8ToString(roomId);
+            window.leaveRoom.amount = parseFloat(amount);
+            window.leaveRoom.type = UTF8ToString(type);
+            window.leaveRoom.rankPoint = parseFloat(rankPoint);
+
+            console.log("Received data from Unity:", window.leaveRoom);
+        }
+    });
 
     JS_ClearLeaveRoomData: function() {
         leaveRoom.memberId = null;
