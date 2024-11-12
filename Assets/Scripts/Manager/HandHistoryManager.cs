@@ -114,6 +114,7 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
 
     void LoadHandHistory(string data)
     {
+        if (data == "null") return;
         HandHistory handHistory = new HandHistory()
         {
             gameInitHistoryDataList = new(),
