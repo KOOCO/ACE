@@ -233,41 +233,85 @@ mergeInto(LibraryManager.library, {
         var newTab =  window.open(url,'_blank','width = 500,height = 500');
     },
 
-    JS_SendBeaconRequest: function(message) {
-      const url = "https://ace-poker-ca2fd-default-rtdb.asia-southeast1.firebasedatabase.app/GameData.json";
-      const data = JSON.stringify({ OnGameClose: message });
 
-      // Use sendBeacon to send data during tab close
-      navigator.sendBeacon(url, data);
+
+
+    myStoredVariable: null, // Initialize the variable
+
+    // Function to store a value
+    storeVariable: function(value) {
+        this.myStoredVariable = UTF8ToString(value);
+        console.log("Variable stored:", this.myStoredVariable);
     },
 
-    JS_SendTabCloseData: function(leaveRoomURL) {
-        if (!leaveRoomURL) {
-            console.log("No data to send, skipping.");
-            return;
-        }
-
-        const fullUrl = leaveRoomURL;
-        const data = JSON.stringify({});
-
-        // Use sendBeacon to send the data when the page is about to unload
-        const isBeaconSent = navigator.sendBeacon(fullUrl, data);
-        if (isBeaconSent) {
-            console.log("sendBeacon request sent successfully.");
-        } else {
-            console.log("Failed to send sendBeacon request.");
-        }
-
-        JS_SendBeaconRequest('It is working');
+    clearStoredVariable: function() {
+        this.myStoredVariable = null;
+        console.log("Stored Variable is cleared");
     },
 
-    JS_AddBeforeUnloadListener: function() {
-        console.log('JS_AddBeforeUnloadListener called');
+    // Function to handle the page load and unload events
+    onPageLoad: function() {
+        // Register the 'load' event listener on the window object
+        window.addEventListener('load', function() {
+        console.log('The page has fully loaded!');
+        });
+
+        // Register the 'beforeunload' event listener on the window object
         window.addEventListener('beforeunload', function(event) {
-            console.log('Tab is closing or refreshing');
-            //JS_SendTabCloseData();
-            window.unityInstance.SendMessage('JoinRoomView', 'SendRoomDataToJS');
+        console.log('The page is about to be unloaded!');
+        
+        if (!myStoredVariable) {
+                console.log("No data to send, skipping.");
+                return;
+        }
+
+        // Send a beacon to the provided Firebase URL before unloading the page
+        const url = myStoredVariable;
+        const data = { message: 'Its working' };
+
+        // Use the Beacon API to send data to Firebase before the page unloads
+        if (navigator.sendBeacon) {
+            const payload = JSON.stringify(data); // Convert data to JSON string
+            navigator.sendBeacon(url, payload); // Send the request asynchronously
+        }
+
+        // Optionally, set a confirmation message (browser dependent)
+        //event.returnValue = 'Are you sure you want to leave?';  // Some browsers show this message to the user
         });
     },
+
+    onPageLoadWithVisibilityChange: function() {
+        // Check if the device is a mobile device
+        const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
+        if (!isMobile) {
+            console.log("Not a mobile device, skipping visibility change listener.");
+            return; // Exit if not on mobile
+        }
+
+        // Add the visibility change listener only on mobile devices
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'hidden') {
+
+                if (!myStoredVariable) {
+                    console.log("No data to send, skipping.");
+                    return;
+                }
+
+                const url = myStoredVariable;
+                const data = { message: 'Its working from mobile' };
+
+                // Send the data using navigator.sendBeacon
+                if (navigator.sendBeacon) {
+                    const payload = JSON.stringify(data);
+                    navigator.sendBeacon(url, payload);
+                }
+
+                console.log("Data sent before page becomes hidden:", data);
+            }
+        });
+
+        console.log("Visibility change listener added for mobile.");
+    }
 
 });

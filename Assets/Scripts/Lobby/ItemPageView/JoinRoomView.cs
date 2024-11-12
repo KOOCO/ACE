@@ -140,7 +140,7 @@ public class JoinRoomView : MonoBehaviour
                 DataManager.RoomId = gameRound.roomId;
                 actionType = gameRound.actionType;
 
-                //SendRoomDataToJS(DataManager.UserId, DataManager.RoomId, 0, DataManager.CurrencyType.ToString(), 10);
+                SendRoomDataToJS();
 
                 NoodleApi.PostTableBuyIn(newCarryChipsValue, (data) =>
                 {
@@ -224,24 +224,61 @@ public class JoinRoomView : MonoBehaviour
 
     private string BASE_URL = "https://admin-d.jf588.com";  // API Base URL
 
-    [DllImport("__Internal")]
-    private static extern void JS_AddBeforeUnloadListener();
-    [DllImport("__Internal")]
-    private static extern void JS_SendTabCloseData(string leaveRoomURL);
-
     public void SendRoomDataToJS()
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
         // Ensure the JavaScript listener is set
-        JS_AddBeforeUnloadListener();
 
         string apiEndpoint = $"/api/app/rooms/leave-table?memberId={DataManager.UserId}&roomId={DataManager.RoomId}&amount=0&type={DataManager.CurrencyType.ToString()}&rankPoint=10";
         string fullUrl = BASE_URL + apiEndpoint;
+        Debug.Log("Leave Room full Url ::"+ fullUrl);
+        StoreVariable("https://ace-poker-ca2fd-default-rtdb.asia-southeast1.firebasedatabase.app/GameData.json");
+        PageChangeVisibility();
+        AddEventListeners();
 
-        // Send data to JavaScript
-        JS_SendTabCloseData(fullUrl);
 #else
         Debug.Log("This function only works in a WebGL build.");
+#endif
+    }
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+    // Define the external JavaScript functions
+
+    [DllImport("__Internal")]
+    private static extern void onPageLoadWithVisibilityChange();
+
+    [DllImport("__Internal")]
+    private static extern void storeVariable(string value);
+
+    [DllImport("__Internal")]
+    private static extern void onPageLoad();
+
+  
+#endif
+
+    public void PageChangeVisibility()
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        onPageLoadWithVisibilityChange();
+        Debug.Log("Unity: PageChangeVisibility called");
+#endif
+    }
+
+
+
+    public void StoreVariable(string value)
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        storeVariable(value);
+        Debug.Log("Unity: Stored variable in JavaScript: " + value);
+#endif
+    }
+
+    public void AddEventListeners()
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        onPageLoad();
+        Debug.Log("Unity: onPageLoad called");
 #endif
     }
 
