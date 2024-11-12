@@ -67,6 +67,7 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
     public const string PLAYER_HAND_SHAPE = "playerHandShape";
     public const string ROOM_FEE = "roomFee";
     public const string VALID_BET = "playerValidBetAmount";
+    public const string IS_PLAYER_LEFT = "isPlayerLeft";
 
     [Header("下注行為")]
     public const string BET_ACTIONER_ID = "betActionerId";                                  //下注玩家ID
@@ -268,6 +269,7 @@ public class GameRoomPlayerData
     public WinnerEnum winType;
     public double playerValidBetAmount;
     public double roomFee;
+    public bool isPlayerLeft;
 }
 
 

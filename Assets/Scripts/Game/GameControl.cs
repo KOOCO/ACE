@@ -407,12 +407,16 @@ public class GameControl : MonoBehaviour
                 Debug.Log("OnLeaveTable :: more then one Player : " + QueryRoomPath);
 
                 //更新房主
-                var dataDic = new Dictionary<string, object>()
+                if (string.IsNullOrEmpty(newHostId))
+                {
+                    Debug.Log("GameControl :: Setting new host : " + newHostId);
+                    var dataDic = new Dictionary<string, object>()
                     {
                          { FirebaseManager.ROOM_HOST_ID, newHostId},
                     };
-                JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}",
-                                                                dataDic);
+                    JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}",
+                                                                    dataDic);
+                }
             }
 
             //移除玩家
@@ -429,6 +433,12 @@ public class GameControl : MonoBehaviour
     {
         gameView.PlayerExitRoom(id);
 
+        var newData = new Dictionary<string, object>
+        {
+            { FirebaseManager.IS_PLAYER_LEFT, true },
+        };
+        UpdataPlayerData(id, newData);
+
         List<string> playingPlayersId = new();
         foreach (var playerId in gameRoomData.playingPlayersIdList)
         {
@@ -437,13 +447,14 @@ public class GameControl : MonoBehaviour
                 playingPlayersId.Add(playerId);
             }
         }
-        JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{id}");
 
         var data = new Dictionary<string, object>()
         {
             { FirebaseManager.PLAYING_PLAYER_ID, playingPlayersId},                 //遊戲中玩家ID
         };
         UpdateGameRoomData(data);
+
+        //JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{id}");
     }
 
 
