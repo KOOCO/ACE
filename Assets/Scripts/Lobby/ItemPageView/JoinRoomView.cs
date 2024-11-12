@@ -209,7 +209,7 @@ public class JoinRoomView : MonoBehaviour
         string apiEndpoint = $"/api/app/rooms/leave-table?memberId={DataManager.UserId}&roomId={DataManager.RoomId}&amount=0&type={DataManager.CurrencyType.ToString()}&rankPoint=10";
         string fullUrl = BASE_URL + apiEndpoint;
         Debug.Log("Leave Room full Url ::"+ fullUrl);
-        StoreVariable("https://ace-poker-ca2fd-default-rtdb.asia-southeast1.firebasedatabase.app/GameData.json");
+        StoreVariable(fullUrl);
         PageChangeVisibility();
         AddEventListeners();
 
