@@ -115,86 +115,7 @@ public class JoinRoomView : MonoBehaviour
             Debug.Log($"MemberId {newRound.memberId} :: TableId {newRound.tableId} :: Amount {newRound.amount}");
 
             //ViewManager.Instance.OpenWaitingView(transform);
-            AppApi.OnJoinRoom(newRound, (data) =>
-            {
-                GameRoom gameRound = JsonConvert.DeserializeObject<GameRoom>(data);
-                Debug.Log("Join Round Response :: " + data);
-                //if (previousRoom == null || previousRoom.id == gameRound.id)
-                //{
-                //    previousRoom = gameRound;
-                //    Debug.Log("same Room id ");
-                //}
-                //else
-                //{
-                //    CreateNewRoom();
-                //    Debug.Log("Room id different");
-                //    return;
-                //}
-
-
-                var _currencyType = DataManager.CurrencyType;
-                Debug.Log("Currency Type :: " + _currencyType);
-                DataManager.TableType = gameRound.tableType;
-                DataManager.Rebate = gameRound.table.rebateSetting;
-                DataManager.RoundId = gameRound.roundId;
-                DataManager.RoomId = gameRound.roomId;
-                actionType = gameRound.actionType;
-
-                SendRoomDataToJS();
-
-                NoodleApi.PostTableBuyIn(newCarryChipsValue, (data) =>
-                {
-                    Debug.Log("Table BuyIn SuccessFull.");
-                },
-               (error) =>
-                {
-                    Debug.LogError($"Table BuyIn Failed Error: {error}");
-                });
-                switch (_currencyType)
-                {
-                    case CurrencyType.Gold:
-                        Debug.Log(_currencyType);
-                        DataManager.UserGold -= newCarryChipsValue;
-                        break;
-                    case CurrencyType.ACoin:
-                        Debug.Log(_currencyType);
-                        DataManager.UserAChips -= newCarryChipsValue;
-                        break;
-                    case CurrencyType.UCoin:
-                        Debug.Log(_currencyType);
-                        DataManager.UserChips -= newCarryChipsValue;
-                        break;
-                }
-                DataManager.DataUpdated = true;
-            },
-            null);
-
-#if UNITY_EDITOR
-
-            /*dataRoomName = "EditorRoom";
-            //創新房間資料
-            var dataDic = new Dictionary<string, object>()
-            {
-                { FirebaseManager.SMALL_BLIND, smallBlind},                         //小盲值
-                { FirebaseManager.ROOM_HOST_ID, DataManager.UserId},                //房主ID
-                { FirebaseManager.POT_CHIPS, 0},                                    //底池總籌碼
-                { FirebaseManager.COMMUNITY_POKER, new List<int>()},                //公共牌
-                { FirebaseManager.CURR_COMMUNITY_POKER, new List<int>()},           //當前公共牌
-            };
-            JSBridgeManager.Instance.UpdateDataFromFirebase(
-                $"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}/{dataRoomName}",
-                dataDic,
-                gameObject.name,
-                nameof(CreateNewRoomCallback));*/
-            Debug.LogError("Cause Editor can't play game, so cancel join/create room, please 'Build First'.");
-            return;
-#endif
-
-            JSBridgeManager.Instance.JoinRoomQueryData($"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}",
-                                                        $"{DataManager.MaxPlayerCount}",
-                                                        $"{DataManager.UserId}",
-                                                        gameObject.name,
-                                                        nameof(JoinRoomQueryCallback));
+            AppApi.OnJoinRoom(newRound, OnJoinRoomSuccess, OnJoinRoomFail);
         });
 
         //購買Slider單位設定
@@ -220,6 +141,62 @@ public class JoinRoomView : MonoBehaviour
         {
             BuyChips_Sli.value = (float)(newCarryChipsValue - smallBlind * 2);
         });
+    }
+
+
+    void OnJoinRoomSuccess(string data)
+    {
+        GameRoom gameRound = JsonConvert.DeserializeObject<GameRoom>(data);
+        Debug.Log("Join Round Response :: " + data);
+        //if (previousRoom == null || previousRoom.id == gameRound.id)
+        //{
+        //    previousRoom = gameRound;
+        //    Debug.Log("same Room id ");
+        //}
+        //else
+        //{
+        //    CreateNewRoom();
+        //    Debug.Log("Room id different");
+        //    return;
+        //}
+        DataManager.TableType = gameRound.tableType;
+        DataManager.Rebate = gameRound.table.rebateSetting;
+        DataManager.RoundId = gameRound.roundId;
+        DataManager.RoomId = gameRound.roomId;
+        actionType = gameRound.actionType;
+
+        SendRoomDataToJS();
+
+#if UNITY_EDITOR
+
+        /*dataRoomName = "EditorRoom";
+        //創新房間資料
+        var dataDic = new Dictionary<string, object>()
+        {
+            { FirebaseManager.SMALL_BLIND, smallBlind},                         //小盲值
+            { FirebaseManager.ROOM_HOST_ID, DataManager.UserId},                //房主ID
+            { FirebaseManager.POT_CHIPS, 0},                                    //底池總籌碼
+            { FirebaseManager.COMMUNITY_POKER, new List<int>()},                //公共牌
+            { FirebaseManager.CURR_COMMUNITY_POKER, new List<int>()},           //當前公共牌
+        };
+        JSBridgeManager.Instance.UpdateDataFromFirebase(
+            $"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}/{dataRoomName}",
+            dataDic,
+            gameObject.name,
+            nameof(CreateNewRoomCallback));*/
+        Debug.LogError("Cause Editor can't play game, so cancel join/create room, please 'Build First'.");
+        return;
+#endif
+
+        JSBridgeManager.Instance.JoinRoomQueryData($"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}",
+                                                    $"{DataManager.MaxPlayerCount}",
+                                                    $"{DataManager.UserId}",
+                                                    gameObject.name,
+                                                    nameof(JoinRoomQueryCallback));
+    }
+    void OnJoinRoomFail(string error)
+    {
+        Debug.LogError("JoinRoomView :: OnJoinRoomFail : " + error);
     }
 
     private string BASE_URL = "https://admin-d.jf588.com";  // API Base URL
@@ -429,6 +406,7 @@ public class JoinRoomView : MonoBehaviour
                                                 newCarryChipsValue,
                                                 0);
 
+        OnEnterTable();
         ViewManager.Instance.CloseWaitingView(transform);
 
         gameObject.SetActive(false);
@@ -455,9 +433,41 @@ public class JoinRoomView : MonoBehaviour
                                                 newCarryChipsValue,
                                                 seat);
 
+        OnEnterTable();
         ViewManager.Instance.CloseWaitingView(transform);
         gameObject.SetActive(false);
         DataManager.isInRoom = true;
         print("Is in Room: " + DataManager.isInRoom);
+    }
+
+    void OnEnterTable()
+    {
+        NoodleApi.PostTableBuyIn(newCarryChipsValue, (data) =>
+        {
+            Debug.Log("Table BuyIn SuccessFull.");
+            var _currencyType = DataManager.CurrencyType;
+            Debug.Log("Currency Type :: " + _currencyType);
+            switch (_currencyType)
+            {
+                case CurrencyType.Gold:
+                    Debug.Log(_currencyType);
+                    DataManager.UserGold -= newCarryChipsValue;
+                    break;
+                case CurrencyType.ACoin:
+                    Debug.Log(_currencyType);
+                    DataManager.UserAChips -= newCarryChipsValue;
+                    break;
+                case CurrencyType.UCoin:
+                    Debug.Log(_currencyType);
+                    DataManager.UserChips -= newCarryChipsValue;
+                    break;
+            }
+            DataManager.DataUpdated = true;
+        },
+        (error) =>
+        {
+            Debug.LogError($"Table BuyIn Failed Error: {error}");
+        });
+
     }
 }
