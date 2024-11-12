@@ -2549,7 +2549,14 @@ public class GameView : MonoBehaviour
             JudgePokerShape(player, true, true);
 
             player.IsWinnerActive = true;
-            player.setWinnerDisplay($"POT + ${changeValue:f2}");
+            if (potWinnerId == DataManager.UserId)
+            {
+                player.setWinnerDisplay($"POT + ${changeValue:f2}");
+            }
+            else
+            {
+                player.setWinnerDisplay($"POT  + ${gameRoomData.sideWinData.sideWinChips / gameRoomData.sideWinData.sideWinnersId.Count():f2}");
+            }
 
             Vector2 winnerSeatPos = player.gameObject.transform.position;
 

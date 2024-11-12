@@ -186,7 +186,7 @@ public class JoinRoomView : MonoBehaviour
                 dataDic,
                 gameObject.name,
                 nameof(CreateNewRoomCallback));*/
-            print("Cause Editor can't play game, so cancel join/create room, please 'Build First'.");
+            Debug.LogError("Cause Editor can't play game, so cancel join/create room, please 'Build First'.");
             return;
 #endif
 
@@ -395,6 +395,8 @@ public class JoinRoomView : MonoBehaviour
         ViewManager.Instance.CloseWaitingView(transform);
 
         gameObject.SetActive(false);
+        DataManager.isInRoom = true;
+        print("Is in Room: " + DataManager.isInRoom);
     }
 
     /// <summary>
@@ -418,5 +420,7 @@ public class JoinRoomView : MonoBehaviour
 
         ViewManager.Instance.CloseWaitingView(transform);
         gameObject.SetActive(false);
+        DataManager.isInRoom = true;
+        print("Is in Room: " + DataManager.isInRoom);
     }
 }

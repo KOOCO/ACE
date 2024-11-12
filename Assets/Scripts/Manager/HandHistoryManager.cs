@@ -114,18 +114,18 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
 
     void LoadHandHistory(string data)
     {
-        HandHistory handHistory = JsonConvert.DeserializeObject<HandHistory>(data);
-        if (handHistory != null)
+        if (data == "null") return;
+        HandHistory handHistory = new HandHistory()
         {
-            resultDataList = handHistory.resultDataList;
-            gameInitHistoryDataList = handHistory.gameInitHistoryDataList;
-            processHistoryDataList = handHistory.processHistoryDataList;
-        }
-        else
-        {
-            // Optionally, handle the case where deserialization fails.
-            Debug.Log("LoadHandHistory :: No data to load from firebase");
-        }
+            gameInitHistoryDataList = new(),
+            resultDataList = new(),
+            processHistoryDataList = new(),
+        };
+        handHistory = JsonConvert.DeserializeObject<HandHistory>(data);
+        resultDataList = handHistory.resultDataList;
+        gameInitHistoryDataList = handHistory.gameInitHistoryDataList;
+        processHistoryDataList = handHistory.processHistoryDataList;
+
     }
 
     /// <summary>
