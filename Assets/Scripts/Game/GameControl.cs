@@ -350,6 +350,8 @@ public class GameControl : MonoBehaviour
         {
             Debug.LogError($"Failed to leave the room. Error: {error}");
         });
+
+        DataManager.isInRoom = false;
     }
 
     [DllImport("__Internal")]

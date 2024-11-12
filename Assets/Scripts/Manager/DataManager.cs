@@ -38,7 +38,7 @@ public static class DataManager
 
     #region Database
 
-    public static string DatabaseUrl { get { return "https://asia-poker-5959b-default-rtdb.firebaseio.com/"; } }   //Database資料庫URL
+    public static string DatabaseUrl { get { return "https://ace2024-e8b4a-default-rtdb.asia-southeast1.firebasedatabase.app/"; } }   //Database資料庫URL
 
     #endregion
 
@@ -367,6 +367,12 @@ public static class DataManager
     public static string TipText { get; set; } //提示文字
 
     #endregion
+
+    #region Heartbeat
+    public static bool isOnline;
+    public static string lastActivityTime;
+    public static string playerStatus;
+    #endregion
 }
 
 public class RankData
@@ -383,4 +389,11 @@ public class ShopData
 {
     public int BuffAmount;
     public int CostCoin;
+}
+
+public enum playerStatus
+    {
+    none,
+    normal,
+    banned
 }

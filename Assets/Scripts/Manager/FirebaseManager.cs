@@ -9,6 +9,7 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
     public const string USER_DATA_PATH = "users/";                                           //Database用戶資料路徑
     public const string ROOM_DATA_PATH = "room/";                                           //房間資料路徑
     public const string ROUND_DATA_PATH = "gameRoundsData";                                           //房間資料路徑
+    public const string HEARTBEAT_DATA_PATH = "heartbeatsData";                                           //心跳資料路徑
 
     [Header("用戶資料內容路徑名稱")]
     public const string USER_ID = "userId";                                                 //用戶ID
@@ -92,6 +93,11 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
 
     [Header("聊天")]
     public const string CHAT_MSG = "chatMsg";                                               //聊天訊息
+
+    [Header("Heartbeat")]
+    public const string IS_ONLINE = "isOnLine";
+    public const string LAST_ACTIVITY_TIME = "lastActivityTime";
+    public const string PLAYER_STATUS = "playerStatus";
 
     public override void Awake()
     {

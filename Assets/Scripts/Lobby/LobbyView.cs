@@ -243,6 +243,8 @@ public class LobbyView : MonoBehaviour
         SetIsShowAssetList = isShowAssetList;
 
         OpenItemPage(ItemType.Main);
+
+        StartHeartbeat();
     }
 
     private void Start()
@@ -325,7 +327,7 @@ public class LobbyView : MonoBehaviour
     /// </summary>
     public void UpdateUserData()
     {
-        print("Get user Data :: " + DataManager.UserId);
+        print("Get user Data");
         //讀取用戶資料
         JSBridgeManager.Instance.ReadDataFromFirebase(
             $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}",
@@ -339,7 +341,6 @@ public class LobbyView : MonoBehaviour
     /// <param name="jsonData">回傳資料</param>
     public void GetDataCallback(string jsonData)
     {
-        Debug.Log($"{nameof(JoinRoomView)} :: {nameof(GetDataCallback)} : {jsonData}");
         AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
 
         if (loginData != null &&
@@ -351,6 +352,7 @@ public class LobbyView : MonoBehaviour
             DataManager.UserNickname = loginData.nickname;
             DataManager.UserAvatarIndex = loginData.avatarIndex;
             DataManager.UserStatus = loginData.online;
+            DataManager.isOnline = loginData.online;
 
 #if !UNITY_EDITOR
 
@@ -372,6 +374,8 @@ public class LobbyView : MonoBehaviour
         }
         else
         {
+            print(loginData.userId + " " + loginData.nickname);
+
             var data = new Dictionary<string, object>()
             {
                 { FirebaseManager.USER_ID, DataManager.UserId},
@@ -381,7 +385,7 @@ public class LobbyView : MonoBehaviour
                 $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}",
                 data,
                 gameObject.name,
-                nameof(getUserData));
+                nameof(UpdateUserData));
 
             //開啟設置暱稱
             // if (isFirstIn)
@@ -437,17 +441,26 @@ public class LobbyView : MonoBehaviour
         isFirstIn = false;
     }
     //Test callBack
-    void getUserData(string jsonData)
+    void StartHeartbeat()
     {
-        Debug.Log($"{nameof(JoinRoomView)} :: {nameof(getUserData)} : {jsonData}");
-        // AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
+        StartCoroutine(updateHeartbeat());
+    }
+    IEnumerator updateHeartbeat()
+    {
+        yield return null;
 
-        // print(loginData.userId);
-        // print(loginData.nickname);
-        // print(loginData.password);
-        // print(loginData.UChips);
-        // print(loginData.online);
-        // print(loginData.phoneNumber);
+        var data = new Dictionary<string, object>()
+            {
+                { FirebaseManager.IS_ONLINE, DataManager.isOnline},
+                { FirebaseManager.LAST_ACTIVITY_TIME, DataManager.lastActivityTime},
+                { FirebaseManager.PLAYER_STATUS, DataManager.playerStatus},
+            };
+        JSBridgeManager.Instance.UpdateDataFromFirebase(
+            $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}_{DateTime.Now.Month}_{DateTime.Now.Day}/{DataManager.UserId}",
+            data,
+            gameObject.name,
+            nameof(UpdateUserData));
+        print($"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}_{DateTime.Now.Month}_{DateTime.Now.Day}/{DataManager.UserId}");
     }
 
     /// <summary>
