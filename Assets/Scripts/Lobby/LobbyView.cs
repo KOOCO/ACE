@@ -244,7 +244,7 @@ public class LobbyView : MonoBehaviour
 
         OpenItemPage(ItemType.Main);
 
-        StartHeartbeat();
+        //StartHeartbeat();
     }
 
     private void Start()
@@ -344,7 +344,7 @@ public class LobbyView : MonoBehaviour
         AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
 
         if (loginData != null &&
-            !string.IsNullOrEmpty(loginData.userId) ||
+            !string.IsNullOrEmpty(loginData.userId) || //Cause some player has not nickname, so this place must become to 'or', otherwise client will call Firebase unstopable.
             !string.IsNullOrEmpty(loginData.nickname))
         {
             ViewManager.Instance.CloseWaitingView(transform);
@@ -352,7 +352,9 @@ public class LobbyView : MonoBehaviour
             DataManager.UserNickname = loginData.nickname;
             DataManager.UserAvatarIndex = loginData.avatarIndex;
             DataManager.UserStatus = loginData.online;
-            DataManager.isOnline = loginData.online;
+            DataManager.isOnline = loginData.online.ToString();
+
+            StartHeartbeat();
 
 #if !UNITY_EDITOR
 
@@ -440,27 +442,30 @@ public class LobbyView : MonoBehaviour
 
         isFirstIn = false;
     }
+
     //Test callBack
     void StartHeartbeat()
     {
-        StartCoroutine(updateHeartbeat());
-    }
-    IEnumerator updateHeartbeat()
-    {
-        yield return null;
+        DataManager.lastActivityTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
+        DataManager.playerStatus = playerStatus.normal.ToString();
 
-        var data = new Dictionary<string, object>()
+        Dictionary<string, object> data = new Dictionary<string, object>()
             {
                 { FirebaseManager.IS_ONLINE, DataManager.isOnline},
                 { FirebaseManager.LAST_ACTIVITY_TIME, DataManager.lastActivityTime},
-                { FirebaseManager.PLAYER_STATUS, DataManager.playerStatus},
+                { FirebaseManager.PLAYER_STATUS, DataManager.playerStatus}
             };
+
         JSBridgeManager.Instance.UpdateDataFromFirebase(
-            $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}_{DateTime.Now.Month}_{DateTime.Now.Day}/{DataManager.UserId}",
-            data,
-            gameObject.name,
-            nameof(UpdateUserData));
-        print($"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}_{DateTime.Now.Month}_{DateTime.Now.Day}/{DataManager.UserId}");
+                $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}_{DateTime.Now.Month}_{DateTime.Now.Day}/{DataManager.UserId}",
+                data,
+                gameObject.name,
+                nameof(delayCallHeartbeat));
+    }
+    void delayCallHeartbeat(string jsonData)
+    {
+        Invoke("StartHeartbeat", 5);
+        //print("After 5 second: " + jsonData);
     }
 
     /// <summary>

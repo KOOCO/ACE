@@ -369,9 +369,9 @@ public static class DataManager
     #endregion
 
     #region Heartbeat
-    public static bool isOnline;
-    public static string lastActivityTime;
-    public static string playerStatus;
+    public static string isOnline { get; set; }
+    public static string lastActivityTime { get; set; }
+    public static string playerStatus { get; set; }
     #endregion
 }
 
