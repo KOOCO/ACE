@@ -344,7 +344,7 @@ public class LobbyView : MonoBehaviour
         AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
 
         if (loginData != null &&
-            !string.IsNullOrEmpty(loginData.userId) &&
+            !string.IsNullOrEmpty(loginData.userId) ||
             !string.IsNullOrEmpty(loginData.nickname))
         {
             ViewManager.Instance.CloseWaitingView(transform);
