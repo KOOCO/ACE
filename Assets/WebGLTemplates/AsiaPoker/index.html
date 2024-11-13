@@ -83,8 +83,8 @@
         }
 
         // Detect when user presses back/swipes back
-        window.onpopstate = function (event) {
-            console.log('onpopstate')
+        window.addEventListener("popstate", function (event) {
+            console.log('popstate')
             if (!isBackWarningDisplayed) {
                 // Prevent the default back action by pushing state again
                 history.pushState(null, null, window.location.href);
@@ -103,7 +103,34 @@
                 // Allow the back action on the second swipe
                 window.history.back();
             }
-        };
+        });
+
+        window.onload = function () {
+            var url = " ";
+            pushHistory();
+            window.addEventListener("popstate", function (e) {
+                console.log('handleBackSwipe')
+                if (!isBackWarningDisplayed) {
+                    // Prevent the back action, show a warning
+                    showWarningNotification();
+
+                    // Set the flag to allow exit on the next swipe
+                    isBackWarningDisplayed = true;
+
+                    // Reset the flag after a few seconds to prevent accidental exit
+                    setTimeout(() => {
+                        isBackWarningDisplayed = false;
+                    }, 3000);  // Adjust the duration as needed
+                } else {
+                    // Allow the swipe back action (or trigger the browser's back behavior)
+                    window.history.back();
+                }
+            });
+            function pushHistory() {
+                var state = { title: "", url: url };
+                window.history.pushState(state, "", url);
+            }
+        }
 
         // Push a dummy state into history on page load to prevent immediate exit
         window.history.pushState(null, null, window.location.href);
