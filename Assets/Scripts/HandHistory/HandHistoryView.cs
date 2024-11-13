@@ -36,6 +36,7 @@ public class HandHistoryView : MonoBehaviour
     {
         HistorySampleObj.gameObject.SetActive(false);
         List<ResultHistoryData> resultDatas = HandHistoryManager.Instance.GetResultDataList();
+        if (resultDatas == null) return;
         for (int i = resultDatas.Count - 1; i >= 0; i--)
         {
             if (resultDatas == null || resultDatas[i] == null)
