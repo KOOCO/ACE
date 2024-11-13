@@ -2609,6 +2609,7 @@ public class GameView : MonoBehaviour
                 saveResultData.roomId = DataManager.RoomId;
                 saveResultData.tableId = DataManager.TableId;
                 saveResultData.roundId = roundId;
+                saveResultData.roundInsuranceFee = 0;
                 saveResultData.roundInsurancePayAmount = 0;
                 saveResultData.roundInsurancePayRate = 0;
                 saveResultData.roundInsuranceResult = "";
@@ -2635,6 +2636,7 @@ public class GameView : MonoBehaviour
                     playerHandId = "",
                     playerValidBetAmount = playerNew.playerValidBetAmount,
                     playerRoomFee = playerNew.roomFee,
+                    tenantName = DataManager.TenantName,
                     isBot = DataManager.UserId.StartsWith(FirebaseManager.ROBOT_ID),
                     playerHandData = new PlayerHand
                     {

@@ -114,12 +114,13 @@ public static class DataManager
     public static double Rebate { get; set; }
     public static bool DataUpdated { get; set; }
     public static string TableId { get; set; }
-    public static bool isInRoom  { get; set; }
+    public static bool isInRoom { get; set; }
     public static string RoomId { get; set; }
     public static string TableType { get; set; }
     public static string AccessCode { get; set; }
     public static string NoodleMemberId { get; set; }
     public static int RoundId { get; set; }
+    public static string TenantName { get; set; }
     public static double RoomFee { get; set; }
     #endregion
 

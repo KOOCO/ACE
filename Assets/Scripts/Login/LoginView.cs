@@ -2196,6 +2196,7 @@ public class LoginView : MonoBehaviour
         NoodleResponse noodleData = JsonConvert.DeserializeObject<NoodleResponse>(data);
         DataManager.AccessCode = noodleData.data.accessCode;
         DataManager.NoodleMemberId = noodleData.data.noodleMemberId;
+        DataManager.TenantName = noodleData.data.tenantName;
         LoginRequest login = new LoginRequest()
         {
             userNameOrEmailAddress = noodleData.data.userName,

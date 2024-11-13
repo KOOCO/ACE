@@ -238,6 +238,7 @@ public class PlayerDetails
     public string playerHandId;
     public double playerValidBetAmount;
     public double playerRoomFee;
+    public string tenantName;
     public bool isBot;
     public PlayerHand playerHandData;
 }

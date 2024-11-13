@@ -16,6 +16,7 @@ public class ResultHistoryData
     public string tableId;
     public string roomId;
     public int roundId;
+    public int roundInsuranceFee;
     public string roundInsuranceResult = "";
     public double roundInsurancePayRate = 0;
     public double roundInsurancePayAmount = 0;
