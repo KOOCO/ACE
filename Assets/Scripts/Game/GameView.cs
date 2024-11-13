@@ -1971,6 +1971,10 @@ public class GameView : MonoBehaviour
         // Update player info for all players
         foreach (var player in gameRoomData.playerDataDic.Values)
         {
+            // if (player.isPlayerLeft)
+            // {
+            //     continue;
+            // }
             GamePlayerInfo gamePlayerInfo = AddPlayer(player, gameRoomData);
             gamePlayerInfo.CloseChatInfo();
 

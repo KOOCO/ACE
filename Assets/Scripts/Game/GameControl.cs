@@ -244,6 +244,7 @@ public class GameControl : MonoBehaviour
             { FirebaseManager.CARRY_CHIPS, Math.Floor(carryChips)},                 //攜帶籌碼
             { FirebaseManager.GAME_SEAT, seatIndex},                                //遊戲座位
             { FirebaseManager.GAME_STATE, (int)PlayerStateEnum.Waiting},            //遊戲狀態(等待下局/遊戲中/All In/棄牌)
+            { FirebaseManager.IS_PLAYER_LEFT, false},            //遊戲狀態(等待下局/遊戲中/All In/棄牌)
         };
         UpdataPlayerData(DataManager.UserId,
                          data,
@@ -296,6 +297,7 @@ public class GameControl : MonoBehaviour
             { FirebaseManager.CARRY_CHIPS, Math.Floor(carryChips)},                 //攜帶籌碼
             { FirebaseManager.GAME_SEAT, seatIndex},                                //遊戲座位
             { FirebaseManager.GAME_STATE, (int)PlayerStateEnum.Waiting},            //遊戲狀態(等待下局/遊戲中/All In/棄牌)
+            { FirebaseManager.IS_PLAYER_LEFT, false},            //遊戲狀態(等待下局/遊戲中/All In/棄牌)
         };
         UpdataPlayerData(DataManager.UserId,
                          dataDic);
@@ -317,17 +319,10 @@ public class GameControl : MonoBehaviour
         {
             memberId = DataManager.UserId,
             roomId = long.Parse(DataManager.RoomId),
-            amount = 0,
+            amount = GetPlayerData(DataManager.UserId).carryChips,
             type = DataManager.CurrencyType.ToString(),
             rankPoint = 10
         };
-
-        // Null and key existence check
-        if (gameRoomData != null && gameRoomData.playerDataDic != null &&
-            gameRoomData.playerDataDic.TryGetValue(DataManager.UserId, out GameRoomPlayerData gameRoomPlayerData))
-        {
-            leaveRoom.amount = gameRoomPlayerData.carryChips;
-        }
 
         NoodleApi.PostTableCashOut((data) =>
         {
@@ -401,15 +396,19 @@ public class GameControl : MonoBehaviour
             }
             else
             {
-                string newHostId = gameRoomData.playingPlayersIdList.Where(x => x != DataManager.UserId && !x.StartsWith(FirebaseManager.ROBOT_ID))
-                                                .FirstOrDefault();
+                string newHostId = "";
+                if (gameRoomData.hostId == DataManager.UserId)
+                {
+                    newHostId = gameRoomData.playingPlayersIdList
+                                        .FirstOrDefault(x => x != DataManager.UserId && !x.StartsWith(FirebaseManager.ROBOT_ID));
+                }
 
-                Debug.Log("OnLeaveTable :: more then one Player : " + QueryRoomPath);
+                Debug.Log("GameControl :: OnLeaveTable : more then one Player : " + QueryRoomPath + " New Host : " + newHostId);
 
                 //更新房主
-                if (string.IsNullOrEmpty(newHostId))
+                if (string.IsNullOrEmpty(newHostId) && newHostId != "")
                 {
-                    Debug.Log("GameControl :: Setting new host : " + newHostId);
+                    Debug.Log("GameControl :: OnLeaveTable : Setting new host : " + newHostId);
                     var dataDic = new Dictionary<string, object>()
                     {
                          { FirebaseManager.ROOM_HOST_ID, newHostId},
@@ -435,9 +434,13 @@ public class GameControl : MonoBehaviour
 
         var newData = new Dictionary<string, object>
         {
+            //{ FirebaseManager.GAME_STATE, (int)PlayerStateEnum.Fold},
             { FirebaseManager.IS_PLAYER_LEFT, true },
         };
-        UpdataPlayerData(id, newData);
+        UpdataPlayerData(id, newData, (x) =>
+        {
+            Debug.Log("RemovePlayer : " + x);
+        });
 
         List<string> playingPlayersId = new();
         foreach (var playerId in gameRoomData.playingPlayersIdList)
@@ -2005,31 +2008,38 @@ public class GameControl : MonoBehaviour
                 playerState = PlayerStateEnum.Waiting;
             }
             gameRoomData.playerDataDic[id].gameState = (int)playerState;
-
             data = new Dictionary<string, object>()
-            {
-                { FirebaseManager.SEAT_CHARACTER, 0},                                   //(SeatCharacterEnum)座位角色(Button/SB/BB)
-                { FirebaseManager.GAME_STATE, (int)playerState},                        //(PlayerStateEnum)遊戲狀態(等待/遊戲中/棄牌/All In/保留座位離開)
-                { FirebaseManager.ALL_BET_CHIPS, 0},                                    //該局總下注籌碼
-                { FirebaseManager.SHOW_HAND_POKER, new List<int>(){ -1, -1} },          //棄牌後顯示手牌
-                { FirebaseManager.HAND_POKER, new List<int>(){ -1, -1}},
-                { FirebaseManager.ROOM_FEE, 0 },
-                { FirebaseManager.VALID_BET, 0 },
-                { FirebaseManager.PLAYER_HAND_SHAPE, -1 },
-            };
+                {
+                    { FirebaseManager.SEAT_CHARACTER, 0},                                   //(SeatCharacterEnum)座位角色(Button/SB/BB)
+                    { FirebaseManager.GAME_STATE, (int)playerState},                        //(PlayerStateEnum)遊戲狀態(等待/遊戲中/棄牌/All In/保留座位離開)
+                    { FirebaseManager.ALL_BET_CHIPS, 0},                                    //該局總下注籌碼
+                    { FirebaseManager.SHOW_HAND_POKER, new List<int>(){ -1, -1} },          //棄牌後顯示手牌
+                    { FirebaseManager.HAND_POKER, new List<int>(){ -1, -1}},
+                    { FirebaseManager.ROOM_FEE, 0 },
+                    { FirebaseManager.VALID_BET, 0 },
+                    { FirebaseManager.PLAYER_HAND_SHAPE, -1 },
+                };
             UpdataPlayerData(id,
                              data);
         }
 
         //遊戲中玩家
         List<string> playingPlayersId = new();
-        foreach (var player in gameRoomData.playerDataDic)
+        foreach (var player in gameRoomData.playerDataDic.Values)
         {
-            //離座 / 籌碼不足 不添加
-            if (player.Value.isSitOut == false &&
-                player.Value.carryChips >= leastChips)
+            if (player.isPlayerLeft)
             {
-                playingPlayersId.Add(player.Key);
+                Debug.Log("GameControl :: Player Removed : " + player.userId);
+                JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{player.userId}");
+                continue;
+            }
+            Debug.Log("GameControl :: Player Next Player : " + player.userId);
+            // Check if the player is active and has enough chips
+            if (player.isSitOut == false &&
+                player.carryChips >= leastChips)
+            {
+                // Add to the list of active player IDs
+                playingPlayersId.Add(player.userId);
             }
         }
         gameRoomData.playingPlayersIdList = playingPlayersId;

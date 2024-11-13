@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Events;
 using TMPro;
+using Newtonsoft.Json;
+using UnityEngine.Events;
 using System;
 using Proyecto26;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using System.Runtime.InteropServices;
 
 public class JoinRoomView : MonoBehaviour
@@ -187,12 +187,7 @@ public class JoinRoomView : MonoBehaviour
         Debug.LogError("Cause Editor can't play game, so cancel join/create room, please 'Build First'.");
         return;
 #endif
-
-        JSBridgeManager.Instance.JoinRoomQueryData($"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}",
-                                                    $"{DataManager.MaxPlayerCount}",
-                                                    $"{DataManager.UserId}",
-                                                    gameObject.name,
-                                                    nameof(JoinRoomQueryCallback));
+        CreateOrJoinRoom();
     }
     void OnJoinRoomFail(string error)
     {
@@ -259,13 +254,13 @@ public class JoinRoomView : MonoBehaviour
 #endif
     }
 
-    public void CreateNewRoom()
+    public void CreateOrJoinRoom()
     {
         JSBridgeManager.Instance.JoinRoomQueryData($"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}",
-                                                               $"{DataManager.MaxPlayerCount}",
-                                                               $"{DataManager.UserId}",
-                                                               gameObject.name,
-                                                               nameof(JoinRoomQueryCallback));
+                                                    $"{DataManager.MaxPlayerCount}",
+                                                    $"{DataManager.UserId}",
+                                                    gameObject.name,
+                                                    nameof(JoinRoomQueryCallback));
     }
 
 
@@ -329,46 +324,57 @@ public class JoinRoomView : MonoBehaviour
     {
         QueryRoom queryRoom = FirebaseManager.Instance.OnFirebaseDataRead<QueryRoom>(jsonData);
 
-        //錯誤
+        // Handle errors
         if (!string.IsNullOrEmpty(queryRoom.error))
         {
             Debug.LogError(queryRoom.error);
             return;
         }
 
-        if (queryRoom.getRoomName == "false" || actionType == "Create")
-        {
-            //沒有找到房間
-            Debug.Log($"沒有找到房間:{queryRoom.roomCount}");
-            string roomToken = StringUtils.GenerateRandomString(DataManager.RoomTokenLength);
-            dataRoomName = $"{FirebaseManager.ROOM_NAME}{queryRoom.roomCount + 1}_{roomToken}";
+        Debug.Log($"JoinRoomView :: roomName : {queryRoom.getRoomName}, roomCount : {queryRoom.roomCount}");
 
-            //創新房間資料
-            var dataDic = new Dictionary<string, object>()
-            {
-                { FirebaseManager.SMALL_BLIND, smallBlind},                         //小盲值
-                { FirebaseManager.ROOM_HOST_ID, DataManager.UserId},                //房主ID
-                { FirebaseManager.POT_CHIPS, 0},                                    //底池總籌碼
-                { FirebaseManager.COMMUNITY_POKER, new List<int>()},                //公共牌
-                { FirebaseManager.CURR_COMMUNITY_POKER, new List<int>()},           //當前公共牌
-            };
+        if (actionType == "Create")
+        {
+            // Define the room name based on the room count
+            dataRoomName = $"{FirebaseManager.ROOM_NAME}{queryRoom.roomCount + 1}_{DataManager.RoomId}";
+
+            // Create new room data
+            var dataDic = new Dictionary<string, object>
+        {
+            { FirebaseManager.SMALL_BLIND, smallBlind },                  // Small blind amount
+            { FirebaseManager.ROOM_HOST_ID, DataManager.UserId },         // Host ID
+            { FirebaseManager.POT_CHIPS, 0 },                             // Total pot chips
+            { FirebaseManager.COMMUNITY_POKER, new List<int>() },         // Community cards
+            { FirebaseManager.CURR_COMMUNITY_POKER, new List<int>() }     // Current community cards
+        };
+
+            // Write data to Firebase
             JSBridgeManager.Instance.WriteDataFromFirebase(
                 $"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}/{dataRoomName}",
                 dataDic,
                 gameObject.name,
                 nameof(CreateNewRoomCallback));
-            actionType = "";
+
+            actionType = ""; // Reset actionType after creating room
         }
         else if (actionType == "Join")
         {
-            //有房間
-            print("已有房間(Has other room)");
-            dataRoomName = queryRoom.getRoomName;
+            // Join an existing room
+            Debug.Log("Room already exists. Attempting to join...");
+
+            dataRoomName = $"{FirebaseManager.ROOM_NAME}{queryRoom.roomCount}_{DataManager.RoomId}";
+
+            // Read room data from Firebase
             JSBridgeManager.Instance.ReadDataFromFirebase(
                 $"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}/{dataRoomName}",
                 gameObject.name,
                 nameof(JoinRoomCallback));
-            actionType = "";
+
+            actionType = ""; // Reset actionType after joining room
+        }
+        else
+        {
+            Debug.LogWarning("Invalid actionType specified.");
         }
     }
 

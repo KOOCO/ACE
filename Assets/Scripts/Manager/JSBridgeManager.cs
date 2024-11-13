@@ -276,6 +276,8 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
                             "OnRemoveDataCallback" :
                             callbackFunPtr;
 
+        Debug.Log(nameof(JSBridgeManager) + " :: " + callbackFun + " : " + objName);
+
 #if UNITY_EDITOR
 
         RestClient.Delete($"{DataManager.DatabaseUrl}{refPathPtr}.json").Catch(error =>
