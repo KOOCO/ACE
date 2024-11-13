@@ -1080,14 +1080,17 @@ public class GameControl : MonoBehaviour
                     newData[FirebaseManager.SIDE_PROFIT] = Math.Floor(profit);
                     break;
             }
-            NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId.ToString(), winner.roomFee, 21, ChipTransactionType.TableFee, (x) =>
-                {
-                    Debug.Log("TableFee ChipsTransaction Success");
-                },
-               (error) =>
-               {
-                   Debug.LogError($"TableFee ChipsTransaction Failed Error: {error}");
-               });
+            if (winner.userId == DataManager.UserId)
+            {
+                NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId.ToString(), winner.roomFee, 21, ChipTransactionType.TableFee, (x) =>
+                    {
+                        Debug.Log("TableFee ChipsTransaction Success");
+                    },
+                   (error) =>
+                   {
+                       Debug.LogError($"TableFee ChipsTransaction Failed Error: {error}");
+                   });
+            }
             // GameRoomPlayerData playerData = GetPlayerData(winner.userId);
             // if (playerData != null)
             // {
