@@ -2549,18 +2549,15 @@ public class GameView : MonoBehaviour
             JudgePokerShape(player, true, true);
 
             player.IsWinnerActive = true;
-            player.setWinnerDisplay($"POT + ${changeValue:f2}");
-            // if (potWinnerId == DataManager.UserId)
-            // {
-            //     Debug.Log("GameView :: IPotResult if : " + changeValue);
-            //     Debug.Log("GameView :: IPotResult if 1: " + changeValue);
-            // }
-            // else
-            // {
-            //     Debug.Log("GameView :: IPotResult else : " + changeValue);
-            //     player.setWinnerDisplay($"POT  + ${gameRoomData.sideWinData.sideWinChips / gameRoomData.sideWinData.sideWinnersId.Count():f2}");
-            //     Debug.Log("GameView :: IPotResult else 2: " + changeValue);
-            // }
+            //player.setWinnerDisplay($"POT + ${changeValue:f2}");
+            if (potWinnerId == DataManager.UserId)
+            {
+                player.setWinnerDisplay($"POT + ${changeValue:f2}");
+            }
+            else
+            {
+                player.setWinnerDisplay($"POT  + ${gameRoomData.potWinData.potWinChips / gameRoomData.potWinData.potWinnersId.Count():f2}");
+            }
 
             Vector2 winnerSeatPos = player.gameObject.transform.position;
 
