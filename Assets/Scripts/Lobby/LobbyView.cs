@@ -352,7 +352,6 @@ public class LobbyView : MonoBehaviour
             DataManager.UserNickname = loginData.nickname;
             DataManager.UserAvatarIndex = loginData.avatarIndex;
             DataManager.UserStatus = loginData.online;
-            DataManager.isOnline = loginData.online.ToString();
 
             StartHeartbeat();
 
@@ -446,26 +445,38 @@ public class LobbyView : MonoBehaviour
     //Test callBack
     void StartHeartbeat()
     {
-        DataManager.lastActivityTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
-        DataManager.playerStatus = playerStatus.normal.ToString();
+#if !UNITY_EDITOR
+        JSBridgeManager.Instance.StartListeningForDataChanges(
+                    $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}",
+                gameObject.name,
+                nameof(delayCallHeartbeat));
+#endif
 
-        Dictionary<string, object> data = new Dictionary<string, object>()
-            {
-                { FirebaseManager.IS_ONLINE, DataManager.isOnline},
-                { FirebaseManager.LAST_ACTIVITY_TIME, DataManager.lastActivityTime},
-                { FirebaseManager.PLAYER_STATUS, DataManager.playerStatus}
-            };
+        heartbeatData hb = null;
+        if(PlayerPrefs.GetString("PlayerStatus") == "" && PlayerPrefs.GetString("ServerStatus") == "")
+            hb = new heartbeatData(true, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), playerStatus.normal.ToString(), serverStatus.normal.ToString());
+        else
+            hb = new heartbeatData(true, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), PlayerPrefs.GetString("PlayerStatus"), PlayerPrefs.GetString("ServerStatus"));
 
-        JSBridgeManager.Instance.UpdateDataFromFirebase(
-                $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}_{DateTime.Now.Month}_{DateTime.Now.Day}/{DataManager.UserId}",
+        string data = JsonConvert.SerializeObject(hb);
+
+        JSBridgeManager.Instance.UpdateDataToFirebase(
+                $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}",
                 data,
                 gameObject.name,
                 nameof(delayCallHeartbeat));
     }
     void delayCallHeartbeat(string jsonData)
     {
+        print("After 5 second: " + jsonData);
+
+        var hb = JsonConvert.DeserializeObject<heartbeatData>(jsonData);
+        string pStatus = hb.playerStatus;
+        string sStatus = hb.serverStatus;
+        PlayerPrefs.SetString("PlayerStatus", pStatus);
+        PlayerPrefs.SetString("ServerStatus", sStatus);
+        PlayerPrefs.Save();
         Invoke("StartHeartbeat", 5);
-        //print("After 5 second: " + jsonData);
     }
 
     /// <summary>

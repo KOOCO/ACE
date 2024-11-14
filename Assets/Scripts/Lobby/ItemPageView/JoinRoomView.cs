@@ -87,6 +87,10 @@ public class JoinRoomView : MonoBehaviour
         //購買
         Buy_Btn.onClick.AddListener(() =>
         {
+            //if status is 'banned' than cancel join room
+            if (PlayerPrefs.GetString("PlayerStatus") == playerStatus.banned.ToString() || PlayerPrefs.GetString("ServerStatus") == serverStatus.maintenance.ToString())
+                return;
+
             //籌碼不足
             if (tableType == TableTypeEnum.Cash &&
                 newCarryChipsValue > DataManager.UserChips)
