@@ -666,72 +666,46 @@ public class LobbyMainPageView : MonoBehaviour
     TableItemList tablesData = new();
     private void CreateRoomBtn()
     {
-        var selectedData = tablesData.items.Where(x => x.mode == 0 && x.isEnable == true);
-        if (selectedData.Count() > 0)
-        {
-            tables[0].SetActive(true);
-            RankTableTital_Txt.text = LanguageManager.Instance.GetText("Rank Battle");
-            RankBattleBtnSample.SetActive(false);
-
-            for (int i = 0; i < selectedData.Count(); i++)
-            {
-                RectTransform rt = Instantiate(RankBattleBtnSample).GetComponent<RectTransform>();
-                rt.gameObject.SetActive(true);
-                rt.SetParent(RankTableParent);
-                rt.GetComponent<RankBattleSampleBtn>().SetRankBattleBtnInfo(tablesData.items[i].smallStake, lobbyView, tablesData.items[i].id);
-                rt.localScale = Vector3.one;
-            }
-        }
-        else
-            tables[0].SetActive(false);
-
-        selectedData = tablesData.items.Where(x => x.mode == 1 && x.isEnable == true);
-
-        if (selectedData.Count() > 0)
-        {
-            tables[1].SetActive(true);
-            CryptoTableTital_Txt.text = LanguageManager.Instance.GetText("High Roller Battleground");
-            CryptoTableBtnSample.SetActive(false);
-
-            for (int i = 0; i < selectedData.Count(); i++)
-            {
-                RectTransform rt = Instantiate(CryptoTableBtnSample).GetComponent<RectTransform>();
-                rt.gameObject.SetActive(true);
-                rt.SetParent(CryptoTableParent);
-                rt.GetComponent<CryptoTableBtnSample>().SetCryptoTableBtnInfo(tablesData.items[i].smallStake, lobbyView, tablesData.items[i].id);
-                rt.localScale = Vector3.one;
-            }
-        }
-        else
-            tables[1].SetActive(false);
-        //加密貨幣桌
-
-
-
-
-        selectedData = tablesData.items.Where(x => x.mode == 2 && x.isEnable == true);
-
-        if (selectedData.Count() > 0)
-        {
-            tables[2].SetActive(true);
-            VCTableTital_Txt.text = LanguageManager.Instance.GetText("Classic Battle");
-
-            //虛擬貨幣桌
-            VCTableBtnSample.SetActive(false);
-            for (int i = 0; i < selectedData.Count(); i++)
-            {
-                RectTransform rt = Instantiate(VCTableBtnSample).GetComponent<RectTransform>();
-                rt.gameObject.SetActive(true);
-                rt.SetParent(VCTableParent);
-                rt.GetComponent<VCTableBtnSample>().SetVCTableBtnInfo(tablesData.items[i].smallStake, lobbyView, tablesData.items[i].id);
-                rt.localScale = Vector3.one;
-            }
-        }
-        else
-            tables[2].SetActive(false);
+        // Define each mode with their respective table index, title, sample button, and parent
+        SetupTable(0, "Rank Battle", tables[0], RankBattleBtnSample, RankTableParent, RankTableTital_Txt);
+        SetupTable(1, "High Roller Battleground", tables[1], CryptoTableBtnSample, CryptoTableParent, CryptoTableTital_Txt);
+        SetupTable(2, "Classic Battle", tables[2], VCTableBtnSample, VCTableParent, VCTableTital_Txt);
 
         ViewManager.Instance.CloseWaitingView(transform);
     }
+
+    // Helper method to set up each table
+    private void SetupTable(int mode, string titleKey, GameObject table, GameObject btnSample, Transform parent, TextMeshProUGUI titleText)
+    {
+        var selectedData = tablesData.items.Where(x => x.mode == mode && x.isEnable == true).ToList();
+
+        if (selectedData.Count > 0)
+        {
+            table.SetActive(true);
+            titleText.text = LanguageManager.Instance.GetText(titleKey);
+            btnSample.SetActive(false);
+
+            foreach (var data in selectedData)
+            {
+                RectTransform rt = Instantiate(btnSample).GetComponent<RectTransform>();
+                rt.gameObject.SetActive(true);
+                rt.SetParent(parent);
+                rt.localScale = Vector3.one;
+
+                if (mode == 0)
+                    rt.GetComponent<RankBattleSampleBtn>().SetRankBattleBtnInfo(data.smallStake, lobbyView, data.id);
+                else if (mode == 1)
+                    rt.GetComponent<CryptoTableBtnSample>().SetCryptoTableBtnInfo(data.smallStake, lobbyView, data.id);
+                else if (mode == 2)
+                    rt.GetComponent<VCTableBtnSample>().SetVCTableBtnInfo(data.smallStake, lobbyView, data.id);
+            }
+        }
+        else
+        {
+            table.SetActive(false);
+        }
+    }
+
 
     #region Line客服加好友
     public void StartLineLogin()
