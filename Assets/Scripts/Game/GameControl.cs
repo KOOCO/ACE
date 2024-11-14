@@ -1085,7 +1085,7 @@ public class GameControl : MonoBehaviour
             }
             if (winner.userId == DataManager.UserId)
             {
-                NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId.ToString(), winner.roomFee, 21, ChipTransactionType.TableFee, (x) =>
+                NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId.ToString(), roomFee, 21, ChipTransactionType.TableFee, (x) =>
                     {
                         Debug.Log("TableFee ChipsTransaction Success");
                     },

@@ -2657,15 +2657,23 @@ public class GameView : MonoBehaviour
             }
         }
 
-        NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(),
-            gameRoomData.potWinData.potWinChips, 12, ChipTransactionType.Win, (x) =>
+
+        foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
         {
-            Debug.Log("Player Win ChipsTransaction Success");
-        },
-        (error) =>
-        {
-            Debug.LogError($"Player Win ChipsTransaction Failed Error: {error}");
-        });
+            if(potWinnerId == DataManager.UserId)
+            {
+                NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(),
+                gameRoomData.potWinData.potWinChips, 12, ChipTransactionType.Win, (x) =>
+                {
+                    Debug.Log("Player Win ChipsTransaction Success");
+                },
+                (error) =>
+                {
+                    Debug.LogError($"Player Win ChipsTransaction Failed Error: {error}");
+                });
+                break;
+            }            
+        }
 
         yield return new WaitForSeconds(2f);
 
