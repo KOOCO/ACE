@@ -83,33 +83,30 @@
         }
 
         // Detect when user presses back/swipes back
-        window.addEventListener("popstate", function (event) {
-            console.log('popstate')
-            if (!isBackWarningDisplayed) {
-                // Prevent the default back action by pushing state again
-                history.pushState(null, null, window.location.href);
-
-                // Show the warning (can be a custom modal or in-app notification)
-                showWarningNotification();
-
-                // Set the flag to allow exit on the next back swipe
-                isBackWarningDisplayed = true;
-
-                // Optionally, reset the flag after a few seconds to prevent accidental exit
-                setTimeout(() => {
-                    isBackWarningDisplayed = false;
-                }, 3000); // Customize the time as needed
-            } else {
-                // Allow the back action on the second swipe
-                window.history.back();
-            }
-        });
-
-        window.onload = function () {
+        window.addEventListener("load", (event) => {
+            isBackWarningDisplayed = false;
             var url = " ";
             pushHistory();
-            window.addEventListener("popstate", function (e) {
-                console.log('handleBackSwipe')
+            window.addEventListener("popstate", function (event) {
+                console.log('popstate2');
+                if (!isBackWarningDisplayed) {
+                    // Prevent the back action, show a warning
+                    showWarningNotification();
+
+                    // Set the flag to allow exit on the next swipe
+                    isBackWarningDisplayed = true;
+
+                    // Reset the flag after a few seconds to prevent accidental exit
+                    setTimeout(() => {
+                        isBackWarningDisplayed = false;
+                    }, 3000);  // Adjust the duration as needed
+                } else {
+                    // Allow the swipe back action (or trigger the browser's back behavior)
+                    window.history.back();
+                }
+            });
+            window.addEventListener("hashchange", function (event) {
+                console.log('hashchange');
                 if (!isBackWarningDisplayed) {
                     // Prevent the back action, show a warning
                     showWarningNotification();
@@ -130,10 +127,10 @@
                 var state = { title: "", url: url };
                 window.history.pushState(state, "", url);
             }
-        }
+        });
 
-        // Push a dummy state into history on page load to prevent immediate exit
-        window.history.pushState(null, null, window.location.href);
+            // Push a dummy state into history on page load to prevent immediate exit
+            window.history.pushState(null, null, window.location.href);
 
         // Function to show notification
         function showWarningNotification() {
