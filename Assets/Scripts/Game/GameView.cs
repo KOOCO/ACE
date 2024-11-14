@@ -2660,7 +2660,7 @@ public class GameView : MonoBehaviour
 
         foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
         {
-            if(potWinnerId == DataManager.UserId)
+            if (potWinnerId == DataManager.UserId)
             {
                 NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(),
                 gameRoomData.potWinData.potWinChips, 12, ChipTransactionType.Win, (x) =>
@@ -2672,7 +2672,7 @@ public class GameView : MonoBehaviour
                     Debug.LogError($"Player Win ChipsTransaction Failed Error: {error}");
                 });
                 break;
-            }            
+            }
         }
 
         yield return new WaitForSeconds(2f);
@@ -3324,7 +3324,7 @@ public class GameView : MonoBehaviour
             if (gameRoomData.hostId == DataManager.UserId)
             {
                 GetRoundCount();
-                AppApi.OnRoundFinish(saveResultData);
+                AppApi.OnRoundFinish(saveResultData, (x) => { Debug.Log("Round Finished"); });
                 SaveToFirebase(nameof(saveResultData), saveResultData, nameof(GameResultDataSaveToFirebase));
                 SaveToFirebase(nameof(gameInitHistoryData), gameInitHistoryData, nameof(GameInitDataSaveToFirebase));
                 SaveToFirebase(nameof(processHistoryData), processHistoryData, nameof(GameProcessDataSaveToFirebase));
@@ -3358,9 +3358,9 @@ public class GameView : MonoBehaviour
     }
 
     // Callbacks for Firebase save completion
-    void GameInitDataSaveToFirebase() => Debug.Log("GameInitDataSavedToFirebase");
-    void GameProcessDataSaveToFirebase() => Debug.Log("GameProcessDataSavedToFirebase");
-    void GameResultDataSaveToFirebase() => Debug.Log("GameResultDataSavedToFirebase");
+    void GameInitDataSaveToFirebase() => Debug.Log("GameView :: GameInitDataSavedToFirebase");
+    void GameProcessDataSaveToFirebase() => Debug.Log("GameView :: GameProcessDataSavedToFirebase");
+    void GameResultDataSaveToFirebase() => Debug.Log("GameView :: GameResultDataSavedToFirebase");
 
     private int roundId = 0; // This could be loaded from Firebase if persistent
 

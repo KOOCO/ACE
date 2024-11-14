@@ -276,7 +276,7 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
                             "OnRemoveDataCallback" :
                             callbackFunPtr;
 
-        Debug.Log(nameof(JSBridgeManager) + " :: " + callbackFun + " : " + objName);
+        //Debug.Log(nameof(JSBridgeManager) + " :: " + callbackFun + " : " + objName);
 
 #if UNITY_EDITOR
 

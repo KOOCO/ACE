@@ -84,9 +84,9 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
     string GameInitHistoryPlayerPrefsKey;                   //遊戲初始資料Key
     string ProcessHistoryPlayerPrefsKey;                    //遊戲過程資料Key
 
-    List<ResultHistoryData> resultDataList;                 //遊戲結果紀錄
-    List<GameInitHistoryData> gameInitHistoryDataList;      //遊戲初始資料紀錄
-    List<ProcessHistoryData> processHistoryDataList;        //遊戲過程資料
+    List<ResultHistoryData> resultDataList = new();                 //遊戲結果紀錄
+    List<GameInitHistoryData> gameInitHistoryDataList = new();      //遊戲初始資料紀錄
+    List<ProcessHistoryData> processHistoryDataList = new();        //遊戲過程資料
 
     HistoryVideoView historyVideoView;
 
@@ -116,13 +116,18 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
     void LoadHandHistory(string data)
     {
         if (data == "null") return;
+
         HandHistory handHistory = new HandHistory()
         {
             gameInitHistoryDataList = new(),
             resultDataList = new(),
             processHistoryDataList = new(),
         };
-        handHistory = JsonConvert.DeserializeObject<HandHistory>(data);
+
+        Debug.Log(nameof(HandHistoryManager) + " LoadHandHistory :: " + data);
+
+        handHistory = FirebaseManager.Instance.OnFirebaseDataRead<HandHistory>(data); ;
+
         resultDataList = handHistory.resultDataList;
         gameInitHistoryDataList = handHistory.gameInitHistoryDataList;
         processHistoryDataList = handHistory.processHistoryDataList;
@@ -179,6 +184,8 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
     /// <param name="newData"></param>
     public void SaveResult(ResultHistoryData newData)
     {
+        Debug.Log("HandHistoryManager :: SaveResult");
+
         if (resultDataList.Count >= DataManager.MaxVideoSaveCount)
         {
             //移除第一筆數據
@@ -274,6 +281,8 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
     /// <param name="newData"></param>
     public void SaveGameInit(GameInitHistoryData newData)
     {
+        Debug.Log("HandHistoryManager :: SaveGameInit");
+
         if (gameInitHistoryDataList.Count >= DataManager.MaxVideoSaveCount)
         {
             //移除第一筆數據
@@ -294,15 +303,15 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
 
     void GameInitDataSaveToFirebase()
     {
-        Debug.Log("GameInitDataSavedToFirebase");
+        Debug.Log("HandHistoryManager :: GameInitDataSavedToFirebase");
     }
     void GameProcessDataSaveToFirebase()
     {
-        Debug.Log("GameProcessDataSavedToFirebase");
+        Debug.Log("HandHistoryManager :: GameProcessDataSavedToFirebase");
     }
     void GameResultDataSaveToFirebase()
     {
-        Debug.Log("GameResultDataSavedToFirebase");
+        Debug.Log("HandHistoryManager :: GameResultDataSavedToFirebase");
     }
 
     #endregion
@@ -333,6 +342,8 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
     /// <param name="newData"></param>
     public void SaveProcess(ProcessHistoryData newData)
     {
+        Debug.Log("HandHistoryManager :: SaveProcess");
+
         if (processHistoryDataList.Count >= DataManager.MaxVideoSaveCount)
         {
             //移除第一筆數據
