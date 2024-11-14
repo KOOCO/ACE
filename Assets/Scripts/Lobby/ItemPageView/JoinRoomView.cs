@@ -336,7 +336,7 @@ public class JoinRoomView : MonoBehaviour
         if (actionType == "Create")
         {
             // Define the room name based on the room count
-            dataRoomName = $"{FirebaseManager.ROOM_NAME}{queryRoom.roomCount + 1}_{DataManager.RoomId}";
+            dataRoomName = $"{FirebaseManager.ROOM_NAME}{DataManager.RoomId}";
 
             // Create new room data
             var dataDic = new Dictionary<string, object>
@@ -362,7 +362,7 @@ public class JoinRoomView : MonoBehaviour
             // Join an existing room
             Debug.Log("Room already exists. Attempting to join...");
 
-            dataRoomName = $"{FirebaseManager.ROOM_NAME}{queryRoom.roomCount}_{DataManager.RoomId}";
+            dataRoomName = $"{FirebaseManager.ROOM_NAME}{DataManager.RoomId}";
 
             // Read room data from Firebase
             JSBridgeManager.Instance.ReadDataFromFirebase(
