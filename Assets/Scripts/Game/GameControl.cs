@@ -432,15 +432,15 @@ public class GameControl : MonoBehaviour
     {
         gameView.PlayerExitRoom(id);
 
-        var newData = new Dictionary<string, object>
-        {
-            //{ FirebaseManager.GAME_STATE, (int)PlayerStateEnum.Fold},
-            { FirebaseManager.IS_PLAYER_LEFT, true },
-        };
-        UpdataPlayerData(id, newData, (x) =>
-        {
-            Debug.Log("RemovePlayer : " + x);
-        });
+        // var newData = new Dictionary<string, object>
+        // {
+        //     //{ FirebaseManager.GAME_STATE, (int)PlayerStateEnum.Fold},
+        //     { FirebaseManager.IS_PLAYER_LEFT, true },
+        // };
+        // UpdataPlayerData(id, newData, (x) =>
+        // {
+        //     Debug.Log("RemovePlayer : " + x);
+        // });
 
         List<string> playingPlayersId = new();
         foreach (var playerId in gameRoomData.playingPlayersIdList)
@@ -457,7 +457,7 @@ public class GameControl : MonoBehaviour
         };
         UpdateGameRoomData(data);
 
-        //JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{id}");
+        JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{id}");
     }
 
 
@@ -2027,13 +2027,13 @@ public class GameControl : MonoBehaviour
         List<string> playingPlayersId = new();
         foreach (var player in gameRoomData.playerDataDic.Values)
         {
-            if (player.isPlayerLeft)
-            {
-                Debug.Log("GameControl :: Player Removed : " + player.userId);
-                JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{player.userId}");
-                continue;
-            }
-            Debug.Log("GameControl :: Player Next Player : " + player.userId);
+            // if (player.isPlayerLeft)
+            // {
+            //     Debug.Log("GameControl :: Player Removed : " + player.userId);
+            //     JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{player.userId}");
+            //     continue;
+            // }
+            // Debug.Log("GameControl :: Player Next Player : " + player.userId);
             // Check if the player is active and has enough chips
             if (player.isSitOut == false &&
                 player.carryChips >= leastChips)
