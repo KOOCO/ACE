@@ -96,9 +96,10 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
     public const string CHAT_MSG = "chatMsg";                                               //聊天訊息
 
     [Header("Heartbeat")]
-    public const string IS_ONLINE = "isOnLine";
+    public const string IS_ONLINE = "isOnline";
     public const string LAST_ACTIVITY_TIME = "lastActivityTime";
     public const string PLAYER_STATUS = "playerStatus";
+    public const string SERVER_STATUS = "serverStatus";
 
     public override void Awake()
     {

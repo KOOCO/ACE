@@ -55,6 +55,24 @@ public class Player
 }
 #endregion
 
+#region Heartbeat
+public class heartbeatData
+{
+    public bool isOnline;
+    public string lastActivityTime;
+    public string playerStatus;
+    public string serverStatus;
+
+    public heartbeatData(bool isOnline, string lastActivityTime, string playerStatus, string serverStatus)
+    {
+        this.isOnline = isOnline;
+        this.lastActivityTime = lastActivityTime;
+        this.playerStatus = playerStatus;
+        this.serverStatus = serverStatus;
+    }
+}
+#endregion
+
 #region Lobby
 [System.Serializable]
 public class TableItem

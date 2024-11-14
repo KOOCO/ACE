@@ -368,12 +368,6 @@ public static class DataManager
     public static string TipText { get; set; } //提示文字
 
     #endregion
-
-    #region Heartbeat
-    public static string isOnline { get; set; }
-    public static string lastActivityTime { get; set; }
-    public static string playerStatus { get; set; }
-    #endregion
 }
 
 public class RankData
@@ -393,8 +387,14 @@ public class ShopData
 }
 
 public enum playerStatus
-    {
+{
     none,
     normal,
     banned
+}
+public enum serverStatus
+{
+    none,
+    normal,
+    maintenance
 }
