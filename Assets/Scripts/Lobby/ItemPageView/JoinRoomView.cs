@@ -202,9 +202,10 @@ public class JoinRoomView : MonoBehaviour
         // Ensure the JavaScript listener is set
 
         string apiEndpoint = $"/api/app/rooms/leave-table?memberId={DataManager.UserId}&roomId={DataManager.RoomId}&amount=0&type={DataManager.CurrencyType.ToString()}&rankPoint=10";
+        string testUrl = "https://f9de149c298966a11d6f15feb43b45f9.m.pipedream.net"
         string fullUrl = BASE_URL + apiEndpoint;
         Debug.Log("Leave Room full Url ::"+ fullUrl);
-        StoreVariable(fullUrl);
+        StoreVariable(testUrl);
         PageChangeVisibility();
         AddEventListeners();
 
