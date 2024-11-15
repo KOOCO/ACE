@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 using UnityEngine.Events;
 using System.Linq;
 using Proyecto26;
+using Newtonsoft.Json;
 
 public class Entry : UnitySingleton<Entry>
 {
@@ -38,8 +39,7 @@ public class Entry : UnitySingleton<Entry>
     [Header("發布環境")]
     public ReleaseEnvironment releaseEnv;
 
-    [Header("是否維護")]
-    public bool isMaintenance;
+    bool isListenered;
 
     public override void Awake()
     {

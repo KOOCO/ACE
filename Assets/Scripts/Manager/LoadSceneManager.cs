@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
 using TMPro;
+using Newtonsoft.Json;
+
 public class LoadSceneManager : UnitySingleton<LoadSceneManager>
 {
     [SerializeField]
@@ -247,7 +249,8 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
     /// </summary>
     public void DoShowView()
     {
-        lodingView.gameObject.SetActive(true);
+        lodingView.gameObject.SetActive(false);
         version_Txt.text = Entry.Instance.version;
+        loginView.setMaintenanceObj(true);
     }
 }
