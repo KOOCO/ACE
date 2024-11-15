@@ -235,21 +235,33 @@ mergeInto(LibraryManager.library, {
 
 
 
-
     myStoredVariable: null, // Initialize the variable
-    roomData: null,  // Initialize the endpoint variable
+    memberId:null,
+    roomId:null,
+    amount:null,
+    type:null,
+    rankPoint:null,
+
 
     // Function to store a value
-    storeVariable: function(value, data) {
+    storeVariable: function(value,_memberId,_roomId,_amount,_type,_rankPoint) {
         this.myStoredVariable = UTF8ToString(value);
-        this.roomData = UTF8ToString(data);
+        this.memberId = UTF8ToString(_memberId);
+        this.roomId = UTF8ToString(_roomId);
+        this.amount = UTF8ToString(_amount);
+        this.type = UTF8ToString(_type);
+        this.rankPoint = UTF8ToString(_rankPoint);
         console.log("Variable URL:", this.myStoredVariable);
-        console.log("Room Data:", this.roomData);
+        console.log("Room Data:", this.memberId);
     },
 
     clearStoredVariable: function() {
         this.myStoredVariable = null;
-        this.roomData = null;
+        this.memberId = null;
+        this.roomId = null;
+        this.amount = null;
+        this.type = null;
+        this.rankPoint =null;
         console.log("Stored Variable is cleared");
     },
 
@@ -273,7 +285,12 @@ mergeInto(LibraryManager.library, {
 
             // Send a beacon to the provided Firebase URL before unloading the page
             const url = self.myStoredVariable;
-            const data = { memberId: self.roomData };
+            const data = { memberId: self.memberId,
+                            roomId: self.roomId,
+                            amount:self.amount,
+                            type:self.type,
+                            rankPoint:self.rankPoint
+                        };
 
             // Use the Beacon API to send data to Firebase before the page unloads
             if (navigator.sendBeacon) {
@@ -307,7 +324,12 @@ mergeInto(LibraryManager.library, {
                 }
 
                 const url = self.myStoredVariable;
-                const data = { memberId: self.roomData };
+                const data = { memberId: self.memberId,
+                                roomId: self.roomId,
+                                amount:self.amount,
+                                type:self.type,
+                                rankPoint:self.rankPoint
+                            };
 
                 // Send the data using navigator.sendBeacon
                 if (navigator.sendBeacon) {
@@ -321,4 +343,5 @@ mergeInto(LibraryManager.library, {
 
         console.log("Visibility change listener added for mobile.");
     }
+    
 });

@@ -88,8 +88,11 @@ public class JoinRoomView : MonoBehaviour
         Buy_Btn.onClick.AddListener(() =>
         {
             //if status is 'banned' than cancel join room
-            if (PlayerPrefs.GetString("PlayerStatus") == playerStatus.banned.ToString() || PlayerPrefs.GetString("ServerStatus") == serverStatus.maintenance.ToString())
+            if (PlayerPrefs.GetString("PlayerStatus") == playerStatus.banned.ToString())
+            {
+                ViewManager.Instance.OpenTipMsgView(lobbyView.transform, messageStatus.Failed, LanguageManager.Instance.GetText("Account abnormal"));
                 return;
+            }
 
             //籌碼不足
             if (tableType == TableTypeEnum.Cash &&
@@ -169,7 +172,7 @@ public class JoinRoomView : MonoBehaviour
         DataManager.RoomId = gameRound.roomId;
         actionType = gameRound.actionType;
 
-        SendRoomDataToJS();
+        SendRoomDataToJS(DataManager.UserId, DataManager.RoomId, "0", DataManager.CurrencyType.ToString(), "10");
 
 #if UNITY_EDITOR
 
@@ -200,15 +203,15 @@ public class JoinRoomView : MonoBehaviour
 
     private string BASE_URL = "https://admin-d.jf588.com";  // API Base URL
 
-    public void SendRoomDataToJS()
+    public void SendRoomDataToJS(string memberId, string roomId, string amount, string type, string rankPoint)
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
     // Set the URL and query parameters
-    string apiEndpoint = DataManager.UserId;
+
     string fullUrl = "https://f9de149c298966a11d6f15feb43b45f9.m.pipedream.net";
     
     // Store the URL in JavaScript
-    StoreVariableJS(fullUrl,apiEndpoint);
+    StoreVariableJS(fullUrl, memberId, roomId, amount, type, rankPoint);
 
     // Call page visibility-related functions
     PageChangeVisibility();
@@ -226,7 +229,7 @@ public class JoinRoomView : MonoBehaviour
     private static extern void onPageLoadWithVisibilityChange();
 
     [DllImport("__Internal")]
-    private static extern void storeVariable(string value,string endPoint);
+    private static extern void storeVariable(string value, string memberId, string roomId, string amount, string type, string rankPoint);
 
     [DllImport("__Internal")]
     private static extern void onPageLoad();
@@ -244,10 +247,10 @@ public class JoinRoomView : MonoBehaviour
 
 
 
-    public void StoreVariableJS(string value, string endPoint)
+    public void StoreVariableJS(string value, string memberId, string roomId, string amount, string type, string rankPoint)
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
-        storeVariable(value,endPoint);
+        storeVariable(value, memberId, roomId, amount, type, rankPoint);
         Debug.Log("Unity: Stored variable in JavaScript: " + value);
 #endif
     }

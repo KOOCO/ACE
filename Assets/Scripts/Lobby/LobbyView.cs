@@ -465,10 +465,7 @@ public class LobbyView : MonoBehaviour
 #endif
 
         heartbeatData hb = null;
-        if (PlayerPrefs.GetString("PlayerStatus") == "" && PlayerPrefs.GetString("ServerStatus") == "")
-            hb = new heartbeatData(true, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), playerStatus.normal.ToString(), serverStatus.normal.ToString());
-        else
-            hb = new heartbeatData(true, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), PlayerPrefs.GetString("PlayerStatus"), PlayerPrefs.GetString("ServerStatus"));
+        hb = new heartbeatData(true, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), PlayerPrefs.GetString("PlayerStatus"), PlayerPrefs.GetString("ServerStatus"));
 
         string data = JsonConvert.SerializeObject(hb);
 
@@ -479,8 +476,9 @@ public class LobbyView : MonoBehaviour
     }
     void delayCallHeartbeat(string jsonData)
     {
-        print("After 5 second: " + jsonData);
-        if (jsonData != "true")
+        //print("After 5 second: " + jsonData);
+
+        if (jsonData != null)
         {
             var hb = JsonConvert.DeserializeObject<heartbeatData>(jsonData);
             string pStatus = hb.playerStatus;
@@ -488,7 +486,14 @@ public class LobbyView : MonoBehaviour
             PlayerPrefs.SetString("PlayerStatus", pStatus);
             PlayerPrefs.SetString("ServerStatus", sStatus);
             PlayerPrefs.Save();
-            print($"PS: {PlayerPrefs.GetString("PlayerStatus")}, SS: {PlayerPrefs.GetString("ServerStatus")}");
+            //print($"PS: {PlayerPrefs.GetString("PlayerStatus")}, SS: {PlayerPrefs.GetString("ServerStatus")}");
+            Invoke("StartHeartbeat", 5);
+        }
+        else
+        {
+            PlayerPrefs.SetString("PlayerStatus", "normal");
+            PlayerPrefs.SetString("ServerStatus", "normal");
+            PlayerPrefs.Save();
             Invoke("StartHeartbeat", 5);
         }
     }
