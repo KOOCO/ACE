@@ -446,14 +446,26 @@ public class LobbyView : MonoBehaviour
     void StartHeartbeat()
     {
 #if !UNITY_EDITOR
-        JSBridgeManager.Instance.StartListeningForDataChanges(
-                    $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}",
+        if (!isListenered)
+        {
+            isListenered = true;
+
+            JSBridgeManager.Instance.StartListeningForDataChanges(
+                        $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}",
+                    gameObject.name,
+                    nameof(delayCallHeartbeat));
+        }
+#endif
+
+#if UNITY_EDITOR
+        JSBridgeManager.Instance.ReadDataFromFirebase(
+                $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}",
                 gameObject.name,
                 nameof(delayCallHeartbeat));
-#else
+#endif
 
         heartbeatData hb = null;
-        if (PlayerPrefs.GetString("PlayerStatus") == "" && PlayerPrefs.GetString("ServerStatus") == "")
+        if(PlayerPrefs.GetString("PlayerStatus") == "" && PlayerPrefs.GetString("ServerStatus") == "")
             hb = new heartbeatData(true, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), playerStatus.normal.ToString(), serverStatus.normal.ToString());
         else
             hb = new heartbeatData(true, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), PlayerPrefs.GetString("PlayerStatus"), PlayerPrefs.GetString("ServerStatus"));
@@ -463,9 +475,7 @@ public class LobbyView : MonoBehaviour
         JSBridgeManager.Instance.UpdateDataToFirebase(
                 $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}",
                 data,
-                gameObject.name,
-                nameof(delayCallHeartbeat));
-#endif
+                gameObject.name);
     }
     void delayCallHeartbeat(string jsonData)
     {
@@ -477,6 +487,7 @@ public class LobbyView : MonoBehaviour
         PlayerPrefs.SetString("PlayerStatus", pStatus);
         PlayerPrefs.SetString("ServerStatus", sStatus);
         PlayerPrefs.Save();
+        print($"PS: {PlayerPrefs.GetString("PlayerStatus")}, SS: {PlayerPrefs.GetString("ServerStatus")}");
         Invoke("StartHeartbeat", 5);
     }
 
