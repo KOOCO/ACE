@@ -236,62 +236,60 @@ mergeInto(LibraryManager.library, {
 
 
 
-     myStoredVariable: null, // Initialize the variable
-     endPointUrl: null,  // endPoint
+    myStoredVariable: null, // Initialize the variable
+    roomData: null,  // Initialize the endpoint variable
 
     // Function to store a value
-    storeVariable: function(value,endPoint) {
+    storeVariable: function(value, data) {
         this.myStoredVariable = UTF8ToString(value);
-        this.endPointUrl =UTF8ToString(endPoint);
-        console.log("Variable stored:", this.myStoredVariable);
-        console.log("Variable stored:", this.endPointUrl);
+        this.roomData = UTF8ToString(data);
+        console.log("Variable URL:", this.myStoredVariable);
+        console.log("Room Data:", this.roomData);
     },
 
     clearStoredVariable: function() {
         this.myStoredVariable = null;
-        this.endPointUrl = null;
+        this.roomData = null;
         console.log("Stored Variable is cleared");
-    },
-
-    // Function to parse query parameters from a URL
-    getQueryParams: function(endPointUrl) {
-        const urlParams = new URLSearchParams(new URL(endPointUrl).search);
-        return {
-            memberId: urlParams.get("memberId")
-        };
     },
 
     // Function to handle the page load and unload events
     onPageLoad: function() {
+        const self = this; // Save reference to the current context
+
         // Register the 'load' event listener on the window object
         window.addEventListener('load', function() {
             console.log('The page has fully loaded!');
-        }); 
+        });
 
         // Register the 'beforeunload' event listener on the window object
         window.addEventListener('beforeunload', function(event) {
             console.log('The page is about to be unloaded!');
 
-            if (!LibraryManager.library.myStoredVariable) {
-                console.log("No URL to send data to, skipping.");
+            if (!self.myStoredVariable) {
+                console.log("No data to send, skipping.");
                 return;
             }
 
-            const url = LibraryManager.library.myStoredVariable;
-            
-            // Extract the query parameters from the URL
-            const data = LibraryManager.library.getQueryParams(endPointUrl);
+            // Send a beacon to the provided Firebase URL before unloading the page
+            const url = self.myStoredVariable;
+            const data = { memberId: self.roomData };
 
-            // Send data using navigator.sendBeacon
+            // Use the Beacon API to send data to Firebase before the page unloads
             if (navigator.sendBeacon) {
-                const payload = JSON.stringify(data);
-                navigator.sendBeacon(url, payload);
-                console.log("Data sent before page unload:", data);
+                const payload = JSON.stringify(data); // Convert data to JSON string
+                navigator.sendBeacon(url, payload); // Send the request asynchronously
+                console.log("Data Sent:", payload);
             }
+
+            // Optionally, set a confirmation message (browser dependent)
+            event.returnValue = 'Are you sure you want to leave?'; // Some browsers show this message to the user
         });
     },
 
     onPageLoadWithVisibilityChange: function() {
+        const self = this; // Save reference to the current context
+
         // Check if the device is a mobile device
         const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
@@ -303,23 +301,21 @@ mergeInto(LibraryManager.library, {
         // Add the visibility change listener only on mobile devices
         document.addEventListener('visibilitychange', function() {
             if (document.visibilityState === 'hidden') {
-
-                if (!LibraryManager.library.myStoredVariable) {
-                    console.log("No URL to send data to, skipping.");
+                if (!self.myStoredVariable) {
+                    console.log("No data to send, skipping.");
                     return;
                 }
 
-                const url = LibraryManager.library.myStoredVariable;
-                
-                // Extract the query parameters from the URL
-                const data = LibraryManager.library.getQueryParams(endPointUrl);
+                const url = self.myStoredVariable;
+                const data = { memberId: self.roomData };
 
                 // Send the data using navigator.sendBeacon
                 if (navigator.sendBeacon) {
                     const payload = JSON.stringify(data);
                     navigator.sendBeacon(url, payload);
-                    console.log("Data sent before page becomes hidden:", data);
                 }
+
+                console.log("Data sent before page becomes hidden:", data);
             }
         });
 

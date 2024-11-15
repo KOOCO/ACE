@@ -204,15 +204,11 @@ public class JoinRoomView : MonoBehaviour
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
     // Set the URL and query parameters
-    string testUrl = "https://f9de149c298966a11d6f15feb43b45f9.m.pipedream.net";
-    string apiEndpoint = $"?memberId={DataManager.UserId}&roomId={DataManager.RoomId}&amount=0&type={DataManager.CurrencyType.ToString()}&rankPoint=10";
-    string fullUrl = testUrl;
+    string apiEndpoint = DataManager.UserId;
+    string fullUrl = "https://f9de149c298966a11d6f15feb43b45f9.m.pipedream.net";
     
-    // Debug log to check the final URL
-    Debug.Log("Sending data to URL: " + fullUrl);
-
     // Store the URL in JavaScript
-    StoreVariable(testUrl,apiEndpoint);
+    StoreVariableJS(fullUrl,apiEndpoint);
 
     // Call page visibility-related functions
     PageChangeVisibility();
@@ -248,7 +244,7 @@ public class JoinRoomView : MonoBehaviour
 
 
 
-    public void StoreVariable(string value, string endPoint)
+    public void StoreVariableJS(string value, string endPoint)
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
         storeVariable(value,endPoint);
