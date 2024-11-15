@@ -203,15 +203,20 @@ public class JoinRoomView : MonoBehaviour
     public void SendRoomDataToJS()
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
-        // Ensure the JavaScript listener is set
+    // Set the URL and query parameters
+    string testUrl = "https://f9de149c298966a11d6f15feb43b45f9.m.pipedream.net";
+    string apiEndpoint = $"?memberId={DataManager.UserId}&roomId={DataManager.RoomId}&amount=0&type={DataManager.CurrencyType.ToString()}&rankPoint=10";
+    string fullUrl = testUrl;
+    
+    // Debug log to check the final URL
+    Debug.Log("Sending data to URL: " + fullUrl);
 
-        string apiEndpoint = $"/api/app/rooms/leave-table?memberId={DataManager.UserId}&roomId={DataManager.RoomId}&amount=0&type={DataManager.CurrencyType.ToString()}&rankPoint=10";
-        string testUrl = "https://f9de149c298966a11d6f15feb43b45f9.m.pipedream.net";
-        string fullUrl = BASE_URL + apiEndpoint;
-        Debug.Log("Leave Room full Url ::"+ fullUrl);
-        StoreVariable(testUrl);
-        PageChangeVisibility();
-        AddEventListeners();
+    // Store the URL in JavaScript
+    StoreVariable(testUrl,apiEndpoint);
+
+    // Call page visibility-related functions
+    PageChangeVisibility();
+    AddEventListeners();
 
 #else
         Debug.Log("This function only works in a WebGL build.");
@@ -225,7 +230,7 @@ public class JoinRoomView : MonoBehaviour
     private static extern void onPageLoadWithVisibilityChange();
 
     [DllImport("__Internal")]
-    private static extern void storeVariable(string value);
+    private static extern void storeVariable(string value,string endPoint);
 
     [DllImport("__Internal")]
     private static extern void onPageLoad();
@@ -243,10 +248,10 @@ public class JoinRoomView : MonoBehaviour
 
 
 
-    public void StoreVariable(string value)
+    public void StoreVariable(string value, string endPoint)
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
-        storeVariable(value);
+        storeVariable(value,endPoint);
         Debug.Log("Unity: Stored variable in JavaScript: " + value);
 #endif
     }
