@@ -450,10 +450,10 @@ public class LobbyView : MonoBehaviour
                     $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}",
                 gameObject.name,
                 nameof(delayCallHeartbeat));
-#endif
+#else
 
         heartbeatData hb = null;
-        if(PlayerPrefs.GetString("PlayerStatus") == "" && PlayerPrefs.GetString("ServerStatus") == "")
+        if (PlayerPrefs.GetString("PlayerStatus") == "" && PlayerPrefs.GetString("ServerStatus") == "")
             hb = new heartbeatData(true, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), playerStatus.normal.ToString(), serverStatus.normal.ToString());
         else
             hb = new heartbeatData(true, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), PlayerPrefs.GetString("PlayerStatus"), PlayerPrefs.GetString("ServerStatus"));
@@ -465,6 +465,7 @@ public class LobbyView : MonoBehaviour
                 data,
                 gameObject.name,
                 nameof(delayCallHeartbeat));
+#endif
     }
     void delayCallHeartbeat(string jsonData)
     {
