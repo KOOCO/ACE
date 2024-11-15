@@ -257,11 +257,7 @@ mergeInto(LibraryManager.library, {
     getQueryParams: function(endPointUrl) {
         const urlParams = new URLSearchParams(new URL(endPointUrl).search);
         return {
-            memberId: urlParams.get("memberId"),
-            roomId: urlParams.get("roomId"),
-            amount: parseFloat(urlParams.get("amount")) || 0,
-            type: urlParams.get("type"),
-            rankPoint: parseInt(urlParams.get("rankPoint"), 10) || 0
+            memberId: urlParams.get("memberId")
         };
     },
 
