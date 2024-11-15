@@ -9,20 +9,20 @@ public static class PokerShape
     /// <summary>
     /// 牌型名稱
     /// </summary>
-    private static readonly Dictionary<string, int> HandRanks = new Dictionary<string, int>
-{
-    { "Fold", 0 },
-    { "Royal Flush", 1 },
-    { "Straight Flush", 2 },
-    { "Four of a Kind", 3 },
-    { "Full House", 4 },
-    { "Flush", 5 },
-    { "Straight", 6 },
-    { "Three of a Kind", 7 },
-    { "Two Pair", 8 },
-    { "One Pair", 9 },
-    { "High Card", 10 }
-};
+    public static readonly Dictionary<string, int> HandRanks = new Dictionary<string, int>
+    {
+        { "Fold" , 0 },
+        { "Royal Flush", 1 },
+        { "Straight Flush", 2 },
+        { "Four of a Kind", 3 },
+        { "Full House", 4 },
+        { "Flush", 5 },
+        { "Straight", 6 },
+        { "Three of a Kind", 7 },
+        { "Two Pair", 8 },
+        { "One Pair", 9 },
+        { "High Card", 10 }
+    };
 
     public static void JudgePokerShape(List<int> cards, UnityAction<int, List<int>> callback)
     {
@@ -98,8 +98,8 @@ public static class PokerShape
         if (isFlush)
         {
             var flushCards = cards.Where(card => (card / 13) == cards.GroupBy(c => c / 13)
-                                                              .OrderByDescending(g => g.Count())
-                                                              .First().Key)
+                                                          .OrderByDescending(g => g.Count())
+                                                          .First().Key)
                                   .Select(card => card % 13 == 0 ? 13 : card % 13)
                                   .OrderByDescending(r => r)
                                   .Take(5)

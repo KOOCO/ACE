@@ -2010,7 +2010,7 @@ public class GameView : MonoBehaviour
                         gamePlayerInfo.SetHandPoker(player.handPoker[0], player.handPoker[1]);
 
                         // Judge the local player's poker hand shape
-                        JudgePokerShape(gamePlayerInfo, true);
+                        JudgePokerShapeUI(gamePlayerInfo, true);
                     }
                 }
 
@@ -2329,7 +2329,7 @@ public class GameView : MonoBehaviour
                 thisData.IsPlaying = true;
                 player.SetHandPoker(dic.Value.Item1,
                                     dic.Value.Item2);
-                JudgePokerShape(player, true);
+                JudgePokerShapeUI(player, true);
             }
             else
             {
@@ -2413,7 +2413,7 @@ public class GameView : MonoBehaviour
         {
             GamePlayerInfo localPlayerInfo = gamePlayerInfoList.Where(x => x.UserId == DataManager.UserId)
                                                                .FirstOrDefault();
-            JudgePokerShape(localPlayerInfo,
+            JudgePokerShapeUI(localPlayerInfo,
                             true);
         }
     }
@@ -2424,67 +2424,83 @@ public class GameView : MonoBehaviour
     /// <param name="player"></param>
     /// <param name="isOpenMatchPokerFrame">是否開啟符合的撲克框</param>
     /// <param name="isWinEffect">贏家效果</param>
-    private void JudgePokerShape(GamePlayerInfo player, bool isOpenMatchPokerFrame, bool isWinEffect = false)
+    private void JudgePokerShapeUI(GamePlayerInfo player, bool isOpenMatchPokerFrame, bool isWinEffect = false)
     {
-        // Get hand cards
+        // Get player's hand cards
         Poker[] handPoker = player.GetHandPoker;
         List<int> judgePoker = handPoker.Select(p => p.PokerNum).ToList();
 
-        Debug.Log("Player: " + player.name + " | Hand Poker: " + string.Join(", ", judgePoker));
+        Debug.Log($"[JudgePokerShapeUI] Player: {player.Nickname} | Hand Cards Count: {handPoker.Length}");
 
+        // Validate hand cards and community cards
         if (judgePoker != null && thisData.CurrCommunityPoker != null)
         {
-            // Combine with community cards
-            judgePoker.AddRange(thisData.CurrCommunityPoker);
-            Debug.Log("Combined Judge Poker: " + string.Join(", ", judgePoker));
+            // Combine player's hand cards with community cards
+            // Combine player's hand cards with community cards
+            judgePoker = judgePoker.Concat(thisData.CurrCommunityPoker).ToList();
+            Debug.Log($"[JudgePokerShapeUI] Combined Cards Count: {judgePoker.Count} | Community Cards Count: {thisData.CurrCommunityPoker.Count}");
+            Debug.Log($"[JudgePokerShapeUI] Combined Cards: {string.Join(", ", judgePoker)}");
 
-            List<Poker> pokers = CommunityPokerList.Concat(handPoker.ToList()).ToList();
-            Debug.Log("Total Pokers (Community + Hand): " + pokers.Count);
+            // Combine hand cards and community cards as Poker objects
+            List<Poker> allPokers = handPoker.Concat(CommunityPokerList).ToList();
+            Debug.Log($"[JudgePokerShapeUI] Total Pokers (Community + Hand): {allPokers.Count}");
+            Debug.Log($"[JudgePokerShapeUI] Total Poker Values: {string.Join(", ", allPokers.Select(p => p.PokerNum))}");
 
-            // Disable effects for the community cards
-            foreach (var poker in pokers)
+            // Disable visual effects for all cards
+            foreach (var poker in allPokers)
             {
                 poker.PokerEffectEnable = false;
             }
 
-            // Determine hand shape
+            // Call JudgePokerShape to determine the hand shape
             PokerShape.JudgePokerShape(judgePoker, (resultIndex, matchPokerList) =>
             {
+                Debug.Log($"[JudgePokerShapeUI] Player: {player.name} | Result Index: {resultIndex} | Matched Cards Count: {matchPokerList.Count}");
+
+                // Verify if the player's cards are active
                 if (player.GetHandPoker[0].gameObject.activeSelf)
                 {
-                    Debug.Log("Result Index :: " + resultIndex);
+                    // Set player's poker shape
                     player.SetPokerShapeStr(resultIndex);
 
-                    if (isOpenMatchPokerFrame && resultIndex < 10) // Only show for valid hands
+                    if (resultIndex < PokerShape.HandRanks.Count)
                     {
-                        Debug.Log("Opening Match Poker Frame for Result Index: " + resultIndex);
-                        PokerShape.OpenMatchPokerFrame(pokers, matchPokerList, isWinEffect);
+                        Debug.Log($"[JudgePokerShapeUI] Valid Result Index: {resultIndex}");
 
-                        if (isWinEffect)
+                        // Open Match Poker Frame if enabled
+                        if (isOpenMatchPokerFrame)
                         {
-                            player.PokerShapeIndex = resultIndex;
-                            SetWinnerStringTxt = LanguageManager.Instance.GetText(
-                                AssetsManager.Instance.GetStringAlbumAsset(StringAlbumEnum.HandRanksStringAlbum).strAlbum[resultIndex]);
+                            PokerShape.OpenMatchPokerFrame(allPokers, matchPokerList, isWinEffect);
+                            Debug.Log($"[JudgePokerShapeUI] Match Poker Frame Opened | isWinEffect: {isWinEffect}");
 
-                            Debug.Log("Winner String Set to: " + resultIndex);
+                            // Set winner details if win effects are enabled
+                            if (isWinEffect)
+                            {
+                                player.PokerShapeIndex = resultIndex;
+                                SetWinnerStringTxt = LanguageManager.Instance.GetText(
+                                    AssetsManager.Instance.GetStringAlbumAsset(StringAlbumEnum.HandRanksStringAlbum).strAlbum[resultIndex]);
+                                Debug.Log($"[JudgePokerShapeUI] Winner String Set to:");
+                            }
                         }
                     }
-                    else if (resultIndex >= 10)
+                    else
                     {
-                        Debug.Log("Result Index " + resultIndex + " is not a valid hand, not opening Match Poker Frame.");
+                        Debug.LogWarning($"[JudgePokerShapeUI] Invalid Result Index: {resultIndex}. HandRank not found.");
                     }
                 }
                 else
                 {
-                    Debug.Log("Player's hand is not active. Skipping shape judgment.");
+                    Debug.LogWarning($"[JudgePokerShapeUI] Player: {player.name} | Hand is inactive. Skipping judgment.");
                 }
             });
         }
         else
         {
-            Debug.LogError("judgePoker or CurrCommunityPoker is null.");
+            Debug.LogError($"[JudgePokerShapeUI] Invalid data: judgePoker or CurrCommunityPoker is null for player {player.name}.");
         }
     }
+
+
 
     /// <summary>
     /// 主池結果
@@ -2516,7 +2532,7 @@ public class GameView : MonoBehaviour
                 {
                     GamePlayerInfo player = GetPlayer(playerId);
                     player.SetHandPoker(playerData.handPoker[0], playerData.handPoker[1]);
-                    JudgePokerShape(player, false);
+                    JudgePokerShapeUI(player, false);
                 }
             }
         }
@@ -2550,7 +2566,7 @@ public class GameView : MonoBehaviour
             GamePlayerInfo player = GetPlayer(potWinnerId);
             player.IsOpenInfoMask = false;
 
-            JudgePokerShape(player, true, true);
+            JudgePokerShapeUI(player, true, true);
 
             player.IsWinnerActive = true;
             //player.setWinnerDisplay($"POT + ${changeValue:f2}");
@@ -2776,7 +2792,7 @@ public class GameView : MonoBehaviour
                     player.setWinnerDisplay($"SIDE POT  + ${gameRoomData.sideWinData.sideWinChips / gameRoomData.sideWinData.sideWinnersId.Count():f2}");
 
                 Vector2 winnerSeatPos = player.gameObject.transform.position;
-                JudgePokerShape(player, true, true);
+                JudgePokerShapeUI(player, true, true);
 
                 if (player.PlayerRoomChips != playerData.carryChips)
                 {
@@ -3610,7 +3626,7 @@ public class GameView : MonoBehaviour
                     // Judge the local player's poker hand shape
                     if (gameRoomData.playingPlayersIdList.Contains(DataManager.UserId))
                     {
-                        JudgePokerShape(gamePlayerInfo, true);
+                        JudgePokerShapeUI(gamePlayerInfo, true);
                     }
                 }
             }
