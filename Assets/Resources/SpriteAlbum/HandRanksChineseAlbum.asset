@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: HandRanksChineseAlbum
   m_EditorClassIdentifier: 
   album:
+  - {fileID: 21300000, guid: 5668c9e50315643c899eed9972eea894, type: 3}
   - {fileID: 21300000, guid: fde932c7b515e4f03b9a8ddcd3485d07, type: 3}
   - {fileID: 21300000, guid: 33ce3658c43d644d5a663b11ff77f0a6, type: 3}
   - {fileID: 21300000, guid: c46d3efa300ee480c99a62de3a44be0c, type: 3}

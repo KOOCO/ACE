@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: HandRanksStringAlbum
   m_EditorClassIdentifier: 
   strAlbum:
+  - High Card
   - Royal Straight Flush
   - Straight Flush
   - Four of a kind

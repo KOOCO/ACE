@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: HandRanksEnglishAlbum
   m_EditorClassIdentifier: 
   album:
+  - {fileID: 21300000, guid: 56c7d386f4f564133aeb894daf07a322, type: 3}
   - {fileID: 21300000, guid: fee483040acff441195d3037cc1753af, type: 3}
   - {fileID: 21300000, guid: 74ab0e889c41e45c78ea9512c0eb2b4a, type: 3}
   - {fileID: 21300000, guid: 13f964bcc1e654b3ebb91f5469536d5c, type: 3}

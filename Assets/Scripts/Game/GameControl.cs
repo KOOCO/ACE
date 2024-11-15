@@ -2553,7 +2553,8 @@ public class GameControl : MonoBehaviour
     /// </summary>
     /// <param name="judgePlayers">判斷玩家</param>
     /// <returns></returns>
-    private List<GameRoomPlayerData> JudgeWinner(List<GameRoomPlayerData> judgePlayers)
+
+    public List<GameRoomPlayerData> JudgeWinner(List<GameRoomPlayerData> judgePlayers)
     {
         if (judgePlayers == null || judgePlayers.Count == 0)
         {
@@ -2561,160 +2562,91 @@ public class GameControl : MonoBehaviour
         }
 
         var shapeDic = EvaluatePlayerHands(judgePlayers);
-        int maxResult = shapeDic.Values.Min(x => x.Item1);
-        int matchCount = shapeDic.Values.Count(x => x.Item1 == maxResult);
+        int bestHandRank = shapeDic.Values.Min(x => x.HandRank);
+        var bestPlayers = shapeDic.Where(x => x.Value.HandRank == bestHandRank)
+                                  .Select(x => x.Key)
+                                  .ToList();
 
-        return matchCount == 1
-            ? GetSingleWinner(shapeDic, maxResult)
-            : DetermineTieWinners(shapeDic, maxResult);
+        if (bestPlayers.Count == 1)
+        {
+            return bestPlayers;
+        }
+        else
+        {
+            // Tie-breaker needed
+            var comparedPlayers = CompareHands(shapeDic, bestPlayers, bestHandRank);
+            return comparedPlayers;
+        }
     }
 
-    private Dictionary<GameRoomPlayerData, (int, List<int>)> EvaluatePlayerHands(List<GameRoomPlayerData> judgePlayers)
+    private Dictionary<GameRoomPlayerData, HandEvaluation> EvaluatePlayerHands(List<GameRoomPlayerData> judgePlayers)
     {
-        var shapeDic = new Dictionary<GameRoomPlayerData, (int, List<int>)>();
+        var shapeDic = new Dictionary<GameRoomPlayerData, HandEvaluation>();
 
         foreach (var player in judgePlayers)
         {
             var judgePoker = new List<int> { player.handPoker[0], player.handPoker[1] };
             judgePoker = judgePoker.Concat(gameRoomData.communityPoker).ToList();
 
+            // Evaluate the hand
             PokerShape.JudgePokerShape(judgePoker, (result, matchPoker) =>
             {
-                shapeDic.Add(player, (result, matchPoker));
+                Debug.Log("GameControl :: Returned Cards : " + matchPoker.Count);
+                shapeDic.Add(player, new HandEvaluation
+                {
+                    HandRank = result,
+                    MatchPoker = matchPoker
+                });
             });
         }
 
         return shapeDic;
     }
 
-    private List<GameRoomPlayerData> GetSingleWinner(Dictionary<GameRoomPlayerData, (int, List<int>)> shapeDic, int maxResult)
+    private List<GameRoomPlayerData> CompareHands(Dictionary<GameRoomPlayerData, HandEvaluation> shapeDic, List<GameRoomPlayerData> tiedPlayers, int bestHandRank)
     {
-        return new List<GameRoomPlayerData>
-    {
-        shapeDic.FirstOrDefault(x => x.Value.Item1 == maxResult).Key
-    };
-    }
-
-    private List<GameRoomPlayerData> DetermineTieWinners(Dictionary<GameRoomPlayerData, (int, List<int>)> shapeDic, int maxResult)
-    {
-        var pairPlayer = BuildPairPlayerData(shapeDic, maxResult);
-        var maxResultPlayers = FindMaxResultPlayers(pairPlayer, maxResult);
-
-        return maxResultPlayers.Count == 1
-            ? maxResultPlayers
-            : HandleHighCardComparison(pairPlayer, maxResultPlayers, maxResult);
-    }
-
-    private Dictionary<GameRoomPlayerData, List<int>> BuildPairPlayerData(Dictionary<GameRoomPlayerData, (int, List<int>)> shapeDic, int maxResult)
-    {
-        var pairPlayer = new Dictionary<GameRoomPlayerData, List<int>>();
-
-        foreach (var shape in shapeDic.Where(s => s.Value.Item1 == maxResult))
+        // Extract relevant comparison data
+        var comparisonData = tiedPlayers.Select(player => new
         {
-            var numList = shape.Value.Item2.Select(x => x % 13 == 0 ? 14 : x % 13).ToList();
-            numList.Sort(new TexasHoldemUtil.SpecialComparer());
-            pairPlayer.Add(shape.Key, numList);
-        }
+            Player = player,
+            HandEval = shapeDic[player]
+        }).ToList();
 
-        return pairPlayer;
+        // Sort players based on their MatchPoker data
+        // The MatchPoker list should be ordered by significance for comparison
+        // For example, in One Pair, first element is the pair rank, followed by kickers in descending order
+        comparisonData = comparisonData.OrderByDescending(p => p.HandEval.MatchPoker, new HandComparer()).ToList();
+
+        // Determine the highest matchPoker
+        var topHand = comparisonData.First().HandEval.MatchPoker;
+        var winners = comparisonData.Where(p => p.HandEval.MatchPoker.SequenceEqual(topHand))
+                                    .Select(p => p.Player)
+                                    .ToList();
+
+        return winners;
     }
 
-    private List<GameRoomPlayerData> FindMaxResultPlayers(Dictionary<GameRoomPlayerData, List<int>> pairPlayer, int maxResult)
+    // Helper class to encapsulate hand evaluation details
+    private class HandEvaluation
     {
-        var maxResultPlayers = new List<GameRoomPlayerData>();
-        int maxValue = int.MinValue;
+        public int HandRank { get; set; } // Lower is better (e.g., 1 for Royal Flush)
+        public List<int> MatchPoker { get; set; } // Relevant card ranks for comparison
+    }
 
-        foreach (var playerPair in pairPlayer)
+    // Custom comparer for comparing MatchPoker lists
+    private class HandComparer : IComparer<List<int>>
+    {
+        public int Compare(List<int> x, List<int> y)
         {
-            int max = DetermineMaxCardValue(playerPair.Value, maxResult);
-
-            if (max > maxValue)
+            for (int i = 0; i < Math.Min(x.Count, y.Count); i++)
             {
-                maxValue = max;
-                maxResultPlayers.Clear();
-                maxResultPlayers.Add(playerPair.Key);
+                if (x[i] > y[i])
+                    return 1;
+                if (x[i] < y[i])
+                    return -1;
             }
-            else if (max == maxValue)
-            {
-                maxResultPlayers.Add(playerPair.Key);
-            }
+            return 0; // Hands are equal
         }
-
-        return maxResultPlayers;
-    }
-
-    private int DetermineMaxCardValue(List<int> playerCards, int maxResult)
-    {
-        if (maxResult == 1 || maxResult == 6)
-        {
-            return (playerCards.Contains(14) && playerCards.Contains(1) &&
-                    playerCards.Contains(2) && playerCards.Contains(3) && playerCards.Contains(4)) ? 4 : playerCards.Max();
-        }
-        return playerCards.Max();
-    }
-
-    private List<GameRoomPlayerData> HandleHighCardComparison(Dictionary<GameRoomPlayerData, List<int>> pairPlayer, List<GameRoomPlayerData> maxResultPlayers, int maxResult)
-    {
-        if (maxResult == 10)
-        {
-            return CompareHighCards(pairPlayer, maxResultPlayers);
-        }
-
-        return CompareSingleCards(pairPlayer);
-    }
-
-    private List<GameRoomPlayerData> CompareHighCards(Dictionary<GameRoomPlayerData, List<int>> pairPlayer, List<GameRoomPlayerData> maxResultPlayers)
-    {
-        foreach (var player in maxResultPlayers)
-        {
-            if (player.handPoker[0] % 13 > 0 && player.handPoker[0] % 13 < player.handPoker[1] % 13)
-            {
-                (player.handPoker[0], player.handPoker[1]) = (player.handPoker[1], player.handPoker[0]);
-            }
-        }
-
-        var maxHand0PokerPlayer = maxResultPlayers.OrderByDescending(x => (x.handPoker[0] % 13 == 0 ? int.MinValue : x.handPoker[0] % 13) + 1).FirstOrDefault();
-        var maxHandPokerClientList = maxResultPlayers.Where(x => x.handPoker[0] % 13 == maxHand0PokerPlayer.handPoker[0] % 13).ToList();
-
-        return maxHandPokerClientList.Count == 1 ? maxHandPokerClientList : CompareSecondaryHighCards(maxResultPlayers);
-    }
-
-    private List<GameRoomPlayerData> CompareSecondaryHighCards(List<GameRoomPlayerData> maxResultPlayers)
-    {
-        var maxHand1PokerPlayer = maxResultPlayers.OrderByDescending(x => (x.handPoker[1] % 13 == 0 ? int.MinValue : x.handPoker[1] % 13) + 1).FirstOrDefault();
-        return maxHand1PokerPlayer == null
-            ? maxResultPlayers
-            : maxResultPlayers.Where(x => x.handPoker[1] % 13 == maxHand1PokerPlayer.handPoker[1] % 13).ToList();
-    }
-
-    private List<GameRoomPlayerData> CompareSingleCards(Dictionary<GameRoomPlayerData, List<int>> pairPlayer)
-    {
-        var winPlayers = new List<GameRoomPlayerData>();
-
-        for (int i = 0; i < pairPlayer.FirstOrDefault().Value.Count; i++)
-        {
-            int max = int.MinValue;
-
-            foreach (var item in pairPlayer)
-            {
-                if (item.Value[i] > max)
-                {
-                    winPlayers = new List<GameRoomPlayerData> { item.Key };
-                    max = item.Value[i];
-                }
-                else if (item.Value[i] == max)
-                {
-                    winPlayers.Add(item.Key);
-                }
-            }
-
-            if (winPlayers.Count == 1)
-            {
-                return winPlayers;
-            }
-        }
-
-        return winPlayers;
     }
 
     #endregion
