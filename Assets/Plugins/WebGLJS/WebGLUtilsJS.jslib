@@ -266,7 +266,7 @@ mergeInto(LibraryManager.library, {
         // Register the 'load' event listener on the window object
         window.addEventListener('load', function() {
             console.log('The page has fully loaded!');
-        });
+        }); 
 
         // Register the 'beforeunload' event listener on the window object
         window.addEventListener('beforeunload', function(event) {
