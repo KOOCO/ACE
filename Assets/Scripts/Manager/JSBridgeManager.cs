@@ -226,6 +226,34 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
                                   objNamePtr,
                                   callbackFunPtr);
     }
+    public void UpdateDataToFirebase(string refPathPtr, string data, string objNamePtr = null, string callbackFunPtr = null)
+    {
+        //string jsonData = JsonConvert.SerializeObject(data);
+
+#if UNITY_EDITOR
+
+        RestClient.Patch($"{DataManager.DatabaseUrl}{refPathPtr}.json", data).Then(response =>
+        {
+            if (!string.IsNullOrEmpty(objNamePtr) && !string.IsNullOrEmpty(callbackFunPtr))
+            {
+                GameObject obj = GameObject.Find(objNamePtr);
+                obj.SendMessage(callbackFunPtr, response.Text);
+            }
+        }).Catch(error =>
+        {
+            Debug.LogError(data);
+            Debug.LogError($"{refPathPtr}/{objNamePtr}/{callbackFunPtr}");
+            Debug.LogError("Update Data Error: " + error);
+        });
+
+        return;
+#endif
+
+        JS_UpdateDataFromFirebase(refPathPtr,
+                                  data,
+                                  objNamePtr,
+                                  callbackFunPtr);
+    }
 
     [DllImport("__Internal")]
     private static extern bool JS_ReadDataFromFirebase(string refPathPtr, string objNamePtr, string callbackFunPtr);
@@ -275,6 +303,8 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
         string callbackFun = string.IsNullOrEmpty(callbackFunPtr) ?
                             "OnRemoveDataCallback" :
                             callbackFunPtr;
+
+        //Debug.Log(nameof(JSBridgeManager) + " :: " + callbackFun + " : " + objName);
 
 #if UNITY_EDITOR
 

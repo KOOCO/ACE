@@ -1926,7 +1926,7 @@ public class LoginView : MonoBehaviour
             { FirebaseManager.A_CHIPS, DataManager.UserAChips},
             { FirebaseManager.U_CHIPS, DataManager.UserChips},
             { FirebaseManager.GOLD, DataManager.UserGold},
-            { FirebaseManager.NICKNAME, ""},
+            { FirebaseManager.NICKNAME, DataManager.UserNickname},
         };
         JSBridgeManager.Instance.WriteDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{LoginType.phoneUser}/{DataManager.UserId}",
                                                         dataDic,
@@ -2196,6 +2196,7 @@ public class LoginView : MonoBehaviour
         NoodleResponse noodleData = JsonConvert.DeserializeObject<NoodleResponse>(data);
         DataManager.AccessCode = noodleData.data.accessCode;
         DataManager.NoodleMemberId = noodleData.data.noodleMemberId;
+        DataManager.TenantName = noodleData.data.tenantName;
         LoginRequest login = new LoginRequest()
         {
             userNameOrEmailAddress = noodleData.data.userName,
@@ -2233,6 +2234,15 @@ public class LoginView : MonoBehaviour
             }
             else
             {
+                if (string.IsNullOrEmpty(loginData.nickname))
+                {
+                    Dictionary<string, object> dataDic = new()
+                    {
+                        { FirebaseManager.NICKNAME, DataManager.UserNickname},
+                    };
+                    JSBridgeManager.Instance.UpdateDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{LoginType.phoneUser}/{loginData.userId}",
+                                                        dataDic);
+                }
                 LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
                 Debug.Log("用戶未登入，正常");
                 //LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);

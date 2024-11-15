@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Events;
 using TMPro;
+using Newtonsoft.Json;
+using UnityEngine.Events;
 using System;
 using Proyecto26;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+using System.Runtime.InteropServices;
 
 public class JoinRoomView : MonoBehaviour
 {
@@ -37,6 +38,9 @@ public class JoinRoomView : MonoBehaviour
 
     bool isClassic;
 
+    string actionType;
+    GameRoom previousRoom;
+
     /// <summary>
     /// 更新文本翻譯
     /// </summary>
@@ -60,6 +64,7 @@ public class JoinRoomView : MonoBehaviour
         lobbyView = GameObject.FindAnyObjectByType<LobbyView>();
     }
 
+
     /// <summary>
     /// 事件聆聽
     /// </summary>
@@ -68,20 +73,24 @@ public class JoinRoomView : MonoBehaviour
         //關閉
         Close_Btn.onClick.AddListener(() =>
         {
-            GameRoomManager.Instance.IsCanMoveSwitch = true;
+            GameRoomManager.Instance.IsCanMoveSwitch = DataManager.isInRoom;
             gameObject.SetActive(false);
         });
 
         //取消
         Cancel_Btn.onClick.AddListener(() =>
         {
-            GameRoomManager.Instance.IsCanMoveSwitch = true;
+            GameRoomManager.Instance.IsCanMoveSwitch = DataManager.isInRoom;
             gameObject.SetActive(false);
         });
 
         //購買
         Buy_Btn.onClick.AddListener(() =>
         {
+            //if status is 'banned' than cancel join room
+            if (PlayerPrefs.GetString("PlayerStatus") == playerStatus.banned.ToString() || PlayerPrefs.GetString("ServerStatus") == serverStatus.maintenance.ToString())
+                return;
+
             //籌碼不足
             if (tableType == TableTypeEnum.Cash &&
                 newCarryChipsValue > DataManager.UserChips)
@@ -110,68 +119,7 @@ public class JoinRoomView : MonoBehaviour
             Debug.Log($"MemberId {newRound.memberId} :: TableId {newRound.tableId} :: Amount {newRound.amount}");
 
             //ViewManager.Instance.OpenWaitingView(transform);
-            AppApi.OnJoinRoom(newRound, (data) =>
-            {
-                Debug.Log("Join Round Response :: " + data);
-                GameRoom gameRound = JsonConvert.DeserializeObject<GameRoom>(data);
-                var _currencyType = DataManager.CurrencyType;
-                Debug.Log("Currency Type :: " + _currencyType);
-                DataManager.TableType = gameRound.tableType;
-                DataManager.Rebate = gameRound.table.rebateSetting;
-                DataManager.RoundId = gameRound.roundId;
-                DataManager.RoomId = gameRound.roomId;
-                NoodleApi.PostTableBuyIn(newCarryChipsValue, (data) =>
-                {
-                    Debug.Log("Table BuyIn SuccessFull.");
-                },
-               (error) =>
-                {
-                    Debug.LogError($"Table BuyIn Failed Error: {error}");
-                });
-                switch (_currencyType)
-                {
-                    case CurrencyType.Gold:
-                        Debug.Log(_currencyType);
-                        DataManager.UserGold -= newCarryChipsValue;
-                        break;
-                    case CurrencyType.ACoin:
-                        Debug.Log(_currencyType);
-                        DataManager.UserAChips -= newCarryChipsValue;
-                        break;
-                    case CurrencyType.UCoin:
-                        Debug.Log(_currencyType);
-                        DataManager.UserChips -= newCarryChipsValue;
-                        break;
-                }
-                DataManager.DataUpdated = true;
-            }, null);
-
-#if UNITY_EDITOR
-
-            dataRoomName = "EditorRoom";
-            //創新房間資料
-            var dataDic = new Dictionary<string, object>()
-            {
-                { FirebaseManager.SMALL_BLIND, smallBlind},                         //小盲值
-                { FirebaseManager.ROOM_HOST_ID, DataManager.UserId},                //房主ID
-                { FirebaseManager.POT_CHIPS, 0},                                    //底池總籌碼
-                { FirebaseManager.COMMUNITY_POKER, new List<int>()},                //公共牌
-                { FirebaseManager.CURR_COMMUNITY_POKER, new List<int>()},           //當前公共牌
-            };
-            JSBridgeManager.Instance.UpdateDataFromFirebase(
-                $"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}/{dataRoomName}",
-                dataDic,
-                gameObject.name,
-                nameof(CreateNewRoomCallback));
-            return;
-#endif
-
-            JSBridgeManager.Instance.JoinRoomQueryData($"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}",
-                                                        $"{DataManager.MaxPlayerCount}",
-                                                        $"{DataManager.UserId}",
-                                                        gameObject.name,
-                                                        nameof(JoinRoomQueryCallback));
-
+            AppApi.OnJoinRoom(newRound, OnJoinRoomSuccess, OnJoinRoomFail);
         });
 
         //購買Slider單位設定
@@ -198,6 +146,129 @@ public class JoinRoomView : MonoBehaviour
             BuyChips_Sli.value = (float)(newCarryChipsValue - smallBlind * 2);
         });
     }
+
+
+    void OnJoinRoomSuccess(string data)
+    {
+        GameRoom gameRound = JsonConvert.DeserializeObject<GameRoom>(data);
+        Debug.Log("Join Round Response :: " + data);
+        //if (previousRoom == null || previousRoom.id == gameRound.id)
+        //{
+        //    previousRoom = gameRound;
+        //    Debug.Log("same Room id ");
+        //}
+        //else
+        //{
+        //    CreateNewRoom();
+        //    Debug.Log("Room id different");
+        //    return;
+        //}
+        DataManager.TableType = gameRound.tableType;
+        DataManager.Rebate = gameRound.table.rebateSetting;
+        DataManager.RoundId = gameRound.roundId;
+        DataManager.RoomId = gameRound.roomId;
+        actionType = gameRound.actionType;
+
+        SendRoomDataToJS();
+
+#if UNITY_EDITOR
+
+        /*dataRoomName = "EditorRoom";
+        //創新房間資料
+        var dataDic = new Dictionary<string, object>()
+        {
+            { FirebaseManager.SMALL_BLIND, smallBlind},                         //小盲值
+            { FirebaseManager.ROOM_HOST_ID, DataManager.UserId},                //房主ID
+            { FirebaseManager.POT_CHIPS, 0},                                    //底池總籌碼
+            { FirebaseManager.COMMUNITY_POKER, new List<int>()},                //公共牌
+            { FirebaseManager.CURR_COMMUNITY_POKER, new List<int>()},           //當前公共牌
+        };
+        JSBridgeManager.Instance.UpdateDataFromFirebase(
+            $"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}/{dataRoomName}",
+            dataDic,
+            gameObject.name,
+            nameof(CreateNewRoomCallback));*/
+        Debug.LogError("Cause Editor can't play game, so cancel join/create room, please 'Build First'.");
+        return;
+#endif
+        CreateOrJoinRoom();
+    }
+    void OnJoinRoomFail(string error)
+    {
+        Debug.LogError("JoinRoomView :: OnJoinRoomFail : " + error);
+    }
+
+    private string BASE_URL = "https://admin-d.jf588.com";  // API Base URL
+
+    public void SendRoomDataToJS()
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        // Ensure the JavaScript listener is set
+
+        string apiEndpoint = $"/api/app/rooms/leave-table?memberId={DataManager.UserId}&roomId={DataManager.RoomId}&amount=0&type={DataManager.CurrencyType.ToString()}&rankPoint=10";
+        string testUrl = "https://f9de149c298966a11d6f15feb43b45f9.m.pipedream.net";
+        string fullUrl = BASE_URL + apiEndpoint;
+        Debug.Log("Leave Room full Url ::"+ fullUrl);
+        StoreVariable(testUrl);
+        PageChangeVisibility();
+        AddEventListeners();
+
+#else
+        Debug.Log("This function only works in a WebGL build.");
+#endif
+    }
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+    // Define the external JavaScript functions
+
+    [DllImport("__Internal")]
+    private static extern void onPageLoadWithVisibilityChange();
+
+    [DllImport("__Internal")]
+    private static extern void storeVariable(string value);
+
+    [DllImport("__Internal")]
+    private static extern void onPageLoad();
+
+  
+#endif
+
+    public void PageChangeVisibility()
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        onPageLoadWithVisibilityChange();
+        Debug.Log("Unity: PageChangeVisibility called");
+#endif
+    }
+
+
+
+    public void StoreVariable(string value)
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        storeVariable(value);
+        Debug.Log("Unity: Stored variable in JavaScript: " + value);
+#endif
+    }
+
+    public void AddEventListeners()
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        onPageLoad();
+        Debug.Log("Unity: onPageLoad called");
+#endif
+    }
+
+    public void CreateOrJoinRoom()
+    {
+        JSBridgeManager.Instance.JoinRoomQueryData($"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}",
+                                                    $"{DataManager.MaxPlayerCount}",
+                                                    $"{DataManager.UserId}",
+                                                    gameObject.name,
+                                                    nameof(JoinRoomQueryCallback));
+    }
+
+
 
     /// <summary>
     /// 設定創建房間介面
@@ -238,16 +309,16 @@ public class JoinRoomView : MonoBehaviour
         }
         Title_Txt.text = LanguageManager.Instance.GetText(titleStr);
 
-        Blind_Txt.text = $"{StringUtils.SetChipsUnit(smallBlind)} / " +
-                         $"{StringUtils.SetChipsUnit(smallBlind * 2)}";
+        Blind_Txt.text = $"${StringUtils.SetChipsUnit(smallBlind)} / " +
+                         $"${StringUtils.SetChipsUnit(smallBlind * 2)}";
 
         if (isClassic)
             TexasHoldemUtil.SetBuySlider(this.smallBlind * 2, DataManager.UserAChips < ((this.smallBlind * 2) * DataManager.MaxMagnification) ? DataManager.UserAChips : (this.smallBlind * 2) * DataManager.MaxMagnification, BuyChips_Sli, tableType);
         else
             TexasHoldemUtil.SetBuySlider(this.smallBlind * 2, DataManager.UserChips < ((this.smallBlind * 2) * DataManager.MaxMagnification) ? DataManager.UserChips : (this.smallBlind * 2) * DataManager.MaxMagnification, BuyChips_Sli, tableType);
 
-        MinBuyChips_Txt.text = $"{StringUtils.SetChipsUnit((this.smallBlind * 2) * DataManager.MinMagnification)}";
-        MaxBuyChips_Txt.text = $"{StringUtils.SetChipsUnit((this.smallBlind * 2) * DataManager.MaxMagnification)}"; ;
+        MinBuyChips_Txt.text = $"${StringUtils.SetChipsUnit((this.smallBlind * 2) * DataManager.MinMagnification)}";
+        MaxBuyChips_Txt.text = $"${StringUtils.SetChipsUnit((this.smallBlind * 2) * DataManager.MaxMagnification)}"; ;
     }
 
     /// <summary>
@@ -258,43 +329,57 @@ public class JoinRoomView : MonoBehaviour
     {
         QueryRoom queryRoom = FirebaseManager.Instance.OnFirebaseDataRead<QueryRoom>(jsonData);
 
-        //錯誤
+        // Handle errors
         if (!string.IsNullOrEmpty(queryRoom.error))
         {
             Debug.LogError(queryRoom.error);
             return;
         }
 
-        if (queryRoom.getRoomName == "false")
-        {
-            //沒有找到房間
-            Debug.Log($"沒有找到房間:{queryRoom.roomCount}");
-            string roomToken = StringUtils.GenerateRandomString(DataManager.RoomTokenLength);
-            dataRoomName = $"{FirebaseManager.ROOM_NAME}{queryRoom.roomCount + 1}_{roomToken}";
+        Debug.Log($"JoinRoomView :: roomName : {queryRoom.getRoomName}, roomCount : {queryRoom.roomCount}");
 
-            //創新房間資料
-            var dataDic = new Dictionary<string, object>()
-            {
-                { FirebaseManager.SMALL_BLIND, smallBlind},                         //小盲值
-                { FirebaseManager.ROOM_HOST_ID, DataManager.UserId},                //房主ID
-                { FirebaseManager.POT_CHIPS, 0},                                    //底池總籌碼
-                { FirebaseManager.COMMUNITY_POKER, new List<int>()},                //公共牌
-                { FirebaseManager.CURR_COMMUNITY_POKER, new List<int>()},           //當前公共牌
-            };
+        if (actionType == "Create")
+        {
+            // Define the room name based on the room count
+            dataRoomName = $"{FirebaseManager.ROOM_NAME}{DataManager.RoomId}";
+
+            // Create new room data
+            var dataDic = new Dictionary<string, object>
+        {
+            { FirebaseManager.SMALL_BLIND, smallBlind },                  // Small blind amount
+            { FirebaseManager.ROOM_HOST_ID, DataManager.UserId },         // Host ID
+            { FirebaseManager.POT_CHIPS, 0 },                             // Total pot chips
+            { FirebaseManager.COMMUNITY_POKER, new List<int>() },         // Community cards
+            { FirebaseManager.CURR_COMMUNITY_POKER, new List<int>() }     // Current community cards
+        };
+
+            // Write data to Firebase
             JSBridgeManager.Instance.WriteDataFromFirebase(
                 $"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}/{dataRoomName}",
                 dataDic,
                 gameObject.name,
                 nameof(CreateNewRoomCallback));
+
+            actionType = ""; // Reset actionType after creating room
         }
-        else
+        else if (actionType == "Join")
         {
-            //有房間
-            dataRoomName = queryRoom.getRoomName;
+            // Join an existing room
+            Debug.Log("Room already exists. Attempting to join...");
+
+            dataRoomName = $"{FirebaseManager.ROOM_NAME}{DataManager.RoomId}";
+
+            // Read room data from Firebase
             JSBridgeManager.Instance.ReadDataFromFirebase(
                 $"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}/{dataRoomName}",
                 gameObject.name,
                 nameof(JoinRoomCallback));
+
+            actionType = ""; // Reset actionType after joining room
+        }
+        else
+        {
+            Debug.LogWarning("Invalid actionType specified.");
         }
     }
 
@@ -304,6 +389,7 @@ public class JoinRoomView : MonoBehaviour
     /// <param name="isSuccess">創建/加入房間回傳結果</param>
     public void CreateNewRoomCallback(string isSuccess)
     {
+        Debug.Log($"JoinRoomView :: {nameof(CreateNewRoomCallback)} : {isSuccess}");
         //錯誤
         if (isSuccess == "false")
         {
@@ -321,6 +407,7 @@ public class JoinRoomView : MonoBehaviour
     /// <returns></returns>
     private IEnumerator IYieldInCreateRoom()
     {
+        Debug.Log($"JoinRoomView :: {nameof(IYieldInCreateRoom)}");
         yield return new WaitForSeconds(0.2f);
 
         GameRoomManager.Instance.CreateGameRoom(tableType,
@@ -330,9 +417,12 @@ public class JoinRoomView : MonoBehaviour
                                                 newCarryChipsValue,
                                                 0);
 
+        OnEnterTable();
         ViewManager.Instance.CloseWaitingView(transform);
 
         gameObject.SetActive(false);
+        DataManager.isInRoom = true;
+        print("Is in Room: " + DataManager.isInRoom);
     }
 
     /// <summary>
@@ -344,6 +434,8 @@ public class JoinRoomView : MonoBehaviour
         var gameRoomData = FirebaseManager.Instance.OnFirebaseDataRead<GameRoomData>(jsonData);
         int seat = TexasHoldemUtil.SetGameSeat(gameRoomData);
 
+        Debug.Log($"JoinRoomView :: {nameof(CreateNewRoomCallback)} : {jsonData}");
+
         //本地創建房間
         GameRoomManager.Instance.CreateGameRoom(tableType,
                                                 smallBlind,
@@ -352,7 +444,41 @@ public class JoinRoomView : MonoBehaviour
                                                 newCarryChipsValue,
                                                 seat);
 
+        OnEnterTable();
         ViewManager.Instance.CloseWaitingView(transform);
         gameObject.SetActive(false);
+        DataManager.isInRoom = true;
+        print("Is in Room: " + DataManager.isInRoom);
+    }
+
+    void OnEnterTable()
+    {
+        NoodleApi.PostTableBuyIn(newCarryChipsValue, (data) =>
+        {
+            Debug.Log("Table BuyIn SuccessFull.");
+            var _currencyType = DataManager.CurrencyType;
+            Debug.Log("Currency Type :: " + _currencyType);
+            switch (_currencyType)
+            {
+                case CurrencyType.Gold:
+                    Debug.Log(_currencyType);
+                    DataManager.UserGold -= newCarryChipsValue;
+                    break;
+                case CurrencyType.ACoin:
+                    Debug.Log(_currencyType);
+                    DataManager.UserAChips -= newCarryChipsValue;
+                    break;
+                case CurrencyType.UCoin:
+                    Debug.Log(_currencyType);
+                    DataManager.UserChips -= newCarryChipsValue;
+                    break;
+            }
+            DataManager.DataUpdated = true;
+        },
+        (error) =>
+        {
+            Debug.LogError($"Table BuyIn Failed Error: {error}");
+        });
+
     }
 }

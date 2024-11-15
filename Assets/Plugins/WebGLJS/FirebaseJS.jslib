@@ -205,7 +205,7 @@ mergeInto(LibraryManager.library, {
     JS_RemoveListenerConnectState: function(idPtr) {
         const id = UTF8ToString(idPtr);
         window.removePresenceListener(id);
-    },
+    },    
 
     // 加入遊戲房間查詢
     // pathPtr = 查詢路徑

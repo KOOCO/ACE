@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -82,6 +83,7 @@ public class AppApi : MonoBehaviour
     }
     public static void OnRoundFinish(ResultHistoryData resultHistoryData, UnityAction<string> _success = null, UnityAction<string> _error = null)
     {
+        Debug.Log("Round Finish API :: " + JsonConvert.SerializeObject(resultHistoryData));
         apiEndpoint = $"/api/app/rooms/finish-round";
         SwaggerAPIManager.Instance.SendPostAPI<ResultHistoryData>(apiEndpoint, resultHistoryData, _success, _error, true);
     }

@@ -6,8 +6,6 @@ using System;
 using System.Linq;
 using TMPro;
 
-using RequestBuf;
-
 public class GamePlayerInfo : MonoBehaviour
 {
     [Header("用戶訊息")]
@@ -50,6 +48,7 @@ public class GamePlayerInfo : MonoBehaviour
     Coroutine chatCoroutine;            //聊天協程
 
     int pokerShapeIndex = -1;                //牌型編號
+    int pokerCurrShapeIndex = -1;                //牌型編號
 
     Vector2 betChipsr_TrInitPos;         //下注籌碼物件初始位置
 
@@ -127,10 +126,12 @@ public class GamePlayerInfo : MonoBehaviour
         if (PokerShape_img == null)
             return;
 
-        if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
-            SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksEnglishAlbum).album[pokerShapeIndex];
-        else
-            SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksChineseAlbum).album[pokerShapeIndex];
+        if (LanguageManager.Instance.GetCurrLanguageIndex() == 0 && pokerCurrShapeIndex != -1)
+            SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksEnglishAlbum).album[pokerCurrShapeIndex];
+        else if (LanguageManager.Instance.GetCurrLanguageIndex() == 1 && pokerCurrShapeIndex != -1)
+        {
+            SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksChineseAlbum).album[pokerCurrShapeIndex];
+        }
         // }
 
 
@@ -177,9 +178,16 @@ public class GamePlayerInfo : MonoBehaviour
     /// <summary>
     /// 設置牌型文字元件文字
     /// </summary>
-    public int GetPokerShapeIndex()
+    public int PokerShapeIndex
     {
-        return pokerShapeIndex;
+        set
+        {
+            pokerShapeIndex = value;
+        }
+        get
+        {
+            return pokerShapeIndex;
+        }
     }
     public Sprite SetPokerShapeImage
     {
@@ -260,6 +268,10 @@ public class GamePlayerInfo : MonoBehaviour
     {
         roomFee_Obj.gameObject.SetActive(true);
         roomFee_Obj.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = Result;
+    }
+    public void HideRoomFee()
+    {
+        roomFee_Obj.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -520,7 +532,7 @@ public class GamePlayerInfo : MonoBehaviour
     /// <param name="cd">倒數</param>
     private IEnumerator ICountDown(int cdTime, int cd)
     {
-        #region 舊的答辯
+        #region 舊的不是答辯
         /*float target = ((float)cdTime - (cd - 1)) / (float)cdTime;
         float curr = ((float)cdTime - cd) / (float)cdTime;
         print($"{cdTime}, {cd}, {target}");
@@ -539,9 +551,8 @@ public class GamePlayerInfo : MonoBehaviour
             yield return null;
         }*/
         #endregion
-        //if(cd<=0)
-        //    cd = cdTime;
 
+        #region 新的答辯
         while (cd > 0)  // 當cd大於0時持續倒數
         {
             Debug.Log($"{Nickname}倒數剩餘時間：{cd}秒");
@@ -559,6 +570,7 @@ public class GamePlayerInfo : MonoBehaviour
 
         CDMask_Img.fillAmount = cdTime;
         yield break;
+        #endregion
     }
 
     /// <summary>
@@ -760,14 +772,14 @@ public class GamePlayerInfo : MonoBehaviour
     public void SetPokerShapeStr(int shapeIndex)
     {
 
-        pokerShapeIndex = shapeIndex;
+        pokerCurrShapeIndex = shapeIndex;
         if (PokerShape_img == null)
             return;
 
         if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
-            SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksEnglishAlbum).album[pokerShapeIndex];
+            SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksEnglishAlbum).album[pokerCurrShapeIndex];
         else
-            SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksChineseAlbum).album[pokerShapeIndex];
+            SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksChineseAlbum).album[pokerCurrShapeIndex];
     }
 
     private void OnDisable()

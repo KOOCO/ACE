@@ -16,10 +16,10 @@ public class HistorySample : MonoBehaviour
     [SerializeField]
     Poker[] CommunityPokers;
     [SerializeField]
-    Button Play_Btn;
+    Button Play_Btn, CopyID_Btn;
     [SerializeField]
     TextMeshProUGUI Index_Txt, Blind_Txt, Nicaname_Txt, WinChips_Txt,
-                    CoinType_Txt, TableName_Txt;
+                    CoinType_Txt, TableName_Txt, RoomID_Txt;
 
     ResultHistoryData tempResultHistory;                                                //紀錄資料
     int tempIndex;                                                                      //紀錄顯示的筆數
@@ -67,6 +67,7 @@ public class HistorySample : MonoBehaviour
         tempIndex = index;
 
         TableName_Txt.text = LanguageManager.Instance.GetText(resultHistory.roomType);
+        RoomID_Txt.text = $"ID：{resultHistory.roomId.ToString()}";
         var winner = resultHistory.playerDetails.FirstOrDefault(x => x.playerHandData.isWinner);
         Index_Txt.text = $"{LanguageManager.Instance.GetText("NO.")}{index + 1}";
         Blind_Txt.text = $"{StringUtils.SetChipsUnit(resultHistory.smallBlind)}/{StringUtils.SetChipsUnit(resultHistory.smallBlind * 2)}";
@@ -88,6 +89,21 @@ public class HistorySample : MonoBehaviour
         Play_Btn.onClick.AddListener(() =>
         {
             HandHistoryManager.Instance.PlayVideo(index);
+        });
+        CopyID_Btn.onClick.AddListener(() =>
+        {
+#if UNITY_EDITOR
+            TextEditor editor = new TextEditor
+            {
+                text = RoomID_Txt.text.Substring(3)
+            };
+            editor.SelectAll();
+            editor.Copy();
+            return;
+#endif
+
+            JSBridgeManager.Instance.CopyString(RoomID_Txt.text.Substring(3));
+            ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Succesful, LanguageManager.Instance.GetText("Copy Success!"));
         });
     }
 }

@@ -243,6 +243,8 @@ public class LobbyView : MonoBehaviour
         SetIsShowAssetList = isShowAssetList;
 
         OpenItemPage(ItemType.Main);
+
+        //StartHeartbeat();
     }
 
     private void Start()
@@ -325,6 +327,7 @@ public class LobbyView : MonoBehaviour
     /// </summary>
     public void UpdateUserData()
     {
+        print("Get user Data");
         //讀取用戶資料
         JSBridgeManager.Instance.ReadDataFromFirebase(
             $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}",
@@ -341,7 +344,7 @@ public class LobbyView : MonoBehaviour
         AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
 
         if (loginData != null &&
-            !string.IsNullOrEmpty(loginData.userId) &&
+            !string.IsNullOrEmpty(loginData.userId) || //Cause some player has not nickname, so this place must become to 'or', otherwise client will call Firebase unstopable.
             !string.IsNullOrEmpty(loginData.nickname))
         {
             ViewManager.Instance.CloseWaitingView(transform);
@@ -349,6 +352,8 @@ public class LobbyView : MonoBehaviour
             DataManager.UserNickname = loginData.nickname;
             DataManager.UserAvatarIndex = loginData.avatarIndex;
             DataManager.UserStatus = loginData.online;
+
+            StartHeartbeat();
 
 #if !UNITY_EDITOR
 
@@ -370,6 +375,8 @@ public class LobbyView : MonoBehaviour
         }
         else
         {
+            print(loginData.userId + " " + loginData.nickname);
+
             var data = new Dictionary<string, object>()
             {
                 { FirebaseManager.USER_ID, DataManager.UserId},
@@ -433,6 +440,44 @@ public class LobbyView : MonoBehaviour
         HandHistoryManager.Instance.LoadHandHistoryData();
 
         isFirstIn = false;
+    }
+
+    //Test callBack
+    void StartHeartbeat()
+    {
+#if !UNITY_EDITOR
+        JSBridgeManager.Instance.StartListeningForDataChanges(
+                    $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}",
+                gameObject.name,
+                nameof(delayCallHeartbeat));
+#else
+
+        heartbeatData hb = null;
+        if (PlayerPrefs.GetString("PlayerStatus") == "" && PlayerPrefs.GetString("ServerStatus") == "")
+            hb = new heartbeatData(true, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), playerStatus.normal.ToString(), serverStatus.normal.ToString());
+        else
+            hb = new heartbeatData(true, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), PlayerPrefs.GetString("PlayerStatus"), PlayerPrefs.GetString("ServerStatus"));
+
+        string data = JsonConvert.SerializeObject(hb);
+
+        JSBridgeManager.Instance.UpdateDataToFirebase(
+                $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}",
+                data,
+                gameObject.name,
+                nameof(delayCallHeartbeat));
+#endif
+    }
+    void delayCallHeartbeat(string jsonData)
+    {
+        print("After 5 second: " + jsonData);
+
+        var hb = JsonConvert.DeserializeObject<heartbeatData>(jsonData);
+        string pStatus = hb.playerStatus;
+        string sStatus = hb.serverStatus;
+        PlayerPrefs.SetString("PlayerStatus", pStatus);
+        PlayerPrefs.SetString("ServerStatus", sStatus);
+        PlayerPrefs.Save();
+        Invoke("StartHeartbeat", 5);
     }
 
     /// <summary>

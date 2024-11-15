@@ -38,7 +38,7 @@ public static class DataManager
 
     #region Database
 
-    public static string DatabaseUrl { get { return "https://asia-poker-5959b-default-rtdb.firebaseio.com/"; } }   //Database資料庫URL
+    public static string DatabaseUrl { get { return "https://ace2024-e8b4a-default-rtdb.asia-southeast1.firebasedatabase.app/"; } }   //Database資料庫URL
 
     #endregion
 
@@ -114,11 +114,13 @@ public static class DataManager
     public static double Rebate { get; set; }
     public static bool DataUpdated { get; set; }
     public static string TableId { get; set; }
+    public static bool isInRoom { get; set; }
     public static string RoomId { get; set; }
     public static string TableType { get; set; }
     public static string AccessCode { get; set; }
     public static string NoodleMemberId { get; set; }
-    public static string RoundId { get; set; }
+    public static int RoundId { get; set; }
+    public static string TenantName { get; set; }
     public static double RoomFee { get; set; }
     #endregion
 
@@ -382,4 +384,17 @@ public class ShopData
 {
     public int BuffAmount;
     public int CostCoin;
+}
+
+public enum playerStatus
+{
+    none,
+    normal,
+    banned
+}
+public enum serverStatus
+{
+    none,
+    normal,
+    maintenance
 }

@@ -55,6 +55,24 @@ public class Player
 }
 #endregion
 
+#region Heartbeat
+public class heartbeatData
+{
+    public bool isOnline;
+    public string lastActivityTime;
+    public string playerStatus;
+    public string serverStatus;
+
+    public heartbeatData(bool isOnline, string lastActivityTime, string playerStatus, string serverStatus)
+    {
+        this.isOnline = isOnline;
+        this.lastActivityTime = lastActivityTime;
+        this.playerStatus = playerStatus;
+        this.serverStatus = serverStatus;
+    }
+}
+#endregion
+
 #region Lobby
 [System.Serializable]
 public class TableItem
@@ -104,6 +122,7 @@ public class LeaveRoom
 public class GameRoom
 {
     public string id;
+    public string actionType;
     public string roomId;
     public string tableId;
     public string tableType;
@@ -112,7 +131,7 @@ public class GameRoom
     public double tableCommission;
     public string name;
     public string tenantId;
-    public string roundId;
+    public int roundId;
     //public DateTime creationTime;
     public Table table;
     public List<RoundMember> roundMembers;
@@ -237,9 +256,7 @@ public class PlayerDetails
     public string playerHandId;
     public double playerValidBetAmount;
     public double playerRoomFee;
-    public string roundInsuranceResult;
-    public double roundInsurancePayRate;
-    public double roundInsurancePayAmount;
+    public string tenantName;
     public bool isBot;
     public PlayerHand playerHandData;
 }
@@ -515,4 +532,13 @@ public class PlayerStatistics
     }
 }
 
+#endregion
+
+#region Hand History
+public class HandHistory
+{
+    public List<GameInitHistoryData> gameInitHistoryDataList;      //遊戲初始資料紀錄
+    public List<ProcessHistoryData> processHistoryDataList;        //遊戲過程資料
+    public List<ResultHistoryData> resultDataList;                 //遊戲結果紀錄
+}
 #endregion

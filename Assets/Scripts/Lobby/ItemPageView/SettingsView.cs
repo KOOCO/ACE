@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System;
 
 public class SettingsView : MonoBehaviour
 {
@@ -35,6 +36,8 @@ public class SettingsView : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI Privacy_Title, Term_Title,
                     TermsConfirm_Btn_Txt, PrivacyConfirm_Btn_Txt;
+    [SerializeField]
+    ScrollRect Privacy_scroll, Term_scroll;
 
     /// <summary>
     /// 更新文本翻譯
@@ -98,11 +101,19 @@ public class SettingsView : MonoBehaviour
     }
     [DllImport("__Internal")]
     private static extern void JS_WindowClose();
+
+    private void CallJSWindowClose(string unused)
+    {
+        #if UNITY_WEBGL && !UNITY_EDITOR
+        JS_WindowClose();
+        #endif
+    }
+
     public void OnClickLogOutBtn()
     {
-        AppApi.LogoutRequest();
-        JS_WindowClose();
+        AppApi.LogoutRequest(CallJSWindowClose);
     }
+
     private void OnEnable()
     {
         //Language_Dd.value = LanguageManager.Instance.GetCurrLanguageIndex();
@@ -150,11 +161,13 @@ public class SettingsView : MonoBehaviour
         {
             Term_text.SetActive(true);
             Privacy_text.SetActive(false);
+            Term_scroll.verticalNormalizedPosition = 1;
         });
         privacy_Btn.onClick.AddListener(() =>
         {
             Term_text.SetActive(false);
             Privacy_text.SetActive(true);
+            Privacy_scroll.verticalNormalizedPosition = 1;
         });
 
         logOut_Btn.onClick.AddListener(OnClickLogOutBtn);

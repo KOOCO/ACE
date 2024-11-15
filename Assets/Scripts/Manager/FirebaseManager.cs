@@ -9,6 +9,7 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
     public const string USER_DATA_PATH = "users/";                                           //Database用戶資料路徑
     public const string ROOM_DATA_PATH = "room/";                                           //房間資料路徑
     public const string ROUND_DATA_PATH = "gameRoundsData";                                           //房間資料路徑
+    public const string HEARTBEAT_DATA_PATH = "heartbeatsData";                                           //心跳資料路徑
 
     [Header("用戶資料內容路徑名稱")]
     public const string USER_ID = "userId";                                                 //用戶ID
@@ -63,6 +64,10 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
     public const string IS_BET = "isBet";                                                   //該流程是否已下注
     public const string IS_SIT_OUT = "isSitOut";                                            //是否保留座位離開
     public const string SHOW_HAND_POKER = "showHandPoker";                                  //棄牌後顯示手牌
+    public const string PLAYER_HAND_SHAPE = "playerHandShape";
+    public const string ROOM_FEE = "roomFee";
+    public const string VALID_BET = "playerValidBetAmount";
+    public const string IS_PLAYER_LEFT = "isPlayerLeft";
 
     [Header("下注行為")]
     public const string BET_ACTIONER_ID = "betActionerId";                                  //下注玩家ID
@@ -89,6 +94,12 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
 
     [Header("聊天")]
     public const string CHAT_MSG = "chatMsg";                                               //聊天訊息
+
+    [Header("Heartbeat")]
+    public const string IS_ONLINE = "isOnline";
+    public const string LAST_ACTIVITY_TIME = "lastActivityTime";
+    public const string PLAYER_STATUS = "playerStatus";
+    public const string SERVER_STATUS = "serverStatus";
 
     public override void Awake()
     {
@@ -256,6 +267,24 @@ public class GameRoomPlayerData
     public bool isSitOut;                           //是否保留座位離開
     public int playerHandShape;
     public List<int> showHandPoker;                 //棄牌後顯示手牌
+    public WinnerEnum winType;
+    public double playerValidBetAmount;
+    public double roomFee;
+    public bool isPlayerLeft;
+}
+
+
+public class RoomFee
+{
+    public string userId;                           //用戶ID
+    public WinnerEnum winType;
+    public double playerValidBetAmount;
+    public double roomFee;
+    public double potWinAmount;
+    public double carryChips;
+    public double sidePotAmount;
+    public double allBetChips;
+    public double extraContribution;
 }
 
 /// <summary>

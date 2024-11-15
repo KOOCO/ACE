@@ -30,13 +30,34 @@ public static class PokerShape
     /// <param name="callBack">Callback to return the result and matching cards</param>
     public static void JudgePokerShape(List<int> judgePokerList, UnityAction<int, List<int>> callBack)
     {
-        // Group cards by rank
+        // Group cards by rank once, outside of any condition
         Dictionary<int, List<int>> groupPoker = GroupPokerByRank(judgePokerList);
 
-        // Check each hand from the highest ranked to lowest
-        List<int> handResult;
+        // Check if the player has fewer than 5 cards (e.g., folded early)
+        if (judgePokerList.Count < 5)
+        {
+            // Sort cards and treat it as a high card or best available hand
+            List<int> sortedCards = judgePokerList.OrderByDescending(card => card).ToList();
 
-        //Debug.Log("judgePokerList ::: " + judgePokerList + "\ngroupPoker ::: " + groupPoker);
+            // If there are exactly 2 cards, check if they form a pair
+            if (judgePokerList.Count == 2)
+            {
+                List<int> pairResult = CheckPair(groupPoker);
+
+                if (pairResult.Count == 2)  // Check if there's a pair
+                {
+                    callBack(8, pairResult); // 8 indicates "Pair"
+                    return;
+                }
+            }
+
+            // If no pair, or if fewer than 2 cards, treat as High Card
+            callBack(9, sortedCards); // 9 indicates "High Card"
+            return;
+        }
+
+        // Continue with standard hand evaluation for 5 or more cards
+        List<int> handResult;
 
         handResult = CheckRoyalFlush(groupPoker);
         if (handResult.Count == 5) { callBack(0, handResult); return; }
@@ -68,6 +89,8 @@ public static class PokerShape
         handResult = CheckHighCard(groupPoker);
         callBack(9, handResult); // High Card
     }
+
+
 
     /// <summary>
     /// Group cards by rank

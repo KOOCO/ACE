@@ -50,13 +50,13 @@ public class HistoryVideoView : MonoBehaviour
 
     private void Awake()
     {
-        gameView = GameObject.Find("GameView").GetComponent<GameView>();
+        //gameView = GameObject.Find("GameView").GetComponent<GameView>();
         ListenerEvent();
 
         //切換影片列表移動距離
         VerticalLayoutGroup verticalLayout = HandHistoryViewParent.GetComponent<VerticalLayoutGroup>();
-        float sampleHeight = HistorySample.rect.height;
-        switchVideoMoveDictance = verticalLayout.spacing + sampleHeight;
+        //float sampleHeight = HistorySample.rect.height;
+        //switchVideoMoveDictance = verticalLayout.spacing + sampleHeight;
     }
 
     /// <summary>
@@ -304,6 +304,8 @@ public class HistoryVideoView : MonoBehaviour
                 PokerShape.JudgePokerShape(judgePoker, (resultIndex, matchPokerList) =>
                 {
                     Players[seatIndex].SetPokerShapeStr(resultIndex);
+                    //Players[seatIndex].PokerShapeIndex = (resultIndex);
+
                     List<Poker> pokers = new List<Poker>()
                     {
                         Players[seatIndex].GetHandPoker[0],
@@ -405,7 +407,7 @@ public class HistoryVideoView : MonoBehaviour
             }
         }
         Debug.Log("Show Chips");
-        yield return gameView.IConcentrateBetChips();
+        //yield return gameView.IConcentrateBetChips();
         if (processStepHistoryData.CommunityPoker == null ||
             processStepHistoryData.CommunityPoker.Count == 0)
         {
@@ -556,6 +558,7 @@ public class HistoryVideoView : MonoBehaviour
             {
                 //Players[seat].SetPokerShapeTxtStr = "";
                 Players[seat].SetPokerShapeImage = null;
+                //Players[seat].PokerShapeIndex = 0;
                 return;
             }
 
@@ -573,6 +576,7 @@ public class HistoryVideoView : MonoBehaviour
             PokerShape.JudgePokerShape(judgePoker, (resultIndex, matchPokerList) =>
             {
                 Players[seat].SetPokerShapeStr(resultIndex);
+                //Players[seat].PokerShapeIndex = (resultIndex);
 
                 if (resultIndex < 10)
                 {

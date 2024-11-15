@@ -1,9 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
 using Newtonsoft.Json;
-using System;
 
 /// <summary>
 /// 紀錄結果資料
@@ -19,13 +16,10 @@ public class ResultHistoryData
     public string tableId;
     public string roomId;
     public int roundId;
-    public string roundInsuranceResult;
-    public double roundInsurancePayRate;
-    public double roundInsurancePayAmount;
-    //public int[] HandPokers;                        //獲勝玩家手牌
-    // public int PlayerCurrHandShape;
-    //public double WinChips;                         //贏得籌碼
-    // public double SideWinChips;
+    public int roundInsuranceFee;
+    public string roundInsuranceResult = "";
+    public double roundInsurancePayRate = 0;
+    public double roundInsurancePayAmount = 0;
     public List<PlayerDetails> playerDetails;
 }
 
@@ -90,9 +84,9 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
     string GameInitHistoryPlayerPrefsKey;                   //遊戲初始資料Key
     string ProcessHistoryPlayerPrefsKey;                    //遊戲過程資料Key
 
-    List<ResultHistoryData> resultDataList;                 //遊戲結果紀錄
-    List<GameInitHistoryData> gameInitHistoryDataList;      //遊戲初始資料紀錄
-    List<ProcessHistoryData> processHistoryDataList;        //遊戲過程資料
+    List<ResultHistoryData> resultDataList = new();                 //遊戲結果紀錄
+    List<GameInitHistoryData> gameInitHistoryDataList = new();      //遊戲初始資料紀錄
+    List<ProcessHistoryData> processHistoryDataList = new();        //遊戲過程資料
 
     HistoryVideoView historyVideoView;
 
@@ -106,13 +100,38 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
     /// </summary>
     public void LoadHandHistoryData()
     {
-        ResultHistoryPlayerPrefsKey = $"AsiaPoker_ResultHistoryDataList_{DataManager.UserId}";
-        GameInitHistoryPlayerPrefsKey = $"AsiaPoker_GameInifHistoryDataList_{DataManager.UserId}";
-        ProcessHistoryPlayerPrefsKey = $"AsiaPoker_ProcessHistoryDataList_{DataManager.UserId}";
+        // ResultHistoryPlayerPrefsKey = $"AsiaPoker_ResultHistoryDataList_{DataManager.UserId}";
+        // GameInitHistoryPlayerPrefsKey = $"AsiaPoker_GameInifHistoryDataList_{DataManager.UserId}";
+        // ProcessHistoryPlayerPrefsKey = $"AsiaPoker_ProcessHistoryDataList_{DataManager.UserId}";
 
-        LoadResultData();
-        LoadGameInitData();
-        LoadProcessData();
+        JSBridgeManager.Instance.ReadDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}/HandHistory",
+                                               gameObject.name,
+                                               nameof(LoadHandHistory));
+
+        // LoadResultData();
+        // LoadGameInitData();
+        // LoadProcessData();
+    }
+
+    void LoadHandHistory(string data)
+    {
+        if (data == "null") return;
+
+        HandHistory handHistory = new HandHistory()
+        {
+            gameInitHistoryDataList = new(),
+            resultDataList = new(),
+            processHistoryDataList = new(),
+        };
+
+        Debug.Log(nameof(HandHistoryManager) + " LoadHandHistory :: " + data);
+
+        handHistory = FirebaseManager.Instance.OnFirebaseDataRead<HandHistory>(data); ;
+
+        resultDataList = handHistory.resultDataList;
+        gameInitHistoryDataList = handHistory.gameInitHistoryDataList;
+        processHistoryDataList = handHistory.processHistoryDataList;
+
     }
 
     /// <summary>
@@ -154,6 +173,7 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
     /// </summary>
     private void LoadResultData()
     {
+
         string json = PlayerPrefs.GetString(ResultHistoryPlayerPrefsKey, "[]");
         resultDataList = JsonConvert.DeserializeObject<List<ResultHistoryData>>(json) ?? new List<ResultHistoryData>();
     }
@@ -164,6 +184,8 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
     /// <param name="newData"></param>
     public void SaveResult(ResultHistoryData newData)
     {
+        Debug.Log("HandHistoryManager :: SaveResult");
+
         if (resultDataList.Count >= DataManager.MaxVideoSaveCount)
         {
             //移除第一筆數據
@@ -172,12 +194,12 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
 
         resultDataList.Add(newData);
         string json = JsonConvert.SerializeObject(resultDataList);
-        PlayerPrefs.SetString(ResultHistoryPlayerPrefsKey, json);
+        //PlayerPrefs.SetString(ResultHistoryPlayerPrefsKey, json);
         JSBridgeManager.Instance.WriteDataToFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}/HandHistory/{nameof(resultDataList)}",
                                                 json,
                                                 gameObject.name,
                                                 nameof(GameResultDataSaveToFirebase), true);
-        PlayerPrefs.Save();
+        //PlayerPrefs.Save();
     }
 
     #endregion
@@ -259,6 +281,8 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
     /// <param name="newData"></param>
     public void SaveGameInit(GameInitHistoryData newData)
     {
+        Debug.Log("HandHistoryManager :: SaveGameInit");
+
         if (gameInitHistoryDataList.Count >= DataManager.MaxVideoSaveCount)
         {
             //移除第一筆數據
@@ -267,27 +291,27 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
 
         gameInitHistoryDataList.Add(newData);
         string json = JsonConvert.SerializeObject(gameInitHistoryDataList);
-        PlayerPrefs.SetString(GameInitHistoryPlayerPrefsKey, json);
+        //PlayerPrefs.SetString(GameInitHistoryPlayerPrefsKey, json);
         JSBridgeManager.Instance.WriteDataToFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}/HandHistory/{nameof(gameInitHistoryDataList)}",
                                                         json,
                                                         gameObject.name,
                                                         nameof(GameInitDataSaveToFirebase), true);
-        PlayerPrefs.Save();
+        //PlayerPrefs.Save();
     }
 
     Dictionary<string, object> gameInitHistoryDic;
 
     void GameInitDataSaveToFirebase()
     {
-        Debug.Log("GameInitDataSavedToFirebase");
+        Debug.Log("HandHistoryManager :: GameInitDataSavedToFirebase");
     }
     void GameProcessDataSaveToFirebase()
     {
-        Debug.Log("GameProcessDataSavedToFirebase");
+        Debug.Log("HandHistoryManager :: GameProcessDataSavedToFirebase");
     }
     void GameResultDataSaveToFirebase()
     {
-        Debug.Log("GameResultDataSavedToFirebase");
+        Debug.Log("HandHistoryManager :: GameResultDataSavedToFirebase");
     }
 
     #endregion
@@ -318,6 +342,8 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
     /// <param name="newData"></param>
     public void SaveProcess(ProcessHistoryData newData)
     {
+        Debug.Log("HandHistoryManager :: SaveProcess");
+
         if (processHistoryDataList.Count >= DataManager.MaxVideoSaveCount)
         {
             //移除第一筆數據
@@ -326,12 +352,12 @@ public class HandHistoryManager : UnitySingleton<HandHistoryManager>
 
         processHistoryDataList.Add(newData);
         string json = JsonConvert.SerializeObject(processHistoryDataList);
-        PlayerPrefs.SetString(ProcessHistoryPlayerPrefsKey, json);
+        //PlayerPrefs.SetString(ProcessHistoryPlayerPrefsKey, json);
         JSBridgeManager.Instance.WriteDataToFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}/HandHistory/{nameof(processHistoryDataList)}",
                                                 json,
                                                 gameObject.name,
                                                 nameof(GameProcessDataSaveToFirebase), true);
-        PlayerPrefs.Save();
+        //PlayerPrefs.Save();
     }
 
     #endregion
