@@ -27,7 +27,7 @@ public class MaintenanceView : MonoBehaviour
 
         Confirm_Btn.onClick.AddListener(() =>
         {
-            Application.Quit();
+            JSBridgeManager.Instance.WindowClose();
         });
     }
 

@@ -222,6 +222,10 @@ public class LoginView : MonoBehaviour
 
     public bool isCorrect = true;
     public MaintenanceView maintenance;
+
+    bool isListenered;
+    bool isMaintenance;
+    string jsonCache = "";
     /*
     
 
@@ -393,12 +397,6 @@ public class LoginView : MonoBehaviour
 
     private void Awake()
     {
-        maintenance.gameObject.SetActive(Entry.Instance.isMaintenance);
-        if (!Entry.Instance.isMaintenance)
-        {
-            LoadSceneManager.Instance.DoShowView();
-        }
-
         LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
 
         Term_text.SetActive(false);
@@ -413,7 +411,7 @@ public class LoginView : MonoBehaviour
     /// </summary>
     private void ListenerEvent()
     {
-        #region 頁面切換
+#region 頁面切換
 
         //錢包Toggle
         Wallet_Tog.onValueChanged.AddListener((isOn) =>
@@ -460,9 +458,9 @@ public class LoginView : MonoBehaviour
             OnWalletDisconnect();
         });
 
-        #endregion
+#endregion
 
-        #region 錢包連接
+#region 錢包連接
 
         //MetaMask連接
         Metamask_Btn.onClick.AddListener(() =>
@@ -521,16 +519,16 @@ public class LoginView : MonoBehaviour
             AppApi.RegisterPasswordLess(walletRegister, WalletRegisterCallback);
         });
 
-        #endregion
+#endregion
 
-        #region 檢查按鈕輸入
+#region 檢查按鈕輸入
         LostPsw_Btn.onClick.AddListener(() =>
         {
             LostPassWord();
         });
-        #endregion
+#endregion
 
-        #region 手機登入
+#region 手機登入
 
         //手機登入提交
         SignIn_Btn.onClick.AddListener(() =>
@@ -568,9 +566,9 @@ public class LoginView : MonoBehaviour
             PasswordDisplayControl(isShowPassword);
         });
 
-        #endregion
+#endregion
 
-        #region 手機注冊
+#region 手機注冊
 
         //手機註冊
         Register_Btn.onClick.AddListener(() =>
@@ -654,9 +652,9 @@ public class LoginView : MonoBehaviour
         });
 
 
-        #endregion
+#endregion
 
-        #region 忘記密碼
+#region 忘記密碼
 
         //返回手機登入
         BackToMobileSignIn_Btn.onClick.AddListener(() =>
@@ -706,9 +704,9 @@ public class LoginView : MonoBehaviour
             LostPswSubmit();
         });
 
-        #endregion
+#endregion
 
-        #region 隱私權政策物件
+#region 隱私權政策物件
 
         //確認
         PrivacyConfirm_Btn.onClick.AddListener(() =>
@@ -726,7 +724,7 @@ public class LoginView : MonoBehaviour
             Term_text.SetActive(true);
             Privacy_text.SetActive(false);
         });
-        #endregion
+#endregion
     }
 
     private void Start()
@@ -817,7 +815,7 @@ public class LoginView : MonoBehaviour
         else
             TipBanner_Obj.SetActive(false);
 
-        #region 註冊帳號規則檢查
+#region 註冊帳號規則檢查
         if (RegisterAccountName_If.text.Length > 0)
         {
             AccountIf_Placeholder.gameObject.SetActive(false);
@@ -827,11 +825,11 @@ public class LoginView : MonoBehaviour
             AccountIf_Placeholder.gameObject.SetActive(true);
         }
         string AccountName = RegisterAccountName_If.text;
-        #endregion
+#endregion
 
         RegisterPasswordError_Txt.text = "";
 
-        #region 登入按鈕
+#region 登入按鈕
 
         string LoginAccountName = SingInAccount_If.text;
         bool SingInAccount_If_IsLongEnough = SingInAccount_If.text.Length > 5;
@@ -859,7 +857,7 @@ public class LoginView : MonoBehaviour
         }
 
 
-        #endregion
+#endregion
 
         //發送OTP倒數
         float codeTime = (float)(DateTime.Now - codeStartTime).TotalSeconds;
@@ -939,7 +937,7 @@ public class LoginView : MonoBehaviour
 #endif
     }
 
-    #region 工具類
+#region 工具類
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -1061,9 +1059,9 @@ public class LoginView : MonoBehaviour
         PlayerPrefs.SetString(LocalPaswword, recodePassword);
     }
 
-    #endregion
+#endregion
 
-    #region 手機登入
+#region 手機登入
 
     /// <summary>
     /// 手機登入初始
@@ -1129,9 +1127,9 @@ public class LoginView : MonoBehaviour
         }
     }
 
-    #endregion
+#endregion
 
-    #region 手機註冊
+#region 手機註冊
 
     /// <summary>
     /// 手機註冊初始化
@@ -1371,9 +1369,9 @@ public class LoginView : MonoBehaviour
         //OnIntoLobby();
     }
 
-    #endregion
+#endregion
 
-    #region 忘記密碼
+#region 忘記密碼
 
     /// <summary>
     /// 忘記密碼提交
@@ -1487,9 +1485,9 @@ public class LoginView : MonoBehaviour
         OnMobileSignInInit();
     }
 
-    #endregion
+#endregion
 
-    #region 錢包連接
+#region 錢包連接
 
     /// <summary>
     /// 選擇錢包畫面初始
@@ -1580,7 +1578,7 @@ public class LoginView : MonoBehaviour
     /// <param name="walletEnum">連接的錢包</param>
     async private void StartConnect(string walletProviderStr, WalletEnum walletEnum)
     {
-        #region 開啟連接畫面
+#region 開啟連接畫面
 
         startConnectTime = DateTime.Now;
         recordConnect.WalletProviderStr = walletProviderStr;
@@ -1598,9 +1596,9 @@ public class LoginView : MonoBehaviour
         ConnectingLogo_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.WalletLogoAlbum).album[(int)walletEnum];
         connectionEffectCoroutine = StartCoroutine(IConnectionEffect());
 
-        #endregion
+#endregion
 
-        #region 錢包連接
+#region 錢包連接
 
         currConnectingWallet = walletEnum;
         DownloadWallet_Txt.gameObject.SetActive(DataManager.IsMobilePlatform);
@@ -1663,7 +1661,7 @@ public class LoginView : MonoBehaviour
             Connect(wc);
         }
 
-        #endregion
+#endregion
     }
 
     /// <summary>
@@ -1943,14 +1941,14 @@ public class LoginView : MonoBehaviour
         OnIntoLobby(isSuccess);
     }
 
-    #endregion
+#endregion
 
     public void closetipBanner()
     {
         DataManager.istipAppear = false;
     }
 
-    #region 註冊前設置資料
+#region 註冊前設置資料
 
     /// <summary>
     /// 設置唯一性資料
@@ -2082,9 +2080,9 @@ public class LoginView : MonoBehaviour
         isGetUserId = true;
     }
 
-    #endregion
+#endregion
 
-    #region 帳號規則
+#region 帳號規則
     /// <summary>
     /// 帳號規則檢查
     /// </summary>
@@ -2098,9 +2096,9 @@ public class LoginView : MonoBehaviour
         // 檢查字元
         return Regex.IsMatch(AccountName, "^[A-Za-z0-9]+$") && hasLetter;
     }
-    #endregion
+#endregion
 
-    #region 進入大廳
+#region 進入大廳
 
     /// <summary>
     /// 進入大廳
@@ -2152,7 +2150,7 @@ public class LoginView : MonoBehaviour
         DataManager.UserMaxEnrtgy = 100;//player.maxEnergy;
 
 #if UNITY_EDITOR
-        ReadUserData(nameof(JudgeLoggedIn));
+        ReadUserData(nameof(checkLogInData));
         //LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
         return;
 #endif
@@ -2180,7 +2178,7 @@ public class LoginView : MonoBehaviour
         if (data == "true" || data == "SUCCESS")
         {
             RegisterSuccessSignIn();
-            ReadUserData(nameof(JudgeLoggedIn));
+            ReadUserData(nameof(checkLogInData));
         }
         else
         {
@@ -2208,7 +2206,19 @@ public class LoginView : MonoBehaviour
         });
     }
 
+    ///<summary>
+    ///check login data is exit
+    /// </summary>
+    void checkLogInData(string jsonData)
+    {
+        Debug.Log("Firebse Login :: " + jsonData);
+        jsonCache = jsonData;
 
+        JSBridgeManager.Instance.ReadDataFromFirebase(
+                $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}",
+                gameObject.name,
+                nameof(delayCallHeartbeat));
+    }
     /// <summary>
     /// 帳號是否登入判斷
     /// </summary>
@@ -2216,7 +2226,7 @@ public class LoginView : MonoBehaviour
     private void JudgeLoggedIn(string jsonData)
     {
         ViewManager.Instance.CloseWaitingView(transform);
-        Debug.Log("Firebse Login :: " + jsonData);
+
         AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
         //        Debug.Log("User id :" + loginData.userId);
         if (loginData != null)
@@ -2243,8 +2253,14 @@ public class LoginView : MonoBehaviour
                     JSBridgeManager.Instance.UpdateDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{LoginType.phoneUser}/{loginData.userId}",
                                                         dataDic);
                 }
-                LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
-                Debug.Log("用戶未登入，正常");
+
+                if (!isMaintenance)
+                {
+                    LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
+                    Debug.Log("用戶未登入，正常");
+                }
+                else
+                    print("Now is Maintenance");
                 //LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
             }
         }
@@ -2255,8 +2271,28 @@ public class LoginView : MonoBehaviour
             Debug.Log("未找到用戶，錯誤");
         }
     }
+    void delayCallHeartbeat(string jsonData)
+    {
+        print("After 5 second: " + jsonData);
 
-    #endregion
+        if (jsonData != null)
+        {
+            var hb = JsonConvert.DeserializeObject<heartbeatData>(jsonData);
+            string sStatus = hb.serverStatus;
+            PlayerPrefs.SetString("ServerStatus", sStatus);
+            PlayerPrefs.Save();
+        }
+        print($"SS: {PlayerPrefs.GetString("ServerStatus")}");
+        if (PlayerPrefs.GetString("ServerStatus") == serverStatus.maintenance.ToString())
+        {
+             isMaintenance = true;
+            maintenance.gameObject.SetActive(isMaintenance);
+            LoadSceneManager.Instance.DoShowView();
+        }
+        JudgeLoggedIn(jsonCache);
+    }
+
+#endregion
 
     //外部調用
     public void openTip(messageStatus status, string message)
@@ -2264,7 +2300,7 @@ public class LoginView : MonoBehaviour
         ViewManager.Instance.OpenTipMsgView(transform, status,
                                             LanguageManager.Instance.GetText(message));
     }
-    #region Get all sesseion
+#region Get all sesseion
     ///<summary>
     ///Get auhtorize Session
     /// </summary>
@@ -2368,7 +2404,12 @@ public class LoginView : MonoBehaviour
         }
         return null; // 如果未找到 session 参数，返回 null
     }
-    #endregion
+#endregion
+
+    public void setMaintenanceObj(bool b)
+    {
+        maintenance.gameObject.SetActive(b);
+    }
 
     // public void NoodleLogin(string loginString)
     // {
