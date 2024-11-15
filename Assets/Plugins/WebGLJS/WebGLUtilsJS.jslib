@@ -236,47 +236,62 @@ mergeInto(LibraryManager.library, {
 
 
 
-    myStoredVariable: null, // Initialize the variable
+     myStoredVariable: null, // Initialize the variable
+     endPointUrl: null,  // endPoint
 
     // Function to store a value
-    storeVariable: function(value) {
+    storeVariable: function(value,endPoint) {
         this.myStoredVariable = UTF8ToString(value);
+        this.endPointUrl =UTF8ToString(endPoint);
         console.log("Variable stored:", this.myStoredVariable);
+        console.log("Variable stored:", this.endPointUrl);
     },
 
     clearStoredVariable: function() {
         this.myStoredVariable = null;
+        this.endPointUrl = null;
         console.log("Stored Variable is cleared");
+    },
+
+    // Function to parse query parameters from a URL
+    getQueryParams: function(endPointUrl) {
+        const urlParams = new URLSearchParams(new URL(endPointUrl).search);
+        return {
+            memberId: urlParams.get("memberId"),
+            roomId: urlParams.get("roomId"),
+            amount: parseFloat(urlParams.get("amount")) || 0,
+            type: urlParams.get("type"),
+            rankPoint: parseInt(urlParams.get("rankPoint"), 10) || 0
+        };
     },
 
     // Function to handle the page load and unload events
     onPageLoad: function() {
         // Register the 'load' event listener on the window object
         window.addEventListener('load', function() {
-        console.log('The page has fully loaded!');
+            console.log('The page has fully loaded!');
         });
 
         // Register the 'beforeunload' event listener on the window object
         window.addEventListener('beforeunload', function(event) {
-        console.log('The page is about to be unloaded!');
-        
-        if (!myStoredVariable) {
-                console.log("No data to send, skipping.");
+            console.log('The page is about to be unloaded!');
+
+            if (!LibraryManager.library.myStoredVariable) {
+                console.log("No URL to send data to, skipping.");
                 return;
-        }
+            }
 
-        // Send a beacon to the provided Firebase URL before unloading the page
-        const url = myStoredVariable;
-        const data = { message: 'Its working' };
+            const url = LibraryManager.library.myStoredVariable;
+            
+            // Extract the query parameters from the URL
+            const data = LibraryManager.library.getQueryParams(endPointUrl);
 
-        // Use the Beacon API to send data to Firebase before the page unloads
-        if (navigator.sendBeacon) {
-            const payload = JSON.stringify(data); // Convert data to JSON string
-            navigator.sendBeacon(url, payload); // Send the request asynchronously
-        }
-
-        // Optionally, set a confirmation message (browser dependent)
-        //event.returnValue = 'Are you sure you want to leave?';  // Some browsers show this message to the user
+            // Send data using navigator.sendBeacon
+            if (navigator.sendBeacon) {
+                const payload = JSON.stringify(data);
+                navigator.sendBeacon(url, payload);
+                console.log("Data sent before page unload:", data);
+            }
         });
     },
 
@@ -293,25 +308,25 @@ mergeInto(LibraryManager.library, {
         document.addEventListener('visibilitychange', function() {
             if (document.visibilityState === 'hidden') {
 
-                if (!myStoredVariable) {
-                    console.log("No data to send, skipping.");
+                if (!LibraryManager.library.myStoredVariable) {
+                    console.log("No URL to send data to, skipping.");
                     return;
                 }
 
-                const url = myStoredVariable;
-                const data = { message: 'Its working from mobile' };
+                const url = LibraryManager.library.myStoredVariable;
+                
+                // Extract the query parameters from the URL
+                const data = LibraryManager.library.getQueryParams(endPointUrl);
 
                 // Send the data using navigator.sendBeacon
                 if (navigator.sendBeacon) {
                     const payload = JSON.stringify(data);
                     navigator.sendBeacon(url, payload);
+                    console.log("Data sent before page becomes hidden:", data);
                 }
-
-                console.log("Data sent before page becomes hidden:", data);
             }
         });
 
         console.log("Visibility change listener added for mobile.");
     }
-
 });
