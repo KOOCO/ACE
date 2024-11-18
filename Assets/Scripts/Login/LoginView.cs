@@ -2273,9 +2273,8 @@ public class LoginView : MonoBehaviour
     }
     void delayCallHeartbeat(string jsonData)
     {
-        print("After 5 second: " + jsonData);
-
-        if (jsonData != null)
+        print("After 5 second: " + jsonData.ToString());
+        if (!string.IsNullOrEmpty(jsonData) && jsonData != "null")
         {
             var hb = JsonConvert.DeserializeObject<heartbeatData>(jsonData);
             string sStatus = hb.serverStatus;

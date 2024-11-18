@@ -14,13 +14,18 @@ using System.Security.Cryptography;
 
 public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
 {
-    private const string BASE_URL = "https://admin-d.jf588.com";           //API Base Url
+    private const string devBASE_URL = "https://admin-d.jf588.com";     //API Base Url
+    private const string prodBASE_URL = "https://ace.ap88.io";     //API Base Url
 
-    private string url = BASE_URL;
+    private string url;
 
     public override void Awake()
     {
         base.Awake();
+        if (Entry.Instance.releaseType == ReleaseEnvironmentEnum.Demo)
+            url = devBASE_URL;
+        else if (Entry.Instance.releaseType == ReleaseEnvironmentEnum.Prod)
+            url = prodBASE_URL;
     }
 
     /// <summary>
@@ -62,7 +67,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     private IEnumerator ISendPOSTRequest<T1>(string apiUrl, T1 data, UnityAction<string> callback = null, UnityAction<string> errCallback = null, bool addHeader = false, bool useParams = false)
     where T1 : class
     {
-        string fullUrl = BASE_URL + apiUrl;
+        string fullUrl = url + apiUrl;
 
         Debug.Log($"Send POST to URL: {fullUrl}");
 
@@ -170,7 +175,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     {
         // 將GetBanner對象轉換為查詢字符串
         //string queryString = $"?Filter={Filter}&StartDate={StartDate}&EndDate={EndDate}&IsEnabled={IsEnabled}&Sorting={Sorting}&SkipCount={data.SkipCount}&MaxResultCount={data.MaxResultCount}";
-        string fullUrl = BASE_URL + apiUrl; //+ queryString;
+        string fullUrl = url + apiUrl; //+ queryString;
         Debug.Log($"Send Get to URL: {fullUrl}");
         // 創建GET請求
         UnityWebRequest getRequest = UnityWebRequest.Get(fullUrl);

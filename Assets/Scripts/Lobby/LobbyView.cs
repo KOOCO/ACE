@@ -62,8 +62,11 @@ public class LobbyView : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI TransfersBtn_Txt;
 
+    [Header("提示POP")]
     public GameObject Notice;
     public TextMeshProUGUI noticeText;
+    public TextMeshProUGUI btnText;
+    public Button ConfirmBtn;
 
     //[Header("背景音樂")][SerializeField] public AudioSource audioSource;
 
@@ -122,6 +125,7 @@ public class LobbyView : MonoBehaviour
         TransfersBtn_Txt.text = LanguageManager.Instance.GetText("Transfers");
 
         #endregion
+        btnText.text = LanguageManager.Instance.GetText("Confirm");
     }
 
     private void OnDestroy()
@@ -233,6 +237,12 @@ public class LobbyView : MonoBehaviour
         Transfers_Btn.onClick.AddListener(() =>
         {
             DisplayFloor4UI(Transfers_AnteView);
+        });
+
+        ConfirmBtn.onClick.AddListener(() =>
+        {
+            PlayerPrefs.SetInt("nullData", 0);
+            JSBridgeManager.Instance.WindowClose();
         });
     }
     private void OnEnable()
@@ -445,6 +455,11 @@ public class LobbyView : MonoBehaviour
     //Test callBack
     void StartHeartbeat()
     {
+        if (PlayerPrefs.GetString("ServerStatus") == serverStatus.maintenance.ToString())
+        {
+            JSBridgeManager.Instance.WindowClose();
+        }
+
 #if !UNITY_EDITOR
         if (!isListenered)
         {
@@ -467,8 +482,9 @@ public class LobbyView : MonoBehaviour
     void delayCallHeartbeat(string jsonData)
     {
         //print("After 5 second: " + jsonData);
+        int nullC = PlayerPrefs.GetInt("nullData");
 
-        if (jsonData != null)
+        if (!string.IsNullOrEmpty(jsonData) && jsonData != "null")
         {
             var hb = JsonConvert.DeserializeObject<heartbeatData>(jsonData);
             string pStatus = hb.playerStatus;
@@ -480,13 +496,24 @@ public class LobbyView : MonoBehaviour
         }
         else
         {
+            nullC++;
+            PlayerPrefs.SetInt("nullData", nullC);
             PlayerPrefs.SetString("PlayerStatus", "normal");
             PlayerPrefs.SetString("ServerStatus", "normal");
             PlayerPrefs.Save();
+            print(nullC);
+        }
+
+        if (nullC >= 3)
+        {
+            PlayerPrefs.SetInt("nullData", 0);
+            DataManager.istipAppear = true;
+            DataManager.TipText = LanguageManager.Instance.GetText("Network offline");
+            return;
         }
 
         heartbeatData HB = null;
-        HB = new heartbeatData(true, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), PlayerPrefs.GetString("PlayerStatus"), PlayerPrefs.GetString("ServerStatus"));
+        HB = new heartbeatData(true, DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString(), PlayerPrefs.GetString("PlayerStatus"), PlayerPrefs.GetString("ServerStatus"));
 
         string data = JsonConvert.SerializeObject(HB);
 
