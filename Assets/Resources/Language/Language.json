@@ -770,6 +770,11 @@
     "zh_TW": "配對中"
   },
   {
+    "ID": "Account abnormal",
+    "English": "Account abnormal, please contact customer service.",
+    "zh_TW": "帳號異常，請聯繫客服"
+  },
+  {
     "ID": "MaxRoomTip",
     "English": "Maximum game room reached!",
     "zh_TW": "已達最大遊戲房間!"
