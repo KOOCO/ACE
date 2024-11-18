@@ -463,16 +463,6 @@ public class LobbyView : MonoBehaviour
                 gameObject.name,
                 nameof(delayCallHeartbeat));
 #endif
-
-        heartbeatData hb = null;
-        hb = new heartbeatData(true, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), PlayerPrefs.GetString("PlayerStatus"), PlayerPrefs.GetString("ServerStatus"));
-
-        string data = JsonConvert.SerializeObject(hb);
-
-        JSBridgeManager.Instance.UpdateDataToFirebase(
-                $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}",
-                data,
-                gameObject.name);
     }
     void delayCallHeartbeat(string jsonData)
     {
@@ -487,15 +477,24 @@ public class LobbyView : MonoBehaviour
             PlayerPrefs.SetString("ServerStatus", sStatus);
             PlayerPrefs.Save();
             //print($"PS: {PlayerPrefs.GetString("PlayerStatus")}, SS: {PlayerPrefs.GetString("ServerStatus")}");
-            Invoke("StartHeartbeat", 5);
         }
         else
         {
             PlayerPrefs.SetString("PlayerStatus", "normal");
             PlayerPrefs.SetString("ServerStatus", "normal");
             PlayerPrefs.Save();
-            Invoke("StartHeartbeat", 5);
         }
+
+        heartbeatData HB = null;
+        HB = new heartbeatData(true, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), PlayerPrefs.GetString("PlayerStatus"), PlayerPrefs.GetString("ServerStatus"));
+
+        string data = JsonConvert.SerializeObject(HB);
+
+        JSBridgeManager.Instance.UpdateDataToFirebase(
+                $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}",
+                data,
+                gameObject.name);
+        Invoke("StartHeartbeat", 5);
     }
 
     /// <summary>
