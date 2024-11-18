@@ -470,6 +470,16 @@ public class LobbyView : MonoBehaviour
                     gameObject.name,
                     nameof(delayCallHeartbeat));
         }
+
+        heartbeatData HB = null;
+        HB = new heartbeatData(true, DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString(), PlayerPrefs.GetString("PlayerStatus"), PlayerPrefs.GetString("ServerStatus"));
+
+        string data = JsonConvert.SerializeObject(HB);
+
+        JSBridgeManager.Instance.UpdateDataToFirebase(
+                $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}",
+                data,
+                gameObject.name);
 #endif
 
 #if UNITY_EDITOR
@@ -481,7 +491,7 @@ public class LobbyView : MonoBehaviour
     }
     void delayCallHeartbeat(string jsonData)
     {
-        //print("After 5 second: " + jsonData);
+        print("After 5 second: " + jsonData);
         int nullC = PlayerPrefs.GetInt("nullData");
 
         if (!string.IsNullOrEmpty(jsonData) && jsonData != "null")
@@ -512,6 +522,7 @@ public class LobbyView : MonoBehaviour
             return;
         }
 
+#if UNITY_EDITOR
         heartbeatData HB = null;
         HB = new heartbeatData(true, DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString(), PlayerPrefs.GetString("PlayerStatus"), PlayerPrefs.GetString("ServerStatus"));
 
@@ -521,6 +532,7 @@ public class LobbyView : MonoBehaviour
                 $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}",
                 data,
                 gameObject.name);
+#endif
         Invoke("StartHeartbeat", 5);
     }
 
