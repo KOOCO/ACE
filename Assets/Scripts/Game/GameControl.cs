@@ -375,52 +375,55 @@ public class GameControl : MonoBehaviour
         JSBridgeManager.Instance.RemoveListenerConnectState($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{DataManager.UserId}");
 
         //移除房間判斷
-        if (gameRoomData.playerDataDic.Count - robotCount == 0 &&
-            RoomType != TableTypeEnum.IntegralTable)
-        {
-            //房間剩下1名玩家
-            Debug.Log("OnLeaveTable :: Single Player : " + QueryRoomPath);
+        // if (gameRoomData.playerDataDic.Count - robotCount == 1 &&
+        //     RoomType != TableTypeEnum.IntegralTable)
+        // {
+        //     //房間剩下1名玩家
+        //     Debug.Log("OnLeaveTable :: Single Player : " + QueryRoomPath);
 
-            JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}");
-        }
-        else
+        //     JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}");
+        // }
+        // else
+        // {
+        //積分房
+        // if (gameRoomData.playerDataDic.Count == 1
+        // && RoomType == TableTypeEnum.IntegralTable)
+        // {
+        //     //房間剩下1名玩家
+        //     JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}");
+        //     GameRoomManager.Instance.RemoveGameRoom(transform.name);
+        //     return;
+        // }
+        // else
+        // {
+        if (gameRoomData.playerDataDic.Count > 0)
         {
-            //積分房
-            if (gameRoomData.playerDataDic.Count == 1
-            && RoomType == TableTypeEnum.IntegralTable)
+            string newHostId = "";
+            if (gameRoomData.hostId == DataManager.UserId)
             {
-                //房間剩下1名玩家
-                JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}");
-                GameRoomManager.Instance.RemoveGameRoom(transform.name);
-                return;
+                newHostId = gameRoomData.playingPlayersIdList
+                                    .FirstOrDefault(x => x != DataManager.UserId && !x.StartsWith(FirebaseManager.ROBOT_ID));
             }
-            else
+
+            Debug.Log("GameControl :: OnLeaveTable : more then one Player : " + QueryRoomPath + " New Host : " + newHostId);
+
+            //更新房主
+            if (!string.IsNullOrEmpty(newHostId) && newHostId != "")
             {
-                string newHostId = "";
-                if (gameRoomData.hostId == DataManager.UserId)
-                {
-                    newHostId = gameRoomData.playingPlayersIdList
-                                        .FirstOrDefault(x => x != DataManager.UserId && !x.StartsWith(FirebaseManager.ROBOT_ID));
-                }
-
-                Debug.Log("GameControl :: OnLeaveTable : more then one Player : " + QueryRoomPath + " New Host : " + newHostId);
-
-                //更新房主
-                if (string.IsNullOrEmpty(newHostId) && newHostId != "")
-                {
-                    Debug.Log("GameControl :: OnLeaveTable : Setting new host : " + newHostId);
-                    var dataDic = new Dictionary<string, object>()
+                Debug.Log("GameControl :: OnLeaveTable : Setting new host : " + newHostId);
+                var dataDic = new Dictionary<string, object>()
                     {
                          { FirebaseManager.ROOM_HOST_ID, newHostId},
                     };
-                    JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}",
-                                                                    dataDic);
-                }
+                JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}",
+                                                                dataDic);
             }
-
-            //移除玩家
-            RemovePlayer(DataManager.UserId);
         }
+        //}
+
+        //移除玩家
+        RemovePlayer(DataManager.UserId);
+        //}
         //本地玩家房間關閉
         GameRoomManager.Instance.RemoveGameRoom(transform.name);
     }
