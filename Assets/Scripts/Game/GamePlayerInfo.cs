@@ -1,10 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using System;
 using System.Linq;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class GamePlayerInfo : MonoBehaviour
 {
@@ -522,6 +522,7 @@ public class GamePlayerInfo : MonoBehaviour
         if (gameObject.activeSelf)
         {
             cdCoroutine = StartCoroutine(ICountDown(cdTime, cd));
+
         }
     }
 
@@ -533,7 +534,7 @@ public class GamePlayerInfo : MonoBehaviour
     private IEnumerator ICountDown(int cdTime, int cd)
     {
         #region 舊的不是答辯
-        /*float target = ((float)cdTime - (cd - 1)) / (float)cdTime;
+        float target = ((float)cdTime - (cd - 1)) / (float)cdTime;
         float curr = ((float)cdTime - cd) / (float)cdTime;
         print($"{cdTime}, {cd}, {target}");
 
@@ -547,29 +548,29 @@ public class GamePlayerInfo : MonoBehaviour
             countDown_Txt.gameObject.SetActive(false);
 
             countDown_Txt.gameObject.SetActive(true);
-            countDown_Txt.text = ((int)value).ToString();
+            countDown_Txt.text = cd.ToString();
             yield return null;
-        }*/
+        }
         #endregion
 
         #region 新的答辯
-        while (cd > 0)  // 當cd大於0時持續倒數
-        {
-            Debug.Log($"{Nickname}倒數剩餘時間：{cd}秒");
+        //while (cd > 0)  // 當cd大於0時持續倒數
+        //{
+        //    Debug.Log($"{Nickname}倒數剩餘時間：{cd}秒");
 
-            yield return new WaitForSeconds(1);  // 每一秒更新一次
+        //    yield return new WaitForSeconds(1);  // 每一秒更新一次
 
-            cd--;  // 每秒減去1
+        //    cd--;  // 每秒減去1
 
-            countDown_Txt.gameObject.SetActive(true);
-            countDown_Txt.text = cd.ToString();
-        }
+        //    countDown_Txt.gameObject.SetActive(true);
+        //    countDown_Txt.text = cd.ToString();
+        //}
 
-        // 當倒數結束時，執行完成的操作
-        Debug.Log("倒數結束");
+        //// 當倒數結束時，執行完成的操作
+        //Debug.Log("倒數結束");
 
-        CDMask_Img.fillAmount = cdTime;
-        yield break;
+        //CDMask_Img.fillAmount = cdTime;
+        //yield break;
         #endregion
     }
 
