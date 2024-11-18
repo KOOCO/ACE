@@ -2587,11 +2587,13 @@ public class GameControl : MonoBehaviour
         {
             var judgePoker = new List<int> { player.handPoker[0], player.handPoker[1] };
             judgePoker = judgePoker.Concat(gameRoomData.communityPoker).ToList();
+            Debug.Log($"GameControl :: judgePoker : {string.Join(", ", judgePoker.Select(p => p))}");
             Debug.Log("GameControl :: " + judgePoker.Count);
             // Evaluate the hand
             PokerShape.JudgePokerShape(judgePoker, (result, matchPoker) =>
             {
-                Debug.Log("GameControl :: Returned Cards : " + matchPoker.Count);
+                Debug.Log("GameControl :: Returned Cards Count : " + matchPoker.Count);
+                Debug.Log($"GameControl :: Returned Cards :  + {string.Join(", ", judgePoker.Select(p => p))}");
                 shapeDic.Add(player, new HandEvaluation
                 {
                     HandRank = result,

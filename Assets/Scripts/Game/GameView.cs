@@ -2456,7 +2456,15 @@ public class GameView : MonoBehaviour
             PokerShape.JudgePokerShape(judgePoker, (resultIndex, matchPokerList) =>
             {
                 Debug.Log($"[JudgePokerShapeUI] Player: {player.name} | Result Index: {resultIndex} | Matched Cards Count: {matchPokerList.Count}");
-
+                if (matchPokerList != null && matchPokerList.Count > 0)
+                {
+                    string matchedCardsInfo = string.Join(", ", matchPokerList.Select(p => p));
+                    Debug.Log($"[JudgePokerShapeUI] Matched Cards: {matchedCardsInfo}");
+                }
+                else
+                {
+                    Debug.LogWarning($"[JudgePokerShapeUI] Matched Cards List is empty or null for Player: {player.name}.");
+                }
                 // Verify if the player's cards are active
                 if (player.GetHandPoker[0].gameObject.activeSelf)
                 {

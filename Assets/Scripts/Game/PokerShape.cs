@@ -31,11 +31,11 @@ public static class PokerShape
                               .ToDictionary(g => g.Key, g => g.Count());
 
         // Step 2: Determine if Flush
-        bool isFlush = cards.GroupBy(card => card / 13) // Assuming card representation: suit * 13 + rank
+        bool isFlush = cards.GroupBy(card => card / 13) // Group by suit
                             .Any(g => g.Count() >= 5);
 
         // Step 3: Determine if Straight
-        var uniqueRanks = rankCounts.Keys.OrderByDescending(r => r).Distinct().ToList();
+        var uniqueRanks = rankCounts.Keys.OrderByDescending(r => r).ToList();
         bool isStraight = false;
         int highestStraightCard = 0;
 
@@ -61,16 +61,29 @@ public static class PokerShape
         // Step 4: Determine hand type
         if (isFlush && isStraight)
         {
+            int flushSuit = cards.GroupBy(card => card / 13)
+                                 .OrderByDescending(g => g.Count())
+                                 .First().Key;
+
+            var flushCards = cards.Where(card => card / 13 == flushSuit)
+                                  .OrderByDescending(card => card % 13 == 0 ? 13 : card % 13)
+                                  .ToList();
+
+            var straightFlushCards = flushCards.Where(card => uniqueRanks.Contains(card % 13 == 0 ? 13 : card % 13))
+                                               .OrderByDescending(card => card % 13 == 0 ? 13 : card % 13)
+                                               .Take(5)
+                                               .ToList();
+
             if (highestStraightCard == 13)
             {
                 // Royal Flush
-                callback(HandRanks["Royal Flush"], new List<int> { 14 });
+                callback(HandRanks["Royal Flush"], straightFlushCards);
                 return;
             }
             else
             {
                 // Straight Flush
-                callback(HandRanks["Straight Flush"], uniqueRanks.SkipWhile(r => r > highestStraightCard).Take(5).ToList());
+                callback(HandRanks["Straight Flush"], straightFlushCards);
                 return;
             }
         }
@@ -79,8 +92,12 @@ public static class PokerShape
         if (rankCounts.Any(rc => rc.Value == 4))
         {
             int quadRank = rankCounts.First(rc => rc.Value == 4).Key;
-            int kicker = rankCounts.Keys.Where(r => r != quadRank).Max();
-            callback(HandRanks["Four of a Kind"], new List<int> { quadRank, quadRank, quadRank, quadRank, kicker });
+            var quadCards = cards.Where(card => (card % 13 == 0 ? 13 : card % 13) == quadRank).ToList();
+
+            int kickerRank = rankCounts.Keys.Where(r => r != quadRank).Max();
+            var kickerCard = cards.First(card => (card % 13 == 0 ? 13 : card % 13) == kickerRank);
+
+            callback(HandRanks["Four of a Kind"], quadCards.Concat(new List<int> { kickerCard }).ToList());
             return;
         }
 
@@ -89,21 +106,27 @@ public static class PokerShape
             rankCounts.Any(rc => rc.Value >= 2 && rc.Key != rankCounts.First(rc => rc.Value == 3).Key))
         {
             int tripletRank = rankCounts.Where(rc => rc.Value == 3).OrderByDescending(rc => rc.Key).First().Key;
+            var tripletCards = cards.Where(card => (card % 13 == 0 ? 13 : card % 13) == tripletRank).Take(3).ToList();
+
             int pairRank = rankCounts.Where(rc => rc.Value >= 2 && rc.Key != tripletRank).OrderByDescending(rc => rc.Key).First().Key;
-            callback(HandRanks["Full House"], new List<int> { tripletRank, tripletRank, tripletRank, pairRank, pairRank });
+            var pairCards = cards.Where(card => (card % 13 == 0 ? 13 : card % 13) == pairRank).Take(2).ToList();
+
+            callback(HandRanks["Full House"], tripletCards.Concat(pairCards).ToList());
             return;
         }
 
         // Check for Flush
         if (isFlush)
         {
-            var flushCards = cards.Where(card => (card / 13) == cards.GroupBy(c => c / 13)
-                                                          .OrderByDescending(g => g.Count())
-                                                          .First().Key)
-                                  .Select(card => card % 13 == 0 ? 13 : card % 13)
-                                  .OrderByDescending(r => r)
+            int flushSuit = cards.GroupBy(card => card / 13)
+                                 .OrderByDescending(g => g.Count())
+                                 .First().Key;
+
+            var flushCards = cards.Where(card => card / 13 == flushSuit)
+                                  .OrderByDescending(card => card % 13 == 0 ? 13 : card % 13)
                                   .Take(5)
                                   .ToList();
+
             callback(HandRanks["Flush"], flushCards);
             return;
         }
@@ -111,40 +134,72 @@ public static class PokerShape
         // Check for Straight
         if (isStraight)
         {
-            callback(HandRanks["Straight"], uniqueRanks.SkipWhile(r => r > highestStraightCard).Take(5).ToList());
+            var straightCards = cards.Where(card => uniqueRanks.Contains(card % 13 == 0 ? 13 : card % 13))
+                                     .OrderByDescending(card => card % 13 == 0 ? 13 : card % 13)
+                                     .Take(5)
+                                     .ToList();
+
+            callback(HandRanks["Straight"], straightCards);
             return;
         }
 
         // Check for Three of a Kind
         if (rankCounts.Any(rc => rc.Value == 3))
         {
-            var triplet = rankCounts.Where(rc => rc.Value == 3).OrderByDescending(rc => rc.Key).First().Key;
-            var kickers = rankCounts.Keys.Where(r => r != triplet).OrderByDescending(r => r).Take(2).ToList();
-            callback(HandRanks["Three of a Kind"], new List<int> { triplet, triplet, triplet }.Concat(kickers).Take(5).ToList());
+            int tripletRank = rankCounts.Where(rc => rc.Value == 3).OrderByDescending(rc => rc.Key).First().Key;
+            var tripletCards = cards.Where(card => (card % 13 == 0 ? 13 : card % 13) == tripletRank).Take(3).ToList();
+
+            var kickers = cards.Where(card => (card % 13 == 0 ? 13 : card % 13) != tripletRank)
+                               .OrderByDescending(card => card % 13 == 0 ? 13 : card % 13)
+                               .Take(2)
+                               .ToList();
+
+            callback(HandRanks["Three of a Kind"], tripletCards.Concat(kickers).ToList());
             return;
         }
 
         // Check for Two Pair
         if (rankCounts.Count(rc => rc.Value >= 2) >= 2)
         {
-            var highPair = rankCounts.Where(rc => rc.Value >= 2).OrderByDescending(rc => rc.Key).First().Key;
-            var lowPair = rankCounts.Where(rc => rc.Value >= 2 && rc.Key != highPair).OrderByDescending(rc => rc.Key).First().Key;
-            var kicker = rankCounts.Keys.Where(r => r != highPair && r != lowPair).OrderByDescending(r => r).First();
-            callback(HandRanks["Two Pair"], new List<int> { highPair, highPair, lowPair, lowPair, kicker });
+            var pairs = rankCounts.Where(rc => rc.Value >= 2)
+                                  .OrderByDescending(rc => rc.Key)
+                                  .Take(2)
+                                  .Select(rc => rc.Key)
+                                  .ToList();
+
+            var pairCards = cards.Where(card => pairs.Contains(card % 13 == 0 ? 13 : card % 13))
+                                 .OrderByDescending(card => card % 13 == 0 ? 13 : card % 13)
+                                 .Take(4)
+                                 .ToList();
+
+            var kicker = cards.Where(card => !pairs.Contains(card % 13 == 0 ? 13 : card % 13))
+                              .OrderByDescending(card => card % 13 == 0 ? 13 : card % 13)
+                              .First();
+
+            callback(HandRanks["Two Pair"], pairCards.Concat(new List<int> { kicker }).ToList());
             return;
         }
 
         // Check for One Pair
         if (rankCounts.Any(rc => rc.Value == 2))
         {
-            var pairRank = rankCounts.Where(rc => rc.Value == 2).OrderByDescending(rc => rc.Key).First().Key;
-            var kickers = rankCounts.Keys.Where(r => r != pairRank).OrderByDescending(r => r).Take(3).ToList();
-            callback(HandRanks["One Pair"], new List<int> { pairRank, pairRank }.Concat(kickers).Take(5).ToList());
+            int pairRank = rankCounts.Where(rc => rc.Value == 2).OrderByDescending(rc => rc.Key).First().Key;
+            var pairCards = cards.Where(card => (card % 13 == 0 ? 13 : card % 13) == pairRank).Take(2).ToList();
+
+            var kickers = cards.Where(card => (card % 13 == 0 ? 13 : card % 13) != pairRank)
+                               .OrderByDescending(card => card % 13 == 0 ? 13 : card % 13)
+                               .Take(3)
+                               .ToList();
+
+            callback(HandRanks["One Pair"], pairCards.Concat(kickers).ToList());
             return;
         }
 
         // High Card
-        var highCards = rankCounts.Keys.OrderByDescending(r => r).Take(5).ToList();
+        var highCards = cards.OrderByDescending(card => card % 13 == 0 ? 13 : card % 13)
+                             .Take(5)
+                             .ToList();
+
         callback(HandRanks["High Card"], highCards);
     }
 
