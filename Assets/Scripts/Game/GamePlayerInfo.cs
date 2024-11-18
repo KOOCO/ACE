@@ -47,8 +47,8 @@ public class GamePlayerInfo : MonoBehaviour
     Coroutine cdCoroutine;              //倒數協程
     Coroutine chatCoroutine;            //聊天協程
 
-    int pokerShapeIndex = -1;                //牌型編號
-    int pokerCurrShapeIndex = -1;                //牌型編號
+    int pokerShapeIndex = 0;                //牌型編號
+    public int pokerCurrShapeIndex = 0;                //牌型編號
 
     Vector2 betChipsr_TrInitPos;         //下注籌碼物件初始位置
 
@@ -126,9 +126,9 @@ public class GamePlayerInfo : MonoBehaviour
         if (PokerShape_img == null)
             return;
 
-        if (LanguageManager.Instance.GetCurrLanguageIndex() == 0 && pokerCurrShapeIndex != -1)
+        if (LanguageManager.Instance.GetCurrLanguageIndex() == 0 && pokerCurrShapeIndex != 0)
             SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksEnglishAlbum).album[pokerCurrShapeIndex];
-        else if (LanguageManager.Instance.GetCurrLanguageIndex() == 1 && pokerCurrShapeIndex != -1)
+        else if (LanguageManager.Instance.GetCurrLanguageIndex() == 1 && pokerCurrShapeIndex != 0)
         {
             SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksChineseAlbum).album[pokerCurrShapeIndex];
         }

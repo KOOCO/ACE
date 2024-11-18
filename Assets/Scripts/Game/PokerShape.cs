@@ -23,22 +23,22 @@ public static class PokerShape
         { "One Pair", 9 },
         { "High Card", 10 }
     };
-
     public static void JudgePokerShape(List<int> cards, UnityAction<int, List<int>> callback)
     {
-        // Step 1: Count occurrences of each card rank
-        var rankCounts = cards.GroupBy(card => card % 13 == 0 ? 13 : card % 13)
+        // Step 1: Count occurrences of each card rank (1 - 13)
+        var rankCounts = cards.GroupBy(card => (card % 13 == 0 ? 13 : card % 13))
                               .ToDictionary(g => g.Key, g => g.Count());
 
-        // Step 2: Determine if Flush
-        bool isFlush = cards.GroupBy(card => card / 13) // Group by suit
+        // Step 2: Check if Flush (same suit)
+        bool isFlush = cards.GroupBy(card => card / 13) // Group by suit (0 = Spades, 1 = Hearts, etc.)
                             .Any(g => g.Count() >= 5);
 
-        // Step 3: Determine if Straight
+        // Step 3: Check if Straight (consecutive ranks)
         var uniqueRanks = rankCounts.Keys.OrderByDescending(r => r).ToList();
         bool isStraight = false;
         int highestStraightCard = 0;
 
+        // Checking for normal straight
         for (int i = 0; i <= uniqueRanks.Count - 5; i++)
         {
             if (uniqueRanks[i] - uniqueRanks[i + 4] == 4)
@@ -55,12 +55,13 @@ public static class PokerShape
             uniqueRanks.Contains(4) && uniqueRanks.Contains(5))
         {
             isStraight = true;
-            highestStraightCard = 5;
+            highestStraightCard = 5; // Low-end straight (A-2-3-4-5)
         }
 
         // Step 4: Determine hand type
         if (isFlush && isStraight)
         {
+            // Check for Royal Flush or Straight Flush
             int flushSuit = cards.GroupBy(card => card / 13)
                                  .OrderByDescending(g => g.Count())
                                  .First().Key;
@@ -69,21 +70,18 @@ public static class PokerShape
                                   .OrderByDescending(card => card % 13 == 0 ? 13 : card % 13)
                                   .ToList();
 
-            var straightFlushCards = flushCards.Where(card => uniqueRanks.Contains(card % 13 == 0 ? 13 : card % 13))
-                                               .OrderByDescending(card => card % 13 == 0 ? 13 : card % 13)
-                                               .Take(5)
-                                               .ToList();
-
-            if (highestStraightCard == 13)
+            // Check if it's a Royal Flush (A, K, Q, J, 10 of same suit)
+            if (flushCards.Any(card => card % 13 == 12) && // Ace in the flush
+                flushCards.Any(card => card % 13 == 11) && // King in the flush
+                flushCards.Any(card => card % 13 == 10) && // Queen in the flush
+                flushCards.Any(card => card % 13 == 9))  // Jack in the flush
             {
-                // Royal Flush
-                callback(HandRanks["Royal Flush"], straightFlushCards);
+                callback(HandRanks["Royal Flush"], flushCards);
                 return;
             }
             else
             {
-                // Straight Flush
-                callback(HandRanks["Straight Flush"], straightFlushCards);
+                callback(HandRanks["Straight Flush"], flushCards.Take(5).ToList());
                 return;
             }
         }
@@ -115,7 +113,7 @@ public static class PokerShape
             return;
         }
 
-        // Check for Flush
+        // Check for Flush (same suit)
         if (isFlush)
         {
             int flushSuit = cards.GroupBy(card => card / 13)
@@ -131,7 +129,7 @@ public static class PokerShape
             return;
         }
 
-        // Check for Straight
+        // Check for Straight (consecutive ranks)
         if (isStraight)
         {
             var straightCards = cards.Where(card => uniqueRanks.Contains(card % 13 == 0 ? 13 : card % 13))

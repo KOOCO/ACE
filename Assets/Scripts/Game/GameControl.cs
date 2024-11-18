@@ -2557,99 +2557,120 @@ public class GameControl : MonoBehaviour
     public List<GameRoomPlayerData> JudgeWinner(List<GameRoomPlayerData> judgePlayers)
     {
         if (judgePlayers == null || judgePlayers.Count == 0)
-        {
             return new List<GameRoomPlayerData>();
-        }
 
+        // Step 1: Evaluate each player's hand
         var shapeDic = EvaluatePlayerHands(judgePlayers);
-        int bestHandRank = shapeDic.Values.Min(x => x.HandRank);
-        var bestPlayers = shapeDic.Where(x => x.Value.HandRank == bestHandRank)
-                                  .Select(x => x.Key)
-                                  .ToList();
 
+        // Step 2: Determine the best hand rank (lower rank is better)
+        int bestHandRank = shapeDic.Values.Min(x => x.HandRank);
+
+        // Step 3: Get players with the best hand rank
+        var bestPlayers = shapeDic
+            .Where(x => x.Value.HandRank == bestHandRank)
+            .Select(x => x.Key)
+            .ToList();
+
+        // Step 4: If only one player has the best hand, they're the winner
         if (bestPlayers.Count == 1)
         {
+            Debug.Log($"GameControl :: Single Winner :: {bestPlayers[0].nickname}");
             return bestPlayers;
         }
-        else
-        {
-            // Tie-breaker needed
-            var comparedPlayers = CompareHands(shapeDic, bestPlayers, bestHandRank);
-            return comparedPlayers;
-        }
-    }
 
+        // Step 5: Resolve ties for players with the same hand rank
+        Debug.Log($"GameControl :: Multiple Winners :: {string.Join(", ", bestPlayers.Select(p => p.nickname))}");
+        return ResolveTies(shapeDic, bestPlayers);
+    }
     private Dictionary<GameRoomPlayerData, HandEvaluation> EvaluatePlayerHands(List<GameRoomPlayerData> judgePlayers)
     {
         var shapeDic = new Dictionary<GameRoomPlayerData, HandEvaluation>();
 
         foreach (var player in judgePlayers)
         {
-            var judgePoker = new List<int> { player.handPoker[0], player.handPoker[1] };
-            judgePoker = judgePoker.Concat(gameRoomData.communityPoker).ToList();
-            Debug.Log($"GameControl :: judgePoker : {string.Join(", ", judgePoker.Select(p => p))}");
-            Debug.Log("GameControl :: " + judgePoker.Count);
-            // Evaluate the hand
+            var judgePoker = new List<int>(player.handPoker); // Player's hand cards
+            judgePoker.AddRange(gameRoomData.communityPoker); // Add community cards
+
             PokerShape.JudgePokerShape(judgePoker, (result, matchPoker) =>
             {
-                Debug.Log("GameControl :: Returned Cards Count : " + matchPoker.Count);
-                Debug.Log($"GameControl :: Returned Cards :  + {string.Join(", ", judgePoker.Select(p => p))}");
-                shapeDic.Add(player, new HandEvaluation
+                shapeDic[player] = new HandEvaluation
                 {
                     HandRank = result,
                     MatchPoker = matchPoker
-                });
+                };
             });
         }
 
         return shapeDic;
     }
-
-    private List<GameRoomPlayerData> CompareHands(Dictionary<GameRoomPlayerData, HandEvaluation> shapeDic, List<GameRoomPlayerData> tiedPlayers, int bestHandRank)
+    private List<GameRoomPlayerData> ResolveTies(
+        Dictionary<GameRoomPlayerData, HandEvaluation> shapeDic,
+        List<GameRoomPlayerData> tiedPlayers)
     {
-        // Extract relevant comparison data
-        var comparisonData = tiedPlayers.Select(player => new
-        {
-            Player = player,
-            HandEval = shapeDic[player]
-        }).ToList();
+        // Step 1: Group tied players by their relevant cards
+        var sortedPlayers = tiedPlayers
+            .OrderByDescending(player => GetRelevantCards(shapeDic[player].MatchPoker, shapeDic[player].HandRank),
+                               new PokerCardComparer())
+            .ToList();
 
-        // Sort players based on their MatchPoker data
-        // The MatchPoker list should be ordered by significance for comparison
-        // For example, in One Pair, first element is the pair rank, followed by kickers in descending order
-        comparisonData = comparisonData.OrderByDescending(p => p.HandEval.MatchPoker, new HandComparer()).ToList();
+        // Step 2: Determine the highest relevant cards
+        var bestRelevantCards = GetRelevantCards(shapeDic[sortedPlayers.First()].MatchPoker,
+                                                 shapeDic[sortedPlayers.First()].HandRank);
 
-        // Determine the highest matchPoker
-        var topHand = comparisonData.First().HandEval.MatchPoker;
-        var winners = comparisonData.Where(p => p.HandEval.MatchPoker.SequenceEqual(topHand))
-                                    .Select(p => p.Player)
-                                    .ToList();
-
-        return winners;
+        // Step 3: Find players with the best relevant cards
+        return sortedPlayers
+            .Where(player => new PokerCardComparer().Compare(
+                                 GetRelevantCards(shapeDic[player].MatchPoker, shapeDic[player].HandRank),
+                                 bestRelevantCards) == 0)
+            .ToList();
     }
 
-    // Helper class to encapsulate hand evaluation details
+    private List<int> GetRelevantCards(List<int> matchPoker, int handRank)
+    {
+        matchPoker = matchPoker.OrderByDescending(card => card % 13 == 0 ? 13 : card % 13).ToList();
+
+        return handRank switch
+        {
+            1 or 2 or 5 => matchPoker.Take(1).ToList(), // Royal/Straight Flush or Straight: Only highest card matters
+            3 => matchPoker.Take(5).ToList(), // Four of a Kind: Four + Kicker
+            4 => matchPoker.Take(5).ToList(), // Full House: Triplet + Pair
+            6 => matchPoker.Take(5).ToList(), // Flush: Top 5 cards
+            7 => matchPoker.Take(5).ToList(), // Three of a Kind: Triplet + Top 2 kickers
+            8 => matchPoker.Take(5).ToList(), // Two Pair: Two pairs + Top kicker
+            9 => matchPoker.Take(5).ToList(), // One Pair: Pair + Top 3 kickers
+            10 => matchPoker.Take(5).ToList(), // High Card: Top 5 cards
+            _ => matchPoker.Take(5).ToList() // Default to top 5 cards
+        };
+    }
+
+    private class PokerCardComparer : IComparer<List<int>>
+    {
+        public int Compare(List<int> hand1, List<int> hand2)
+        {
+            // Sort hands in descending order
+            hand1.Sort((a, b) => (b % 13 == 0 ? 13 : b % 13).CompareTo(a % 13 == 0 ? 13 : a % 13));
+            hand2.Sort((a, b) => (b % 13 == 0 ? 13 : b % 13).CompareTo(a % 13 == 0 ? 13 : a % 13));
+
+            // Compare cards one by one
+            for (int i = 0; i < Math.Min(hand1.Count, hand2.Count); i++)
+            {
+                int rank1 = hand1[i] % 13 == 0 ? 13 : hand1[i] % 13;
+                int rank2 = hand2[i] % 13 == 0 ? 13 : hand2[i] % 13;
+
+                if (rank1 > rank2) return 1;
+                if (rank1 < rank2) return -1;
+            }
+
+            return 0; // Hands are equal
+        }
+    }
+
     private class HandEvaluation
     {
         public int HandRank { get; set; } // Lower is better (e.g., 1 for Royal Flush)
         public List<int> MatchPoker { get; set; } // Relevant card ranks for comparison
     }
 
-    // Custom comparer for comparing MatchPoker lists
-    private class HandComparer : IComparer<List<int>>
-    {
-        public int Compare(List<int> x, List<int> y)
-        {
-            for (int i = 0; i < Math.Min(x.Count, y.Count); i++)
-            {
-                if (x[i] > y[i])
-                    return 1;
-                if (x[i] < y[i])
-                    return -1;
-            }
-            return 0; // Hands are equal
-        }
-    }
 
     #endregion
 

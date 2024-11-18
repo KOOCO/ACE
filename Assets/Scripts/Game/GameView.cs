@@ -864,7 +864,7 @@ public class GameView : MonoBehaviour
 
         List<string> numName = new()
         {
-            "A","2","3","4","5","6","7","8","9","10","J","Q","K",
+            "2","3","4","5","6","7","8","9","10","J","Q","K","A",
         };
         CP_NumTogList.AddRange(PN0_NumTogList);
         CP_NumTogList.AddRange(PN1_NumTogList);
@@ -2669,7 +2669,7 @@ public class GameView : MonoBehaviour
                     playerHandData = new PlayerHand
                     {
                         playerHand = playerNew.handPoker ?? new List<int>(),  // Ensure `handPoker` is not null
-                        playerCurrHandShape = GetPlayer(playerNew.userId).PokerShapeIndex,
+                        playerCurrHandShape = GetPlayer(playerNew.userId).pokerCurrShapeIndex,
                         potWinChips = isWinner ? potWinChips : 0,
                         sideWinChips = gameRoomData.sideWinData?.sideWinnersId.Contains(playerNew.userId) == true ? sideWinChips : 0,
                         isWinner = isWinner,

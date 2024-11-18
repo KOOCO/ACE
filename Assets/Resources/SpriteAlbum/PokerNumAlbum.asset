@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: PokerNumAlbum
   m_EditorClassIdentifier: 
   album:
-  - {fileID: 21300000, guid: ac6e44781f40ebc44a93777df2f4c37b, type: 3}
   - {fileID: 21300000, guid: 812386428dbdebf4faa7bc9a3f440496, type: 3}
   - {fileID: 21300000, guid: 4c280b0a2efd404488b2b5bb88a67b85, type: 3}
   - {fileID: 21300000, guid: 243249c0c6a087a43b27ce26a9f72b0b, type: 3}
@@ -26,7 +25,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 154947ac621e77549a03653f118cc44a, type: 3}
   - {fileID: 21300000, guid: b2d7d109b20ac1a40837e6d0af7085cb, type: 3}
   - {fileID: 21300000, guid: 59473f65c49854142ac090023e3a5e8d, type: 3}
-  - {fileID: 21300000, guid: 3aa2275fa01afa24a99caf9667f892c7, type: 3}
+  - {fileID: 21300000, guid: ac6e44781f40ebc44a93777df2f4c37b, type: 3}
   - {fileID: 21300000, guid: 1f37b7754b7e80f43815ca3b5451f26b, type: 3}
   - {fileID: 21300000, guid: 5e5bd2c07dd071a4a9d64c427062733a, type: 3}
   - {fileID: 21300000, guid: c7845f5ba528a38419f53fdbb5208d65, type: 3}
@@ -39,7 +38,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 76a87ab534bffb642a863765c9cfbacd, type: 3}
   - {fileID: 21300000, guid: 2226e184d054c1a49a39e3b1f6e2e59a, type: 3}
   - {fileID: 21300000, guid: c5d25302245957940b5063fb4ca5c65b, type: 3}
-  - {fileID: 21300000, guid: 0d550a9c176803544b13bb33de53172f, type: 3}
+  - {fileID: 21300000, guid: 3aa2275fa01afa24a99caf9667f892c7, type: 3}
   - {fileID: 21300000, guid: cab588d94de3be44ebab083d49c98d55, type: 3}
   - {fileID: 21300000, guid: 1fc16a5f26b69bf4b8fdd0376c5269ab, type: 3}
   - {fileID: 21300000, guid: 123e73bf31fac654f9c458a9b9e1f0ff, type: 3}
@@ -52,7 +51,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: e051ceb596a85db4496d0ad7b9b4f6ef, type: 3}
   - {fileID: 21300000, guid: a7af30cd1678c0140bca7699c9be742d, type: 3}
   - {fileID: 21300000, guid: 94e90a00e0b340d45bdc254a54f66846, type: 3}
-  - {fileID: 21300000, guid: 29112caca4244d24e93614d812c32246, type: 3}
+  - {fileID: 21300000, guid: 0d550a9c176803544b13bb33de53172f, type: 3}
   - {fileID: 21300000, guid: ba844d28f3330d14d9e5c14335678319, type: 3}
   - {fileID: 21300000, guid: 42beea122f2a032409b9f09344605a5d, type: 3}
   - {fileID: 21300000, guid: 780e4ef4800387e4c9d5e4ef18c90491, type: 3}
@@ -65,3 +64,4 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 5f854583136723241acdcc0409d190f4, type: 3}
   - {fileID: 21300000, guid: eecc9097f90a2fb4ab459961998c42f8, type: 3}
   - {fileID: 21300000, guid: cdef2885f33732746a2a8e3aeb8aa651, type: 3}
+  - {fileID: 21300000, guid: 29112caca4244d24e93614d812c32246, type: 3}
