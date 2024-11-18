@@ -451,8 +451,8 @@
   },
   {
     "ID": "Network offline",
-    "English": "If you haven't playing the game for too long. The system will prompt you to exit the game.",
-    "zh_TW": "遊戲閒置過久，您已被踢線"
+    "English": "The game has been idle for a long time or a network interruption has been detected, please log in again.",
+    "zh_TW": "遊戲閒置過久或偵測到網路中斷，請重新登入。"
   },
   {
     "ID": "You don,t have enough Ucoins",
