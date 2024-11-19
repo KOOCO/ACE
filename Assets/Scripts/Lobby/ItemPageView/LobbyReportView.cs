@@ -31,6 +31,9 @@ public class LobbyReportView : MonoBehaviour
     [SerializeField]
     Button Confirm_Btn, Submit_Btn;
 
+    [Header("注單查詢")]
+    public BetHistoryManager bethistory;
+
     [Header("文本")]
     public TextMeshProUGUI betRecord_Txt, transactionList_Txt, handHistory_Txt,
         allWins_Txt, allValidBet_Txt, allBets_Txt, totalRecords_Txt, totalRecords_Txt1,
@@ -99,6 +102,7 @@ public class LobbyReportView : MonoBehaviour
             if (isOn)
                 selectObj(betRecord_Obj);
             dateSelect_Obj.SetActive(true);
+            bethistory.gameObject.SetActive(false);
             StartTime_Txt.text = System.DateTime.Today.ToShortDateString();
             EndTime_Txt.text = System.DateTime.Today.ToShortDateString();
             Game_Drop.gameObject.SetActive(true);
@@ -142,6 +146,17 @@ public class LobbyReportView : MonoBehaviour
             EndTime_Txt.text = endTime_Txt.text;
             Calendar_Obj.SetActive(false);
         });
+        Submit_Btn.onClick.AddListener(() =>
+        {
+            AppApi.GetBettingDetail(startTime_Txt.text, endTime_Txt.text, GetBettingData);
+        });
+    }
+
+    private void GetBettingData(string data)
+    {
+        bethistory.gameObject.SetActive(true);
+        dateSelect_Obj.SetActive(false);
+        bethistory.showBetHistory(data);
     }
 
     // Update is called once per frame
