@@ -207,12 +207,12 @@ public class JoinRoomView : MonoBehaviour
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
     // Set the URL and query parameters
-    // string apiEndpoint = $"/api/app/rooms/player-disconnected?memberId={memberId}";
+    string apiEndpoint = $"/api/app/rooms/player-disconnected";
     string memberId = _memberId;
-    string pipfullUrl = "https://f9de149c298966a11d6f15feb43b45f9.m.pipedream.net";
-    // string fullUrl = BASE_URL + apiEndpoint;
+    // string pipfullUrl = "https://f9de149c298966a11d6f15feb43b45f9.m.pipedream.net";
+    string fullUrl = BASE_URL + apiEndpoint;
     // Store the URL in JavaScript
-    StoreVariableJS(pipfullUrl,memberId);
+    StoreVariableJS(fullUrl,memberId);
 
     // Call page visibility-related functions
     PageChangeVisibility();

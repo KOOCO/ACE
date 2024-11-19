@@ -232,9 +232,35 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
         yield return new WaitForSeconds(3f);
         if (!isDev)
         {
-            AppApi.DecryptSession(loginString, loginView.RegisterWithNoodle, (x) =>
+            AppApi.DecryptSession(loginString, loginView.RegisterWithNoodle, (errorResponse) =>
             {
-                Debug.Log("Noodle Login Failed: " + x);
+                if (errorResponse.Contains("403"))
+                {
+                    Debug.Log("Error 403: Forbidden - Session Expired.");
+
+                    // Optional: Parse the error details if needed
+                    try
+                    {
+                        var errorDetails = JsonUtility.FromJson<ErrorResponse>(errorResponse);
+                        if (errorDetails.code == "403")
+                        {
+                            Debug.Log("Error Details: " + string.Join(", ", errorDetails.messages));
+                            if (loginView.SessionExp_Obj != null)
+                            {
+                                loginView.SessionExp_Obj.SetActive(true);
+                            }
+                            // Handle session expiration here, e.g., redirect to login
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogError("Failed to parse error details: " + ex.Message);
+                    }
+                }
+                else
+                {
+                    Debug.Log("Noodle Login Failed: " + errorResponse);
+                }
             });
         }
         else
@@ -253,4 +279,11 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
         version_Txt.text = Entry.Instance.version;
         loginView.setMaintenanceObj(true);
     }
+}
+
+[Serializable]
+public class ErrorResponse
+{
+    public string code;
+    public string[] messages;
 }
