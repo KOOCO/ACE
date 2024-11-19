@@ -610,7 +610,7 @@ public class GameView : MonoBehaviour
 
             if (CallBtn_Txt.text != LanguageManager.Instance.GetText("Check"))
             {
-                NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(), thisData.CurrCallValue, 4, ChipTransactionType.Call, (x) =>
+                NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(), thisData.CallDifference, 4, ChipTransactionType.Call, (x) =>
                 {
                     Debug.Log("Call Table ChipsTransaction Success");
                 },
