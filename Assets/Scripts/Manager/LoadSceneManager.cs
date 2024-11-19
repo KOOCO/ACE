@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using System;
 using TMPro;
 using Newtonsoft.Json;
+using System.Runtime.InteropServices;
 
 public class LoadSceneManager : UnitySingleton<LoadSceneManager>
 {
@@ -18,7 +19,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
 
     [Header("開啟介面")]
     [SerializeField]
-    GameObject LoginViewObj, LobbyViewObj;
+    GameObject LoginViewObj, LobbyViewObj, SessionExp_Obj;
 
     [SerializeField]
     TextMeshProUGUI version_Txt; //login場景要顯示的板號
@@ -26,6 +27,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
     public bool isGetUserData { get; set; }
 
     DateTime startYieldTime;
+    public Button closeBrowser_Btn;
 
     public override void Awake()
     {
@@ -33,6 +35,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
 
         Loading_Txt.text = "Now Loading...";
         lodingView.gameObject.SetActive(false);
+        closeBrowser_Btn.onClick.AddListener(OnClickLogOutBtn);
     }
 
     /// <summary>
@@ -212,6 +215,22 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
         }
     }
 
+
+    [DllImport("__Internal")]
+    private static extern void JS_WindowClose();
+
+    private void CallJSWindowClose(string unused)
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        JS_WindowClose();
+#endif
+    }
+
+
+    public void OnClickLogOutBtn()
+    {
+        AppApi.LogoutRequest(CallJSWindowClose);
+    }
     public void NoodleSession(string loginString)
     {
         Debug.Log(loginString);
@@ -245,9 +264,9 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
                         if (errorDetails.code == "403")
                         {
                             Debug.Log("Error Details: " + string.Join(", ", errorDetails.messages));
-                            if (loginView.SessionExp_Obj != null)
+                            if (SessionExp_Obj != null)
                             {
-                                loginView.SessionExp_Obj.SetActive(true);
+                                SessionExp_Obj.SetActive(true);
                             }
                             // Handle session expiration here, e.g., redirect to login
                         }
