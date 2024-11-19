@@ -44,10 +44,24 @@ public class BetHistorySample : MonoBehaviour
         dateTimeValue_Txt.text = dateTime;
         blindsValue_Txt.text = blinds;
         roomIDValue_Txt.text = roomID;
-        roomRateValue_Txt.text = roomRate.ToString();
-        betsValue_Txt.text = bets.ToString();
-        validBetValue_Txt.text = validBet.ToString();
-        winsValue_Txt.text = wins.ToString();
-        profitValue_Txt.text = profit.ToString();
+        roomRateValue_Txt.text = toString(roomRate);
+        betsValue_Txt.text = toString(bets);
+        validBetValue_Txt.text = toString(validBet);
+        winsValue_Txt.text = toString(wins);
+        profitValue_Txt.text = toString(profit);
+    }
+
+    private string toString(float number)
+    {
+        string numStr = "";
+        if (number < 0)
+        {
+            numStr = number.ToString().Insert(1, "$");
+        }
+        else
+        {
+            numStr = $"${number}";
+        }
+        return numStr;
     }
 }
