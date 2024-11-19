@@ -46,7 +46,6 @@ public class Entry : UnitySingleton<Entry>
 #if !UNITY_EDITOR
         JSBridgeManager.Instance.SetupRecaptchaVerifier();
 #endif
-
         base.Awake();
     }
 
@@ -74,7 +73,14 @@ public class Entry : UnitySingleton<Entry>
         AudioManager.Instance.StartLoadAudioAssets();
 
         LoadSceneManager.Instance.LoadScene(SceneEnum.Login);
+        StartHeartbeat();
     }
+
+    //private void Update()
+    //{
+    //    GameObject obj = GameObject.Find(gameObject.name);
+    //    obj.SendMessage(nameof(Test));
+    //}
 
     #region Instagram登入
 
@@ -269,5 +275,67 @@ public class Entry : UnitySingleton<Entry>
         Debug.Log($"Browser Debug: {str}");
     }
 
+    #endregion
+
+    #region 心跳 in Web
+    public void initHeartBeat(string userID)
+    {
+        if (!isListenered)
+        {
+            isListenered = true;
+            JSBridgeManager.Instance.StartListeningForDataChanges(
+                        $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{userID}",
+                    gameObject.name,
+                    nameof(delayCallHeartbeat));
+        }
+    }
+
+    void StartHeartbeat()
+    {
+        heartbeatData HB = null;
+        HB = new heartbeatData(true, DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString(), PlayerPrefs.GetString("PlayerStatus"), PlayerPrefs.GetString("ServerStatus"));
+
+        string data = JsonConvert.SerializeObject(HB);
+
+        JSBridgeManager.Instance.UpdateDataToFirebase(
+                $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}",
+                data,
+                gameObject.name,
+                nameof(checkUpdate));
+    }
+    void delayCallHeartbeat(string jsonData)
+    {
+        //print("After 5 second in Entry: " + jsonData);
+
+        if (!string.IsNullOrEmpty(jsonData) && jsonData != "null")
+        {
+            var hb = JsonConvert.DeserializeObject<heartbeatData>(jsonData);
+            string pStatus = hb.playerStatus;
+            string sStatus = hb.serverStatus;
+            PlayerPrefs.SetString("PlayerStatus", pStatus);
+            PlayerPrefs.SetString("ServerStatus", sStatus);
+            PlayerPrefs.Save();
+            //print($"PS: {PlayerPrefs.GetString("PlayerStatus")}, SS: {PlayerPrefs.GetString("ServerStatus")}");
+        }
+        else
+        {
+            PlayerPrefs.SetString("PlayerStatus", "normal");
+            PlayerPrefs.SetString("ServerStatus", "normal");
+            PlayerPrefs.Save();
+        }
+        Invoke(nameof(StartHeartbeat), 5);
+    }
+    public void checkUpdate(string s)
+    {
+        //print("Result: " + s);
+        int nullC = PlayerPrefs.GetInt("nullData");
+        if (s == "false")
+        {
+            nullC++;
+            PlayerPrefs.SetInt("nullData", nullC);
+            PlayerPrefs.Save();
+        }
+        //print(nullC);
+    }
     #endregion
 }

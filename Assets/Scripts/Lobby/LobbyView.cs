@@ -280,6 +280,7 @@ public class LobbyView : MonoBehaviour
 
         Refresh_Btn.onClick.Invoke();
 
+        InvokeRepeating(nameof(checkIsMaintenance), 0 , 5);
         /*
 #if UNITY_EDITOR
 
@@ -452,36 +453,26 @@ public class LobbyView : MonoBehaviour
         isFirstIn = false;
     }
 
-    //Test callBack
-    void StartHeartbeat()
+    void checkIsMaintenance()
     {
         if (PlayerPrefs.GetString("ServerStatus") == serverStatus.maintenance.ToString())
         {
             JSBridgeManager.Instance.WindowClose();
         }
-
-#if !UNITY_EDITOR
-        if (!isListenered)
+    }
+    void checkIsOffline()
+    {
+        if (PlayerPrefs.GetInt("nullData") >= 3)
         {
-            isListenered = true;
-
-            JSBridgeManager.Instance.StartListeningForDataChanges(
-                        $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}",
-                    gameObject.name,
-                    nameof(delayCallHeartbeat));
+            DataManager.istipAppear=true;
+            DataManager.TipText = LanguageManager.Instance.GetText("Network offline");
         }
+    }
 
-        heartbeatData HB = null;
-        HB = new heartbeatData(true, DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString(), PlayerPrefs.GetString("PlayerStatus"), PlayerPrefs.GetString("ServerStatus"));
-
-        string data = JsonConvert.SerializeObject(HB);
-
-        JSBridgeManager.Instance.UpdateDataToFirebase(
-                $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}",
-                data,
-                gameObject.name);
-#endif
-
+    #region HB in Unity
+    //Test callBack in Unity
+    void StartHeartbeat()
+    {
 #if UNITY_EDITOR
         JSBridgeManager.Instance.ReadDataFromFirebase(
                 $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}",
@@ -492,7 +483,6 @@ public class LobbyView : MonoBehaviour
     void delayCallHeartbeat(string jsonData)
     {
         print("After 5 second: " + jsonData);
-        int nullC = PlayerPrefs.GetInt("nullData");
 
         if (!string.IsNullOrEmpty(jsonData) && jsonData != "null")
         {
@@ -506,20 +496,9 @@ public class LobbyView : MonoBehaviour
         }
         else
         {
-            nullC++;
-            PlayerPrefs.SetInt("nullData", nullC);
             PlayerPrefs.SetString("PlayerStatus", "normal");
             PlayerPrefs.SetString("ServerStatus", "normal");
             PlayerPrefs.Save();
-            print(nullC);
-        }
-
-        if (nullC >= 3)
-        {
-            PlayerPrefs.SetInt("nullData", 0);
-            DataManager.istipAppear = true;
-            DataManager.TipText = LanguageManager.Instance.GetText("Network offline");
-            return;
         }
 
 #if UNITY_EDITOR
@@ -532,9 +511,10 @@ public class LobbyView : MonoBehaviour
                 $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}",
                 data,
                 gameObject.name);
-#endif
         Invoke("StartHeartbeat", 5);
+#endif
     }
+    #endregion
 
     /// <summary>
     /// 更新用戶訊息
