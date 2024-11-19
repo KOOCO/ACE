@@ -781,6 +781,7 @@ public class LoginView : MonoBehaviour
         AudioManager.Instance.playTittle();
         MusicSwitchBtn.IsPlayAudio();
 
+        InvokeRepeating(nameof(checkIsMaintenance), 0, 5);
 
 #if UNITY_EDITOR
         loginWithURL.gameObject.SetActive(false);
@@ -2155,7 +2156,7 @@ public class LoginView : MonoBehaviour
         return;
 #endif
 
-        ReadUserData(nameof(JudgeLoggedIn));
+        ReadUserData(nameof(checkLogInData));
 
     }
 
@@ -2214,10 +2215,15 @@ public class LoginView : MonoBehaviour
         Debug.Log("Firebse Login :: " + jsonData);
         jsonCache = jsonData;
 
+#if UNITY_EDITOR
         JSBridgeManager.Instance.ReadDataFromFirebase(
                 $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}",
                 gameObject.name,
                 nameof(delayCallHeartbeat));
+#else
+        Entry.Instance.initHeartBeat(DataManager.UserId);
+        JudgeLoggedIn(jsonCache);
+#endif
     }
     /// <summary>
     /// 帳號是否登入判斷
@@ -2282,16 +2288,19 @@ public class LoginView : MonoBehaviour
             PlayerPrefs.Save();
         }
         print($"SS: {PlayerPrefs.GetString("ServerStatus")}");
-        if (PlayerPrefs.GetString("ServerStatus") == serverStatus.maintenance.ToString())
-        {
-             isMaintenance = true;
-            maintenance.gameObject.SetActive(isMaintenance);
-            LoadSceneManager.Instance.DoShowView();
-        }
         JudgeLoggedIn(jsonCache);
     }
 
 #endregion
+
+    void checkIsMaintenance()
+    {
+        if (PlayerPrefs.GetString("ServerStatus") == serverStatus.maintenance.ToString())
+        {
+            isMaintenance = true;
+            LoadSceneManager.Instance.DoShowView();
+        }
+    }
 
     //外部調用
     public void openTip(messageStatus status, string message)
