@@ -207,11 +207,12 @@ public class JoinRoomView : MonoBehaviour
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
     // Set the URL and query parameters
-    string apiEndpoint = $"/api/app/rooms/player-disconnected?memberId={memberId}";
-    // string fullUrl = "https://f9de149c298966a11d6f15feb43b45f9.m.pipedream.net";
+    // string apiEndpoint = $"/api/app/rooms/player-disconnected?memberId={memberId}";
+    string memberId = memberId;
+    string pipfullUrl = "https://f9de149c298966a11d6f15feb43b45f9.m.pipedream.net";
     string fullUrl = BASE_URL + apiEndpoint;
     // Store the URL in JavaScript
-    StoreVariableJS(fullUrl);
+    StoreVariableJS(pipfullUrl,memberId);
 
     // Call page visibility-related functions
     PageChangeVisibility();
@@ -229,7 +230,7 @@ public class JoinRoomView : MonoBehaviour
     private static extern void onPageLoadWithVisibilityChange();
 
     [DllImport("__Internal")]
-    private static extern void storeVariable(string value);
+    private static extern void storeVariable(string value,string memberId);
 
     [DllImport("__Internal")]
     private static extern void onPageLoad();
@@ -247,10 +248,10 @@ public class JoinRoomView : MonoBehaviour
 
 
 
-    public void StoreVariableJS(string value)
+    public void StoreVariableJS(string value, string memberId)
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
-        storeVariable(value);
+        storeVariable(value,memberId);
         Debug.Log("Unity: Stored variable in JavaScript: " + value);
 #endif
     }
