@@ -172,7 +172,7 @@ public class JoinRoomView : MonoBehaviour
         DataManager.RoomId = gameRound.roomId;
         actionType = gameRound.actionType;
 
-        SendRoomDataToJS(DataManager.UserId, DataManager.RoomId, "0", DataManager.CurrencyType.ToString(), "10");
+        SendRoomDataToJS(DataManager.UserId);
 
 #if UNITY_EDITOR
 
@@ -203,15 +203,15 @@ public class JoinRoomView : MonoBehaviour
 
     private string BASE_URL = "https://admin-d.jf588.com";  // API Base URL
 
-    public void SendRoomDataToJS(string memberId, string roomId, string amount, string type, string rankPoint)
+    public void SendRoomDataToJS(string memberId)
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
     // Set the URL and query parameters
-
-    string fullUrl = "https://f9de149c298966a11d6f15feb43b45f9.m.pipedream.net";
-    
+    string apiEndpoint = $"/api/app/rooms/player-disconnected?memberId={memberId}";
+    // string fullUrl = "https://f9de149c298966a11d6f15feb43b45f9.m.pipedream.net";
+    string fullUrl = BASE_URL + apiEndpoint;
     // Store the URL in JavaScript
-    StoreVariableJS(fullUrl, memberId, roomId, amount, type, rankPoint);
+    StoreVariableJS(fullUrl);
 
     // Call page visibility-related functions
     PageChangeVisibility();
@@ -229,7 +229,7 @@ public class JoinRoomView : MonoBehaviour
     private static extern void onPageLoadWithVisibilityChange();
 
     [DllImport("__Internal")]
-    private static extern void storeVariable(string value, string memberId, string roomId, string amount, string type, string rankPoint);
+    private static extern void storeVariable(string value);
 
     [DllImport("__Internal")]
     private static extern void onPageLoad();
@@ -247,10 +247,10 @@ public class JoinRoomView : MonoBehaviour
 
 
 
-    public void StoreVariableJS(string value, string memberId, string roomId, string amount, string type, string rankPoint)
+    public void StoreVariableJS(string value)
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
-        storeVariable(value, memberId, roomId, amount, type, rankPoint);
+        storeVariable(value);
         Debug.Log("Unity: Stored variable in JavaScript: " + value);
 #endif
     }
