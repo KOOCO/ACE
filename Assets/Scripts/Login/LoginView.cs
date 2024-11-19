@@ -29,7 +29,6 @@ public class LoginView : MonoBehaviour
     TextMeshProUGUI WalletTog_Txt, MobileTog_Txt;
     [SerializeField]
     GameObject Wallet_Obj, Mobile_Obj;
-    public GameObject SessionExp_Obj;
 
     [Header("錢包連接頁面")]
     [SerializeField]
@@ -61,7 +60,7 @@ public class LoginView : MonoBehaviour
     [SerializeField]
     GameObject WalletRegisterPage_Obj;
     [SerializeField]
-    Button WalletRegisterSubmit_Btn, CloseBrowser_Btn;
+    Button WalletRegisterSubmit_Btn;
     [SerializeField]
     TMP_InputField WalletRegister_If, WalletEmail_If;
     [SerializeField]
@@ -728,29 +727,8 @@ public class LoginView : MonoBehaviour
         });
         #endregion
 
-        CloseBrowser_Btn.onClick.AddListener(() =>
-        {
-#if UNITY_WEBGL && !UNITY_EDITOR
-            AppApi.LogoutRequest(CallJSWindowClose);
-#endif
-        });
     }
 
-
-    [DllImport("__Internal")]
-    private static extern void JS_WindowClose();
-
-    private void CallJSWindowClose(string unused)
-    {
-#if UNITY_WEBGL && !UNITY_EDITOR
-        JS_WindowClose();
-#endif
-    }
-
-    public void OnClickLogOutBtn()
-    {
-        AppApi.LogoutRequest(CallJSWindowClose);
-    }
     private void Start()
     {
         string localIP = string.IsNullOrEmpty(DataManager.PlayerIPAddress) ?
