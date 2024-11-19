@@ -176,7 +176,7 @@ public class JoinRoomView : MonoBehaviour
 
 #if UNITY_EDITOR
 
-        /*dataRoomName = "EditorRoom";
+        /*dataRoomName = DataManager.RoomId + "_Editor";
         //創新房間資料
         var dataDic = new Dictionary<string, object>()
         {
@@ -190,7 +190,7 @@ public class JoinRoomView : MonoBehaviour
             $"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}/{dataRoomName}",
             dataDic,
             gameObject.name,
-            nameof(CreateNewRoomCallback));*/
+            nameof(JoinRoomQueryCallback));*/
         Debug.LogError("Cause Editor can't play game, so cancel join/create room, please 'Build First'.");
         return;
 #endif
@@ -266,7 +266,7 @@ public class JoinRoomView : MonoBehaviour
 
     public void CreateOrJoinRoom()
     {
-        JSBridgeManager.Instance.JoinRoomQueryData($"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}",
+        JSBridgeManager.Instance.JoinRoomQueryData($"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}/{DataManager.RoomId}",
                                                     $"{DataManager.MaxPlayerCount}",
                                                     $"{DataManager.UserId}",
                                                     gameObject.name,
@@ -332,23 +332,33 @@ public class JoinRoomView : MonoBehaviour
     /// <param name="jsonData">回傳資料</param>
     public void JoinRoomQueryCallback(string jsonData)
     {
+        // Deserialize JSON data into a QueryRoom object
         QueryRoom queryRoom = FirebaseManager.Instance.OnFirebaseDataRead<QueryRoom>(jsonData);
 
         // Handle errors
-        if (!string.IsNullOrEmpty(queryRoom.error))
+        if (!string.IsNullOrEmpty(queryRoom?.error))
         {
-            Debug.LogError(queryRoom.error);
+            Debug.LogError($"JoinRoomQueryCallback Error: {queryRoom.error}");
             return;
         }
 
-        Debug.Log($"JoinRoomView :: roomName : {queryRoom.getRoomName}, roomCount : {queryRoom.roomCount}");
+        Debug.Log($"JoinRoomQueryCallback :: Room Name: {queryRoom?.getRoomName}, Room Count: {queryRoom?.roomCount}");
+
+        // Validate dataRoomName
+        dataRoomName = DataManager.RoomId;
+
+        if (string.IsNullOrEmpty(dataRoomName))
+        {
+            Debug.LogError("JoinRoomQueryCallback Error: Invalid Room ID.");
+            return;
+        }
+
+        // Construct the common data path
+        string dataPath = $"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}/{dataRoomName}";
 
         if (actionType == "Create")
         {
-            // Define the room name based on the room count
-            dataRoomName = $"{FirebaseManager.ROOM_NAME}{DataManager.RoomId}";
-
-            // Create new room data
+            // Data for creating a new room
             var dataDic = new Dictionary<string, object>
         {
             { FirebaseManager.SMALL_BLIND, smallBlind },                  // Small blind amount
@@ -358,35 +368,34 @@ public class JoinRoomView : MonoBehaviour
             { FirebaseManager.CURR_COMMUNITY_POKER, new List<int>() }     // Current community cards
         };
 
+            Debug.Log($"JoinRoomQueryCallback :: Creating Room at Path: {dataPath}");
+
             // Write data to Firebase
-            JSBridgeManager.Instance.WriteDataFromFirebase(
-                $"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}/{dataRoomName}",
+            JSBridgeManager.Instance.UpdateDataFromFirebase(
+                dataPath,
                 dataDic,
                 gameObject.name,
                 nameof(CreateNewRoomCallback));
-
-            actionType = ""; // Reset actionType after creating room
         }
         else if (actionType == "Join")
         {
-            // Join an existing room
-            Debug.Log("Room already exists. Attempting to join...");
+            Debug.Log($"JoinRoomQueryCallback :: Joining Room at Path: {dataPath}");
 
-            dataRoomName = $"{FirebaseManager.ROOM_NAME}{DataManager.RoomId}";
-
-            // Read room data from Firebase
+            // Read data from Firebase
             JSBridgeManager.Instance.ReadDataFromFirebase(
-                $"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}/{dataRoomName}",
+                dataPath,
                 gameObject.name,
                 nameof(JoinRoomCallback));
-
-            actionType = ""; // Reset actionType after joining room
         }
         else
         {
-            Debug.LogWarning("Invalid actionType specified.");
+            Debug.LogWarning($"JoinRoomQueryCallback Warning: Invalid actionType '{actionType}' specified.");
         }
+
+        // Reset actionType to avoid accidental reuse
+        actionType = string.Empty;
     }
+
 
     /// <summary>
     /// 創建新房間回傳
@@ -436,6 +445,8 @@ public class JoinRoomView : MonoBehaviour
     /// <param name="jsonData">房間資料</param>
     public void JoinRoomCallback(string jsonData)
     {
+        Debug.Log("JoinRoomView :: JoinRoomCallback : " + jsonData);
+
         var gameRoomData = FirebaseManager.Instance.OnFirebaseDataRead<GameRoomData>(jsonData);
         int seat = TexasHoldemUtil.SetGameSeat(gameRoomData);
 
