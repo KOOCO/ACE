@@ -203,14 +203,14 @@ public class JoinRoomView : MonoBehaviour
 
     private string BASE_URL = "https://admin-d.jf588.com";  // API Base URL
 
-    public void SendRoomDataToJS(string memberId)
+    public void SendRoomDataToJS(string _memberId)
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
     // Set the URL and query parameters
     // string apiEndpoint = $"/api/app/rooms/player-disconnected?memberId={memberId}";
-    string memberId = memberId;
+    string memberId = _memberId;
     string pipfullUrl = "https://f9de149c298966a11d6f15feb43b45f9.m.pipedream.net";
-    string fullUrl = BASE_URL + apiEndpoint;
+    // string fullUrl = BASE_URL + apiEndpoint;
     // Store the URL in JavaScript
     StoreVariableJS(pipfullUrl,memberId);
 
