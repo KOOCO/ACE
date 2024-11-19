@@ -236,16 +236,18 @@ mergeInto(LibraryManager.library, {
 
 
     myStoredVariable: null, // Initialize the variable
-
+    MemberId: null,
 
     // Function to store a value
-    storeVariable: function(value) {
+    storeVariable: function(value,MemberId) {
         this.myStoredVariable = UTF8ToString(value);
+        this.MemberId = UTF8ToString(MemberId);
         console.log("Variable URL:", this.myStoredVariable);
     },
 
     clearStoredVariable: function() {
         this.myStoredVariable = null;
+        this.MemberId = null;
         console.log("Stored Variable is cleared");
     },
 
@@ -271,7 +273,7 @@ mergeInto(LibraryManager.library, {
             const url = self.myStoredVariable;
 
             const data = { 
-                            message: "Success Player disconnect" // Send only a success message
+                            memberId: self.MemberId // Send only a success message
                          };
 
 
@@ -309,7 +311,7 @@ mergeInto(LibraryManager.library, {
                 const url = self.myStoredVariable;
 
                 const data = { 
-                                message: "Success Player disconnect" // Send only a success message
+                                memberId: self.MemberId // Send only a success message
                              };
 
                 // Send the data using navigator.sendBeacon
