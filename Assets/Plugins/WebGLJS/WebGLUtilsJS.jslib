@@ -251,6 +251,35 @@ mergeInto(LibraryManager.library, {
         console.log("Stored Variable is cleared");
     },
 
+    sendBeaconRequest: function() {
+       console.log('The page is about to be unloaded!');
+
+            if (!self.myStoredVariable) {
+                console.log("No data to send, skipping.");
+                return;
+            }
+
+            // Send a beacon to the provided Firebase URL before unloading the page
+            const url = self.myStoredVariable;
+
+            const data = { 
+                            memberId: self.MemberId // Send only a success message
+                         };
+
+
+            // Use the Beacon API to send data to Firebase before the page unloads
+            if (navigator.sendBeacon) {
+                const payload = JSON.stringify(data); // Convert data to JSON string
+                navigator.sendBeacon(url, payload); // Send the request asynchronously
+                console.log("Payload Sent:", payload);
+                console.log("Data Sent:", data);
+            }
+            else
+            {
+                console.log("Request not Sent");
+            }
+    },
+
     // Function to handle the page load and unload events
     onPageLoad: function() {
         const self = this; // Save reference to the current context
