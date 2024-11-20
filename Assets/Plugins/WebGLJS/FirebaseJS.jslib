@@ -80,7 +80,7 @@ mergeInto(LibraryManager.library, {
     }
 
     // 发起网络连通性测试
-    fetch("https://www.google.com", { method: "HEAD", mode: "no-cors" })
+    fetch("https://api.ipify.org", {mode: "no-cors" })
         .then(() => {
             // 网络可用，执行 Firebase 操作
             const data = JSON.parse(jsonData);

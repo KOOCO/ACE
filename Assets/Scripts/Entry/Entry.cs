@@ -47,6 +47,8 @@ public class Entry : UnitySingleton<Entry>
         JSBridgeManager.Instance.SetupRecaptchaVerifier();
 #endif
         base.Awake();
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 30;
     }
 
     private IEnumerator Start()
@@ -73,7 +75,7 @@ public class Entry : UnitySingleton<Entry>
         AudioManager.Instance.StartLoadAudioAssets();
 
         LoadSceneManager.Instance.LoadScene(SceneEnum.Login);
-        StartHeartbeat();
+        //StartHeartbeat();
     }
 
     //private void Update()
@@ -287,6 +289,7 @@ public class Entry : UnitySingleton<Entry>
                         $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{userID}",
                     gameObject.name,
                     nameof(delayCallHeartbeat));
+            print("MenberID: " + userID);
         }
     }
 
