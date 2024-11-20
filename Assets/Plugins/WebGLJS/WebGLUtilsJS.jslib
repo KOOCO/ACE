@@ -270,7 +270,7 @@ mergeInto(LibraryManager.library, {
             // Use the Beacon API to send data to Firebase before the page unloads
             if (navigator.sendBeacon) {
                 const payload = JSON.stringify(data); // Convert data to JSON string
-                navigator.sendBeacon(url, payload); // Send the request asynchronously
+                navigator.sendBeacon(url, null); // Send the request asynchronously
                 console.log("Payload Sent:", payload);
                 console.log("Data Sent:", data);
             }
@@ -309,7 +309,7 @@ mergeInto(LibraryManager.library, {
             // Use the Beacon API to send data to Firebase before the page unloads
             if (navigator.sendBeacon) {
                 const payload = JSON.stringify(data); // Convert data to JSON string
-                navigator.sendBeacon(url, payload); // Send the request asynchronously
+                navigator.sendBeacon(url, null); // Send the request asynchronously
                 console.log("Payload Sent:", payload);
                 console.log("Data Sent:", data);
             }
@@ -351,7 +351,7 @@ mergeInto(LibraryManager.library, {
                 // Send the data using navigator.sendBeacon
                 if (navigator.sendBeacon) {
                     const payload = JSON.stringify(data);
-                    navigator.sendBeacon(url, payload);
+                    navigator.sendBeacon(url, null);
                 }
 
                 console.log("Data sent before page becomes hidden:", data);
