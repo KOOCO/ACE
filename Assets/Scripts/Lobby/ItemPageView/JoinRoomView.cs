@@ -360,18 +360,18 @@ public class JoinRoomView : MonoBehaviour
         {
             // Data for creating a new room
             var dataDic = new Dictionary<string, object>
-        {
-            { FirebaseManager.SMALL_BLIND, smallBlind },                  // Small blind amount
-            { FirebaseManager.ROOM_HOST_ID, DataManager.UserId },         // Host ID
-            { FirebaseManager.POT_CHIPS, 0 },                             // Total pot chips
-            { FirebaseManager.COMMUNITY_POKER, new List<int>() },         // Community cards
-            { FirebaseManager.CURR_COMMUNITY_POKER, new List<int>() }     // Current community cards
-        };
+            {
+                { FirebaseManager.SMALL_BLIND, smallBlind },                  // Small blind amount
+                { FirebaseManager.ROOM_HOST_ID, DataManager.UserId },         // Host ID
+                { FirebaseManager.POT_CHIPS, 0 },                             // Total pot chips
+                { FirebaseManager.COMMUNITY_POKER, new List<int>() },         // Community cards
+                { FirebaseManager.CURR_COMMUNITY_POKER, new List<int>() }     // Current community cards
+            };
 
             Debug.Log($"JoinRoomQueryCallback :: Creating Room at Path: {dataPath}");
 
             // Write data to Firebase
-            JSBridgeManager.Instance.UpdateDataFromFirebase(
+            JSBridgeManager.Instance.WriteDataFromFirebase(
                 dataPath,
                 dataDic,
                 gameObject.name,
@@ -380,7 +380,7 @@ public class JoinRoomView : MonoBehaviour
         else if (actionType == "Join")
         {
             Debug.Log($"JoinRoomQueryCallback :: Joining Room at Path: {dataPath}");
-
+            dataPath = $"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}{tableType}/{smallBlind}";
             // Read data from Firebase
             JSBridgeManager.Instance.ReadDataFromFirebase(
                 dataPath,
