@@ -28,6 +28,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
 
     DateTime startYieldTime;
     public Button closeBrowser_Btn;
+    public Canvas canvas;
 
     public override void Awake()
     {
@@ -229,6 +230,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
 
     public void OnClickLogOutBtn()
     {
+        canvas.gameObject.SetActive(false);
         AppApi.LogoutRequest(CallJSWindowClose);
     }
     public void NoodleSession(string loginString)
@@ -255,26 +257,12 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
             {
                 if (errorResponse.Contains("403"))
                 {
+                    if (SessionExp_Obj != null)
+                    {
+                        canvas.gameObject.SetActive(true);
+                        SessionExp_Obj.SetActive(true);
+                    }
                     Debug.Log("Error 403: Forbidden - Session Expired.");
-
-                    // Optional: Parse the error details if needed
-                    try
-                    {
-                        var errorDetails = JsonUtility.FromJson<ErrorResponse>(errorResponse);
-                        if (errorDetails.code == "403")
-                        {
-                            Debug.Log("Error Details: " + string.Join(", ", errorDetails.messages));
-                            if (SessionExp_Obj != null)
-                            {
-                                SessionExp_Obj.SetActive(true);
-                            }
-                            // Handle session expiration here, e.g., redirect to login
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.LogError("Failed to parse error details: " + ex.Message);
-                    }
                 }
                 else
                 {
@@ -298,11 +286,4 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
         version_Txt.text = Entry.Instance.version;
         loginView.setMaintenanceObj(true);
     }
-}
-
-[Serializable]
-public class ErrorResponse
-{
-    public string code;
-    public string[] messages;
 }

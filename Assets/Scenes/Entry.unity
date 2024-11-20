@@ -1286,11 +1286,40 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8390296672431321879, guid: 2ceb5a51bdfdd5f4883445954a0a1d33, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8932807522549967469, guid: 2ceb5a51bdfdd5f4883445954a0a1d33, type: 3}
+      propertyPath: m_Name
+      value: popup
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ceb5a51bdfdd5f4883445954a0a1d33, type: 3}
+--- !u!114 &3579595187627393287 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 148540590696225520, guid: 2ceb5a51bdfdd5f4883445954a0a1d33, type: 3}
+  m_PrefabInstance: {fileID: 3579595187627393286}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &3579595187627393288 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1281660762889173829, guid: 2ceb5a51bdfdd5f4883445954a0a1d33, type: 3}
+  m_PrefabInstance: {fileID: 3579595187627393286}
+  m_PrefabAsset: {fileID: 0}
+--- !u!223 &3579595187627393289 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 6969269851278166072, guid: 2ceb5a51bdfdd5f4883445954a0a1d33, type: 3}
+  m_PrefabInstance: {fileID: 3579595187627393286}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3791846982356559364
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1311,6 +1340,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: LoadSceneManager
       objectReference: {fileID: 0}
+    - target: {fileID: 5809064056217285269, guid: 595d35a91a389aa4aa584fef504a36d7, type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 3579595187627393289}
+    - target: {fileID: 5809064056217285269, guid: 595d35a91a389aa4aa584fef504a36d7, type: 3}
+      propertyPath: SessionExp_Obj
+      value: 
+      objectReference: {fileID: 3579595187627393288}
+    - target: {fileID: 5809064056217285269, guid: 595d35a91a389aa4aa584fef504a36d7, type: 3}
+      propertyPath: closeBrowser_Btn
+      value: 
+      objectReference: {fileID: 3579595187627393287}
     - target: {fileID: 8966428627177976091, guid: 595d35a91a389aa4aa584fef504a36d7, type: 3}
       propertyPath: m_Pivot.x
       value: 0
