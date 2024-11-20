@@ -782,7 +782,7 @@ public class GameControl : MonoBehaviour
                 double remainingChips = gameRoomData.potChips - mainPotWinChips;
 
                 // Check if there is a side pot, but only if there are remaining chips from bets not fully covered
-                bool IsHaveSide = remainingChips > 0 && playingPlayers.Any(p => p.allBetChips < potMin);
+                bool IsHaveSide = remainingChips > 0;
 
                 // Update the chips for the winning players
                 List<string> potWinnerIdList = new List<string>();
@@ -791,20 +791,6 @@ public class GameControl : MonoBehaviour
                     potWinner.winType = WinnerEnum.MAIN;
                     potWinnerIdList.Add(potWinner.userId);
                     double winnerShare = mainPotWinChips / potWinners.Count;
-                    //newCarryChips = potWinner.carryChips + (mainPotWinChips / potWinners.Count);
-                    // double _roomFee = winnerShare * (DataManager.Rebate / 100);
-                    // this.roomFee = _roomFee;
-                    // double profit = winnerShare - potWinner.allBetChips;
-                    // double finalWinnings = winnerShare;
-                    // if (profit > 0)
-                    // {
-                    //     finalWinnings -= _roomFee;
-                    //     if (_roomFee > 0)
-                    //     {
-                    //         mainPotWinnersRoomFee.Add(potWinner.userId, roomFee);
-                    //     }
-                    // }
-                    //newCarryChips = potWinner.carryChips + Math.Floor(finalWinnings);
                     RoomFee roomFeeObj = new RoomFee()
                     {
                         userId = potWinner.userId,
@@ -846,157 +832,117 @@ public class GameControl : MonoBehaviour
 
             //邊池結果
             case GameFlowEnum.SideResult:
+                Debug.Log("=== Starting SideResult Flow ===");
+
                 // Update game flow
                 data = new Dictionary<string, object>()
-                {
-                    { FirebaseManager.CURR_COMMUNITY_POKER, gameRoomData.communityPoker.Take(5)},      // Current community cards
-                };
+    {
+        { FirebaseManager.CURR_COMMUNITY_POKER, gameRoomData.communityPoker.Take(5)}, // Current community cards
+    };
                 UpdateGameRoomData(data);
+                Debug.Log($"GameControl :: SideResult : Updated community cards: {string.Join(", ", gameRoomData.communityPoker.Take(5))}");
 
                 // Get players still in the game, ordered by total bet chips
                 playingPlayers = GetPlayingPlayer().OrderBy(x => x.allBetChips).ToList();
+                Debug.Log($"GameControl :: SideResult : Playing players ordered by bet chips: {string.Join(", ", playingPlayers.Select(p => $"{p.userId}: {p.allBetChips}"))}");
 
                 // Side pot winners
                 List<GameRoomPlayerData> sideWinners = JudgeWinner(playingPlayers).OrderBy(x => x.allBetChips).ToList();
+                Debug.Log($"GameControl :: SideResult : Side winners: {string.Join(", ", sideWinners.Select(w => $"{w.userId}: {w.allBetChips}"))}");
 
                 // Calculate minimum chips required for the main pot (main pot chips are divided equally)
                 double potMinChips = Math.Floor(gameRoomData.potWinData.potWinChips / playingPlayers.Count);
+                Debug.Log($"GameControl :: SideResult : Minimum chips for main pot: {potMinChips}");
 
                 // Initialize the total side pot value
                 double totalSidePot = 0;
 
-                // Calculate the total side pot value by summing all chips above the main pot minimum
+                // Calculate the total side pot value
                 foreach (var player in playingPlayers)
                 {
                     double potDifference = player.allBetChips - potMinChips;
                     if (potDifference > 0)
                     {
-                        // Add only the excess chips to the side pot
                         totalSidePot += potDifference;
+                        Debug.Log($"GameControl :: SideResult : Player {player.userId} adds {potDifference} to side pot. Total side pot: {totalSidePot}");
                     }
                 }
 
-                // Now calculate the amount to return for players who over-bet compared to the side winners
+                // Handle over-bets
                 foreach (var player in playingPlayers)
                 {
                     double potDifference = player.allBetChips - potMinChips;
 
-                    // If player didn't over-bet, skip
                     if (potDifference == 0)
                     {
+                        Debug.Log($"GameControl :: SideResult : Player {player.userId} did not over-bet.");
                         continue;
                     }
 
                     if (player.allBetChips <= sideWinners[0].allBetChips)
                     {
-                        // Player is eligible for the full side pot winnings
+                        Debug.Log($"GameControl :: SideResult : Player {player.userId} is eligible for full side pot winnings.");
                         continue;
                     }
                     else
                     {
-                        // Player over-bet, so calculate the excess and return chips
                         double excess = player.allBetChips - sideWinners[0].allBetChips;
                         double backChips = excess;
 
-                        // Return excess chips to player
                         newCarryChips = player.carryChips + backChips;
-                        Debug.Log($"{nameof(IStartGameFlow)} New Carry Chips :: {newCarryChips}");
+                        Debug.Log($"GameControl :: SideResult : Player {player.userId} over-bet by {excess}. Returning {backChips} chips.");
+
                         data = new Dictionary<string, object>()
-                        {
-                            { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips) }, // Update player's carry chips
-                        };
+            {
+                { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips) },
+            };
                         UpdataPlayerData(player.userId, data);
 
-                        // Update Firebase with returned chips data
+                        Debug.Log($"GameControl :: SideResult : Updated carry chips for {player.userId}: {newCarryChips}");
 
-                        Debug.Log($"{nameof(IStartGameFlow)} Back Chips :: {backChips}");
                         data = new Dictionary<string, object>()
-                        {
-                            { FirebaseManager.BACK_USER_ID, player.userId },           // Player ID
-                            { FirebaseManager.BACK_CHIPS_VALUE, backChips },           // Chips returned to player
-                        };
+            {
+                { FirebaseManager.BACK_USER_ID, player.userId },
+                { FirebaseManager.BACK_CHIPS_VALUE, backChips },
+            };
                         JSBridgeManager.Instance.UpdateDataFromFirebase(
                             $"{QueryRoomPath}/{FirebaseManager.SIDE_WIN_DATA}/{FirebaseManager.BACK_CHIPS_DATA}/{player.userId}",
                             data);
 
-                        // Update local player data
                         GetPlayerData(player.userId).carryChips = newCarryChips;
                     }
                 }
 
-                // Distribute the side pot proportionally among the winners
+                // Distribute the side pot
                 List<string> sideWinnerIdList = new List<string>();
-                List<GameRoomPlayerData> temp = new();
                 foreach (var sideWinner in sideWinners)
                 {
-                    // // Find the winner in pokerWinners list that matches sideWinner.userId
-                    // var existingWinner = pokerWinners.FirstOrDefault(x => x.userId == sideWinner.userId);
-
-                    // // If a winner is found in pokerWinners, set their win type to BOTH
-                    // if (existingWinner != null)
-                    // {
-                    //     existingWinner.winType = WinnerEnum.BOTH;
-                    // }
-                    // // If no winner is found, set the sideWinner's win type to SIDE
-                    // else
-                    // {
-                    //     temp.Add(sideWinner);
-                    //     sideWinner.winType = WinnerEnum.SIDE;
-                    // }
-                    // sideWinnerIdList.Add(sideWinner.userId);
-
-                    // Calculate this winner's proportional share of the side pot
                     double winnerContribution = Math.Min(sideWinner.allBetChips - potMinChips, totalSidePot);
                     double winnerShare = (winnerContribution / totalSidePot) * totalSidePot;
 
-                    // Update player's chips with their side pot winnings
                     newCarryChips = sideWinner.carryChips + Math.Floor(winnerShare);
 
-                    foreach (var roomFeePlayer in winnersRoomFee)
-                    {
-                        if (roomFeePlayer.userId == sideWinner.userId)
-                        {
-                            roomFeePlayer.winType = WinnerEnum.BOTH;
-                            roomFeePlayer.sidePotAmount = winnerShare;
-                        }
-                        else
-                        {
-                            RoomFee newRoomFeeObj = new()
-                            {
-                                sidePotAmount = winnerShare,
-                                winType = WinnerEnum.SIDE,
-                                extraContribution = winnerContribution,
-                            };
-                            winnersRoomFee.Add(newRoomFeeObj);
-                        }
-                    }
-
-                    Debug.Log($"{nameof(IStartGameFlow)} All Players Chips :: {newCarryChips}");
-                    // data = new Dictionary<string, object>()
-                    // {
-                    //     { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips) },  // Update carry chips
-                    // };
-                    // UpdataPlayerData(sideWinner.userId, data);
-
-                    // Update local side winner data
+                    Debug.Log($"GameControl :: SideResult : Side winner {sideWinner.userId} contribution: {winnerContribution}, share: {winnerShare}, new carry chips: {newCarryChips}");
+                    sideWinnerIdList.Add(sideWinner.userId);
                     GetPlayerData(sideWinner.userId).carryChips = newCarryChips;
                 }
 
+                Debug.Log($"GameControl :: SideResult : All side winners: {string.Join(", ", sideWinnerIdList)}");
+
                 CalculateRoomFee();
 
-                // Update Firebase with the side pot data and the list of winners
                 var sidePotData = new Dictionary<string, object>()
-                {
-                    { FirebaseManager.SIDE_WIN_CHIPS, totalSidePot },          // Total side pot value
-                    { FirebaseManager.SIDE_WINNERS_ID, sideWinnerIdList },     // List of side pot winners
-                };
+    {
+        { FirebaseManager.SIDE_WIN_CHIPS, totalSidePot },
+        { FirebaseManager.SIDE_WINNERS_ID, sideWinnerIdList },
+    };
                 JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.SIDE_WIN_DATA}",
                                                                 sidePotData,
                                                                 gameObject.name,
                                                                 nameof(SideWinDataCallback));
-
-
+                Debug.Log($"GameControl :: SideResult : Side pot data updated in Firebase. Total side pot: {totalSidePot}, winners: {string.Join(", ", sideWinnerIdList)}");
                 break;
+
 
             //剩餘1名玩家結果
             case GameFlowEnum.OnePlayerLeftResult:
