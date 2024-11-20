@@ -284,7 +284,7 @@ mergeInto(LibraryManager.library, {
         .catch((error) => {
             console.error("Network or server error:", error);
         });
-    }
+    },
 
 
     // Function to handle the page load and unload events
