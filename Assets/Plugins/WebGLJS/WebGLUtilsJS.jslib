@@ -281,11 +281,16 @@ mergeInto(LibraryManager.library, {
             if (navigator.sendBeacon) {
                 const payload = JSON.stringify(data); // Convert data to JSON string
                 navigator.sendBeacon(url, payload); // Send the request asynchronously
-                console.log("Data Sent:", payload);
+                console.log("Payload Sent:", payload);
+                console.log("Data Sent:", data);
+            }
+            else
+            {
+                console.log("Request not Sent");
             }
 
             // Optionally, set a confirmation message (browser dependent)
-            //event.returnValue = 'Are you sure you want to leave?'; // Some browsers show this message to the user
+            event.returnValue = 'Are you sure you want to leave?'; // Some browsers show this message to the user
         });
     },
 
