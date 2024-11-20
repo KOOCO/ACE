@@ -196,6 +196,8 @@ public class GameView : MonoBehaviour
     ProcessHistoryData processHistoryData;                      //遊戲過程資料紀錄
     ResultHistoryData saveResultData;                           //遊戲結果資料紀錄
 
+    public Button testApi_Btn;
+
     #endregion
 
     private TableTypeEnum roomType;
@@ -360,6 +362,7 @@ public class GameView : MonoBehaviour
 
         //初始底池位置
         InitPotPointPos = Pot_Img.rectTransform.anchoredPosition;
+        testApi_Btn.onClick.AddListener(sendBeaconRequest);
     }
 
 
@@ -902,18 +905,6 @@ public class GameView : MonoBehaviour
         {
             PlayerPrefs.DeleteAll();
         }
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-#if UNITY_WEBGL && !UNITY_EDITOR
-        // Call the actual send beacon function in WebGL
-        Debug.Log("Simulating Send Beacon in WebGL.");
-        sendBeaconRequest();
-#else
-            Debug.Log("Simulating Send Beacon in Editor.");
-#endif
-        }
-
     }
 
     /// <summary>
