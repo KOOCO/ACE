@@ -246,39 +246,46 @@ mergeInto(LibraryManager.library, {
     },
 
     clearStoredVariable: function() {
-        this.myStoredVariable = null;
-        this.MemberId = null;
+        self.myStoredVariable = null;
+        self.MemberId = null;
         console.log("Stored Variable is cleared");
     },
 
     sendBeaconRequest: function() {
-       console.log('The page is about to be unloaded!');
+        console.log("Preparing to send fetch request...");
 
-            if (!self.myStoredVariable) {
-                console.log("No data to send, skipping.");
-                return;
+        if (!self.myStoredVariable) {
+            console.log("No URL to send, skipping.");
+            return;
+        }
+
+        const url = self.myStoredVariable;
+        const data = {
+            memberId: self.MemberId // Add additional properties if needed
+        };
+
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json" // Ensure the server knows you're sending JSON
+            },
+            body: JSON.stringify(data) // Convert the data object to a JSON string
+        })
+        .then((response) => {
+            if (response.ok) {
+                console.log("Request was successful:", response.status);
+            } else {
+                console.error("Request failed with status:", response.status);
+                response.json().then((errorDetails) => {
+                    console.error("Error details:", errorDetails);
+                });
             }
+        })
+        .catch((error) => {
+            console.error("Network or server error:", error);
+        });
+    }
 
-            // Send a beacon to the provided Firebase URL before unloading the page
-            const url = self.myStoredVariable;
-
-            const data = { 
-                            memberId: self.MemberId // Send only a success message
-                         };
-
-
-            // Use the Beacon API to send data to Firebase before the page unloads
-            if (navigator.sendBeacon) {
-                const payload = JSON.stringify(data); // Convert data to JSON string
-                navigator.sendBeacon(url, null); // Send the request asynchronously
-                console.log("Payload Sent:", payload);
-                console.log("Data Sent:", data);
-            }
-            else
-            {
-                console.log("Request not Sent");
-            }
-    },
 
     // Function to handle the page load and unload events
     onPageLoad: function() {
