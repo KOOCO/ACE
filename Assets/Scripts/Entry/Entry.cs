@@ -327,14 +327,21 @@ public class Entry : UnitySingleton<Entry>
     }
     public void checkUpdate(string s)
     {
-        //print("Result: " + s);
+        print("Result: " + s);
         int nullC = PlayerPrefs.GetInt("nullData");
         if (s == "false")
         {
             nullC++;
             PlayerPrefs.SetInt("nullData", nullC);
             PlayerPrefs.Save();
+        }else if(s=="No network")
+        {
+            nullC+=3;
+            PlayerPrefs.SetInt("nullData", nullC);
+            PlayerPrefs.Save();
         }
+        else if (string.IsNullOrEmpty(s))
+            print("Json = Null");
         //print(nullC);
     }
     #endregion

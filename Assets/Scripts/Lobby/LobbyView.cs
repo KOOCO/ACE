@@ -281,6 +281,7 @@ public class LobbyView : MonoBehaviour
         Refresh_Btn.onClick.Invoke();
 
         InvokeRepeating(nameof(checkIsMaintenance), 0 , 5);
+        InvokeRepeating(nameof(checkIsOffline), 0 , 5);
         /*
 #if UNITY_EDITOR
 

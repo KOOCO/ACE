@@ -69,30 +69,42 @@ mergeInto(LibraryManager.library, {
     // objNamePtr = 回傳物件名
     // callbackFunPtr = 回傳方法名
     JS_UpdateDataFromFirebase: function(refPathPtr, jsonDataPtr, objNamePtr = null, callbackFunPtr = null) {
-        const refPath = UTF8ToString(refPathPtr);
-        const jsonData = UTF8ToString(jsonDataPtr);
+    const refPath = UTF8ToString(refPathPtr);
+    const jsonData = UTF8ToString(jsonDataPtr);
 
-        let gameObjectName = null;
-        let callbackFunctionName = null;
-        if (objNamePtr && callbackFunPtr) {
-            gameObjectName = UTF8ToString(objNamePtr);
-            callbackFunctionName = UTF8ToString(callbackFunPtr);
-        }
+    let gameObjectName = null;
+    let callbackFunctionName = null;
+    if (objNamePtr && callbackFunPtr) {
+        gameObjectName = UTF8ToString(objNamePtr);
+        callbackFunctionName = UTF8ToString(callbackFunPtr);
+    }
 
-        const data = JSON.parse(jsonData);
-        firebase.database().ref(refPath).update(data, (error) => {
-            if (error) {
-                console.error("The update failed... : " + error);
-                if (gameObjectName != null && callbackFunctionName != null) {
-                    window.unityInstance.SendMessage(gameObjectName, callbackFunctionName, "false");
+    // 发起网络连通性测试
+    fetch("https://www.google.com", { method: "HEAD", mode: "no-cors" })
+        .then(() => {
+            // 网络可用，执行 Firebase 操作
+            const data = JSON.parse(jsonData);
+            firebase.database().ref(refPath).update(data, (error) => {
+                if (error) {
+                    console.error("The update failed... : " + error);
+                    if (gameObjectName != null && callbackFunctionName != null) {
+                        window.unityInstance.SendMessage(gameObjectName, callbackFunctionName, "false");
+                    }
+                } else {
+                    if (gameObjectName != null && callbackFunctionName != null) {
+                        window.unityInstance.SendMessage(gameObjectName, callbackFunctionName, "true");
+                    }
                 }
-            } else {
-                if (gameObjectName != null && callbackFunctionName != null) {
-                    window.unityInstance.SendMessage(gameObjectName, callbackFunctionName, "true");
-                }
+            });
+        })
+        .catch(() => {
+            // 网络不可用，立即返回 false
+            console.error("No internet connection detected (via fetch).");
+            if (gameObjectName != null && callbackFunctionName != null) {
+                window.unityInstance.SendMessage(gameObjectName, callbackFunctionName, "No network");
             }
         });
-    },
+},
 
     // 讀取資料
     // refPathPtr = 資料路徑
