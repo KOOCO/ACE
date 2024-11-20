@@ -7,7 +7,7 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
 {
     [Header("資料路徑名稱")]
     public const string USER_DATA_PATH = "users/";                                           //Database用戶資料路徑
-    public const string ROOM_DATA_PATH = "room/";                                           //房間資料路徑
+    public const string ROOM_DATA_PATH = "room";                                           //房間資料路徑
     public const string ROUND_DATA_PATH = "gameRoundsData";                                           //房間資料路徑
     public const string HEARTBEAT_DATA_PATH = "heartbeatsData";                                           //心跳資料路徑
 
