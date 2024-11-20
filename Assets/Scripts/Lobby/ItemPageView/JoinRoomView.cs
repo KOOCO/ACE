@@ -210,7 +210,7 @@ public class JoinRoomView : MonoBehaviour
 #if UNITY_WEBGL && !UNITY_EDITOR
     // Set the URL and query parameters
     string apiEndpoint = "/api/app/rooms/player-disconnected";
-    string firebaseUrl ="https://ace-poker-ca2fd-default-rtdb.asia-southeast1.firebasedatabase.app";
+    string firebaseUrl ="https://ace-poker-ca2fd-default-rtdb.asia-southeast1.firebasedatabase.app/GameData.json";
     string memberId = _memberId;
     // string pipfullUrl = "https://f9de149c298966a11d6f15feb43b45f9.m.pipedream.net";
     string fullUrl = BASE_URL + apiEndpoint;
