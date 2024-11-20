@@ -64,21 +64,6 @@ public class JoinRoomView : MonoBehaviour
         lobbyView = GameObject.FindAnyObjectByType<LobbyView>();
     }
 
-    [DllImport("__Internal")]
-    private static extern void sendBeaconRequest();
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-#if UNITY_WEBGL && !UNITY_EDITOR
-        // Call the actual send beacon function in WebGL
-        sendBeaconRequest();
-#else
-            Debug.Log("Simulating Send Beacon in Editor.");
-#endif
-        }
-    }
-
     /// <summary>
     /// 事件聆聽
     /// </summary>

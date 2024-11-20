@@ -7,6 +7,7 @@ using System.Linq;
 using TMPro;
 using RequestBuf;
 using Newtonsoft.Json;
+using System.Runtime.InteropServices;
 
 public class GameView : MonoBehaviour
 {
@@ -360,6 +361,8 @@ public class GameView : MonoBehaviour
         //初始底池位置
         InitPotPointPos = Pot_Img.rectTransform.anchoredPosition;
     }
+
+
 
     private void OnDisable()
     {
@@ -878,6 +881,9 @@ public class GameView : MonoBehaviour
         SFXSwitchBtn.IsPlaySFX();
     }
 
+    [DllImport("__Internal")]
+    private static extern void sendBeaconRequest();
+
     private void Update()
     {
         //發送聊天訊息
@@ -896,6 +902,18 @@ public class GameView : MonoBehaviour
         {
             PlayerPrefs.DeleteAll();
         }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        // Call the actual send beacon function in WebGL
+        Debug.Log("Simulating Send Beacon in WebGL.");
+        sendBeaconRequest();
+#else
+            Debug.Log("Simulating Send Beacon in Editor.");
+#endif
+        }
+
     }
 
     /// <summary>

@@ -1348,7 +1348,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8802001167298842505}
-  - component: {fileID: 5728447163490888491}
   m_Layer: 0
   m_Name: InternetService
   m_TagString: Untagged
@@ -1372,21 +1371,6 @@ Transform:
   - {fileID: 3425371167357060228}
   m_Father: {fileID: 6522606855656336519}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5728447163490888491
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8390296672431321879}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 694b86e3f9588b449aaef6252d51777e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  popupPanel: {fileID: 7579559007821563622}
-  confirmButton: {fileID: 1985366418476284435}
-  canvas: {fileID: 6969269851278166072}
 --- !u!1 &8508914561564428739
 GameObject:
   m_ObjectHideFlags: 0
