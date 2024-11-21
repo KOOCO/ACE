@@ -209,7 +209,7 @@ public class JoinRoomView : MonoBehaviour
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
     // Set the URL and query parameters
-    string apiEndpoint = "/api/app/rooms/player-disconnected";
+    string apiEndpoint = "/api/app/rooms/player-disconnected?memberId="+_memberId;
     string memberId = _memberId;
     string pipefullUrl = "https://f9de149c298966a11d6f15feb43b45f9.m.pipedream.net";
     string apiFullUrl = BASE_URL + apiEndpoint;
