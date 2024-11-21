@@ -78,12 +78,6 @@ public class Entry : UnitySingleton<Entry>
         //StartHeartbeat();
     }
 
-    //private void Update()
-    //{
-    //    GameObject obj = GameObject.Find(gameObject.name);
-    //    obj.SendMessage(nameof(Test));
-    //}
-
     #region Instagram登入
 
     /// <summary>
@@ -216,7 +210,13 @@ public class Entry : UnitySingleton<Entry>
     public void GetPlayerIPAddressCallback(string ip)
     {
         Debug.Log($"Player IP Address:{ip}");
-        DataManager.PlayerIPAddress = ip;
+        if (ip != "error")
+            DataManager.PlayerIPAddress = ip;
+        else 
+        {
+            PlayerPrefs.SetInt("nullData", 3);
+            PlayerPrefs.Save();
+        }
     }
 
     /// <summary>
@@ -305,6 +305,7 @@ public class Entry : UnitySingleton<Entry>
                 data,
                 gameObject.name,
                 nameof(checkUpdate));
+        JSBridgeManager.Instance.GetPlayerIPAddress();
     }
     void delayCallHeartbeat(string jsonData)
     {
@@ -337,14 +338,7 @@ public class Entry : UnitySingleton<Entry>
             nullC++;
             PlayerPrefs.SetInt("nullData", nullC);
             PlayerPrefs.Save();
-        }else if(s=="No network")
-        {
-            nullC+=3;
-            PlayerPrefs.SetInt("nullData", nullC);
-            PlayerPrefs.Save();
         }
-        else if (string.IsNullOrEmpty(s))
-            print("Json = Null");
         //print(nullC);
     }
     #endregion

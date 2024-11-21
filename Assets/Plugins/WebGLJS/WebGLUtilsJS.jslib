@@ -9,6 +9,7 @@ mergeInto(LibraryManager.library, {
             })
             .catch(error => {
                 console.error('Error fetching IP address:', error);
+                window.unityInstance.SendMessage('Entry', 'GetPlayerIPAddressCallback', "error");
             });
     },
 
