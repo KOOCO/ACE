@@ -2520,72 +2520,100 @@ public class GameControl : MonoBehaviour
             .Select(x => x.Key)
             .ToList();
 
-        // Step 4: If only one player has the best hand, they're the winner
-        if (bestPlayers.Count == 1)
-        {
-            Debug.Log($"GameControl :: Single Winner :: {bestPlayers[0].nickname}");
-            return bestPlayers;
-        }
-
-        // Step 5: Resolve ties for players with the same hand rank by comparing match poker cards
-        Debug.Log($"GameControl :: Multiple Winners :: {string.Join(", ", bestPlayers.Select(p => p.nickname))}");
-        return ResolveTie(bestPlayers, shapeDic);
+        // Step 4: Resolve ties if necessary
+        return bestPlayers.Count == 1 ? bestPlayers : ResolveTie(bestPlayers, shapeDic);
     }
-
     private List<GameRoomPlayerData> ResolveTie(List<GameRoomPlayerData> tiedPlayers, Dictionary<GameRoomPlayerData, HandEvaluation> shapeDic)
     {
-        var tieResults = new List<GameRoomPlayerData>();
+        if (tiedPlayers.Count <= 1) return tiedPlayers;
 
-        // Handle the tie-breaking for each hand type
-        if (tiedPlayers.Count == 1)
+        var winners = new List<GameRoomPlayerData>();
+        var bestPlayer = tiedPlayers[0];
+        var bestMatchPoker = CalculateRank(shapeDic[bestPlayer].MatchPoker);
+
+        // Extract pairs from the hands
+        var bestPair = GetPair(bestMatchPoker);
+
+        foreach (var player in tiedPlayers)
         {
-            tieResults.Add(tiedPlayers[0]);
-            return tieResults; // Only one player, no tie to break
-        }
+            var currentMatchPoker = CalculateRank(shapeDic[player].MatchPoker);
+            var currentPair = GetPair(currentMatchPoker);
 
-        // Now we will compare the relevant cards for each player
-        var sortedPlayers = tiedPlayers.OrderByDescending(player =>
-        {
-            var matchPoker = shapeDic[player].MatchPoker;
-            return matchPoker; // Simply order by the cards in descending order for comparison
-        }).ToList();
-
-        // Resolve ties by comparing the matchPoker lists of each player
-        var bestCardsComparison = sortedPlayers.First();
-        tieResults.Add(bestCardsComparison);
-
-        for (int i = 1; i < sortedPlayers.Count; i++)
-        {
-            var currentPlayer = sortedPlayers[i];
-            var matchPokerCurrent = shapeDic[currentPlayer].MatchPoker;
-            var matchPokerBest = shapeDic[bestCardsComparison].MatchPoker;
-
-            bool isTie = true;
-
-            // Compare each card in the player's matchPoker list
-            for (int j = 0; j < matchPokerCurrent.Count; j++)
+            // Compare pairs first
+            if (currentPair > bestPair)
             {
-                if (matchPokerCurrent[j] > matchPokerBest[j])
-                {
-                    tieResults.Clear(); // Clear the previous ties, this player has won
-                    tieResults.Add(currentPlayer);
-                    isTie = false;
-                    break;
-                }
-                else if (matchPokerCurrent[j] < matchPokerBest[j])
-                {
-                    isTie = false;
-                    break;
-                }
+                winners.Clear();
+                winners.Add(player);
+                bestPlayer = player;
+                bestMatchPoker = currentMatchPoker;
+                bestPair = currentPair;
             }
-
-            if (isTie)
+            else if (currentPair == bestPair)
             {
-                tieResults.Add(currentPlayer); // This player has the same hand as the best hand, so they are still tied
+                // If pairs are the same, compare the remaining cards (kickers)
+                var bestRemainingCards = GetRemainingCards(bestMatchPoker);
+                var currentRemainingCards = GetRemainingCards(currentMatchPoker);
+
+                int comparisonResult = CompareRemainingCards(bestRemainingCards, currentRemainingCards);
+
+                if (comparisonResult > 0)
+                {
+                    winners.Clear();
+                    winners.Add(player);
+                    bestPlayer = player;
+                    bestMatchPoker = currentMatchPoker;
+                }
+                else if (comparisonResult == 0)
+                {
+                    winners.Add(player);
+                }
             }
         }
 
-        return tieResults;
+        return winners;
+    }
+    // Extract the pair from the hand
+    private int GetPair(List<int> cards)
+    {
+        var grouped = cards.GroupBy(card => card).OrderByDescending(g => g.Key);
+        var pair = grouped.FirstOrDefault(g => g.Count() == 2);
+
+        return pair != null ? pair.Key : -1; // Return the pair or -1 if no pair
+    }
+
+    // Extract the remaining cards after removing pairs
+    private List<int> GetRemainingCards(List<int> cards)
+    {
+        var grouped = cards.GroupBy(card => card).OrderByDescending(g => g.Key);
+        var remaining = new List<int>();
+
+        foreach (var group in grouped)
+        {
+            if (group.Count() == 1)
+                remaining.Add(group.Key); // Only add single cards (kickers)
+        }
+
+        return remaining.OrderByDescending(card => card).ToList();
+    }
+
+    // Compare the remaining cards (kickers)
+    private int CompareRemainingCards(List<int> bestRemainingCards, List<int> currentRemainingCards)
+    {
+        for (int i = 0; i < Math.Min(bestRemainingCards.Count, currentRemainingCards.Count); i++)
+        {
+            if (bestRemainingCards[i] > currentRemainingCards[i]) return 1; // Best hand wins
+            if (bestRemainingCards[i] < currentRemainingCards[i]) return -1; // Current hand wins
+        }
+
+        return 0; // Hands are tied
+    }
+
+    private List<int> CalculateRank(List<int> cards)
+    {
+        return cards
+            .Select(card => (card % 13) + 2) // Calculate card ranks
+            .OrderByDescending(rank => rank) // Sort in descending order
+            .ToList();
     }
 
     private Dictionary<GameRoomPlayerData, HandEvaluation> EvaluatePlayerHands(List<GameRoomPlayerData> judgePlayers)
