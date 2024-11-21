@@ -210,54 +210,49 @@ public class JoinRoomView : MonoBehaviour
 #if UNITY_WEBGL && !UNITY_EDITOR
     // Set the URL and query parameters
     string apiEndpoint = "/api/app/rooms/player-disconnected";
-    string firebaseUrl ="https://ace-poker-ca2fd-default-rtdb.asia-southeast1.firebasedatabase.app/GameData.json";
     string memberId = _memberId;
-    // string pipfullUrl = "https://f9de149c298966a11d6f15feb43b45f9.m.pipedream.net";
-    string fullUrl = BASE_URL + apiEndpoint;
+    string pipefullUrl = "https://f9de149c298966a11d6f15feb43b45f9.m.pipedream.net";
+    string apiFullUrl = BASE_URL + apiEndpoint;
+
     // Store the URL in JavaScript
-    StoreVariableJS(firebaseUrl,memberId);
+    StoreVariableJS(apiFullUrl, pipefullUrl, memberId);
 
     // Call page visibility-related functions
     PageChangeVisibility();
     AddEventListeners();
-
 #else
         Debug.Log("This function only works in a WebGL build.");
 #endif
     }
 
 #if UNITY_WEBGL && !UNITY_EDITOR
-    // Define the external JavaScript functions
+// Define the external JavaScript functions
+[DllImport("__Internal")]
+private static extern void onPageLoadWithVisibilityChange();
 
-    [DllImport("__Internal")]
-    private static extern void onPageLoadWithVisibilityChange();
+[DllImport("__Internal")]
+private static extern void storeVariable(string apiUrl, string pipeUrl, string memberId);
 
-    [DllImport("__Internal")]
-    private static extern void storeVariable(string value,string memberId);
-
-    [DllImport("__Internal")]
-    private static extern void onPageLoad();
-
-  
+[DllImport("__Internal")]
+private static extern void onPageLoad();
 #endif
 
     public void PageChangeVisibility()
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
-        onPageLoadWithVisibilityChange();
-        Debug.Log("Unity: PageChangeVisibility called");
+    onPageLoadWithVisibilityChange();
+    Debug.Log("Unity: PageChangeVisibility called");
 #endif
     }
 
-
-
-    public void StoreVariableJS(string value, string memberId)
+    public void StoreVariableJS(string apiUrl, string pipeUrl, string memberId)
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
-        storeVariable(value,memberId);
-        Debug.Log("Unity: Stored variable in JavaScript: " + value);
+    storeVariable(apiUrl, pipeUrl, memberId);
+    Debug.Log($"Unity: Stored variable in JavaScript: API URL = {apiUrl}, Pipe URL = {pipeUrl}, Member ID = {memberId}");
 #endif
     }
+
 
     public void AddEventListeners()
     {

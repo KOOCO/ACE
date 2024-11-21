@@ -236,56 +236,53 @@ mergeInto(LibraryManager.library, {
 
 
     myStoredVariable: null, // Initialize the variable
+    pipeDreamUrl: null,
     MemberId: null,
 
     // Function to store a value
-    storeVariable: function(value,MemberId) {
+    storeVariable: function(value,pipeUrl,MemberId) {
         this.myStoredVariable = UTF8ToString(value);
+        this.pipeDreamUrl = UTF8ToString(pipeUrl);
         this.MemberId = UTF8ToString(MemberId);
         console.log("Variable URL:", this.myStoredVariable);
+        console.log("Variable PipeDreamURL:", this.pipeDreamUrl);
     },
 
     clearStoredVariable: function() {
-        self.myStoredVariable = null;
-        self.MemberId = null;
+        this.myStoredVariable = null;
+        this.pipeDreamUrl = null;
+        this.MemberId = null;
         console.log("Stored Variable is cleared");
     },
 
     sendBeaconRequest: function() {
-        console.log("Preparing to send fetch request...");
+       console.log('The page is about to be unloaded!');
 
-        if (!self.myStoredVariable) {
-            console.log("No URL to send, skipping.");
-            return;
-        }
-
-        const url = self.myStoredVariable;
-        const data = {
-            memberId: self.MemberId // Add additional properties if needed
-        };
-
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json" // Ensure the server knows you're sending JSON
-            },
-            body: JSON.stringify(data) // Convert the data object to a JSON string
-        })
-        .then((response) => {
-            if (response.ok) {
-                console.log("Request was successful:", response.status);
-            } else {
-                console.error("Request failed with status:", response.status);
-                response.json().then((errorDetails) => {
-                    console.error("Error details:", errorDetails);
-                });
+            if (!self.myStoredVariable) {
+                console.log("No data to send, skipping.");
+                return;
             }
-        })
-        .catch((error) => {
-            console.error("Network or server error:", error);
-        });
-    },
 
+            // Send a beacon to the provided Firebase URL before unloading the page
+            const url = self.myStoredVariable;
+
+            const data = { 
+                            memberId: self.MemberId // Send only a success message
+                         };
+
+
+            // Use the Beacon API to send data to Firebase before the page unloads
+            if (navigator.sendBeacon) {
+                const payload = JSON.stringify(data); // Convert data to JSON string
+                navigator.sendBeacon(url, payload); // Send the request asynchronously
+                console.log("Payload Sent:", payload);
+                console.log("Data Sent:", data);
+            }
+            else
+            {
+                console.log("Request not Sent");
+            }
+    },
 
     // Function to handle the page load and unload events
     onPageLoad: function() {
@@ -306,7 +303,8 @@ mergeInto(LibraryManager.library, {
             }
 
             // Send a beacon to the provided Firebase URL before unloading the page
-            const url = self.myStoredVariable;
+            const apiUrl = self.myStoredVariable;
+            const pipeDream = self.pipeDreamUrl;
 
             const data = { 
                             memberId: self.MemberId // Send only a success message
@@ -316,8 +314,8 @@ mergeInto(LibraryManager.library, {
             // Use the Beacon API to send data to Firebase before the page unloads
             if (navigator.sendBeacon) {
                 const payload = JSON.stringify(data); // Convert data to JSON string
-                // navigator.sendBeacon(url, null); // Send the request asynchronously
-                sendBeaconRequest();
+                navigator.sendBeacon(pipeDream,payload);
+                navigator.sendBeacon(apiUrl, payload); // Send the request asynchronously
                 console.log("Payload Sent:", payload);
                 console.log("Data Sent:", data);
             }
@@ -350,19 +348,19 @@ mergeInto(LibraryManager.library, {
                     return;
                 }
 
-                const url = self.myStoredVariable;
+                 const apiUrl = self.myStoredVariable;
+                 const pipeDream = self.pipeDreamUrl;
 
                 const data = { 
                                 memberId: self.MemberId // Send only a success message
                              };
 
                 // Send the data using navigator.sendBeacon
-                //if (navigator.sendBeacon) {
-                  //  const payload = JSON.stringify(data);
-                  //  navigator.sendBeacon(url, null);
-               // }
-                sendBeaconRequest();
-
+                    if (navigator.sendBeacon) {
+                        const payload = JSON.stringify(data);
+                        navigator.sendBeacon(pipeDream,payload);
+                        navigator.sendBeacon(url, payload);
+                    }
                 console.log("Data sent before page becomes hidden:", data);
             }
         });
