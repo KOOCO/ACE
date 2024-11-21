@@ -2543,33 +2543,50 @@ public class GameControl : MonoBehaviour
             return tieResults; // Only one player, no tie to break
         }
 
+        // Now we will compare the relevant cards for each player
         var sortedPlayers = tiedPlayers.OrderByDescending(player =>
         {
             var matchPoker = shapeDic[player].MatchPoker;
-            return string.Join(",", matchPoker.Select(card => card.ToString("D2"))); // Sorting by card ranks as strings for comparison
+            return matchPoker; // Simply order by the cards in descending order for comparison
         }).ToList();
 
-        // Compare players' matchPoker lists to resolve ties
-        int highestCardComparison = -1;
-        foreach (var player in sortedPlayers)
+        // Resolve ties by comparing the matchPoker lists of each player
+        var bestCardsComparison = sortedPlayers.First();
+        tieResults.Add(bestCardsComparison);
+
+        for (int i = 1; i < sortedPlayers.Count; i++)
         {
-            var matchPoker = shapeDic[player].MatchPoker;
-            int comparisonValue = int.Parse(string.Join(",", matchPoker.Select(card => card.ToString("D2")))); // Convert to a comparable value
-            if (comparisonValue > highestCardComparison)
+            var currentPlayer = sortedPlayers[i];
+            var matchPokerCurrent = shapeDic[currentPlayer].MatchPoker;
+            var matchPokerBest = shapeDic[bestCardsComparison].MatchPoker;
+
+            bool isTie = true;
+
+            // Compare each card in the player's matchPoker list
+            for (int j = 0; j < matchPokerCurrent.Count; j++)
             {
-                highestCardComparison = comparisonValue;
-                tieResults.Clear(); // Clear previous ties
-                tieResults.Add(player);
+                if (matchPokerCurrent[j] > matchPokerBest[j])
+                {
+                    tieResults.Clear(); // Clear the previous ties, this player has won
+                    tieResults.Add(currentPlayer);
+                    isTie = false;
+                    break;
+                }
+                else if (matchPokerCurrent[j] < matchPokerBest[j])
+                {
+                    isTie = false;
+                    break;
+                }
             }
-            else if (comparisonValue == highestCardComparison)
+
+            if (isTie)
             {
-                tieResults.Add(player); // Add this player if they have the same top card value
+                tieResults.Add(currentPlayer); // This player has the same hand as the best hand, so they are still tied
             }
         }
 
         return tieResults;
     }
-
 
     private Dictionary<GameRoomPlayerData, HandEvaluation> EvaluatePlayerHands(List<GameRoomPlayerData> judgePlayers)
     {
