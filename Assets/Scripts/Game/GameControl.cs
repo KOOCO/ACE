@@ -2531,6 +2531,7 @@ public class GameControl : MonoBehaviour
         Debug.Log($"GameControl :: Multiple Winners :: {string.Join(", ", bestPlayers.Select(p => p.nickname))}");
         return ResolveTies(shapeDic, bestPlayers);
     }
+
     private Dictionary<GameRoomPlayerData, HandEvaluation> EvaluatePlayerHands(List<GameRoomPlayerData> judgePlayers)
     {
         var shapeDic = new Dictionary<GameRoomPlayerData, HandEvaluation>();
@@ -2552,6 +2553,7 @@ public class GameControl : MonoBehaviour
 
         return shapeDic;
     }
+
     private List<GameRoomPlayerData> ResolveTies(
         Dictionary<GameRoomPlayerData, HandEvaluation> shapeDic,
         List<GameRoomPlayerData> tiedPlayers)
@@ -2576,7 +2578,11 @@ public class GameControl : MonoBehaviour
 
     private List<int> GetRelevantCards(List<int> matchPoker, int handRank)
     {
+        // Sort cards in descending order based on rank
         matchPoker = matchPoker.OrderByDescending(card => card % 13 == 0 ? 13 : card % 13).ToList();
+
+        // Extract rank values (Ace = 13, King = 12, ..., 2 = 2)
+        var cardRanks = matchPoker.Select(card => card % 13 == 0 ? 13 : card % 13).ToList();
 
         return handRank switch
         {
@@ -2585,11 +2591,46 @@ public class GameControl : MonoBehaviour
             4 => matchPoker.Take(5).ToList(), // Full House: Triplet + Pair
             6 => matchPoker.Take(5).ToList(), // Flush: Top 5 cards
             7 => matchPoker.Take(5).ToList(), // Three of a Kind: Triplet + Top 2 kickers
-            8 => matchPoker.Take(5).ToList(), // Two Pair: Two pairs + Top kicker
-            9 => matchPoker.Take(5).ToList(), // One Pair: Pair + Top 3 kickers
+            8 => GetTwoPairRelevantCards(cardRanks), // Two Pair: Two pairs + Top kicker
+            9 => GetOnePairRelevantCards(cardRanks), // One Pair: Pair + Top 3 kickers
             10 => matchPoker.Take(5).ToList(), // High Card: Top 5 cards
             _ => matchPoker.Take(5).ToList() // Default to top 5 cards
         };
+    }
+
+    private List<int> GetOnePairRelevantCards(List<int> cardRanks)
+    {
+        // Find the pair's rank
+        var pairRank = cardRanks.GroupBy(rank => rank)
+                                .Where(g => g.Count() == 2)
+                                .Select(g => g.Key)
+                                .FirstOrDefault();
+
+        // Separate the pair and the remaining kickers
+        var pair = cardRanks.Where(rank => rank == pairRank).ToList();
+        var kickers = cardRanks.Where(rank => rank != pairRank).OrderByDescending(rank => rank).Take(3).ToList();
+
+        // Return the pair followed by the kickers
+        return pair.Concat(kickers).ToList();
+    }
+
+    private List<int> GetTwoPairRelevantCards(List<int> cardRanks)
+    {
+        // Find the ranks of the two pairs
+        var pairRanks = cardRanks.GroupBy(rank => rank)
+                                 .Where(g => g.Count() == 2)
+                                 .Select(g => g.Key)
+                                 .OrderByDescending(rank => rank)
+                                 .Take(2)
+                                 .ToList();
+
+        // Find the kickers
+        var kickers = cardRanks.Where(rank => !pairRanks.Contains(rank)).OrderByDescending(rank => rank).Take(1).ToList();
+
+        // Return the pairs followed by the kicker
+        return pairRanks.SelectMany(pairRank => Enumerable.Repeat(pairRank, 2))
+                        .Concat(kickers)
+                        .ToList();
     }
 
     private class PokerCardComparer : IComparer<List<int>>
@@ -2619,7 +2660,6 @@ public class GameControl : MonoBehaviour
         public int HandRank { get; set; } // Lower is better (e.g., 1 for Royal Flush)
         public List<int> MatchPoker { get; set; } // Relevant card ranks for comparison
     }
-
 
     #endregion
 
