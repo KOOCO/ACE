@@ -2445,15 +2445,11 @@ public class GameView : MonoBehaviour
         if (judgePoker != null && thisData.CurrCommunityPoker != null)
         {
             // Combine player's hand cards with community cards
-            // Combine player's hand cards with community cards
             judgePoker = judgePoker.Concat(thisData.CurrCommunityPoker).ToList();
-            Debug.Log($"[JudgePokerShapeUI] Combined Cards Count: {judgePoker.Count} | Community Cards Count: {thisData.CurrCommunityPoker.Count}");
             Debug.Log($"[JudgePokerShapeUI] Combined Cards: {string.Join(", ", judgePoker)}");
 
             // Combine hand cards and community cards as Poker objects
             List<Poker> allPokers = handPoker.Concat(CommunityPokerList).ToList();
-            Debug.Log($"[JudgePokerShapeUI] Total Pokers (Community + Hand): {allPokers.Count}");
-            Debug.Log($"[JudgePokerShapeUI] Total Poker Values: {string.Join(", ", allPokers.Select(p => p.PokerNum))}");
 
             // Disable visual effects for all cards
             foreach (var poker in allPokers)
@@ -2464,16 +2460,7 @@ public class GameView : MonoBehaviour
             // Call JudgePokerShape to determine the hand shape
             PokerShape.JudgePokerShape(judgePoker, (resultIndex, matchPokerList) =>
             {
-                Debug.Log($"[JudgePokerShapeUI] Player: {player.name} | Result Index: {resultIndex} | Matched Cards Count: {matchPokerList.Count}");
-                if (matchPokerList != null && matchPokerList.Count > 0)
-                {
-                    string matchedCardsInfo = string.Join(", ", matchPokerList.Select(p => p));
-                    Debug.Log($"[JudgePokerShapeUI] Matched Cards: {matchedCardsInfo}");
-                }
-                else
-                {
-                    Debug.LogWarning($"[JudgePokerShapeUI] Matched Cards List is empty or null for Player: {player.name}.");
-                }
+                Debug.Log($"[JudgePokerShapeUI] Player: {player.Nickname} | Result Index: {resultIndex} | Matched Cards Count: {matchPokerList.Count}");
                 // Verify if the player's cards are active
                 if (player.GetHandPoker[0].gameObject.activeSelf)
                 {
@@ -2482,13 +2469,13 @@ public class GameView : MonoBehaviour
 
                     if (resultIndex < PokerShape.HandRanks.Count)
                     {
-                        Debug.Log($"[JudgePokerShapeUI] Valid Result Index: {resultIndex}");
+                        Debug.Log($"[JudgePokerShapeUI] Valid Result Index: {resultIndex} : ");
 
                         // Open Match Poker Frame if enabled
                         if (isOpenMatchPokerFrame)
                         {
                             PokerShape.OpenMatchPokerFrame(allPokers, matchPokerList, isWinEffect);
-                            Debug.Log($"[JudgePokerShapeUI] Match Poker Frame Opened | isWinEffect: {isWinEffect}");
+                            Debug.Log($"[JudgePokerShapeUI] Match Poker Frame Opened | isWinEffect: {isWinEffect} | {string.Join(", ", matchPokerList.Select(p => p))}");
 
                             // Set winner details if win effects are enabled
                             if (isWinEffect)
@@ -2496,7 +2483,6 @@ public class GameView : MonoBehaviour
                                 player.PokerShapeIndex = resultIndex;
                                 SetWinnerStringTxt = LanguageManager.Instance.GetText(
                                     AssetsManager.Instance.GetStringAlbumAsset(StringAlbumEnum.HandRanksStringAlbum).strAlbum[resultIndex]);
-                                Debug.Log($"[JudgePokerShapeUI] Winner String Set to:");
                             }
                         }
                     }
@@ -2513,7 +2499,7 @@ public class GameView : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"[JudgePokerShapeUI] Invalid data: judgePoker or CurrCommunityPoker is null for player {player.name}.");
+            Debug.LogError($"[JudgePokerShapeUI] Invalid data: judgePoker or CurrCommunityPoker is null for player {player.Nickname}.");
         }
     }
 
