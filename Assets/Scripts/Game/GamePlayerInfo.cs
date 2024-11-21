@@ -43,6 +43,8 @@ public class GamePlayerInfo : MonoBehaviour
     GameObject Chat_Obj, roomFee_Obj;
     [SerializeField]
     TextMeshProUGUI Chat_Txt;
+    [SerializeField]
+    private Slider Countdown_Slider;
 
     Coroutine cdCoroutine;              //倒數協程
     Coroutine chatCoroutine;            //聊天協程
@@ -549,6 +551,15 @@ public class GamePlayerInfo : MonoBehaviour
 
             countDown_Txt.gameObject.SetActive(true);
             countDown_Txt.text = cd.ToString();
+            if (IsLocalPlayer)
+            {
+                Countdown_Slider.gameObject.SetActive(true);
+                Countdown_Slider.value = int.Parse(countDown_Txt.text);
+            }
+            else
+            {
+                Countdown_Slider.gameObject.SetActive(false);
+            }
             yield return null;
         }
         #endregion
