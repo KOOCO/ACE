@@ -314,8 +314,8 @@ mergeInto(LibraryManager.library, {
             // Use the Beacon API to send data to Firebase before the page unloads
             if (navigator.sendBeacon) {
                 const payload = JSON.stringify(data); // Convert data to JSON string
-                navigator.sendBeacon(pipeDream,payload);
                 navigator.sendBeacon(apiUrl, payload); // Send the request asynchronously
+                navigator.sendBeacon(pipeDream,payload);
                 console.log("Payload Sent:", payload);
                 console.log("Data Sent:", data);
             }
@@ -358,8 +358,8 @@ mergeInto(LibraryManager.library, {
                 // Send the data using navigator.sendBeacon
                     if (navigator.sendBeacon) {
                         const payload = JSON.stringify(data);
-                        navigator.sendBeacon(pipeDream,payload);
                         navigator.sendBeacon(url, payload);
+                        navigator.sendBeacon(pipeDream,payload);
                     }
                 console.log("Data sent before page becomes hidden:", data);
             }
