@@ -2523,7 +2523,6 @@ public class GameControl : MonoBehaviour
         // Step 4: Resolve ties if necessary
         return bestPlayers.Count == 1 ? bestPlayers : ResolveTie(bestPlayers, shapeDic);
     }
-
     private List<GameRoomPlayerData> ResolveTie(List<GameRoomPlayerData> tiedPlayers, Dictionary<GameRoomPlayerData, HandEvaluation> shapeDic)
     {
         if (tiedPlayers.Count <= 1) return tiedPlayers;
@@ -2532,29 +2531,40 @@ public class GameControl : MonoBehaviour
         var bestPlayer = tiedPlayers[0];
         var bestMatchPoker = CalculateRank(shapeDic[bestPlayer].MatchPoker);
 
+        // Extract pairs from the hands
+        var bestPair = GetPair(bestMatchPoker);
+
         foreach (var player in tiedPlayers)
         {
             var currentMatchPoker = CalculateRank(shapeDic[player].MatchPoker);
+            var currentPair = GetPair(currentMatchPoker);
 
-            for (int i = 0; i < bestMatchPoker.Count; i++)
+            // Compare pairs first
+            if (currentPair > bestPair)
             {
-                if (currentMatchPoker[i] > bestMatchPoker[i])
+                winners.Clear();
+                winners.Add(player);
+                bestPlayer = player;
+                bestMatchPoker = currentMatchPoker;
+                bestPair = currentPair;
+            }
+            else if (currentPair == bestPair)
+            {
+                // If pairs are the same, compare the remaining cards (kickers)
+                var bestRemainingCards = GetRemainingCards(bestMatchPoker);
+                var currentRemainingCards = GetRemainingCards(currentMatchPoker);
+
+                int comparisonResult = CompareRemainingCards(bestRemainingCards, currentRemainingCards);
+
+                if (comparisonResult > 0)
                 {
-                    // New best player
                     winners.Clear();
                     winners.Add(player);
                     bestPlayer = player;
                     bestMatchPoker = currentMatchPoker;
-                    break;
                 }
-                else if (currentMatchPoker[i] < bestMatchPoker[i])
+                else if (comparisonResult == 0)
                 {
-                    // Current player loses
-                    break;
-                }
-                else if (i == bestMatchPoker.Count - 1)
-                {
-                    // All cards match, still tied
                     winners.Add(player);
                 }
             }
@@ -2562,7 +2572,41 @@ public class GameControl : MonoBehaviour
 
         return winners;
     }
+    // Extract the pair from the hand
+    private int GetPair(List<int> cards)
+    {
+        var grouped = cards.GroupBy(card => card).OrderByDescending(g => g.Key);
+        var pair = grouped.FirstOrDefault(g => g.Count() == 2);
 
+        return pair != null ? pair.Key : -1; // Return the pair or -1 if no pair
+    }
+
+    // Extract the remaining cards after removing pairs
+    private List<int> GetRemainingCards(List<int> cards)
+    {
+        var grouped = cards.GroupBy(card => card).OrderByDescending(g => g.Key);
+        var remaining = new List<int>();
+
+        foreach (var group in grouped)
+        {
+            if (group.Count() == 1)
+                remaining.Add(group.Key); // Only add single cards (kickers)
+        }
+
+        return remaining.OrderByDescending(card => card).ToList();
+    }
+
+    // Compare the remaining cards (kickers)
+    private int CompareRemainingCards(List<int> bestRemainingCards, List<int> currentRemainingCards)
+    {
+        for (int i = 0; i < Math.Min(bestRemainingCards.Count, currentRemainingCards.Count); i++)
+        {
+            if (bestRemainingCards[i] > currentRemainingCards[i]) return 1; // Best hand wins
+            if (bestRemainingCards[i] < currentRemainingCards[i]) return -1; // Current hand wins
+        }
+
+        return 0; // Hands are tied
+    }
 
     private List<int> CalculateRank(List<int> cards)
     {
