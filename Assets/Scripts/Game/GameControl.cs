@@ -2527,10 +2527,49 @@ public class GameControl : MonoBehaviour
             return bestPlayers;
         }
 
-        // Step 5: Resolve ties for players with the same hand rank
+        // Step 5: Resolve ties for players with the same hand rank by comparing match poker cards
         Debug.Log($"GameControl :: Multiple Winners :: {string.Join(", ", bestPlayers.Select(p => p.nickname))}");
-        return ResolveTies(shapeDic, bestPlayers);
+        return ResolveTie(bestPlayers, shapeDic);
     }
+
+    private List<GameRoomPlayerData> ResolveTie(List<GameRoomPlayerData> tiedPlayers, Dictionary<GameRoomPlayerData, HandEvaluation> shapeDic)
+    {
+        var tieResults = new List<GameRoomPlayerData>();
+
+        // Handle the tie-breaking for each hand type
+        if (tiedPlayers.Count == 1)
+        {
+            tieResults.Add(tiedPlayers[0]);
+            return tieResults; // Only one player, no tie to break
+        }
+
+        var sortedPlayers = tiedPlayers.OrderByDescending(player =>
+        {
+            var matchPoker = shapeDic[player].MatchPoker;
+            return string.Join(",", matchPoker.Select(card => card.ToString("D2"))); // Sorting by card ranks as strings for comparison
+        }).ToList();
+
+        // Compare players' matchPoker lists to resolve ties
+        int highestCardComparison = -1;
+        foreach (var player in sortedPlayers)
+        {
+            var matchPoker = shapeDic[player].MatchPoker;
+            int comparisonValue = int.Parse(string.Join(",", matchPoker.Select(card => card.ToString("D2")))); // Convert to a comparable value
+            if (comparisonValue > highestCardComparison)
+            {
+                highestCardComparison = comparisonValue;
+                tieResults.Clear(); // Clear previous ties
+                tieResults.Add(player);
+            }
+            else if (comparisonValue == highestCardComparison)
+            {
+                tieResults.Add(player); // Add this player if they have the same top card value
+            }
+        }
+
+        return tieResults;
+    }
+
 
     private Dictionary<GameRoomPlayerData, HandEvaluation> EvaluatePlayerHands(List<GameRoomPlayerData> judgePlayers)
     {
@@ -2552,107 +2591,6 @@ public class GameControl : MonoBehaviour
         }
 
         return shapeDic;
-    }
-
-    private List<GameRoomPlayerData> ResolveTies(
-        Dictionary<GameRoomPlayerData, HandEvaluation> shapeDic,
-        List<GameRoomPlayerData> tiedPlayers)
-    {
-        // Step 1: Group tied players by their relevant cards
-        var sortedPlayers = tiedPlayers
-            .OrderByDescending(player => GetRelevantCards(shapeDic[player].MatchPoker, shapeDic[player].HandRank),
-                               new PokerCardComparer())
-            .ToList();
-
-        // Step 2: Determine the highest relevant cards
-        var bestRelevantCards = GetRelevantCards(shapeDic[sortedPlayers.First()].MatchPoker,
-                                                 shapeDic[sortedPlayers.First()].HandRank);
-
-        // Step 3: Find players with the best relevant cards
-        return sortedPlayers
-            .Where(player => new PokerCardComparer().Compare(
-                                 GetRelevantCards(shapeDic[player].MatchPoker, shapeDic[player].HandRank),
-                                 bestRelevantCards) == 0)
-            .ToList();
-    }
-
-    private List<int> GetRelevantCards(List<int> matchPoker, int handRank)
-    {
-        // Sort cards in descending order based on rank
-        matchPoker = matchPoker.OrderByDescending(card => card % 13 == 0 ? 13 : card % 13).ToList();
-
-        // Extract rank values (Ace = 13, King = 12, ..., 2 = 2)
-        var cardRanks = matchPoker.Select(card => card % 13 == 0 ? 13 : card % 13).ToList();
-
-        return handRank switch
-        {
-            1 or 2 or 5 => matchPoker.Take(1).ToList(), // Royal/Straight Flush or Straight: Only highest card matters
-            3 => matchPoker.Take(5).ToList(), // Four of a Kind: Four + Kicker
-            4 => matchPoker.Take(5).ToList(), // Full House: Triplet + Pair
-            6 => matchPoker.Take(5).ToList(), // Flush: Top 5 cards
-            7 => matchPoker.Take(5).ToList(), // Three of a Kind: Triplet + Top 2 kickers
-            8 => GetTwoPairRelevantCards(cardRanks), // Two Pair: Two pairs + Top kicker
-            9 => GetOnePairRelevantCards(cardRanks), // One Pair: Pair + Top 3 kickers
-            10 => matchPoker.Take(5).ToList(), // High Card: Top 5 cards
-            _ => matchPoker.Take(5).ToList() // Default to top 5 cards
-        };
-    }
-
-    private List<int> GetOnePairRelevantCards(List<int> cardRanks)
-    {
-        // Find the pair's rank
-        var pairRank = cardRanks.GroupBy(rank => rank)
-                                .Where(g => g.Count() == 2)
-                                .Select(g => g.Key)
-                                .FirstOrDefault();
-
-        // Separate the pair and the remaining kickers
-        var pair = cardRanks.Where(rank => rank == pairRank).ToList();
-        var kickers = cardRanks.Where(rank => rank != pairRank).OrderByDescending(rank => rank).Take(3).ToList();
-
-        // Return the pair followed by the kickers
-        return pair.Concat(kickers).ToList();
-    }
-
-    private List<int> GetTwoPairRelevantCards(List<int> cardRanks)
-    {
-        // Find the ranks of the two pairs
-        var pairRanks = cardRanks.GroupBy(rank => rank)
-                                 .Where(g => g.Count() == 2)
-                                 .Select(g => g.Key)
-                                 .OrderByDescending(rank => rank)
-                                 .Take(2)
-                                 .ToList();
-
-        // Find the kickers
-        var kickers = cardRanks.Where(rank => !pairRanks.Contains(rank)).OrderByDescending(rank => rank).Take(1).ToList();
-
-        // Return the pairs followed by the kicker
-        return pairRanks.SelectMany(pairRank => Enumerable.Repeat(pairRank, 2))
-                        .Concat(kickers)
-                        .ToList();
-    }
-
-    private class PokerCardComparer : IComparer<List<int>>
-    {
-        public int Compare(List<int> hand1, List<int> hand2)
-        {
-            // Sort hands in descending order
-            hand1.Sort((a, b) => (b % 13 == 0 ? 13 : b % 13).CompareTo(a % 13 == 0 ? 13 : a % 13));
-            hand2.Sort((a, b) => (b % 13 == 0 ? 13 : b % 13).CompareTo(a % 13 == 0 ? 13 : a % 13));
-
-            // Compare cards one by one
-            for (int i = 0; i < Math.Min(hand1.Count, hand2.Count); i++)
-            {
-                int rank1 = hand1[i] % 13 == 0 ? 13 : hand1[i] % 13;
-                int rank2 = hand2[i] % 13 == 0 ? 13 : hand2[i] % 13;
-
-                if (rank1 > rank2) return 1;
-                if (rank1 < rank2) return -1;
-            }
-
-            return 0; // Hands are equal
-        }
     }
 
     private class HandEvaluation
