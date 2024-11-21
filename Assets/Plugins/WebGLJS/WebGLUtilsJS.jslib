@@ -241,7 +241,7 @@ mergeInto(LibraryManager.library, {
     MemberId: null,
 
     // Function to store a value
-    storeVariable: function(value, pipeUrl, MemberId) {
+    storeVariable: function(value,pipeUrl,MemberId) {
         this.myStoredVariable = UTF8ToString(value);
         this.pipeDreamUrl = UTF8ToString(pipeUrl);
         this.MemberId = UTF8ToString(MemberId);
@@ -257,101 +257,91 @@ mergeInto(LibraryManager.library, {
     },
 
     sendBeaconRequest: function() {
-        console.log('The page is about to be unloaded!');
+       console.log('The page is about to be unloaded!');
 
-        if (!this.myStoredVariable) {
-            console.log("No data to send, skipping.");
-            return;
-        }
-
-        const url = this.myStoredVariable;
-        const data = { memberId: this.MemberId };
-
-        if (navigator.sendBeacon) {
-            const payload = JSON.stringify(data);
-            const success = navigator.sendBeacon(url, payload);
-            console.log(success ? "Payload sent:" : "Request failed:", payload);
-        } else {
-            console.log("Beacon API not supported");
-        }
-    },
-
-    disconnectAPI: async function(url) {
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ memberId: this.MemberId })
-            });
-
-            if (response.ok) {
-                console.log('API disconnect successful');
-                return true;
-            } else {
-                console.log('API call failed');
-                return false;
-            }
-        } catch (error) {
-            console.error('Error during API call:', error);
-            return false;
-        }
-    },
-
-    onPageLoad: function() {
-        const self = this;
-
-        window.addEventListener('load', function() {
-            console.log('The page has fully loaded!');
-        });
-
-        window.addEventListener('beforeunload', function(event) {
             if (!self.myStoredVariable) {
                 console.log("No data to send, skipping.");
                 return;
             }
 
-            const confirmation = confirm('Are you sure you want to close this tab? Your session will be disconnected.');
+            // Send a beacon to the provided Firebase URL before unloading the page
+            const url = self.myStoredVariable;
 
-           if (confirmation) {
-                self.disconnectAPI(self.myStoredVariable)
-                    .then(success => {
-                        if (success) {
-                            console.log("Session disconnected successfully.");
-                            // Proceed with the second API call only if the first one is successful
-                            return self.disconnectAPI(self.pipeDreamUrl);
-                        } else {
-                            console.log("Failed to disconnect session.");
-                            return Promise.reject("First disconnect failed.");
-                        }
-                    })
-                    .then(pipeDreamSuccess => {
-                        if (pipeDreamSuccess) {
-                            console.log("PipeDream session disconnected successfully.");
-                             window.close();
-                        } else {
-                            console.log("Failed to disconnect PipeDream session.");
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error during disconnection process:", error);
-                    });
+            const data = { 
+                            memberId: self.MemberId // Send only a success message
+                         };
+
+
+            // Use the Beacon API to send data to Firebase before the page unloads
+            if (navigator.sendBeacon) {
+                const payload = JSON.stringify(data); // Convert data to JSON string
+                navigator.sendBeacon(url, payload); // Send the request asynchronously
+                console.log("Payload Sent:", payload);
+                console.log("Data Sent:", data);
+            }
+            else
+            {
+                console.log("Request not Sent");
+            }
+    },
+
+    // Function to handle the page load and unload events
+    onPageLoad: function() {
+        const self = this; // Save reference to the current context
+
+        // Register the 'load' event listener on the window object
+        window.addEventListener('load', function() {
+            console.log('The page has fully loaded!');
+        });
+
+        // Register the 'beforeunload' event listener on the window object
+        window.addEventListener('beforeunload', function(event) {
+            console.log('The page is about to be unloaded!');
+
+            if (!self.myStoredVariable) {
+                console.log("No data to send, skipping.");
+                return;
             }
 
-            // Ensure browser's confirmation dialog shows
-            event.preventDefault();
-            event.returnValue = ''; // For most browsers
+            // Send a beacon to the provided Firebase URL before unloading the page
+            const apiUrl = self.myStoredVariable;
+            const pipeDream = self.pipeDreamUrl;
+
+            const data = { 
+                            memberId: self.MemberId // Send only a success message
+                         };
+
+
+            // Use the Beacon API to send data to Firebase before the page unloads
+            if (navigator.sendBeacon) {
+                const payload = JSON.stringify(data); // Convert data to JSON string
+                navigator.sendBeacon(apiUrl, payload); // Send the request asynchronously
+                navigator.sendBeacon(pipeDream,payload);
+                console.log("Payload Sent:", payload);
+                console.log("Data Sent:", data);
+            }
+            else
+            {
+                console.log("Request not Sent");
+            }
+
+            // Optionally, set a confirmation message (browser dependent)
+            event.returnValue = 'Are you sure you want to leave?'; // Some browsers show this message to the user
         });
     },
 
     onPageLoadWithVisibilityChange: function() {
-        const self = this;
+        const self = this; // Save reference to the current context
 
+        // Check if the device is a mobile device
         const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
         if (!isMobile) {
             console.log("Not a mobile device, skipping visibility change listener.");
-            return;
+            return; // Exit if not on mobile
         }
 
+        // Add the visibility change listener only on mobile devices
         document.addEventListener('visibilitychange', function() {
             if (document.visibilityState === 'hidden') {
                 if (!self.myStoredVariable) {
@@ -359,35 +349,24 @@ mergeInto(LibraryManager.library, {
                     return;
                 }
 
-                const confirmation = confirm('Are you sure you want to close this tab? Your session will be disconnected.');
+                 const apiUrl = self.myStoredVariable;
+                 const pipeDream = self.pipeDreamUrl;
 
-                if (confirmation) {
-                    self.disconnectAPI(self.myStoredVariable)
-                        .then(success => {
-                            if (success) {
-                                console.log("Session disconnected successfully.");
-                                // Proceed with the second API call only if the first one is successful
-                                return self.disconnectAPI(self.pipeDreamUrl);
-                            } else {
-                                console.log("Failed to disconnect session.");
-                                return Promise.reject("First disconnect failed.");
-                            }
-                        })
-                        .then(pipeDreamSuccess => {
-                            if (pipeDreamSuccess) {
-                                console.log("PipeDream session disconnected successfully.");
-                                window.close();
-                            } else {
-                                console.log("Failed to disconnect PipeDream session.");
-                            }
-                        })
-                        .catch(error => {
-                            console.error("Error during disconnection process:", error);
-                        });
-                }
+                const data = { 
+                                memberId: self.MemberId // Send only a success message
+                             };
+
+                // Send the data using navigator.sendBeacon
+                    if (navigator.sendBeacon) {
+                        const payload = JSON.stringify(data);
+                        navigator.sendBeacon(url, payload);
+                        navigator.sendBeacon(pipeDream,payload);
+                    }
+                console.log("Data sent before page becomes hidden:", data);
             }
         });
 
         console.log("Visibility change listener added for mobile.");
     }
+    
 });
