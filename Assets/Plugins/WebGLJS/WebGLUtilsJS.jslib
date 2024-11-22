@@ -326,7 +326,7 @@ mergeInto(LibraryManager.library, {
             }
 
             // Optionally, set a confirmation message (browser dependent)
-            event.returnValue = 'Are you sure you want to leave?'; // Some browsers show this message to the user
+           // event.returnValue = 'Are you sure you want to leave?'; // Some browsers show this message to the user
         });
     },
 
