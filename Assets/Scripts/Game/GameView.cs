@@ -362,7 +362,7 @@ public class GameView : MonoBehaviour
 
         //初始底池位置
         InitPotPointPos = Pot_Img.rectTransform.anchoredPosition;
-        testApi_Btn.onClick.AddListener(sendBeaconRequest);
+        // testApi_Btn.onClick.AddListener(sendBeaconRequest);
     }
 
 
@@ -884,8 +884,8 @@ public class GameView : MonoBehaviour
         SFXSwitchBtn.IsPlaySFX();
     }
 
-    [DllImport("__Internal")]
-    private static extern void sendBeaconRequest();
+    // [DllImport("__Internal")]
+    // private static extern void sendBeaconRequest();
 
     private void Update()
     {
