@@ -29453,6 +29453,10 @@ MonoBehaviour:
   - {fileID: 2133441413119653344}
   - {fileID: 730311962259329439}
   - {fileID: 9074611881163530038}
+  ActionBtn_Sprites:
+  - {fileID: 21300000, guid: 607890cd9022b884698e4c42cc56008a, type: 3}
+  - {fileID: 21300000, guid: 50044b20c6a7ede4194bf991ed2dc111, type: 3}
+  - {fileID: 21300000, guid: c90241aeb1c7ce848ad56ce72d5361e3, type: 3}
   IsStartGameTest: 0
   testApi_Btn: {fileID: 5835559540771385357}
 --- !u!114 &6875628500851460784
