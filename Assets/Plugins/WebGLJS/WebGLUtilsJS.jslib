@@ -239,45 +239,7 @@ mergeInto(LibraryManager.library, {
     myStoredVariable: null, // Initialize the variable
     pipeDreamUrl: null,
     MemberId: null,
-    antiForgeryToken: null, // Placeholder for the anti-forgery token
-    accessToken: null,   // AccessToken
-
-    // Function to get the anti-forgery token
-    getAntiForgeryToken: async function (url) {
-        try {
-            // Fetch the token from the server
-            const response = await fetch(url, {
-                method: 'GET',
-                credentials: 'include', // Include cookies for authentication, if required
-            });
-
-            if (response.ok) {
-                // Check if the token is in a header
-                const antiForgeryToken = response.headers.get('RequestVerificationToken');
-
-                if (antiForgeryToken) {
-                    console.log("Anti-forgery token retrieved from headers:", antiForgeryToken);
-                    return antiForgeryToken;
-                }
-
-                // Alternatively, check if the token is in the response body
-                const data = await response.json();
-                if (data && data.token) {
-                    console.log("Anti-forgery token retrieved from body:", data.token);
-                    return data.token;
-                }
-
-                console.log("Anti-forgery token not found in response.");
-                return null;
-            } else {
-                console.log("Failed to fetch anti-forgery token. Status:", response.status);
-                return null;
-            }
-        } catch (error) {
-            console.error("Error fetching anti-forgery token:", error);
-            return null;
-        }
-    },
+    accessToken: null, // AccessToken
 
     // Function to store a value
     storeVariable: function (value, pipeUrl, MemberId, accessToken) {
@@ -298,41 +260,13 @@ mergeInto(LibraryManager.library, {
         console.log("Stored Variable is cleared");
     },
 
-    sendBeaconRequest: function () {
-        console.log('The page is about to be unloaded!');
-
-        if (!this.myStoredVariable) {
-            console.log("No data to send, skipping.");
-            return;
-        }
-
-        // Send a beacon to the provided Firebase URL before unloading the page
-        const url = this.myStoredVariable;
-
-        const data = {
-            memberId: this.MemberId // Send only a success message
-        };
-
-        // Use the Beacon API to send data to Firebase before the page unloads
-        if (navigator.sendBeacon) {
-            const payload = JSON.stringify(data); // Convert data to JSON string
-            navigator.sendBeacon(url, payload); // Send the request asynchronously
-            console.log("Payload Sent:", payload);
-            console.log("Data Sent:", data);
-        }
-        else {
-            console.log("Request not Sent");
-        }
-    },
-
-    disconnectAPI: async function (url, accessToken, antiForgeryToken) {
+    disconnectAPI: async function (url, accessToken) {
         try {
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`, // Access token for authentication
-                    'RequestVerificationToken': antiForgeryToken // Anti-forgery token header
+                    'Authorization': `Bearer ${accessToken}` // Access token for authentication
                 },
                 body: JSON.stringify({ memberId: this.MemberId }) // Payload
             });
@@ -351,18 +285,18 @@ mergeInto(LibraryManager.library, {
     },
 
     // Function to handle the page load and unload events
-    onPageLoad: async function () {
+    onPageLoad: function () {
         const self = this; // Save reference to the current context
 
-        // Get the anti-forgery token before making API calls
-        const antiForgeryToken = await self.getAntiForgeryToken(self.myStoredVariable);
+        if (!self.myStoredVariable) {
+            console.error("Stored variable is null or undefined, skipping onPageLoad.");
+            return;
+        }
 
-        // Register the 'load' event listener on the window object
         window.addEventListener('load', function () {
             console.log('The page has fully loaded!');
         });
 
-        // Register the 'beforeunload' event listener on the window object
         window.addEventListener('beforeunload', function (event) {
             console.log('The page is about to be unloaded!');
 
@@ -371,22 +305,44 @@ mergeInto(LibraryManager.library, {
                 return;
             }
 
-            // Make disconnectAPI calls
-            self.disconnectAPI(self.myStoredVariable, self.accessToken, antiForgeryToken);
-            self.disconnectAPI(self.pipeDreamUrl, self.accessToken, antiForgeryToken);
+            // Call disconnectAPI synchronously (as fetch won't wait for completion)
+            self.disconnectAPI(self.myStoredVariable, self.accessToken)
+                .then((success) => {
+                    if (success) {
+                        console.log("disconnectAPI call successful.");
+                    } else {
+                        console.error("disconnectAPI call failed.");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error in disconnectAPI call:", error);
+                });
 
-            // Optionally, set a confirmation message (browser dependent)
-            event.returnValue = 'Are you sure you want to leave?'; // Some browsers show this message to the user
+            self.disconnectAPI(self.pipeDreamUrl, self.accessToken)
+                .then((success) => {
+                    if (success) {
+                        console.log("PipeDream disconnectAPI call successful.");
+                    } else {
+                        console.error("PipeDream disconnectAPI call failed.");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error in PipeDream disconnectAPI call:", error);
+                });
+
+            // Optionally set a confirmation message
+            event.returnValue = 'Are you sure you want to leave?'; // Some browsers may show this message
         });
     },
 
-    onPageLoadWithVisibilityChange: async function () {
+    onPageLoadWithVisibilityChange: function () {
         const self = this; // Save reference to the current context
 
-        // Get the anti-forgery token before making API calls
-        const antiForgeryToken = await self.getAntiForgeryToken(self.myStoredVariable);
+        if (!self.myStoredVariable) {
+            console.error("Stored variable is null or undefined, skipping visibility change listener.");
+            return;
+        }
 
-        // Check if the device is a mobile device
         const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
         if (!isMobile) {
@@ -394,7 +350,6 @@ mergeInto(LibraryManager.library, {
             return; // Exit if not on mobile
         }
 
-        // Add the visibility change listener only on mobile devices
         document.addEventListener('visibilitychange', function () {
             if (document.visibilityState === 'hidden') {
                 if (!self.myStoredVariable) {
@@ -402,14 +357,34 @@ mergeInto(LibraryManager.library, {
                     return;
                 }
 
-                // Make disconnectAPI calls
-                self.disconnectAPI(self.myStoredVariable, self.accessToken, antiForgeryToken);
-                self.disconnectAPI(self.pipeDreamUrl, self.accessToken, antiForgeryToken);
+                // Call disconnectAPI when the page becomes hidden
+                self.disconnectAPI(self.myStoredVariable, self.accessToken)
+                    .then((success) => {
+                        if (success) {
+                            console.log("disconnectAPI call successful on visibility change.");
+                        } else {
+                            console.error("disconnectAPI call failed on visibility change.");
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error in disconnectAPI call on visibility change:", error);
+                    });
+
+                self.disconnectAPI(self.pipeDreamUrl, self.accessToken)
+                    .then((success) => {
+                        if (success) {
+                            console.log("PipeDream disconnectAPI call successful on visibility change.");
+                        } else {
+                            console.error("PipeDream disconnectAPI call failed on visibility change.");
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error in PipeDream disconnectAPI call on visibility change:", error);
+                    });
             }
         });
 
         console.log("Visibility change listener added for mobile.");
     }
 
-    
 });

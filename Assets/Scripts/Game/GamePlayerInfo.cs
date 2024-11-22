@@ -45,6 +45,7 @@ public class GamePlayerInfo : MonoBehaviour
     TextMeshProUGUI Chat_Txt;
     [SerializeField]
     private Slider Countdown_Slider;
+    public float animationDuration = 1.0f;
 
     Coroutine cdCoroutine;              //倒數協程
     Coroutine chatCoroutine;            //聊天協程
@@ -554,7 +555,14 @@ public class GamePlayerInfo : MonoBehaviour
             if (IsLocalPlayer)
             {
                 Countdown_Slider.gameObject.SetActive(true);
-                Countdown_Slider.value = int.Parse(countDown_Txt.text);
+
+                // Parse the initial value
+                int countdownValue = int.Parse(countDown_Txt.text);
+                Countdown_Slider.maxValue = countdownValue;
+                Countdown_Slider.value = countdownValue;
+
+                // Start the smooth countdown animation
+                StartCoroutine(SmoothCountdown(countdownValue));
             }
             else
             {
@@ -584,7 +592,28 @@ public class GamePlayerInfo : MonoBehaviour
         //yield break;
         #endregion
     }
+    IEnumerator SmoothCountdown(int startValue)
+    {
+        float targetValue = 0; // The target value for the slider
+        float elapsedTime = 0; // Time elapsed since the animation started
 
+        while (elapsedTime < animationDuration)
+        {
+            elapsedTime += Time.deltaTime;
+
+            // Lerp between the start value and the target value
+            Countdown_Slider.value = Mathf.Lerp(startValue, targetValue, elapsedTime / animationDuration);
+
+            // Optionally update the text to match the slider value
+            countDown_Txt.text = Mathf.CeilToInt(Countdown_Slider.value).ToString();
+
+            yield return null; // Wait for the next frame
+        }
+
+        // Ensure the slider ends at exactly the target value
+        Countdown_Slider.value = targetValue;
+        countDown_Txt.text = targetValue.ToString();
+    }
     /// <summary>
     /// 每輪回合開始初始
     /// </summary>
