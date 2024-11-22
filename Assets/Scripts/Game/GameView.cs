@@ -1378,22 +1378,41 @@ public class GameView : MonoBehaviour
     /// <param name="parent"></param>
     private void SetAutoAction(bool isActive, Transform parent = null, Image _selectImg = null)
     {
-        // AutoActionFrame_Tr.gameObject.SetActive(isActive);
-        // if (_selectImg == null)
-        // {
-        //     foreach (var item in ActionBtn_Images)
-        //     {
-        //         item.gameObject.SetActive(false);
-        //     }
-        // }
-        // _selectImg.gameObject.SetActive(isActive);
-        // if (parent != null)
-        // {
-        //     AutoActionFrame_Tr.SetParent(parent);
-        //     AutoActionFrame_Tr.anchoredPosition = Vector2.zero;
-        //     AutoActionFrame_Tr.offsetMax = Vector2.zero;
-        //     AutoActionFrame_Tr.offsetMin = Vector2.zero;
-        // }
+        // Deactivate all images first
+        foreach (var item in ActionBtn_Images)
+        {
+            if (item != null)
+            {
+                item.gameObject.SetActive(false); // Ensure all other images are hidden
+            }
+            else
+            {
+                Debug.LogWarning("Found null item in ActionBtn_Images.");
+            }
+        }
+
+        // Activate the selected image if provided
+        if (_selectImg != null)
+        {
+            _selectImg.gameObject.SetActive(isActive);
+
+            // If a parent is provided, set the AutoActionFrame to follow it
+            if (isActive && parent != null && AutoActionFrame_Tr != null)
+            {
+                // AutoActionFrame_Tr.SetParent(parent);
+                // AutoActionFrame_Tr.anchoredPosition = Vector2.zero;
+                // AutoActionFrame_Tr.offsetMax = Vector2.zero;
+                // AutoActionFrame_Tr.offsetMin = Vector2.zero;
+            }
+            else if (parent == null)
+            {
+                Debug.LogWarning("Parent is null.");
+            }
+            else if (AutoActionFrame_Tr == null)
+            {
+                Debug.LogError("AutoActionFrame_Tr is null.");
+            }
+        }
     }
 
     /// <summary>

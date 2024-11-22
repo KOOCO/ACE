@@ -556,71 +556,76 @@ public class GamePlayerInfo : MonoBehaviour
             {
                 Countdown_Slider.gameObject.SetActive(true);
 
-                // Safely parse the initial value
-                if (int.TryParse(countDown_Txt.text, out int countdownValue))
-                {
-                    Countdown_Slider.maxValue = countdownValue;
-                    Countdown_Slider.value = countdownValue;
+                // Parse the initial value
+                int countdownValue = int.Parse(countDown_Txt.text);
+                Countdown_Slider.maxValue = countdownValue;
+                Countdown_Slider.value = countdownValue;
 
-                    // Stop any existing coroutine before starting a new one
-                    StopAllCoroutines(); // Alternatively, you can track the coroutine and stop it explicitly
-
-                    // Start the smooth countdown animation
-                    StartCoroutine(SmoothCountdown(Countdown_Slider.value));
-                }
-                else
-                {
-                    Countdown_Slider.gameObject.SetActive(false);
-                }
-                yield return null;
+                // Start the smooth countdown animation
+                StartCoroutine(SmoothCountdown(countdownValue));
             }
-            #endregion
-
-            #region 新的答辯
-            //while (cd > 0)  // 當cd大於0時持續倒數
-            //{
-            //    Debug.Log($"{Nickname}倒數剩餘時間：{cd}秒");
-
-            //    yield return new WaitForSeconds(1);  // 每一秒更新一次
-
-            //    cd--;  // 每秒減去1
-
-            //    countDown_Txt.gameObject.SetActive(true);
-            //    countDown_Txt.text = cd.ToString();
-            //}
-
-            //// 當倒數結束時，執行完成的操作
-            //Debug.Log("倒數結束");
-
-            //CDMask_Img.fillAmount = cdTime;
-            //yield break;
-            #endregion
+            else
+            {
+                Countdown_Slider.gameObject.SetActive(false);
+            }
+            yield return null;
         }
+        #endregion
+
+        #region 新的答辯
+        //while (cd > 0)  // 當cd大於0時持續倒數
+        //{
+        //    Debug.Log($"{Nickname}倒數剩餘時間：{cd}秒");
+
+        //    yield return new WaitForSeconds(1);  // 每一秒更新一次
+
+        //    cd--;  // 每秒減去1
+
+        //    countDown_Txt.gameObject.SetActive(true);
+        //    countDown_Txt.text = cd.ToString();
+        //}
+
+        //// 當倒數結束時，執行完成的操作
+        //Debug.Log("倒數結束");
+
+        //CDMask_Img.fillAmount = cdTime;
+        //yield break;
+        #endregion
     }
-    IEnumerator SmoothCountdown(float startValue)
+    IEnumerator SmoothCountdown(int startValue)
     {
-        float targetValue = 0f; // The target value for the slider
-        float elapsedTime = 0f; // Time elapsed since the animation started
+        float elapsedTime = 0f;
+        float durationPerStep = animationDuration / startValue; // Calculate the duration for each decrement step
 
-        while (elapsedTime < animationDuration)
+        while (startValue > 0)
         {
-            elapsedTime += Time.deltaTime;
+            float stepStartValue = startValue; // Keep the current value as the starting point for this step
+            float targetValue = startValue - 1; // Target value is one less than the current value
 
-            // Normalize elapsedTime and clamp between 0 and 1
-            float t = Mathf.Clamp01(elapsedTime / animationDuration);
+            elapsedTime = 0f; // Reset elapsed time for this step
+            while (elapsedTime < durationPerStep)
+            {
+                elapsedTime += Time.deltaTime;
 
-            // Lerp between startValue and targetValue
-            Countdown_Slider.value = Mathf.Lerp(startValue, targetValue, t);
+                // Smoothly interpolate the slider value
+                Countdown_Slider.value = Mathf.Lerp(stepStartValue, targetValue, elapsedTime / durationPerStep);
 
-            // Update the text to match the slider value
-            countDown_Txt.text = Mathf.CeilToInt(Countdown_Slider.value).ToString();
+                // Optionally update the text to reflect the slider's value
+                countDown_Txt.text = Mathf.CeilToInt(Countdown_Slider.value).ToString();
 
-            yield return null; // Wait for the next frame
+                yield return null; // Wait for the next frame
+            }
+
+            // Finalize the step by setting the slider to the target value
+            Countdown_Slider.value = targetValue;
+            countDown_Txt.text = targetValue.ToString();
+
+            startValue--; // Decrease the start value for the next step
         }
 
-        // Ensure the slider ends exactly at the target value
-        Countdown_Slider.value = targetValue;
-        countDown_Txt.text = targetValue.ToString();
+        // Ensure the slider ends at exactly 0
+        Countdown_Slider.value = 0;
+        countDown_Txt.text = "0";
     }
     /// <summary>
     /// 每輪回合開始初始
