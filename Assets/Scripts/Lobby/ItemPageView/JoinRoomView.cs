@@ -233,7 +233,7 @@ public class JoinRoomView : MonoBehaviour
 private static extern void onPageLoadWithVisibilityChange();
 
 [DllImport("__Internal")]
-private static extern void storeVariable(string apiUrl, string pipeUrl, string memberId);
+private static extern void storeVariable(string apiUrl, string pipeUrl, string memberId, string accessToken);
 
 [DllImport("__Internal")]
 private static extern void onPageLoad();
