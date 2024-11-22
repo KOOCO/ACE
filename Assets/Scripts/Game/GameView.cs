@@ -161,7 +161,7 @@ public class GameView : MonoBehaviour
     [SerializeField]
     public List<TMP_Dropdown> PN1_NumTogList;
     [SerializeField]
-    List<Sprite> ActionBtn_Sprites;
+    List<Image> ActionBtn_Images;
     public bool IsStartGameTest;                                //是否開始遊戲測試
 
     const float PageMoveTime = 0.25f;                           //滑動頁面移動時間
@@ -1359,13 +1359,13 @@ public class GameView : MonoBehaviour
                     SetAutoAction(false);
                     break;
                 case AutoActingEnum.CallAny:
-                    SetAutoAction(true, Raise_Btn.transform, ActionBtn_Sprites[0]);
+                    SetAutoAction(true, Raise_Btn.transform, ActionBtn_Images[0]);
                     break;
                 case AutoActingEnum.Check:
-                    SetAutoAction(true, Call_Btn.transform, ActionBtn_Sprites[1]);
+                    SetAutoAction(true, Call_Btn.transform, ActionBtn_Images[1]);
                     break;
                 case AutoActingEnum.CheckAndFold:
-                    SetAutoAction(true, Fold_Btn.transform, ActionBtn_Sprites[2]);
+                    SetAutoAction(true, Fold_Btn.transform, ActionBtn_Images[2]);
                     break;
             }
         }
@@ -1376,10 +1376,10 @@ public class GameView : MonoBehaviour
     /// </summary>
     /// <param name="isActive"></param>
     /// <param name="parent"></param>
-    private void SetAutoAction(bool isActive, Transform parent = null, Sprite _sprite = null)
+    private void SetAutoAction(bool isActive, Transform parent = null, Image _selectImg = null)
     {
-        AutoActionFrame_Tr.gameObject.SetActive(isActive);
-        AutoActionFrame_Tr.GetComponent<Image>().sprite = _sprite;
+        // AutoActionFrame_Tr.gameObject.SetActive(isActive);
+        _selectImg.gameObject.SetActive(true);
         // if (parent != null)
         // {
         //     AutoActionFrame_Tr.SetParent(parent);
