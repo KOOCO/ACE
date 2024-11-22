@@ -102,8 +102,13 @@ public class AppApi : MonoBehaviour
     }
     public static void GetBettingDetail(string MinBettingTime, string MaxBettingTime, UnityAction<string> _success = null, UnityAction _error = null)
     {
-        apiEndpoint = $"/api/app/betting-detail/?=MemberAccount{DataManager.UserAccount}&MemberId={DataManager.UserId}&MinBettingTime={MinBettingTime}&MaxBettingTime={MaxBettingTime}";
+        apiEndpoint = $"/api/app/betting-detail/?MemberAccount={DataManager.UserAccount}&MemberId={DataManager.UserId}&MinBettingTime={MinBettingTime}&MaxBettingTime={MaxBettingTime}";
         SwaggerAPIManager.Instance.SendGetAPI(apiEndpoint, _success, _error);
+    }
+    public static void GetTopPlayers(string period, UnityAction<string> _success = null, UnityAction _error = null)
+    {
+        apiEndpoint = $"/api/app/round-data/top-players/{DataManager.UserId}/?period={period}";
+        SwaggerAPIManager.Instance.SendGetAPI(apiEndpoint, _success, _error, true);
     }
 
     #region Generate Aes

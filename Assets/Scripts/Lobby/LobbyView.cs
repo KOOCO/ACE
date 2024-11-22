@@ -275,7 +275,6 @@ public class LobbyView : MonoBehaviour
         #endregion
 
         ViewManager.Instance.OpenWaitingView(transform);
-        DataManager.ReciveRankData();
         UpdateUserData();
 
         Refresh_Btn.onClick.Invoke();

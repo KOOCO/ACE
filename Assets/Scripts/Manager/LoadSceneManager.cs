@@ -188,7 +188,6 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
 #if !UNITY_EDITOR
                 JSBridgeManager.Instance.CloseRecaptchaTool();
 #endif
-                DataManager.ReciveRankData();
                 ViewManager.Instance.CreateViewInCurrCanvas<LobbyView>(LobbyViewObj);
                 break;
 

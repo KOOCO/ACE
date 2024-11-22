@@ -222,130 +222,6 @@ public static class DataManager
         new ShopData(){BuffAmount = 100,CostCoin = 300},
     };
 
-
-    /// <summary>
-    /// 接收排名資料
-    /// </summary>
-    public static void ReciveRankData()
-    {
-        CurrRankSeason = 2;
-
-        // 賽季剩餘時間(分)
-        int timeLest = 144000;
-        RandEndDate = DateTime.Now.AddMinutes(timeLest);
-
-        // 本地玩家排名
-        LocalUserRankData = new List<RankData>()
-    {
-        new RankData() { rank = 1001, point = 5, status = true },  // 當季積分
-        new RankData() { rank = 5, point = 800, status = false },    // 當季Cash
-        new RankData() { rank = 1, point = 2000, status = true },   // 當季Golden
-        new RankData() { rank = 6, point = 750, status = true },   // 前季積分
-        new RankData() { rank = 3, point = 900, status = false},    // 前季Cash
-        new RankData() { rank = 88, point = 5, status = true },     // 前季Golden
-    };
-
-        // 當季積分排名
-        CurrSeasonIntegralRankList = new List<RankData>()
-    {
-        new RankData() { avatar = 0, nickname = "AA", point = 1000, status = true},
-        new RankData() { avatar = 1, nickname = "BB", point = 950, status = false },
-        new RankData() { avatar = 2, nickname = "CC", point = 900, status = true},
-        new RankData() { avatar = 3, nickname = "DD", point = 850, status = true },
-        new RankData() { avatar = 4, nickname = "EE", point = 800, status = false},
-        new RankData() { avatar = 5, nickname = "FF", point = 750, status = true },
-        new RankData() { avatar = 6, nickname = "GG", point = 700, status = true},
-        new RankData() { avatar = 7, nickname = "HH", point = 650, status = true },
-        new RankData() { avatar = 2, nickname = "II", point = 600, status = false},
-        new RankData() { avatar = 4, nickname = "JJ", point = 550, status = true },
-        new RankData() { avatar = 5, nickname = "KK", point = 450, status = false},
-    };
-
-        // 前季積分排名
-        PreSeasonIntegralRankList = new List<RankData>()
-    {
-        new RankData() { avatar = 0, nickname = "OO", point = 1230, status = false},
-        new RankData() { avatar = 1, nickname = "BB", point = 950, status = true },
-        new RankData() { avatar = 2, nickname = "PP", point = 900, status = true},
-        new RankData() { avatar = 3, nickname = "DD", point = 850, status = true },
-        new RankData() { avatar = 4, nickname = "YY", point = 800, status = true},
-        new RankData() { avatar = 6, nickname = "LL", point = 700, status = false},
-        new RankData() { avatar = 7, nickname = "HH", point = 650, status = false },
-        new RankData() { avatar = 5, nickname = "II", point = 600, status = true},
-        new RankData() { avatar = 6, nickname = "JJ", point = 550, status = false },
-        new RankData() { avatar = 2, nickname = "KK", point = 450, status = true},
-    };
-
-        // 當季Cash排名
-        CurrSeasonCashRankList = new List<RankData>()
-    {
-        new RankData() { avatar = 0, nickname = "ZZ", point = 1100, status = false},
-        new RankData() { avatar = 1, nickname = "BB", point = 1000, status = true },
-        new RankData() { avatar = 2, nickname = "AA", point = 900, status = true},
-        new RankData() { avatar = 3, nickname = "DD", point = 880, status = false },
-        new RankData() { avatar = 5, nickname = "FF", point = 780, status = true },
-        new RankData() { avatar = 6, nickname = "UU", point = 710, status = true},
-        new RankData() { avatar = 7, nickname = "HH", point = 650, status = false },
-        new RankData() { avatar = 2, nickname = "II", point = 630, status = true},
-        new RankData() { avatar = 4, nickname = "JJ", point = 550, status = true },
-        new RankData() { avatar = 1, nickname = "PP", point = 455, status = false},
-    };
-
-        // 前季Cash排名
-        PreSeasonCashRankList = new List<RankData>()
-    {
-        new RankData() { avatar = 0, nickname = "AA", point = 1005, status = false},
-        new RankData() { avatar = 1, nickname = "BB", point = 1000, status = true },
-        new RankData() { avatar = 3, nickname = "TT", point = 880, status = false },
-        new RankData() { avatar = 4, nickname = "EE", point = 800, status = true},
-        new RankData() { avatar = 5, nickname = "FF", point = 780, status = true },
-        new RankData() { avatar = 6, nickname = "UU", point = 710, status = false},
-        new RankData() { avatar = 7, nickname = "HH", point = 650, status = true },
-        new RankData() { avatar = 3, nickname = "II", point = 630, status = true},
-        new RankData() { avatar = 4, nickname = "JJ", point = 550, status = true },
-        new RankData() { avatar = 5, nickname = "PP", point = 455, status = false},
-    };
-
-        // 當季Golden排名
-        CurrSeasonGoldenRankList = new List<RankData>()
-    {
-        new RankData() { avatar = 1, nickname = "AA", point = 1500, status = false },
-        new RankData() { avatar = 2, nickname = "BB", point = 900, status = true},
-        new RankData() { avatar = 3, nickname = "DD", point = 870, status = true },
-        new RankData() { avatar = 4, nickname = "EE", point = 830, status = true},
-        new RankData() { avatar = 5, nickname = "FF", point = 770, status = false },
-        new RankData() { avatar = 6, nickname = "YY", point = 730, status = false},
-        new RankData() { avatar = 7, nickname = "HH", point = 670, status = true },
-        new RankData() { avatar = 5, nickname = "II", point = 630, status = true},
-        new RankData() { avatar = 2, nickname = "JJ", point = 530, status = true },
-        new RankData() { avatar = 1, nickname = "RR", point = 450, status = false},
-    };
-
-        // 前季Golden排名
-        PreSeasonGoldenRankList = new List<RankData>()
-    {
-        new RankData() { avatar = 0, nickname = "LL", point = 2500, status = false},
-        new RankData() { avatar = 1, nickname = "AA", point = 1500, status = true },
-        new RankData() { avatar = 2, nickname = "SS", point = 1000, status = true},
-        new RankData() { avatar = 3, nickname = "DD", point = 870, status = true },
-        new RankData() { avatar = 4, nickname = "EE", point = 830, status = false},
-        new RankData() { avatar = 5, nickname = "YY", point = 770, status = true },
-        new RankData() { avatar = 6, nickname = "YY", point = 730, status = false},
-        new RankData() { avatar = 7, nickname = "HH", point = 670, status = true },
-        new RankData() { avatar = 4, nickname = "II", point = 630, status = false},
-        new RankData() { avatar = 3, nickname = "JJ", point = 530, status = false },
-        new RankData() { avatar = 1, nickname = "RR", point = 450, status = true},
-    };
-
-        //刷新排名
-        LobbyRankingView lobbyRankingView = GameObject.FindFirstObjectByType<LobbyRankingView>();
-        if (lobbyRankingView != null &&
-            lobbyRankingView.gameObject.activeSelf)
-        {
-            lobbyRankingView.SetRank();
-        }
-    }
-
     #endregion
 
     #region 遊戲
@@ -372,7 +248,7 @@ public static class DataManager
 
 public class RankData
 {
-    public int rank;
+    public string rank;
     public int avatar;
     public string nickname;
     public int point;

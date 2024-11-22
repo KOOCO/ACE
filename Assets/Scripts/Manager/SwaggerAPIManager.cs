@@ -194,7 +194,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         {
             string response = getRequest.downloadHandler.text;
             Debug.Log("Response: " + response);
-            GetBanner getBanner = JsonConvert.DeserializeObject<GetBanner>(response);
+            //GetBanner getBanner = JsonConvert.DeserializeObject<GetBanner>(response);
             //ConvertHtmlToJson(response);
 
 

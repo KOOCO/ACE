@@ -17,7 +17,7 @@ public class RankSample : MonoBehaviour
     /// <param name="rankData"></param>
     /// <param name="rank">排名</param>
     /// <param name="pointStr">點數文字</param>
-    public void SetRankData(RankData rankData, int rank, string pointStr)
+    public void SetRankData(RankData rankData, string rank)
     {
         int avatarIndex = rankData.nickname == DataManager.UserNickname ?
                           DataManager.UserAvatarIndex :
@@ -28,7 +28,7 @@ public class RankSample : MonoBehaviour
                             $"<color=#FFFFFF>{rankData.nickname}</color>";
         status_Txt.text = rankData.status ? $"<color=#36D982>{LanguageManager.Instance.GetText("Online")}</color>" : $"<color=#EC6273>{LanguageManager.Instance.GetText("Offline")}</color>";
         Award_Txt.text = "$" + rankData.point.ToString();
-        Rank_Txt.text = rank.ToString();
+        Rank_Txt.text = rank;
     }
 
 }
