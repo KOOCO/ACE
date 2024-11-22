@@ -239,63 +239,131 @@ mergeInto(LibraryManager.library, {
     myStoredVariable: null, // Initialize the variable
     pipeDreamUrl: null,
     MemberId: null,
+    antiForgeryToken: null, // Placeholder for the anti-forgery token
+    accessToken: null,   // AccessToken
+
+    // Function to get the anti-forgery token
+    getAntiForgeryToken: async function (url) {
+        try {
+            // Fetch the token from the server
+            const response = await fetch(url, {
+                method: 'GET',
+                credentials: 'include', // Include cookies for authentication, if required
+            });
+
+            if (response.ok) {
+                // Check if the token is in a header
+                const antiForgeryToken = response.headers.get('RequestVerificationToken');
+
+                if (antiForgeryToken) {
+                    console.log("Anti-forgery token retrieved from headers:", antiForgeryToken);
+                    return antiForgeryToken;
+                }
+
+                // Alternatively, check if the token is in the response body
+                const data = await response.json();
+                if (data && data.token) {
+                    console.log("Anti-forgery token retrieved from body:", data.token);
+                    return data.token;
+                }
+
+                console.log("Anti-forgery token not found in response.");
+                return null;
+            } else {
+                console.log("Failed to fetch anti-forgery token. Status:", response.status);
+                return null;
+            }
+        } catch (error) {
+            console.error("Error fetching anti-forgery token:", error);
+            return null;
+        }
+    },
 
     // Function to store a value
-    storeVariable: function(value,pipeUrl,MemberId) {
+    storeVariable: function (value, pipeUrl, MemberId, accessToken) {
         this.myStoredVariable = UTF8ToString(value);
         this.pipeDreamUrl = UTF8ToString(pipeUrl);
         this.MemberId = UTF8ToString(MemberId);
+        this.accessToken = UTF8ToString(accessToken);
         console.log("Variable URL:", this.myStoredVariable);
         console.log("Variable PipeDreamURL:", this.pipeDreamUrl);
+        console.log("Variable AccessToken:", this.accessToken);
     },
 
-    clearStoredVariable: function() {
+    clearStoredVariable: function () {
         this.myStoredVariable = null;
         this.pipeDreamUrl = null;
         this.MemberId = null;
+        this.accessToken = null;
         console.log("Stored Variable is cleared");
     },
 
-    sendBeaconRequest: function() {
-       console.log('The page is about to be unloaded!');
+    sendBeaconRequest: function () {
+        console.log('The page is about to be unloaded!');
 
-            if (!self.myStoredVariable) {
-                console.log("No data to send, skipping.");
-                return;
+        if (!this.myStoredVariable) {
+            console.log("No data to send, skipping.");
+            return;
+        }
+
+        // Send a beacon to the provided Firebase URL before unloading the page
+        const url = this.myStoredVariable;
+
+        const data = {
+            memberId: this.MemberId // Send only a success message
+        };
+
+        // Use the Beacon API to send data to Firebase before the page unloads
+        if (navigator.sendBeacon) {
+            const payload = JSON.stringify(data); // Convert data to JSON string
+            navigator.sendBeacon(url, payload); // Send the request asynchronously
+            console.log("Payload Sent:", payload);
+            console.log("Data Sent:", data);
+        }
+        else {
+            console.log("Request not Sent");
+        }
+    },
+
+    disconnectAPI: async function (url, accessToken, antiForgeryToken) {
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`, // Access token for authentication
+                    'RequestVerificationToken': antiForgeryToken // Anti-forgery token header
+                },
+                body: JSON.stringify({ memberId: this.MemberId }) // Payload
+            });
+
+            if (response.ok) {
+                console.log('API disconnect successful');
+                return true;
+            } else {
+                console.log('API call failed with status:', response.status);
+                return false;
             }
-
-            // Send a beacon to the provided Firebase URL before unloading the page
-            const url = self.myStoredVariable;
-
-            const data = { 
-                            memberId: self.MemberId // Send only a success message
-                         };
-
-
-            // Use the Beacon API to send data to Firebase before the page unloads
-            if (navigator.sendBeacon) {
-                const payload = JSON.stringify(data); // Convert data to JSON string
-                navigator.sendBeacon(url, payload); // Send the request asynchronously
-                console.log("Payload Sent:", payload);
-                console.log("Data Sent:", data);
-            }
-            else
-            {
-                console.log("Request not Sent");
-            }
+        } catch (error) {
+            console.error('Error during API call:', error);
+            return false;
+        }
     },
 
     // Function to handle the page load and unload events
-    onPageLoad: function() {
+    onPageLoad: async function () {
         const self = this; // Save reference to the current context
 
+        // Get the anti-forgery token before making API calls
+        const antiForgeryToken = await self.getAntiForgeryToken(self.myStoredVariable);
+
         // Register the 'load' event listener on the window object
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             console.log('The page has fully loaded!');
         });
 
         // Register the 'beforeunload' event listener on the window object
-        window.addEventListener('beforeunload', function(event) {
+        window.addEventListener('beforeunload', function (event) {
             console.log('The page is about to be unloaded!');
 
             if (!self.myStoredVariable) {
@@ -303,35 +371,20 @@ mergeInto(LibraryManager.library, {
                 return;
             }
 
-            // Send a beacon to the provided Firebase URL before unloading the page
-            const apiUrl = self.myStoredVariable;
-            const pipeDream = self.pipeDreamUrl;
-
-            const data = { 
-                            memberId: self.MemberId // Send only a success message
-                         };
-
-
-            // Use the Beacon API to send data to Firebase before the page unloads
-            if (navigator.sendBeacon) {
-                const payload = JSON.stringify(data); // Convert data to JSON string
-                navigator.sendBeacon(apiUrl, payload); // Send the request asynchronously
-                navigator.sendBeacon(pipeDream,payload);
-                console.log("Payload Sent:", payload);
-                console.log("Data Sent:", data);
-            }
-            else
-            {
-                console.log("Request not Sent");
-            }
+            // Make disconnectAPI calls
+            self.disconnectAPI(self.myStoredVariable, self.accessToken, antiForgeryToken);
+            self.disconnectAPI(self.pipeDreamUrl, self.accessToken, antiForgeryToken);
 
             // Optionally, set a confirmation message (browser dependent)
             event.returnValue = 'Are you sure you want to leave?'; // Some browsers show this message to the user
         });
     },
 
-    onPageLoadWithVisibilityChange: function() {
+    onPageLoadWithVisibilityChange: async function () {
         const self = this; // Save reference to the current context
+
+        // Get the anti-forgery token before making API calls
+        const antiForgeryToken = await self.getAntiForgeryToken('your-api-url-for-token');
 
         // Check if the device is a mobile device
         const isMobile = /Mobi|Android/i.test(navigator.userAgent);
@@ -342,31 +395,21 @@ mergeInto(LibraryManager.library, {
         }
 
         // Add the visibility change listener only on mobile devices
-        document.addEventListener('visibilitychange', function() {
+        document.addEventListener('visibilitychange', function () {
             if (document.visibilityState === 'hidden') {
                 if (!self.myStoredVariable) {
                     console.log("No data to send, skipping.");
                     return;
                 }
 
-                 const apiUrl = self.myStoredVariable;
-                 const pipeDream = self.pipeDreamUrl;
-
-                const data = { 
-                                memberId: self.MemberId // Send only a success message
-                             };
-
-                // Send the data using navigator.sendBeacon
-                    if (navigator.sendBeacon) {
-                        const payload = JSON.stringify(data);
-                        navigator.sendBeacon(url, payload);
-                        navigator.sendBeacon(pipeDream,payload);
-                    }
-                console.log("Data sent before page becomes hidden:", data);
+                // Make disconnectAPI calls
+                self.disconnectAPI(self.myStoredVariable, self.accessToken, antiForgeryToken);
+                self.disconnectAPI(self.pipeDreamUrl, self.accessToken, antiForgeryToken);
             }
         });
 
         console.log("Visibility change listener added for mobile.");
     }
+
     
 });

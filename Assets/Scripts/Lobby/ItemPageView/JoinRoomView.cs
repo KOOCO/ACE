@@ -205,17 +205,19 @@ public class JoinRoomView : MonoBehaviour
 
     private string BASE_URL = "https://admin-d.jf588.com";  // API Base URL
 
+
     public void SendRoomDataToJS(string _memberId)
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
     // Set the URL and query parameters
     string apiEndpoint = "/api/app/rooms/player-disconnected?memberId="+_memberId;
     string memberId = _memberId;
+    string accessToken = Services.PlayerService.GetAccessToken();
     string pipefullUrl = "https://f9de149c298966a11d6f15feb43b45f9.m.pipedream.net";
     string apiFullUrl = BASE_URL + apiEndpoint;
 
     // Store the URL in JavaScript
-    StoreVariableJS(apiFullUrl, pipefullUrl, memberId);
+    StoreVariableJS(apiFullUrl, pipefullUrl, memberId, accessToken);
 
     // Call page visibility-related functions
     PageChangeVisibility();
@@ -245,11 +247,11 @@ private static extern void onPageLoad();
 #endif
     }
 
-    public void StoreVariableJS(string apiUrl, string pipeUrl, string memberId)
+    public void StoreVariableJS(string apiUrl, string pipeUrl, string memberId, string accessToken)
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
-    storeVariable(apiUrl, pipeUrl, memberId);
-    Debug.Log($"Unity: Stored variable in JavaScript: API URL = {apiUrl}, Pipe URL = {pipeUrl}, Member ID = {memberId}");
+    storeVariable(apiUrl, pipeUrl, memberId, accessToken);
+    Debug.Log($"Unity: Stored variable in JavaScript: API URL = {apiUrl}, Pipe URL = {pipeUrl}, Member ID = {memberId}, accessToken = {accessToken}");
 #endif
     }
 
