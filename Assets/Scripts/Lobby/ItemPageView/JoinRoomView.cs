@@ -217,7 +217,7 @@ public class JoinRoomView : MonoBehaviour
     string apiFullUrl = BASE_URL + apiEndpoint;
 
     // Store the URL in JavaScript
-    StoreVariableJS(apiFullUrl, pipefullUrl, memberId, accessToken);
+    StoreVariableJS(apiFullUrl, pipefullUrl, memberId);
 
     // Call page visibility-related functions
     PageChangeVisibility();
@@ -233,7 +233,7 @@ public class JoinRoomView : MonoBehaviour
 private static extern void onPageLoadWithVisibilityChange();
 
 [DllImport("__Internal")]
-private static extern void storeVariable(string apiUrl, string pipeUrl, string memberId, string accessToken);
+private static extern void storeVariable(string apiUrl, string pipeUrl, string memberId);
 
 [DllImport("__Internal")]
 private static extern void onPageLoad();
@@ -247,11 +247,11 @@ private static extern void onPageLoad();
 #endif
     }
 
-    public void StoreVariableJS(string apiUrl, string pipeUrl, string memberId, string accessToken)
+    public void StoreVariableJS(string apiUrl, string pipeUrl, string memberId)
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
-    storeVariable(apiUrl, pipeUrl, memberId, accessToken);
-    Debug.Log($"Unity: Stored variable in JavaScript: API URL = {apiUrl}, Pipe URL = {pipeUrl}, Member ID = {memberId}, accessToken = {accessToken}");
+    storeVariable(apiUrl, pipeUrl, memberId);
+    Debug.Log($"Unity: Stored variable in JavaScript: API URL = {apiUrl}, Pipe URL = {pipeUrl}, Member ID = {memberId}");
 #endif
     }
 
