@@ -384,7 +384,7 @@ mergeInto(LibraryManager.library, {
         const self = this; // Save reference to the current context
 
         // Get the anti-forgery token before making API calls
-        const antiForgeryToken = await self.getAntiForgeryToken('your-api-url-for-token');
+        const antiForgeryToken = await self.getAntiForgeryToken(self.myStoredVariable);
 
         // Check if the device is a mobile device
         const isMobile = /Mobi|Android/i.test(navigator.userAgent);
