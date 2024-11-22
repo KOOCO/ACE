@@ -12,20 +12,30 @@ public class BetHistoryManager : UnitySingleton<BetHistoryManager>
     private float allWin, allValidBet, allBet;
 
     private BettingDetail detailData;
+
+    private ObjPool objPool;
+
+
+    public void Init()
+    {
+        objPool = new ObjPool(transform, 100);
+    }
     public void showBetHistory(string data)
     {
         for (int i = 1; i < bethistorySample.GetComponent<Transform>().parent.childCount; i++)
         {
-            Destroy(bethistorySample.GetComponent<Transform>().parent.GetChild(i).gameObject);
+            bethistorySample.GetComponent<Transform>().parent.GetChild(i).gameObject.SetActive(false);
         }
 
         detailData = JsonConvert.DeserializeObject<BettingDetail>(data) ?? new BettingDetail();
         
         foreach (Item item in detailData.items)
         {
-            BetHistorySample obj = Instantiate(bethistorySample, bethistorySample.GetComponent<Transform>().parent).GetComponent<BetHistorySample>();
+            //BetHistorySample obj = Instantiate(bethistorySample, bethistorySample.GetComponent<Transform>().parent).GetComponent<BetHistorySample>();
+            BetHistorySample obj = objPool.CreateObj<BetHistorySample>(bethistorySample, bethistorySample.GetComponent<Transform>().parent);
             obj.gameObject.SetActive(true);
-            obj.setBetRecordValue(item.bettingTime, "", item.tableID.ToString(), item.roomFee, item.bets, item.validBet, item.wins, item.profit);
+            string time = item.bettingTime.Replace("T", " ");
+            obj.setBetRecordValue(time, "", item.roomID.ToString(), item.roomFee, item.bets, item.validBet, item.wins, item.profit);
             allWin += item.wins;
             allValidBet += item.validBet;
             allBet += item.bets;

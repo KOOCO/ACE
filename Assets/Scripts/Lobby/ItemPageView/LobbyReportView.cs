@@ -52,6 +52,7 @@ public class LobbyReportView : MonoBehaviour
         LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
         StartTime_Txt.text = System.DateTime.Today.ToShortDateString();
         EndTime_Txt.text = System.DateTime.Today.ToShortDateString();
+        bethistory.Init();
     }
 
     /// <summary>
@@ -155,6 +156,10 @@ public class LobbyReportView : MonoBehaviour
             if (isBetReport)
             {
                 AppApi.GetBettingDetail(startTime_Txt.text, endTime_Txt.text, GetBettingData);
+            }
+            else
+            {
+
             }
         });
     }

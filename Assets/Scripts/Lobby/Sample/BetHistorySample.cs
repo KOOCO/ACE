@@ -47,8 +47,34 @@ public class BetHistorySample : MonoBehaviour
         roomRateValue_Txt.text = toString(roomRate);
         betsValue_Txt.text = toString(bets);
         validBetValue_Txt.text = toString(validBet);
-        winsValue_Txt.text = toString(wins);
-        profitValue_Txt.text = toString(profit);
+        string winStr = "";
+        string profitStr = "";
+        if (wins > 0)
+        {
+            winStr = $"<color=#36D982>{toString(wins)}</color>";
+        }
+        else if (wins < 0)
+        {
+            winStr = $"<color=#EC6273>{toString(wins)}</color>";
+        }
+        else
+        {
+            winStr = $"<color=#FFFFFF>{toString(wins)}</color>";
+        }
+        winsValue_Txt.text = winStr;
+        if (profit > 0)
+        {
+            profitStr = $"<color=#36D982>{toString(profit)}</color>";
+        }
+        else if (profit < 0)
+        {
+            profitStr = $"<color=#EC6273>{toString(profit)}</color>";
+        }
+        else
+        {
+            profitStr = $"<color=#FFFFFF>{toString(profit)}</color>";
+        }
+        profitValue_Txt.text = profitStr;
     }
 
     private string toString(float number)
