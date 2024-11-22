@@ -239,65 +239,63 @@ mergeInto(LibraryManager.library, {
     myStoredVariable: null, // Initialize the variable
     pipeDreamUrl: null,
     MemberId: null,
-    accessToken: null, // AccessToken
 
     // Function to store a value
-    storeVariable: function (value, pipeUrl, MemberId, accessToken) {
+    storeVariable: function(value,pipeUrl,MemberId) {
         this.myStoredVariable = UTF8ToString(value);
         this.pipeDreamUrl = UTF8ToString(pipeUrl);
         this.MemberId = UTF8ToString(MemberId);
-        this.accessToken = UTF8ToString(accessToken);
         console.log("Variable URL:", this.myStoredVariable);
         console.log("Variable PipeDreamURL:", this.pipeDreamUrl);
-        console.log("Variable AccessToken:", this.accessToken);
     },
 
-    clearStoredVariable: function () {
+    clearStoredVariable: function() {
         this.myStoredVariable = null;
         this.pipeDreamUrl = null;
         this.MemberId = null;
-        this.accessToken = null;
         console.log("Stored Variable is cleared");
     },
 
-    disconnectAPI: async function (url, accessToken) {
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}` // Access token for authentication
-                },
-                body: JSON.stringify({ memberId: this.MemberId }) // Payload
-            });
+    sendBeaconRequest: function() {
+       console.log('The page is about to be unloaded!');
 
-            if (response.ok) {
-                console.log('API disconnect successful');
-                return true;
-            } else {
-                console.log('API call failed with status:', response.status);
-                return false;
+            if (!self.myStoredVariable) {
+                console.log("No data to send, skipping.");
+                return;
             }
-        } catch (error) {
-            console.error('Error during API call:', error);
-            return false;
-        }
+
+            // Send a beacon to the provided Firebase URL before unloading the page
+            const url = self.myStoredVariable;
+
+            const data = { 
+                            memberId: self.MemberId // Send only a success message
+                         };
+
+
+            // Use the Beacon API to send data to Firebase before the page unloads
+            if (navigator.sendBeacon) {
+                const payload = JSON.stringify(data); // Convert data to JSON string
+                navigator.sendBeacon(url, payload); // Send the request asynchronously
+                console.log("Payload Sent:", payload);
+                console.log("Data Sent:", data);
+            }
+            else
+            {
+                console.log("Request not Sent");
+            }
     },
 
     // Function to handle the page load and unload events
-    onPageLoad: function () {
+    onPageLoad: function() {
         const self = this; // Save reference to the current context
 
-        if (!self.myStoredVariable) {
-            console.error("Stored variable is null or undefined, skipping onPageLoad.");
-            return;
-        }
-
-        window.addEventListener('load', function () {
+        // Register the 'load' event listener on the window object
+        window.addEventListener('load', function() {
             console.log('The page has fully loaded!');
         });
 
-        window.addEventListener('beforeunload', function (event) {
+        // Register the 'beforeunload' event listener on the window object
+        window.addEventListener('beforeunload', function(event) {
             console.log('The page is about to be unloaded!');
 
             if (!self.myStoredVariable) {
@@ -305,44 +303,37 @@ mergeInto(LibraryManager.library, {
                 return;
             }
 
-            // Call disconnectAPI synchronously (as fetch won't wait for completion)
-            self.disconnectAPI(self.myStoredVariable, self.accessToken)
-                .then((success) => {
-                    if (success) {
-                        console.log("disconnectAPI call successful.");
-                    } else {
-                        console.error("disconnectAPI call failed.");
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error in disconnectAPI call:", error);
-                });
+            // Send a beacon to the provided Firebase URL before unloading the page
+            const apiUrl = self.myStoredVariable;
+            const pipeDream = self.pipeDreamUrl;
 
-            self.disconnectAPI(self.pipeDreamUrl, self.accessToken)
-                .then((success) => {
-                    if (success) {
-                        console.log("PipeDream disconnectAPI call successful.");
-                    } else {
-                        console.error("PipeDream disconnectAPI call failed.");
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error in PipeDream disconnectAPI call:", error);
-                });
+            const data = { 
+                            memberId: self.MemberId // Send only a success message
+                         };
 
-            // Optionally set a confirmation message
-            event.returnValue = 'Are you sure you want to leave?'; // Some browsers may show this message
+
+            // Use the Beacon API to send data to Firebase before the page unloads
+            if (navigator.sendBeacon) {
+                const payload = JSON.stringify(data); // Convert data to JSON string
+                navigator.sendBeacon(apiUrl, payload); // Send the request asynchronously
+                navigator.sendBeacon(pipeDream,payload);
+                console.log("Payload Sent:", payload);
+                console.log("Data Sent:", data);
+            }
+            else
+            {
+                console.log("Request not Sent");
+            }
+
+            // Optionally, set a confirmation message (browser dependent)
+            event.returnValue = 'Are you sure you want to leave?'; // Some browsers show this message to the user
         });
     },
 
-    onPageLoadWithVisibilityChange: function () {
+    onPageLoadWithVisibilityChange: function() {
         const self = this; // Save reference to the current context
 
-        if (!self.myStoredVariable) {
-            console.error("Stored variable is null or undefined, skipping visibility change listener.");
-            return;
-        }
-
+        // Check if the device is a mobile device
         const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
         if (!isMobile) {
@@ -350,41 +341,32 @@ mergeInto(LibraryManager.library, {
             return; // Exit if not on mobile
         }
 
-        document.addEventListener('visibilitychange', function () {
+        // Add the visibility change listener only on mobile devices
+        document.addEventListener('visibilitychange', function() {
             if (document.visibilityState === 'hidden') {
                 if (!self.myStoredVariable) {
                     console.log("No data to send, skipping.");
                     return;
                 }
 
-                // Call disconnectAPI when the page becomes hidden
-                self.disconnectAPI(self.myStoredVariable, self.accessToken)
-                    .then((success) => {
-                        if (success) {
-                            console.log("disconnectAPI call successful on visibility change.");
-                        } else {
-                            console.error("disconnectAPI call failed on visibility change.");
-                        }
-                    })
-                    .catch((error) => {
-                        console.error("Error in disconnectAPI call on visibility change:", error);
-                    });
+                 const apiUrl = self.myStoredVariable;
+                 const pipeDream = self.pipeDreamUrl;
 
-                self.disconnectAPI(self.pipeDreamUrl, self.accessToken)
-                    .then((success) => {
-                        if (success) {
-                            console.log("PipeDream disconnectAPI call successful on visibility change.");
-                        } else {
-                            console.error("PipeDream disconnectAPI call failed on visibility change.");
-                        }
-                    })
-                    .catch((error) => {
-                        console.error("Error in PipeDream disconnectAPI call on visibility change:", error);
-                    });
+                const data = { 
+                                memberId: self.MemberId // Send only a success message
+                             };
+
+                // Send the data using navigator.sendBeacon
+                    if (navigator.sendBeacon) {
+                        const payload = JSON.stringify(data);
+                        navigator.sendBeacon(url, payload);
+                        navigator.sendBeacon(pipeDream,payload);
+                    }
+                console.log("Data sent before page becomes hidden:", data);
             }
         });
 
         console.log("Visibility change listener added for mobile.");
     }
-
+    
 });
