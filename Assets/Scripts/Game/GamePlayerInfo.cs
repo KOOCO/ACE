@@ -556,61 +556,69 @@ public class GamePlayerInfo : MonoBehaviour
             {
                 Countdown_Slider.gameObject.SetActive(true);
 
-                // Parse the initial value
-                int countdownValue = int.Parse(countDown_Txt.text);
-                Countdown_Slider.maxValue = countdownValue;
-                Countdown_Slider.value = countdownValue;
+                // Safely parse the initial value
+                if (int.TryParse(countDown_Txt.text, out int countdownValue))
+                {
+                    Countdown_Slider.maxValue = countdownValue;
+                    Countdown_Slider.value = countdownValue;
 
-                // Start the smooth countdown animation
-                StartCoroutine(SmoothCountdown(countdownValue));
+                    // Stop any existing coroutine before starting a new one
+                    StopAllCoroutines(); // Alternatively, you can track the coroutine and stop it explicitly
+
+                    // Start the smooth countdown animation
+                    StartCoroutine(SmoothCountdown(Countdown_Slider.value));
+                }
+                else
+                {
+                    Countdown_Slider.gameObject.SetActive(false);
+                }
+                yield return null;
             }
-            else
-            {
-                Countdown_Slider.gameObject.SetActive(false);
-            }
-            yield return null;
+            #endregion
+
+            #region 新的答辯
+            //while (cd > 0)  // 當cd大於0時持續倒數
+            //{
+            //    Debug.Log($"{Nickname}倒數剩餘時間：{cd}秒");
+
+            //    yield return new WaitForSeconds(1);  // 每一秒更新一次
+
+            //    cd--;  // 每秒減去1
+
+            //    countDown_Txt.gameObject.SetActive(true);
+            //    countDown_Txt.text = cd.ToString();
+            //}
+
+            //// 當倒數結束時，執行完成的操作
+            //Debug.Log("倒數結束");
+
+            //CDMask_Img.fillAmount = cdTime;
+            //yield break;
+            #endregion
         }
-        #endregion
-
-        #region 新的答辯
-        //while (cd > 0)  // 當cd大於0時持續倒數
-        //{
-        //    Debug.Log($"{Nickname}倒數剩餘時間：{cd}秒");
-
-        //    yield return new WaitForSeconds(1);  // 每一秒更新一次
-
-        //    cd--;  // 每秒減去1
-
-        //    countDown_Txt.gameObject.SetActive(true);
-        //    countDown_Txt.text = cd.ToString();
-        //}
-
-        //// 當倒數結束時，執行完成的操作
-        //Debug.Log("倒數結束");
-
-        //CDMask_Img.fillAmount = cdTime;
-        //yield break;
-        #endregion
     }
-    IEnumerator SmoothCountdown(int startValue)
+    IEnumerator SmoothCountdown(float startValue)
     {
-        float targetValue = 0; // The target value for the slider
-        float elapsedTime = 0; // Time elapsed since the animation started
+        float targetValue = 0f; // The target value for the slider
+        float elapsedTime = 0f; // Time elapsed since the animation started
 
         while (elapsedTime < animationDuration)
         {
             elapsedTime += Time.deltaTime;
 
-            // Lerp between the start value and the target value
-            Countdown_Slider.value = Mathf.Lerp(startValue, targetValue, elapsedTime / animationDuration);
+            // Normalize elapsedTime and clamp between 0 and 1
+            float t = Mathf.Clamp01(elapsedTime / animationDuration);
 
-            // Optionally update the text to match the slider value
+            // Lerp between startValue and targetValue
+            Countdown_Slider.value = Mathf.Lerp(startValue, targetValue, t);
+
+            // Update the text to match the slider value
             countDown_Txt.text = Mathf.CeilToInt(Countdown_Slider.value).ToString();
 
             yield return null; // Wait for the next frame
         }
 
-        // Ensure the slider ends at exactly the target value
+        // Ensure the slider ends exactly at the target value
         Countdown_Slider.value = targetValue;
         countDown_Txt.text = targetValue.ToString();
     }

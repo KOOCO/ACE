@@ -160,8 +160,6 @@ public class GameView : MonoBehaviour
     public List<TMP_Dropdown> PN0_NumTogList;
     [SerializeField]
     public List<TMP_Dropdown> PN1_NumTogList;
-    [SerializeField]
-    List<Sprite> ActionBtn_Sprites;
 
     public bool IsStartGameTest;                                //是否開始遊戲測試
 
@@ -1360,13 +1358,13 @@ public class GameView : MonoBehaviour
                     SetAutoAction(false);
                     break;
                 case AutoActingEnum.CallAny:
-                    SetAutoAction(true, Raise_Btn.transform, ActionBtn_Sprites[0]);
+                    SetAutoAction(true, Raise_Btn.transform);
                     break;
                 case AutoActingEnum.Check:
-                    SetAutoAction(true, Call_Btn.transform, ActionBtn_Sprites[1]);
+                    SetAutoAction(true, Call_Btn.transform);
                     break;
                 case AutoActingEnum.CheckAndFold:
-                    SetAutoAction(true, Fold_Btn.transform, ActionBtn_Sprites[2]);
+                    SetAutoAction(true, Fold_Btn.transform);
                     break;
             }
         }
@@ -1377,13 +1375,12 @@ public class GameView : MonoBehaviour
     /// </summary>
     /// <param name="isActive"></param>
     /// <param name="parent"></param>
-    private void SetAutoAction(bool isActive, Transform parent = null, Sprite _sprite = null)
+    private void SetAutoAction(bool isActive, Transform parent = null)
     {
         AutoActionFrame_Tr.gameObject.SetActive(isActive);
         if (parent != null)
         {
             AutoActionFrame_Tr.SetParent(parent);
-            AutoActionFrame_Tr.GetComponent<Image>().sprite = _sprite;
             AutoActionFrame_Tr.anchoredPosition = Vector2.zero;
             AutoActionFrame_Tr.offsetMax = Vector2.zero;
             AutoActionFrame_Tr.offsetMin = Vector2.zero;
