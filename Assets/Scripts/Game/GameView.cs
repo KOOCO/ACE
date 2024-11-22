@@ -1379,7 +1379,14 @@ public class GameView : MonoBehaviour
     private void SetAutoAction(bool isActive, Transform parent = null, Image _selectImg = null)
     {
         // AutoActionFrame_Tr.gameObject.SetActive(isActive);
-        _selectImg.gameObject.SetActive(true);
+        // if (_selectImg == null)
+        // {
+        //     foreach (var item in ActionBtn_Images)
+        //     {
+        //         item.gameObject.SetActive(false);
+        //     }
+        // }
+        // _selectImg.gameObject.SetActive(isActive);
         // if (parent != null)
         // {
         //     AutoActionFrame_Tr.SetParent(parent);
