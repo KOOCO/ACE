@@ -1063,7 +1063,7 @@ public class GameView : MonoBehaviour
         set
         {
             Debug.Log($"SetActionButton called with value: {value}");
-            SetActingButtonEnable = value;
+            //SetActingButtonEnable = value;
             thisData.isLocalPlayerTurn = value;
 
             UpdateActionBtns();
