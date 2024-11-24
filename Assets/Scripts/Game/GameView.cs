@@ -2502,7 +2502,7 @@ public class GameView : MonoBehaviour
                         // Open Match Poker Frame if enabled
                         if (isOpenMatchPokerFrame)
                         {
-                            PokerShape.OpenMatchPokerFrame(allPokers, matchPokerList, isWinEffect);
+                            PokerShape.OpenMatchPokerFrame(allPokers, gameControl.CalculateRank(matchPokerList).Take(5).ToList(), isWinEffect);
                             Debug.Log($"[JudgePokerShapeUI] Match Poker Frame Opened | isWinEffect: {isWinEffect} | {string.Join(", ", matchPokerList.Select(p => p))}");
 
                             // Set winner details if win effects are enabled

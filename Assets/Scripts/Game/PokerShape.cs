@@ -37,7 +37,7 @@ public static class PokerShape
         List<int> suits = judgePokerList.Select(card => card / 13).ToList();    // Suits 0-3
 
         // Sort cards by rank for easier evaluation
-        var sortedCards = judgePokerList.OrderBy(card => card % 13).ToList();
+        var sortedCards = judgePokerList.OrderByDescending(card => card % 13).ToList();
         ranks = sortedCards.Select(card => card % 13 + 2).ToList();
 
         // Create helper dictionaries
@@ -68,22 +68,29 @@ public static class PokerShape
             return null;
         }
 
+        // Helper to pad the hand to 7 cards
+        List<int> PadToSevenCards(List<int> hand, List<int> allCards)
+        {
+            var remainingCards = allCards.Except(hand).OrderByDescending(card => card % 13).ToList();
+            return hand.Concat(remainingCards.Take(7 - hand.Count)).ToList();
+        }
+
         // Check for Royal Flush or Straight Flush
         foreach (var suit in suitGroups.Keys)
         {
             if (suitGroups[suit].Count >= 5)
             {
-                var flushCards = suitGroups[suit].OrderBy(card => card % 13).ToList();
+                var flushCards = suitGroups[suit].OrderByDescending(card => card % 13).ToList();
                 var straightFlush = GetStraight(flushCards);
                 if (straightFlush != null)
                 {
                     if (straightFlush.All(card => card % 13 + 2 >= 10))
                     {
-                        callBack?.Invoke(1, straightFlush); // Royal Flush
+                        callBack?.Invoke(1, PadToSevenCards(straightFlush, sortedCards)); // Royal Flush
                         return;
                     }
 
-                    callBack?.Invoke(2, straightFlush); // Straight Flush
+                    callBack?.Invoke(2, PadToSevenCards(straightFlush, sortedCards)); // Straight Flush
                     return;
                 }
             }
@@ -94,8 +101,7 @@ public static class PokerShape
         {
             int quadRank = rankCounts.First(kvp => kvp.Value == 4).Key;
             var quadCards = sortedCards.Where(card => card % 13 + 2 == quadRank).Take(4).ToList();
-            var kicker = sortedCards.Except(quadCards).OrderByDescending(card => card % 13).First();
-            callBack?.Invoke(3, quadCards.Concat(new List<int> { kicker }).ToList());
+            callBack?.Invoke(3, PadToSevenCards(quadCards, sortedCards));
             return;
         }
 
@@ -107,7 +113,7 @@ public static class PokerShape
             var fullHouse = sortedCards.Where(card => card % 13 + 2 == tripletRank).Take(3)
                                        .Concat(sortedCards.Where(card => card % 13 + 2 == pairRank).Take(2))
                                        .ToList();
-            callBack?.Invoke(4, fullHouse);
+            callBack?.Invoke(4, PadToSevenCards(fullHouse, sortedCards));
             return;
         }
 
@@ -117,7 +123,7 @@ public static class PokerShape
             if (suitGroups[suit].Count >= 5)
             {
                 var flush = suitGroups[suit].OrderByDescending(card => card % 13).Take(5).ToList();
-                callBack?.Invoke(5, flush);
+                callBack?.Invoke(5, PadToSevenCards(flush, sortedCards));
                 return;
             }
         }
@@ -126,7 +132,7 @@ public static class PokerShape
         var straight = GetStraight(sortedCards);
         if (straight != null)
         {
-            callBack?.Invoke(6, straight);
+            callBack?.Invoke(6, PadToSevenCards(straight, sortedCards));
             return;
         }
 
@@ -135,8 +141,7 @@ public static class PokerShape
         {
             int tripletRank = rankCounts.First(kvp => kvp.Value == 3).Key;
             var tripletCards = sortedCards.Where(card => card % 13 + 2 == tripletRank).Take(3).ToList();
-            var kickers = sortedCards.Except(tripletCards).OrderByDescending(card => card % 13).Take(2).ToList();
-            callBack?.Invoke(7, tripletCards.Concat(kickers).ToList());
+            callBack?.Invoke(7, PadToSevenCards(tripletCards, sortedCards));
             return;
         }
 
@@ -145,8 +150,7 @@ public static class PokerShape
         {
             var pairRanks = rankCounts.Where(kvp => kvp.Value == 2).OrderByDescending(kvp => kvp.Key).Take(2).Select(kvp => kvp.Key).ToList();
             var pairCards = sortedCards.Where(card => pairRanks.Contains(card % 13 + 2)).Take(4).ToList();
-            var kicker = sortedCards.Except(pairCards).OrderByDescending(card => card % 13).First();
-            callBack?.Invoke(8, pairCards.Concat(new List<int> { kicker }).ToList());
+            callBack?.Invoke(8, PadToSevenCards(pairCards, sortedCards));
             return;
         }
 
@@ -155,14 +159,13 @@ public static class PokerShape
         {
             int pairRank = rankCounts.First(kvp => kvp.Value == 2).Key;
             var pairCards = sortedCards.Where(card => card % 13 + 2 == pairRank).Take(2).ToList();
-            var kickers = sortedCards.Except(pairCards).OrderByDescending(card => card % 13).Take(3).ToList();
-            callBack?.Invoke(9, pairCards.Concat(kickers).ToList());
+            callBack?.Invoke(9, PadToSevenCards(pairCards, sortedCards));
             return;
         }
 
         // High Card
-        var highCards = sortedCards.OrderByDescending(card => card % 13).Take(5).ToList();
-        callBack?.Invoke(10, highCards);
+        var highCards = sortedCards.Take(5).ToList();
+        callBack?.Invoke(10, PadToSevenCards(highCards, sortedCards));
     }
 
     /// <summary>
