@@ -2713,7 +2713,7 @@ public class GameControl : MonoBehaviour
         return shapeDic;
     }
 
-    public List<int> CalculateRank(List<int> cards)
+    private List<int> CalculateRank(List<int> cards)
     {
         // Group cards by rank (e.g., 2, 2, 5, 6, K -> groups for 2:2, 5:1, etc.)
         var grouped = cards

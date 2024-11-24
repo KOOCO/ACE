@@ -2502,7 +2502,7 @@ public class GameView : MonoBehaviour
                         // Open Match Poker Frame if enabled
                         if (isOpenMatchPokerFrame)
                         {
-                            PokerShape.OpenMatchPokerFrame(allPokers, gameControl.CalculateRank(matchPokerList).Take(5).ToList(), isWinEffect);
+                            PokerShape.OpenMatchPokerFrame(allPokers, CalculateRank(matchPokerList).Take(5).ToList(), isWinEffect);
                             Debug.Log($"[JudgePokerShapeUI] Match Poker Frame Opened | isWinEffect: {isWinEffect} | {string.Join(", ", matchPokerList.Select(p => p))}");
 
                             // Set winner details if win effects are enabled
@@ -2531,6 +2531,23 @@ public class GameView : MonoBehaviour
         }
     }
 
+    private List<int> CalculateRank(List<int> cards)
+    {
+        // Group cards by rank (e.g., 2, 2, 5, 6, K -> groups for 2:2, 5:1, etc.)
+        var grouped = cards
+            .GroupBy(card => card % 13) // Group by rank (0-12 -> 2 to Ace)
+            .Select(g => new { Rank = (g.Key + 2), Count = g.Count(), Cards = g.ToList() }) // Include cards in group
+            .OrderByDescending(g => g.Count) // Sort by group size (pairs, trips first)
+            .ThenByDescending(g => g.Rank)   // Sort by rank within same group size
+            .ToList();
+
+        // Flatten the grouped cards into a single list, ordered by importance
+        var sortedCards = grouped
+            .SelectMany(g => g.Cards) // Extract cards from each group in sorted order
+            .ToList();
+
+        return sortedCards;
+    }
 
 
     /// <summary>
