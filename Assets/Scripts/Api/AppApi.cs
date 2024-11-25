@@ -84,8 +84,14 @@ public class AppApi : MonoBehaviour
     public static void OnRoundFinish(ResultHistoryData resultHistoryData, UnityAction<string> _success = null, UnityAction<string> _error = null)
     {
         Debug.Log("Round Finish API :: " + JsonConvert.SerializeObject(resultHistoryData));
+        string jsonData = JsonConvert.SerializeObject(resultHistoryData);
+        print("RF Encrypt: " + EncryptJson(jsonData));
+        encryptResultHistoryData eRHD = new encryptResultHistoryData(EncryptJson(jsonData));
+
         apiEndpoint = $"/api/app/rooms/finish-round";
         SwaggerAPIManager.Instance.SendPostAPI<ResultHistoryData>(apiEndpoint, resultHistoryData, _success, _error, true);
+        //Encrypt version
+        //SwaggerAPIManager.Instance.SendPostAPI<encryptResultHistoryData>(apiEndpoint, eRHD, _success, _error, true);
     }
 
     public static void PlayerStatistics(UnityAction<string> _success = null, UnityAction _error = null)
@@ -153,8 +159,46 @@ public class AppApi : MonoBehaviour
             byte[] encryptedBytes = encryptor.TransformFinalBlock(byteRaw, 0, byteRaw.Length);
 
             // 將加密後的位元組數組轉換為 Base64 字串
-            return Convert.ToBase64String(encryptedBytes);
+            return Base64UrlEncoder.Encode(encryptedBytes);
+        }
+    }
+    public static string EncryptJson(string byteString)
+    {
+        // 創建 AES 實例
+        using (Aes aes = CreateAes())
+        {
+            // 創建加密器
+            ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+
+            // 加密 JSON 字符串
+            byte[] byteRaw = Encoding.UTF8.GetBytes(byteString);
+            byte[] encryptedBytes = encryptor.TransformFinalBlock(byteRaw, 0, byteRaw.Length);
+
+            // 將加密後的位元組數組轉換為 Base64 字串
+            return Base64UrlEncoder.Encode(encryptedBytes);
         }
     }
     #endregion
 }
+
+#region Base64urlEncoder(Only can use this to encrypt AES)
+public static class Base64UrlEncoder
+{
+    public static string Encode(byte[] input)
+    {
+        var base64 = Convert.ToBase64String(input);
+        return base64.Replace("+", "-").Replace("/", "_").TrimEnd('=');
+    }
+
+    public static byte[] Decode(string input)
+    {
+        string base64 = input.Replace("-", "+").Replace("_", "/");
+        switch (base64.Length % 4)
+        {
+            case 2: base64 += "=="; break;
+            case 3: base64 += "="; break;
+        }
+        return Convert.FromBase64String(base64);
+    }
+}
+#endregion

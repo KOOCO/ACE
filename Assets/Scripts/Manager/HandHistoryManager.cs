@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 [System.Serializable]
 public class ResultHistoryData
 {
+    public string uniqueSerial;
     public string dateTime;
     public string roomType;                         //房間類型
     public double smallBlind;                       //小盲注
@@ -21,6 +22,15 @@ public class ResultHistoryData
     public double roundInsurancePayRate = 0;
     public double roundInsurancePayAmount = 0;
     public List<PlayerDetails> playerDetails;
+}
+public class encryptResultHistoryData
+{
+    public string text;
+
+    public encryptResultHistoryData(string text)
+    {
+        this.text = text;
+    }
 }
 
 /// <summary>

@@ -2685,10 +2685,11 @@ public class GameView : MonoBehaviour
                     _ => "Unknown Room"
                 };
 
+                saveResultData.uniqueSerial = Guid.NewGuid().ToString();
                 saveResultData.roomType = roomName;
                 saveResultData.smallBlind = gameRoomData.smallBlind;
                 saveResultData.communityPoker = gameRoomData.currCommunityPoker ?? new List<int>();
-                saveResultData.dateTime = DateTime.UtcNow.ToString();
+                saveResultData.dateTime = DateTime.UtcNow.ToString("yyyy/MM/dd HH:mm:ss");
                 saveResultData.roomId = DataManager.RoomId;
                 saveResultData.tableId = DataManager.TableId;
                 saveResultData.roundId = roundId;
