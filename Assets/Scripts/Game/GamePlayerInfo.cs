@@ -554,18 +554,32 @@ public class GamePlayerInfo : MonoBehaviour
             countDown_Txt.text = cd.ToString();
             if (IsLocalPlayer)
             {
+                // Enable the slider for the local player
                 Countdown_Slider.gameObject.SetActive(true);
 
-                // Parse the initial value
-                int countdownValue = int.Parse(countDown_Txt.text);
-                Countdown_Slider.maxValue = countdownValue;
-                Countdown_Slider.value = countdownValue;
+                // Parse the initial value from the text
+                if (int.TryParse(countDown_Txt.text, out int countdownValue))
+                {
+                    Countdown_Slider.maxValue = countdownValue;
+                    Countdown_Slider.value = countdownValue;
 
-                // Start the smooth countdown animation
-                StartCoroutine(SmoothCountdown(countdownValue));
+                    // Stop any ongoing coroutine before starting a new one
+                    if (cdCoroutine != null)
+                    {
+                        StopCoroutine(cdCoroutine);
+                    }
+
+                    // Start the smooth countdown animation for the local player
+                    cdCoroutine = StartCoroutine(SmoothCountdown(countdownValue));
+                }
+                else
+                {
+                    Debug.LogWarning("Countdown text could not be parsed into an integer.");
+                }
             }
             else
             {
+                // Hide the slider for non-local players
                 Countdown_Slider.gameObject.SetActive(false);
             }
             yield return null;
@@ -594,36 +608,40 @@ public class GamePlayerInfo : MonoBehaviour
     }
     IEnumerator SmoothCountdown(int startValue)
     {
-        float elapsedTime = 0f;
-        float durationPerStep = animationDuration / startValue; // Calculate the duration for each decrement step
+        // Set the initial slider value
+        Countdown_Slider.value = startValue;
 
+        // Loop through each step of the countdown
         while (startValue > 0)
         {
-            float stepStartValue = startValue; // Keep the current value as the starting point for this step
-            float targetValue = startValue - 1; // Target value is one less than the current value
+            float elapsedTime = 0f;                  // Track elapsed time for the animation
+            float durationPerStep = 1f;             // Each step (1-second countdown)
 
-            elapsedTime = 0f; // Reset elapsed time for this step
+            float currentStartValue = startValue;   // Current value at the start of the step
+            float targetValue = startValue - 1;     // Target value for the slider after the step
+
+            // Animate the slider for the duration of this step
             while (elapsedTime < durationPerStep)
             {
                 elapsedTime += Time.deltaTime;
 
                 // Smoothly interpolate the slider value
-                Countdown_Slider.value = Mathf.Lerp(stepStartValue, targetValue, elapsedTime / durationPerStep);
+                Countdown_Slider.value = Mathf.Lerp(currentStartValue, targetValue, elapsedTime / durationPerStep);
 
-                // Optionally update the text to reflect the slider's value
+                // Update the text to reflect the current slider value
                 countDown_Txt.text = Mathf.CeilToInt(Countdown_Slider.value).ToString();
 
                 yield return null; // Wait for the next frame
             }
 
-            // Finalize the step by setting the slider to the target value
+            // Ensure the slider reaches the target value after the step
             Countdown_Slider.value = targetValue;
             countDown_Txt.text = targetValue.ToString();
 
-            startValue--; // Decrease the start value for the next step
+            startValue--; // Move to the next step of the countdown
         }
 
-        // Ensure the slider ends at exactly 0
+        // At the end of the countdown, set the slider and text to zero
         Countdown_Slider.value = 0;
         countDown_Txt.text = "0";
     }
