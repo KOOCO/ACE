@@ -608,25 +608,21 @@ public class GamePlayerInfo : MonoBehaviour
     }
     IEnumerator SmoothCountdown(int startValue)
     {
-        // Set the initial slider value
-        Countdown_Slider.value = startValue;
+        float currentValue = startValue;  // Start the countdown from the initial value
 
-        // Loop through each step of the countdown
-        while (startValue > 0)
+        while (currentValue > 0)
         {
-            float elapsedTime = 0f;                  // Track elapsed time for the animation
-            float durationPerStep = 1f;             // Each step (1-second countdown)
+            float targetValue = currentValue - 1; // Target value for this step
+            float elapsedTime = 0f;               // Track elapsed time for the animation
+            float durationPerStep = 1f;           // Duration for each countdown step
 
-            float currentStartValue = startValue;   // Current value at the start of the step
-            float targetValue = startValue - 1;     // Target value for the slider after the step
-
-            // Animate the slider for the duration of this step
+            // Animate the slider from the current value to the target value
             while (elapsedTime < durationPerStep)
             {
                 elapsedTime += Time.deltaTime;
 
                 // Smoothly interpolate the slider value
-                Countdown_Slider.value = Mathf.Lerp(currentStartValue, targetValue, elapsedTime / durationPerStep);
+                Countdown_Slider.value = Mathf.Lerp(currentValue, targetValue, elapsedTime / durationPerStep);
 
                 // Update the text to reflect the current slider value
                 countDown_Txt.text = Mathf.CeilToInt(Countdown_Slider.value).ToString();
@@ -634,11 +630,12 @@ public class GamePlayerInfo : MonoBehaviour
                 yield return null; // Wait for the next frame
             }
 
-            // Ensure the slider reaches the target value after the step
+            // Finalize the step by setting the slider to the exact target value
             Countdown_Slider.value = targetValue;
-            countDown_Txt.text = targetValue.ToString();
+            countDown_Txt.text = Mathf.CeilToInt(Countdown_Slider.value).ToString();
 
-            startValue--; // Move to the next step of the countdown
+            // Move to the next value
+            currentValue = targetValue;
         }
 
         // At the end of the countdown, set the slider and text to zero
