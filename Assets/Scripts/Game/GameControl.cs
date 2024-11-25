@@ -2722,7 +2722,8 @@ public class GameControl : MonoBehaviour
                 Debug.Log($"GameControl :: {player.nickname} : Input Hand :: {fullHand}");
                 // Store hand rank and match poker for tie-breaking
                 Debug.Log($"GameControl :: {player.nickname} : Returned Cards :: {string.Join(" , ", matchPoker)}");
-                var _matchPoker = CalculateRank(matchPoker);
+                bool isStraight = result == 6 ? true : false;
+                var _matchPoker = CalculateRank(matchPoker, isStraight);
                 Debug.Log($"GameControl :: {player.nickname} : Hand :: {PokerShape.HandRanks[result]} : CardsRank :: {string.Join(" , ", _matchPoker)}");
 
                 shapeDic[player] = new HandEvaluation
@@ -2735,8 +2736,7 @@ public class GameControl : MonoBehaviour
 
         return shapeDic;
     }
-
-    private List<int> CalculateRank(List<int> cards)
+    public List<int> CalculateRank(List<int> cards, bool isStraight = false)
     {
         // Group cards by rank (e.g., 2, 2, 5, 6, K -> groups for 2:2, 5:1, etc.)
         var grouped = cards
@@ -2751,7 +2751,95 @@ public class GameControl : MonoBehaviour
             .SelectMany(g => Enumerable.Repeat(g.Rank, g.Count)) // Expand groups into individual cards
             .ToList();
 
-        return sortedCards;
+        // If the hand is a straight, ensure the cards are sorted in sequence order (ascending)
+        if (isStraight)
+        {
+            // Find the highest consecutive sequence (straight)
+            Debug.Log("Calculate Rank : isStraight : " + isStraight + " " + string.Join(" , ", sortedCards));
+
+            // Handle Ace-low straight (A-2-3-4-5)
+            if (HasLowStraight(cards))
+            {
+                Debug.Log("HasLowStraight");
+                // Convert Ace from 14 to 1 for low straights and update the sortedCards list
+                sortedCards = sortedCards.Select(card => card == 14 ? 1 : card).ToList();
+            }
+
+            var highestSeq = FindHighestConsecutiveSequence(sortedCards);
+            Debug.Log("Consecutive Seq : " + string.Join(" , ", highestSeq));
+            // Sort the highest sequence in ascending order
+            var ascendingSeq = highestSeq.OrderBy(card => card).ToList();
+
+            // Remove the cards in the sequence from the original sortedCards
+            var remainingCards = sortedCards.Where(card => !ascendingSeq.Contains(card)).ToList();
+
+            // Sort the remaining cards in descending order
+            var descendingRemaining = remainingCards.OrderByDescending(card => card).ToList();
+
+            // Combine the ascending sequence and descending remaining cards
+            return ascendingSeq.Concat(descendingRemaining).ToList();
+        }
+
+        // If not a straight, just return the cards sorted by rank
+        return sortedCards.OrderByDescending(card => card).ToList();
+    }
+
+    public static List<int> FindHighestConsecutiveSequence(List<int> input)
+    {
+        // Sort the input list to ensure the elements are in order
+        input.Sort();
+
+        // List to store the result sequences
+        List<List<int>> result = new List<List<int>>();
+
+        // Iterate through the list and check for consecutive sequences
+        for (int i = 0; i <= input.Count - 5; i++)
+        {
+            List<int> sequence = new List<int> { input[i] };
+            for (int j = i + 1; j < input.Count; j++)
+            {
+                // If current number is consecutive to the last one, add it to the sequence
+                if (input[j] == sequence[sequence.Count - 1] + 1)
+                {
+                    sequence.Add(input[j]);
+                    if (sequence.Count == 5)
+                    {
+                        result.Add(new List<int>(sequence));
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
+        // Check if there are valid sequences
+        if (result.Count == 0)
+        {
+            return null; // No sequence found
+        }
+
+        // Find the highest sequence (the one with the highest last number)
+        List<int> highestSequence = result.OrderByDescending(seq => seq.Last()).FirstOrDefault();
+
+        return highestSequence;
+    }
+    // Check if the hand contains a low straight (A-2-3-4-5)
+    public static bool HasLowStraight(List<int> cards)
+    {
+        // Step 1: Calculate ranks for each card
+        List<int> ranks = cards.Select(card => card % 13 + 2).ToList();
+
+        // Step 2: Check for the low straight ranks (2, 3, 4, 5, 14)
+        HashSet<int> lowStraightRanks = new HashSet<int> { 2, 3, 4, 5, 14 };
+
+        // Step 3: Convert ranks to a HashSet for fast lookup
+        HashSet<int> handRanks = new HashSet<int>(ranks);
+
+        // Step 4: Check if all low straight ranks are in the hand
+        return lowStraightRanks.All(rank => handRanks.Contains(rank));
     }
 
     // Hand evaluation structure

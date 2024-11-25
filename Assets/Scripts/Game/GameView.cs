@@ -2528,7 +2528,8 @@ public class GameView : MonoBehaviour
                         // Open Match Poker Frame if enabled
                         if (isOpenMatchPokerFrame)
                         {
-                            PokerShape.OpenMatchPokerFrame(allPokers, CalculateRank(matchPokerList).Take(5).ToList(), isWinEffect);
+                            bool isStraight = resultIndex == 6 ? true : false;
+                            PokerShape.OpenMatchPokerFrame(allPokers, HighlightCard(matchPokerList, isStraight).Take(5).ToList(), isWinEffect);
                             Debug.Log($"[JudgePokerShapeUI] Match Poker Frame Opened | isWinEffect: {isWinEffect} | {string.Join(", ", matchPokerList.Select(p => p))}");
 
                             // Set winner details if win effects are enabled
@@ -2557,24 +2558,30 @@ public class GameView : MonoBehaviour
         }
     }
 
-    private List<int> CalculateRank(List<int> cards)
+    List<int> HighlightCard(List<int> cards, bool isStraight)
     {
-        // Group cards by rank (e.g., 2, 2, 5, 6, K -> groups for 2:2, 5:1, etc.)
+        // Calculate the rank of the cards
+        var myCards = gameControl.CalculateRank(cards, isStraight);
+
         var grouped = cards
             .GroupBy(card => card % 13) // Group by rank (0-12 -> 2 to Ace)
-            .Select(g => new { Rank = (g.Key + 2), Count = g.Count(), Cards = g.ToList() }) // Include cards in group
+            .Select(g => new { Rank = (g.Key + 2), Count = g.Count(), Cards = g.ToList() }) // Add 2 for rank and keep original cards
             .OrderByDescending(g => g.Count) // Sort by group size (pairs, trips first)
             .ThenByDescending(g => g.Rank)   // Sort by rank within same group size
             .ToList();
 
         // Flatten the grouped cards into a single list, ordered by importance
         var sortedCards = grouped
-            .SelectMany(g => g.Cards) // Extract cards from each group in sorted order
+            .SelectMany(g => g.Cards) // Use original cards
             .ToList();
 
-        return sortedCards;
+        var result = sortedCards.Where(card => myCards.Contains((card % 13) + 2))
+                            .OrderBy(card => myCards.IndexOf((card % 13) + 2)) // Preserve myCards' order
+                            .ToList();
+        // Return or process `result` as needed
+        // You could highlight these cards in the UI, for example:
+        return result;
     }
-
 
     /// <summary>
     /// 主池結果
