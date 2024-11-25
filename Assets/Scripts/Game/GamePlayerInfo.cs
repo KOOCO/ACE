@@ -561,15 +561,12 @@ public class GamePlayerInfo : MonoBehaviour
                 if (int.TryParse(countDown_Txt.text, out int countdownValue))
                 {
                     Countdown_Slider.maxValue = countdownValue;
-                    Countdown_Slider.value = countdownValue;
 
-                    // Stop any ongoing coroutine before starting a new one
+                    // Start the smooth countdown animation for the local player
                     if (cdCoroutine != null)
                     {
                         StopCoroutine(cdCoroutine);
                     }
-
-                    // Start the smooth countdown animation for the local player
                     cdCoroutine = StartCoroutine(SmoothCountdown(countdownValue));
                 }
                 else
@@ -606,42 +603,40 @@ public class GamePlayerInfo : MonoBehaviour
         //yield break;
         #endregion
     }
+
     IEnumerator SmoothCountdown(int startValue)
     {
-        float currentValue = startValue;  // Start the countdown from the initial value
+        Countdown_Slider.value = startValue; // Initialize the slider's value
 
-        while (currentValue > 0)
+        for (int currentValue = startValue; currentValue > 0; currentValue--)
         {
             float targetValue = currentValue - 1; // Target value for this step
-            float elapsedTime = 0f;               // Track elapsed time for the animation
-            float durationPerStep = 1f;           // Duration for each countdown step
+            float elapsedTime = 0f;              // Reset elapsed time
 
-            // Animate the slider from the current value to the target value
-            while (elapsedTime < durationPerStep)
+            // Smoothly interpolate from the current value to the target value
+            while (elapsedTime < 1f) // 1 second per step
             {
                 elapsedTime += Time.deltaTime;
 
                 // Smoothly interpolate the slider value
-                Countdown_Slider.value = Mathf.Lerp(currentValue, targetValue, elapsedTime / durationPerStep);
+                Countdown_Slider.value = Mathf.Lerp(currentValue, targetValue, elapsedTime / 1f);
 
-                // Update the text to reflect the current slider value
+                // Update the countdown text to reflect the current slider value
                 countDown_Txt.text = Mathf.CeilToInt(Countdown_Slider.value).ToString();
 
                 yield return null; // Wait for the next frame
             }
 
-            // Finalize the step by setting the slider to the exact target value
+            // At the end of this step, snap the value to the target
             Countdown_Slider.value = targetValue;
-            countDown_Txt.text = Mathf.CeilToInt(Countdown_Slider.value).ToString();
-
-            // Move to the next value
-            currentValue = targetValue;
+            countDown_Txt.text = targetValue.ToString();
         }
 
-        // At the end of the countdown, set the slider and text to zero
+        // Ensure slider and text are set to 0 at the end
         Countdown_Slider.value = 0;
         countDown_Txt.text = "0";
     }
+
     /// <summary>
     /// 每輪回合開始初始
     /// </summary>
