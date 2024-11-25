@@ -1126,12 +1126,14 @@ public class GameView : MonoBehaviour
                 strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                 strData.CallStr = LanguageManager.Instance.GetText("Check");
                 strData.CallValueStr = "";
+                Call_Btn.interactable = false;
             }
             else
             {
                 strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                 strData.CallStr = LanguageManager.Instance.GetText("Call");
                 strData.CallValueStr = $"\n{gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                Call_Btn.interactable = true;
             }
         }
         else
@@ -1142,6 +1144,7 @@ public class GameView : MonoBehaviour
                 strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                 strData.CallStr = LanguageManager.Instance.GetText("Check");
                 strData.CallValueStr = "";
+                Call_Btn.interactable = false;
             }
             else if (isSmallBlind)
             {
@@ -1149,6 +1152,7 @@ public class GameView : MonoBehaviour
                 strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                 strData.CallStr = LanguageManager.Instance.GetText("Call");
                 strData.CallValueStr = $"\n{gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                Call_Btn.interactable = true;
             }
             else
             {
@@ -1156,6 +1160,7 @@ public class GameView : MonoBehaviour
                 strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                 strData.CallStr = LanguageManager.Instance.GetText("Call");
                 strData.CallValueStr = $"\n{gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                Call_Btn.interactable = true;
             }
         }
 
@@ -1173,6 +1178,7 @@ public class GameView : MonoBehaviour
                 strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                 strData.CallStr = LanguageManager.Instance.GetText("Check");
                 strData.CallValueStr = "";
+                Call_Btn.interactable = false;
             }
             else
             {
@@ -1180,6 +1186,7 @@ public class GameView : MonoBehaviour
                 strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                 strData.CallStr = LanguageManager.Instance.GetText("Call");
                 strData.CallValueStr = $"\n{gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                Call_Btn.interactable = true;
             }
         }
         else
@@ -1190,12 +1197,14 @@ public class GameView : MonoBehaviour
                 strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                 strData.CallStr = LanguageManager.Instance.GetText("Check");
                 strData.CallValueStr = "";
+                Call_Btn.interactable = false;
             }
             else
             {
                 strData.FoldStr = LanguageManager.Instance.GetText("CheckOrFold");
                 strData.CallStr = LanguageManager.Instance.GetText("Check");
                 strData.CallValueStr = "";
+                Call_Btn.interactable = false;
             }
         }
 
@@ -1213,12 +1222,14 @@ public class GameView : MonoBehaviour
                 strData.FoldStr = LanguageManager.Instance.GetText("CheckOrFold");
                 strData.CallStr = LanguageManager.Instance.GetText("Check");
                 strData.CallValueStr = "";
+                Call_Btn.interactable = false;
             }
             else
             {
                 bool check = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0;
                 strData.CallStr = check ? "" : LanguageManager.Instance.GetText("Call");
                 strData.CallValueStr = check ? "" : $"\n{gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                Call_Btn.interactable = true;
             }
         }
         else
@@ -1229,6 +1240,7 @@ public class GameView : MonoBehaviour
                 strData.FoldStr = LanguageManager.Instance.GetText("CheckOrFold");
                 strData.CallStr = LanguageManager.Instance.GetText("Check");
                 strData.CallValueStr = "";
+                Call_Btn.interactable = false;
             }
             else if (isSmallBlind)
             {
@@ -1238,6 +1250,15 @@ public class GameView : MonoBehaviour
                 strData.CallValueStr = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0
                     ? ""
                     : $"\n{gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+
+                if (string.IsNullOrEmpty(strData.CallValueStr))
+                {
+                    Call_Btn.interactable = false;
+                }
+                else
+                {
+                    Call_Btn.interactable = true;
+                }
             }
             else
             {
@@ -1247,6 +1268,15 @@ public class GameView : MonoBehaviour
                 strData.CallValueStr = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0
                     ? ""
                     : $"\n{gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+
+                if (string.IsNullOrEmpty(strData.CallValueStr))
+                {
+                    Call_Btn.interactable = false;
+                }
+                else
+                {
+                    Call_Btn.interactable = true;
+                }
             }
         }
 
@@ -1264,6 +1294,7 @@ public class GameView : MonoBehaviour
                 strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                 strData.CallStr = "";
                 strData.CallValueStr = "";
+                Call_Btn.interactable = false;
             }
             else
             {
@@ -1271,6 +1302,7 @@ public class GameView : MonoBehaviour
                 strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                 strData.CallStr = LanguageManager.Instance.GetText("Call"); ;
                 strData.CallValueStr = $"\n{gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                Call_Btn.interactable = true;
             }
         }
         else
@@ -1279,6 +1311,7 @@ public class GameView : MonoBehaviour
             strData.FoldStr = LanguageManager.Instance.GetText("CheckOrFold");
             strData.CallStr = LanguageManager.Instance.GetText("Check");
             strData.CallValueStr = "";
+            Call_Btn.interactable = false;
         }
 
         // Update button texts for other players
@@ -1887,12 +1920,14 @@ public class GameView : MonoBehaviour
                 //Debug.Log($"{nameof(ShowBetArea)} :: check");
                 strData.CallStr = "Check";
                 strData.CallValueStr = "";
+                Call_Btn.interactable = false;
             }
             else
             {
                 //Debug.Log($"{nameof(ShowBetArea)} :: call");
                 strData.CallStr = "Call";
                 strData.CallValueStr = $"\n{StringUtils.SetChipsUnit(thisData.CallDifference)}";
+                Call_Btn.interactable = true;
             }
         }
         else
@@ -1902,12 +1937,14 @@ public class GameView : MonoBehaviour
                 //Debug.Log($"{nameof(ShowBetArea)} :: else check");
                 strData.CallStr = "Check";
                 strData.CallValueStr = "";
+                Call_Btn.interactable = false;
             }
             else
             {
                 //Debug.Log($"{nameof(ShowBetArea)} :: else call");
                 strData.CallStr = "Call";
                 strData.CallValueStr = $"\n{StringUtils.SetChipsUnit(thisData.CallDifference)}";
+                Call_Btn.interactable = true;
             }
         }
         CallBtn_Txt.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
@@ -2260,10 +2297,6 @@ public class GameView : MonoBehaviour
 
                 //All In
                 case BetActingEnum.AllIn:
-                    SetActingButtonEnable = false;
-                    break;
-
-                case BetActingEnum.Raise:
                     SetActingButtonEnable = false;
                     break;
             }
