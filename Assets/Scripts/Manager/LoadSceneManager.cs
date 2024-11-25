@@ -15,7 +15,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
     [SerializeField]
     Image Progress_Img;
     [SerializeField]
-    TextMeshProUGUI Loading_Txt, Progress_Txt;
+    TextMeshProUGUI Loading_Txt, Progress_Txt, SessionExp_Txt, Ok_Txt;
 
     [Header("開啟介面")]
     [SerializeField]
@@ -33,7 +33,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
     public override void Awake()
     {
         base.Awake();
-
+        LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
         Loading_Txt.text = "Now Loading...";
         lodingView.gameObject.SetActive(false);
         closeBrowser_Btn.onClick.AddListener(OnClickLogOutBtn);
@@ -285,4 +285,16 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
         version_Txt.text = Entry.Instance.version;
         loginView.setMaintenanceObj(true);
     }
+
+    private void UpdateLanguage()
+    {
+        SessionExp_Txt.text = LanguageManager.Instance.GetText("Session expired. Please log in again.");
+        Ok_Txt.text = LanguageManager.Instance.GetText("Ok");
+    }
+
+    private void OnDestroy()
+    {
+        LanguageManager.Instance.RemoveLanguageFun(UpdateLanguage);
+    }
+
 }

@@ -1567,12 +1567,21 @@ Our Texas Hold'em poker tables are about to undergo routine maintenance to ensur
 
 Thank you for your understanding and support! After the maintenance is over, we will invite you back to the battlefield immediately!
 
-ASIA POKER TEAM",
-    "zh_TW": "緊急通知：
+ASIA POKER TEAM","zh_TW": "緊急通知：
 各位玩家請注意，我們需要進行一次臨時維護，以確保您的撲克之旅始終保持最佳狀態。維護期間遊戲將暫時無法進行，但我們會盡快完成，讓您重返桌上風雲！
 
 感謝您的耐心等候，我們隨時為您準備好牌桌！
 
 ASIA POKER 團隊"
+  },
+  {
+    "ID": "Session expired. Please log in again.",
+    "English": "Session expired. Please log in again.",
+    "zh_TW": "登入已過期，請重新登入"
+  },
+  {
+    "ID": "Ok",
+    "English": "Ok",
+    "zh_TW": "確定"
   }
 ]
