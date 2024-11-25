@@ -965,6 +965,29 @@ public class GameControl : MonoBehaviour
                 UpdataPlayerData(winner.userId,
                                  data);
 
+                remainingChips = gameRoomData.potChips - mainPotWinChips;
+                IsHaveSide = remainingChips > 0;
+                potWinnerIdList = new List<string>();
+                foreach (var potWinner in potWinners)
+                {
+                    potWinner.winType = WinnerEnum.MAIN;
+                    potWinnerIdList.Add(potWinner.userId);
+                    double winnerShare = mainPotWinChips / potWinners.Count;
+                    RoomFee roomFeeObj = new RoomFee()
+                    {
+                        userId = potWinner.userId,
+                        winType = WinnerEnum.MAIN,
+                        potWinAmount = winnerShare,
+                        allBetChips = potWinner.allBetChips,
+                        carryChips = potWinner.carryChips,
+                    };
+                    winnersRoomFee.Add(roomFeeObj);
+                }
+                if (!IsHaveSide)
+                {
+                    CalculateRoomFee();
+                }
+
                 GetPlayerData(winner.userId).carryChips = newCarryChips;
 
                 //更新底池獲勝資料
