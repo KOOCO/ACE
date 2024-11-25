@@ -161,7 +161,7 @@ public class GameView : MonoBehaviour
     [SerializeField]
     public List<TMP_Dropdown> PN1_NumTogList;
     [SerializeField]
-    List<Image> ActionBtn_Images;
+    List<Sprite> ActionBtn_Images;
     public bool IsStartGameTest;                                //是否開始遊戲測試
 
     const float PageMoveTime = 0.25f;                           //滑動頁面移動時間
@@ -1376,43 +1376,54 @@ public class GameView : MonoBehaviour
     /// </summary>
     /// <param name="isActive"></param>
     /// <param name="parent"></param>
-    private void SetAutoAction(bool isActive, Transform parent = null, Image _selectImg = null)
+    private void SetAutoAction(bool isActive, Transform parent = null, Sprite _selectImg = null)
     {
+        AutoActionFrame_Tr.gameObject.SetActive(isActive);
+        AutoActionFrame_Tr.gameObject.GetComponent<Image>().sprite = _selectImg;
+        if (parent != null)
+        {
+            AutoActionFrame_Tr.SetParent(parent);
+            AutoActionFrame_Tr.anchoredPosition = Vector2.zero;
+            AutoActionFrame_Tr.offsetMax = Vector2.zero;
+            AutoActionFrame_Tr.offsetMin = Vector2.zero;
+        }
+
+
         // Deactivate all images first
-        foreach (var item in ActionBtn_Images)
-        {
-            if (item != null)
-            {
-                item.gameObject.SetActive(false); // Ensure all other images are hidden
-            }
-            else
-            {
-                Debug.LogWarning("Found null item in ActionBtn_Images.");
-            }
-        }
+        // foreach (var item in ActionBtn_Images)
+        // {
+        //     if (item != null)
+        //     {
+        //         item.gameObject.SetActive(false); // Ensure all other images are hidden
+        //     }
+        //     else
+        //     {
+        //         Debug.LogWarning("Found null item in ActionBtn_Images.");
+        //     }
+        // }
 
-        // Activate the selected image if provided
-        if (_selectImg != null)
-        {
-            _selectImg.gameObject.SetActive(isActive);
+        // // Activate the selected image if provided
+        // if (_selectImg != null)
+        // {
+        //     _selectImg.gameObject.SetActive(isActive);
 
-            // If a parent is provided, set the AutoActionFrame to follow it
-            if (isActive && parent != null && AutoActionFrame_Tr != null)
-            {
-                // AutoActionFrame_Tr.SetParent(parent);
-                // AutoActionFrame_Tr.anchoredPosition = Vector2.zero;
-                // AutoActionFrame_Tr.offsetMax = Vector2.zero;
-                // AutoActionFrame_Tr.offsetMin = Vector2.zero;
-            }
-            else if (parent == null)
-            {
-                Debug.LogWarning("Parent is null.");
-            }
-            else if (AutoActionFrame_Tr == null)
-            {
-                Debug.LogError("AutoActionFrame_Tr is null.");
-            }
-        }
+        //     // If a parent is provided, set the AutoActionFrame to follow it
+        //     if (isActive && parent != null && AutoActionFrame_Tr != null)
+        //     {
+        //         // AutoActionFrame_Tr.SetParent(parent);
+        //         // AutoActionFrame_Tr.anchoredPosition = Vector2.zero;
+        //         // AutoActionFrame_Tr.offsetMax = Vector2.zero;
+        //         // AutoActionFrame_Tr.offsetMin = Vector2.zero;
+        //     }
+        //     else if (parent == null)
+        //     {
+        //         Debug.LogWarning("Parent is null.");
+        //     }
+        //     else if (AutoActionFrame_Tr == null)
+        //     {
+        //         Debug.LogError("AutoActionFrame_Tr is null.");
+        //     }
+        // }
     }
 
     /// <summary>
