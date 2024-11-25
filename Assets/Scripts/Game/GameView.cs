@@ -2251,6 +2251,10 @@ public class GameView : MonoBehaviour
                 case BetActingEnum.AllIn:
                     SetActingButtonEnable = false;
                     break;
+
+                case BetActingEnum.Raise:
+                    SetActingButtonEnable = false;
+                    break;
             }
         }
 
