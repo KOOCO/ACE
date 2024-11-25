@@ -4971,7 +4971,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3645123124189837803
 RectTransform:
   m_ObjectHideFlags: 0
@@ -29605,9 +29605,9 @@ MonoBehaviour:
   - {fileID: 730311962259329439}
   - {fileID: 9074611881163530038}
   ActionBtn_Images:
-  - {fileID: 6515612709860702113}
-  - {fileID: 3876597421502793944}
-  - {fileID: 8733892636691946212}
+  - {fileID: 21300000, guid: 607890cd9022b884698e4c42cc56008a, type: 3}
+  - {fileID: 21300000, guid: 50044b20c6a7ede4194bf991ed2dc111, type: 3}
+  - {fileID: 21300000, guid: c90241aeb1c7ce848ad56ce72d5361e3, type: 3}
   IsStartGameTest: 0
   testApi_Btn: {fileID: 5835559540771385357}
 --- !u!114 &6875628500851460784
