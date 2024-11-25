@@ -43,7 +43,6 @@ public class LobbyReportView : MonoBehaviour
         T_Number_Txt, Time_Txt, Types_Txt, Amount_Txt,
         hadH_Tip_Txt;
 
-    private bool isBetReport = true;
 
     // Start is called before the first frame update
     void Start()
@@ -106,7 +105,6 @@ public class LobbyReportView : MonoBehaviour
                 selectObj(betRecord_Obj);
             dateSelect_Obj.SetActive(true);
             bethistory.gameObject.SetActive(false);
-            isBetReport = true;
             StartTime_Txt.text = System.DateTime.Today.ToShortDateString();
             EndTime_Txt.text = System.DateTime.Today.ToShortDateString();
             Game_Drop.gameObject.SetActive(true);
@@ -116,7 +114,6 @@ public class LobbyReportView : MonoBehaviour
             if (isOn)
                 selectObj(transactionList_Obj);
             dateSelect_Obj.SetActive(true);
-            isBetReport = false;
             StartTime_Txt.text = System.DateTime.Today.ToShortDateString();
             EndTime_Txt.text = System.DateTime.Today.ToShortDateString();
             Game_Drop.gameObject.SetActive(false);
@@ -153,14 +150,7 @@ public class LobbyReportView : MonoBehaviour
         });
         Submit_Btn.onClick.AddListener(() =>
         {
-            if (isBetReport)
-            {
                 AppApi.GetBettingDetail(startTime_Txt.text, endTime_Txt.text, GetBettingData);
-            }
-            else
-            {
-
-            }
         });
     }
 
