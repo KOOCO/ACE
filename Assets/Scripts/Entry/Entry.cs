@@ -296,15 +296,16 @@ public class Entry : UnitySingleton<Entry>
     void StartHeartbeat()
     {
         heartbeatData HB = null;
+
         HB = new heartbeatData(true, DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString(), PlayerPrefs.GetString("PlayerStatus"), PlayerPrefs.GetString("ServerStatus"));
 
         string data = JsonConvert.SerializeObject(HB);
 
         JSBridgeManager.Instance.UpdateDataToFirebase(
-                $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}",
-                data,
-                gameObject.name,
-                nameof(checkUpdate));
+                    $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}",
+                    data,
+                    gameObject.name,
+                    nameof(checkUpdate));
         JSBridgeManager.Instance.GetPlayerIPAddress();
     }
     void delayCallHeartbeat(string jsonData)
@@ -340,6 +341,13 @@ public class Entry : UnitySingleton<Entry>
             PlayerPrefs.Save();
         }
         //print(nullC);
+    }
+
+    public void stopListenHB()
+    {
+        JSBridgeManager.Instance.StopListeningForDataChanges(
+                        $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}");
+        isListenered = false;
     }
     #endregion
 }

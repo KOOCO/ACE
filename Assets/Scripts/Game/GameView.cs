@@ -164,6 +164,12 @@ public class GameView : MonoBehaviour
     List<Sprite> ActionBtn_Images;
     public bool IsStartGameTest;                                //是否開始遊戲測試
 
+    [Header("提示POP")]
+    public GameObject Notice;
+    public TextMeshProUGUI noticeText;
+    public TextMeshProUGUI btnText;
+    public Button ConfirmBtn;
+
     const float PageMoveTime = 0.25f;                           //滑動頁面移動時間
 
     //底池倍率
@@ -352,6 +358,8 @@ public class GameView : MonoBehaviour
         #endregion
 
         SetSitOutDisplay();
+
+        btnText.text = LanguageManager.Instance.GetText("Confirm");
     }
 
     public void Awake()
@@ -795,6 +803,13 @@ public class GameView : MonoBehaviour
         });
 
         #endregion
+
+        ConfirmBtn.onClick.AddListener(() =>
+        {
+            PlayerPrefs.SetInt("nullData", 0);
+            PlayerPrefs.SetString("PlayerIsOnline", "True");
+            JSBridgeManager.Instance.WindowClose();
+        });
     }
 
     private void OnEnable()
@@ -851,6 +866,7 @@ public class GameView : MonoBehaviour
 
         LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
 
+        InvokeRepeating(nameof(checkIsIdle), 0, 2);
 
         #region 遊戲測試
 
@@ -906,6 +922,9 @@ public class GameView : MonoBehaviour
         {
             PlayerPrefs.DeleteAll();
         }
+
+        Notice.gameObject.SetActive(DataManager.istipAppear);
+        noticeText.text = DataManager.TipText;
     }
 
     /// <summary>
@@ -2527,8 +2546,8 @@ public class GameView : MonoBehaviour
             .ToList();
 
         var result = sortedCards.Where(card => myCards.Contains((card % 13) + 2))
-                                .OrderBy(card => myCards.IndexOf((card % 13) + 2)) // Preserve myCards' order
-                                .ToList();
+                            .OrderBy(card => myCards.IndexOf((card % 13) + 2)) // Preserve myCards' order
+                            .ToList();
         // Return or process `result` as needed
         // You could highlight these cards in the UI, for example:
         return result;
@@ -3855,5 +3874,21 @@ public class GameView : MonoBehaviour
     {
         thisData = null;
         StopAllCoroutines();
+    }
+
+    void checkIsIdle()
+    {
+        if (PlayerPrefs.GetString("PlayerIsOnline") == "False")
+        {
+            DataManager.istipAppear = true;
+            DataManager.TipText = LanguageManager.Instance.GetText("Network offline");
+
+            var data = new Dictionary<string, object>()
+            {
+                { FirebaseManager.IS_SIT_OUT, true},         //是否保留座位離開
+            };
+            gameControl.UpdataPlayerData(DataManager.UserId,
+                                         data);
+        }
     }
 }
