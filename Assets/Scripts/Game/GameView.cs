@@ -2511,6 +2511,8 @@ public class GameView : MonoBehaviour
     {
         // Calculate the rank of the cards
         var myCards = gameControl.CalculateRank(cards, isStraight);
+        // Convert 1 to 14 in myCards to handle Ace as high
+        myCards = myCards.Select(rank => rank == 1 ? 14 : rank).ToList();
 
         var grouped = cards
             .GroupBy(card => card % 13) // Group by rank (0-12 -> 2 to Ace)
@@ -2525,8 +2527,8 @@ public class GameView : MonoBehaviour
             .ToList();
 
         var result = sortedCards.Where(card => myCards.Contains((card % 13) + 2))
-                            .OrderBy(card => myCards.IndexOf((card % 13) + 2)) // Preserve myCards' order
-                            .ToList();
+                                .OrderBy(card => myCards.IndexOf((card % 13) + 2)) // Preserve myCards' order
+                                .ToList();
         // Return or process `result` as needed
         // You could highlight these cards in the UI, for example:
         return result;
