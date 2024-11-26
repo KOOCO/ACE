@@ -2781,7 +2781,7 @@ public class GameControl : MonoBehaviour
         }
 
         // If not a straight, just return the cards sorted by rank
-        return sortedCards.OrderByDescending(card => card).ToList();
+        return sortedCards;
     }
 
     public static List<int> FindHighestConsecutiveSequence(List<int> input)
