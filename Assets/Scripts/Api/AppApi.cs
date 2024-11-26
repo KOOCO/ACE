@@ -85,13 +85,13 @@ public class AppApi : MonoBehaviour
     {
         Debug.Log("Round Finish API :: " + JsonConvert.SerializeObject(resultHistoryData));
         string jsonData = JsonConvert.SerializeObject(resultHistoryData);
-        print("RF Encrypt: " + EncryptJson(jsonData));
+        //print("RF Encrypt: " + EncryptJson(jsonData));
         encryptResultHistoryData eRHD = new encryptResultHistoryData(EncryptJson(jsonData));
 
         apiEndpoint = $"/api/app/rooms/finish-round";
-        SwaggerAPIManager.Instance.SendPostAPI<ResultHistoryData>(apiEndpoint, resultHistoryData, _success, _error, true);
+        //SwaggerAPIManager.Instance.SendPostAPI<ResultHistoryData>(apiEndpoint, resultHistoryData, _success, _error, true);
         //Encrypt version
-        //SwaggerAPIManager.Instance.SendPostAPI<encryptResultHistoryData>(apiEndpoint, eRHD, _success, _error, true);
+        SwaggerAPIManager.Instance.SendPostAPI<encryptResultHistoryData>(apiEndpoint, eRHD, _success, _error, true);
     }
 
     public static void PlayerStatistics(UnityAction<string> _success = null, UnityAction _error = null)
