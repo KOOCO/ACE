@@ -923,6 +923,8 @@ public class GameView : MonoBehaviour
             PlayerPrefs.DeleteAll();
         }
 
+        Call_Btn.interactable = (CallBtn_Txt.text != "");
+
         Notice.gameObject.SetActive(DataManager.istipAppear);
         noticeText.text = DataManager.TipText;
     }

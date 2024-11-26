@@ -43,8 +43,6 @@ public class GamePlayerInfo : MonoBehaviour
     GameObject Chat_Obj, roomFee_Obj;
     [SerializeField]
     TextMeshProUGUI Chat_Txt;
-    [SerializeField]
-    private Slider Countdown_Slider;
     public float animationDuration = 1.0f;
 
     Coroutine cdCoroutine;              //倒數協程
@@ -548,36 +546,25 @@ public class GamePlayerInfo : MonoBehaviour
             float value = Mathf.Lerp(curr, target, process);
 
             CDMask_Img.fillAmount = value;
-            countDown_Txt.gameObject.SetActive(false);
 
-            countDown_Txt.gameObject.SetActive(true);
+            //countDown_Txt.gameObject.SetActive(true);
             countDown_Txt.text = cd.ToString();
             if (IsLocalPlayer)
             {
-                // Enable the slider for the local player
-                Countdown_Slider.gameObject.SetActive(true);
-
                 // Parse the initial value from the text
-                if (int.TryParse(countDown_Txt.text, out int countdownValue))
-                {
-                    Countdown_Slider.maxValue = countdownValue;
-
-                    // Start the smooth countdown animation for the local player
-                    if (cdCoroutine != null)
-                    {
-                        StopCoroutine(cdCoroutine);
-                    }
-                    cdCoroutine = StartCoroutine(SmoothCountdown(countdownValue));
-                }
-                else
-                {
-                    Debug.LogWarning("Countdown text could not be parsed into an integer.");
-                }
-            }
-            else
-            {
-                // Hide the slider for non-local players
-                Countdown_Slider.gameObject.SetActive(false);
+                //if (int.TryParse(countDown_Txt.text, out int countdownValue))
+                //{
+                //    // Start the smooth countdown animation for the local player
+                //    if (cdCoroutine != null)
+                //    {
+                //        StopCoroutine(cdCoroutine);
+                //    }
+                //    cdCoroutine = StartCoroutine(SmoothCountdown(countdownValue));
+                //}
+                //else
+                //{
+                //    Debug.LogWarning("Countdown text could not be parsed into an integer.");
+                //}
             }
             yield return null;
         }
@@ -604,10 +591,9 @@ public class GamePlayerInfo : MonoBehaviour
         #endregion
     }
 
-    IEnumerator SmoothCountdown(int startValue)
+    #region old Slider
+    /*IEnumerator SmoothCountdown(int startValue)
     {
-        Countdown_Slider.value = startValue; // Initialize the slider's value
-
         for (int currentValue = startValue; currentValue > 0; currentValue--)
         {
             float targetValue = currentValue - 1; // Target value for this step
@@ -635,7 +621,8 @@ public class GamePlayerInfo : MonoBehaviour
         // Ensure slider and text are set to 0 at the end
         Countdown_Slider.value = 0;
         countDown_Txt.text = "0";
-    }
+    }*/
+    #endregion
 
     /// <summary>
     /// 每輪回合開始初始
