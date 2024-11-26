@@ -55,11 +55,14 @@ MonoBehaviour:
   Progress_Img: {fileID: 5002000278297190414}
   Loading_Txt: {fileID: 4859874510119967642}
   Progress_Txt: {fileID: 3138990008103890053}
+  SessionExp_Txt: {fileID: 0}
+  Ok_Txt: {fileID: 0}
   LoginViewObj: {fileID: 863772692583407926, guid: ea3817528ae246c4d80bb6c297ea41ac, type: 3}
   LobbyViewObj: {fileID: 8235554248380638060, guid: d4ca02ac74fe4254ba32cc80ad1af576, type: 3}
   SessionExp_Obj: {fileID: 0}
   version_Txt: {fileID: 692580163136675378}
   closeBrowser_Btn: {fileID: 0}
+  canvas: {fileID: 0}
 --- !u!223 &4144129472689817358
 Canvas:
   m_ObjectHideFlags: 0
@@ -340,11 +343,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2801911039031991352, guid: 1e965ac91fc25cf419c47349fd550e39, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3405911707972282787, guid: 1e965ac91fc25cf419c47349fd550e39, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3983121718248984777, guid: 1e965ac91fc25cf419c47349fd550e39, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6e67ee763bced7e42b042ebd77c8cdc9, type: 3}
     - target: {fileID: 7677484781933308552, guid: 1e965ac91fc25cf419c47349fd550e39, type: 3}
       propertyPath: m_FillAmount
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9145320219823566037, guid: 1e965ac91fc25cf419c47349fd550e39, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 292
+      objectReference: {fileID: 0}
+    - target: {fileID: 9145320219823566037, guid: 1e965ac91fc25cf419c47349fd550e39, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 32
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
