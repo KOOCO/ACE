@@ -724,6 +724,7 @@ public class GameControl : MonoBehaviour
 
         var data = new Dictionary<string, object>();
         var playingPlayers = new List<GameRoomPlayerData>();
+        var potWinners = new List<GameRoomPlayerData>();
         double newCarryChips = 0;
         switch (gameFlow)
         {
@@ -801,7 +802,7 @@ public class GameControl : MonoBehaviour
                     break;
 
                 // Judge the winners based on the remaining players
-                var potWinners = JudgeWinner(playingPlayers).OrderBy(x => x.allBetChips).ToList();
+                potWinners = JudgeWinner(playingPlayers).OrderBy(x => x.allBetChips).ToList();
 
                 // Calculate the minimum amount in the pot and the total winning chips
                 double potMin = playingPlayers[0].allBetChips;
@@ -874,45 +875,63 @@ public class GameControl : MonoBehaviour
                 Debug.Log($"GameControl :: SideResult : Updated community cards: {string.Join(", ", gameRoomData.communityPoker.Take(5))}");
 
                 // Get players still in the game, ordered by their total bet chips
-                var newPlayingPlayers = playingPlayers.OrderBy(p => p.allBetChips).ToList(); // Ensure players are sorted by bet chips
-                Debug.Log($"GameControl :: SideResult : Playing players ordered by bet chips: {string.Join(", ", newPlayingPlayers.Select(p => $"{p.userId}: {p.allBetChips}"))}");
-
+                var newPlayingPlayers = GetPlayingPlayer().OrderBy(x => x.allBetChips).ToList(); // Ensure players are sorted by bet chips
+                Debug.Log($"GameControl :: SideResult : Playing players ordered by bet chips: {string.Join(", ", newPlayingPlayers.Select(p => $"{p.nickname}: {p.allBetChips}"))}");
+                potWinners = JudgeWinner(playingPlayers).OrderBy(x => x.allBetChips).ToList();
+                Debug.Log($"GameControl :: SideResult : PotWinner players ordered by bet chips: {string.Join(", ", potWinners.Select(p => $"{p.nickname}: {p.allBetChips}"))}");
                 // Calculate total side pot
                 double totalSidePot = gameRoomData.potChips - mainPotWinChips;
                 Debug.Log($"GameControl :: SideResult : Total side pot: {totalSidePot}");
 
                 // Calculate individual side pots
                 var sidePots = CalculatePots(newPlayingPlayers);
-
-                List<GameRoomPlayerData> eligiblePlayers = newPlayingPlayers.ToList();
+                double maxEligibleCriteria = newPlayingPlayers[0].allBetChips;
+                List<GameRoomPlayerData> eligiblePlayers = new();
                 Dictionary<List<GameRoomPlayerData>, double> sideWinners1 = new();
                 sideWinnersIds = new List<string>();
 
-                foreach (var sidePot in sidePots.Skip(1)) // Skip the main pot
+                foreach (var player in newPlayingPlayers)
                 {
-                    if (!eligiblePlayers.Any())
+                    if (player.allBetChips >= maxEligibleCriteria)
                     {
-                        Debug.Log("GameControl :: SideResult : No eligible players remaining for side pots.");
-                        break; // Stop if no eligible players remain
+                        eligiblePlayers.Add(player);
                     }
+                }
+                if (eligiblePlayers.Count > 0 && eligiblePlayers != null)
+                {
+                    foreach (var sidePot in sidePots.Skip(1)) // Skip the main pot
+                    {
+                        if (!eligiblePlayers.Any())
+                        {
+                            Debug.Log("GameControl :: SideResult : No eligible players remaining for side pots.");
+                            break; // Stop if no eligible players remain
+                        }
 
-                    double minBet = eligiblePlayers.Min(p => p.allBetChips);
-                    Debug.Log($"GameControl :: SideResult : Minimum bet among eligible players: {minBet}");
+                        double minBet = eligiblePlayers.Min(p => p.allBetChips);
+                        Debug.Log($"GameControl :: SideResult : Minimum bet among eligible players: {minBet}");
 
-                    var sideWinner = JudgeWinner(eligiblePlayers);  // Get winner(s) for the side pot
-                    Debug.Log($"GameControl :: SideResult : Judged winners for side pot: {string.Join(", ", sideWinner.Select(p => p.userId))}");
+                        var sideWinner = JudgeWinner(eligiblePlayers);  // Get winner(s) for the side pot
+                        Debug.Log($"GameControl :: SideResult : Judged winners for side pot: {string.Join(", ", sideWinner.Select(p => p.userId))}");
 
+                        sideWinners1.Clear();
+                        sideWinners1.Add(sideWinner, sidePot);
+                        Debug.Log($"GameControl :: SideResult : Side pot amount: {sidePot}, distributing to winners.");
+
+                        DistributeSidePot(sideWinners1);
+
+                        // Remove players whose chips are less than the minimum bet
+                        eligiblePlayers = eligiblePlayers.Where(p => (p.allBetChips - minBet) > minBet)?.ToList();
+                        Debug.Log($"GameControl :: SideResult : Remaining eligible players: {string.Join(", ", eligiblePlayers.Select(p => p.userId))}");
+                    }
+                }
+                else
+                {
                     sideWinners1.Clear();
-                    sideWinners1.Add(sideWinner, sidePot);
-                    Debug.Log($"GameControl :: SideResult : Side pot amount: {sidePot}, distributing to winners.");
-
+                    sideWinners1.Add(potWinners, sidePots.Count > 1 ? sidePots[1] : 0);
                     DistributeSidePot(sideWinners1);
-
-                    // Remove players whose chips are less than the minimum bet
-                    eligiblePlayers = eligiblePlayers.Where(p => (p.allBetChips - minBet) > minBet)?.ToList();
-                    Debug.Log($"GameControl :: SideResult : Remaining eligible players: {string.Join(", ", eligiblePlayers.Select(p => p.userId))}");
                 }
 
+                CalculateRoomFee();
                 // Update Firebase with side pot data
                 var sidePotData = new Dictionary<string, object>
                 {
@@ -1047,14 +1066,30 @@ public class GameControl : MonoBehaviour
             {
                 double newCarryChip = player.carryChips + sideWinChips;
                 Debug.Log($"GameControl :: DistributeSidePot : Player {player.userId}, NewCarryChip = {Math.Floor(newCarryChip)}");
-
-                var data = new Dictionary<string, object>
-            {
-                { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChip) },
-                //{ FirebaseManager.SIDE_WIN_CHIPS, sideWinChips }
-            };
-                UpdataPlayerData(player.userId, data);
-
+                // var data = new Dictionary<string, object>
+                // {
+                //     { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChip) },
+                //     //{ FirebaseManager.SIDE_WIN_CHIPS, sideWinChips }
+                // };
+                // UpdataPlayerData(player.userId, data);
+                var winner = winnersRoomFee.FirstOrDefault(p => p.userId == player.userId);
+                if (winner != null)
+                {
+                    winner.sidePotAmount = sideWinChips;
+                }
+                else
+                {
+                    RoomFee roomFeeObj = new RoomFee()
+                    {
+                        userId = player.userId,
+                        winType = WinnerEnum.SIDE,
+                        potWinAmount = 0,
+                        sidePotAmount = sideWinChips,
+                        allBetChips = player.allBetChips,
+                        carryChips = player.carryChips,
+                    };
+                    winnersRoomFee.Add(roomFeeObj);
+                }
                 Debug.Log($"GameControl :: DistributeSidePot : Updated player data for {player.userId}");
                 sideWinnersIds.Add(player.userId);
             }
