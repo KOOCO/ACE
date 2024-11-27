@@ -195,6 +195,7 @@ public class GameView : MonoBehaviour
     Vector2 InitPotPointPos;                                    //初始底池位置
     int notReadMsgCount;                                        //未讀取數
     bool isNextRountSitOut;                                     //是否下局保留作位離開
+    bool isOnFold;                                     //是否下局保留作位離開
 
     #region 遊戲過程紀錄
 
@@ -250,6 +251,7 @@ public class GameView : MonoBehaviour
         public double CurrCallValue;                       //當前跟注值
         public double CurrRaiseValue;                      //當前加注值
         public double MinRaiseValue;                       //最小加注值
+        public double RaiseValueSum;                       //累積加注值
         public double SmallBlindValue;                     //小盲值
         public bool IsFirstRaisePlayer;                    //首位加注玩家
         public bool IsUnableRaise;                         //無法加注
@@ -645,6 +647,9 @@ public class GameView : MonoBehaviour
             {
                 bool isAllIn = thisData.LocalPlayerChips < thisData.MinRaiseValue ||
                                thisData.CurrRaiseValue == thisData.LocalPlayerChips;
+                strData.RaiseStr = isAllIn ?
+                               "AllIn" :
+                               "RaiseTo";
 
                 BetActingEnum acting = isAllIn == true ?
                                     BetActingEnum.AllIn :
@@ -659,15 +664,19 @@ public class GameView : MonoBehaviour
                 // CalculateEffectiveBets();
                 if (Raise_Tr.gameObject.activeSelf || isAllIn == true)
                 {
+                    double currRaiseBet = 0;
+
                     double betValue = isAllIn == true ?
                                   thisData.LocalPlayerChips :
-                                  thisData.CurrRaiseValue;
+                                  thisData.CurrRaiseValue - thisData.RaiseValueSum;
 
                     gameControl.UpdateBetAction(DataManager.UserId,
                                                 acting,
                                                 betValue);
 
-                    NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(), thisData.CurrRaiseValue, 9, ChipTransactionType.Raise, (x) =>
+                    currRaiseBet = isAllIn == true ? thisData.CurrRaiseValue : thisData.CurrRaiseValue - thisData.RaiseValueSum;
+
+                    NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(), currRaiseBet, 9, ChipTransactionType.Raise, (x) =>
                     {
                         Debug.Log("Raise Table ChipsTransaction Success");
                     },
@@ -677,6 +686,9 @@ public class GameView : MonoBehaviour
                     });
                     Raise_Tr.gameObject.SetActive(false);
                     SetActionButton = false;
+                    if(!isAllIn || thisData.CurrRaiseValue > thisData.RaiseValueSum)
+                        thisData.RaiseValueSum += thisData.CurrRaiseValue;
+                    print("Player now Raise sum = " + thisData.RaiseValueSum);
                 }
                 else
                 {
@@ -923,7 +935,10 @@ public class GameView : MonoBehaviour
             PlayerPrefs.DeleteAll();
         }
 
-        Call_Btn.interactable = (CallBtn_Txt.text != "");
+        if(!isOnFold)
+            Call_Btn.interactable = (CallBtn_Txt.text != "");
+        else
+            Call_Btn.interactable = false;
 
         Notice.gameObject.SetActive(DataManager.istipAppear);
         noticeText.text = DataManager.TipText;
@@ -1491,6 +1506,7 @@ public class GameView : MonoBehaviour
         WinType_Txt.text = "";
         SetPotActive = false;
         SetActionButton = false;
+        isOnFold = false;
         AutoActionState = AutoActingEnum.None;
         Fold_Btn.gameObject.SetActive(true);
         Call_Btn.gameObject.SetActive(true);
@@ -1499,6 +1515,7 @@ public class GameView : MonoBehaviour
         thisData.IsPlaying = false;
         thisData.isFold = false;
         thisData.CurrCommunityPoker = new List<int>();
+        thisData.RaiseValueSum = 0;
     }
 
     /// <summary>
@@ -1517,6 +1534,7 @@ public class GameView : MonoBehaviour
         gameControl.UpdateBetAction(DataManager.UserId,
                                     BetActingEnum.Fold,
                                     0);
+        isOnFold = true;
     }
 
     /// <summary>
@@ -3039,6 +3057,8 @@ public class GameView : MonoBehaviour
                 /* yield return IFlopCommunityPoker(pack.CommunityPokerPack.CurrCommunityPoker);
                  RountInit();
                  JudgeWinRate();*/
+                thisData.RaiseValueSum = 0;
+                print("Player now Raise sum = " + thisData.RaiseValueSum);
                 break;
 
             //轉牌
@@ -3046,6 +3066,8 @@ public class GameView : MonoBehaviour
                 /* yield return IFlopCommunityPoker(pack.CommunityPokerPack.CurrCommunityPoker);
                  RountInit();
                  JudgeWinRate();*/
+                thisData.RaiseValueSum = 0;
+                print("Player now Raise sum = " + thisData.RaiseValueSum);
                 break;
 
             //河牌
@@ -3779,6 +3801,9 @@ public class GameView : MonoBehaviour
                  {
                      Debug.LogError($"SB Table ChipsTransaction Failed Error: {error}");
                  });
+
+            thisData.RaiseValueSum += thisData.SmallBlindValue;
+            print("Player now Raise sum = " + thisData.RaiseValueSum);
         }
 
         if (DataManager.UserId == sbPlayerData.userId)
@@ -3809,6 +3834,9 @@ public class GameView : MonoBehaviour
                 {
                     Debug.LogError($"Call Table ChipsTransaction Failed Error: {error}");
                 });
+
+            thisData.RaiseValueSum += thisData.SmallBlindValue*2;
+            print("Player now Raise sum = " + thisData.RaiseValueSum);
         }
 
         if (DataManager.UserId == bbPlayerData.userId)
