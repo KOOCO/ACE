@@ -885,14 +885,14 @@ public class GameControl : MonoBehaviour
 
                 // Calculate individual side pots
                 var sidePots = CalculatePots(newPlayingPlayers);
-                double maxEligibleCriteria = newPlayingPlayers[0].allBetChips;
+                double maxEligibleCriteria = potWinners[0].allBetChips;
                 List<GameRoomPlayerData> eligiblePlayers = new();
                 Dictionary<List<GameRoomPlayerData>, double> sideWinners1 = new();
                 sideWinnersIds = new List<string>();
 
                 foreach (var player in newPlayingPlayers)
                 {
-                    if (player.allBetChips > maxEligibleCriteria)
+                    if (player.allBetChips >= maxEligibleCriteria && player.allBetChips > newPlayingPlayers[0].allBetChips)
                     {
                         eligiblePlayers.Add(player);
                     }
@@ -1018,7 +1018,7 @@ public class GameControl : MonoBehaviour
         Debug.Log("GameControl :: CalculatePots : Start");
 
         var sortedPlayers = players.OrderBy(p => p.allBetChips).ToList();
-        Debug.Log($"GameControl :: CalculatePots : SortedPlayers = {string.Join(", ", sortedPlayers.Select(p => p.userId + ":" + p.allBetChips))}");
+        Debug.Log($"GameControl :: CalculatePots : SortedPlayers = {string.Join(", ", sortedPlayers.Select(p => p.nickname + ":" + p.allBetChips))}");
 
         List<double> pots = new List<double>();
         double previousBet = 0;
@@ -1026,7 +1026,7 @@ public class GameControl : MonoBehaviour
         foreach (var player in sortedPlayers)
         {
             double betDifference = player.allBetChips - previousBet;
-            Debug.Log($"GameControl :: CalculatePots : Player {player.userId}, BetDifference = {betDifference}");
+            Debug.Log($"GameControl :: CalculatePots : Player {player.nickname}, BetDifference = {betDifference}");
 
             if (betDifference > 0)
             {
@@ -1052,7 +1052,7 @@ public class GameControl : MonoBehaviour
             var players = entry.Key;
             double sidePot = entry.Value;
 
-            Debug.Log($"GameControl :: DistributeSidePot : SidePot = {sidePot}, Players = {string.Join(", ", players?.Select(p => p.userId) ?? new List<string>())}");
+            Debug.Log($"GameControl :: DistributeSidePot : SidePot = {sidePot}, Players = {string.Join(", ", players?.Select(p => p.nickname) ?? new List<string>())}");
 
             if (players == null || players.Count == 0)
             {
@@ -1076,7 +1076,7 @@ public class GameControl : MonoBehaviour
                 var winner = winnersRoomFee.FirstOrDefault(p => p.userId == player.userId);
                 if (winner != null)
                 {
-                    winner.sidePotAmount = sideWinChips;
+                    winner.sidePotAmount += sideWinChips;
                 }
                 else
                 {
@@ -1091,7 +1091,7 @@ public class GameControl : MonoBehaviour
                     };
                     winnersRoomFee.Add(roomFeeObj);
                 }
-                Debug.Log($"GameControl :: DistributeSidePot : Updated player data for {player.userId}");
+                Debug.Log($"GameControl :: DistributeSidePot : Updated player data for {player.nickname}");
                 sideWinnersIds.Add(player.userId);
             }
         }
