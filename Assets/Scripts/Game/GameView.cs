@@ -3885,12 +3885,16 @@ public class GameView : MonoBehaviour
             DataManager.istipAppear = true;
             DataManager.TipText = LanguageManager.Instance.GetText("Network offline");
 
+            PlayerPrefs.SetString("PlayerIsOnline", "True");
+
             var data = new Dictionary<string, object>()
             {
                 { FirebaseManager.IS_SIT_OUT, true},         //是否保留座位離開
             };
             gameControl.UpdataPlayerData(DataManager.UserId,
                                          data);
+
+            gameControl.idleExit();
         }
     }
 }
