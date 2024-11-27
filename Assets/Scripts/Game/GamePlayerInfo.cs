@@ -535,9 +535,9 @@ public class GamePlayerInfo : MonoBehaviour
     private IEnumerator ICountDown(int cdTime, int cd)
     {
         #region 舊的不是答辯
-        float target = ((float)cdTime - (cd - 1)) / (float)cdTime;
-        float curr = ((float)cdTime - cd) / (float)cdTime;
-        print($"{cdTime}, {cd}, {target}");
+        float curr = (float)(cd) / (float)cdTime;        // 當前進度
+        float target = (float)(cd - 1) / (float)cdTime;  // 目標進度
+        print($"cdTime: {cdTime}, cd: {cd}, target: {target}");
 
         DateTime startTime = DateTime.Now;
         while ((DateTime.Now - startTime).TotalSeconds < 1)

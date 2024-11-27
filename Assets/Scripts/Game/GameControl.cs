@@ -348,6 +348,37 @@ public class GameControl : MonoBehaviour
 
         DataManager.isInRoom = false;
     }
+    public void idleExit()
+    {
+        LeaveRoom leaveRoom = new LeaveRoom
+        {
+            memberId = DataManager.UserId,
+            roomId = long.Parse(DataManager.RoomId),
+            amount = GetPlayerData(DataManager.UserId).carryChips,
+            type = DataManager.CurrencyType.ToString(),
+            rankPoint = 10
+        };
+
+        NoodleApi.PostTableCashOut((data) =>
+        {
+            Debug.Log("Table CashOut SuccessFull.");
+        },
+        (error) =>
+        {
+            Debug.LogError($"Table CashOut Failed Error: {error}");
+        });
+
+        AppApi.OnLeaveRoom(leaveRoom, (data) =>
+        {
+            Debug.Log("Player successfully left the room.");
+            DataManager.UserChips += leaveRoom.amount;
+            DataManager.DataUpdated = true;
+        },
+        (error) =>
+        {
+            Debug.LogError($"Failed to leave the room. Error: {error}");
+        });
+    }
 
     [DllImport("__Internal")]
     private static extern void clearStoredVariable();
