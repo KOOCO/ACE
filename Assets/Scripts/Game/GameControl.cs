@@ -2601,6 +2601,35 @@ public class GameControl : MonoBehaviour
         // Step 4: Resolve ties if necessary
         return bestPlayers.Count == 1 ? bestPlayers : ResolveTie(bestPlayers, shapeDic, bestHandRank);
     }
+    private Dictionary<GameRoomPlayerData, HandEvaluation> EvaluatePlayerHands(List<GameRoomPlayerData> judgePlayers)
+    {
+        var shapeDic = new Dictionary<GameRoomPlayerData, HandEvaluation>();
+
+        foreach (var player in judgePlayers)
+        {
+            // Combine player hand and community cards
+            var fullHand = new List<int>(player.handPoker);
+            fullHand.AddRange(gameRoomData.communityPoker);
+
+            PokerShape.JudgePokerShape(fullHand, (result, matchPoker) =>
+            {
+                Debug.Log($"GameControl :: {player.nickname} : Input Hand :: {fullHand}");
+                // Store hand rank and match poker for tie-breaking
+                Debug.Log($"GameControl :: {player.nickname} : Returned Cards :: {string.Join(" , ", matchPoker)}");
+                bool isStraight = result == 6 ? true : false;
+                var _matchPoker = CalculateRank(matchPoker, isStraight);
+                Debug.Log($"GameControl :: {player.nickname} : Hand :: {PokerShape.HandRanks[result]} : CardsRank :: {string.Join(" , ", _matchPoker)}");
+
+                shapeDic[player] = new HandEvaluation
+                {
+                    HandRank = result,
+                    MatchPoker = _matchPoker
+                };
+            });
+        }
+
+        return shapeDic;
+    }
 
     private List<GameRoomPlayerData> ResolveTie(List<GameRoomPlayerData> tiedPlayers, Dictionary<GameRoomPlayerData, HandEvaluation> shapeDic, int handRank)
     {
@@ -2633,163 +2662,6 @@ public class GameControl : MonoBehaviour
         }
 
         return winners;
-    }
-
-    public static int CompareHands(List<int> hand1, List<int> hand2)
-    {
-        // Compare cards one by one
-        for (int i = 0; i < Math.Min(hand1.Count, hand2.Count); i++)
-        {
-            if (hand1[i] > hand2[i])
-                return -1;
-            if (hand1[i] < hand2[i])
-                return 1;
-        }
-        // If all cards are equal, the hands are a tie
-        return 0;
-    }
-
-    private int CompareHands(List<int> hand1, List<int> hand2, int handRank)
-    {
-        // Handle comparison for each hand type
-        switch (handRank)
-        {
-            case 10: // High Card
-                return CompareHighCards(hand1, hand2);
-            case 9: // One Pair
-                return CompareOnePair(hand1, hand2);
-            case 8: // Two Pair
-                return CompareTwoPair(hand1, hand2);
-            case 7: // Three of a Kind
-                return CompareThreeOfAKind(hand1, hand2);
-            case 6: // Straight
-                return CompareFlushOrStraight(hand1, hand2);
-            case 5: // Flush
-                return CompareFlushOrStraight(hand1, hand2);
-            default:
-                return 0;
-        }
-    }
-    private int CompareHighCards(List<int> hand1, List<int> hand2)
-    {
-        for (int i = 0; i < hand1.Count; i++)
-        {
-            if (hand1[i] > hand2[i])
-                return -1;  // hand1 is better
-            if (hand1[i] < hand2[i])
-                return 1;   // hand2 is better
-        }
-
-        return 0; // Hands are equal
-    }
-    private int CompareOnePair(List<int> hand1, List<int> hand2)
-    {
-        var pair1 = hand1[0];  // First card is the pair's rank (assuming sorted)
-        var pair2 = hand2[0];
-
-        if (pair1 > pair2)
-            return -1; // hand1 wins
-        if (pair1 < pair2)
-            return 1;  // hand2 wins
-
-        // If pairs are equal, compare kickers
-        for (int i = 1; i < hand1.Count; i++)
-        {
-            if (hand1[i] > hand2[i])
-                return -1;
-            if (hand1[i] < hand2[i])
-                return 1;
-        }
-        return 0; // Same pair and kickers
-    }
-    private int CompareTwoPair(List<int> hand1, List<int> hand2)
-    {
-        var pair1High = hand1[0];
-        var pair2High = hand2[0];
-        var pair1Low = hand1[2];
-        var pair2Low = hand2[2];
-
-        if (pair1High > pair2High)
-            return -1; // hand1 wins
-        if (pair1High < pair2High)
-            return 1;  // hand2 wins
-
-        if (pair1Low > pair2Low)
-            return -1; // hand1 wins
-        if (pair1Low < pair2Low)
-            return 1;  // hand2 wins
-
-        // If pairs are equal, compare kickers
-        for (int i = 4; i < hand1.Count; i++)
-        {
-            if (hand1[i] > hand2[i])
-                return -1;
-            if (hand1[i] < hand2[i])
-                return 1;
-        }
-        return 0;
-        // Same two pairs and kicker
-    }
-    private int CompareThreeOfAKind(List<int> hand1, List<int> hand2)
-    {
-        var threeOfAKind1 = hand1[0];
-        var threeOfAKind2 = hand2[0];
-
-        if (threeOfAKind1 > threeOfAKind2)
-            return -1; // hand1 wins
-        if (threeOfAKind1 < threeOfAKind2)
-            return 1;  // hand2 wins
-
-        // If three of a kinds are the same, compare kickers
-        for (int i = 1; i < hand1.Count; i++)
-        {
-            if (hand1[i] > hand2[i])
-                return -1;
-            if (hand1[i] < hand2[i])
-                return 1;
-        }
-        return 0; // Same three of a kind and kickers
-    }
-    private int CompareFlushOrStraight(List<int> hand1, List<int> hand2)
-    {
-        for (int i = 0; i < hand1.Count; i++)
-        {
-            if (hand1[i] > hand2[i])
-                return -1;  // hand1 wins
-            if (hand1[i] < hand2[i])
-                return 1;   // hand2 wins
-        }
-        return 0;  // Same flush
-    }
-
-    private Dictionary<GameRoomPlayerData, HandEvaluation> EvaluatePlayerHands(List<GameRoomPlayerData> judgePlayers)
-    {
-        var shapeDic = new Dictionary<GameRoomPlayerData, HandEvaluation>();
-
-        foreach (var player in judgePlayers)
-        {
-            // Combine player hand and community cards
-            var fullHand = new List<int>(player.handPoker);
-            fullHand.AddRange(gameRoomData.communityPoker);
-
-            PokerShape.JudgePokerShape(fullHand, (result, matchPoker) =>
-            {
-                Debug.Log($"GameControl :: {player.nickname} : Input Hand :: {fullHand}");
-                // Store hand rank and match poker for tie-breaking
-                Debug.Log($"GameControl :: {player.nickname} : Returned Cards :: {string.Join(" , ", matchPoker)}");
-                bool isStraight = result == 6 ? true : false;
-                var _matchPoker = CalculateRank(matchPoker, isStraight);
-                Debug.Log($"GameControl :: {player.nickname} : Hand :: {PokerShape.HandRanks[result]} : CardsRank :: {string.Join(" , ", _matchPoker)}");
-
-                shapeDic[player] = new HandEvaluation
-                {
-                    HandRank = result,
-                    MatchPoker = _matchPoker
-                };
-            });
-        }
-
-        return shapeDic;
     }
     public List<int> CalculateRank(List<int> cards, bool isStraight = false)
     {
@@ -2897,6 +2769,19 @@ public class GameControl : MonoBehaviour
         return lowStraightRanks.All(rank => handRanks.Contains(rank));
     }
 
+    public static int CompareHands(List<int> hand1, List<int> hand2)
+    {
+        // Compare cards one by one
+        for (int i = 0; i < Math.Min(hand1.Count, hand2.Count); i++)
+        {
+            if (hand1[i] > hand2[i])
+                return -1;
+            if (hand1[i] < hand2[i])
+                return 1;
+        }
+        // If all cards are equal, the hands are a tie
+        return 0;
+    }
     // Hand evaluation structure
     private class HandEvaluation
     {
