@@ -282,7 +282,7 @@ public class RoomFee
     public double roomFee;
     public double potWinAmount;
     public double carryChips;
-    public double sidePotAmount;
+    public double sidePotAmount = 0;
     public double allBetChips;
     public double extraContribution;
 }

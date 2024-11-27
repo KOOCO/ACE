@@ -877,18 +877,19 @@ public class GameControl : MonoBehaviour
                 // Get players still in the game, ordered by their total bet chips
                 var newPlayingPlayers = GetPlayingPlayer().OrderBy(x => x.allBetChips).ToList(); // Ensure players are sorted by bet chips
                 Debug.Log($"GameControl :: SideResult : Playing players ordered by bet chips: {string.Join(", ", newPlayingPlayers.Select(p => $"{p.nickname}: {p.allBetChips}"))}");
-                potWinners = JudgeWinner(playingPlayers).OrderBy(x => x.allBetChips).ToList();
+                potWinners = JudgeWinner(newPlayingPlayers).OrderBy(x => x.allBetChips).ToList();
                 Debug.Log($"GameControl :: SideResult : PotWinner players ordered by bet chips: {string.Join(", ", potWinners.Select(p => $"{p.nickname}: {p.allBetChips}"))}");
                 // Calculate total side pot
                 double totalSidePot = gameRoomData.potChips - mainPotWinChips;
                 Debug.Log($"GameControl :: SideResult : Total side pot: {totalSidePot}");
 
                 // Calculate individual side pots
-                var sidePots = CalculatePots(newPlayingPlayers);
                 double maxEligibleCriteria = potWinners[0].allBetChips;
+                double potMinBet = newPlayingPlayers[0].allBetChips;
                 List<GameRoomPlayerData> eligiblePlayers = new();
                 Dictionary<List<GameRoomPlayerData>, double> sideWinners1 = new();
                 sideWinnersIds = new List<string>();
+                List<double> sidePots = new();
 
                 foreach (var player in newPlayingPlayers)
                 {
@@ -897,8 +898,11 @@ public class GameControl : MonoBehaviour
                         eligiblePlayers.Add(player);
                     }
                 }
+                Debug.Log($"GameControl :: SideResult : Eligible Player : {eligiblePlayers.Count} :" + string.Join(" , ", eligiblePlayers.Select(p => p.nickname)));
                 if (eligiblePlayers.Count > 0 && eligiblePlayers != null)
                 {
+                    sidePots = CalculatePots(newPlayingPlayers);
+
                     foreach (var sidePot in sidePots.Skip(1)) // Skip the main pot
                     {
                         if (!eligiblePlayers.Any())
@@ -920,7 +924,7 @@ public class GameControl : MonoBehaviour
                         DistributeSidePot(sideWinners1);
 
                         // Remove players whose chips are less than the minimum bet
-                        eligiblePlayers = eligiblePlayers.Where(p => (p.allBetChips - minBet) > minBet)?.ToList();
+                        eligiblePlayers = eligiblePlayers.Where(p => (p.allBetChips - minBet) > 0)?.ToList();
                         Debug.Log($"GameControl :: SideResult : Remaining eligible players: {string.Join(", ", eligiblePlayers.Select(p => p.nickname))}");
                     }
                 }
@@ -928,7 +932,7 @@ public class GameControl : MonoBehaviour
                 {
                     Debug.Log("GameControl :: SideResult : No eligible Players");
                     sideWinners1.Clear();
-                    sideWinners1.Add(potWinners, sidePots.Count > 1 ? sidePots[1] : 0);
+                    sideWinners1.Add(potWinners, totalSidePot);
                     DistributeSidePot(sideWinners1);
                 }
 
