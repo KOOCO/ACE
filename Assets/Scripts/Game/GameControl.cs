@@ -892,7 +892,7 @@ public class GameControl : MonoBehaviour
 
                 foreach (var player in newPlayingPlayers)
                 {
-                    if (player.allBetChips >= maxEligibleCriteria)
+                    if (player.allBetChips > maxEligibleCriteria)
                     {
                         eligiblePlayers.Add(player);
                     }
@@ -911,7 +911,7 @@ public class GameControl : MonoBehaviour
                         Debug.Log($"GameControl :: SideResult : Minimum bet among eligible players: {minBet}");
 
                         var sideWinner = JudgeWinner(eligiblePlayers);  // Get winner(s) for the side pot
-                        Debug.Log($"GameControl :: SideResult : Judged winners for side pot: {string.Join(", ", sideWinner.Select(p => p.userId))}");
+                        Debug.Log($"GameControl :: SideResult : Judged winners for side pot: {string.Join(", ", sideWinner.Select(p => p.nickname))}");
 
                         sideWinners1.Clear();
                         sideWinners1.Add(sideWinner, sidePot);
@@ -921,11 +921,12 @@ public class GameControl : MonoBehaviour
 
                         // Remove players whose chips are less than the minimum bet
                         eligiblePlayers = eligiblePlayers.Where(p => (p.allBetChips - minBet) > minBet)?.ToList();
-                        Debug.Log($"GameControl :: SideResult : Remaining eligible players: {string.Join(", ", eligiblePlayers.Select(p => p.userId))}");
+                        Debug.Log($"GameControl :: SideResult : Remaining eligible players: {string.Join(", ", eligiblePlayers.Select(p => p.nickname))}");
                     }
                 }
                 else
                 {
+                    Debug.Log("GameControl :: SideResult : No eligible Players");
                     sideWinners1.Clear();
                     sideWinners1.Add(potWinners, sidePots.Count > 1 ? sidePots[1] : 0);
                     DistributeSidePot(sideWinners1);
