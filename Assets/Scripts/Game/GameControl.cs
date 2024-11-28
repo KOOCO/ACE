@@ -2744,11 +2744,11 @@ public class GameControl : MonoBehaviour
             var descendingRemaining = remainingCards.OrderByDescending(card => card).ToList();
 
             // Combine the ascending sequence and descending remaining cards
-            return ascendingSeq.Concat(descendingRemaining).ToList();
+            return ascendingSeq.Concat(descendingRemaining).Take(5).ToList();
         }
 
         // If not a straight, just return the cards sorted by rank
-        return sortedCards;
+        return sortedCards.Take(5).ToList();
     }
 
     public static List<int> FindHighestConsecutiveSequence(List<int> input)
