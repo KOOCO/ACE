@@ -373,6 +373,8 @@ public class GameControl : MonoBehaviour
             Debug.Log("Player successfully left the room.");
             DataManager.UserChips += leaveRoom.amount;
             DataManager.DataUpdated = true;
+            OnLeaveTable();
+            ClearRoomDataFromJS();
         },
         (error) =>
         {

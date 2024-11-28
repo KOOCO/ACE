@@ -626,14 +626,14 @@ public class GameView : MonoBehaviour
 
             if (CallBtn_Txt.text != LanguageManager.Instance.GetText("Check"))
             {
-                NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(), thisData.CallDifference, 4, ChipTransactionType.Call, (x) =>
-                {
-                    Debug.Log("Call Table ChipsTransaction Success");
-                },
-               (error) =>
-               {
-                   Debug.LogError($"Call Table ChipsTransaction Failed Error: {error}");
-               });
+               // NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(), thisData.CallDifference, 4, ChipTransactionType.Call, (x) =>
+               // {
+               //     Debug.Log("Call Table ChipsTransaction Success");
+               // },
+               //(error) =>
+               //{
+               //    Debug.LogError($"Call Table ChipsTransaction Failed Error: {error}");
+               //});
             }
             else
                 print("Player Action: " + LanguageManager.Instance.GetText("Check"));
@@ -3900,19 +3900,27 @@ public class GameView : MonoBehaviour
     {
         if (PlayerPrefs.GetString("PlayerIsOnline") == "False")
         {
-            DataManager.istipAppear = true;
-            DataManager.TipText = LanguageManager.Instance.GetText("Network offline");
-
+            int idleC = PlayerPrefs.GetInt("idleCount");
             PlayerPrefs.SetString("PlayerIsOnline", "True");
+            idleC++;
+            PlayerPrefs.SetInt("idleCount", idleC);
+            PlayerPrefs.Save();
 
-            var data = new Dictionary<string, object>()
+            if (PlayerPrefs.GetInt("idleCount") >= 2)
             {
-                { FirebaseManager.IS_SIT_OUT, true},         //是否保留座位離開
-            };
-            gameControl.UpdataPlayerData(DataManager.UserId,
-                                         data);
+                JSBridgeManager.Instance.WindowClose();
+            }
+            else
+            {
+                var data = new Dictionary<string, object>()
+                {
+                    { FirebaseManager.IS_SIT_OUT, true},         //是否保留座位離開
+                };
+                gameControl.UpdataPlayerData(DataManager.UserId,
+                                                data);
 
-            gameControl.idleExit();
+                gameControl.idleExit();
+            }
         }
     }
 }

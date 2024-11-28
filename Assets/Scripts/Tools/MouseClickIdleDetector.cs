@@ -31,7 +31,7 @@ public class MouseClickIdleDetector : MonoBehaviour
         {
             if (!isIdle)
             {
-                Debug.LogError("player is idle");
+                Debug.Log("player is idle");
                 Entry.Instance.stopListenHB();
                 isIdle = true;
             }

@@ -241,8 +241,15 @@ public class LobbyView : MonoBehaviour
 
         ConfirmBtn.onClick.AddListener(() =>
         {
-            PlayerPrefs.SetInt("nullData", 0);
-            JSBridgeManager.Instance.WindowClose();
+            if (PlayerPrefs.GetInt("nullData") >= 3)
+            {
+                PlayerPrefs.SetInt("nullData", 0);
+                JSBridgeManager.Instance.WindowClose();
+            }
+            else
+            {
+                DataManager.istipAppear = false;
+            }
         });
     }
     private void OnEnable()
@@ -255,6 +262,10 @@ public class LobbyView : MonoBehaviour
         OpenItemPage(ItemType.Main);
 
         //StartHeartbeat();
+        if (PlayerPrefs.GetInt("idleCount") > 0) {
+            DataManager.istipAppear = true;
+            DataManager.TipText = LanguageManager.Instance.GetText("Idle warn");
+        }
     }
 
     private void Start()

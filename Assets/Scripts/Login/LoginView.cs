@@ -2264,6 +2264,7 @@ public class LoginView : MonoBehaviour
 
                 if (!isMaintenance)
                 {
+                    PlayerPrefs.SetInt("idleCount", 0);
                     LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
                     Debug.Log("用戶未登入，正常");
                 }
