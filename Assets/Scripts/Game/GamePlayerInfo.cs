@@ -542,6 +542,10 @@ public class GamePlayerInfo : MonoBehaviour
         float target = (float)(cd - 1) / (float)cdTime;  // 目標進度
         print($"cdTime: {cdTime}, cd: {cd}, target: {target}");
 
+        CD_Back.enabled = true;
+        if (IsLocalPlayer)
+            CD_Back2.enabled = true;
+
         DateTime startTime = DateTime.Now;
         while ((DateTime.Now - startTime).TotalSeconds < 1)
         {
@@ -554,9 +558,6 @@ public class GamePlayerInfo : MonoBehaviour
             countDown_Txt.text = cd.ToString();
             yield return null;
         }
-        CD_Back.enabled = true; 
-        if (IsLocalPlayer)
-            CD_Back2.enabled = true;
 
         #endregion
 
