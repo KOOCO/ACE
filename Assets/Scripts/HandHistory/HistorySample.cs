@@ -81,9 +81,12 @@ public class HistorySample : MonoBehaviour
         {
             common.PokerNum = -1;
         }
-        for (int i = 0; i < resultHistory.communityPoker.Count; i++)
+        if (resultHistory.communityPoker != null)
         {
-            CommunityPokers[i].PokerNum = resultHistory.communityPoker[i];
+            for (int i = 0; i < resultHistory.communityPoker.Count; i++)
+            {
+                CommunityPokers[i].PokerNum = resultHistory.communityPoker[i];
+            }
         }
 
         Play_Btn.onClick.AddListener(() =>
