@@ -813,7 +813,7 @@ public class GameControl : MonoBehaviour
                 Debug.Log(nameof(IStartGameFlow) + " before potWinnerIdList");
 
                 // Update the main pot and check if there are remaining side chips
-                double remainingChips = gameRoomData.potChips - mainPotWinChips;
+                double remainingChips = gameRoomData.potChips - (mainPotWinChips + (gameView.playersWhoLeft == null ? 0 : gameView.playersWhoLeft.Sum(p => p.allBetChips)));
 
                 // Check if there is a side pot, but only if there are remaining chips from bets not fully covered
                 bool IsHaveSide = remainingChips > 0;
@@ -882,7 +882,7 @@ public class GameControl : MonoBehaviour
                 potWinners = JudgeWinner(newPlayingPlayers).OrderBy(x => x.allBetChips).ToList();
                 Debug.Log($"GameControl :: SideResult : PotWinner players ordered by bet chips: {string.Join(", ", potWinners.Select(p => $"{p.nickname}: {p.allBetChips}"))}");
                 // Calculate total side pot
-                double totalSidePot = gameRoomData.potChips - mainPotWinChips;
+                double totalSidePot = gameRoomData.potChips - (mainPotWinChips + (gameView.playersWhoLeft == null ? 0 : gameView.playersWhoLeft.Sum(p => p.allBetChips)));
                 Debug.Log($"GameControl :: SideResult : Total side pot: {totalSidePot}");
 
                 // Calculate individual side pots
@@ -974,7 +974,7 @@ public class GameControl : MonoBehaviour
                 UpdataPlayerData(winner.userId,
                                  data);
 
-                remainingChips = gameRoomData.potChips - mainPotWinChips;
+                remainingChips = gameRoomData.potChips - (mainPotWinChips + (gameView.playersWhoLeft == null ? 0 : gameView.playersWhoLeft.Sum(p => p.allBetChips)));
                 IsHaveSide = remainingChips > 0;
                 potWinnerIdList = new List<string>();
                 foreach (var potWinner in potWinners)

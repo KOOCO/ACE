@@ -198,7 +198,7 @@ public class GameView : MonoBehaviour
     bool isOnFold;                                     //是否下局保留作位離開
 
     #region 遊戲過程紀錄
-
+    public List<GameRoomPlayerData> playersWhoLeft;
     List<int> exitPlayerSeatList;                               //玩家離開座位
     GameInitHistoryData gameInitHistoryData;                    //遊戲初始資料紀錄
     ProcessHistoryData processHistoryData;                      //遊戲過程資料紀錄
@@ -626,14 +626,14 @@ public class GameView : MonoBehaviour
 
             if (CallBtn_Txt.text != LanguageManager.Instance.GetText("Check"))
             {
-               // NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(), thisData.CallDifference, 4, ChipTransactionType.Call, (x) =>
-               // {
-               //     Debug.Log("Call Table ChipsTransaction Success");
-               // },
-               //(error) =>
-               //{
-               //    Debug.LogError($"Call Table ChipsTransaction Failed Error: {error}");
-               //});
+                // NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(), thisData.CallDifference, 4, ChipTransactionType.Call, (x) =>
+                // {
+                //     Debug.Log("Call Table ChipsTransaction Success");
+                // },
+                //(error) =>
+                //{
+                //    Debug.LogError($"Call Table ChipsTransaction Failed Error: {error}");
+                //});
             }
             else
                 print("Player Action: " + LanguageManager.Instance.GetText("Check"));
@@ -921,7 +921,7 @@ public class GameView : MonoBehaviour
             PlayerPrefs.DeleteAll();
         }
 
-        if(!isOnFold)
+        if (!isOnFold)
             Call_Btn.interactable = (CallBtn_Txt.text != "");
         else
             Call_Btn.interactable = false;
@@ -2182,6 +2182,8 @@ public class GameView : MonoBehaviour
     /// <returns></returns>
     public GamePlayerInfo PlayerExitRoom(string id)
     {
+        playersWhoLeft.Add(gameControl.GetPlayerData(id));
+
         GamePlayerInfo exitPlayer = GetPlayer(id);
 
         gamePlayerInfoList.Remove(exitPlayer);
@@ -2671,7 +2673,7 @@ public class GameView : MonoBehaviour
         int winIndex = 0;
         saveResultData = new ResultHistoryData
         {
-            playerDetails = new List<PlayerDetails>() // Initialize the playerHands list
+            playerDetails = new List<PlayerDetails>(), // Initialize the playerHands list
         };
 
         // Loop through pot winners to save data
@@ -2730,6 +2732,7 @@ public class GameView : MonoBehaviour
                     playerRoomFee = playerNew.roomFee,
                     tenantName = DataManager.TenantName,
                     isBot = DataManager.UserId.StartsWith(FirebaseManager.ROBOT_ID),
+                    isPlayerLeft = false,
                     playerHandData = new PlayerHand
                     {
                         playerHand = playerNew.handPoker ?? new List<int>(),  // Ensure `handPoker` is not null
@@ -2743,6 +2746,31 @@ public class GameView : MonoBehaviour
                 Debug.Log("PlayerDetailsLoop :: " + playerData);
                 saveResultData.playerDetails.Add(playerData);
             }
+        }
+        Debug.Log("GameView :: playersWhoLeft : " + playersWhoLeft.Count);
+        foreach (var player in playersWhoLeft)
+        {
+            PlayerDetails playerData = new PlayerDetails
+            {
+                playerId = player.userId,
+                playerName = player.nickname,
+                playerHandId = "",
+                playerValidBetAmount = player.allBetChips,
+                playerRoomFee = player.roomFee,
+                tenantName = DataManager.TenantName,
+                isBot = DataManager.UserId.StartsWith(FirebaseManager.ROBOT_ID),
+                isPlayerLeft = true,
+                playerHandData = new PlayerHand
+                {
+                    playerHand = player.handPoker ?? new List<int>(),  // Ensure `handPoker` is not null
+                    playerCurrHandShape = GetPlayer(player.userId).pokerCurrShapeIndex,
+                    potWinChips = 0,
+                    sideWinChips = 0,
+                    isWinner = false,
+                    seat = player.gameSeat.ToString(),
+                }
+            };
+            saveResultData.playerDetails.Add(playerData);
         }
 
 
@@ -3425,6 +3453,7 @@ public class GameView : MonoBehaviour
         }
 
         // Reset exit player seat list and process history data
+        playersWhoLeft.Clear();
         exitPlayerSeatList = new List<int>();
         processHistoryData = new ProcessHistoryData
         {

@@ -258,6 +258,7 @@ public class PlayerDetails
     public double playerRoomFee;
     public string tenantName;
     public bool isBot;
+    public bool isPlayerLeft;
     public PlayerHand playerHandData;
 }
 [System.Serializable]
