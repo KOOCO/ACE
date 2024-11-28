@@ -668,13 +668,15 @@ public class GameView : MonoBehaviour
 
                     double betValue = isAllIn == true ?
                                   thisData.LocalPlayerChips :
-                                  thisData.CurrRaiseValue - thisData.RaiseValueSum;
+                                  thisData.CurrRaiseValue;
 
                     gameControl.UpdateBetAction(DataManager.UserId,
                                                 acting,
                                                 betValue);
 
                     currRaiseBet = isAllIn == true ? thisData.CurrRaiseValue : thisData.CurrRaiseValue - thisData.RaiseValueSum;
+                    print("Player this current Raise: " + currRaiseBet);
+                    //currRaiseBet = thisData.CurrRaiseValue;
 
                     NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(), currRaiseBet, 9, ChipTransactionType.Raise, (x) =>
                     {
