@@ -3027,7 +3027,6 @@ MonoBehaviour:
   MobileTog_Txt: {fileID: 353165297087603427}
   Wallet_Obj: {fileID: 6651509344537826233}
   Mobile_Obj: {fileID: 4123359324234838089}
-  SessionExp_Obj: {fileID: 8023639441047226385}
   SelectWalletPage_Obj: {fileID: 4919952079168757834}
   Metamask_Btn: {fileID: 6529305865818223236}
   Trust_Btn: {fileID: 2363203249054904267}
@@ -3062,7 +3061,6 @@ MonoBehaviour:
   DownloadWallet_Txt: {fileID: 8409566728414062180}
   WalletRegisterPage_Obj: {fileID: 4695722415808943641}
   WalletRegisterSubmit_Btn: {fileID: 4176407220410947255}
-  CloseBrowser_Btn: {fileID: 2945722382748773167}
   WalletRegister_If: {fileID: 442557130741467716}
   WalletEmail_If: {fileID: 7462518758661203259}
   SMSMobileNumberError_Txt: {fileID: 3791440171900952581}
@@ -33597,7 +33595,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6953a90edd3f8c840826382185b62e99, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9cf4d22a5e3f22445babbbe1e21a38c0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
