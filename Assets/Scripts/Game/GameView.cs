@@ -251,7 +251,6 @@ public class GameView : MonoBehaviour
         public double CurrCallValue;                       //當前跟注值
         public double CurrRaiseValue;                      //當前加注值
         public double MinRaiseValue;                       //最小加注值
-        public double RaiseValueSum;                       //累積加注值
         public double SmallBlindValue;                     //小盲值
         public bool IsFirstRaisePlayer;                    //首位加注玩家
         public bool IsUnableRaise;                         //無法加注
@@ -674,23 +673,8 @@ public class GameView : MonoBehaviour
                                                 acting,
                                                 betValue);
 
-                    currRaiseBet = isAllIn == true ? thisData.CurrRaiseValue : thisData.CurrRaiseValue - thisData.RaiseValueSum;
-                    print("Player this current Raise: " + currRaiseBet);
-                    //currRaiseBet = thisData.CurrRaiseValue;
-
-                    NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(), currRaiseBet, 9, ChipTransactionType.Raise, (x) =>
-                    {
-                        Debug.Log("Raise Table ChipsTransaction Success");
-                    },
-                    (error) =>
-                    {
-                        Debug.LogError($"Raise Table ChipsTransaction Failed Error: {error}");
-                    });
                     Raise_Tr.gameObject.SetActive(false);
                     SetActionButton = false;
-                    if(!isAllIn || thisData.CurrRaiseValue > thisData.RaiseValueSum)
-                        thisData.RaiseValueSum += thisData.CurrRaiseValue;
-                    print("Player now Raise sum = " + thisData.RaiseValueSum);
                 }
                 else
                 {
@@ -989,6 +973,21 @@ public class GameView : MonoBehaviour
         {
             GamePause_Obj.SetActive(value);
         }
+    }
+
+    ///<summary>
+    ///Chip transaction
+    /// </summary>
+    public void postNoodleChip(double currRaiseBet)
+    {
+        NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(), currRaiseBet, 9, ChipTransactionType.Raise, (x) =>
+        {
+            Debug.Log("Raise Table ChipsTransaction Success");
+        },
+        (error) =>
+        {
+            Debug.LogError($"Raise Table ChipsTransaction Failed Error: {error}");
+        });
     }
 
     /// <summary>
@@ -1517,7 +1516,6 @@ public class GameView : MonoBehaviour
         thisData.IsPlaying = false;
         thisData.isFold = false;
         thisData.CurrCommunityPoker = new List<int>();
-        thisData.RaiseValueSum = 0;
     }
 
     /// <summary>
@@ -3059,8 +3057,6 @@ public class GameView : MonoBehaviour
                 /* yield return IFlopCommunityPoker(pack.CommunityPokerPack.CurrCommunityPoker);
                  RountInit();
                  JudgeWinRate();*/
-                thisData.RaiseValueSum = 0;
-                print("Player now Raise sum = " + thisData.RaiseValueSum);
                 break;
 
             //轉牌
@@ -3068,8 +3064,6 @@ public class GameView : MonoBehaviour
                 /* yield return IFlopCommunityPoker(pack.CommunityPokerPack.CurrCommunityPoker);
                  RountInit();
                  JudgeWinRate();*/
-                thisData.RaiseValueSum = 0;
-                print("Player now Raise sum = " + thisData.RaiseValueSum);
                 break;
 
             //河牌
@@ -3803,9 +3797,6 @@ public class GameView : MonoBehaviour
                  {
                      Debug.LogError($"SB Table ChipsTransaction Failed Error: {error}");
                  });
-
-            thisData.RaiseValueSum += thisData.SmallBlindValue;
-            print("Player now Raise sum = " + thisData.RaiseValueSum);
         }
 
         if (DataManager.UserId == sbPlayerData.userId)
@@ -3836,9 +3827,6 @@ public class GameView : MonoBehaviour
                 {
                     Debug.LogError($"Call Table ChipsTransaction Failed Error: {error}");
                 });
-
-            thisData.RaiseValueSum += thisData.SmallBlindValue*2;
-            print("Player now Raise sum = " + thisData.RaiseValueSum);
         }
 
         if (DataManager.UserId == bbPlayerData.userId)

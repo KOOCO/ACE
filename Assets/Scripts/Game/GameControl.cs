@@ -2261,6 +2261,8 @@ public class GameControl : MonoBehaviour
         if (id == DataManager.UserId)
         {
             UpdateLocalChips(-difference);
+
+            gameView.postNoodleChip(difference);
         }
 
         //更新玩家資料
