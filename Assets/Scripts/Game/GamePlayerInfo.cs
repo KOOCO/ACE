@@ -12,7 +12,7 @@ public class GamePlayerInfo : MonoBehaviour
     [SerializeField]
     GameObject ActionFrame_Obj, Winner_Obj, InfoMask_Obj;
     [SerializeField]
-    Image CDMask_Img, Avatar_Img, ButtonCharacter_Img, PokerShape_img;
+    Image CDMask_Img, Avatar_Img, ButtonCharacter_Img, PokerShape_img, CD_Back, CD_Back2;
     [SerializeField]
     TextMeshProUGUI Nickname_Txt, Chips_Txt, BackChips_Txt, BlindCharacter_Txt, countDown_Txt, Winner_Txt;
 
@@ -510,6 +510,9 @@ public class GamePlayerInfo : MonoBehaviour
         if (cdCoroutine != null) StopCoroutine(cdCoroutine);
         CDMask_Img.fillAmount = 0;
         countDown_Txt.gameObject.SetActive(false);
+        CD_Back.enabled = false;
+        if (IsLocalPlayer)
+            CD_Back2.enabled = false;
     }
 
     /// <summary>
@@ -549,25 +552,12 @@ public class GamePlayerInfo : MonoBehaviour
 
             //countDown_Txt.gameObject.SetActive(true);
             countDown_Txt.text = cd.ToString();
-            if (IsLocalPlayer)
-            {
-                // Parse the initial value from the text
-                //if (int.TryParse(countDown_Txt.text, out int countdownValue))
-                //{
-                //    // Start the smooth countdown animation for the local player
-                //    if (cdCoroutine != null)
-                //    {
-                //        StopCoroutine(cdCoroutine);
-                //    }
-                //    cdCoroutine = StartCoroutine(SmoothCountdown(countdownValue));
-                //}
-                //else
-                //{
-                //    Debug.LogWarning("Countdown text could not be parsed into an integer.");
-                //}
-            }
             yield return null;
         }
+        CD_Back.enabled = true; 
+        if (IsLocalPlayer)
+            CD_Back2.enabled = true;
+
         #endregion
 
         #region 新的答辯
