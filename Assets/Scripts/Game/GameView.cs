@@ -41,6 +41,8 @@ public class GameView : MonoBehaviour
     TextMeshProUGUI RaiseBtn_Txt, CallBtn_Txt, FoldBtn_Txt, BackToSitBtn_Txt;
     [SerializeField]
     GameObject coinIconObj;
+    [SerializeField]
+    Image CallBtn_Img, FoldBtn_Img;
 
     [Header("加注操作")]
     [SerializeField]
@@ -276,6 +278,24 @@ public class GameView : MonoBehaviour
         public string RaiseStr { get; set; }
         public string RaiseValueStr { get; set; }
     }
+
+    public Dictionary<int, string> betStringsE = new Dictionary<int, string>
+    {
+        {0, "Call"},
+        {1, "Check"},
+        {2, "Fold"},
+        {3, "Fold/Check"},
+        {4, ""}
+    };
+    public Dictionary<int, string> betStringsC = new Dictionary<int, string>
+    {
+        {0, "跟注"},
+        {1, "過牌"},
+        {2, "棄牌"},
+        {3, "棄牌/過牌"},
+        {4, ""}
+    };
+
     public string SetWinnerStringTxt
     {
         set
@@ -295,6 +315,46 @@ public class GameView : MonoBehaviour
             }
         }
     }
+
+    public Sprite SetCallBetImage
+    {
+        set
+        {
+            if (CallBtn_Img != null)
+            {
+                CallBtn_Img.gameObject.SetActive(true);
+
+                if (value != null)
+                {
+                    CallBtn_Img.sprite = value;
+                    CallBtn_Img.preserveAspect = true;
+                }
+                else
+                    CallBtn_Img.gameObject.SetActive(false);
+            }
+        }
+    }
+    
+    public Sprite SetFoldBetImage
+    {
+        set
+        {
+            if (FoldBtn_Img != null)
+            {
+                FoldBtn_Img.gameObject.SetActive(true);
+
+                if (value != null)
+                {
+                    FoldBtn_Img.sprite = value;
+                    FoldBtn_Img.preserveAspect = true;
+                }
+                else
+                    FoldBtn_Img.gameObject.SetActive(false);
+            }
+        }
+    }
+
+
     /// <summary>
     /// 更新文本翻譯
     /// </summary>
@@ -624,7 +684,7 @@ public class GameView : MonoBehaviour
             Raise_Tr.gameObject.SetActive(false);
             SetActionButton = false;
 
-            if (CallBtn_Txt.text != LanguageManager.Instance.GetText("Check"))
+            if (CallBtn_Img.sprite != AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteEnglish).album[1] || CallBtn_Img.sprite != AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteChinese).album[1])
             {
                 // NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(), thisData.CallDifference, 4, ChipTransactionType.Call, (x) =>
                 // {
@@ -922,9 +982,11 @@ public class GameView : MonoBehaviour
         }
 
         if (!isOnFold)
-            Call_Btn.interactable = (CallBtn_Txt.text != "");
+            //Call_Btn.interactable = (CallBtn_Txt.text != "");
+            Call_Btn.gameObject.SetActive(CallBtn_Txt.text != "");
         else
-            Call_Btn.interactable = false;
+            //Call_Btn.interactable = false;
+            Call_Btn.gameObject.SetActive(false);
 
         Notice.gameObject.SetActive(DataManager.istipAppear);
         noticeText.text = DataManager.TipText;
@@ -1160,9 +1222,12 @@ public class GameView : MonoBehaviour
             if (isBigBlind)
             {
                 // Big Blind sees Check/Fold and Check pre-flop with no raise
+                //print("如果加注了，大盲注看到Check/Fold和Check翻牌前沒有加注");
                 strData.FoldStr = LanguageManager.Instance.GetText("Fold");
-                strData.CallStr = LanguageManager.Instance.GetText("Check");
-                strData.CallValueStr = "";
+                //strData.CallStr = LanguageManager.Instance.GetText("Check");
+                //strData.CallValueStr = "";
+                strData.CallStr = LanguageManager.Instance.GetText("Call");
+                strData.CallValueStr = $"\n{gameRoomData.currCallValue - localPlayer.currAllBetChips}";
             }
             else
             {
@@ -1176,6 +1241,7 @@ public class GameView : MonoBehaviour
             if (isBigBlind)
             {
                 // Big Blind sees Check/Fold and Check pre-flop with no raise
+                //print("大盲注看到Check/Fold和Check翻牌前沒有加注");
                 strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                 strData.CallStr = LanguageManager.Instance.GetText("Check");
                 strData.CallValueStr = "";
@@ -1247,9 +1313,13 @@ public class GameView : MonoBehaviour
             // If raised, everyone sees Fold and Call + amount
             if (isBigBlind)
             {
+                //print("如果加注，每個人都會看到 Fold 和 Call + 金額");
                 strData.FoldStr = LanguageManager.Instance.GetText("CheckOrFold");
-                strData.CallStr = LanguageManager.Instance.GetText("Check");
-                strData.CallValueStr = "";
+                //strData.CallStr = LanguageManager.Instance.GetText("Check");
+                //strData.CallValueStr = "";
+                bool check = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0;
+                strData.CallStr = check ? "" : LanguageManager.Instance.GetText("Call");
+                strData.CallValueStr = check ? "" : $"\n{gameRoomData.currCallValue - localPlayer.currAllBetChips}";
             }
             else
             {
@@ -1324,6 +1394,21 @@ public class GameView : MonoBehaviour
 
     private void UpdateActionButtonTexts(bool isRaised, bool localPlayerTurn = false)
     {
+        if(LanguageManager.Instance.GetCurrLanguageIndex() == 0)
+        {
+            int keyF = betStringsE.FirstOrDefault(x => x.Value == strData.FoldStr).Key;
+            int keyC = betStringsE.FirstOrDefault(x => x.Value == strData.CallStr).Key;
+            SetCallFoldBetStr("Call", keyC);
+            SetCallFoldBetStr("Fold", keyF);
+        }
+        else
+        {
+            int keyF = betStringsC.FirstOrDefault(x => x.Value == strData.FoldStr).Key;
+            int keyC = betStringsC.FirstOrDefault(x => x.Value == strData.CallStr).Key;
+            SetCallFoldBetStr("Call", keyC);
+            SetCallFoldBetStr("Fold", keyF);
+        }
+
         FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
         CallBtn_Txt.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
         //coinIconObj.SetActive(false);
@@ -1361,8 +1446,10 @@ public class GameView : MonoBehaviour
         set
         {
             Raise_Btn.interactable = value;
-            Call_Btn.interactable = value;
-            Fold_Btn.interactable = value;
+            //Call_Btn.interactable = value;
+            Call_Btn.gameObject.SetActive(value);
+            //Fold_Btn.interactable = value;
+            Fold_Btn.gameObject.SetActive(value);
         }
     }
 
@@ -1472,6 +1559,21 @@ public class GameView : MonoBehaviour
         RaiseBtn_Txt.text = LanguageManager.Instance.GetText(strData.RaiseStr) + strData.RaiseValueStr;
         coinIconObj.SetActive(false);
         SetTotalPot = 0;
+
+        if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
+        {
+            int keyF = betStringsE.FirstOrDefault(x => x.Value == strData.FoldStr).Key;
+            int keyC = betStringsE.FirstOrDefault(x => x.Value == strData.CallStr).Key;
+            SetCallFoldBetStr("Call", keyC);
+            SetCallFoldBetStr("Fold", keyF);
+        }
+        else
+        {
+            int keyF = betStringsC.FirstOrDefault(x => x.Value == strData.FoldStr).Key;
+            int keyC = betStringsC.FirstOrDefault(x => x.Value == strData.CallStr).Key;
+            SetCallFoldBetStr("Call", keyC);
+            SetCallFoldBetStr("Fold", keyF);
+        }
 
         Raise_Tr.gameObject.SetActive(false);
     }
@@ -1902,17 +2004,30 @@ public class GameView : MonoBehaviour
         {
             if (thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue)
             {
+                print("CallBtn: 是否等於當前跟注金額");
                 //Debug.Log($"{nameof(ShowBetArea)} :: else check");
                 strData.CallStr = "Check";
                 strData.CallValueStr = "";
             }
             else
             {
+                print("CallBtn: 是否不等於當前跟注金額");
                 //Debug.Log($"{nameof(ShowBetArea)} :: else call");
                 strData.CallStr = "Call";
                 strData.CallValueStr = $"\n{StringUtils.SetChipsUnit(thisData.CallDifference)}";
             }
         }
+        if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
+        {
+            int keyC = betStringsE.FirstOrDefault(x => x.Value == strData.CallStr).Key;
+            SetCallFoldBetStr("Call", keyC);
+        }
+        else
+        {
+            int keyC = betStringsC.FirstOrDefault(x => x.Value == strData.CallStr).Key;
+            SetCallFoldBetStr("Call", keyC);
+        }
+
         CallBtn_Txt.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
 
         if (IsUnableRaise == true && isJustAllIn == false && isCanCall == true)
@@ -3918,6 +4033,33 @@ public class GameView : MonoBehaviour
     #endregion
 
     /// <summary>
+    /// 設置下注按鈕文字
+    /// </summary>
+    /// <param name="shapeIndex"></param>
+    public void SetCallFoldBetStr(string btnName, int shapeIndex)
+    {
+        if (btnName == "Call" && CallBtn_Img == null)
+            return;
+        if (btnName == "Fold" && FoldBtn_Img == null)
+            return;
+
+        if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
+        {
+            if(btnName=="Call")
+                SetCallBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteEnglish).album[shapeIndex];
+            else
+                SetFoldBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteEnglish).album[shapeIndex];
+        }
+        else
+        {
+            if (btnName == "Call")
+                SetCallBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteChinese).album[shapeIndex];
+            else
+                SetFoldBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteChinese).album[shapeIndex];
+        }
+    }
+
+    /// <summary>
     /// 移除資料
     /// </summary>
     private void OnRemoveData()
@@ -3936,21 +4078,14 @@ public class GameView : MonoBehaviour
             PlayerPrefs.SetInt("idleCount", idleC);
             PlayerPrefs.Save();
 
-            if (PlayerPrefs.GetInt("idleCount") >= 2)
+            var data = new Dictionary<string, object>()
             {
-                JSBridgeManager.Instance.WindowClose();
-            }
-            else
-            {
-                var data = new Dictionary<string, object>()
-                {
-                    { FirebaseManager.IS_SIT_OUT, true},         //是否保留座位離開
-                };
-                gameControl.UpdataPlayerData(DataManager.UserId,
-                                                data);
+                { FirebaseManager.IS_SIT_OUT, true},         //是否保留座位離開
+            };
+            gameControl.UpdataPlayerData(DataManager.UserId,
+                                            data);
 
-                gameControl.idleExit();
-            }
+            gameControl.idleExit();
         }
     }
 }

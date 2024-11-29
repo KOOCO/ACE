@@ -18,10 +18,13 @@ public enum AlbumEnum
     Shop_GoldAlbum,
     Shop_ExtraTimeAlbum,
     HandRanksEnglishAlbum,
-    HandRanksChineseAlbum
+    HandRanksChineseAlbum,
+    betSpriteEnglish,
+    betSpriteChinese
 }
 
 public enum StringAlbumEnum
 {
-    HandRanksStringAlbum
+    HandRanksStringAlbum,
+    betString
 }
