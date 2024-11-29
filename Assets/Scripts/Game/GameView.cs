@@ -1398,15 +1398,15 @@ public class GameView : MonoBehaviour
         {
             int keyF = betStringsE.FirstOrDefault(x => x.Value == strData.FoldStr).Key;
             int keyC = betStringsE.FirstOrDefault(x => x.Value == strData.CallStr).Key;
-            SetFoldBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteEnglish).album[keyF];
-            SetCallBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteEnglish).album[keyC];
+            SetCallFoldBetStr("Call", keyC);
+            SetCallFoldBetStr("Fold", keyF);
         }
         else
         {
             int keyF = betStringsC.FirstOrDefault(x => x.Value == strData.FoldStr).Key;
             int keyC = betStringsC.FirstOrDefault(x => x.Value == strData.CallStr).Key;
-            SetFoldBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteChinese).album[keyF];
-            SetCallBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteChinese).album[keyC];
+            SetCallFoldBetStr("Call", keyC);
+            SetCallFoldBetStr("Fold", keyF);
         }
 
         FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
@@ -1564,15 +1564,15 @@ public class GameView : MonoBehaviour
         {
             int keyF = betStringsE.FirstOrDefault(x => x.Value == strData.FoldStr).Key;
             int keyC = betStringsE.FirstOrDefault(x => x.Value == strData.CallStr).Key;
-            SetFoldBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteEnglish).album[keyF];
-            SetCallBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteEnglish).album[keyC];
+            SetCallFoldBetStr("Call", keyC);
+            SetCallFoldBetStr("Fold", keyF);
         }
         else
         {
             int keyF = betStringsC.FirstOrDefault(x => x.Value == strData.FoldStr).Key;
             int keyC = betStringsC.FirstOrDefault(x => x.Value == strData.CallStr).Key;
-            SetFoldBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteChinese).album[keyF];
-            SetCallBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteChinese).album[keyC];
+            SetCallFoldBetStr("Call", keyC);
+            SetCallFoldBetStr("Fold", keyF);
         }
 
         Raise_Tr.gameObject.SetActive(false);
@@ -2020,12 +2020,12 @@ public class GameView : MonoBehaviour
         if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
         {
             int keyC = betStringsE.FirstOrDefault(x => x.Value == strData.CallStr).Key;
-            SetCallBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteEnglish).album[keyC];
+            SetCallFoldBetStr("Call", keyC);
         }
         else
         {
             int keyC = betStringsC.FirstOrDefault(x => x.Value == strData.CallStr).Key;
-            SetCallBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteChinese).album[keyC];
+            SetCallFoldBetStr("Call", keyC);
         }
 
         CallBtn_Txt.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
