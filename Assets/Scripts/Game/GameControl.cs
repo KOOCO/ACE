@@ -2791,54 +2791,37 @@ public class GameControl : MonoBehaviour
 
             var highestSeq = FindHighestConsecutiveSequence(sortedCards);
             Debug.Log("Straight Found: " + string.Join(", ", highestSeq));
-            return highestSeq.OrderByDescending(card => card).ToList();
+            return highestSeq.OrderByDescending(card => card).Take(5).ToList();
         }
 
         // Default case: return the top 5 cards sorted by rank
         return sortedCards.Take(5).ToList();
     }
-
-    public static List<int> FindHighestConsecutiveSequence(List<int> input)
+    private List<int> FindHighestConsecutiveSequence(List<int> cards)
     {
-        // Sort the input list to ensure the elements are in order
-        input.Sort();
+        var sortedCards = cards.Distinct().OrderBy(card => card).ToList();
+        var longestSeq = new List<int>();
+        var currentSeq = new List<int>();
 
-        // List to store the result sequences
-        List<List<int>> result = new List<List<int>>();
-
-        // Iterate through the list and check for consecutive sequences
-        for (int i = 0; i <= input.Count - 5; i++)
+        for (int i = 0; i < sortedCards.Count; i++)
         {
-            List<int> sequence = new List<int> { input[i] };
-            for (int j = i + 1; j < input.Count; j++)
+            if (i == 0 || sortedCards[i] == sortedCards[i - 1] + 1)
             {
-                // If current number is consecutive to the last one, add it to the sequence
-                if (input[j] == sequence[sequence.Count - 1] + 1)
-                {
-                    sequence.Add(input[j]);
-                    if (sequence.Count == 5)
-                    {
-                        result.Add(new List<int>(sequence));
-                        break;
-                    }
-                }
-                else
-                {
-                    break;
-                }
+                currentSeq.Add(sortedCards[i]);
+            }
+            else
+            {
+                if (currentSeq.Count > longestSeq.Count)
+                    longestSeq = new List<int>(currentSeq);
+                currentSeq.Clear();
+                currentSeq.Add(sortedCards[i]);
             }
         }
 
-        // Check if there are valid sequences
-        if (result.Count == 0)
-        {
-            return null; // No sequence found
-        }
+        if (currentSeq.Count > longestSeq.Count)
+            longestSeq = currentSeq;
 
-        // Find the highest sequence (the one with the highest last number)
-        List<int> highestSequence = result.OrderByDescending(seq => seq.Last()).FirstOrDefault();
-
-        return highestSequence;
+        return longestSeq.ToList(); // Return the top 5 cards in the sequence
     }
     // Check if the hand contains a low straight (A-2-3-4-5)
     public static bool HasLowStraight(List<int> cards)

@@ -53,7 +53,7 @@ public static class PokerShape
             // Handle Ace-low straight
             if (sortedRanks.Contains(14) && sortedRanks.Take(4).SequenceEqual(new List<int> { 2, 3, 4, 5 }))
             {
-                return cardList.Where(card => card % 13 + 2 == 14 || card % 13 + 2 <= 5).Take(5).ToList();
+                return cardList.Where(card => card % 13 + 2 == 14 || card % 13 + 2 <= 5).ToList();
             }
 
             for (int i = 0; i <= sortedRanks.Count - 5; i++)
@@ -61,7 +61,7 @@ public static class PokerShape
                 if (sortedRanks[i + 4] - sortedRanks[i] == 4)
                 {
                     var straightRanks = sortedRanks.Skip(i).Take(5).ToHashSet();
-                    return cardList.Where(card => straightRanks.Contains(card % 13 + 2)).Take(5).ToList();
+                    return cardList.Where(card => straightRanks.Contains(card % 13 + 2)).ToList();
                 }
             }
 
