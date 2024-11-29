@@ -368,9 +368,6 @@ public class GameControl : MonoBehaviour
             Debug.LogError($"Table CashOut Failed Error: {error}");
         });
 
-        LobbyView lobbyView = GameObject.Find("LobbyView").GetComponent<LobbyView>();
-        lobbyView.checkIsIdle();
-
         AppApi.OnLeaveRoom(leaveRoom, (data) =>
         {
             Debug.Log("Player successfully left the room.");
@@ -383,6 +380,9 @@ public class GameControl : MonoBehaviour
         {
             Debug.LogError($"Failed to leave the room. Error: {error}");
         });
+
+        LobbyView lobbyView = GameObject.Find("LobbyView").GetComponent<LobbyView>();
+        lobbyView.checkIsIdle();
     }
 
     [DllImport("__Internal")]

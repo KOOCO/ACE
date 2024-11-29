@@ -476,7 +476,10 @@ public class LobbyView : MonoBehaviour
 
     public void checkIsIdle()
     {
-        if (PlayerPrefs.GetInt("idleCount") > 0)
+        if (PlayerPrefs.GetInt("idleCount") > 1)
+        {
+            JSBridgeManager.Instance.WindowClose();
+        }else if(PlayerPrefs.GetInt("idleCount") > 0)
         {
             DataManager.istipAppear = true;
             DataManager.TipText = LanguageManager.Instance.GetText("Idle warn");
