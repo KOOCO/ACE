@@ -108,7 +108,9 @@ public static class PokerShape
         {
             if (suitGroups[suit].Count >= 5)
             {
-                callBack?.Invoke(5, judgePokerList); // Flush
+                // Flush found, return the cards of this suit
+                var flushCards = suitGroups[suit];
+                callBack?.Invoke(5, flushCards); // Flush
                 return;
             }
         }
