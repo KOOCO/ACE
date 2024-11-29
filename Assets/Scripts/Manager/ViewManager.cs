@@ -40,8 +40,8 @@ public class ViewManager : UnitySingleton<ViewManager>
     /// <param name="viewName"></param>
     public void InitViewTr(RectTransform view, string viewName = "")
     {
-        view.anchorMax = new Vector2(0.5f, 1);
-        view.anchorMin = new Vector2(0.5f, 0);
+        //view.anchorMax = new Vector2(0.5f, 1);
+        //view.anchorMin = new Vector2(0.5f, 0);
         view.offsetMax = Vector2.zero;
         view.offsetMin = Vector2.zero;
         view.sizeDelta = new Vector2(Entry.Instance.resolution.x, 0);
