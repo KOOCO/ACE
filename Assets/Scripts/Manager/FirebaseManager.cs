@@ -29,6 +29,7 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
     public const string ROBOT_ID = "robot";                                                 //機器人ID
     public const string PLAYER_DATA_LIST = "playerDataDic";                                 //房間內所有玩家列表路徑
     public const string PLAYING_PLAYER_ID = "playingPlayersIdList";                         //遊戲中玩家ID列表路徑
+    public const string PLAYERS_WHO_LEFT = "playersWhoLeft";                         //遊戲中玩家ID列表路徑
     public const string BET_ACTION_DATA = "betActionDataDic";                               //下注行為資料路徑
     public const string POT_WIN_DATA = "potWinData";                                        //底池獲勝資料路徑
     public const string SIDE_WIN_DATA = "sideWinData";                                      //邊池獲勝資料路徑
@@ -223,6 +224,7 @@ public class QueryRoom
 public class GameRoomData
 {
     public Dictionary<string, GameRoomPlayerData> playerDataDic;        //房間內玩家資料
+    public List<GameRoomPlayerData> playersWhoLeft;        //房間內玩家資料
     public List<string> playingPlayersIdList;                           //遊戲中玩家ID列表
     public BetActionData betActionDataDic;                              //下注行為資料
     public PotWinData potWinData;                                       //底池獲勝資料

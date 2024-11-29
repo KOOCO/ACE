@@ -469,17 +469,22 @@ public class GameControl : MonoBehaviour
     /// <param name="id"></param>
     private void RemovePlayer(string id)
     {
+        GameRoomPlayerData playerLeft = GetPlayerData(id);
+        if (playerLeft != null)
+        {
+            var exitPlayer = new Dictionary<string, object>()
+            {
+                { FirebaseManager.PLAYERS_WHO_LEFT, gameView.playersWhoLeft},                 //遊戲中玩家ID
+            };
+            JSBridgeManager.Instance.WriteDataFromFirebase($"{QueryRoomPath}", exitPlayer);
+        }
+        else
+        {
+            Debug.Log("GameControl :: Left Player Not Found");
+        }
+
         gameView.PlayerExitRoom(id);
 
-        // var newData = new Dictionary<string, object>
-        // {
-        //     //{ FirebaseManager.GAME_STATE, (int)PlayerStateEnum.Fold},
-        //     { FirebaseManager.IS_PLAYER_LEFT, true },
-        // };
-        // UpdataPlayerData(id, newData, (x) =>
-        // {
-        //     Debug.Log("RemovePlayer : " + x);
-        // });
 
         List<string> playingPlayersId = new();
         foreach (var playerId in gameRoomData.playingPlayersIdList)

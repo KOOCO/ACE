@@ -200,7 +200,7 @@ public class GameView : MonoBehaviour
     bool isOnFold;                                     //是否下局保留作位離開
 
     #region 遊戲過程紀錄
-    public List<GameRoomPlayerData> playersWhoLeft;
+    public List<GameRoomPlayerData> playersWhoLeft = new();
     List<int> exitPlayerSeatList;                               //玩家離開座位
     GameInitHistoryData gameInitHistoryData;                    //遊戲初始資料紀錄
     ProcessHistoryData processHistoryData;                      //遊戲過程資料紀錄
@@ -2297,8 +2297,6 @@ public class GameView : MonoBehaviour
     /// <returns></returns>
     public GamePlayerInfo PlayerExitRoom(string id)
     {
-        playersWhoLeft.Add(gameControl.GetPlayerData(id));
-
         GamePlayerInfo exitPlayer = GetPlayer(id);
 
         gamePlayerInfoList.Remove(exitPlayer);
@@ -3150,6 +3148,7 @@ public class GameView : MonoBehaviour
         AutoActionState = AutoActingEnum.None;
         thisData.SmallBlindValue = smallBlind;
         thisData.CurrRaiseValue = thisData.SmallBlindValue * 2;
+        playersWhoLeft = gameRoomData.playersWhoLeft;
 
         //重製玩家行動文字顯示
         if ((GameFlowEnum)gameRoomData.currGameFlow == GameFlowEnum.PotResult)
@@ -3570,6 +3569,12 @@ public class GameView : MonoBehaviour
 
         // Reset exit player seat list and process history data
         playersWhoLeft.Clear();
+        var gameRoomData1 = new Dictionary<string, object>()
+        {
+            { FirebaseManager.PLAYERS_WHO_LEFT, playersWhoLeft},                 //遊戲中玩家ID
+        };
+        gameControl.UpdateGameRoomData(gameRoomData1);
+
         exitPlayerSeatList = new List<int>();
         processHistoryData = new ProcessHistoryData
         {
@@ -3774,6 +3779,7 @@ public class GameView : MonoBehaviour
     public void UpdateGameRoomData(GameRoomData gameRoomData)
     {
         this.gameRoomData = gameRoomData;
+        playersWhoLeft = gameRoomData.playersWhoLeft;
 
         //當前小盲值
         thisData.SmallBlindValue = gameRoomData.smallBlind;
