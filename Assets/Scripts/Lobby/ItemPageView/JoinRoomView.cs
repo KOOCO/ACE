@@ -293,11 +293,11 @@ private static extern void onPageLoad();
                 titleStr = "High Roller Battleground";
                 isClassic = false;
                 BlindACoin_Img.gameObject.SetActive(true);
-                BlindUCoin_Img.gameObject.SetActive(false);
+                //                BlindUCoin_Img.gameObject.SetActive(false);
                 MinBuyACoin_Img.gameObject.SetActive(true);
-                MinBuyUCoin_Img.gameObject.SetActive(false);
+                //           MinBuyUCoin_Img.gameObject.SetActive(false);
                 MaxBuyACoin_Img.gameObject.SetActive(true);
-                MaxBuyUCoin_Img.gameObject.SetActive(false);
+                //            MaxBuyUCoin_Img.gameObject.SetActive(false);
                 break;
 
             //虛擬貨幣桌
@@ -305,11 +305,11 @@ private static extern void onPageLoad();
                 titleStr = "Classic Battle";
                 isClassic = true;
                 BlindACoin_Img.gameObject.SetActive(false);
-                BlindUCoin_Img.gameObject.SetActive(true);
+                //         BlindUCoin_Img.gameObject.SetActive(true);
                 MinBuyACoin_Img.gameObject.SetActive(false);
-                MinBuyUCoin_Img.gameObject.SetActive(true);
+                //        MinBuyUCoin_Img.gameObject.SetActive(true);
                 MaxBuyACoin_Img.gameObject.SetActive(false);
-                MaxBuyUCoin_Img.gameObject.SetActive(true);
+                //        MaxBuyUCoin_Img.gameObject.SetActive(true);
                 break;
         }
         Title_Txt.text = LanguageManager.Instance.GetText(titleStr);
