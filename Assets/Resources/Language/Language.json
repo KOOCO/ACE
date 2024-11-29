@@ -455,6 +455,11 @@
     "zh_TW": "遊戲閒置過久或偵測到網路中斷，請重新登入。"
   },
   {
+    "ID": "Idle warn",
+    "English": "We have detected that you have idle in the last game, so the system has kicked you out of the table, to remind you that in order to protect the rights of other players, if you idle again in the next game, we will have to ask you to leave the game.",
+    "zh_TW": "偵測到您於上一局遊戲存在掛機行為，因此系統將您踢出牌桌，提醒您，為了維護其他玩家的權益，若下一局再有掛機行為，我們將不得不請你離線。"
+  },
+  {
     "ID": "You don,t have enough Ucoins",
     "English": "You don,t have enough Ucoins",
     "zh_TW": "您的U幣不足"

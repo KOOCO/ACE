@@ -260,12 +260,6 @@ public class LobbyView : MonoBehaviour
         SetIsShowAssetList = isShowAssetList;
 
         OpenItemPage(ItemType.Main);
-
-        //StartHeartbeat();
-        if (PlayerPrefs.GetInt("idleCount") > 0) {
-            DataManager.istipAppear = true;
-            DataManager.TipText = LanguageManager.Instance.GetText("Idle warn");
-        }
     }
 
     private void Start()
@@ -477,6 +471,15 @@ public class LobbyView : MonoBehaviour
         {
             DataManager.istipAppear=true;
             DataManager.TipText = LanguageManager.Instance.GetText("Network offline");
+        }
+    }
+
+    public void checkIsIdle()
+    {
+        if (PlayerPrefs.GetInt("idleCount") > 0)
+        {
+            DataManager.istipAppear = true;
+            DataManager.TipText = LanguageManager.Instance.GetText("Idle warn");
         }
     }
 
