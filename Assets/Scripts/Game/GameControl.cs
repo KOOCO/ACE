@@ -2664,7 +2664,7 @@ public class GameControl : MonoBehaviour
                 // Store hand rank and match poker for tie-breaking
                 Debug.Log($"GameControl :: {player.nickname} : Returned Cards :: {string.Join(" , ", matchPoker)}");
                 bool isStraight = result == 6 || result == 2 ? true : false;
-                bool _isFlush = result == 5 ? true : false;
+                bool _isFlush = result == 5 || result == 2 ? true : false;
                 var _matchPoker = CalculateRank(matchPoker, isStraight, _isFlush);
                 Debug.Log($"GameControl :: {player.nickname} : Hand :: {PokerShape.HandRanks[result]} : CardsRank :: {string.Join(" , ", _matchPoker)}");
 
@@ -2713,16 +2713,57 @@ public class GameControl : MonoBehaviour
     }
     public List<int> CalculateRank(List<int> cards, bool isStraight = false, bool isFlush = false)
     {
+        // Handle Straight Flush
+        if (isStraight && isFlush)
+        {
+            Debug.Log("Calculate Rank: Straight Flush Check");
+
+            // Group cards by suit
+            var suitGroups = cards
+                .GroupBy(card => card / 13) // Group by suit (0: Clubs, 1: Diamonds, 2: Hearts, 3: Spades)
+                .Where(group => group.Count() >= 5) // Only consider suits with 5+ cards
+                .ToList();
+
+            foreach (var suitGroup in suitGroups)
+            {
+                // Extract the cards of the current suit and sort by rank
+                var suitedCards = suitGroup
+                    .Select(card => card % 13 + 2) // Convert card to rank (2 to 14)
+                    .OrderByDescending(rank => rank)
+                    .ToList();
+
+                // Handle Ace-low straight (A-2-3-4-5)
+                if (HasLowStraight(suitedCards))
+                {
+                    Debug.Log("Straight Flush: Has Low Straight");
+                    suitedCards = suitedCards.Select(rank => rank == 14 ? 1 : rank).ToList();
+                }
+
+                // Find the highest straight within the suited cards
+                var highestStraightFlush = FindHighestConsecutiveSequence(suitedCards);
+
+                if (highestStraightFlush.Count == 5)
+                {
+                    Debug.Log("Straight Flush Found: " + string.Join(", ", highestStraightFlush));
+                    return highestStraightFlush.OrderByDescending(card => card).ToList(); // Return the straight flush
+                }
+            }
+        }
+
+        // Handle Flush (not a straight flush)
         if (isFlush)
         {
+            Debug.Log("Calculate Rank: Flush Check");
+
             var grouped1 = cards
-            .GroupBy(card => card % 13) // Group by rank (0-12 -> 2 to Ace)
-            .Select(g => (g.Key + 2)) // Add 2 for rank
-            .OrderByDescending(card => card)
-            .Take(5)
-            .ToList();
+                .GroupBy(card => card % 13) // Group by rank (0-12 -> 2 to Ace)
+                .Select(g => (g.Key + 2)) // Add 2 for rank
+                .OrderByDescending(card => card)
+                .Take(5)
+                .ToList();
             return grouped1;
         }
+
         // Group cards by rank (e.g., 2, 2, 5, 6, K -> groups for 2:2, 5:1, etc.)
         var grouped = cards
             .GroupBy(card => card % 13) // Group by rank (0-12 -> 2 to Ace)
@@ -2736,36 +2777,24 @@ public class GameControl : MonoBehaviour
             .SelectMany(g => Enumerable.Repeat(g.Rank, g.Count)) // Expand groups into individual cards
             .ToList();
 
-        // If the hand is a straight, ensure the cards are sorted in sequence order (ascending)
+        // Handle Straight
         if (isStraight)
         {
-            // Find the highest consecutive sequence (straight)
-            Debug.Log("Calculate Rank : isStraight : " + isStraight + " " + string.Join(" , ", sortedCards));
+            Debug.Log("Calculate Rank: Straight Check");
 
             // Handle Ace-low straight (A-2-3-4-5)
             if (HasLowStraight(cards))
             {
-                Debug.Log("HasLowStraight");
-                // Convert Ace from 14 to 1 for low straights and update the sortedCards list
+                Debug.Log("Straight: Has Low Straight");
                 sortedCards = sortedCards.Select(card => card == 14 ? 1 : card).ToList();
             }
 
             var highestSeq = FindHighestConsecutiveSequence(sortedCards);
-            Debug.Log("Consecutive Seq : " + string.Join(" , ", highestSeq));
-            // Sort the highest sequence in ascending order
-            var ascendingSeq = highestSeq.OrderBy(card => card).ToList();
-
-            // Remove the cards in the sequence from the original sortedCards
-            var remainingCards = sortedCards.Where(card => !ascendingSeq.Contains(card)).ToList();
-
-            // Sort the remaining cards in descending order
-            var descendingRemaining = remainingCards.OrderByDescending(card => card).ToList();
-
-            // Combine the ascending sequence and descending remaining cards
-            return ascendingSeq.Concat(descendingRemaining).Take(5).ToList();
+            Debug.Log("Straight Found: " + string.Join(", ", highestSeq));
+            return highestSeq.OrderByDescending(card => card).ToList();
         }
 
-        // If not a straight, just return the cards sorted by rank
+        // Default case: return the top 5 cards sorted by rank
         return sortedCards.Take(5).ToList();
     }
 

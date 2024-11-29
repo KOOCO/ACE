@@ -2519,7 +2519,7 @@ public class GameView : MonoBehaviour
                         if (isOpenMatchPokerFrame)
                         {
                             bool isStraight = resultIndex == 6 || resultIndex == 2 ? true : false;
-                            bool _isFlush = resultIndex == 5 ? true : false;
+                            bool _isFlush = resultIndex == 5 || resultIndex == 2 ? true : false;
                             PokerShape.OpenMatchPokerFrame(allPokers, HighlightCard(matchPokerList, isStraight, _isFlush).Take(5).ToList(), isWinEffect);
                             Debug.Log($"[JudgePokerShapeUI] Match Poker Frame Opened | isWinEffect: {isWinEffect} | {string.Join(", ", matchPokerList.Select(p => p))}");
 
