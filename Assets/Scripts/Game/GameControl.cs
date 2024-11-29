@@ -2664,7 +2664,8 @@ public class GameControl : MonoBehaviour
                 // Store hand rank and match poker for tie-breaking
                 Debug.Log($"GameControl :: {player.nickname} : Returned Cards :: {string.Join(" , ", matchPoker)}");
                 bool isStraight = result == 6 || result == 2 ? true : false;
-                var _matchPoker = CalculateRank(matchPoker, isStraight);
+                bool _isFlush = result == 5 ? true : false;
+                var _matchPoker = CalculateRank(matchPoker, isStraight, _isFlush);
                 Debug.Log($"GameControl :: {player.nickname} : Hand :: {PokerShape.HandRanks[result]} : CardsRank :: {string.Join(" , ", _matchPoker)}");
 
                 shapeDic[player] = new HandEvaluation
@@ -2710,8 +2711,18 @@ public class GameControl : MonoBehaviour
 
         return winners;
     }
-    public List<int> CalculateRank(List<int> cards, bool isStraight = false)
+    public List<int> CalculateRank(List<int> cards, bool isStraight = false, bool isFlush = false)
     {
+        if (isFlush)
+        {
+            var grouped1 = cards
+            .GroupBy(card => card % 13) // Group by rank (0-12 -> 2 to Ace)
+            .Select(g => (g.Key + 2)) // Add 2 for rank
+            .OrderByDescending(card => card)
+            .Take(5)
+            .ToList();
+            return grouped1;
+        }
         // Group cards by rank (e.g., 2, 2, 5, 6, K -> groups for 2:2, 5:1, etc.)
         var grouped = cards
             .GroupBy(card => card % 13) // Group by rank (0-12 -> 2 to Ace)

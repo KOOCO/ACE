@@ -2518,8 +2518,9 @@ public class GameView : MonoBehaviour
                         // Open Match Poker Frame if enabled
                         if (isOpenMatchPokerFrame)
                         {
-                            bool isStraight = resultIndex == 6 ? true : false;
-                            PokerShape.OpenMatchPokerFrame(allPokers, HighlightCard(matchPokerList, isStraight).Take(5).ToList(), isWinEffect);
+                            bool isStraight = resultIndex == 6 || resultIndex == 2 ? true : false;
+                            bool _isFlush = resultIndex == 5 ? true : false;
+                            PokerShape.OpenMatchPokerFrame(allPokers, HighlightCard(matchPokerList, isStraight, _isFlush).Take(5).ToList(), isWinEffect);
                             Debug.Log($"[JudgePokerShapeUI] Match Poker Frame Opened | isWinEffect: {isWinEffect} | {string.Join(", ", matchPokerList.Select(p => p))}");
 
                             // Set winner details if win effects are enabled
@@ -2548,10 +2549,10 @@ public class GameView : MonoBehaviour
         }
     }
 
-    List<int> HighlightCard(List<int> cards, bool isStraight)
+    List<int> HighlightCard(List<int> cards, bool isStraight, bool isFlush)
     {
         // Calculate the rank of the cards
-        var myCards = gameControl.CalculateRank(cards, isStraight);
+        var myCards = gameControl.CalculateRank(cards, isStraight, isFlush);
         // Convert 1 to 14 in myCards to handle Ace as high
         myCards = myCards.Select(rank => rank == 1 ? 14 : rank).ToList();
 
