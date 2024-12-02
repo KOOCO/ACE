@@ -672,6 +672,7 @@ public class GameControl : MonoBehaviour
     /// <param name="gameFlow">遊戲流程</param>
     /// 
     double mainPotWinChips = 0;
+    double playersWhoLeftBet = 0;
     public List<RoomFee> winnersRoomFee = new();
 
     public IEnumerator IStartGameFlow(GameFlowEnum gameFlow)
@@ -790,11 +791,10 @@ public class GameControl : MonoBehaviour
             //遊戲結果_底池
             case GameFlowEnum.PotResult:
                 winnersRoomFee.Clear();
-                Debug.Log(nameof(IStartGameFlow) + " Before getting playing Players");
                 // Get the players still in the game and order by their total bet chips
                 playingPlayers = GetPlayingPlayer().OrderBy(x => x.allBetChips).ToList();
 
-                Debug.Log("Before Judging player " + playingPlayers.Count);
+                Debug.Log("GameControl :: " + nameof(IStartGameFlow) + " Before Judging player " + playingPlayers.Count);
                 if (playingPlayers.Count == 0)
                     break;
 
@@ -803,24 +803,24 @@ public class GameControl : MonoBehaviour
 
                 // Calculate the minimum amount in the pot and the total winning chips
                 double potMin = playingPlayers[0].allBetChips;
+
+                playersWhoLeftBet = gameRoomData.playersWhoLeft == null ? 0 : gameRoomData.playersWhoLeft.Sum(p => p.Value.allBetChips);
+                Debug.Log("GameControl :: PlayersWhoLeftBet : " + playersWhoLeftBet);
                 mainPotWinChips = potMin * playingPlayers.Count();
 
-                Debug.Log(nameof(IStartGameFlow) + " before potWinnerIdList");
-
                 // Update the main pot and check if there are remaining side chips
-                double remainingChips = gameRoomData.potChips - (mainPotWinChips + (gameRoomData.playersWhoLeft == null ? 0 : gameRoomData.playersWhoLeft.Sum(p => p.Value.allBetChips)));
+                double remainingChips = gameRoomData.potChips - (mainPotWinChips + playersWhoLeftBet);
 
                 // Check if there is a side pot, but only if there are remaining chips from bets not fully covered
                 bool IsHaveSide = remainingChips > 0;
 
+                double winnerShare = (mainPotWinChips / potWinners.Count) + playersWhoLeftBet;
                 // Update the chips for the winning players
                 List<string> potWinnerIdList = new List<string>();
                 foreach (var potWinner in potWinners)
                 {
                     potWinner.winType = WinnerEnum.MAIN;
                     potWinnerIdList.Add(potWinner.userId);
-                    double winnerShare = mainPotWinChips / potWinners.Count;
-                    Debug.Log("GameControl :: PotWinnerChips : " + winnerShare);
                     RoomFee roomFeeObj = new RoomFee()
                     {
                         userId = potWinner.userId,
@@ -835,7 +835,6 @@ public class GameControl : MonoBehaviour
                 {
                     CalculateRoomFee();
                 }
-                Debug.Log(nameof(IStartGameFlow) + " before data dictionary");
 
                 // Update the game room data (e.g., community cards)
                 data = new Dictionary<string, object>()
@@ -844,13 +843,11 @@ public class GameControl : MonoBehaviour
                 };
                 UpdateGameRoomData(data);
 
-                Debug.Log(nameof(IStartGameFlow) + " before finding potWinnersId");
-
                 // Update the pot winner details
                 List<string> potWinnersId = potWinners.Select(x => x.userId).ToList();
                 data = new Dictionary<string, object>()
                 {
-                    { FirebaseManager.POT_WIN_CHIPS, mainPotWinChips},                      //底池獲得籌碼
+                    { FirebaseManager.POT_WIN_CHIPS, winnerShare},                      //底池獲得籌碼
                     { FirebaseManager.POT_WINNERS_ID, potWinnerIdList},                 //底池獲得贏家ID
                     { FirebaseManager.IS_HAVE_SIDE, IsHaveSide},                        //是否有邊池
                 };
@@ -877,7 +874,8 @@ public class GameControl : MonoBehaviour
                 potWinners = JudgeWinner(newPlayingPlayers).OrderBy(x => x.allBetChips).ToList();
                 Debug.Log($"GameControl :: SideResult : PotWinner players ordered by bet chips: {string.Join(", ", potWinners.Select(p => $"{p.nickname}: {p.allBetChips}"))}");
                 // Calculate total side pot
-                double totalSidePot = gameRoomData.potChips - (mainPotWinChips + (gameRoomData.playersWhoLeft == null ? 0 : gameRoomData.playersWhoLeft.Sum(p => p.Value.allBetChips)));
+                playersWhoLeftBet = gameRoomData.playersWhoLeft == null ? 0 : gameRoomData.playersWhoLeft.Sum(p => p.Value.allBetChips);
+                double totalSidePot = gameRoomData.potChips - (mainPotWinChips + playersWhoLeftBet);
                 Debug.Log($"GameControl :: SideResult : Total side pot: {totalSidePot}");
 
                 // Calculate individual side pots
@@ -976,7 +974,7 @@ public class GameControl : MonoBehaviour
                 {
                     potWinner.winType = WinnerEnum.MAIN;
                     potWinnerIdList.Add(potWinner.userId);
-                    double winnerShare = mainPotWinChips / potWinners.Count;
+                    winnerShare = (mainPotWinChips / potWinners.Count);
                     RoomFee roomFeeObj = new RoomFee()
                     {
                         userId = potWinner.userId,
@@ -1066,18 +1064,11 @@ public class GameControl : MonoBehaviour
 
             foreach (var player in players)
             {
-                double newCarryChip = player.carryChips + sideWinChips;
-                Debug.Log($"GameControl :: DistributeSidePot : Player {player.userId}, NewCarryChip = {Math.Floor(newCarryChip)}");
-                // var data = new Dictionary<string, object>
-                // {
-                //     { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChip) },
-                //     //{ FirebaseManager.SIDE_WIN_CHIPS, sideWinChips }
-                // };
-                // UpdataPlayerData(player.userId, data);
                 var winner = winnersRoomFee.FirstOrDefault(p => p.userId == player.userId);
                 if (winner != null)
                 {
                     winner.sidePotAmount += sideWinChips;
+                    winner.winType = WinnerEnum.BOTH;
                 }
                 else
                 {
@@ -1149,7 +1140,7 @@ public class GameControl : MonoBehaviour
             }
             if (winner.userId == DataManager.UserId)
             {
-                NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId.ToString(), roomFee, 21, ChipTransactionType.TableFee, (x) =>
+                NoodleApi.PostTableChipsTransaction(DataManager.UserId, DataManager.RoundId.ToString(), Math.Round(roomFee, 2), 21, ChipTransactionType.TableFee, (x) =>
                     {
                         Debug.Log("TableFee ChipsTransaction Success");
                     },
