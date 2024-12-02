@@ -224,7 +224,7 @@ public class QueryRoom
 public class GameRoomData
 {
     public Dictionary<string, GameRoomPlayerData> playerDataDic;        //房間內玩家資料
-    public List<GameRoomPlayerData> playersWhoLeft;        //房間內玩家資料
+    public Dictionary<string, GameRoomPlayerData> playersWhoLeft;        //房間內玩家資料
     public List<string> playingPlayersIdList;                           //遊戲中玩家ID列表
     public BetActionData betActionDataDic;                              //下注行為資料
     public PotWinData potWinData;                                       //底池獲勝資料

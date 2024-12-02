@@ -200,7 +200,6 @@ public class GameView : MonoBehaviour
     bool isOnFold;                                     //是否下局保留作位離開
 
     #region 遊戲過程紀錄
-    public List<GameRoomPlayerData> playersWhoLeft = new();
     List<int> exitPlayerSeatList;                               //玩家離開座位
     GameInitHistoryData gameInitHistoryData;                    //遊戲初始資料紀錄
     ProcessHistoryData processHistoryData;                      //遊戲過程資料紀錄
@@ -334,7 +333,7 @@ public class GameView : MonoBehaviour
             }
         }
     }
-    
+
     public Sprite SetFoldBetImage
     {
         set
@@ -1402,7 +1401,7 @@ public class GameView : MonoBehaviour
 
     private void UpdateActionButtonTexts(bool isRaised, bool localPlayerTurn = false)
     {
-        if(LanguageManager.Instance.GetCurrLanguageIndex() == 0)
+        if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
         {
             int keyF = betStringsE.FirstOrDefault(x => x.Value == strData.FoldStr).Key;
             int keyC = betStringsE.FirstOrDefault(x => x.Value == strData.CallStr).Key;
@@ -2311,8 +2310,32 @@ public class GameView : MonoBehaviour
     /// </summary>
     /// <param name="id">退出玩家ID</param>
     /// <returns></returns>
-    public GamePlayerInfo PlayerExitRoom(string id)
+    public GamePlayerInfo PlayerExitRoom(string id, bool allPlayersLeft = false)
     {
+        GameRoomPlayerData playerLeft = gameControl.GetPlayerData(DataManager.UserId);
+        if (playerLeft != null)
+        {
+            Debug.Log("GameControl :: Player Who Left : " + playerLeft.nickname);
+            var exitPlayer1 = new Dictionary<string, object>()
+            {
+                { DataManager.UserId, playerLeft},                 //遊戲中玩家ID
+            };
+            JSBridgeManager.Instance.UpdateDataFromFirebase($"{gameControl.QueryRoomPath}/{FirebaseManager.PLAYERS_WHO_LEFT}", exitPlayer1);
+
+            if (allPlayersLeft)
+            {
+                GetRoundCount();
+                StartCoroutine(SaveResult(gameRoomData, true));
+                AppApi.OnRoundFinish(saveResultData, (x) => { Debug.Log("Round Finished"); });
+                SaveResultDataToFirebase();
+                IncrementRoundCount();
+            }
+        }
+        else
+        {
+            Debug.Log("GameControl :: Left Player Not Found");
+        }
+
         GamePlayerInfo exitPlayer = GetPlayer(id);
 
         gamePlayerInfoList.Remove(exitPlayer);
@@ -2800,109 +2823,7 @@ public class GameView : MonoBehaviour
             player.IsWinnerActive = false;
         }
 
-        int winIndex = 0;
-        saveResultData = new ResultHistoryData
-        {
-            playerDetails = new List<PlayerDetails>(), // Initialize the playerHands list
-        };
-
-        // Loop through pot winners to save data
-        foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
-        {
-            winIndex++;
-            GameRoomPlayerData winnerPlayerData = gameControl.GetPlayerData(potWinnerId);
-
-            if (winnerPlayerData == null)
-                yield break;
-
-            if (thisData.LocalGamePlayerInfo.IsPlaying && winIndex == 1)
-            {
-                string roomName = roomType switch
-                {
-                    TableTypeEnum.IntegralTable => "Integral",
-                    TableTypeEnum.Cash => "High Roller Battleground",
-                    TableTypeEnum.VCTable => "Classic Battle",
-                    _ => "Unknown Room"
-                };
-
-                saveResultData.uniqueSerial = Guid.NewGuid().ToString();
-                saveResultData.roomType = roomName;
-                saveResultData.smallBlind = gameRoomData.smallBlind;
-                saveResultData.communityPoker = gameRoomData.currCommunityPoker ?? new List<int>();
-                saveResultData.dateTime = DateTime.UtcNow.ToString("yyyy/MM/dd HH:mm:ss");
-                saveResultData.roomId = DataManager.RoomId;
-                saveResultData.tableId = DataManager.TableId;
-                saveResultData.roundId = roundId;
-                saveResultData.roundInsuranceFee = 0;
-                saveResultData.roundInsurancePayAmount = 0;
-                saveResultData.roundInsurancePayRate = 0;
-                saveResultData.roundInsuranceResult = "";
-            }
-        }
-
-        Debug.Log("PlayerDetailsLoop :: ");
-        // Add player details to result data
-        foreach (var playerId in gameRoomData.playingPlayersIdList ?? Enumerable.Empty<string>())
-        {
-            Debug.Log("PlayerDetailsLoop :: " + playerId);
-            if (gameRoomData.playerDataDic.TryGetValue(playerId, out GameRoomPlayerData playerNew) && playerNew != null)
-            {
-                Debug.Log("PlayerDetailsLoop :: " + playerNew);
-
-                var potWinChips = gameRoomData.potWinData?.potWinChips ?? 0;
-                var sideWinChips = gameRoomData.sideWinData?.sideWinChips ?? 0;
-                var isWinner = gameRoomData.potWinData?.potWinnersId?.Contains(playerNew.userId) ?? false;
-                Debug.Log("PlayerDetailsLoop :: " + potWinChips);
-                PlayerDetails playerData = new PlayerDetails
-                {
-                    playerId = playerNew.userId,
-                    playerName = playerNew.nickname,
-                    playerHandId = "",
-                    playerValidBetAmount = playerNew.playerValidBetAmount,
-                    playerRoomFee = playerNew.roomFee,
-                    tenantName = DataManager.TenantName,
-                    isBot = DataManager.UserId.StartsWith(FirebaseManager.ROBOT_ID),
-                    isPlayerLeft = false,
-                    playerHandData = new PlayerHand
-                    {
-                        playerHand = playerNew.handPoker ?? new List<int>(),  // Ensure `handPoker` is not null
-                        playerCurrHandShape = GetPlayer(playerNew.userId).pokerCurrShapeIndex,
-                        potWinChips = isWinner ? potWinChips : 0,
-                        sideWinChips = gameRoomData.sideWinData?.sideWinnersId.Contains(playerNew.userId) == true ? sideWinChips : 0,
-                        isWinner = isWinner,
-                        seat = playerNew.gameSeat.ToString(),
-                    }
-                };
-                Debug.Log("PlayerDetailsLoop :: " + playerData);
-                saveResultData.playerDetails.Add(playerData);
-            }
-        }
-        Debug.Log("GameView :: playersWhoLeft : " + playersWhoLeft.Count);
-        foreach (var player in playersWhoLeft)
-        {
-            PlayerDetails playerData = new PlayerDetails
-            {
-                playerId = player.userId,
-                playerName = player.nickname,
-                playerHandId = "",
-                playerValidBetAmount = player.allBetChips,
-                playerRoomFee = player.roomFee,
-                tenantName = DataManager.TenantName,
-                isBot = DataManager.UserId.StartsWith(FirebaseManager.ROBOT_ID),
-                isPlayerLeft = true,
-                playerHandData = new PlayerHand
-                {
-                    playerHand = player.handPoker ?? new List<int>(),  // Ensure `handPoker` is not null
-                    playerCurrHandShape = GetPlayer(player.userId).pokerCurrShapeIndex,
-                    potWinChips = 0,
-                    sideWinChips = 0,
-                    isWinner = false,
-                    seat = player.gameSeat.ToString(),
-                }
-            };
-            saveResultData.playerDetails.Add(playerData);
-        }
-
+        yield return SaveResult(gameRoomData);
 
         foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
         {
@@ -2963,6 +2884,137 @@ public class GameView : MonoBehaviour
         }
     }
 
+    IEnumerator SaveResult(GameRoomData gameRoomData, bool isAllPlayerLeft = false)
+    {
+        int winIndex = 0;
+        saveResultData = new ResultHistoryData
+        {
+            playerDetails = new List<PlayerDetails>(), // Initialize the playerHands list
+        };
+        bool allPlayerLeft = isAllPlayerLeft;
+        // Loop through pot winners to save data
+        foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
+        {
+            winIndex++;
+            GameRoomPlayerData winnerPlayerData = gameControl.GetPlayerData(potWinnerId);
+
+            if (winnerPlayerData == null)
+                yield break;
+
+            if (thisData.LocalGamePlayerInfo.IsPlaying && winIndex == 1)
+            {
+                string roomName = roomType switch
+                {
+                    TableTypeEnum.IntegralTable => "Integral",
+                    TableTypeEnum.Cash => "High Roller Battleground",
+                    TableTypeEnum.VCTable => "Classic Battle",
+                    _ => "Unknown Room"
+                };
+
+                saveResultData.uniqueSerial = Guid.NewGuid().ToString();
+                saveResultData.roomType = roomName;
+                saveResultData.smallBlind = gameRoomData.smallBlind;
+                saveResultData.communityPoker = gameRoomData.currCommunityPoker ?? new List<int>();
+                saveResultData.dateTime = DateTime.UtcNow.ToString("yyyy/MM/dd HH:mm:ss");
+                saveResultData.roomId = DataManager.RoomId;
+                saveResultData.tableId = DataManager.TableId;
+                saveResultData.roundId = roundId;
+                saveResultData.roundInsuranceFee = 0;
+                saveResultData.roundInsurancePayAmount = 0;
+                saveResultData.roundInsurancePayRate = 0;
+                saveResultData.roundInsuranceResult = "";
+            }
+        }
+
+        Debug.Log("PlayerDetailsLoop :: ");
+        // Add player details to result data
+        foreach (var playerId in gameRoomData.playingPlayersIdList ?? Enumerable.Empty<string>())
+        {
+            if (isAllPlayerLeft)
+            {
+                string roomName = roomType switch
+                {
+                    TableTypeEnum.IntegralTable => "Integral",
+                    TableTypeEnum.Cash => "High Roller Battleground",
+                    TableTypeEnum.VCTable => "Classic Battle",
+                    _ => "Unknown Room"
+                };
+
+                saveResultData.uniqueSerial = Guid.NewGuid().ToString();
+                saveResultData.roomType = roomName;
+                saveResultData.smallBlind = gameRoomData.smallBlind;
+                saveResultData.communityPoker = gameRoomData.currCommunityPoker ?? new List<int>();
+                saveResultData.dateTime = DateTime.UtcNow.ToString("yyyy/MM/dd HH:mm:ss");
+                saveResultData.roomId = DataManager.RoomId;
+                saveResultData.tableId = DataManager.TableId;
+                saveResultData.roundId = roundId;
+                saveResultData.roundInsuranceFee = 0;
+                saveResultData.roundInsurancePayAmount = 0;
+                saveResultData.roundInsurancePayRate = 0;
+                saveResultData.roundInsuranceResult = "";
+            }
+
+
+            Debug.Log("PlayerDetailsLoop :: " + playerId);
+            if (gameRoomData.playerDataDic.TryGetValue(playerId, out GameRoomPlayerData playerNew) && playerNew != null)
+            {
+                Debug.Log("PlayerDetailsLoop :: " + playerNew);
+
+                var potWinChips = gameRoomData.potWinData?.potWinChips ?? 0;
+                var sideWinChips = gameRoomData.sideWinData?.sideWinChips ?? 0;
+                var isWinner = gameRoomData.potWinData?.potWinnersId?.Contains(playerNew.userId) ?? false;
+                Debug.Log("PlayerDetailsLoop :: " + potWinChips);
+                PlayerDetails playerData = new PlayerDetails
+                {
+                    playerId = playerNew.userId,
+                    playerName = playerNew.nickname,
+                    playerHandId = "",
+                    playerValidBetAmount = playerNew.playerValidBetAmount,
+                    playerRoomFee = playerNew.roomFee,
+                    tenantName = DataManager.TenantName,
+                    isBot = DataManager.UserId.StartsWith(FirebaseManager.ROBOT_ID),
+                    isPlayerLeft = allPlayerLeft,
+                    playerHandData = new PlayerHand
+                    {
+                        playerHand = playerNew.handPoker ?? new List<int>(),  // Ensure `handPoker` is not null
+                        playerCurrHandShape = GetPlayer(playerNew.userId).pokerCurrShapeIndex,
+                        potWinChips = isWinner ? potWinChips : 0,
+                        sideWinChips = gameRoomData.sideWinData?.sideWinnersId.Contains(playerNew.userId) == true ? sideWinChips : 0,
+                        isWinner = isWinner,
+                        seat = playerNew.gameSeat.ToString(),
+                    }
+                };
+                Debug.Log("PlayerDetailsLoop :: " + playerData);
+                saveResultData.playerDetails.Add(playerData);
+            }
+        }
+        Debug.Log("GameView :: playersWhoLeft : " + gameRoomData.playersWhoLeft.Count);
+        foreach (var player in gameRoomData.playersWhoLeft)
+        {
+            PlayerDetails playerData = new PlayerDetails
+            {
+                playerId = player.Value.userId,
+                playerName = player.Value.nickname,
+                playerHandId = "",
+                playerValidBetAmount = player.Value.allBetChips,
+                playerRoomFee = player.Value.roomFee,
+                tenantName = DataManager.TenantName,
+                isBot = DataManager.UserId.StartsWith(FirebaseManager.ROBOT_ID),
+                isPlayerLeft = true,
+                playerHandData = new PlayerHand
+                {
+                    playerHand = player.Value.handPoker ?? new List<int>(),  // Ensure `handPoker` is not null
+                    playerCurrHandShape = GetPlayer(player.Value.userId).pokerCurrShapeIndex,
+                    potWinChips = 0,
+                    sideWinChips = 0,
+                    isWinner = false,
+                    seat = player.Value.gameSeat.ToString(),
+                }
+            };
+            saveResultData.playerDetails.Add(playerData);
+        }
+        yield return new WaitForEndOfFrame();
+    }
     /// <summary>
     /// 邊池結果
     /// </summary>
@@ -3164,7 +3216,6 @@ public class GameView : MonoBehaviour
         AutoActionState = AutoActingEnum.None;
         thisData.SmallBlindValue = smallBlind;
         thisData.CurrRaiseValue = thisData.SmallBlindValue * 2;
-        playersWhoLeft = gameRoomData.playersWhoLeft;
 
         //重製玩家行動文字顯示
         if ((GameFlowEnum)gameRoomData.currGameFlow == GameFlowEnum.PotResult)
@@ -3584,10 +3635,10 @@ public class GameView : MonoBehaviour
         }
 
         // Reset exit player seat list and process history data
-        playersWhoLeft.Clear();
+        gameRoomData.playersWhoLeft.Clear();
         var gameRoomData1 = new Dictionary<string, object>()
         {
-            { FirebaseManager.PLAYERS_WHO_LEFT, playersWhoLeft},                 //遊戲中玩家ID
+            { FirebaseManager.PLAYERS_WHO_LEFT, gameRoomData.playersWhoLeft},                 //遊戲中玩家ID
         };
         gameControl.UpdateGameRoomData(gameRoomData1);
 
@@ -3599,6 +3650,11 @@ public class GameView : MonoBehaviour
 
         // Update hand history view if available
         GameObject.FindAnyObjectByType<HandHistoryView>()?.UpdateHitoryDate();
+    }
+
+    public void SaveResultDataToFirebase()
+    {
+        SaveToFirebase(nameof(saveResultData), saveResultData, nameof(GameResultDataSaveToFirebase));
     }
 
     private void SaveToFirebase(string dataName, object data, string callbackMethodName)
@@ -3795,8 +3851,6 @@ public class GameView : MonoBehaviour
     public void UpdateGameRoomData(GameRoomData gameRoomData)
     {
         this.gameRoomData = gameRoomData;
-        playersWhoLeft = gameRoomData.playersWhoLeft;
-
         //當前小盲值
         thisData.SmallBlindValue = gameRoomData.smallBlind;
         sbBlinds_Txt.text = $"BLINDS: ${thisData.SmallBlindValue}/{thisData.SmallBlindValue * 2}";
@@ -4067,7 +4121,7 @@ public class GameView : MonoBehaviour
 
         if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
         {
-            if(btnName=="Call")
+            if (btnName == "Call")
                 SetCallBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteEnglish).album[shapeIndex];
             else
                 SetFoldBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteEnglish).album[shapeIndex];
