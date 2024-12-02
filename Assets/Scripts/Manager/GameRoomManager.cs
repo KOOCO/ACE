@@ -297,8 +297,8 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
         room.gameObject.SetActive(true);
         room.SetParent(GameRoomList_Tr);
         string roomName = $"{roomType}{thisData.RoomNameIndex}";
-        room.anchorMax = new Vector2(0, 1);
-        room.anchorMin = new Vector2(0, 0);
+        //room.anchorMax = new Vector2(0, 1);
+        //room.anchorMin = new Vector2(0, 0);
         room.offsetMax = Vector2.zero;
         room.offsetMin = Vector2.zero;
         room.sizeDelta = new Vector2(Entry.Instance.resolution.x, 0);
