@@ -149,7 +149,7 @@ public class GameView : MonoBehaviour
     [SerializeField]
     List<GameObject> PlayerTestObjList;
     [SerializeField]
-    Button GameTestStart_Btn;
+    Button GameTestStart_Btn, Pause_Btn;
     [SerializeField]
     public List<TMP_Dropdown> CP_SuitTogList;
     [SerializeField]
@@ -860,6 +860,14 @@ public class GameView : MonoBehaviour
             IsOpenGameTestObj = false;
         });
 
+        Pause_Btn.onClick.AddListener(() =>
+        {
+            if (Time.timeScale != 0)
+                Time.timeScale = 0;
+            else
+                Time.timeScale = 1;
+        });
+
         #endregion
 
         ConfirmBtn.onClick.AddListener(() =>
@@ -1399,6 +1407,7 @@ public class GameView : MonoBehaviour
             int keyF = betStringsE.FirstOrDefault(x => x.Value == strData.FoldStr).Key;
             int keyC = betStringsE.FirstOrDefault(x => x.Value == strData.CallStr).Key;
             SetCallFoldBetStr("Call", keyC);
+            print("跟注按鈕文字: " + betStringsE[keyC] + " " + strData.CallStr);
             SetCallFoldBetStr("Fold", keyF);
         }
         else
@@ -1406,6 +1415,7 @@ public class GameView : MonoBehaviour
             int keyF = betStringsC.FirstOrDefault(x => x.Value == strData.FoldStr).Key;
             int keyC = betStringsC.FirstOrDefault(x => x.Value == strData.CallStr).Key;
             SetCallFoldBetStr("Call", keyC);
+            print("跟注按鈕文字: " + betStringsE[keyC] + " " + strData.CallStr);
             SetCallFoldBetStr("Fold", keyF);
         }
 
@@ -1441,11 +1451,13 @@ public class GameView : MonoBehaviour
     {
         get
         {
-            return Raise_Btn.interactable;
+            //return Raise_Btn.interactable;
+            return Raise_Btn.gameObject.activeSelf;
         }
         set
         {
-            Raise_Btn.interactable = value;
+            //Raise_Btn.interactable = value;
+            Raise_Btn.gameObject.SetActive(value);
             //Call_Btn.interactable = value;
             Call_Btn.gameObject.SetActive(value);
             //Fold_Btn.interactable = value;
@@ -1565,6 +1577,7 @@ public class GameView : MonoBehaviour
             int keyF = betStringsE.FirstOrDefault(x => x.Value == strData.FoldStr).Key;
             int keyC = betStringsE.FirstOrDefault(x => x.Value == strData.CallStr).Key;
             SetCallFoldBetStr("Call", keyC);
+            print("跟注按鈕文字: " + betStringsE[keyC] + " " + strData.CallStr);
             SetCallFoldBetStr("Fold", keyF);
         }
         else
@@ -1572,6 +1585,7 @@ public class GameView : MonoBehaviour
             int keyF = betStringsC.FirstOrDefault(x => x.Value == strData.FoldStr).Key;
             int keyC = betStringsC.FirstOrDefault(x => x.Value == strData.CallStr).Key;
             SetCallFoldBetStr("Call", keyC);
+            print("跟注按鈕文字: " + betStringsE[keyC] + " " + strData.CallStr);
             SetCallFoldBetStr("Fold", keyF);
         }
 
@@ -2021,11 +2035,13 @@ public class GameView : MonoBehaviour
         {
             int keyC = betStringsE.FirstOrDefault(x => x.Value == strData.CallStr).Key;
             SetCallFoldBetStr("Call", keyC);
+            print("跟注按鈕文字: " + betStringsE[keyC] + " " + strData.CallStr);
         }
         else
         {
             int keyC = betStringsC.FirstOrDefault(x => x.Value == strData.CallStr).Key;
             SetCallFoldBetStr("Call", keyC);
+            print("跟注按鈕文字: " + betStringsE[keyC] + " " + strData.CallStr);
         }
 
         CallBtn_Txt.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
