@@ -1131,9 +1131,9 @@ public class GameControl : MonoBehaviour
             var newData = new Dictionary<string, object>
             {
                 { FirebaseManager.CARRY_CHIPS, Math.Floor(newCarryChips) },
-                { FirebaseManager.ROOM_FEE, roomFee }
+                { FirebaseManager.ROOM_FEE, Math.Round(roomFee,2) }
             };
-            Debug.Log("Player ID: " + winner.userId + " with room fee: " + Math.Floor(roomFee));
+            Debug.Log("Player ID: " + winner.userId + " with room fee: " + Math.Round(roomFee, 2));
             // Add profit type-specific data
             switch (winner.winType)
             {

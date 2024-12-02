@@ -766,6 +766,10 @@ public class GamePlayerInfo : MonoBehaviour
         {
             //大小盲
             case BetActingEnum.Blind:
+
+                if (chips <= 0)
+                    IsAllIn = true;
+
                 PlayerBet(betValue, chips);
                 break;
 
