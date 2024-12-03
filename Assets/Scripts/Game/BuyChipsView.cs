@@ -9,9 +9,9 @@ using System;
 public class BuyChipsView : MonoBehaviour
 {
     [SerializeField]
-    Image BlindACoin_Img, BlindUCoin_Img,
-          MinBuyACoin_Img, MinBuyUCoin_Img,
-          MaxBuyACoin_Img, MaxBuyUCoin_Img;
+    Image BlindACoin_Img,
+          MinBuyACoin_Img,
+          MaxBuyACoin_Img;
     [SerializeField]
     Slider BuyChips_Sli;
     [SerializeField]
@@ -195,11 +195,8 @@ public class BuyChipsView : MonoBehaviour
                 titleStr = "High Roller Battleground";
                 maxBuyChipsStr = $"${(smallBlind * 2) * DataManager.MaxMagnification}";
                 BlindACoin_Img.gameObject.SetActive(true);
-                BlindUCoin_Img.gameObject.SetActive(false);
                 MinBuyACoin_Img.gameObject.SetActive(true);
-                MinBuyUCoin_Img.gameObject.SetActive(false);
                 MaxBuyACoin_Img.gameObject.SetActive(true);
-                MaxBuyUCoin_Img.gameObject.SetActive(false);
                 break;
 
             //虛擬貨幣桌
@@ -207,11 +204,8 @@ public class BuyChipsView : MonoBehaviour
                 titleStr = "Classic Battle";
                 maxBuyChipsStr = $"${(smallBlind * 2) * DataManager.MaxMagnification}";
                 BlindACoin_Img.gameObject.SetActive(false);
-                BlindUCoin_Img.gameObject.SetActive(true);
                 MinBuyACoin_Img.gameObject.SetActive(false);
-                MinBuyUCoin_Img.gameObject.SetActive(true);
                 MaxBuyACoin_Img.gameObject.SetActive(false);
-                MaxBuyUCoin_Img.gameObject.SetActive(true);
                 break;
         }
         Title_Txt.text = LanguageManager.Instance.GetText(titleStr);
