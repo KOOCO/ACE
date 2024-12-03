@@ -775,6 +775,7 @@ public class GamePlayerInfo : MonoBehaviour
                 if (chips <= 0)
                     IsAllIn = true;
 
+                Debug.Log("GamePlayerInfo :: " + betValue + " , " + chips);
                 PlayerBet(betValue, chips);
                 break;
 

@@ -279,6 +279,7 @@ public class GameRoomPlayerData
 public class RoomFee
 {
     public string userId;                           //用戶ID
+    public string nickname;
     public WinnerEnum winType;
     public double playerValidBetAmount;
     public double roomFee;
