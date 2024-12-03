@@ -12,9 +12,9 @@ public class GamePlayerInfo : MonoBehaviour
     [SerializeField]
     GameObject ActionFrame_Obj, Winner_Obj, InfoMask_Obj;
     [SerializeField]
-    Image CDMask_Img, Avatar_Img, ButtonCharacter_Img, PokerShape_img, CD_Back, CD_Back2;
+    Image CDMask_Img, Avatar_Img, ButtonCharacter_Img, PokerShape_img, CD_Back, CD_Back2, BlindCharacter_Img;
     [SerializeField]
-    TextMeshProUGUI Nickname_Txt, Chips_Txt, BackChips_Txt, BlindCharacter_Txt, countDown_Txt, Winner_Txt;
+    TextMeshProUGUI Nickname_Txt, Chips_Txt, BackChips_Txt, countDown_Txt, Winner_Txt;
 
     [Header("手牌")]
     [SerializeField]
@@ -52,6 +52,8 @@ public class GamePlayerInfo : MonoBehaviour
     public int pokerCurrShapeIndex = 0;                //牌型編號
 
     Vector2 betChipsr_TrInitPos;         //下注籌碼物件初始位置
+
+    public List<Sprite> characters;
 
     /// <summary>
     /// 是否為本地玩家
@@ -160,7 +162,7 @@ public class GamePlayerInfo : MonoBehaviour
         CurrBetAction = BetActionEnum.None;
         CurrBetValue = 0;
         ButtonCharacter_Img.gameObject.SetActive(false);
-        BlindCharacter_Txt.text = "";
+        BlindCharacter_Img.gameObject.SetActive(false);
         Action_Img.gameObject.SetActive(false);
         betChipsr_TrInitPos = BetChips_Tr.anchoredPosition;
         BetChips_Tr.gameObject.SetActive(false);
@@ -485,7 +487,8 @@ public class GamePlayerInfo : MonoBehaviour
         {
             case SeatCharacterEnum.None:
                 ButtonCharacter_Img.gameObject.SetActive(false);
-                BlindCharacter_Txt.text = "";
+                BlindCharacter_Img.gameObject.SetActive(false);
+                
                 break;
 
             case SeatCharacterEnum.Button:
@@ -493,11 +496,13 @@ public class GamePlayerInfo : MonoBehaviour
                 break;
 
             case SeatCharacterEnum.SB:
-                BlindCharacter_Txt.text = "SB";
+                BlindCharacter_Img.gameObject.SetActive(true);
+                BlindCharacter_Img.sprite = characters[1];
                 break;
 
             case SeatCharacterEnum.BB:
-                BlindCharacter_Txt.text = "BB";
+                BlindCharacter_Img.gameObject.SetActive(true);
+                BlindCharacter_Img.sprite = characters[0];
                 break;
         }
     }
