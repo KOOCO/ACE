@@ -1566,6 +1566,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 649407050713552574, guid: 595d35a91a389aa4aa584fef504a36d7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3341277279865789206, guid: 595d35a91a389aa4aa584fef504a36d7, type: 3}
       propertyPath: m_Name
       value: LoadSceneManager
