@@ -15366,7 +15366,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: $
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c9adb1f542a93ae489bacfeae21e8394, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: -8643439910342830561, guid: c9adb1f542a93ae489bacfeae21e8394, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -21381,7 +21381,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 203.3213}
+  m_AnchoredPosition: {x: 0, y: 215}
   m_SizeDelta: {x: 350, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3739184537360146919
@@ -29128,6 +29128,7 @@ MonoBehaviour:
   noticeText: {fileID: 1704506777170104001}
   btnText: {fileID: 6939036143391088888}
   ConfirmBtn: {fileID: 2036287523325695988}
+  isOnFold: 0
   testApi_Btn: {fileID: 5835559540771385357}
 --- !u!114 &6875628500851460784
 MonoBehaviour:
