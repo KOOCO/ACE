@@ -1851,9 +1851,9 @@ public class GameControl : MonoBehaviour
             {
                 //超過時間棄牌
                 string id = gameRoomData.currActionerId;
-                UpdateBetAction(id,
-                                BetActingEnum.Fold,
-                                0);
+                UpdateBetAction(id, BetActingEnum.Fold, 0);
+                if (player.UserId == DataManager.UserId)
+                    gameView.isOnFold = true;
             }
             else
             {
