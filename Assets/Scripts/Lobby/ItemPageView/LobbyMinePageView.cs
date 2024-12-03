@@ -146,6 +146,8 @@ public class LobbyMinePageView : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI myHistory_Txt, handsPlayed_Txt, handsWon_Txt, bestGame_Txt, worstGame_Txt;
 
+    public Image Refresh;
+
     const string expandContentName = "Content";                                 //展開內容物件名稱
     const string expandTopBgName = "TopBg";                                     //收起上方物件名稱
     const float expandTIme = 0.1f;                                              //內容展開時間
@@ -382,6 +384,8 @@ public class LobbyMinePageView : MonoBehaviour
             LobbyView lobbyView = FindAnyObjectByType<LobbyView>();
             lobbyView.UpdateUserData();
             NoodleApi.GetBalance();
+
+            StartCoroutine(rotateRefresh());
         });
 
         #endregion
@@ -864,5 +868,22 @@ public class LobbyMinePageView : MonoBehaviour
         Text_vicRateValue.text = $"{playerData.winRate.ToString("F2")} %";
         Text_highestVicPriceValue.text = $"$ {playerData.biggestPotWon.ToString("F2")}";
         Text_totalRevenueValue.text = $"$ {playerData.totalEarnings.ToString("F2")}";
+    }
+
+
+    IEnumerator rotateRefresh()
+    {
+        float turnTime = 0.5f;
+        float angle = 180f;
+        float duration = 0f;
+        float speed = angle / turnTime;
+        while (duration < turnTime)
+        {
+            float amount = speed * Time.deltaTime;
+            Refresh.GetComponent<Transform>().Rotate(Vector3.back, amount);
+            duration += Time.deltaTime;
+            yield return null;
+        }
+        duration = 0f;
     }
 }

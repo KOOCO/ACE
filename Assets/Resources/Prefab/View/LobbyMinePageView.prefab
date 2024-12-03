@@ -19448,11 +19448,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3670205344798957037}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 5.5, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -32.49999, y: -0.000009536743}
   m_SizeDelta: {x: 20, y: 20}
-  m_Pivot: {x: 0, y: 0.5}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6374121220395237460
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -20001,6 +20001,7 @@ MonoBehaviour:
   handsWon_Txt: {fileID: 6383034638335087221}
   bestGame_Txt: {fileID: 1297784972370972728}
   worstGame_Txt: {fileID: 1401516268830831936}
+  Refresh: {fileID: 331025313446620221}
 --- !u!1 &6806961639976115128
 GameObject:
   m_ObjectHideFlags: 0

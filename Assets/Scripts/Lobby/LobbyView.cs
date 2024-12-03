@@ -214,6 +214,7 @@ public class LobbyView : MonoBehaviour
         //刷新
         Refresh_Btn.onClick.AddListener(() =>
         {
+            StartCoroutine(rotateRefresh());
             UpdateUserData();
             Refresh_Btn.interactable = false;
             StartCoroutine(openRefreshBtn());
@@ -691,5 +692,20 @@ public class LobbyView : MonoBehaviour
         yield return new WaitForSeconds(5);
 
         Refresh_Btn.interactable = true;
+    }
+    IEnumerator rotateRefresh()
+    {
+        float turnTime = 0.5f;
+        float angle = 180f;
+        float duration = 0f;
+        float speed = angle / turnTime;
+        while (duration < turnTime)
+        {
+            float amount = speed * Time.deltaTime;
+            Refresh_Btn.GetComponent<Transform>().Rotate(Vector3.back, amount);
+            duration += Time.deltaTime;
+            yield return null;
+        }
+        duration = 0f;
     }
 }
