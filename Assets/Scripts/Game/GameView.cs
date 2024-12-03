@@ -283,7 +283,7 @@ public class GameView : MonoBehaviour
         {0, "Call"},
         {1, "Check"},
         {2, "Fold"},
-        {3, "Fold/Check"},
+        {3, "Fold / Check"},
         {4, ""}
     };
     public Dictionary<int, string> betStringsC = new Dictionary<int, string>
@@ -291,7 +291,7 @@ public class GameView : MonoBehaviour
         {0, "跟注"},
         {1, "過牌"},
         {2, "棄牌"},
-        {3, "棄牌/過牌"},
+        {3, "棄牌 / 過牌"},
         {4, ""}
     };
 
@@ -1406,7 +1406,7 @@ public class GameView : MonoBehaviour
             int keyF = betStringsE.FirstOrDefault(x => x.Value == strData.FoldStr).Key;
             int keyC = betStringsE.FirstOrDefault(x => x.Value == strData.CallStr).Key;
             SetCallFoldBetStr("Call", keyC);
-            print("跟注按鈕文字: " + betStringsE[keyC] + " " + strData.CallStr);
+            //print("跟注按鈕文字: " + betStringsE[keyC] + " " + strData.CallStr);
             SetCallFoldBetStr("Fold", keyF);
         }
         else
@@ -1414,7 +1414,7 @@ public class GameView : MonoBehaviour
             int keyF = betStringsC.FirstOrDefault(x => x.Value == strData.FoldStr).Key;
             int keyC = betStringsC.FirstOrDefault(x => x.Value == strData.CallStr).Key;
             SetCallFoldBetStr("Call", keyC);
-            print("跟注按鈕文字: " + betStringsE[keyC] + " " + strData.CallStr);
+            //print("跟注按鈕文字: " + betStringsE[keyC] + " " + strData.CallStr);
             SetCallFoldBetStr("Fold", keyF);
         }
 
@@ -1576,15 +1576,15 @@ public class GameView : MonoBehaviour
             int keyF = betStringsE.FirstOrDefault(x => x.Value == strData.FoldStr).Key;
             int keyC = betStringsE.FirstOrDefault(x => x.Value == strData.CallStr).Key;
             SetCallFoldBetStr("Call", keyC);
-            print("跟注按鈕文字: " + betStringsE[keyC] + " " + strData.CallStr);
+            //print("跟注按鈕文字: " + betStringsE[keyC] + " " + strData.CallStr);
             SetCallFoldBetStr("Fold", keyF);
         }
         else
         {
-            int keyF = betStringsC.FirstOrDefault(x => x.Value == strData.FoldStr).Key;
-            int keyC = betStringsC.FirstOrDefault(x => x.Value == strData.CallStr).Key;
+            int keyF = betStringsC.FirstOrDefault(x => x.Value == LanguageManager.Instance.GetText(strData.FoldStr)).Key;
+            int keyC = betStringsC.FirstOrDefault(x => x.Value == LanguageManager.Instance.GetText(strData.CallStr)).Key;
             SetCallFoldBetStr("Call", keyC);
-            print("跟注按鈕文字: " + betStringsE[keyC] + " " + strData.CallStr);
+            //print("跟注按鈕文字: " + betStringsE[keyC] + " " + strData.CallStr);
             SetCallFoldBetStr("Fold", keyF);
         }
 
@@ -2034,13 +2034,13 @@ public class GameView : MonoBehaviour
         {
             int keyC = betStringsE.FirstOrDefault(x => x.Value == strData.CallStr).Key;
             SetCallFoldBetStr("Call", keyC);
-            print("跟注按鈕文字: " + betStringsE[keyC] + " " + strData.CallStr);
+            //print("跟注按鈕文字: " + betStringsE[keyC] + " " + strData.CallStr);
         }
         else
         {
-            int keyC = betStringsC.FirstOrDefault(x => x.Value == strData.CallStr).Key;
+            int keyC = betStringsC.FirstOrDefault(x => x.Value == LanguageManager.Instance.GetText(strData.CallStr)).Key;
             SetCallFoldBetStr("Call", keyC);
-            print("跟注按鈕文字: " + betStringsE[keyC] + " " + strData.CallStr);
+            //print("跟注按鈕文字: " + betStringsE[keyC] + " " + strData.CallStr);
         }
 
         CallBtn_Txt.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
