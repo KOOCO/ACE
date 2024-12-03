@@ -2924,12 +2924,15 @@ public class GameView : MonoBehaviour
             Debug.LogError("SaveResult: Invalid gameRoomData or missing player list.");
             yield break;
         }
-
+        Debug.Log("GameView :: Init Save Result :: " + gameRoomData.playerDataDic.Count());
         // Initialize result data for saving
         saveResultData = InitializeResultData(gameRoomData, isAllPlayerLeft);
+        var allPlayers = gameRoomData.playerDataDic.AsEnumerable();
 
-        // Combine all current players and players who have left
-        var allPlayers = gameRoomData.playerDataDic.Concat(gameRoomData.playersWhoLeft);
+        if (gameRoomData.playersWhoLeft != null)
+        {
+            allPlayers = allPlayers.Concat(gameRoomData.playersWhoLeft);
+        }
 
         foreach (var playerData in allPlayers)
         {
