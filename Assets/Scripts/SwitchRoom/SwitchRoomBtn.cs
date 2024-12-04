@@ -54,7 +54,7 @@ public class SwitchRoomBtn : MonoBehaviour
             }
             else
             {              
-                transform.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.5f);
+                transform.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.8f);
             }
         }
     }
