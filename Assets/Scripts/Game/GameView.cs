@@ -635,14 +635,6 @@ public class GameView : MonoBehaviour
         AllIn_Btn.onClick.AddListener(() =>
         {
             Raise_Sli.value = (float)thisData.LocalPlayerChips;
-            NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(), thisData.LocalPlayerChips, 6, ChipTransactionType.AllIn, (x) =>
-              {
-                  Debug.Log("AllIn Table ChipsTransaction Success");
-              },
-              (error) =>
-              {
-                  Debug.LogError($"AllIn Table ChipsTransaction Failed Error: {error}");
-              });
         });
 
         //底池百分比加註
