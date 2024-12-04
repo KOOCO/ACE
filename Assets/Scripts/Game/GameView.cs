@@ -174,6 +174,10 @@ public class GameView : MonoBehaviour
 
     const float PageMoveTime = 0.25f;                           //滑動頁面移動時間
 
+    [Header("等待下局")]
+    public Image WaitNext_Obj;
+    public List<Sprite> WaitNext_ImgList;
+
     //底池倍率
     readonly float[] PotPercentRate = new float[]
     {
@@ -418,6 +422,10 @@ public class GameView : MonoBehaviour
         HandHistoryTitle_Txt.text = LanguageManager.Instance.GetText("HAND HISTORY");
         HandHistoryTip_Txt.text = LanguageManager.Instance.GetText("Show last 20 hands");
 
+        #endregion
+
+        #region 等待下局
+        WaitNext_Obj.sprite = WaitNext_ImgList[LanguageManager.Instance.GetCurrLanguageIndex()];
         #endregion
 
         SetSitOutDisplay();
