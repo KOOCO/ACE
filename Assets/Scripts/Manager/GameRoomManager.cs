@@ -41,6 +41,8 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
 
     public bool IsShow;                                 //是否顯示遊戲房間
 
+    public GameObject SwitchBackground;
+
     private ThisData thisData;
     public class ThisData
     {
@@ -186,6 +188,7 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
         BgMask_Obj.SetActive(false);
         IsShowGameRoom = false;
         CloseAllBtnFrame();
+        GameObject.Find("Floo3").GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -62, 0);
     }
 
     /// <summary>
@@ -204,10 +207,15 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
             if (IsShow)
             {
                 JudgeShowGoLobbyBtn();
+                SwitchBackground.GetComponent<Image>().enabled = false;
+                SwitchBackground.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
+                GameObject.Find("Floo3").GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
             }
             else
             {
                 GoLobby_Btn.gameObject.SetActive(false);
+                SwitchBackground.GetComponent<Image>().enabled = true;
+                SwitchBackground.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -80, 0);
             }
             
             GoLobby_Btn.interactable = value;
