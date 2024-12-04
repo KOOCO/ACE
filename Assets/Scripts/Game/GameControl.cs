@@ -1149,23 +1149,28 @@ public class GameControl : MonoBehaviour
 
             UpdataPlayerData(winner.userId, newData);
 
-            if (winner.userId == DataManager.UserId)
-            {
-                NoodleApi.PostTableChipsTransaction(winner.userId, DataManager.RoundId.ToString(), Math.Round(roomFee, 2), 21, ChipTransactionType.TableFee, (x) =>
-                    {
-                        Debug.Log("TableFee ChipsTransaction Success");
-                    },
-                   (error) =>
-                   {
-                       Debug.LogError($"TableFee ChipsTransaction Failed Error: {error}");
-                   });
-            }
+            #region Cause the total calculate has been move to the GameView, so close this part
+            //if (winner.userId == DataManager.UserId)
+            //{
+            //    NoodleApi.PostTableChipsTransaction(winner.userId, DataManager.RoundId.ToString(), Math.Round(roomFee, 2), 21, ChipTransactionType.TableFee, (x) =>
+            //        {
+            //            Debug.Log("TableFee ChipsTransaction Success");
+            //        },
+            //       (error) =>
+            //       {
+            //           Debug.LogError($"TableFee ChipsTransaction Failed Error: {error}");
+            //       });
+            //}
+            #endregion
+
+            #region Old not use
             // GameRoomPlayerData playerData = GetPlayerData(winner.userId);
             // if (playerData != null)
             // {
             //     playerData.roomFee = roomFee;
             // }
             // Update player data
+            #endregion
         }
         CalculateValidBets();
     }

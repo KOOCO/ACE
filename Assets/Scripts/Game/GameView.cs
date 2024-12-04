@@ -993,7 +993,7 @@ public class GameView : MonoBehaviour
 
         if (!isOnFold)
             //Call_Btn.interactable = (CallBtn_Txt.text != "");
-            Call_Btn.gameObject.SetActive(CallBtn_Txt.text != "" || CallBtn_Txt.text != "$ 0" || CallBtn_Img.sprite.name != "blank");
+            Call_Btn.gameObject.SetActive(!(CallBtn_Txt.text == "" || CallBtn_Txt.text == "$ 0" || CallBtn_Img.sprite.name == "blank"));
         else
             //Call_Btn.interactable = false;
             Call_Btn.gameObject.SetActive(false);
