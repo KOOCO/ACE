@@ -4090,7 +4090,7 @@ public class GameView : MonoBehaviour
         if (bbPlayerData.carryChips - (gameRoomData.smallBlind * 2) == 0)
         {
             betActingEnum = BetActingEnum.AllIn;
-            gameControl.UpdateBetAction(bbPlayer.UserId, betActingEnum, bbPlayerData.carryChips);
+            //gameControl.UpdateBetAction(bbPlayer.UserId, betActingEnum, bbPlayerData.carryChips);
         }
 
         bbPlayer.PlayerAction(betActingEnum,
