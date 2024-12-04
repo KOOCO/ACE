@@ -1276,8 +1276,8 @@
   },
   {
     "ID": "Log Out",
-    "English": "Lobby",
-    "zh_TW": "返回大廳"
+    "English": "Log Out",
+    "zh_TW": "登出"
   },
   {
     "ID": "Game Settings",
@@ -1588,5 +1588,10 @@ ASIA POKER 團隊"
     "ID": "Ok",
     "English": "Ok",
     "zh_TW": "確定"
+  },
+  {
+    "ID": "Lobby",
+    "English": "Lobby",
+    "zh_TW": "返回大廳"
   }
 ]

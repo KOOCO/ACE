@@ -378,7 +378,7 @@ public class GameView : MonoBehaviour
         MenuCloseBtn_Txt.text = LanguageManager.Instance.GetText("MENU");
         BuyChipsBtn_Txt.text = LanguageManager.Instance.GetText("Buy Chips");
         HandHistoryBtn_Txt.text = LanguageManager.Instance.GetText("Hand History");
-        LogOutBtn_Txt.text = LanguageManager.Instance.GetText("Log Out");
+        LogOutBtn_Txt.text = LanguageManager.Instance.GetText("Lobby");
         GameSettingsBtn_Txt.text = LanguageManager.Instance.GetText("Game Settings");
         GameRules_Txt.text = LanguageManager.Instance.GetText("Game Rules");
         soundSwitch_Txt.text = LanguageManager.Instance.GetText("Sound");
