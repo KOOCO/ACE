@@ -993,7 +993,7 @@ public class GameView : MonoBehaviour
 
         if (!isOnFold)
             //Call_Btn.interactable = (CallBtn_Txt.text != "");
-            Call_Btn.gameObject.SetActive(!(CallBtn_Txt.text == "" || CallBtn_Txt.text == "$ 0" || CallBtn_Img.sprite.name == "blank"));
+            Call_Btn.gameObject.SetActive(!(CallBtn_Img.sprite.name == "blank"));
         else
             //Call_Btn.interactable = false;
             Call_Btn.gameObject.SetActive(false);
@@ -1113,6 +1113,8 @@ public class GameView : MonoBehaviour
             }
         }
     }
+
+    #region Old not use
     // public void CalculateEffectiveBets()
     // {
     //     if (saveResultData.playerDetails == null || gameRoomData.playerDataDic == null)
@@ -1162,6 +1164,8 @@ public class GameView : MonoBehaviour
     //         }
     //     }
     // }
+
+    #endregion
 
     /// <summary>
     /// 設置行動按鈕文字(是否為玩家回合)
@@ -3031,6 +3035,7 @@ public class GameView : MonoBehaviour
             sideWinChips = roomFeeData.sidePotAmount;
             roomFee = Math.Round(roomFeeData.roomFee, 2);
         }
+        print("Room Fee of this round: " + roomFee);
 
         //Final total settle(最後總結算)
         if (playerData.userId == DataManager.UserId)
