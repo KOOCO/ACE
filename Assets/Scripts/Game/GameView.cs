@@ -2784,14 +2784,14 @@ public class GameView : MonoBehaviour
             }
         }
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
 
         if (!gameRoomData.potWinData?.isHaveSide ?? true)
         {
             yield return DisplayAndDistributeMainPot();
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
             yield return DisplayRoomFeeAll();
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
             yield return SaveResult(gameRoomData);
         }
     }
@@ -2806,7 +2806,7 @@ public class GameView : MonoBehaviour
             if (player != null)
             {
                 player.SetRoomFee($"Room Fee - ${winner.roomFee:f2}");
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(0.5f);
                 player.HideRoomFee();
             }
         }
@@ -2869,25 +2869,28 @@ public class GameView : MonoBehaviour
                 player.PlayerRoomChips = playerData.carryChips;
                 Destroy(rt.gameObject);
             });
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
             player.IsWinnerActive = false;
         }
-        foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
-        {
-            if (potWinnerId == DataManager.UserId)
-            {
-                NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(),
-                gameRoomData.potWinData.potWinChips, 12, ChipTransactionType.Win, (x) =>
-                {
-                    Debug.Log("Player Win ChipsTransaction Success");
-                },
-                (error) =>
-                {
-                    Debug.LogError($"Player Win ChipsTransaction Failed Error: {error}");
-                });
-                break;
-            }
-        }
+
+        #region Old send winCips API
+        //foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
+        //{
+        //    if (potWinnerId == DataManager.UserId)
+        //    {
+        //        NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(),
+        //        gameRoomData.potWinData.potWinChips, 12, ChipTransactionType.Win, (x) =>
+        //        {
+        //            Debug.Log("Player Win ChipsTransaction Success");
+        //        },
+        //        (error) =>
+        //        {
+        //            Debug.LogError($"Player Win ChipsTransaction Failed Error: {error}");
+        //        });
+        //        break;
+        //    }
+        //}
+        #endregion
 
         yield return new WaitForSeconds(0.5f);
 
@@ -2941,6 +2944,8 @@ public class GameView : MonoBehaviour
             var playerDetails = CreatePlayerDetails(playerData.Value, playerRoomFee, isPotWinner, isAllPlayerLeft);
             saveResultData.playerDetails.Add(playerDetails);
         }
+
+        #region Not use now
         // // Loop through pot winners to save their data
         // if (gameRoomData.potWinData?.potWinnersId != null)
         // {
@@ -2977,6 +2982,7 @@ public class GameView : MonoBehaviour
         //     var playerDetails = CreatePlayerDetails(gameRoomData, player.Value, isWinner: false, isPlayerLeft: true);
         //     saveResultData.playerDetails.Add(playerDetails);
         // }
+        #endregion
 
         Debug.Log("SaveResult: Player details saved. Finalizing...");
         yield return new WaitForEndOfFrame();
@@ -3025,6 +3031,19 @@ public class GameView : MonoBehaviour
             roomFee = Math.Round(roomFeeData.roomFee, 2);
         }
 
+        //Final total settle(最後總結算)
+        double totalSendAPI = potWinChips + sideWinChips - roomFee;
+        NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(),
+                totalSendAPI, 12, ChipTransactionType.Win, (x) =>
+                {
+                    Debug.Log("Player Win ChipsTransaction Success");
+                },
+                (error) =>
+                {
+                    Debug.LogError($"Player Win ChipsTransaction Failed Error: {error}");
+                });
+
+
         return new PlayerDetails
         {
             playerId = playerData.userId,
@@ -3054,7 +3073,7 @@ public class GameView : MonoBehaviour
     public IEnumerator SideResult(GameRoomData gameRoomData)
     {
         yield return DisplayAndDistributeMainPot();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         yield return DisplayAndDistributeSidePot();
         yield return new WaitForSeconds(1f);
         yield return DisplayRoomFeeAll();
