@@ -2691,8 +2691,8 @@ public class GameView : MonoBehaviour
                         if (isOpenMatchPokerFrame)
                         {
                             bool isStraight = resultIndex == 6 || resultIndex == 2 || resultIndex == 1 ? true : false;
-                            bool _isFlush = resultIndex == 5 || resultIndex == 2 ? true : false;
-                            PokerShape.OpenMatchPokerFrame(allPokers, HighlightCard(matchPokerList, isStraight, _isFlush).Take(5).ToList(), isWinEffect);
+                            bool _isFlush = resultIndex == 5 || resultIndex == 2 || resultIndex == 1 ? true : false;
+                            PokerShape.OpenMatchPokerFrame(allPokers, HighlightCard(matchPokerList, isStraight, _isFlush), isWinEffect);
                             Debug.Log($"[JudgePokerShapeUI] Match Poker Frame Opened | isWinEffect: {isWinEffect} | {string.Join(", ", matchPokerList.Select(p => p))}");
 
                             // Set winner details if win effects are enabled
@@ -2723,29 +2723,22 @@ public class GameView : MonoBehaviour
 
     List<int> HighlightCard(List<int> cards, bool isStraight, bool isFlush)
     {
-        // Calculate the rank of the cards
-        var myCards = gameControl.CalculateRank(cards, isStraight, isFlush);
-        // Convert 1 to 14 in myCards to handle Ace as high
-        myCards = myCards.Select(rank => rank == 1 ? 14 : rank).ToList();
+        var data = gameControl.CalculateRank(cards, isStraight, isFlush);
 
-        var grouped = cards
-            .GroupBy(card => card % 13) // Group by rank (0-12 -> 2 to Ace)
-            .Select(g => new { Rank = (g.Key + 2), Count = g.Count(), Cards = g.ToList() }) // Add 2 for rank and keep original cards
-            .OrderByDescending(g => g.Count) // Sort by group size (pairs, trips first)
-            .ThenByDescending(g => g.Rank)   // Sort by rank within same group size
-            .ToList();
+        List<int> myCards = new List<int>();
+        List<int> myRank = new List<int>();
 
-        // Flatten the grouped cards into a single list, ordered by importance
-        var sortedCards = grouped
-            .SelectMany(g => g.Cards) // Use original cards
-            .ToList();
+        foreach (var item in data)
+        {
+            myRank = item.Key; // Rank (e.g., [14, 13, 12, 11, 10])
+            myCards = item.Value; // Cards used to form the rank
+            break; // Exit after the first item
+        }
 
-        var result = sortedCards.Where(card => myCards.Contains((card % 13) + 2))
-                            .OrderBy(card => myCards.IndexOf((card % 13) + 2)) // Preserve myCards' order
-                            .ToList();
-        // Return or process `result` as needed
-        // You could highlight these cards in the UI, for example:
-        return result;
+        Debug.Log("My Cards :: " + string.Join(",", myCards));
+        Debug.Log("My Ranks :: " + string.Join(",", myRank));
+
+        return myCards.Take(5).ToList();
     }
 
     /// <summary>

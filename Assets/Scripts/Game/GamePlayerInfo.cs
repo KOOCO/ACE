@@ -488,7 +488,7 @@ public class GamePlayerInfo : MonoBehaviour
             case SeatCharacterEnum.None:
                 ButtonCharacter_Img.gameObject.SetActive(false);
                 BlindCharacter_Img.gameObject.SetActive(false);
-                
+
                 break;
 
             case SeatCharacterEnum.Button:
@@ -771,11 +771,6 @@ public class GamePlayerInfo : MonoBehaviour
         {
             //大小盲
             case BetActingEnum.Blind:
-
-                if (chips <= 0)
-                    IsAllIn = true;
-
-                Debug.Log("GamePlayerInfo :: " + betValue + " , " + chips);
                 PlayerBet(betValue, chips);
                 break;
 
