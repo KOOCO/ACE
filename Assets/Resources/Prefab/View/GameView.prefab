@@ -29203,6 +29203,10 @@ MonoBehaviour:
   noticeText: {fileID: 1704506777170104001}
   btnText: {fileID: 6939036143391088888}
   ConfirmBtn: {fileID: 2036287523325695988}
+  WaitNext_Obj: {fileID: 6728932602968849237}
+  WaitNext_ImgList:
+  - {fileID: 21300000, guid: 3de0477425abf0a419f42d58402f4e47, type: 3}
+  - {fileID: 21300000, guid: 2f6821a9e3faa1c4da77922238a953df, type: 3}
   isOnFold: 0
   testApi_Btn: {fileID: 5835559540771385357}
 --- !u!114 &6875628500851460784
