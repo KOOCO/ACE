@@ -73,7 +73,7 @@ public static class PokerShape
         {
             if (suitGroups[suit].Count >= 5)
             {
-                var flushCards = suitGroups[suit].OrderBy(card => card % 13).ToList();
+                var flushCards = suitGroups[suit].OrderByDescending(card => card % 13).Take(5).OrderBy(card => card).ToList();
                 var straightFlush = GetStraight(flushCards);
                 if (straightFlush != null)
                 {

@@ -2693,7 +2693,7 @@ public class GameControl : MonoBehaviour
                 shapeDic[player] = new HandEvaluation
                 {
                     HandRank = result,
-                    MatchPoker = myRank.Take(5).ToList(),
+                    MatchPoker = myRank,
                 };
             });
         }
