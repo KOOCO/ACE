@@ -2656,7 +2656,7 @@ public class GameControl : MonoBehaviour
                 Debug.Log($"GameControl :: {player.nickname} : Input Hand :: {fullHand}");
                 // Store hand rank and match poker for tie-breaking
                 Debug.Log($"GameControl :: {player.nickname} : Returned Cards :: {string.Join(" , ", matchPoker)}");
-                bool isStraight = result == 6 || result == 2 ? true : false;
+                bool isStraight = result == 6 || result == 2 || result == 1 ? true : false;
                 bool _isFlush = result == 5 || result == 2 ? true : false;
                 var _matchPoker = CalculateRank(matchPoker, isStraight, _isFlush);
                 Debug.Log($"GameControl :: {player.nickname} : Hand :: {PokerShape.HandRanks[result]} : CardsRank :: {string.Join(" , ", _matchPoker)}");
