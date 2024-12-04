@@ -3040,16 +3040,19 @@ public class GameView : MonoBehaviour
         }
 
         //Final total settle(最後總結算)
-        double totalSendAPI = potWinChips + sideWinChips - roomFee;
-        NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(),
-                totalSendAPI, 12, ChipTransactionType.Win, (x) =>
-                {
-                    Debug.Log("Player Win ChipsTransaction Success");
-                },
-                (error) =>
-                {
-                    Debug.LogError($"Player Win ChipsTransaction Failed Error: {error}");
-                });
+        if (playerData.userId == DataManager.UserId)
+        {
+            double totalSendAPI = potWinChips + sideWinChips - roomFee;
+            NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(),
+                    totalSendAPI, 12, ChipTransactionType.Win, (x) =>
+                    {
+                        Debug.Log("Player Win ChipsTransaction Success");
+                    },
+                    (error) =>
+                    {
+                        Debug.LogError($"Player Win ChipsTransaction Failed Error: {error}");
+                    });
+        }
 
 
         return new PlayerDetails
