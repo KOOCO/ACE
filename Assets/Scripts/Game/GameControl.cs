@@ -1122,7 +1122,7 @@ public class GameControl : MonoBehaviour
                 Debug.Log("GameControl :: CalculateRoomFee : Profit is <= 0 " + winner.nickname);
                 roomFee = 0;
             }
-
+            winner.roomFee = roomFee;
             // Determine carry chips based on profit
             double newCarryChips = profit > 0 ? carryChips + Math.Floor(finalWinnings) : carryChips + winAmount;
 

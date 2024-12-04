@@ -3035,7 +3035,7 @@ public class GameView : MonoBehaviour
             sideWinChips = roomFeeData.sidePotAmount;
             roomFee = Math.Round(roomFeeData.roomFee, 2);
         }
-        print("Room Fee of this round: " + roomFee);
+        print("GameView :: Room Fee of this round: " + roomFeeData.roomFee + $" Simple RoomFee {roomFeeData.roomFee} :" + " Player Data :: " + playerData.roomFee);
 
         //Final total settle(最後總結算)
         if (playerData.userId == DataManager.UserId)
