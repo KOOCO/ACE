@@ -4085,9 +4085,18 @@ public class GameView : MonoBehaviour
         }
         GamePlayerInfo bbPlayer = GetPlayer(bbPlayerData.userId);
         bbPlayer.SetSeatCharacter(SeatCharacterEnum.BB);
-        bbPlayer.PlayerAction(BetActingEnum.Blind,
+        BetActingEnum betActingEnum = BetActingEnum.Blind;
+
+        if (bbPlayerData.carryChips - (gameRoomData.smallBlind * 2) == 0)
+        {
+            betActingEnum = BetActingEnum.AllIn;
+            gameControl.UpdateBetAction(bbPlayer.UserId, betActingEnum, bbPlayerData.carryChips);
+        }
+
+        bbPlayer.PlayerAction(betActingEnum,
                               gameRoomData.smallBlind * 2,
                               bbPlayerData.carryChips - (gameRoomData.smallBlind * 2));
+
         if (bbPlayer.UserId == DataManager.UserId)
         {
             NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(), thisData.SmallBlindValue * 2, 2, ChipTransactionType.BigBlind, (x) =>
