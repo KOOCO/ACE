@@ -2832,6 +2832,29 @@ public class GameControl : MonoBehaviour
             .SelectMany(group => Enumerable.Repeat(group.Rank, group.Cards.Count)) // Maintain rank grouping
             .ToList();
 
+        var fourOfAKindGroup = groupedRanks.FirstOrDefault(group => group.Count == 4);
+        if (fourOfAKindGroup != null)
+        {
+            // Get the kicker
+            var kicker = groupedRanks
+                .Where(group => group.Rank != fourOfAKindGroup.Rank)
+                .OrderByDescending(group => group.Rank)
+                .FirstOrDefault();
+
+            var fourOfAKindCards = fourOfAKindGroup.Cards;
+            if (kicker != null)
+            {
+                fourOfAKindCards.Add(kicker.Cards.First());
+            }
+
+            // Take the first 5 cards for the final hand
+            sortedCards = fourOfAKindCards.Take(5).ToList();
+            sortedRanks = sortedCards.Select(card => card % 13 + 2).ToList();
+
+            result[sortedRanks] = sortedCards;
+            return result;
+        }
+
         // Keep only the top 5 cards
         sortedRanks = sortedRanks.Take(5).ToList();
         sortedCards = sortedCards.Take(5).ToList();
