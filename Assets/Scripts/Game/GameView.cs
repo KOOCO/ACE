@@ -58,7 +58,7 @@ public class GameView : MonoBehaviour
     [SerializeField]
     List<TextMeshProUGUI> PotPercentRaiseTxtList;
     [SerializeField]
-    TextMeshProUGUI RaiseSliHandle_Txt, CurrRaise_Txt, MinRaiseBtn_Txt;
+    TextMeshProUGUI RaiseSliHandle_Txt, CurrRaise_Txt, MinRaiseBtn_Txt, AllinBtn_Txt;
 
     [Header("底池")]
     [SerializeField]
@@ -2195,7 +2195,9 @@ public class GameView : MonoBehaviour
             SetRaiseToText = thisData.MinRaiseValue;
 
             //最小加注值
-            MinRaiseBtn_Txt.text = thisData.MinRaiseValue.ToString(); ;
+            MinRaiseBtn_Txt.text = thisData.MinRaiseValue.ToString();
+
+            AllinBtn_Txt.text = thisData.LocalPlayerChips.ToString();
 
             // Always display BB values and Pot for the raise options
             // Check if the current game flow is in the Preflop stage
