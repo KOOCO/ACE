@@ -30,7 +30,7 @@ public class GameView : MonoBehaviour
 
     [Header("操作按鈕")]
     [SerializeField]
-    Button Raise_Btn, Call_Btn, Fold_Btn;
+    Button Raise_Btn, Call_Btn, Fold_Btn, RaiseClose_Btn;
     [SerializeField]
     RectTransform AutoActionFrame_Tr;
     [SerializeField]
@@ -666,6 +666,7 @@ public class GameView : MonoBehaviour
                                   AutoActingEnum.CheckAndFold;
             }
             Raise_Tr.gameObject.SetActive(false);
+            GameRoomManager.Instance.EnanbleBtn(false);
             SetActionButton = false;
         });
 
@@ -684,6 +685,7 @@ public class GameView : MonoBehaviour
             }
             // CalculateEffectiveBets();
             Raise_Tr.gameObject.SetActive(false);
+            GameRoomManager.Instance.EnanbleBtn(false);
             SetActionButton = false;
 
             if (CallBtn_Img.sprite != AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteEnglish).album[1] || CallBtn_Img.sprite != AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteChinese).album[1])
@@ -736,11 +738,13 @@ public class GameView : MonoBehaviour
                                                 betValue);
 
                     Raise_Tr.gameObject.SetActive(false);
+                    GameRoomManager.Instance.EnanbleBtn(false);
                     SetActionButton = false;
                 }
                 else
                 {
                     Raise_Tr.gameObject.SetActive(true);
+                    GameRoomManager.Instance.EnanbleBtn(true);
                     strData.RaiseStr = acting == BetActingEnum.Bet ?
                                        "BetTo" :
                                        "RaiseTo";
@@ -754,6 +758,11 @@ public class GameView : MonoBehaviour
                                   AutoActingEnum.None :
                                   AutoActingEnum.CallAny;
             }
+        });
+        RaiseClose_Btn.onClick.AddListener(() =>
+        {
+            Raise_Tr.gameObject.SetActive(false);
+            GameRoomManager.Instance.EnanbleBtn(false);
         });
 
         #endregion
@@ -1609,6 +1618,7 @@ public class GameView : MonoBehaviour
         }
 
         Raise_Tr.gameObject.SetActive(false);
+        GameRoomManager.Instance.EnanbleBtn(false);
     }
 
     /// <summary>
@@ -2079,6 +2089,7 @@ public class GameView : MonoBehaviour
 
         //加注區域物件
         Raise_Tr.gameObject.SetActive(false);
+        GameRoomManager.Instance.EnanbleBtn(false);
         if (isJustAllIn == false)
         {
             //倍數
@@ -2435,6 +2446,7 @@ public class GameView : MonoBehaviour
                     SetAutoAction(false);
                     SetActingButtonEnable = false;
                     Raise_Tr.gameObject.SetActive(false);
+                    GameRoomManager.Instance.EnanbleBtn(false);
                     thisData.isFold = true;
                     thisData.IsPlaying = false;
                     break;

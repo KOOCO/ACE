@@ -43,6 +43,8 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
 
     public GameObject SwitchBackground;
 
+    public GameObject Mask;
+
     private ThisData thisData;
     public class ThisData
     {
@@ -511,5 +513,11 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
         {
             room.Value.Item1.GetComponent<GameControl>().UpdateGameRoom();
         }
+    }
+
+
+    public void EnanbleBtn(bool isEnable)
+    {
+        Mask.SetActive(isEnable);
     }
 }
