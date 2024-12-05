@@ -30,6 +30,8 @@ public class GameView : MonoBehaviour
 
     [Header("操作按鈕")]
     [SerializeField]
+    GameObject actionButtonsMainObject;
+    [SerializeField]
     Button Raise_Btn, Call_Btn, Fold_Btn, RaiseClose_Btn;
     [SerializeField]
     RectTransform AutoActionFrame_Tr;
@@ -1756,6 +1758,7 @@ public class GameView : MonoBehaviour
         SetActionButton = false;
         isOnFold = false;
         AutoActionState = AutoActingEnum.None;
+        actionButtonsMainObject.SetActive(false);
         Fold_Btn.gameObject.SetActive(true);
         Call_Btn.gameObject.SetActive(true);
         Raise_Btn.gameObject.SetActive(true);
@@ -3427,6 +3430,7 @@ public class GameView : MonoBehaviour
             //大小盲
             case GameFlowEnum.SetBlind:
                 SetActingButtonEnable = thisData.IsPlaying;
+                actionButtonsMainObject.SetActive(true);
 
                 /* SetTotalPot = pack.GameRoomInfoPack.TotalPot;
                  SetBlind(pack.BlindStagePack);*/
