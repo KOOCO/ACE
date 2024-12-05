@@ -1079,6 +1079,7 @@ public class GameView : MonoBehaviour
     /// </summary>
     public void oneKeySet(string pokerShape)
     {
+        int shapeIndex = -1;
         #region Old
 
         //switch (pokerShape)
@@ -1102,6 +1103,29 @@ public class GameView : MonoBehaviour
         //}
 
         #endregion
+        for (int i = 0; i < pokerShapes.inst.Shapes.Count; i++)
+        {
+            int index = i;
+            if (pokerShapes.inst.Shapes[index].shapeName == pokerShape)
+            {
+                shapeIndex = index;
+                break;
+            }
+        }
+
+        for (int i = 0; i < 5; i++)
+        {
+            CP_SuitTogList[i].value = pokerShapes.inst.Shapes[shapeIndex].Community[i].Suit;
+            CP_NumTogList[i].value = pokerShapes.inst.Shapes[shapeIndex].Community[i].Num;
+        }
+        CP_SuitTogList[5].value = pokerShapes.inst.Shapes[shapeIndex].Local[0].Suit;
+        CP_SuitTogList[11].value = pokerShapes.inst.Shapes[shapeIndex].Local[1].Suit;
+        CP_NumTogList[5].value = pokerShapes.inst.Shapes[shapeIndex].Local[0].Num;
+        CP_NumTogList[11].value = pokerShapes.inst.Shapes[shapeIndex].Local[1].Num;
+        robot_SuitTogList[0].value = pokerShapes.inst.Shapes[shapeIndex].Robot[0].Suit;
+        robot_SuitTogList[1].value = pokerShapes.inst.Shapes[shapeIndex].Robot[1].Suit;
+        robot_NumTogList[0].value = pokerShapes.inst.Shapes[shapeIndex].Robot[0].Num;
+        robot_NumTogList[1].value = pokerShapes.inst.Shapes[shapeIndex].Robot[1].Num;
     }
 
     /// <summary>
@@ -2999,7 +3023,6 @@ public class GameView : MonoBehaviour
 
     IEnumerator SaveResult(GameRoomData gameRoomData, bool isAllPlayerLeft = false)
     {
-        SetWinnerStringTxt = "";
         if (gameRoomData == null || gameRoomData.playingPlayersIdList == null)
         {
             Debug.LogError("SaveResult: Invalid gameRoomData or missing player list.");
