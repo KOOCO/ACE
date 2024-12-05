@@ -2855,6 +2855,31 @@ public class GameControl : MonoBehaviour
             return result;
         }
 
+        var threeOfAKindGroup = groupedRanks.FirstOrDefault(group => group.Count == 3);
+        if (threeOfAKindGroup != null)
+        {
+            // Get the top two kickers
+            var kickers = groupedRanks
+                .Where(group => group.Rank != threeOfAKindGroup.Rank)
+                .OrderByDescending(group => group.Rank)
+                .Take(2)
+                .SelectMany(group => group.Cards)
+                .Take(2)
+                .ToList();
+
+            var threeOfAKindCards = threeOfAKindGroup.Cards;
+
+            // Combine three-of-a-kind cards with the kickers
+            threeOfAKindCards.AddRange(kickers);
+
+            // Take the first 5 cards for the final hand
+            sortedCards = threeOfAKindCards.Take(5).ToList();
+            sortedRanks = sortedCards.Select(card => card % 13 + 2).ToList();
+
+            result[sortedRanks] = sortedCards;
+            return result;
+        }
+
         // Keep only the top 5 cards
         sortedRanks = sortedRanks.Take(5).ToList();
         sortedCards = sortedCards.Take(5).ToList();
