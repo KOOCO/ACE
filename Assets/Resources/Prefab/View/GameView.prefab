@@ -61689,7 +61689,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1688855737146689523, guid: 7f8b09ddbd41c3e44906d0638f0e5eb0, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 3
+      value: 38
       objectReference: {fileID: 0}
     - target: {fileID: 2674577903906544263, guid: 7f8b09ddbd41c3e44906d0638f0e5eb0, type: 3}
       propertyPath: m_AnchorMax.y
