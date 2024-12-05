@@ -163,7 +163,10 @@ public class GameView : MonoBehaviour
     [SerializeField]
     public List<TMP_Dropdown> PN1_NumTogList;
     [SerializeField]
-    List<Sprite> ActionBtn_Images;
+    public TMP_Dropdown pokerShapeDrop;
+    [SerializeField]
+    public List<TMP_Dropdown> robot_SuitTogList;
+    public List<TMP_Dropdown> robot_NumTogList;
     public bool IsStartGameTest;                                //是否開始遊戲測試
 
     [Header("提示POP")]
@@ -177,6 +180,9 @@ public class GameView : MonoBehaviour
     [Header("等待下局")]
     public Image WaitNext_Obj;
     public List<Sprite> WaitNext_ImgList;
+
+    [SerializeField]
+    List<Sprite> ActionBtn_Images;
 
     //底池倍率
     readonly float[] PotPercentRate = new float[]
@@ -759,6 +765,7 @@ public class GameView : MonoBehaviour
                                   AutoActingEnum.CallAny;
             }
         });
+
         RaiseClose_Btn.onClick.AddListener(() =>
         {
             Raise_Tr.gameObject.SetActive(false);
@@ -879,6 +886,11 @@ public class GameView : MonoBehaviour
                 Time.timeScale = 1;
         });
 
+        pokerShapeDrop.onValueChanged.AddListener((value) =>
+        {
+            oneKeySet(pokerShapeDrop.options[value].text);
+        });
+
         #endregion
 
         ConfirmBtn.onClick.AddListener(() =>
@@ -964,13 +976,35 @@ public class GameView : MonoBehaviour
 
         List<string> numName = new()
         {
-            "2","3","4","5","6","7","8","9","10","J","Q","K","A",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "J",
+            "Q",
+            "K",
+            "A",
         };
         CP_NumTogList.AddRange(PN0_NumTogList);
         CP_NumTogList.AddRange(PN1_NumTogList);
         for (int i = 0; i < CP_NumTogList.Count; i++)
         {
             Utils.SetOptionsToDropdown(CP_NumTogList[i], numName);
+        }
+
+        for (int i = 1; i < PlayerTestObjList.Count; i++)
+        {
+            int index = i;
+            if (PlayerTestObjList[index].activeSelf)
+            {
+                robot_SuitTogList.Add(PlayerTestObjList[index].transform.GetChild(0).GetComponent<TMP_Dropdown>());
+                robot_NumTogList.Add(PlayerTestObjList[index].transform.GetChild(1).GetComponent<TMP_Dropdown>());
+            }
         }
 
         #endregion
@@ -998,6 +1032,24 @@ public class GameView : MonoBehaviour
         if (Input.GetKey(KeyCode.Backspace))
         {
             PlayerPrefs.DeleteAll();
+        }
+
+        //Test
+        if (Input.GetKey(KeyCode.Space))
+        {
+            for (int i = 1; i < PlayerTestObjList.Count; i++)
+            {
+                int index = i;
+                if (PlayerTestObjList[index].activeSelf)
+                {
+                    robot_SuitTogList.Add(PlayerTestObjList[index].transform.GetChild(0).GetChild(0).GetComponent<TMP_Dropdown>());
+                    robot_SuitTogList.Add(PlayerTestObjList[index].transform.GetChild(1).GetChild(0).GetComponent<TMP_Dropdown>());
+                    robot_NumTogList.Add(PlayerTestObjList[index].transform.GetChild(0).GetChild(1).GetComponent<TMP_Dropdown>());
+                    robot_NumTogList.Add(PlayerTestObjList[index].transform.GetChild(1).GetChild(1).GetComponent<TMP_Dropdown>());
+                    Debug.Log($"Adding Dropdown from {PlayerTestObjList[i].name}");
+                    break;
+                }
+            }
         }
 
         if (!isOnFold)
@@ -1033,6 +1085,32 @@ public class GameView : MonoBehaviour
                     PlayerTestObjList[item.Value.gameSeat].SetActive(true);
                 }
             }
+        }
+    }
+
+    ///<summary>
+    ///設置一鍵設定小工具參數
+    /// </summary>
+    public void oneKeySet(string pokerShape)
+    {
+        switch (pokerShape)
+        {
+            case "皇家同花順":
+                List<int> shape = new List<int> { 1, 8, 9, 10, 12 };
+                for (int i = 0; i < 5; i++)
+                {
+                    CP_SuitTogList[i].value = 3;
+                    CP_NumTogList[i].value = shape[i];
+                }
+                CP_SuitTogList[5].value = 0;
+                CP_SuitTogList[11].value = 1;
+                CP_NumTogList[5].value = 12;
+                CP_NumTogList[11].value = 11;
+                robot_SuitTogList[0].value = 3;
+                robot_SuitTogList[1].value = 2;
+                robot_NumTogList[0].value = 11;
+                robot_NumTogList[1].value = 9;
+                break;
         }
     }
 
