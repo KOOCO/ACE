@@ -4181,10 +4181,11 @@ public class GameView : MonoBehaviour
         GamePlayerInfo bbPlayer = GetPlayer(bbPlayerData.userId);
         bbPlayer.SetSeatCharacter(SeatCharacterEnum.BB);
         BetActingEnum betActingEnum = BetActingEnum.Blind;
-
+        bool bbIsAllIn = false;
         if (bbPlayerData.carryChips - (gameRoomData.smallBlind * 2) == 0)
         {
             betActingEnum = BetActingEnum.AllIn;
+            bbIsAllIn = true;
             //gameControl.UpdateBetAction(bbPlayer.UserId, betActingEnum, bbPlayerData.carryChips);
         }
 
@@ -4237,12 +4238,25 @@ public class GameView : MonoBehaviour
 
             //BB攜帶籌碼更新
             double bbNewCarryChips = bbPlayerData.carryChips - (gameRoomData.smallBlind * 2);
-            data = new Dictionary<string, object>()
+            if (!bbIsAllIn)
+            {
+                data = new Dictionary<string, object>()
             {
                 { FirebaseManager.CARRY_CHIPS, bbNewCarryChips },                           //攜帶籌碼
                 { FirebaseManager.CURR_ALL_BET_CHIPS, gameRoomData.smallBlind * 2},         //當前流程總下注籌碼
                 { FirebaseManager.ALL_BET_CHIPS, gameRoomData.smallBlind * 2},              //該局總下注籌碼
             };
+            }
+            else
+            {
+                data = new Dictionary<string, object>()
+            {
+                { FirebaseManager.CARRY_CHIPS, bbNewCarryChips },                           //攜帶籌碼
+                { FirebaseManager.CURR_ALL_BET_CHIPS, gameRoomData.smallBlind * 2},         //當前流程總下注籌碼
+                { FirebaseManager.ALL_BET_CHIPS, gameRoomData.smallBlind * 2},              //該局總下注籌碼
+                { FirebaseManager.GAME_STATE, (int)PlayerStateEnum.AllIn},              //該局總下注籌碼
+            };
+            }
             gameControl.UpdataPlayerData(bbPlayerData.userId,
                                          data);
 
