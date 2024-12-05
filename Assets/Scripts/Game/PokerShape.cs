@@ -73,7 +73,7 @@ public static class PokerShape
         {
             if (suitGroups[suit].Count >= 5)
             {
-                var flushCards = suitGroups[suit].OrderByDescending(card => card % 13).Take(5).OrderBy(card => card).ToList();
+                var flushCards = FindHighestConsecutiveSequence(suitGroups[suit]);
                 var straightFlush = GetStraight(flushCards);
                 if (straightFlush != null)
                 {
@@ -179,5 +179,32 @@ public static class PokerShape
                 }
             }
         }
+    }
+    public static List<int> FindHighestConsecutiveSequence(List<int> ranks)
+    {
+        var sortedRanks = ranks.Distinct().OrderBy(rank => rank).ToList();
+        var longestSequence = new List<int>();
+        var currentSequence = new List<int>();
+
+        for (int i = 0; i < sortedRanks.Count; i++)
+        {
+            if (i == 0 || sortedRanks[i] == sortedRanks[i - 1] + 1)
+            {
+                currentSequence.Add(sortedRanks[i]);
+            }
+            else
+            {
+                if (currentSequence.Count > longestSequence.Count)
+                    longestSequence = new List<int>(currentSequence);
+
+                currentSequence.Clear();
+                currentSequence.Add(sortedRanks[i]);
+            }
+        }
+
+        if (currentSequence.Count > longestSequence.Count)
+            longestSequence = currentSequence;
+
+        return longestSequence.Count > 5 ? longestSequence.Skip(longestSequence.Count - 5).ToList() : longestSequence;
     }
 }

@@ -2758,7 +2758,7 @@ public class GameControl : MonoBehaviour
                     if (HasLowStraight(suitedRanks))
                         suitedRanks = suitedRanks.Select(rank => rank == 14 ? 1 : rank).OrderBy(rank => rank).ToList();
 
-                    var highestStraightFlush = FindHighestConsecutiveSequence(suitedRanks);
+                    var highestStraightFlush = PokerShape.FindHighestConsecutiveSequence(suitedRanks);
                     if (highestStraightFlush.Count == 5)
                     {
                         var suitedCards = suitGroup
@@ -2797,7 +2797,7 @@ public class GameControl : MonoBehaviour
             if (HasLowStraight(distinctRanks))
                 distinctRanks = distinctRanks.Select(rank => rank == 14 ? 1 : rank).OrderBy(rank => rank).ToList();
 
-            var highestStraight = FindHighestConsecutiveSequence(distinctRanks);
+            var highestStraight = PokerShape.FindHighestConsecutiveSequence(distinctRanks);
             if (highestStraight.Count == 5)
             {
                 var straightCards = cards
@@ -2836,34 +2836,6 @@ public class GameControl : MonoBehaviour
 
         result[sortedRanks] = sortedCards;
         return result;
-    }
-
-    private List<int> FindHighestConsecutiveSequence(List<int> ranks)
-    {
-        var sortedRanks = ranks.Distinct().OrderBy(rank => rank).ToList();
-        var longestSequence = new List<int>();
-        var currentSequence = new List<int>();
-
-        for (int i = 0; i < sortedRanks.Count; i++)
-        {
-            if (i == 0 || sortedRanks[i] == sortedRanks[i - 1] + 1)
-            {
-                currentSequence.Add(sortedRanks[i]);
-            }
-            else
-            {
-                if (currentSequence.Count > longestSequence.Count)
-                    longestSequence = new List<int>(currentSequence);
-
-                currentSequence.Clear();
-                currentSequence.Add(sortedRanks[i]);
-            }
-        }
-
-        if (currentSequence.Count > longestSequence.Count)
-            longestSequence = currentSequence;
-
-        return longestSequence.Count > 5 ? longestSequence.Skip(longestSequence.Count - 5).ToList() : longestSequence;
     }
 
     private bool HasLowStraight(List<int> ranks)
