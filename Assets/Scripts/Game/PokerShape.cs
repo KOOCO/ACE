@@ -73,7 +73,7 @@ public static class PokerShape
         {
             if (suitGroups[suit].Count >= 5)
             {
-                var flushCards = FindHighestConsecutiveSequence(suitGroups[suit]);
+                var flushCards = suitGroups[suit].OrderBy(card => card).ToList();
                 var straightFlush = GetStraight(flushCards);
                 if (straightFlush != null)
                 {

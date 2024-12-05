@@ -2761,6 +2761,8 @@ public class GameControl : MonoBehaviour
                     var highestStraightFlush = PokerShape.FindHighestConsecutiveSequence(suitedRanks);
                     if (highestStraightFlush.Count == 5)
                     {
+                        highestStraightFlush = highestStraightFlush.Select(rank => rank == 1 ? 14 : rank).ToList();
+
                         var suitedCards = suitGroup
                             .Where(card => highestStraightFlush.Contains(card % 13 + 2))
                             .OrderByDescending(card => card % 13 + 2)
