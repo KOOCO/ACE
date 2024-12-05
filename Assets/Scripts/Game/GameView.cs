@@ -3025,6 +3025,7 @@ public class GameView : MonoBehaviour
 
     IEnumerator SaveResult(GameRoomData gameRoomData, bool isAllPlayerLeft = false)
     {
+        SetWinnerStringTxt = "";
         if (gameRoomData == null || gameRoomData.playingPlayersIdList == null)
         {
             Debug.LogError("SaveResult: Invalid gameRoomData or missing player list.");
