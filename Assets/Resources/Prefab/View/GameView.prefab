@@ -68824,6 +68824,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: pokerShape_Dropdown
       objectReference: {fileID: 0}
+    - target: {fileID: 7014778559082267184, guid: 660be59e1d97af3438d6af294e13fe3f, type: 3}
+      propertyPath: m_Options.m_Options.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
