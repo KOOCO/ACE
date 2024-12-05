@@ -2879,7 +2879,30 @@ public class GameControl : MonoBehaviour
             result[sortedRanks] = sortedCards;
             return result;
         }
+        var pairGroups = groupedRanks.Where(group => group.Count == 2).OrderByDescending(group => group.Rank).Take(2).ToList();
+        if (pairGroups.Count == 2)
+        {
+            // Get the kickers (remaining cards not in the two pairs)
+            var kicker = groupedRanks
+                .Where(group => !pairGroups.Any(pairGroup => pairGroup.Rank == group.Rank))
+                .OrderByDescending(group => group.Rank)
+                .FirstOrDefault();
 
+            var twoPairCards = pairGroups.SelectMany(group => group.Cards).ToList();
+
+            // Add the kicker to complete the hand
+            if (kicker != null)
+            {
+                twoPairCards.Add(kicker.Cards.First());
+            }
+
+            // Take the first 5 cards for the final hand
+            sortedCards = twoPairCards.Take(5).ToList();
+            sortedRanks = sortedCards.Select(card => card % 13 + 2).ToList();
+
+            result[sortedRanks] = sortedCards;
+            return result;
+        }
         // Keep only the top 5 cards
         sortedRanks = sortedRanks.Take(5).ToList();
         sortedCards = sortedCards.Take(5).ToList();
