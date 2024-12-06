@@ -3445,7 +3445,7 @@ public class GameView : MonoBehaviour
             //大小盲
             case GameFlowEnum.SetBlind:
                 SetActingButtonEnable = thisData.IsPlaying;
-                actionButtonsMainObject.SetActive(true);
+                actionButtonsMainObject.SetActive(thisData.IsPlaying);
 
                 /* SetTotalPot = pack.GameRoomInfoPack.TotalPot;
                  SetBlind(pack.BlindStagePack);*/
