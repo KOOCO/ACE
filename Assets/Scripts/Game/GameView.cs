@@ -1080,16 +1080,24 @@ public class GameView : MonoBehaviour
                     }
                 }
 
-                List<string> shapeName = new List<string>();
-                foreach (var item in pokerShapes.inst.Shapes)
-                {
-                    shapeName.Add(item.shapeName);
-                }
-                for (int i = 0; i < pokerShapes.inst.Shapes.Count; i++)
-                {
-                    Utils.SetOptionsToDropdown(pokerShapeDrop, shapeName);
-                }
+                updateShapeDropList();
             }
+        }
+    }
+
+    ///<summary>
+    ///更新牌型Dropdown列表
+    /// </summary>
+    public void updateShapeDropList()
+    {
+        List<string> shapeName = new List<string>();
+        foreach (var item in pokerShapes.inst.Shapes)
+        {
+            shapeName.Add(item.shapeName);
+        }
+        for (int i = 0; i < pokerShapes.inst.Shapes.Count; i++)
+        {
+            Utils.SetOptionsToDropdown(pokerShapeDrop, shapeName);
         }
     }
 
