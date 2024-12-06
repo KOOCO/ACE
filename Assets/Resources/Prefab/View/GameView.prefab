@@ -28906,7 +28906,7 @@ MonoBehaviour:
   - {fileID: 2219748225832017332}
   - {fileID: 7916488212442784977}
   - {fileID: 1482773719850572044}
-  actionButtonsMainObject: {fileID: 0}
+  actionButtonsMainObject: {fileID: 833458388458001409}
   Raise_Btn: {fileID: 1731130837798298710}
   Call_Btn: {fileID: 4507901033771419328}
   Fold_Btn: {fileID: 415474277880085598}
