@@ -151,7 +151,7 @@ public class GameView : MonoBehaviour
     [SerializeField]
     List<GameObject> PlayerTestObjList;
     [SerializeField]
-    Button GameTestStart_Btn, Pause_Btn;
+    Button GameTestStart_Btn, Pause_Btn, addNull_Btn, addNew_Btn;
     [SerializeField]
     public List<TMP_Dropdown> CP_SuitTogList;
     [SerializeField]
@@ -886,6 +886,13 @@ public class GameView : MonoBehaviour
                 Time.timeScale = 0;
             else
                 Time.timeScale = 1;
+        });
+
+        addNull_Btn.onClick.AddListener(pokerShapes.inst.addNullShape);
+
+        addNew_Btn.onClick.AddListener(()=>
+        {
+
         });
 
         pokerShapeDrop.onValueChanged.AddListener((value) =>
