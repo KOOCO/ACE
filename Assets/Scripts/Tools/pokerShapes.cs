@@ -6,14 +6,28 @@ public class pokerShapes : MonoBehaviour
 {
     public static pokerShapes inst;
 
+    bool isListenered;
+
+    public List<Shape> Shapes;
+
     private void Awake()
     {
         inst = this;
 
+#if UNITY_EDITOR
         JSBridgeManager.Instance.ReadDataFromFirebase("PokerShapes/-ODL14cFBIY9d4GKtSD_", gameObject.name, nameof(getShapeData));
-    }
+#endif
 
-    public List<Shape> Shapes;
+#if !UNITY_EDITOR
+        if (!isListenered)
+        {
+            isListenered = true;
+            JSBridgeManager.Instance.StartListeningForDataChanges("PokerShapes/-ODL14cFBIY9d4GKtSD_", 
+                gameObject.name, 
+                nameof(getShapeData));
+        }
+#endif
+    }
 
     public void getShapeData(string jsonData)
     {
@@ -21,11 +35,14 @@ public class pokerShapes : MonoBehaviour
         {
             var PS = JsonConvert.DeserializeObject<List<Shape>>(jsonData);
             Shapes = PS;
-            print(jsonData);
+            //print(jsonData);
+            GameView gameView = GameRoomManager.Instance.GameRoomList_Tr.GetComponentInChildren<GameView>();
+            if (gameView != null)
+                gameView.updateShapeDropList();
         }
     }
 
-    public void test()
+    public void addNullShape()
     {
         Shape nullS = new Shape
         {
