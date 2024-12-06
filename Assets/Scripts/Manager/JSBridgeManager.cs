@@ -494,4 +494,11 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
 
     #endregion
 
+    [DllImport("__Internal")]
+    private static extern void onPageUnload(string scriptName, string functionName);
+
+    public void RegisterOnPageUnload(string scriptName, string functionName)
+    {
+        onPageUnload(scriptName, functionName);
+    }
 }

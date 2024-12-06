@@ -367,6 +367,27 @@ mergeInto(LibraryManager.library, {
         });
 
         console.log("Visibility change listener added for mobile.");
+    },
+onPageUnload: function(scriptName,functionName) {
+    // Ensure functionName is provided
+    if (scriptName&&functionName) {
+        window.addEventListener('beforeunload', function () {
+            try {
+                console.log('The page is about to be unloaded.');
+
+                // Check if unityInstance exists before calling SendMessage
+                if (window.unityInstance) {
+                    window.unityInstance.SendMessage(scriptName, functionName);
+                } else {
+                    console.error('Unity instance is not available.');
+                }
+            } catch (error) {
+                console.error('Error while sending the message to Unity:', error);
+            }
+        });
+    } else {
+        console.error('Function name is not defined.');
     }
+}
     
 });

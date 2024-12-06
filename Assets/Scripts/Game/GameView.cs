@@ -898,7 +898,7 @@ public class GameView : MonoBehaviour
 
         addNull_Btn.onClick.AddListener(pokerShapes.inst.addNullShape);
 
-        addNew_Btn.onClick.AddListener(()=>
+        addNew_Btn.onClick.AddListener(() =>
         {
             pokerShapes.inst.addNewShape(CP_SuitTogList, CP_NumTogList, robot_SuitTogList, robot_NumTogList);
         });
@@ -948,6 +948,8 @@ public class GameView : MonoBehaviour
         MenuAvatar_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[DataManager.UserAvatarIndex];
 
         SetNotReadChatCount = 0;
+
+        JSBridgeManager.Instance.RegisterOnPageUnload(gameObject.name, nameof(OnAllPlayerLeft));
 
         Init();
         GameInit();
@@ -2491,11 +2493,7 @@ public class GameView : MonoBehaviour
 
             if (allPlayersLeft)
             {
-                GetRoundCount();
-                StartCoroutine(SaveResult(gameRoomData, true));
-                AppApi.OnRoundFinish(saveResultData, (x) => { Debug.Log("Round Finished"); });
-                SaveResultDataToFirebase();
-                IncrementRoundCount();
+                OnAllPlayerLeft();
             }
         }
         else
@@ -2517,6 +2515,16 @@ public class GameView : MonoBehaviour
         }
 
         return exitPlayer;
+    }
+
+    void OnAllPlayerLeft()
+    {
+        Debug.Log("OnAllPlayerLeftCalled");
+        GetRoundCount();
+        StartCoroutine(SaveResult(gameRoomData, true));
+        AppApi.OnRoundFinish(saveResultData, (x) => { Debug.Log("Round Finished"); });
+        SaveResultDataToFirebase();
+        IncrementRoundCount();
     }
 
     /// <summary>
