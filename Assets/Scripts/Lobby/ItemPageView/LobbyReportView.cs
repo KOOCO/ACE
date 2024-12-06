@@ -51,6 +51,8 @@ public class LobbyReportView : MonoBehaviour
         LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
         StartTime_Txt.text = System.DateTime.Today.ToShortDateString();
         EndTime_Txt.text = System.DateTime.Today.ToShortDateString();
+        startTime_Txt.text = System.DateTime.Today.ToShortDateString();
+        endTime_Txt.text = System.DateTime.Today.ToShortDateString();
         bethistory.Init();
     }
 
