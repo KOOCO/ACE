@@ -1476,14 +1476,23 @@ public class GameView : MonoBehaviour
                 //strData.CallStr = LanguageManager.Instance.GetText("Check");
                 //strData.CallValueStr = "";
                 bool check = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0;
-                strData.CallStr = check ? LanguageManager.Instance.GetText("Check") : LanguageManager.Instance.GetText("Call");
-                strData.CallValueStr = check ? "" : $" {gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                if (check)
+                {
+                    strData.CallStr = LanguageManager.Instance.GetText("Check");
+                    strData.CallValueStr = "";
+                }
+                else
+                {
+                    strData.CallStr = (thisData.LocalPlayerChips <= thisData.CurrCallValue) ? "" : LanguageManager.Instance.GetText("Call");
+                    strData.CallValueStr = (thisData.LocalPlayerChips <= thisData.CurrCallValue) ? "" : $" {gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                }
             }
             else
             {
+                print("小盲: 每個人都會看到 Fold 和 Call + 金額");
                 bool check = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0;
-                strData.CallStr = check ? "" : LanguageManager.Instance.GetText("Call");
-                strData.CallValueStr = check ? "" : $" {gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                strData.CallStr = (check || thisData.LocalPlayerChips <= thisData.CurrCallValue) ? "" : LanguageManager.Instance.GetText("Call");
+                strData.CallValueStr = (check || thisData.LocalPlayerChips <= thisData.CurrCallValue) ? "" : $" {gameRoomData.currCallValue - localPlayer.currAllBetChips}";
             }
         }
         else
