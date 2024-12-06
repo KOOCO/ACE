@@ -211,6 +211,8 @@ public class GameView : MonoBehaviour
     bool isNextRountSitOut;                                     //是否下局保留作位離開
     public bool isOnFold;                                     //是否棄牌
 
+    public GameObject GameMask;
+
     #region 遊戲過程紀錄
     List<int> exitPlayerSeatList;                               //玩家離開座位
     GameInitHistoryData gameInitHistoryData;                    //遊戲初始資料紀錄
@@ -446,6 +448,7 @@ public class GameView : MonoBehaviour
         objPool = new ObjPool(transform, MaxChatCount);
         audioPool = new AudioPool(transform);
 
+        GameMask.SetActive(false);
         ListenerEvent();
 
         //初始底池位置
@@ -4385,5 +4388,12 @@ public class GameView : MonoBehaviour
 
             gameControl.idleExit();
         }
+    }
+
+
+    //多桌遮罩
+    public void SetGameMask(bool isShow)
+    {
+        GameMask.SetActive(isShow);
     }
 }

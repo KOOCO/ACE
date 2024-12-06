@@ -476,6 +476,49 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6689726745126147366, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
   m_PrefabInstance: {fileID: 3151687746463192382}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &638422986 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 361291708100108246, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
+  m_PrefabInstance: {fileID: 3151687746463192382}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &638422988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 638422986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 1ca195ed2c9456d4f8fba4973dc625ea, type: 3}
+  m_Type: 2
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &638422989
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 638422986}
+  m_CullTransparentMesh: 1
 --- !u!224 &812066652 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2267801237438837788, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
@@ -1024,12 +1067,28 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 17353678597013140, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 17353678597013140, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 17353678597013140, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 17353678597013140, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 17353678597013140, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
-      propertyPath: m_AnchoredPosition.x
+      propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 17353678597013140, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.00024414062
       objectReference: {fileID: 0}
     - target: {fileID: 240207099792435625, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       propertyPath: m_Enabled
@@ -1357,7 +1416,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7708268745242368702, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -0.00077620626
       objectReference: {fileID: 0}
     - target: {fileID: 7708268745242368702, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1469,6 +1528,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 279344460}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 361291708100108246, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 638422989}
+    - targetCorrespondingSourceObject: {fileID: 361291708100108246, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 638422988}
     - targetCorrespondingSourceObject: {fileID: 4559879947427259486, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 874619040}

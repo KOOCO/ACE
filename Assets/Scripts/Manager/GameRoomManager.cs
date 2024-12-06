@@ -474,6 +474,20 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
         if (roomIndex < 0 || thisData.RoomDic == null || thisData.RoomDic.Count == 0) return;
 
         thisData.CurrRoomIndex = roomIndex;
+        if (GetRoomCount == 2)
+        {
+            switch (roomIndex)
+            {
+                case 0:
+                    GameRoomList_Tr.GetChild(0).GetComponent<GameView>().SetGameMask(false);
+                    GameRoomList_Tr.GetChild(1).GetComponent<GameView>().SetGameMask(true);
+                    break;
+                case 1:
+                    GameRoomList_Tr.GetChild(1).GetComponent<GameView>().SetGameMask(false);
+                    GameRoomList_Tr.GetChild(0).GetComponent<GameView>().SetGameMask(true);
+                    break;
+            }
+        }
         CloseAllBtnFrame();
         IsShowGameRoom = true;
         BgMask_Obj.SetActive(true);
