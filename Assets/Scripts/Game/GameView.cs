@@ -675,6 +675,7 @@ public class GameView : MonoBehaviour
             }
             Raise_Tr.gameObject.SetActive(false);
             GameRoomManager.Instance.EnanbleBtn(false);
+            Menu_Btn.interactable = true;
             SetActionButton = false;
         });
 
@@ -694,6 +695,7 @@ public class GameView : MonoBehaviour
             // CalculateEffectiveBets();
             Raise_Tr.gameObject.SetActive(false);
             GameRoomManager.Instance.EnanbleBtn(false);
+            Menu_Btn.interactable = true;
             SetActionButton = false;
 
             if (CallBtn_Img.sprite != AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteEnglish).album[1] || CallBtn_Img.sprite != AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteChinese).album[1])
@@ -747,12 +749,14 @@ public class GameView : MonoBehaviour
 
                     Raise_Tr.gameObject.SetActive(false);
                     GameRoomManager.Instance.EnanbleBtn(false);
+                    Menu_Btn.interactable = true;
                     SetActionButton = false;
                 }
                 else
                 {
                     Raise_Tr.gameObject.SetActive(true);
                     GameRoomManager.Instance.EnanbleBtn(true);
+                    Menu_Btn.interactable = false;
                     strData.RaiseStr = acting == BetActingEnum.Bet ?
                                        "BetTo" :
                                        "RaiseTo";
@@ -772,6 +776,7 @@ public class GameView : MonoBehaviour
         {
             Raise_Tr.gameObject.SetActive(false);
             GameRoomManager.Instance.EnanbleBtn(false);
+            Menu_Btn.interactable = true;
         });
 
         #endregion
@@ -1237,7 +1242,7 @@ public class GameView : MonoBehaviour
             else
             {
                 CurrRaise_Txt.text = StringUtils.SetChipsUnit(value);
-                RaiseSliHandle_Txt.text = StringUtils.SetChipsUnit(value);
+                RaiseSliHandle_Txt.text = "$" + StringUtils.SetChipsUnit(value);
             }
         }
     }
@@ -1738,6 +1743,7 @@ public class GameView : MonoBehaviour
 
         Raise_Tr.gameObject.SetActive(false);
         GameRoomManager.Instance.EnanbleBtn(false);
+        Menu_Btn.interactable = true;
     }
 
     /// <summary>
@@ -2210,6 +2216,7 @@ public class GameView : MonoBehaviour
         //加注區域物件
         Raise_Tr.gameObject.SetActive(false);
         GameRoomManager.Instance.EnanbleBtn(false);
+        Menu_Btn.interactable = true;
         if (isJustAllIn == false)
         {
             //倍數
@@ -2225,7 +2232,7 @@ public class GameView : MonoBehaviour
             //最小加注值
             MinRaiseBtn_Txt.text = thisData.MinRaiseValue.ToString();
 
-            AllinBtn_Txt.text = thisData.LocalPlayerChips.ToString();
+            AllinBtn_Txt.text = $"${thisData.LocalPlayerChips}";
 
             // Always display BB values and Pot for the raise options
             // Check if the current game flow is in the Preflop stage
@@ -2569,6 +2576,7 @@ public class GameView : MonoBehaviour
                     SetActingButtonEnable = false;
                     Raise_Tr.gameObject.SetActive(false);
                     GameRoomManager.Instance.EnanbleBtn(false);
+                    Menu_Btn.interactable = true;
                     thisData.isFold = true;
                     thisData.IsPlaying = false;
                     break;
