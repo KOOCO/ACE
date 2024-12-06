@@ -18,7 +18,7 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
 
     [Header("房間")]
     [SerializeField]
-    RectTransform GameRoomList_Tr;
+    public RectTransform GameRoomList_Tr;
     [SerializeField]
     ScrollRect GameRoomList_Sr;
 
