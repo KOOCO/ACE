@@ -1480,7 +1480,7 @@ public class GameView : MonoBehaviour
                 bool check = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0;
                 if (check)
                 {
-                    strData.CallStr = LanguageManager.Instance.GetText("Check");
+                    strData.CallStr = (thisData.LocalPlayerChips <= thisData.CurrCallValue) ? "" : LanguageManager.Instance.GetText("Check");
                     strData.CallValueStr = "";
                 }
                 else
