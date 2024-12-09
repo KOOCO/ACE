@@ -8,6 +8,7 @@ using TMPro;
 using RequestBuf;
 using Newtonsoft.Json;
 using System.Runtime.InteropServices;
+using UnityEngine.EventSystems;
 
 public class GameView : MonoBehaviour
 {
@@ -57,6 +58,7 @@ public class GameView : MonoBehaviour
     SliderClickDetection SliderClickDetection;
     [SerializeField]
     Button AllIn_Btn, MinRaise_Btn;
+    private bool isAllinSelected = false;
     [SerializeField]
     List<TextMeshProUGUI> PotPercentRaiseTxtList;
     [SerializeField]
@@ -1243,11 +1245,15 @@ public class GameView : MonoBehaviour
                 //All In
                 CurrRaise_Txt.text = LanguageManager.Instance.GetText("AllIn");
                 RaiseSliHandle_Txt.text = LanguageManager.Instance.GetText("AllIn");
+                AllIn_Btn.Select();
+                isAllinSelected = true;
             }
             else
             {
                 CurrRaise_Txt.text = StringUtils.SetChipsUnit(value);
                 RaiseSliHandle_Txt.text = "$" + StringUtils.SetChipsUnit(value);
+                if (isAllinSelected) EventSystem.current.SetSelectedGameObject(null);
+                isAllinSelected = false;
             }
         }
     }
