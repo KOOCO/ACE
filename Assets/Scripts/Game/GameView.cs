@@ -4334,21 +4334,22 @@ public class GameView : MonoBehaviour
             if (!bbIsAllIn)
             {
                 data = new Dictionary<string, object>()
-            {
-                { FirebaseManager.CARRY_CHIPS, bbNewCarryChips },                           //攜帶籌碼
-                { FirebaseManager.CURR_ALL_BET_CHIPS, gameRoomData.smallBlind * 2},         //當前流程總下注籌碼
-                { FirebaseManager.ALL_BET_CHIPS, gameRoomData.smallBlind * 2},              //該局總下注籌碼
-            };
+                {
+                    { FirebaseManager.CARRY_CHIPS, bbNewCarryChips },                           //攜帶籌碼
+                    { FirebaseManager.CURR_ALL_BET_CHIPS, gameRoomData.smallBlind * 2},         //當前流程總下注籌碼
+                    { FirebaseManager.ALL_BET_CHIPS, gameRoomData.smallBlind * 2},              //該局總下注籌碼
+                };
             }
             else
             {
                 data = new Dictionary<string, object>()
-            {
-                { FirebaseManager.CARRY_CHIPS, bbNewCarryChips },                           //攜帶籌碼
-                { FirebaseManager.CURR_ALL_BET_CHIPS, gameRoomData.smallBlind * 2},         //當前流程總下注籌碼
-                { FirebaseManager.ALL_BET_CHIPS, gameRoomData.smallBlind * 2},              //該局總下注籌碼
-                { FirebaseManager.GAME_STATE, (int)PlayerStateEnum.AllIn},              //該局總下注籌碼
-            };
+                {
+                    { FirebaseManager.CARRY_CHIPS, bbNewCarryChips },                           //攜帶籌碼
+                    { FirebaseManager.CURR_ALL_BET_CHIPS, gameRoomData.smallBlind * 2},         //當前流程總下注籌碼
+                    { FirebaseManager.ALL_BET_CHIPS, gameRoomData.smallBlind * 2},              //該局總下注籌碼
+                    { FirebaseManager.GAME_STATE, (int)PlayerStateEnum.AllIn},              //該局總下注籌碼
+                };
+                actionButtonsMainObject.SetActive(false);
             }
             gameControl.UpdataPlayerData(bbPlayerData.userId,
                                          data);
@@ -4422,6 +4423,7 @@ public class GameView : MonoBehaviour
             gameControl.UpdataPlayerData(DataManager.UserId,
                                             data);
 
+            print("是否閒置");
             gameControl.idleExit();
         }
     }
