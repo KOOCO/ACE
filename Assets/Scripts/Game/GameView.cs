@@ -1487,7 +1487,7 @@ public class GameView : MonoBehaviour
                 bool check = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0;
                 if (check)
                 {
-                    strData.CallStr = (thisData.LocalPlayerChips <= thisData.CurrCallValue) ? "" : LanguageManager.Instance.GetText("Check");
+                    strData.CallStr = (thisData.LocalPlayerChips <= thisData.CurrCallValue && gameRoomData.currGameFlow != (int)GameFlowEnum.SetBlind) ? "" : LanguageManager.Instance.GetText("Check");
                     strData.CallValueStr = "";
                 }
                 else
@@ -3874,7 +3874,6 @@ public class GameView : MonoBehaviour
         {
             gameRoomData.playersWhoLeft.Clear();
         }
-
         var gameRoomData1 = new Dictionary<string, object>()
         {
             { FirebaseManager.PLAYERS_WHO_LEFT, gameRoomData.playersWhoLeft},                 //遊戲中玩家ID
