@@ -3870,7 +3870,11 @@ public class GameView : MonoBehaviour
         }
 
         // Reset exit player seat list and process history data
-        gameRoomData.playersWhoLeft.Clear();
+        if (gameRoomData.playersWhoLeft != null)
+        {
+            gameRoomData.playersWhoLeft.Clear();
+        }
+
         var gameRoomData1 = new Dictionary<string, object>()
         {
             { FirebaseManager.PLAYERS_WHO_LEFT, gameRoomData.playersWhoLeft},                 //遊戲中玩家ID
