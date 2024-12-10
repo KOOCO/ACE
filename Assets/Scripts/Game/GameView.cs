@@ -58,7 +58,7 @@ public class GameView : MonoBehaviour
     SliderClickDetection SliderClickDetection;
     [SerializeField]
     Button AllIn_Btn, MinRaise_Btn;
-    private bool isAllinSelected = false;
+    private bool isAllinSelected = false; //判斷下注拉條是否為all
     [SerializeField]
     List<TextMeshProUGUI> PotPercentRaiseTxtList;
     [SerializeField]
@@ -762,7 +762,7 @@ public class GameView : MonoBehaviour
                 {
                     Raise_Tr.gameObject.SetActive(true);
                     GameRoomManager.Instance.EnanbleBtn(true);
-                    Menu_Btn.interactable = false;
+                    Menu_Btn.interactable = false; //開啟下注拉條時menu不能按
                     strData.RaiseStr = acting == BetActingEnum.Bet ?
                                        "BetTo" :
                                        "RaiseTo";
@@ -1246,14 +1246,14 @@ public class GameView : MonoBehaviour
                 //All In
                 CurrRaise_Txt.text = LanguageManager.Instance.GetText("AllIn");
                 RaiseSliHandle_Txt.text = LanguageManager.Instance.GetText("AllIn");
-                AllIn_Btn.Select();
+                AllIn_Btn.Select(); //allin按鈕亮起
                 isAllinSelected = true;
             }
             else
             {
                 CurrRaise_Txt.text = StringUtils.SetChipsUnit(value);
                 RaiseSliHandle_Txt.text = "$" + StringUtils.SetChipsUnit(value);
-                if (isAllinSelected) EventSystem.current.SetSelectedGameObject(null);
+                if (isAllinSelected) EventSystem.current.SetSelectedGameObject(null); //取消allin按鈕亮起
                 isAllinSelected = false;
             }
         }
@@ -3870,7 +3870,7 @@ public class GameView : MonoBehaviour
         }
 
         // Reset exit player seat list and process history data
-        if (gameRoomData.playersWhoLeft != null)
+        if (gameRoomData.playersWhoLeft != null) //防clear失敗
         {
             gameRoomData.playersWhoLeft.Clear();
         }
