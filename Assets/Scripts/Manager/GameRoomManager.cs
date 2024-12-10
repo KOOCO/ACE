@@ -398,6 +398,7 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
         {
             room.Value.Item1.anchoredPosition = new Vector2(Mathf.Max(0, room.Value.Item1.anchoredPosition.x - Entry.Instance.resolution.x),
                                                             room.Value.Item1.anchoredPosition.y);
+            room.Value.Item1.GetComponent<GameView>().SetGameMask(false);
         }
 
         StartCoroutine(IJudgeShowSwitchBtn());
