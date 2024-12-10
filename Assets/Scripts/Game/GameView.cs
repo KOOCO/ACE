@@ -674,6 +674,7 @@ public class GameView : MonoBehaviour
             }
             else
             {
+                print("執行預選");
                 AutoActionState = AutoActionState == AutoActingEnum.CheckAndFold ?
                                   AutoActingEnum.None :
                                   AutoActingEnum.CheckAndFold;
@@ -1676,6 +1677,7 @@ public class GameView : MonoBehaviour
                     SetAutoAction(true, Fold_Btn.transform, ActionBtn_Images[2]);
                     break;
             }
+            print($"自動操作預選框: {value}, 是否開啟: {AutoActionFrame_Tr.gameObject.activeSelf}");
         }
     }
 
@@ -2107,6 +2109,7 @@ public class GameView : MonoBehaviour
                     }
                     else
                     {
+                        print("首次加注後棄牌");
                         OnFold();
                     }
                 }
@@ -2114,7 +2117,13 @@ public class GameView : MonoBehaviour
                 {
                     if (gameRoomData.currGameFlow == (int)GameFlowEnum.SetBlind)
                     {
-                        OnFold();
+                        print("未加注棄牌");
+                        var localPlayer = gameControl.GetLocalPlayer();
+                        bool isBigBlind = localPlayer.seatCharacter == (int)SeatCharacterEnum.BB;
+                        if(isBigBlind) 
+                            OnCallAndCheck();
+                        else
+                            OnFold();
                     }
                     else if (thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue)
                     {
@@ -2126,6 +2135,7 @@ public class GameView : MonoBehaviour
                     }
                     else
                     {
+                        print("未加注棄牌else");
                         OnFold();
                     }
                 }
