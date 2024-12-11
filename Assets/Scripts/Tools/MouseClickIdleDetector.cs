@@ -24,6 +24,7 @@ public class MouseClickIdleDetector : MonoBehaviour
         {
             // 使用 Time.deltaTime 累积时间
             timeSinceLastClick += Time.deltaTime;
+            //print("閒置時間: " + timeSinceLastClick);
         }
 
         // 检测是否超过闲置时间
@@ -36,7 +37,7 @@ public class MouseClickIdleDetector : MonoBehaviour
                 isIdle = true;
             }
 
-            if (timeSinceLastClick > 90)
+            if (timeSinceLastClick > 40)
             {
                 JSBridgeManager.Instance.ReadDataFromFirebase(
                 $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}",
@@ -50,6 +51,7 @@ public class MouseClickIdleDetector : MonoBehaviour
 
     void checkCallHeartbeat(string jsonData)
     {
+        print("is Online data: " + jsonData);
         if (!string.IsNullOrEmpty(jsonData) && jsonData != "null")
         {
             var hb = JsonConvert.DeserializeObject<heartbeatData>(jsonData);
