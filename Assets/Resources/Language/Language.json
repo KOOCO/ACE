@@ -451,8 +451,8 @@
   },
   {
     "ID": "Network offline",
-    "English": "The game has been idle for a long time or a network interruption has been detected, please log in again.",
-    "zh_TW": "遊戲閒置過久或偵測到網路中斷，請重新登入。"
+    "English": "The network interruption has been detected, please log in again.",
+    "zh_TW": "偵測到網路中斷，請重新登入。"
   },
   {
     "ID": "Idle warn",
