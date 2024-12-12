@@ -300,7 +300,8 @@ public class GameView : MonoBehaviour
         {1, "Check"},
         {2, "Fold"},
         {3, "Fold / Check"},
-        {4, ""}
+        {4, "All In"},
+        {5, ""}
     };
     public Dictionary<int, string> betStringsC = new Dictionary<int, string>
     {
@@ -308,7 +309,8 @@ public class GameView : MonoBehaviour
         {1, "過牌"},
         {2, "棄牌"},
         {3, "棄牌 / 過牌"},
-        {4, ""}
+        {4, "All In"},
+        {5, ""}
     };
 
     public string SetWinnerStringTxt
@@ -1047,8 +1049,12 @@ public class GameView : MonoBehaviour
         }
 
         if (!isOnFold)
+        {
             //Call_Btn.interactable = (CallBtn_Txt.text != "");
-            Call_Btn.gameObject.SetActive(!(CallBtn_Img.sprite.name == "blank"));
+            //print($"跟注按鈕圖片名: {CallBtn_Img.sprite.name}, 按鈕圖片: {CallBtn_Img.gameObject.activeSelf}");
+            Call_Btn.gameObject.SetActive(!(CallBtn_Img.sprite.name == "blank" || !CallBtn_Img.gameObject.activeSelf));
+            Fold_Btn.gameObject.SetActive(!(FoldBtn_Img.sprite.name == "blank" || !FoldBtn_Img.gameObject.activeSelf));
+        }
         else
             //Call_Btn.interactable = false;
             Call_Btn.gameObject.SetActive(false);
@@ -1392,15 +1398,32 @@ public class GameView : MonoBehaviour
                 }
                 else
                 {
-                    strData.CallStr = LanguageManager.Instance.GetText("Call");
-                    strData.CallValueStr = $" {gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                    if (thisData.CurrCallValue > thisData.LocalPlayerChips)
+                    {
+                        strData.CallStr = LanguageManager.Instance.GetText("AllIn");
+                        strData.CallValueStr = "";
+                    }
+                    else
+                    {
+                        strData.CallStr = LanguageManager.Instance.GetText("Call");
+                        strData.CallValueStr = $" {gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                    }
                 }
             }
             else
             {
+                print("如果加注了，其他玩家看到Fold和Call翻牌前沒有加注");
                 strData.FoldStr = LanguageManager.Instance.GetText("Fold");
-                strData.CallStr = LanguageManager.Instance.GetText("Call");
-                strData.CallValueStr = $" {gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                if (thisData.CurrCallValue > thisData.LocalPlayerChips)
+                {
+                    strData.CallStr = LanguageManager.Instance.GetText("AllIn");
+                    strData.CallValueStr = "";
+                }
+                else
+                {
+                    strData.CallStr = LanguageManager.Instance.GetText("Call");
+                    strData.CallValueStr = $" {gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                }
             }
         }
         else
@@ -1416,6 +1439,7 @@ public class GameView : MonoBehaviour
             else if (isSmallBlind)
             {
                 // Small Blind sees Fold and Call + amount pre-flop
+                print("小盲注看到Fold和Call + 金額 翻牌前沒有加注");
                 strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                 strData.CallStr = LanguageManager.Instance.GetText("Call");
                 strData.CallValueStr = $" {gameRoomData.currCallValue - localPlayer.currAllBetChips}";
@@ -1423,6 +1447,7 @@ public class GameView : MonoBehaviour
             else
             {
                 // Other players see Fold and Call + amount pre-flop
+                print("每個人都看到Fold和跟注 + 金額在翻牌前");
                 strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                 strData.CallStr = LanguageManager.Instance.GetText("Call");
                 strData.CallValueStr = $" {gameRoomData.currCallValue - localPlayer.currAllBetChips}";
@@ -1440,6 +1465,7 @@ public class GameView : MonoBehaviour
             if (localPlayer.currAllBetChips >= gameRoomData.currCallValue)
             {
                 // Player who raised sees Fold and an empty Call text
+                print("如果加注了，每個人都看到Fold和空跟注按鈕");
                 strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                 strData.CallStr = LanguageManager.Instance.GetText("Check");
                 strData.CallValueStr = "";
@@ -1447,9 +1473,18 @@ public class GameView : MonoBehaviour
             else
             {
                 // Other players see Fold and Call + amount
+                print("如果加注了，小盲注看到Fold和跟注 + 金額");
                 strData.FoldStr = LanguageManager.Instance.GetText("Fold");
-                strData.CallStr = LanguageManager.Instance.GetText("Call");
-                strData.CallValueStr = $" {gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                if(thisData.CurrCallValue > thisData.LocalPlayerChips)
+                {
+                    strData.CallStr = LanguageManager.Instance.GetText("AllIn");
+                    strData.CallValueStr = "";
+                }
+                else
+                {
+                    strData.CallStr = LanguageManager.Instance.GetText("Call");
+                    strData.CallValueStr = $" {gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                }
             }
         }
         else
@@ -1457,6 +1492,7 @@ public class GameView : MonoBehaviour
             // No raise: Everyone sees Check/Fold and Check post-flop
             if (localPlayer.userId == DataManager.UserId)
             {
+                print("本地玩家看到Fold和Check");
                 strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                 strData.CallStr = LanguageManager.Instance.GetText("Check");
                 strData.CallValueStr = "";
@@ -1475,25 +1511,35 @@ public class GameView : MonoBehaviour
 
     private void SetPreFlopActionsForOthers(bool isBigBlind, bool isSmallBlind, bool isRaised, GameRoomPlayerData localPlayer)
     {
+        GamePlayerInfo locPlayer = GetPlayer(DataManager.UserId);
+
         if (isRaised)
         {
             // If raised, everyone sees Fold and Call + amount
             if (isBigBlind)
             {
                 print("如果加注，每個人都會看到 Fold 和 Call + 金額");
-                strData.FoldStr = LanguageManager.Instance.GetText("CheckOrFold");
-                //strData.CallStr = LanguageManager.Instance.GetText("Check");
-                //strData.CallValueStr = "";
-                bool check = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0;
-                if (check)
+                if (locPlayer.PlayerRoomChips > 0)
                 {
-                    strData.CallStr = (thisData.LocalPlayerChips <= thisData.CurrCallValue && gameRoomData.currGameFlow != (int)GameFlowEnum.SetBlind) ? "" : LanguageManager.Instance.GetText("Check");
-                    strData.CallValueStr = "";
+                    strData.FoldStr = LanguageManager.Instance.GetText("CheckOrFold");
+                    bool check = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0;
+                    if (check)
+                    {
+                        strData.CallStr = (thisData.LocalPlayerChips <= thisData.CurrCallValue && gameRoomData.currGameFlow != (int)GameFlowEnum.SetBlind) ? "" : LanguageManager.Instance.GetText("Check");
+                        strData.CallValueStr = "";
+                    }
+                    else
+                    {
+                        strData.CallStr = (thisData.LocalPlayerChips <= thisData.CurrCallValue) ? "" : LanguageManager.Instance.GetText("Call");
+                        strData.CallValueStr = (thisData.LocalPlayerChips <= thisData.CurrCallValue) ? "" : $" {gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                    }
                 }
                 else
                 {
-                    strData.CallStr = (thisData.LocalPlayerChips <= thisData.CurrCallValue) ? "" : LanguageManager.Instance.GetText("Call");
-                    strData.CallValueStr = (thisData.LocalPlayerChips <= thisData.CurrCallValue) ? "" : $" {gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                    print("玩家已All In");
+                    strData.FoldStr = "";
+                    strData.CallStr = "";
+                    strData.CallValueStr = "";
                 }
             }
             else
@@ -1517,6 +1563,7 @@ public class GameView : MonoBehaviour
             else if (isSmallBlind)
             {
                 // Small Blind sees Fold and Call + amount pre-flop
+                print("小盲注看到Fold和跟注 + 金額在翻牌前");
                 strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                 strData.CallStr = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0 ? "" : LanguageManager.Instance.GetText("Call");
                 strData.CallValueStr = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0
@@ -1526,6 +1573,7 @@ public class GameView : MonoBehaviour
             else
             {
                 // Other players see Fold and Call + amount pre-flop
+                print("每個人都看到Fold和跟注 + 金額in翻牌前");
                 strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                 strData.CallStr = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0 ? "" : LanguageManager.Instance.GetText("Call");
                 strData.CallValueStr = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0
@@ -1540,6 +1588,8 @@ public class GameView : MonoBehaviour
 
     private void SetPostFlopActionsForOthers(bool isRaised, GameRoomPlayerData localPlayer)
     {
+        GamePlayerInfo locPlayer = GetPlayer(DataManager.UserId);
+
         if (isRaised)
         {
             if (localPlayer.currAllBetChips >= gameRoomData.currCallValue)
@@ -1552,6 +1602,7 @@ public class GameView : MonoBehaviour
             else
             {
                 // Other players see Fold and Call + amount post-flop
+                print("每個人都看到Fold和跟注 + 金額");
                 strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                 strData.CallStr = LanguageManager.Instance.GetText("Call"); ;
                 strData.CallValueStr = $" {gameRoomData.currCallValue - localPlayer.currAllBetChips}";
@@ -1560,9 +1611,20 @@ public class GameView : MonoBehaviour
         else
         {
             // No raise: everyone sees Check/Fold and Check post-flop
-            strData.FoldStr = LanguageManager.Instance.GetText("CheckOrFold");
-            strData.CallStr = LanguageManager.Instance.GetText("Check");
-            strData.CallValueStr = "";
+            print("每個人都看到Check/Fold和Check");
+            if (locPlayer.PlayerRoomChips > 0)
+            {
+                strData.FoldStr = LanguageManager.Instance.GetText("CheckOrFold");
+                strData.CallStr = LanguageManager.Instance.GetText("Check");
+                strData.CallValueStr = "";
+            }
+            else
+            {
+                print("玩家已All In");
+                strData.FoldStr = "";
+                strData.CallStr = "";
+                strData.CallValueStr = "";
+            }
         }
 
         // Update button texts for other players
@@ -2127,11 +2189,14 @@ public class GameView : MonoBehaviour
                     }
                     else if (thisData.LocalPlayerCurrBetValue == thisData.CurrCallValue)
                     {
+                        print("當前下注金額等於當前跟注");
                         OnCallAndCheck();
                     }
                     else if (thisData.CurrCallValue <= thisData.SmallBlindValue * 2)
                     {
-                        OnCallAndCheck();
+                        print("當前跟注金額小於大盲");
+                        //OnCallAndCheck();
+                        OnFold();
                     }
                     else
                     {
@@ -4349,7 +4414,8 @@ public class GameView : MonoBehaviour
                     { FirebaseManager.ALL_BET_CHIPS, gameRoomData.smallBlind * 2},              //該局總下注籌碼
                     { FirebaseManager.GAME_STATE, (int)PlayerStateEnum.AllIn},              //該局總下注籌碼
                 };
-                actionButtonsMainObject.SetActive(false);
+                if(bbPlayer.UserId == DataManager.UserId)
+                    actionButtonsMainObject.SetActive(false);
             }
             gameControl.UpdataPlayerData(bbPlayerData.userId,
                                          data);
