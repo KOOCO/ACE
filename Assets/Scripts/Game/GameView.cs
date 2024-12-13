@@ -2182,8 +2182,13 @@ public class GameView : MonoBehaviour
                         print("未加注棄牌");
                         var localPlayer = gameControl.GetLocalPlayer();
                         bool isBigBlind = localPlayer.seatCharacter == (int)SeatCharacterEnum.BB;
-                        if(isBigBlind) 
-                            OnCallAndCheck();
+                        if (isBigBlind)
+                        {
+                            if(thisData.CurrCallValue > thisData.SmallBlindValue * 2)
+                                OnFold();
+                            else
+                                OnCallAndCheck();
+                        }
                         else
                             OnFold();
                     }
@@ -2195,8 +2200,7 @@ public class GameView : MonoBehaviour
                     else if (thisData.CurrCallValue <= thisData.SmallBlindValue * 2)
                     {
                         print("當前跟注金額小於大盲");
-                        //OnCallAndCheck();
-                        OnFold();
+                        OnCallAndCheck();
                     }
                     else
                     {
