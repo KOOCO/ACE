@@ -1400,6 +1400,7 @@ public class GameView : MonoBehaviour
                 {
                     if (thisData.CurrCallValue > thisData.LocalPlayerChips)
                     {
+                        //print("當前加注小於玩家籌碼: " + (thisData.CurrRaiseValue < thisData.LocalPlayerChips));
                         strData.CallStr = LanguageManager.Instance.GetText("AllIn");
                         strData.CallValueStr = "";
                     }
@@ -1416,11 +1417,13 @@ public class GameView : MonoBehaviour
                 strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                 if (thisData.CurrCallValue > thisData.LocalPlayerChips)
                 {
+                    //print("當前加注小於玩家籌碼: " + (thisData.CurrRaiseValue < thisData.LocalPlayerChips));
                     strData.CallStr = LanguageManager.Instance.GetText("AllIn");
                     strData.CallValueStr = "";
                 }
                 else
                 {
+                    //print("當前加注小於玩家籌碼: " + (thisData.CurrRaiseValue < thisData.LocalPlayerChips));
                     strData.CallStr = LanguageManager.Instance.GetText("Call");
                     strData.CallValueStr = $" {gameRoomData.currCallValue - localPlayer.currAllBetChips}";
                 }
@@ -1532,8 +1535,9 @@ public class GameView : MonoBehaviour
                     else
                     {
                         //print($"玩家籌碼:{thisData.LocalPlayerChips}, 當前跟注:{thisData.CurrCallValue}");
-                        if (thisData.CurrRaiseValue <= thisData.LocalPlayerChips)
+                        if (thisData.CurrRaiseValue < thisData.LocalPlayerChips)
                         {
+                            //print("當前加注小於玩家籌碼: " + (thisData.CurrRaiseValue < thisData.LocalPlayerChips));
                             strData.CallStr = (thisData.LocalPlayerChips <= thisData.CurrCallValue) ? "" : LanguageManager.Instance.GetText("Call");
                             strData.CallValueStr = (thisData.LocalPlayerChips <= thisData.CurrCallValue) ? "" : $" {gameRoomData.currCallValue - localPlayer.currAllBetChips}";
                         }
@@ -1546,6 +1550,7 @@ public class GameView : MonoBehaviour
                 }
                 else
                 {
+                    print(locPlayer.PlayerRoomChips);
                     print("玩家已All In");
                     strData.FoldStr = "";
                     strData.CallStr = "";
@@ -1555,18 +1560,10 @@ public class GameView : MonoBehaviour
             else
             {
                 print("小盲: 每個人都會看到 Fold 和 Call + 金額");
-                if (thisData.CurrRaiseValue <= thisData.LocalPlayerChips)
-                {
-                    bool check = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0;
-                    strData.CallStr = (check || thisData.LocalPlayerChips <= thisData.CurrCallValue) ? "" : LanguageManager.Instance.GetText("Call");
-                    strData.CallValueStr = (check || thisData.LocalPlayerChips <= thisData.CurrCallValue) ? "" : $" {gameRoomData.currCallValue - localPlayer.currAllBetChips}";
-                }
-                else
-                {
-                    strData.CallStr = LanguageManager.Instance.GetText("AllIn");
-                    strData.CallValueStr = "";
-                }
-            }
+                bool check = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0;
+                strData.CallStr = (check || thisData.LocalPlayerChips <= thisData.CurrCallValue) ? "" : LanguageManager.Instance.GetText("Call");
+                strData.CallValueStr = (check || thisData.LocalPlayerChips <= thisData.CurrCallValue) ? "" : $" {gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+        }
         }
         else
         {
@@ -1623,6 +1620,7 @@ public class GameView : MonoBehaviour
                 print("每個人都看到Fold和跟注 + 金額");
                 if (locPlayer.PlayerRoomChips > 0)
                 {
+                    //print(locPlayer.PlayerRoomChips);
                     strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                     strData.CallStr = LanguageManager.Instance.GetText("Call"); ;
                     strData.CallValueStr = $" {gameRoomData.currCallValue - localPlayer.currAllBetChips}";
