@@ -1535,7 +1535,7 @@ public class GameView : MonoBehaviour
                     else
                     {
                         //print($"玩家籌碼:{thisData.LocalPlayerChips}, 當前跟注:{thisData.CurrCallValue}");
-                        if (thisData.CurrRaiseValue < thisData.LocalPlayerChips)
+                        if (thisData.CurrRaiseValue < thisData.LocalPlayerChips || (gameRoomData.currCallValue - localPlayer.currAllBetChips) < locPlayer.CurrRoomChips)
                         {
                             //print("當前加注小於玩家籌碼: " + (thisData.CurrRaiseValue < thisData.LocalPlayerChips));
                             strData.CallStr = (thisData.LocalPlayerChips <= thisData.CurrCallValue) ? "" : LanguageManager.Instance.GetText("Call");
@@ -1560,10 +1560,28 @@ public class GameView : MonoBehaviour
             else
             {
                 print("小盲: 每個人都會看到 Fold 和 Call + 金額");
-                bool check = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0;
-                strData.CallStr = (check || thisData.LocalPlayerChips <= thisData.CurrCallValue) ? "" : LanguageManager.Instance.GetText("Call");
-                strData.CallValueStr = (check || thisData.LocalPlayerChips <= thisData.CurrCallValue) ? "" : $" {gameRoomData.currCallValue - localPlayer.currAllBetChips}";
-        }
+                if ((gameRoomData.currCallValue - localPlayer.currAllBetChips) < locPlayer.CurrRoomChips)
+                {
+                    bool check = gameRoomData.currCallValue - localPlayer.currAllBetChips == 0;
+                    strData.CallStr = (check || thisData.LocalPlayerChips <= thisData.CurrCallValue) ? "" : LanguageManager.Instance.GetText("Call");
+                    strData.CallValueStr = (check || thisData.LocalPlayerChips <= thisData.CurrCallValue) ? "" : $" {gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                }
+                else
+                {
+                    if (locPlayer.CurrRoomChips > 0)
+                    {
+                        strData.CallStr = LanguageManager.Instance.GetText("AllIn");
+                        strData.CallValueStr = "";
+                    }
+                    else
+                    {
+                        print("玩家已All In");
+                        strData.FoldStr = "";
+                        strData.CallStr = "";
+                        strData.CallValueStr = "";
+                    }
+                }
+            }
         }
         else
         {
