@@ -1042,7 +1042,6 @@ public class GameView : MonoBehaviour
             Chat_If.Select();
         }
 
-
         if (Input.GetKey(KeyCode.Backspace))
         {
             PlayerPrefs.DeleteAll();
@@ -2744,6 +2743,9 @@ public class GameView : MonoBehaviour
             playerInfo.PlayerAction(actionEnum,
                                     betValue,
                                     chips);
+
+            if (playerInfo.IsAllIn)
+                playerInfo.allInHalo.Play();
 
             playerInfo.InitCountDown();
         }

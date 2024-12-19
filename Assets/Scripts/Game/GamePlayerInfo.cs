@@ -15,6 +15,8 @@ public class GamePlayerInfo : MonoBehaviour
     Image CDMask_Img, Avatar_Img, ButtonCharacter_Img, PokerShape_img, CD_Back, CD_Back2, BlindCharacter_Img;
     [SerializeField]
     TextMeshProUGUI Nickname_Txt, Chips_Txt, BackChips_Txt, countDown_Txt, Winner_Txt;
+    [SerializeField]
+    public ParticleSystem allInHalo;
 
     [Header("手牌")]
     [SerializeField]
@@ -37,6 +39,8 @@ public class GamePlayerInfo : MonoBehaviour
     Sprite foldImg, callImg, checkImg, raiseImg, allInImg, blindImg;
     [SerializeField]
     Color foldColor, callColor, checkColor, raiseColor, allInColor, blindColor;
+    [SerializeField]
+    Transform betAnim;
 
     [Header("聊天訊息")]
     [SerializeField]
@@ -176,6 +180,7 @@ public class GamePlayerInfo : MonoBehaviour
         //SetPokerShapeTxtStr = "";
         SetPokerShapeImage = null;
         ShowHandPoker_Tr.gameObject.SetActive(false);
+        allInHalo.Stop();
     }
 
     /// <summary>
@@ -678,6 +683,8 @@ public class GamePlayerInfo : MonoBehaviour
             case BetActionEnum.Fold:
                 Action_Img.sprite = foldImg;
                 Action_Txt.color = foldColor;
+                if(IsLocalPlayer)
+                    tweenManager.inst.playFold();
                 break;
 
             case BetActionEnum.Check:
@@ -688,26 +695,32 @@ public class GamePlayerInfo : MonoBehaviour
             case BetActionEnum.Raise:
                 Action_Img.sprite = raiseImg;
                 Action_Txt.color = raiseColor;
+                tweenManager.inst.playBet(betAnim);
                 break;
 
             case BetActionEnum.Bet:
                 Action_Img.sprite = raiseImg;
                 Action_Txt.color = raiseColor;
+                tweenManager.inst.playBet(betAnim);
                 break;
 
             case BetActionEnum.Call:
                 Action_Img.sprite = callImg;
                 Action_Txt.color = callColor;
+                tweenManager.inst.playBet(betAnim);
                 break;
 
             case BetActionEnum.AllIn:
                 Action_Img.sprite = allInImg;
                 Action_Txt.color = allInColor;
+                tweenManager.inst.playBet(betAnim);
+                allInHalo.Play();
                 break;
 
             case BetActionEnum.Blinds:
                 Action_Img.sprite = blindImg;
                 Action_Txt.color = blindColor;
+                tweenManager.inst.playBet(betAnim);
                 break;
         }
 
