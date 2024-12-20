@@ -25,7 +25,7 @@ public class GameView : MonoBehaviour
 
     [Header("座位上玩家訊息")]
     [SerializeField]
-    List<GamePlayerInfo> SeatGamePlayerInfoList;
+    public List<GamePlayerInfo> SeatGamePlayerInfoList;
     [SerializeField]
     List<Button> SeatButtonList;
 
@@ -1914,6 +1914,7 @@ public class GameView : MonoBehaviour
         thisData.IsPlaying = false;
         thisData.isFold = false;
         thisData.CurrCommunityPoker = new List<int>();
+        tweenManager.inst.initDPos();
     }
 
     /// <summary>
@@ -4331,6 +4332,8 @@ public class GameView : MonoBehaviour
         { FirebaseManager.SEAT_CHARACTER, (int)seatCharacter }
     };
         gameControl.UpdataPlayerData(userId, dataDic);
+
+        tweenManager.inst.DPosAnim();
     }
 
     /// <summary>

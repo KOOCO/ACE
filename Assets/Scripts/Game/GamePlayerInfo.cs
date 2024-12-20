@@ -180,7 +180,21 @@ public class GamePlayerInfo : MonoBehaviour
         //SetPokerShapeTxtStr = "";
         SetPokerShapeImage = null;
         ShowHandPoker_Tr.gameObject.SetActive(false);
-        allInHalo.Stop();
+        if(!IsAllIn)
+            allInHalo.Stop();
+    }
+
+    public Transform getDPos()
+    {
+        if (ButtonCharacter_Img.gameObject.activeSelf)
+        {
+            Transform P = ButtonCharacter_Img.transform.parent;
+            return P.GetChild(1);
+        }
+        else
+        {
+            return null;
+        }
     }
 
     /// <summary>
