@@ -2,8 +2,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
-using UnityEditor;
+using System.Linq;
 using UnityEngine;
 
 public class tweenManager : MonoBehaviour
@@ -57,20 +56,11 @@ public class tweenManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        int r = UnityEngine.Random.Range(1, 6);
-
-        for (int i = 1; i < r+1; i++)
-        {
-            playerSeats[i].gameObject.SetActive(true);
-        }
-
-        foreach (var obj in D_Targets)
-        {
-            if (obj.gameObject.activeInHierarchy)
-                D_TargetsActive.Add(obj);
-        }
-        D_Btn.SetParent(D_TargetsActive[r]);
-        D_Btn.localPosition = Vector2.zero;
+        //foreach (var obj in D_Targets)
+        //{
+        //    if (obj.gameObject.activeInHierarchy)
+        //        D_TargetsActive.Add(obj);
+        //}
     }
 
     // Update is called once per frame
@@ -179,6 +169,24 @@ public class tweenManager : MonoBehaviour
                 }
             }
         });
+    }
+
+    public void addTargets()
+    {
+        foreach (var obj in D_Targets)
+        {
+            if (obj.gameObject.activeInHierarchy)
+                D_TargetsActive.Add(obj);
+        }
+    }
+    public void initDPos()
+    {
+        addTargets();
+
+        GameView gameView = GetComponent<GameView>();
+        var info = gameView.SeatGamePlayerInfoList.FirstOrDefault(x => x.getDPos() != null);
+        D_Btn.SetParent(info.getDPos());
+        D_Btn.localPosition = Vector2.zero;
     }
 
     public void DPosAnim()
