@@ -789,6 +789,7 @@ public class GameControl : MonoBehaviour
 
             //遊戲結果_底池
             case GameFlowEnum.PotResult:
+                print("執行底池結果");
                 winnersRoomFee.Clear();
                 // Get the players still in the game and order by their total bet chips
                 playingPlayers = GetPlayingPlayer().OrderBy(x => x.allBetChips).ToList();
@@ -950,15 +951,18 @@ public class GameControl : MonoBehaviour
 
             //剩餘1名玩家結果
             case GameFlowEnum.OnePlayerLeftResult:
-
+                print("剩餘1名玩家結果");
+                winnersRoomFee.Clear();
                 potWinners = GetPlayingPlayer();
 
                 if (potWinners.Count() > 1)
                 {
                     yield break;
                 }
-
+                
                 GameRoomPlayerData winner = potWinners[0];
+
+                print($"贏家數: {potWinners.Count}, {potWinners[0].nickname}");
 
                 mainPotWinChips = gameRoomData.potChips;
 
@@ -996,6 +1000,10 @@ public class GameControl : MonoBehaviour
                     };
                     winnersRoomFee.Add(roomFeeObj);
                 }
+
+                print($"最後結算贏家數: {winnersRoomFee.Count}, {winnersRoomFee[0].nickname}");
+                foreach (var player in winnersRoomFee)
+                    print(player.nickname + ", " + player.potWinAmount);
 
                 CalculateRoomFee();
 
@@ -2655,7 +2663,8 @@ public class GameControl : MonoBehaviour
             .Where(x => x.Value.HandRank == bestHandRank)
             .Select(x => x.Key)
             .ToList();
-
+        print("贏家數: " + bestPlayers.Count);
+        print("贏家資料: " + bestPlayers[0].nickname);
         // Step 4: Resolve ties if necessary
         return bestPlayers.Count == 1 ? bestPlayers : ResolveTie(bestPlayers, shapeDic, bestHandRank);
     }

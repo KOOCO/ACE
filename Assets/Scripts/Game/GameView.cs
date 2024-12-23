@@ -1878,6 +1878,7 @@ public class GameView : MonoBehaviour
     /// </summary>
     public void GameInit()
     {
+        print("初始化");
         foreach (var poker in CommunityPokerList)
         {
             poker.gameObject.SetActive(false);
@@ -2095,7 +2096,8 @@ public class GameView : MonoBehaviour
     public void CheckActionArea(GameRoomData gameRoomData)
     {
         //顯示異常
-        if (FoldBtn_Txt.text == "CheckOrFold")
+        if (FoldBtn_Img.sprite == AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteEnglish).album[3] ||
+            FoldBtn_Img.sprite == AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteChinese).album[3])
         {
             LocalPlayerRound(gameRoomData);
         }
@@ -3235,7 +3237,7 @@ public class GameView : MonoBehaviour
                 continue;
 
             // Check if the player is in the winners' room fee list
-            var playerRoomFee = gameControl.winnersRoomFee.FirstOrDefault(x => x.userId == playerData.Value.userId);
+            var playerRoomFee = gameControl.winnersRoomFee.FirstOrDefault(x => x.userId == playerData.Value.userId); 
 
             // Determine if the player is a pot winner
             bool isPotWinner = gameRoomData.potWinData.potWinnersId.Contains(playerData.Value.userId);
@@ -3330,6 +3332,7 @@ public class GameView : MonoBehaviour
             sideWinChips = roomFeeData.sidePotAmount;
             roomFee = Math.Round(roomFeeData.roomFee, 2);
         }
+        //print("GameView :: Win of this round: " + potWinChips + $" Side Chips {sideWinChips} :" + "Player is fold :: " + thisData.isFold);
         print("GameView :: Room Fee of this round: " + roomFeeData.roomFee + $" Simple RoomFee {roomFeeData.roomFee} :" + " Player Data :: " + playerData.roomFee);
 
         //Final total settle(最後總結算)
