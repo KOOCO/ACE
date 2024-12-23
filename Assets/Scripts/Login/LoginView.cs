@@ -1929,7 +1929,7 @@ public class LoginView : MonoBehaviour
             { FirebaseManager.GOLD, DataManager.UserGold},
             { FirebaseManager.NICKNAME, DataManager.UserNickname},
         };
-        JSBridgeManager.Instance.WriteDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{LoginType.phoneUser}/{DataManager.UserId}",
+        JSBridgeManager.Instance.UpdateDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{LoginType.phoneUser}/{DataManager.UserId}",
                                                         dataDic,
                                                         gameObject.name,
                                                         nameof(IsUserRegistered));

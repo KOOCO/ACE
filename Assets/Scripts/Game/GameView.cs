@@ -708,6 +708,7 @@ public class GameView : MonoBehaviour
 
             if (CallBtn_Img.sprite != AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteEnglish).album[1] || CallBtn_Img.sprite != AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteChinese).album[1])
             {
+                #region Old Noodle Api
                 // NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(), thisData.CallDifference, 4, ChipTransactionType.Call, (x) =>
                 // {
                 //     Debug.Log("Call Table ChipsTransaction Success");
@@ -716,6 +717,8 @@ public class GameView : MonoBehaviour
                 //{
                 //    Debug.LogError($"Call Table ChipsTransaction Failed Error: {error}");
                 //});
+                #endregion
+                print(LanguageManager.Instance.GetText("Call"));
             }
             else
                 print("Player Action: " + LanguageManager.Instance.GetText("Check"));
