@@ -2113,6 +2113,7 @@ public class LoginView : MonoBehaviour
         Debug.Log("Noodle Response Register::" + data);
         NoodleResponse noodleData = JsonConvert.DeserializeObject<NoodleResponse>(data);
         noodleLoginData = data;
+        DataManager.NoodleMemberId = noodleData.data.noodleMemberId;
         DataManager.UserNickname = noodleData.data.userName;
         Register register = new Register()
         {
@@ -2169,6 +2170,7 @@ public class LoginView : MonoBehaviour
     private void ReadUserData(string callBackFunName)
     {
         ViewManager.Instance.OpenWaitingView(transform);
+        print(DataManager.UserId);
         JSBridgeManager.Instance.ReadDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserId}",
                                                        gameObject.name,
                                                        callBackFunName);
@@ -2181,7 +2183,8 @@ public class LoginView : MonoBehaviour
         if (data == "true" || data == "SUCCESS")
         {
             RegisterSuccessSignIn();
-            ReadUserData(nameof(checkLogInData));
+            firstLogWithNoodle(noodleLoginData);
+            StartCoroutine(awaitGetUserID());
         }
         else
         {
@@ -2190,13 +2193,45 @@ public class LoginView : MonoBehaviour
             LoginWithNoodle(noodleLoginData);
         }
     }
+    IEnumerator awaitGetUserID()
+    {
+        yield return new WaitUntil(() => !string.IsNullOrEmpty(DataManager.UserId));
+        ReadUserData(nameof(checkLogInData));
+    }
 
+    public void firstLogWithNoodle(string data)
+    {
+        Debug.Log("Noodle Fisrt Login::" + data);
+        NoodleResponse noodleData = JsonConvert.DeserializeObject<NoodleResponse>(data);
+        DataManager.AccessCode = noodleData.data.accessCode;
+        DataManager.NoodleMemberId = noodleData.data.noodleMemberId;
+        print("UserID in fisrt LogIn: " + DataManager.UserId);
+        DataManager.TenantName = noodleData.data.tenantName;
+        LoginRequest login = new LoginRequest()
+        {
+            userNameOrEmailAddress = noodleData.data.userName,
+            password = "Abcd@12345678",
+        };
+        AppApi.LoginRequest(login, (X) =>
+        {
+            getUserID(X);
+        });
+    }
+    void getUserID(string data)
+    {
+        Debug.Log("Noodle ::" + data);
+        Services.PlayerService.SaveUser(data);
+        Player player = Services.PlayerService.GetPlayer();
+
+        DataManager.UserId = player.memberId;
+    }
     public void LoginWithNoodle(string data)
     {
         Debug.Log("Noodle Response Login::" + data);
         NoodleResponse noodleData = JsonConvert.DeserializeObject<NoodleResponse>(data);
         DataManager.AccessCode = noodleData.data.accessCode;
         DataManager.NoodleMemberId = noodleData.data.noodleMemberId;
+        print("UserID: " + DataManager.UserId);
         DataManager.TenantName = noodleData.data.tenantName;
         LoginRequest login = new LoginRequest()
         {
