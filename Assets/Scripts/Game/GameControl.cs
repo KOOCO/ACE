@@ -2748,11 +2748,14 @@ public class GameControl : MonoBehaviour
 
         // Convert cards to ranks and suits
         var cardRanks = cards.Select(card => card % 13 + 2).ToList(); // Convert to ranks (2 to 14)
+        string res = string.Join(", ", cardRanks);
+        print("牌號: " + res);
         var cardSuits = cards.GroupBy(card => card / 13); // Group by suit
 
         // Handle Straight Flush
         if (isStraight && isFlush)
         {
+            print("同花順");
             foreach (var suitGroup in cardSuits)
             {
                 if (suitGroup.Count() >= 5)
@@ -2787,6 +2790,7 @@ public class GameControl : MonoBehaviour
         // Handle Flush
         if (isFlush)
         {
+            print("順子");
             var flushGroup = cardSuits.FirstOrDefault(group => group.Count() >= 5);
             if (flushGroup != null)
             {
@@ -2804,6 +2808,7 @@ public class GameControl : MonoBehaviour
         // Handle Straight
         if (isStraight)
         {
+            print("同花");
             var distinctRanks = cardRanks.Distinct().OrderByDescending(rank => rank).ToList();
             if (HasLowStraight(distinctRanks))
                 distinctRanks = distinctRanks.Select(rank => rank == 14 ? 1 : rank).OrderBy(rank => rank).ToList();
@@ -2844,6 +2849,7 @@ public class GameControl : MonoBehaviour
         var fourOfAKindGroup = groupedRanks.FirstOrDefault(group => group.Count == 4);
         if (fourOfAKindGroup != null)
         {
+            print("四條");
             // Get the kicker
             var kicker = groupedRanks
                 .Where(group => group.Rank != fourOfAKindGroup.Rank)
@@ -2867,6 +2873,26 @@ public class GameControl : MonoBehaviour
         var threeOfAKindGroup = groupedRanks.FirstOrDefault(group => group.Count == 3);
         if (threeOfAKindGroup != null)
         {
+            print("三條");
+
+            var pairGroup = groupedRanks.FirstOrDefault(group => group.Count == 2 && group.Rank != threeOfAKindGroup.Rank);
+            if (pairGroup != null)
+            {
+                print("找到葫蘆");
+
+                // 將三條和對子組合形成葫蘆
+                var fullHouseCards = threeOfAKindGroup.Cards.ToList(); // 複製三條的牌
+                fullHouseCards.AddRange(pairGroup.Cards); // 加入對子的牌
+
+                // 取得前 5 張卡片（這裡一定是五張）
+                sortedCards = fullHouseCards.Take(5).ToList();
+                sortedRanks = sortedCards.Select(card => card % 13 + 2).ToList();
+
+                result[sortedRanks] = sortedCards;
+
+                return result; // 返回結果
+            }
+
             // Get the top two kickers
             var kickers = groupedRanks
                 .Where(group => group.Rank != threeOfAKindGroup.Rank)
@@ -2886,11 +2912,13 @@ public class GameControl : MonoBehaviour
             sortedRanks = sortedCards.Select(card => card % 13 + 2).ToList();
 
             result[sortedRanks] = sortedCards;
+
             return result;
         }
         var pairGroups = groupedRanks.Where(group => group.Count == 2).OrderByDescending(group => group.Rank).Take(2).ToList();
         if (pairGroups.Count == 2)
         {
+            print("一對");
             // Get the kickers (remaining cards not in the two pairs)
             var kicker = groupedRanks
                 .Where(group => !pairGroups.Any(pairGroup => pairGroup.Rank == group.Rank))
