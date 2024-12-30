@@ -692,6 +692,7 @@ public class GameView : MonoBehaviour
         {
             if (thisData.isLocalPlayerTurn)
             {
+                print("執行跟注/過牌");
                 OnCallAndCheck();
             }
             else
@@ -957,7 +958,9 @@ public class GameView : MonoBehaviour
 
         SetNotReadChatCount = 0;
 
+#if !UNITY_EDITOR
         JSBridgeManager.Instance.RegisterOnPageUnload(gameObject.name, nameof(OnAllPlayerLeft));
+#endif
 
         Init();
         GameInit();
@@ -986,43 +989,7 @@ public class GameView : MonoBehaviour
 
         #region 遊戲測試
 
-        IsOpenGameTestObj = false;
-        CP_SuitTogList.AddRange(PH0_SuitTogList);
-        CP_SuitTogList.AddRange(PH1_SuitTogList);
-        List<string> suitName = new()
-        {
-            "C",//梅花
-            "D",//方塊
-            "H",//紅心
-            "S",//黑桃
-        };
-        for (int i = 0; i < CP_SuitTogList.Count; i++)
-        {
-            Utils.SetOptionsToDropdown(CP_SuitTogList[i], suitName);
-        }
-
-        List<string> numName = new()
-        {
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "J",
-            "Q",
-            "K",
-            "A",
-        };
-        CP_NumTogList.AddRange(PN0_NumTogList);
-        CP_NumTogList.AddRange(PN1_NumTogList);
-        for (int i = 0; i < CP_NumTogList.Count; i++)
-        {
-            Utils.SetOptionsToDropdown(CP_NumTogList[i], numName);
-        }
+        testToolSetUp();
 
         #endregion
         //MusicSwitchBtn.IsPlayAudio(AudioSource_Obj);
@@ -1065,6 +1032,8 @@ public class GameView : MonoBehaviour
         noticeText.text = DataManager.TipText;
     }
 
+    #region Game Test Area
+
     /// <summary>
     /// 是否開啟遊戲測試操作
     /// </summary>
@@ -1103,6 +1072,50 @@ public class GameView : MonoBehaviour
 
                 updateShapeDropList();
             }
+        }
+    }
+
+    ///<summary>
+    ///遊戲測試工具設定
+    /// </summary>
+    void testToolSetUp()
+    {
+        IsOpenGameTestObj = false;
+        CP_SuitTogList.AddRange(PH0_SuitTogList);
+        CP_SuitTogList.AddRange(PH1_SuitTogList);
+        List<string> suitName = new()
+        {
+            "C",//梅花
+            "D",//方塊
+            "H",//紅心
+            "S",//黑桃
+        };
+        for (int i = 0; i < CP_SuitTogList.Count; i++)
+        {
+            Utils.SetOptionsToDropdown(CP_SuitTogList[i], suitName);
+        }
+
+        List<string> numName = new()
+        {
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "J",
+            "Q",
+            "K",
+            "A",
+        };
+        CP_NumTogList.AddRange(PN0_NumTogList);
+        CP_NumTogList.AddRange(PN1_NumTogList);
+        for (int i = 0; i < CP_NumTogList.Count; i++)
+        {
+            Utils.SetOptionsToDropdown(CP_NumTogList[i], numName);
         }
     }
 
@@ -1176,6 +1189,8 @@ public class GameView : MonoBehaviour
         robot_NumTogList[1].value = pokerShapes.inst.Shapes[shapeIndex].Robot[1].Num;
     }
 
+    #endregion
+
     /// <summary>
     /// 播放音效
     /// </summary>
@@ -1201,14 +1216,22 @@ public class GameView : MonoBehaviour
     /// </summary>
     public void postNoodleChip(double currRaiseBet)
     {
-        NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(), currRaiseBet, 9, ChipTransactionType.Raise, (x) =>
+        print("遊戲結果(籌碼異動): " + saveResultData);
+        try
         {
-            Debug.Log("Raise Table ChipsTransaction Success");
-        },
-        (error) =>
+            NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(), currRaiseBet, 9, ChipTransactionType.Raise, (x) =>
+            {
+                Debug.Log("Raise Table ChipsTransaction Success");
+            },
+            (error) =>
+            {
+                Debug.LogError($"Raise Table ChipsTransaction Failed Error: {error}");
+            });
+        }
+        catch
         {
-            Debug.LogError($"Raise Table ChipsTransaction Failed Error: {error}");
-        });
+            print("Result Data為空");
+        }
     }
 
     /// <summary>
@@ -1982,6 +2005,7 @@ public class GameView : MonoBehaviour
 
         AutoActionState = AutoActingEnum.None;
 
+        print("更新下注動作");
         gameControl.UpdateBetAction(DataManager.UserId,
                                     acting,
                                     betValue);
@@ -2454,6 +2478,7 @@ public class GameView : MonoBehaviour
         // If no local player data, exit early
         if (localData == null)
         {
+            print("找不到本地玩家");
             return;
         }
 
@@ -2665,6 +2690,7 @@ public class GameView : MonoBehaviour
         Debug.Log("OnAllPlayerLeftCalled");
         GetRoundCount();
         StartCoroutine(SaveResult(gameRoomData, true));
+        print("遊戲結果(所有玩家離開): " + saveResultData);
         AppApi.OnRoundFinish(saveResultData, (x) => { Debug.Log("Round Finished"); });
         SaveResultDataToFirebase();
         IncrementRoundCount();
@@ -3221,11 +3247,14 @@ public class GameView : MonoBehaviour
         SetWinnerStringTxt = "";
         if (gameRoomData == null || gameRoomData.playingPlayersIdList == null)
         {
+            print (gameRoomData == null);
+            print (gameRoomData.playingPlayersIdList == null);
             Debug.LogError("SaveResult: Invalid gameRoomData or missing player list.");
             yield break;
         }
         Debug.Log("GameView :: Init Save Result :: " + gameRoomData.playerDataDic.Count());
         // Initialize result data for saving
+        print("遊戲結果(儲存遊戲結果): " + saveResultData);
         saveResultData = InitializeResultData(gameRoomData, isAllPlayerLeft);
         var allPlayers = gameRoomData.playerDataDic.AsEnumerable();
 
@@ -3336,12 +3365,14 @@ public class GameView : MonoBehaviour
             roomFee = Math.Round(roomFeeData.roomFee, 2);
         }
         //print("GameView :: Win of this round: " + potWinChips + $" Side Chips {sideWinChips} :" + "Player is fold :: " + thisData.isFold);
-        print("GameView :: Room Fee of this round: " + roomFeeData.roomFee + $" Simple RoomFee {roomFeeData.roomFee} :" + " Player Data :: " + playerData.roomFee);
+        //print("GameView :: Room Fee of this round: " + roomFeeData.roomFee + $" Simple RoomFee {roomFeeData.roomFee} :" + " Player Data :: " + playerData.roomFee);
 
         //Final total settle(最後總結算)
         if (playerData.userId == DataManager.UserId)
         {
             double totalSendAPI = potWinChips + sideWinChips - roomFee;
+            print("遊戲結果(創建玩家資料): " + saveResultData);
+            try { 
             NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(),
                     totalSendAPI, 12, ChipTransactionType.Win, (x) =>
                     {
@@ -3351,6 +3382,11 @@ public class GameView : MonoBehaviour
                     {
                         Debug.LogError($"Player Win ChipsTransaction Failed Error: {error}");
                     });
+            }
+            catch
+            {
+                print("Result Data為空");
+            }
         }
 
 
@@ -3970,6 +4006,7 @@ public class GameView : MonoBehaviour
     private void SavePreGame()
     {
         // Check if the local player is playing and all necessary data is available
+        print("遊戲結果(上一局遊戲紀錄存檔): " + saveResultData);
         if (thisData?.LocalGamePlayerInfo?.IsPlaying == true &&
             saveResultData != null &&
             gameInitHistoryData != null &&
@@ -3978,6 +4015,7 @@ public class GameView : MonoBehaviour
             // If the current player is the host, save data to Firebase
             if (gameRoomData.hostId == DataManager.UserId)
             {
+                print("本地玩家是否為房主: " + gameRoomData.hostId == DataManager.UserId);
                 GetRoundCount();
                 AppApi.OnRoundFinish(saveResultData, (x) => { Debug.Log("Round Finished"); });
                 SaveToFirebase(nameof(saveResultData), saveResultData, nameof(GameResultDataSaveToFirebase));
@@ -4014,6 +4052,7 @@ public class GameView : MonoBehaviour
 
     public void SaveResultDataToFirebase()
     {
+        print("遊戲結果(儲存結果進火庫): " + saveResultData);
         SaveToFirebase(nameof(saveResultData), saveResultData, nameof(GameResultDataSaveToFirebase));
     }
 
@@ -4372,6 +4411,8 @@ public class GameView : MonoBehaviour
                                sbPlayerData.carryChips - gameRoomData.smallBlind);
         if (sbPlayer.UserId == DataManager.UserId)
         {
+            print("遊戲結果(小盲流程): " + saveResultData);
+            try { 
             NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(), thisData.SmallBlindValue, 3, ChipTransactionType.SmallBlind, (x) =>
             {
                 Debug.Log("SB Table ChipsTransaction Success");
@@ -4380,6 +4421,11 @@ public class GameView : MonoBehaviour
                  {
                      Debug.LogError($"SB Table ChipsTransaction Failed Error: {error}");
                  });
+            }
+            catch
+            {
+                print("Result Data為空");
+            }
         }
 
         if (DataManager.UserId == sbPlayerData.userId)
@@ -4412,14 +4458,21 @@ public class GameView : MonoBehaviour
 
         if (bbPlayer.UserId == DataManager.UserId)
         {
-            NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(), thisData.SmallBlindValue * 2, 2, ChipTransactionType.BigBlind, (x) =>
-            {
-                Debug.Log("BB Table ChipsTransaction Success");
-            },
-                (error) =>
+            print("遊戲結果(大盲流程): " + saveResultData);
+            try{
+                NoodleApi.PostTableChipsTransaction(DataManager.UserId, saveResultData.roundId.ToString(), thisData.SmallBlindValue * 2, 2, ChipTransactionType.BigBlind, (x) =>
                 {
-                    Debug.LogError($"Call Table ChipsTransaction Failed Error: {error}");
-                });
+                    Debug.Log("BB Table ChipsTransaction Success");
+                },
+                    (error) =>
+                    {
+                        Debug.LogError($"Call Table ChipsTransaction Failed Error: {error}");
+                    });
+            }
+            catch
+            {
+                print("沒有Result Data");
+            }
         }
 
         if (DataManager.UserId == bbPlayerData.userId)

@@ -372,7 +372,7 @@ private static extern void onPageLoad();
             Debug.Log($"JoinRoomQueryCallback :: Creating Room at Path: {dataPath}");
 
             // Write data to Firebase
-            JSBridgeManager.Instance.WriteDataFromFirebase(
+            JSBridgeManager.Instance.UpdateDataFromFirebase(
                 dataPath,
                 dataDic,
                 gameObject.name,

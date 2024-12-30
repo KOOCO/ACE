@@ -48,6 +48,7 @@ public class tweenManager : MonoBehaviour
     private void Awake()
     {
         inst = this;
+        print(inst == null);
 
         foreach (var obj in Cards)
             obj.SetActive(false);
@@ -173,6 +174,9 @@ public class tweenManager : MonoBehaviour
 
     public void addTargets()
     {
+        if (D_TargetsActive.Count > 0)
+            D_TargetsActive.Clear();
+
         foreach (var obj in D_Targets)
         {
             if (obj.gameObject.activeInHierarchy)
@@ -181,12 +185,20 @@ public class tweenManager : MonoBehaviour
     }
     public void initDPos()
     {
+        GameView gameView = GetComponent<GameView>();
+        GamePlayerInfo info = null;
         addTargets();
 
-        GameView gameView = GetComponent<GameView>();
-        var info = gameView.SeatGamePlayerInfoList.FirstOrDefault(x => x.getDPos() != null);
-        D_Btn.SetParent(info.getDPos());
-        D_Btn.localPosition = Vector2.zero;
+        if (gameView != null)
+            info = gameView.SeatGamePlayerInfoList.FirstOrDefault(x => x.getDPos() != null);
+
+        if (info != null)
+        {
+            D_Btn.SetParent(info.getDPos());
+            D_Btn.localPosition = Vector2.zero;
+        }
+        else
+            print("©|µL¶}±ÒD¦ì");
     }
 
     public void DPosAnim()

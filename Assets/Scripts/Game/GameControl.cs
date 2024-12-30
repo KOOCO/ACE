@@ -41,6 +41,9 @@ public class GameControl : MonoBehaviour
     List<int> localHand { get; set; }                           //本地玩家手牌
     int cdSound { get; set; }                                   //倒數聲音計時器
 
+    //Test
+    bool isCoroutineRunning;
+
 
 
     private void OnDestroy()
@@ -56,11 +59,8 @@ public class GameControl : MonoBehaviour
 
     private void Start()
     {
-
 #if UNITY_EDITOR
-
-        EditorReadRoomData();
-        InvokeRepeating(nameof(EditorReadRoomData), 1, 1f);
+        startRepeatEditorRead();
         return;
 #endif
 
@@ -70,12 +70,12 @@ public class GameControl : MonoBehaviour
 
     private void Update()
     {
-#if UNITY_EDITOR
-
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            CreateRobot(false);
+            CreateRobot(true);
         }
+
+#if UNITY_EDITOR
 
         if (Input.GetKeyDown(KeyCode.X))
         {
@@ -136,6 +136,11 @@ public class GameControl : MonoBehaviour
                                                             dataDic);
         }
 
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            startRepeatEditorRead();
+        }
+
 #endif
 
         if (gameRoomData != null &&
@@ -175,6 +180,9 @@ public class GameControl : MonoBehaviour
     /// </summary>
     public void EditorReadRoomData()
     {
+        if (Time.timeScale == 0)
+            return;
+
         //讀取房間資料
         JSBridgeManager.Instance.ReadDataFromFirebase($"{QueryRoomPath}",
                                                       gameObject.name,
@@ -197,16 +205,18 @@ public class GameControl : MonoBehaviour
 
 #if UNITY_EDITOR
 
+        print("讀取房間資料");
         //產生機器人
         if (isWaitingCreateRobot)
         {
             isWaitingCreateRobot = false;
             CreateRobot(true);
+
+            print("是否等待產生機器人: " + isWaitingCreateRobot);
         }
 
         return;
-#endif
-
+#elif !UNITY_EDITOR
         //開始監聽遊戲房間資料
         JSBridgeManager.Instance.StartListeningForDataChanges($"{QueryRoomPath}",
                                                               gameObject.name,
@@ -215,12 +225,16 @@ public class GameControl : MonoBehaviour
         //開始監聽連線狀態
         JSBridgeManager.Instance.StartListenerConnectState($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{DataManager.UserId}");
 
+        print("開啟監聽器");
         //產生機器人
         if (isWaitingCreateRobot)
         {
             isWaitingCreateRobot = false;
             CreateRobot(true);
+
+            print("是否等待產生機器人: " + isWaitingCreateRobot);
         }
+#endif
     }
 
     #endregion
@@ -271,9 +285,12 @@ public class GameControl : MonoBehaviour
     /// </summary>
     public void GameStart(string isSuccess)
     {
+        print("遊戲開始");
         if (RoomType != TableTypeEnum.IntegralTable)
         {
             isWaitingCreateRobot = true;
+
+            print("是否等待產生機器人: " + isWaitingCreateRobot);
         }
 
         ReadGameData();
@@ -501,6 +518,8 @@ public class GameControl : MonoBehaviour
     /// </summary>
     private void CreateRobot(bool randonSeat = false)
     {
+        print("生成機器人");
+
         //設置座位
         int robotSeat = randonSeat == true ?
                         UnityEngine.Random.Range(1, 5) :
@@ -656,6 +675,7 @@ public class GameControl : MonoBehaviour
                 if (!player.userId.StartsWith(FirebaseManager.ROBOT_ID) &&
                     player.online == false)
                 {
+                    print("本地玩家是否離線: " + player.userId == DataManager.UserId);
                     RemovePlayer(player.userId);
                 }
             }
@@ -681,6 +701,8 @@ public class GameControl : MonoBehaviour
         if (preUpdateGameFlow == gameFlow ||
             gameRoomData.hostId != DataManager.UserId)
         {
+            print(gameRoomData.hostId);
+            print(preUpdateGameFlow == gameFlow);
             Debug.Log("Game Break Host Not found");
             yield break;
         }
@@ -1473,6 +1495,7 @@ public class GameControl : MonoBehaviour
         // Create a dictionary for updating data
         var data = new Dictionary<string, object>();
 
+        print("判斷不同遊戲流程: " + (GameFlowEnum)gameRoomData.currGameFlow);
         // Handle different game flow cases
         switch ((GameFlowEnum)gameRoomData.currGameFlow)
         {
@@ -1737,9 +1760,15 @@ public class GameControl : MonoBehaviour
     /// </summary>
     public void CountDown()
     {
-        if ((preCD < DataManager.StartCountDownTime && preCD == gameRoomData.actionCD) ||
-            gameRoomData.actionCD < 0)
+        if (
+#if UNITY_EDITOR
+            gameRoomData.actionCD < 0
+#else
+            (preCD < DataManager.StartCountDownTime && preCD == gameRoomData.actionCD) || gameRoomData.actionCD < 0
+#endif
+            )
         {
+            print("倒數歸0，若此時遊戲卡住可再按空白鍵重啟監聽模擬\n若下一輪無法觸發則須重進房間");
             return;
         }
 
@@ -1753,12 +1782,15 @@ public class GameControl : MonoBehaviour
         //行動倒數
         if (cdCoroutine != null) StopCoroutine(cdCoroutine);
         cdCoroutine = StartCoroutine(ICountdown());
+
+        CancelInvoke(nameof(EditorReadRoomData));
     }
     /// <summary>
     /// 行動倒數
     /// </summary>
     private IEnumerator ICountdown()
     {
+        print("行動倒數");
         if (gameRoomData.actionCD < 0 ||
             preCD != gameRoomData.actionCD)
         {
@@ -1885,6 +1917,7 @@ public class GameControl : MonoBehaviour
                     gameRoomData.actionCD == DataManager.RobotActionTime)
                 {
                     RobotControl.RobotBet(gameRoomData);
+                    startRepeatEditorRead();
 
                     yield break;
                 }
@@ -1894,9 +1927,14 @@ public class GameControl : MonoBehaviour
                 {
                     { FirebaseManager.ACTION_CD, gameRoomData.actionCD - 1},              //行動倒數時間
                 };
+                print("更新倒數");
                 UpdateGameRoomData(data);
             }
         }
+
+#if UNITY_EDITOR
+        EditorReadRoomData();
+#endif
     }
 
     /// <summary>
@@ -2036,9 +2074,9 @@ public class GameControl : MonoBehaviour
         }
     }
 
-    #endregion
+#endregion
 
-    #region 遊戲資料更新
+#region 遊戲資料更新
 
     /// <summary>
     /// 刷新房間
@@ -2186,6 +2224,7 @@ public class GameControl : MonoBehaviour
     {
         JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}",
                                                         data);
+        print(data);
     }
 
     /// <summary>
@@ -2334,11 +2373,12 @@ public class GameControl : MonoBehaviour
             { FirebaseManager.ACTIONP_PLAYER_COUNT, actionPlayerCount },             //當前流程行動玩家次數
         };
         UpdateGameRoomData(data);
+        startRepeatEditorRead();
     }
 
-    #endregion
+#endregion
 
-    #region 用戶籌碼更新
+#region 用戶籌碼更新
 
     /// <summary>
     /// 更新用戶籌碼資料
@@ -2411,9 +2451,9 @@ public class GameControl : MonoBehaviour
         gameView.BuyChipsGoBack();
     }
 
-    #endregion
+#endregion
 
-    #region 遊戲工具類
+#region 遊戲工具類
 
     /// <summary>
     /// 設定玩家手牌與公共牌
@@ -2972,9 +3012,9 @@ public class GameControl : MonoBehaviour
         public List<int> MatchPoker { get; set; } // Relevant cards for tie-breaking
     }
 
-    #endregion
+#endregion
 
-    #region 聊天
+#region 聊天
 
     /// <summary>
     /// 更新聊天訊息
@@ -3015,5 +3055,16 @@ public class GameControl : MonoBehaviour
         }
     }
 
-    #endregion
+#endregion
+
+    /// <summary>
+    /// 模擬監聽器
+    /// </summary>
+    void startRepeatEditorRead()
+    {
+#if UNITY_EDITOR
+        EditorReadRoomData();
+        InvokeRepeating(nameof(EditorReadRoomData), 1, 1f);
+#endif
+    }
 }
