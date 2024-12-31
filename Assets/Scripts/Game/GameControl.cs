@@ -75,6 +75,12 @@ public class GameControl : MonoBehaviour
             CreateRobot(true);
         }
 
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            //EditorReadRoomData();
+            Debug.Log($"玩家是否為房主: {gameRoomData.hostId == DataManager.UserId}");
+        }
+
 #if UNITY_EDITOR
 
         if (Input.GetKeyDown(KeyCode.X))
@@ -1760,11 +1766,12 @@ public class GameControl : MonoBehaviour
     /// </summary>
     public void CountDown()
     {
+        //preCD < DataManager.StartCountDownTime && preCD == gameRoomData.actionCD) || 備份
         if (
 #if UNITY_EDITOR
             gameRoomData.actionCD < 0
 #else
-            (preCD < DataManager.StartCountDownTime && preCD == gameRoomData.actionCD) || gameRoomData.actionCD < 0
+            (gameRoomData.actionCD < 0)
 #endif
             )
         {

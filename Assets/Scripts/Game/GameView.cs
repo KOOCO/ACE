@@ -3750,6 +3750,16 @@ public class GameView : MonoBehaviour
         buyChipsView.gameObject.SetActive(false);
         gameControl.PreBuyChipsValue = Math.Floor(buyValue);
         gameControl.UpdateCarryChips();
+
+        if(gameRoomData.hostId != DataManager.UserId)
+        {
+            var dataDic = new Dictionary<string, object>()
+                    {
+                         { FirebaseManager.ROOM_HOST_ID, DataManager.UserId},
+                    };
+            JSBridgeManager.Instance.UpdateDataFromFirebase($"{gameControl.QueryRoomPath}",
+                                                            dataDic);
+        }
     }
 
     /// <summary>
