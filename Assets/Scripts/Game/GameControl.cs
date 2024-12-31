@@ -1562,7 +1562,7 @@ public class GameControl : MonoBehaviour
                 }
 
                 gameView.UpdateGameRoomInfo(gameRoomData);
-                gameView.OnLicensingFlow(gameRoomData);
+                StartCoroutine(gameView.OnLicensingFlow(gameRoomData));
 
                 yield return new WaitForSeconds(1);
 

@@ -215,6 +215,8 @@ public class GameView : MonoBehaviour
 
     public GameObject GameMask;
 
+    bool isDealed; //是否播放過發牌動畫
+
     #region 遊戲過程紀錄
     List<int> exitPlayerSeatList;                               //玩家離開座位
     GameInitHistoryData gameInitHistoryData;                    //遊戲初始資料紀錄
@@ -1942,6 +1944,7 @@ public class GameView : MonoBehaviour
         thisData.isFold = false;
         thisData.CurrCommunityPoker = new List<int>();
         tweenManager.inst.initDPos();
+        isDealed = false;
     }
 
     /// <summary>
@@ -2503,7 +2506,7 @@ public class GameView : MonoBehaviour
             {
                 // Hide other players' hands
                 gamePlayerInfo.SetPokerShapeImage = null;
-                gamePlayerInfo.SetHandPoker(-1, -1);
+                gamePlayerInfo.SetHandPoker(-1, -1, "hideCard");
             }
             else
             {
@@ -2524,7 +2527,16 @@ public class GameView : MonoBehaviour
                     // Only for the local player, display their hand and judge poker shape
                     if (player.userId == DataManager.UserId)
                     {
-                        gamePlayerInfo.SetHandPoker(player.handPoker[0], player.handPoker[1]);
+                        if (!isDealed)
+                        {
+                            print("尚未開牌");
+                            gamePlayerInfo.SetHandPoker(-1, -1, "hideCard");
+                        }
+                        else
+                        {
+                            print("已開牌");
+                            gamePlayerInfo.SetHandPoker(player.handPoker[0], player.handPoker[1], "Normal");
+                        }
 
                         // Judge the local player's poker hand shape
                         JudgePokerShapeUI(gamePlayerInfo, true);
@@ -2881,13 +2893,13 @@ public class GameView : MonoBehaviour
             if (player.UserId == Entry.TestInfoData.LocalUserId)
             {
                 thisData.IsPlaying = true;
-                player.SetHandPoker(dic.Value.Item1,
-                                    dic.Value.Item2);
+                //player.SetHandPoker(dic.Value.Item1,
+                   //                 dic.Value.Item2);
                 JudgePokerShapeUI(player, true);
             }
             else
             {
-                player.SetHandPoker(-1, -1);
+                //player.SetHandPoker(-1, -1);
             }
         }
     }
@@ -3107,7 +3119,7 @@ public class GameView : MonoBehaviour
                     var player = GetPlayer(playerId);
                     if (player != null)
                     {
-                        player.SetHandPoker(playerData.handPoker[0], playerData.handPoker[1]);
+                        player.SetHandPoker(playerData.handPoker[0], playerData.handPoker[1], "PotResult");
                         JudgePokerShapeUI(player, false);
                     }
                 }
@@ -4297,7 +4309,7 @@ public class GameView : MonoBehaviour
     /// 發牌流程
     /// </summary>
     /// <param name="gameRoomData"></param>
-    public void OnLicensingFlow(GameRoomData gameRoomData)
+    public IEnumerator OnLicensingFlow(GameRoomData gameRoomData)
     {
         foreach (var userId in gameRoomData.playingPlayersIdList)
         {
@@ -4308,6 +4320,14 @@ public class GameView : MonoBehaviour
             gamePlayerInfo.SetShowHandPoker(false, new List<int> { -1, -1 });
             gamePlayerInfo.Init();
             gamePlayerInfo.SetSeatCharacter(SeatCharacterEnum.None); // Reset seat character
+
+            //Play Dealcard anim
+            if (!isDealed)
+            {
+                tweenManager.inst.setSeats();
+            }
+
+            yield return new WaitForSeconds(1.2f);
 
             // Set hand cards for local player (UserId matches local player)
             if (userId == DataManager.UserId)
@@ -4320,7 +4340,12 @@ public class GameView : MonoBehaviour
                     thisData.IsPlaying = true;
 
                     // Set local player's hand poker cards
-                    gamePlayerInfo.SetHandPoker(playerData.handPoker[0], playerData.handPoker[1]);
+                    if (!isDealed)
+                    {
+                        print("開牌");
+                        gamePlayerInfo.SetHandPoker(playerData.handPoker[0], playerData.handPoker[1], "OnLicensing");
+                        isDealed = true;
+                    }
 
                     // Hide waiting tip
                     WaitingTip_Txt.gameObject.SetActive(false);
@@ -4335,7 +4360,7 @@ public class GameView : MonoBehaviour
             else
             {
                 // For other players, hide their hand and poker shape
-                gamePlayerInfo.SetHandPoker(-1, -1);
+                gamePlayerInfo.SetHandPoker(-1, -1, "hideCard");
                 gamePlayerInfo.SetPokerShapeImage = null;
             }
         }

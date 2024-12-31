@@ -121,7 +121,7 @@ public class tweenManager : MonoBehaviour
     public void foldAnim(Transform obj, Transform target)
     {
         Sequence cardSequence = DOTween.Sequence();
-        cardSequence.Append(obj.DOMove(target.position, 1)).Insert(0, obj.DORotate(new Vector3(0, 0, 360f), 1, RotateMode.FastBeyond360)).OnComplete(()=>
+        cardSequence.Append(obj.DOMove(target.position, 1)).Insert(0, obj.DORotate(new Vector3(20f, 0, 0), 1f)).Insert(0, obj.DORotate(new Vector3(0, 0, 360f), 1, RotateMode.FastBeyond360)).Insert(0, obj.DOScale(0.75f, 1)).OnComplete(() =>
         {
             obj.GetComponent<pokerAnim>().onComplete(false);
         });

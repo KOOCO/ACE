@@ -430,7 +430,7 @@ public class GamePlayerInfo : MonoBehaviour
     /// </summary>
     /// <param name="handPoker0"></param>
     /// <param name="handPoker1"></param>
-    public void SetHandPoker(int hand0, int hand1)
+    public void SetHandPoker(int hand0, int hand1, string flowKind)
     {
         InitCountDown();
 
@@ -442,8 +442,17 @@ public class GamePlayerInfo : MonoBehaviour
             poker.SetColor = 1;
         }
 
-        HandPokers[0].PokerNum = hand0;
-        HandPokers[1].PokerNum = hand1;
+        //本地玩家開牌
+        if (IsLocalPlayer && flowKind == "OnLicensing")
+        {
+            StartCoroutine(HandPokers[0].IHorizontalFlopEffect(hand0));
+            StartCoroutine(HandPokers[1].IHorizontalFlopEffect(hand1));
+        }
+        else
+        {
+            HandPokers[0].PokerNum = hand0;
+            HandPokers[1].PokerNum = hand1;
+        }
 
         if (CurrBetAction != BetActionEnum.Fold)
         {
