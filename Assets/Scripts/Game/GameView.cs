@@ -2957,6 +2957,16 @@ public class GameView : MonoBehaviour
         Debug.Log("Collecting Pot");
         yield return IConcentrateBetChips();
 
+        //播放翻牌動畫
+        if (gameRoomData.currCommunityPoker.Count == 3)
+            tweenManager.inst.playCommunity();
+        else if (gameRoomData.currCommunityPoker.Count == 5)
+        {
+            if(!CommunityPokerList[0].gameObject.activeSelf)
+                tweenManager.inst.playCommunity5();
+        }
+        yield return new WaitForSeconds(0.25f * gameRoomData.currCommunityPoker.Count);
+
         if (currCommunityPoker != null)
         {
             for (int i = 0; i < currCommunityPoker.Count; i++)
@@ -3102,6 +3112,7 @@ public class GameView : MonoBehaviour
 
         // Execute betting and reveal community cards
         yield return IConcentrateBetChips();
+
         yield return IFlopCommunityPoker(gameRoomData.currCommunityPoker);
 
         // Check if only one player remains
