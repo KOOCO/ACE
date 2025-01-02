@@ -135,6 +135,12 @@ public class tweenManager : MonoBehaviour
             obj.GetComponent<pokerAnim>().onComplete(false);
         });
     }
+
+    public void biggerAnim(Transform obj)
+    {
+        Sequence cardSequence = DOTween.Sequence();
+        cardSequence.Append(obj.DOScale(1.15f, 0.5f));
+    }
     
     public void communityAnim(Transform obj, Transform target)
     {
@@ -158,7 +164,7 @@ public class tweenManager : MonoBehaviour
     {
         isComplete = false;
         Sequence cardSequence = DOTween.Sequence();
-        cardSequence.Append(obj.DOMove(target.position, 0.25f)).OnComplete(()=>
+        cardSequence.Append(obj.DOMove(target.position, 0.15f)).OnComplete(()=>
         {
             isComplete = true;
             if (obj.name == "CommuniyCards last")

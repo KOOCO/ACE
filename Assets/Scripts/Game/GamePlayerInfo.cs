@@ -177,14 +177,18 @@ public class GamePlayerInfo : MonoBehaviour
         ActionFrame = false;
         HandPokers[0].PokerNum = -1;
         HandPokers[0].gameObject.SetActive(false);
+        HandPokers[0].PokerEffectEnable = true;
         HandPokers[1].PokerNum = -1;
         HandPokers[1].gameObject.SetActive(false);
+        HandPokers[1].PokerEffectEnable = true;
         Winner_Obj.SetActive(false);
         SetBackChips = 0;
         //SetPokerShapeTxtStr = "";
         SetPokerShapeImage = null;
         ShowHandPoker_Tr.gameObject.SetActive(false);
         Lead_Obj.SetActive(false);
+        ShowHandPokers[0].PokerEffectEnable = true;
+        ShowHandPokers[1].PokerEffectEnable = true;
         if (!IsAllIn)
             allInHalo.Stop();
     }

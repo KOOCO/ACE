@@ -500,7 +500,7 @@ public class LobbyView : MonoBehaviour
     }
     void delayCallHeartbeat(string jsonData)
     {
-        print("After 5 second: " + jsonData);
+        //print("After 5 second: " + jsonData);
 
         if (!string.IsNullOrEmpty(jsonData) && jsonData != "null")
         {

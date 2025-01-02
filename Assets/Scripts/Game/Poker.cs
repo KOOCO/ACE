@@ -60,9 +60,10 @@ public class Poker : MonoBehaviour
     /// <summary>
     /// 播放贏家效果
     /// </summary>
+    
     public void StartWinEffect()
     {
-        //thisRt.localScale = new Vector3(1.1f, 1.1f, 1);
+        tweenManager.inst.biggerAnim(thisRt);
     }
 
     /// <summary>

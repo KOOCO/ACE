@@ -1683,7 +1683,7 @@ public class GameView : MonoBehaviour
         {
             // No raise: everyone sees Check/Fold and Check post-flop
             print("每個人都看到Check/Fold和Check");
-            if (locPlayer.PlayerRoomChips > 0)
+            if (locPlayer != null && locPlayer.PlayerRoomChips > 0)
             {
                 strData.FoldStr = LanguageManager.Instance.GetText("CheckOrFold");
                 strData.CallStr = LanguageManager.Instance.GetText("Check");
@@ -2959,13 +2959,18 @@ public class GameView : MonoBehaviour
 
         //播放翻牌動畫
         if (gameRoomData.currCommunityPoker.Count == 3)
+        {
             tweenManager.inst.playCommunity();
+            yield return new WaitForSeconds(0.25f * gameRoomData.currCommunityPoker.Count);
+        }
         else if (gameRoomData.currCommunityPoker.Count == 5)
         {
-            if(!CommunityPokerList[0].gameObject.activeSelf)
+            if (!CommunityPokerList[0].gameObject.activeSelf)
+            {
                 tweenManager.inst.playCommunity5();
+                yield return new WaitForSeconds(0.15f * gameRoomData.currCommunityPoker.Count);
+            }
         }
-        yield return new WaitForSeconds(0.25f * gameRoomData.currCommunityPoker.Count);
 
         if (currCommunityPoker != null)
         {
