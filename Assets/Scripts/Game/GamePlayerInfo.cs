@@ -42,6 +42,10 @@ public class GamePlayerInfo : MonoBehaviour
     [SerializeField]
     Transform betAnim;
 
+    [Header("保險")]
+    [SerializeField]
+    GameObject Lead_Obj;
+
     [Header("聊天訊息")]
     [SerializeField]
     GameObject Chat_Obj, roomFee_Obj;
@@ -180,7 +184,8 @@ public class GamePlayerInfo : MonoBehaviour
         //SetPokerShapeTxtStr = "";
         SetPokerShapeImage = null;
         ShowHandPoker_Tr.gameObject.SetActive(false);
-        if(!IsAllIn)
+        Lead_Obj.SetActive(false);
+        if (!IsAllIn)
             allInHalo.Stop();
     }
 
@@ -867,6 +872,11 @@ public class GamePlayerInfo : MonoBehaviour
             SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksEnglishAlbum).album[pokerCurrShapeIndex];
         else
             SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksChineseAlbum).album[pokerCurrShapeIndex];
+    }
+
+    public void SetLead()
+    {
+        Lead_Obj.SetActive(true);
     }
 
     private void OnDisable()
