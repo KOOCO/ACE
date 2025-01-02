@@ -114,7 +114,6 @@ public class AudioManager : UnitySingleton<AudioManager>
     /// <param name="source"></param>
     public void playTittle(string name)
     {
-        Debug.LogError(tittleSourse.clip);
         if (GetMusic(name) != tittleSourse.clip)
         {
             tittleSourse.clip = GetMusic(name);
