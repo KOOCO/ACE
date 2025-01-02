@@ -112,12 +112,16 @@ public class AudioManager : UnitySingleton<AudioManager>
     /// 播放BGM
     /// </summary>
     /// <param name="source"></param>
-    public void playTittle()
+    public void playTittle(string name)
     {
-        tittleSourse.clip = GetMusic("爵士２");
-        tittleSourse.loop = true;
-        tittleSourse.volume = 0.5f;
-        tittleSourse.Play();
+        Debug.LogError(tittleSourse.clip);
+        if (GetMusic(name) != tittleSourse.clip)
+        {
+            tittleSourse.clip = GetMusic(name);
+            tittleSourse.loop = true;
+            tittleSourse.volume = 0.5f;
+            tittleSourse.Play();
+        }
     }
     
     /// <summary>

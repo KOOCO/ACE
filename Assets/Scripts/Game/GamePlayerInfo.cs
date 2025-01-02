@@ -753,6 +753,10 @@ public class GamePlayerInfo : MonoBehaviour
             betActionEnum == BetActionEnum.Bet ||
             betActionEnum == BetActionEnum.AllIn)
         {
+            if(betActionEnum==BetActionEnum.AllIn)
+            {
+                AudioManager.Instance.playTittle("AllinBGM");
+            }
             if (isEffect)
             {
                 if (!IsLocalPlayer)

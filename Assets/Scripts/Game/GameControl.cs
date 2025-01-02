@@ -758,6 +758,7 @@ public class GameControl : MonoBehaviour
 
                 //遊戲資料初始化
                 GameDataInit();
+                AudioManager.Instance.playTittle("爵士２");
 
                 //積分房只剩下玩家1名
                 if (RoomType == TableTypeEnum.IntegralTable &&

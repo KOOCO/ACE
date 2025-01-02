@@ -780,7 +780,7 @@ public class LoginView : MonoBehaviour
         DataManager.IsNotFirstInLogin = true;
 
         //SoundToggleGroup.IsPlayAudio(AudioSource);
-        AudioManager.Instance.playTittle();
+        AudioManager.Instance.playTittle("爵士２");
         MusicSwitchBtn.IsPlayAudio();
 
         InvokeRepeating(nameof(checkIsMaintenance), 0, 5);
