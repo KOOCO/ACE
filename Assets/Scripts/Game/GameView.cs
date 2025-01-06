@@ -3165,7 +3165,7 @@ public class GameView : MonoBehaviour
             if (player != null)
             {
                 //player.SetRoomFee($"Room Fee - ${winner.roomFee:f2}");
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.1f);
                 //player.HideRoomFee();
                 playerWinValueList[player.UserId] = playerWinValueList[player.UserId] - winner.roomFee;
             }
