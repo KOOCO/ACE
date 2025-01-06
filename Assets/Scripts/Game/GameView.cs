@@ -7,7 +7,6 @@ using System.Linq;
 using TMPro;
 using RequestBuf;
 using Newtonsoft.Json;
-using System.Runtime.InteropServices;
 using UnityEngine.EventSystems;
 
 public class GameView : MonoBehaviour
@@ -216,6 +215,8 @@ public class GameView : MonoBehaviour
     public GameObject GameMask;
 
     bool isDealed; //是否播放過發牌動畫
+
+    private Dictionary<string, double> playerWinValueList = new Dictionary<string, double>();
 
     #region 遊戲過程紀錄
     List<int> exitPlayerSeatList;                               //玩家離開座位
@@ -1945,6 +1946,7 @@ public class GameView : MonoBehaviour
         thisData.CurrCommunityPoker = new List<int>();
         tweenManager.inst.initDPos();
         isDealed = false;
+        playerWinValueList.Clear();
     }
 
     /// <summary>
@@ -2689,10 +2691,10 @@ public class GameView : MonoBehaviour
 
         exitPlayer.gameObject.SetActive(false);
 
-        if (RoomType == TableTypeEnum.IntegralTable)
-        {
-            SetBattleResult(true);
-        }
+        //if (RoomType == TableTypeEnum.IntegralTable)
+        //{
+        //    SetBattleResult(true);
+        //}
 
         return exitPlayer;
     }
@@ -3147,9 +3149,8 @@ public class GameView : MonoBehaviour
         if (!gameRoomData.potWinData?.isHaveSide ?? true)
         {
             yield return DisplayAndDistributeMainPot();
-            yield return new WaitForSeconds(0.5f);
             yield return DisplayRoomFeeAll();
-            yield return new WaitForSeconds(0.5f);
+            yield return ShowResult();
             yield return SaveResult(gameRoomData);
         }
     }
@@ -3163,9 +3164,10 @@ public class GameView : MonoBehaviour
             var player = GetPlayer(winner.userId);
             if (player != null)
             {
-                player.SetRoomFee($"Room Fee - ${winner.roomFee:f2}");
+                //player.SetRoomFee($"Room Fee - ${winner.roomFee:f2}");
                 yield return new WaitForSeconds(0.5f);
-                player.HideRoomFee();
+                //player.HideRoomFee();
+                playerWinValueList[player.UserId] = playerWinValueList[player.UserId] - winner.roomFee;
             }
         }
     }
@@ -3181,45 +3183,29 @@ public class GameView : MonoBehaviour
         {
             player.IsOpenInfoMask = true;
         }
-        TotalPot_Txt.text = $"{LanguageManager.Instance.GetText("Pot")} {gameRoomData.potWinData.potWinChips}";
-        SetTotalPot = gameRoomData.potWinData.potWinChips;
+        TotalPot_Txt.text = $"{LanguageManager.Instance.GetText("Pot")} {gameRoomData.potWinData.potWinChips + gameRoomData.sideWinData?.sideWinChips}";
+        SetTotalPot = gameRoomData.potWinData.potWinChips + (int)(gameRoomData.sideWinData?.sideWinChips ?? 0);
 
         // Display the winning players and distribute the pot
         foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
         {
+            changeValue = gameRoomData.potWinData.potWinChips / gameRoomData.potWinData.potWinnersId.Count();
             if (potWinnerId == DataManager.UserId)
             {
                 // Update local player's chips if they are a winner
-                changeValue = gameRoomData.potWinData.potWinChips / gameRoomData.potWinData.potWinnersId.Count();
                 gameControl.UpdateLocalChips(changeValue);
             }
-
-            CloseAllPokerEffect();
-
+                CloseAllPokerEffect();
             GameRoomPlayerData playerData = gameRoomData.playerDataDic[potWinnerId];
             GamePlayerInfo player = GetPlayer(potWinnerId);
             player.IsOpenInfoMask = false;
-
             JudgePokerShapeUI(player, true, true);
-
-            player.IsWinnerActive = true;
-            //player.setWinnerDisplay($"POT + ${changeValue:f2}");
-            if (potWinnerId == DataManager.UserId)
-            {
-                player.setWinnerDisplay($"POT + ${changeValue:f2}");
-            }
-            else
-            {
-                player.setWinnerDisplay($"POT  + ${gameRoomData.potWinData.potWinChips / gameRoomData.potWinData.potWinnersId.Count():f2}");
-            }
-
+            playerWinValueList.Add(potWinnerId, changeValue);
             Vector2 winnerSeatPos = player.gameObject.transform.position;
 
             RectTransform rt = Instantiate(WinChipsObj, Pot_Img.transform).GetComponent<RectTransform>();
             rt.anchoredPosition = Vector2.zero;
             SetPotActive = false;
-
-            yield return new WaitForSeconds(0.5f);
 
             ObjMoveUtils.ObjMoveToTarget(rt, winnerSeatPos, 0.5f, () =>
             {
@@ -3227,7 +3213,7 @@ public class GameView : MonoBehaviour
                 player.PlayerRoomChips = playerData.carryChips;
                 Destroy(rt.gameObject);
             });
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.1f);
             player.IsWinnerActive = false;
         }
 
@@ -3250,7 +3236,7 @@ public class GameView : MonoBehaviour
         //}
         #endregion
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
 
         // Display room fee for local player winners
         foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
@@ -3447,12 +3433,23 @@ public class GameView : MonoBehaviour
     public IEnumerator SideResult(GameRoomData gameRoomData)
     {
         yield return DisplayAndDistributeMainPot();
-        yield return new WaitForSeconds(0.5f);
         yield return DisplayAndDistributeSidePot();
-        yield return new WaitForSeconds(1f);
         yield return DisplayRoomFeeAll();
-        yield return new WaitForSeconds(1f);
+        yield return ShowResult();
         yield return SaveResult(gameRoomData);
+    }
+    IEnumerator ShowResult()
+    {
+        foreach (KeyValuePair<string, double> playerWin in playerWinValueList)
+        {
+            GamePlayerInfo player = GetPlayer(playerWin.Key);
+            player.IsWinnerActive = true;
+            player.setWinnerDisplay($"WIN + ${playerWin.Value:f2}");
+            //獲勝籌碼物件
+            RectTransform rt = Instantiate(WinChipsObj, Pot_Img.transform).GetComponent<RectTransform>();
+            rt.anchoredPosition = Vector2.zero;
+            yield return new WaitForSeconds(0.5f);
+        }
     }
 
     IEnumerator DisplayAndDistributeSidePot()
@@ -3473,17 +3470,14 @@ public class GameView : MonoBehaviour
 
         if (gameRoomData.sideWinData.sideWinChips > 0)
         {
-            //WinType_Txt.text = LanguageManager.Instance.GetText("Side");
-            TotalPot_Txt.text = LanguageManager.Instance.GetText("Side") + " " + TotalPot_Txt.text;
-            SetTotalPot = gameRoomData.sideWinData.sideWinChips;
 
             foreach (var sideWinnerId in gameRoomData.sideWinData.sideWinnersId)
             {
+                changeValue = gameRoomData.sideWinData.sideWinChips / gameRoomData.sideWinData.sideWinnersId.Count();
                 //本地玩家
                 if (sideWinnerId == DataManager.UserId)
                 {
                     //更新用戶籌碼資料
-                    changeValue = gameRoomData.sideWinData.sideWinChips / gameRoomData.sideWinData.sideWinnersId.Count();
                     gameControl.UpdateLocalChips(changeValue);
                 }
 
@@ -3503,45 +3497,17 @@ public class GameView : MonoBehaviour
                 GamePlayerInfo player = GetPlayer(sideWinnerId);
 
                 player.IsOpenInfoMask = false;
-                player.IsWinnerActive = true;
-                if (sideWinnerId == DataManager.UserId)
-                    player.setWinnerDisplay($"SIDE POT + ${changeValue:f2}");
-                else
-                    player.setWinnerDisplay($"SIDE POT  + ${gameRoomData.sideWinData.sideWinChips / gameRoomData.sideWinData.sideWinnersId.Count():f2}");
-
-                Vector2 winnerSeatPos = player.gameObject.transform.position;
-                JudgePokerShapeUI(player, true, true);
-
-                if (player.PlayerRoomChips != playerData.carryChips)
+                if (playerWinValueList.ContainsKey(sideWinnerId))
                 {
-                    //獲勝籌碼物件
-                    RectTransform rt = Instantiate(WinChipsObj, Pot_Img.transform).GetComponent<RectTransform>();
-                    rt.anchoredPosition = Vector2.zero;
-                    yield return new WaitForSeconds(0.5f);
-                    ObjMoveUtils.ObjMoveToTarget(rt, winnerSeatPos, 0.5f, () =>
-                    {
-                        PlaySound("SoundWinPot");
-                        player.PlayerRoomChips = playerData.carryChips; // Correctly update chips
-                        Destroy(rt.gameObject);
-                        player.IsWinnerActive = false;
-                    });
+                    playerWinValueList[sideWinnerId] = playerWinValueList[sideWinnerId] + changeValue;
                 }
-
-                yield return new WaitForSeconds(2);
-
-                //關閉撲克外框
-                Poker[] handPoker = player.GetHandPoker;
-                if (CommunityPokerList != null && handPoker != null)
+                else
                 {
-                    List<Poker> pokerList = CommunityPokerList.Concat(handPoker.ToList()).ToList();
-                    foreach (var poker in pokerList)
-                    {
-                        poker.PokerEffectEnable = false;
-                    }
+                    playerWinValueList.Add(sideWinnerId, changeValue);
                 }
             }
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.1f);
         }
 
         //顯示退回籌碼
@@ -3763,10 +3729,10 @@ public class GameView : MonoBehaviour
                 WaitingTip_Txt.gameObject.SetActive(true);
             }
         }
-        else if (RoomType == TableTypeEnum.IntegralTable)
-        {
-            SetBattleResult(false);
-        }
+        //else if (RoomType == TableTypeEnum.IntegralTable)
+        //{
+        //    SetBattleResult(false);
+        //}
     }
 
     /// <summary>
@@ -3823,12 +3789,12 @@ public class GameView : MonoBehaviour
     /// 設置積分結果
     /// </summary>
     /// <param name="isWin"></param>
-    public void SetBattleResult(bool isWin)
-    {
-        BattleResultView.gameObject.SetActive(true);
-        BattleResultView battleResult = BattleResultView.GetComponent<BattleResultView>();
-        battleResult.OnSetBattleResult(isWin, transform.name, gameControl);
-    }
+    //public void SetBattleResult(bool isWin)
+    //{
+    //    BattleResultView.gameObject.SetActive(true);
+    //    BattleResultView battleResult = BattleResultView.GetComponent<BattleResultView>();
+    //    battleResult.OnSetBattleResult(isWin, transform.name, gameControl);
+    //}
 
     #region 聊天
 

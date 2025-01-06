@@ -761,14 +761,14 @@ public class GameControl : MonoBehaviour
                 AudioManager.Instance.playTittle("爵士２");
 
                 //積分房只剩下玩家1名
-                if (RoomType == TableTypeEnum.IntegralTable &&
-                    gameRoomData.playingPlayersIdList != null &&
-                    gameRoomData.playingPlayersIdList.Count() == 1)
-                {
-                    //顯示積分結果
-                    gameView.SetBattleResult(true);
-                    yield break;
-                }
+                //if (RoomType == TableTypeEnum.IntegralTable &&
+                //    gameRoomData.playingPlayersIdList != null &&
+                //    gameRoomData.playingPlayersIdList.Count() == 1)
+                //{
+                //    //顯示積分結果
+                //    gameView.SetBattleResult(true);
+                //    yield break;
+                //}
 
                 yield return new WaitForSeconds(1);
 
@@ -1383,13 +1383,13 @@ public class GameControl : MonoBehaviour
         //JudgeHost();
 
         //積分房未開始牌局只剩1名玩家
-        if (RoomType == TableTypeEnum.IntegralTable &&
-            gameRoomData.playerDataDic.Count() == 1 &&
-            gameRoomData.currGameFlow < (int)GameFlowEnum.Licensing)
-        {
-            gameView.SetBattleResult(true);
-            return;
-        }
+        //if (RoomType == TableTypeEnum.IntegralTable &&
+        //    gameRoomData.playerDataDic.Count() == 1 &&
+        //    gameRoomData.currGameFlow < (int)GameFlowEnum.Licensing)
+        //{
+        //    gameView.SetBattleResult(true);
+        //    return;
+        //}
 
         //聊天訊息
         ChatMessage();
@@ -1631,10 +1631,10 @@ public class GameControl : MonoBehaviour
                     gameRoomData.playerDataDic.Any(x => x.Value.carryChips < leastChips);
 
                 // Display result for an integral table
-                if (RoomType == TableTypeEnum.IntegralTable && isPotIntegralResult)
-                {
-                    gameView.SetBattleResult(GetLocalPlayer().carryChips >= leastChips);
-                }
+                //if (RoomType == TableTypeEnum.IntegralTable && isPotIntegralResult)
+                //{
+                //    gameView.SetBattleResult(GetLocalPlayer().carryChips >= leastChips);
+                //}
 
                 // Host will handle game flow continuation
                 if (gameRoomData.hostId == DataManager.UserId)
@@ -1678,10 +1678,10 @@ public class GameControl : MonoBehaviour
 
                 bool isSideIntegralResult = gameRoomData.playerDataDic.Any(x => x.Value.carryChips < leastChips);
 
-                if (RoomType == TableTypeEnum.IntegralTable && isSideIntegralResult)
-                {
-                    gameView.SetBattleResult(GetLocalPlayer().carryChips >= leastChips);
-                }
+                //if (RoomType == TableTypeEnum.IntegralTable && isSideIntegralResult)
+                //{
+                //    gameView.SetBattleResult(GetLocalPlayer().carryChips >= leastChips);
+                //}
 
                 if (gameRoomData.hostId == DataManager.UserId)
                 {
@@ -1722,11 +1722,11 @@ public class GameControl : MonoBehaviour
                 };
                     UpdateGameRoomData(data);
 
-                    if (RoomType == TableTypeEnum.IntegralTable && gameRoomData.playingPlayersIdList.Count == 1)
-                    {
-                        gameView.SetBattleResult(GetLocalPlayer().carryChips >= leastChips);
-                        yield break;
-                    }
+                    //if (RoomType == TableTypeEnum.IntegralTable && gameRoomData.playingPlayersIdList.Count == 1)
+                    //{
+                    //    gameView.SetBattleResult(GetLocalPlayer().carryChips >= leastChips);
+                    //    yield break;
+                    //}
 
                     isLicense = false;
                     yield return IStartGameFlow(GameFlowEnum.Licensing);
