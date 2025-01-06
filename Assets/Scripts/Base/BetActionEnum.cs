@@ -8,4 +8,5 @@ public enum BetActionEnum
     Bet,        //下注
     Call,       //跟注
     AllIn,      //All In
+    AddChip,      //補籌碼
 }

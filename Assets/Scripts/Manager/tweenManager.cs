@@ -78,7 +78,11 @@ public class tweenManager : MonoBehaviour
             if (obj.gameObject.activeSelf)
                 Seats.Add(obj);
         }
-        //print(Seats.Count);
+        foreach(var info in Seats)
+        {
+            if (!info.GetComponent<GamePlayerInfo>().IsPlaying)
+                Seats.RemoveAt(Seats.IndexOf(info));
+        }
 
         dealCard.gameObject.SetActive(true);
         StartCoroutine(animChain(Seats));
@@ -136,10 +140,14 @@ public class tweenManager : MonoBehaviour
         });
     }
 
-    public void biggerAnim(Transform obj)
+    public void biggerAnim(Transform obj, bool isSolid = false)
     {
         Sequence cardSequence = DOTween.Sequence();
-        cardSequence.Append(obj.DOScale(1.15f, 0.5f));
+        cardSequence.Append(obj.DOScale(obj.localScale.x + 0.15f, 0.5f)).OnComplete(()=>
+        {
+            if (isSolid)
+                obj.localScale = new Vector2(1.15f, 1.15f);
+        });
     }
     
     public void communityAnim(Transform obj, Transform target)

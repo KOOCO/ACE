@@ -2309,6 +2309,7 @@ public class GameControl : MonoBehaviour
         {
             playerState = PlayerStateEnum.AllIn;
         }
+
         //下注差額
         double difference = betActing == BetActingEnum.AllIn ?
                             betValue :
@@ -2382,7 +2383,7 @@ public class GameControl : MonoBehaviour
         };
         UpdateGameRoomData(data);
         startRepeatEditorRead();
-    }
+    } 
 
 #endregion
 
@@ -2446,6 +2447,19 @@ public class GameControl : MonoBehaviour
         UpdataPlayerData(playerData.userId,
                          data,
                          UpdateCarryChipsCallback);
+
+        //更新購買行為
+        var betActionData = new Dictionary<string, object>()
+        {
+            { FirebaseManager.BET_ACTIONER_ID, DataManager.UserId},                                         //下注玩家ID
+            { FirebaseManager.BET_ACTION, (int)BetActingEnum.AddChip},                                  //(BetActingEnum)下注行為
+            { FirebaseManager.BUY_ACTION_VALUE, Math.Floor(PreBuyChipsValue)},                      //下注籌碼值
+            { FirebaseManager.UPDATE_CARRY_CHIPS, Math.Floor(newCarryChips)},                  //更新後的攜帶籌碼
+        };
+        JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.BET_ACTION_DATA}",
+                                                        betActionData);
+
+        gameView.GetPlayerAction(gameRoomData);
 
         PreBuyChipsValue = 0;
     }

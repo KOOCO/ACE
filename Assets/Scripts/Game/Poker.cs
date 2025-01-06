@@ -42,7 +42,7 @@ public class Poker : MonoBehaviour
     {
         set
         {
-            thisRt.localScale = Vector3.one;
+            thisRt.localScale = value ? Vector3.one : thisRt.localScale;
         }
     }
 

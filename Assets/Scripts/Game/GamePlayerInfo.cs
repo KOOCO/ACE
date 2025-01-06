@@ -36,9 +36,9 @@ public class GamePlayerInfo : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI Action_Txt;
     [SerializeField]
-    Sprite foldImg, callImg, checkImg, raiseImg, allInImg, blindImg;
+    Sprite foldImg, callImg, checkImg, raiseImg, allInImg, blindImg, addChipImg;
     [SerializeField]
-    Color foldColor, callColor, checkColor, raiseColor, allInColor, blindColor;
+    Color foldColor, callColor, checkColor, raiseColor, allInColor, blindColor, addChipColor;
     [SerializeField]
     Transform betAnim;
 
@@ -452,10 +452,16 @@ public class GamePlayerInfo : MonoBehaviour
         }
 
         //本地玩家開牌
-        if (IsLocalPlayer && flowKind == "OnLicensing")
+        if ((IsLocalPlayer && flowKind == "OnLicensing") || (!IsLocalPlayer && flowKind == "PotResult"))
         {
             StartCoroutine(HandPokers[0].IHorizontalFlopEffect(hand0));
             StartCoroutine(HandPokers[1].IHorizontalFlopEffect(hand1));
+
+            if(!IsLocalPlayer && flowKind == "PotResult")
+            {
+                tweenManager.inst.biggerAnim(HandPokers[0].transform, true);
+                tweenManager.inst.biggerAnim(HandPokers[1].transform, true);
+            }
         }
         else
         {
@@ -754,13 +760,19 @@ public class GamePlayerInfo : MonoBehaviour
                 Action_Txt.color = blindColor;
                 tweenManager.inst.playBet(betAnim);
                 break;
+            
+            case BetActionEnum.AddChip:
+                Action_Img.sprite = addChipImg;
+                Action_Txt.color = addChipColor;
+                break;
         }
 
         if (betActionEnum == BetActionEnum.Blinds ||
             betActionEnum == BetActionEnum.Call ||
             betActionEnum == BetActionEnum.Raise ||
             betActionEnum == BetActionEnum.Bet ||
-            betActionEnum == BetActionEnum.AllIn)
+            betActionEnum == BetActionEnum.AllIn ||
+            betActionEnum == BetActionEnum.AddChip)
         {
             if(betActionEnum==BetActionEnum.AllIn)
             {

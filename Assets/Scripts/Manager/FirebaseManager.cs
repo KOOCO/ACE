@@ -29,7 +29,7 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
     public const string ROBOT_ID = "robot";                                                 //機器人ID
     public const string PLAYER_DATA_LIST = "playerDataDic";                                 //房間內所有玩家列表路徑
     public const string PLAYING_PLAYER_ID = "playingPlayersIdList";                         //遊戲中玩家ID列表路徑
-    public const string PLAYERS_WHO_LEFT = "playersWhoLeft";                         //遊戲中玩家ID列表路徑
+    public const string PLAYERS_WHO_LEFT = "playersWhoLeft";                         //遊戲中離線玩家ID列表路徑
     public const string BET_ACTION_DATA = "betActionDataDic";                               //下注行為資料路徑
     public const string POT_WIN_DATA = "potWinData";                                        //底池獲勝資料路徑
     public const string SIDE_WIN_DATA = "sideWinData";                                      //邊池獲勝資料路徑
@@ -74,6 +74,7 @@ public class FirebaseManager : UnitySingleton<FirebaseManager>
     public const string BET_ACTIONER_ID = "betActionerId";                                  //下注玩家ID
     public const string BET_ACTION = "betAction";                                           //(BetActingEnum)下注行為
     public const string BET_ACTION_VALUE = "betActionValue";                                //下注籌碼值
+    public const string BUY_ACTION_VALUE = "buyActionValue";                                //購買籌碼值
     public const string UPDATE_CARRY_CHIPS = "updateCarryChips";                            //更新後的攜帶籌碼
 
     [Header("底池獲勝資料")]
@@ -299,6 +300,7 @@ public class BetActionData
     public string betActionerId;       //行動玩家ID
     public int betAction;              //(BetActingEnum)下注行為
     public double betActionValue;      //下注籌碼值
+    public double buyActionValue;      //購買籌碼值
     public double updateCarryChips;    //更新後的攜帶籌碼
 }
 
@@ -399,6 +401,7 @@ public enum BetActingEnum
     Bet,        //下注
     Call,       //跟注
     AllIn,      //All In
+    AddChip,      //All In
 }
 
 #endregion

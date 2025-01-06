@@ -158,7 +158,7 @@ public static class PokerShape
     {
         foreach (var poker in pokerList)
         {
-            poker.PokerEffectEnable = false;
+            poker.PokerEffectEnable = true;
             poker.SetColor = isWinEffect ? 0.5f : 1;
         }
 
@@ -169,7 +169,7 @@ public static class PokerShape
             {
                 if (poker.PokerNum == matchNum)
                 {
-                    poker.PokerEffectEnable = true;
+                    //poker.PokerEffectEnable = true;
 
                     if (isWinEffect)
                     {

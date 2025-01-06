@@ -2729,8 +2729,10 @@ public class GameView : MonoBehaviour
         string id = gameRoomData.betActionDataDic.betActionerId;
         BetActingEnum actionEnum = (BetActingEnum)gameRoomData.betActionDataDic.betAction;
         double betValue = gameRoomData.betActionDataDic.betActionValue;
+        double buyValue = gameRoomData.betActionDataDic.buyActionValue;
         double chips = gameRoomData.betActionDataDic.updateCarryChips;
         bool isLocalPlayer = id == DataManager.UserId;
+
 
         //音效播放
         switch (actionEnum)
@@ -2755,6 +2757,9 @@ public class GameView : MonoBehaviour
                 break;
             case BetActingEnum.AllIn:
                 PlaySound("SoundGatherChips");
+                break;
+            case BetActingEnum.AddChip:
+                PlaySound("SoundCall");
                 break;
         }
 
@@ -2786,12 +2791,22 @@ public class GameView : MonoBehaviour
         if (playerInfo != null &&
             playerInfo.gameObject.activeSelf)
         {
-            playerInfo.PlayerAction(actionEnum,
-                                    betValue,
-                                    chips);
+            if (actionEnum != BetActingEnum.AddChip)
+            {
+                playerInfo.PlayerAction(actionEnum,
+                                        betValue,
+                                        chips);
+            }
+            else
+            {
+                playerInfo.PlayerAction(actionEnum,
+                                        buyValue,
+                                        chips);
+            }
 
-            if (playerInfo.IsAllIn)
+            if (actionEnum == BetActingEnum.AllIn)
                 playerInfo.allInHalo.Play();
+            print($"PlayerID: {playerInfo.Nickname}\nPlayer is All In: {actionEnum == BetActingEnum.AllIn}\nIs particle playing: {playerInfo.allInHalo.isPlaying}");
 
             playerInfo.InitCountDown();
         }
@@ -2962,8 +2977,11 @@ public class GameView : MonoBehaviour
         //播放翻牌動畫
         if (gameRoomData.currCommunityPoker.Count == 3)
         {
-            tweenManager.inst.playCommunity();
-            yield return new WaitForSeconds(0.25f * gameRoomData.currCommunityPoker.Count);
+            if (!CommunityPokerList[0].gameObject.activeSelf)
+            {
+                tweenManager.inst.playCommunity();
+                yield return new WaitForSeconds(0.25f * gameRoomData.currCommunityPoker.Count);
+            }
         }
         else if (gameRoomData.currCommunityPoker.Count == 5)
         {
@@ -3028,7 +3046,7 @@ public class GameView : MonoBehaviour
             // Disable visual effects for all cards
             foreach (var poker in allPokers)
             {
-                poker.PokerEffectEnable = false;
+                poker.PokerEffectEnable = true;
             }
 
             // Call JudgePokerShape to determine the hand shape
@@ -3195,12 +3213,16 @@ public class GameView : MonoBehaviour
                 // Update local player's chips if they are a winner
                 gameControl.UpdateLocalChips(changeValue);
             }
-                CloseAllPokerEffect();
+
+            CloseAllPokerEffect();
             GameRoomPlayerData playerData = gameRoomData.playerDataDic[potWinnerId];
             GamePlayerInfo player = GetPlayer(potWinnerId);
             player.IsOpenInfoMask = false;
+
             JudgePokerShapeUI(player, true, true);
+
             playerWinValueList.Add(potWinnerId, changeValue);
+
             Vector2 winnerSeatPos = player.gameObject.transform.position;
 
             RectTransform rt = Instantiate(WinChipsObj, Pot_Img.transform).GetComponent<RectTransform>();
@@ -3438,6 +3460,7 @@ public class GameView : MonoBehaviour
         yield return ShowResult();
         yield return SaveResult(gameRoomData);
     }
+
     IEnumerator ShowResult()
     {
         foreach (KeyValuePair<string, double> playerWin in playerWinValueList)
@@ -3470,7 +3493,6 @@ public class GameView : MonoBehaviour
 
         if (gameRoomData.sideWinData.sideWinChips > 0)
         {
-
             foreach (var sideWinnerId in gameRoomData.sideWinData.sideWinnersId)
             {
                 changeValue = gameRoomData.sideWinData.sideWinChips / gameRoomData.sideWinData.sideWinnersId.Count();
@@ -3497,6 +3519,7 @@ public class GameView : MonoBehaviour
                 GamePlayerInfo player = GetPlayer(sideWinnerId);
 
                 player.IsOpenInfoMask = false;
+
                 if (playerWinValueList.ContainsKey(sideWinnerId))
                 {
                     playerWinValueList[sideWinnerId] = playerWinValueList[sideWinnerId] + changeValue;
@@ -3587,7 +3610,7 @@ public class GameView : MonoBehaviour
         List<Poker> allPokerList = CommunityPokerList.Concat(playersPoker.ToList()).ToList();
         foreach (var poker in allPokerList)
         {
-            poker.PokerEffectEnable = false;
+            poker.PokerEffectEnable = true;
         }
     }
 
@@ -3745,7 +3768,10 @@ public class GameView : MonoBehaviour
         gameControl.PreBuyChipsValue = Math.Floor(buyValue);
         gameControl.UpdateCarryChips();
 
-        if(gameRoomData.hostId != DataManager.UserId)
+        //gameControl.UpdatePlayerAction(DataManager.UserId,
+        //                            buyValue);
+
+        if (gameRoomData.hostId != DataManager.UserId)
         {
             var dataDic = new Dictionary<string, object>()
                     {
@@ -3766,6 +3792,9 @@ public class GameView : MonoBehaviour
         ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Sending,
                                             LanguageManager.Instance.GetText("Start replenishing chips for the next hand"));
         gameControl.PreBuyChipsValue = Math.Floor(buyValue);
+
+        //gameControl.UpdatePlayerAction(DataManager.UserId,
+        //                            buyValue);
     }
 
     /// <summary>
