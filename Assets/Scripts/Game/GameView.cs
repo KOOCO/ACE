@@ -3177,7 +3177,7 @@ public class GameView : MonoBehaviour
     {
         foreach (var winner in gameControl.winnersRoomFee)
         {
-            if (winner == null || winner.userId != DataManager.UserId || winner.roomFee <= 0) continue;
+            if (winner == null || winner.roomFee <= 0) continue;
 
             var player = GetPlayer(winner.userId);
             if (player != null)
