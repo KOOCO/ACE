@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class tweenManager : MonoBehaviour
 {
@@ -70,7 +71,7 @@ public class tweenManager : MonoBehaviour
 
     }
 
-    public void setSeats()
+    public void setSeats(UnityAction callback)
     {
         List<Transform>Seats = new List<Transform>();
         foreach(var obj in playerSeats)
@@ -85,7 +86,7 @@ public class tweenManager : MonoBehaviour
         }
 
         dealCard.gameObject.SetActive(true);
-        StartCoroutine(animChain(Seats));
+        StartCoroutine(animChain(Seats, callback));
     }
 
     public void playFold()
@@ -294,7 +295,7 @@ public class tweenManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         communityCard5.gameObject.SetActive(false);
     }
-    IEnumerator animChain(List<Transform> seats)
+    IEnumerator animChain(List<Transform> seats, UnityAction callback)
     {
         while (seats.Count > 0)
         {
@@ -318,6 +319,7 @@ public class tweenManager : MonoBehaviour
             dealCard.gameObject.SetActive(false);
             //for (int i = 1; i < dealCard.childCount; i++)
             //    Destroy(dealCard.GetChild(i).gameObject);
+            callback?.Invoke();
         }
     }
 }

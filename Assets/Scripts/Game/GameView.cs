@@ -2806,7 +2806,7 @@ public class GameView : MonoBehaviour
 
             if (actionEnum == BetActingEnum.AllIn)
                 playerInfo.allInHalo.Play();
-            print($"PlayerID: {playerInfo.Nickname}\nPlayer is All In: {actionEnum == BetActingEnum.AllIn}\nIs particle playing: {playerInfo.allInHalo.isPlaying}");
+            print($"PlayerID: {playerInfo.Nickname}\nPlayer is All In: {actionEnum == BetActingEnum.AllIn}\nIs particle playing: {playerInfo.allInHalo.isPlaying}\nParticle counts: {playerInfo.allInHalo.particleCount}");
 
             playerInfo.InitCountDown();
         }
@@ -4320,61 +4320,57 @@ public class GameView : MonoBehaviour
     /// 發牌流程
     /// </summary>
     /// <param name="gameRoomData"></param>
-    public IEnumerator OnLicensingFlow(GameRoomData gameRoomData)
+    public void OnLicensingFlow(GameRoomData gameRoomData)
     {
-        foreach (var userId in gameRoomData.playingPlayersIdList)
+        //Play Dealcard anim
+        tweenManager.inst.setSeats(() =>
         {
-            GamePlayerInfo gamePlayerInfo = GetPlayer(userId);
-
-            // Initialize player's hand and seat character
-            gamePlayerInfo.SwitchShoHandPoker(new List<int> { -1, -1 });
-            gamePlayerInfo.SetShowHandPoker(false, new List<int> { -1, -1 });
-            gamePlayerInfo.Init();
-            gamePlayerInfo.SetSeatCharacter(SeatCharacterEnum.None); // Reset seat character
-
-            //Play Dealcard anim
-            if (!isDealed)
+            foreach (var userId in gameRoomData.playingPlayersIdList)
             {
-                tweenManager.inst.setSeats();
-            }
+                GamePlayerInfo gamePlayerInfo = GetPlayer(userId);
 
-            yield return new WaitForSeconds(1.2f);
+                // Initialize player's hand and seat character
+                gamePlayerInfo.SwitchShoHandPoker(new List<int> { -1, -1 });
+                gamePlayerInfo.SetShowHandPoker(false, new List<int> { -1, -1 });
+                gamePlayerInfo.Init();
+                gamePlayerInfo.SetSeatCharacter(SeatCharacterEnum.None); // Reset seat character
 
-            // Set hand cards for local player (UserId matches local player)
-            if (userId == DataManager.UserId)
-            {
-                GameRoomPlayerData playerData = gameRoomData.playerDataDic.FirstOrDefault(x => x.Value.userId == DataManager.UserId).Value;
-
-                if (playerData != null && !playerData.isSitOut && playerData.gameState != (int)PlayerStateEnum.Waiting)
+                // Set hand cards for local player (UserId matches local player)
+                if (userId == DataManager.UserId)
                 {
-                    // Local player is actively playing
-                    thisData.IsPlaying = true;
+                    GameRoomPlayerData playerData = gameRoomData.playerDataDic.FirstOrDefault(x => x.Value.userId == DataManager.UserId).Value;
 
-                    // Set local player's hand poker cards
-                    if (!isDealed)
+                    if (playerData != null && !playerData.isSitOut && playerData.gameState != (int)PlayerStateEnum.Waiting)
                     {
-                        print("開牌");
-                        gamePlayerInfo.SetHandPoker(playerData.handPoker[0], playerData.handPoker[1], "OnLicensing");
-                        isDealed = true;
-                    }
+                        // Local player is actively playing
+                        thisData.IsPlaying = true;
 
-                    // Hide waiting tip
-                    WaitingTip_Txt.gameObject.SetActive(false);
+                        // Set local player's hand poker cards
+                        if (!isDealed)
+                        {
+                            print("開牌");
+                            gamePlayerInfo.SetHandPoker(playerData.handPoker[0], playerData.handPoker[1], "OnLicensing");
+                            isDealed = true;
+                        }
 
-                    // Judge the local player's poker hand shape
-                    if (gameRoomData.playingPlayersIdList.Contains(DataManager.UserId))
-                    {
-                        JudgePokerShapeUI(gamePlayerInfo, true);
+                        // Hide waiting tip
+                        WaitingTip_Txt.gameObject.SetActive(false);
+
+                        // Judge the local player's poker hand shape
+                        if (gameRoomData.playingPlayersIdList.Contains(DataManager.UserId))
+                        {
+                            JudgePokerShapeUI(gamePlayerInfo, true);
+                        }
                     }
                 }
+                else
+                {
+                    // For other players, hide their hand and poker shape
+                    gamePlayerInfo.SetHandPoker(-1, -1, "hideCard");
+                    gamePlayerInfo.SetPokerShapeImage = null;
+                }
             }
-            else
-            {
-                // For other players, hide their hand and poker shape
-                gamePlayerInfo.SetHandPoker(-1, -1, "hideCard");
-                gamePlayerInfo.SetPokerShapeImage = null;
-            }
-        }
+        });
 
         // If the local player is the host
         if (gameRoomData.hostId == DataManager.UserId)
