@@ -203,7 +203,7 @@ public class tweenManager : MonoBehaviour
         GameView gameView = GetComponent<GameView>();
         GamePlayerInfo info = null;
         addTargets();
-
+        D_Btn.gameObject.SetActive(false);
         if (gameView != null)
             info = gameView.SeatGamePlayerInfoList.FirstOrDefault(x => x.getDPos() != null);
 
@@ -219,6 +219,7 @@ public class tweenManager : MonoBehaviour
     public void DPosAnim()
     {
         Transform parent = D_Btn.parent;
+        D_Btn.gameObject.SetActive(true);
         int i = D_TargetsActive.IndexOf(parent);
         i = (i+1 >= D_TargetsActive.Count) ? 0 : i+1;
         print(i);
