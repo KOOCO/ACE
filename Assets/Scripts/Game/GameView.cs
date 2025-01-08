@@ -374,7 +374,6 @@ public class GameView : MonoBehaviour
         }
     }
 
-
     /// <summary>
     /// 更新文本翻譯
     /// </summary>
@@ -575,8 +574,6 @@ public class GameView : MonoBehaviour
         got_it_btn.onClick.AddListener(() =>
         {
             RuleView.SetActive(false);
-
-
         });
         //離開/回到座位
         SitOut_Btn.onClick.AddListener(() =>
@@ -878,13 +875,13 @@ public class GameView : MonoBehaviour
 #if UNITY_EDITOR
             TextEditor editor = new TextEditor
             {
-                text = roomID_Txt.text.Substring(3)
+                text = roomID_Txt.text.Substring(4)
             };
             editor.SelectAll();
             editor.Copy();
 #endif
 
-            JSBridgeManager.Instance.CopyString(roomID_Txt.text.Substring(3));
+            JSBridgeManager.Instance.CopyString(roomID_Txt.text.Substring(4));
             ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Succesful, LanguageManager.Instance.GetText("Copy Success!"));
         });
 
@@ -3773,12 +3770,7 @@ public class GameView : MonoBehaviour
 
         if (gameRoomData.hostId != DataManager.UserId)
         {
-            var dataDic = new Dictionary<string, object>()
-                    {
-                         { FirebaseManager.ROOM_HOST_ID, DataManager.UserId},
-                    };
-            JSBridgeManager.Instance.UpdateDataFromFirebase($"{gameControl.QueryRoomPath}",
-                                                            dataDic);
+            gameControl.JudgeHost();
         }
     }
 
@@ -4322,19 +4314,25 @@ public class GameView : MonoBehaviour
     /// <param name="gameRoomData"></param>
     public void OnLicensingFlow(GameRoomData gameRoomData)
     {
-        //Play Dealcard anim
-        tweenManager.inst.setSeats(() =>
+        foreach (var userId in gameRoomData.playingPlayersIdList)
         {
-            foreach (var userId in gameRoomData.playingPlayersIdList)
+            GamePlayerInfo gamePlayerInfo = GetPlayer(userId);
+
+            // Initialize player's hand and seat character
+            gamePlayerInfo.SwitchShoHandPoker(new List<int> { -1, -1 });
+            gamePlayerInfo.SetShowHandPoker(false, new List<int> { -1, -1 });
+            gamePlayerInfo.Init();
+            gamePlayerInfo.SetSeatCharacter(SeatCharacterEnum.None); // Reset seat character
+
+            print($"正在處理玩家: {gamePlayerInfo.Nickname}");
+            if (gamePlayerInfo.CurrRoomChips <= 0)
             {
-                GamePlayerInfo gamePlayerInfo = GetPlayer(userId);
-
-                // Initialize player's hand and seat character
-                gamePlayerInfo.SwitchShoHandPoker(new List<int> { -1, -1 });
-                gamePlayerInfo.SetShowHandPoker(false, new List<int> { -1, -1 });
-                gamePlayerInfo.Init();
-                gamePlayerInfo.SetSeatCharacter(SeatCharacterEnum.None); // Reset seat character
-
+                print($"玩家 {gamePlayerInfo.Nickname} 無法完成動畫流程，跳過處理！");
+                continue;
+            }
+            //Play Dealcard anim
+            tweenManager.inst.setSeats(() =>
+            {
                 // Set hand cards for local player (UserId matches local player)
                 if (userId == DataManager.UserId)
                 {
@@ -4369,8 +4367,8 @@ public class GameView : MonoBehaviour
                     gamePlayerInfo.SetHandPoker(-1, -1, "hideCard");
                     gamePlayerInfo.SetPokerShapeImage = null;
                 }
-            }
-        });
+            });
+        }
 
         // If the local player is the host
         if (gameRoomData.hostId == DataManager.UserId)

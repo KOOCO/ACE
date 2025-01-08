@@ -63,6 +63,8 @@ public class GamePlayerInfo : MonoBehaviour
 
     public List<Sprite> characters;
 
+    bool isPlayingP;
+
     /// <summary>
     /// 是否為本地玩家
     /// </summary>
@@ -158,6 +160,20 @@ public class GamePlayerInfo : MonoBehaviour
         PokerShape_img?.gameObject.SetActive(false);
 
         Init();
+    }
+
+    private void Update()
+    {
+        if (IsAllIn && !isPlayingP)
+        {
+            allInHalo.Play();
+            isPlayingP = true;
+        }
+        else if(!IsAllIn)
+        {
+            allInHalo.Stop();
+            isPlayingP = false;
+        }
     }
 
     /// <summary>

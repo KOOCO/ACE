@@ -65,7 +65,7 @@ public class GameControl : MonoBehaviour
 #endif
 
         //判斷玩家在線狀態
-        InvokeRepeating(nameof(JudgePlayersOnline), 5, 5);
+        //InvokeRepeating(nameof(JudgePlayersOnline), 5, 5);
     }
 
     private void Update()
@@ -220,7 +220,6 @@ public class GameControl : MonoBehaviour
 
             print("是否等待產生機器人: " + isWaitingCreateRobot);
         }
-
         return;
 #elif !UNITY_EDITOR
         //開始監聽遊戲房間資料
@@ -309,6 +308,7 @@ public class GameControl : MonoBehaviour
     /// <param name="seatIndex">遊戲座位</param>
     public void NewPlayerInRoom(double carryChips, int seatIndex)
     {
+        print("添加新玩家");
         isGameStart = true;
 
         //添加新玩家
@@ -609,7 +609,7 @@ public class GameControl : MonoBehaviour
     /// <summary>
     /// 判斷房主
     /// </summary>
-    private void JudgeHost()
+    public void JudgeHost()
     {
 #if UNITY_EDITOR
         return;

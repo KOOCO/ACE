@@ -16,6 +16,10 @@ public class LobbyView : MonoBehaviour
     Button OpenGameTest_Btn;
     [SerializeField]
     Toggle GameTest_Tog;
+    [SerializeField]
+    TMP_InputField IPT;
+    [SerializeField]
+    Button customJoin_Btn;
 
     [Header("用戶訊息")]
     [SerializeField]
@@ -166,6 +170,14 @@ public class LobbyView : MonoBehaviour
             DataManager.IsOpenGameTest = isOn;
         });
 
+        //指定加入房間(需先打開對應桌的入桌介面)
+        customJoin_Btn.onClick.AddListener(() =>
+        {
+            JoinRoomView joinRoom = FindAnyObjectByType<JoinRoomView>();
+            if (joinRoom != null)
+                joinRoom.joinCustomRoom(IPT.text);
+        });
+
         #endregion
 
         //顯示用戶資源列表
@@ -256,6 +268,7 @@ public class LobbyView : MonoBehaviour
     private void OnEnable()
     {
         GameTest_Tog.gameObject.SetActive(false);
+        IPT.gameObject.SetActive(false);
 
         isShowAssetList = false;
         SetIsShowAssetList = isShowAssetList;
@@ -321,6 +334,7 @@ public class LobbyView : MonoBehaviour
             {
                 gameTestTouchCount = 0;
                 GameTest_Tog.gameObject.SetActive(!GameTest_Tog.gameObject.activeSelf);
+                IPT.gameObject.SetActive(!IPT.gameObject.activeSelf);
             }
         }
         else

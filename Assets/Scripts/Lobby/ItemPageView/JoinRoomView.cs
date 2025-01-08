@@ -15,7 +15,7 @@ public class JoinRoomView : MonoBehaviour
     [SerializeField]
     Request_JoinRoom baseRequest;
     [SerializeField]
-    Image BlindACoin_Img, BlindUCoin_Img,
+    Image this_Img, BG, BlindACoin_Img, BlindUCoin_Img,
           MinBuyACoin_Img, MinBuyUCoin_Img,
           MaxBuyACoin_Img, MaxBuyUCoin_Img;
     [SerializeField]
@@ -62,6 +62,11 @@ public class JoinRoomView : MonoBehaviour
         ListenerEvent();
 
         lobbyView = GameObject.FindAnyObjectByType<LobbyView>();
+
+#if UNITY_EDITOR
+        this_Img.raycastTarget = false;
+        BG.raycastTarget = false;
+#endif
     }
 
     /// <summary>
@@ -191,7 +196,7 @@ public class JoinRoomView : MonoBehaviour
             gameObject.name,
             nameof(JoinRoomQueryCallback));*/
         JoinRoomQueryCallback();
-        Debug.LogError("Cause Editor can't play game, so cancel join/create room, please 'Build First'.");
+        //Debug.LogError("Cause Editor can't play game, so cancel join/create room, please 'Build First'.");
         return;
 #endif
         //CreateOrJoinRoom();
@@ -326,11 +331,24 @@ private static extern void onPageLoad();
         MaxBuyChips_Txt.text = $"${StringUtils.SetChipsUnit((this.smallBlind * 2) * DataManager.MaxMagnification)}"; ;
     }
 
+    ///<summary>
+    ///編輯器加入指定房間
+    /// </summary>
+    public void joinCustomRoom(string roomID)
+    {
+        DataManager.RoomId = roomID;
+        print(roomID);
+
+        actionType = "Join";
+        SendRoomDataToJS(DataManager.UserId);
+        JoinRoomQueryCallback(roomID);
+    }
+
     /// <summary>
     /// 加入房間查詢回傳
     /// </summary>
     /// <param name="jsonData">回傳資料</param>
-    public void JoinRoomQueryCallback()
+    public void JoinRoomQueryCallback(string roomID = "")
     {
         // Deserialize JSON data into a QueryRoom object
         // Debug.Log("JoinRoomView :: JoinRoomQueryCallback : " + jsonData);
@@ -346,7 +364,10 @@ private static extern void onPageLoad();
         // Debug.Log($"JoinRoomQueryCallback :: Room Name: {queryRoom?.getRoomName}, Room Count: {queryRoom?.roomCount}");
 
         // Validate dataRoomName
-        dataRoomName = DataManager.RoomId;
+        if (roomID != "")
+            dataRoomName = roomID;
+        else
+            dataRoomName = DataManager.RoomId;
 
         if (string.IsNullOrEmpty(dataRoomName))
         {

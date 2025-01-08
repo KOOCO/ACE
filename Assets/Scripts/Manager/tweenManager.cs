@@ -79,11 +79,11 @@ public class tweenManager : MonoBehaviour
             if (obj.gameObject.activeSelf)
                 Seats.Add(obj);
         }
-        foreach(var info in Seats)
-        {
-            if (!info.GetComponent<GamePlayerInfo>().IsPlaying)
-                Seats.RemoveAt(Seats.IndexOf(info));
-        }
+        //foreach(var info in Seats)
+        //{
+        //    if (!info.GetComponent<GamePlayerInfo>().IsPlaying)
+        //        Seats.RemoveAt(Seats.IndexOf(info));
+        //}
 
         dealCard.gameObject.SetActive(true);
         StartCoroutine(animChain(Seats, callback));
@@ -203,6 +203,7 @@ public class tweenManager : MonoBehaviour
         GameView gameView = GetComponent<GameView>();
         GamePlayerInfo info = null;
         addTargets();
+
         D_Btn.gameObject.SetActive(false);
         if (gameView != null)
             info = gameView.SeatGamePlayerInfoList.FirstOrDefault(x => x.getDPos() != null);
@@ -320,6 +321,7 @@ public class tweenManager : MonoBehaviour
             dealCard.gameObject.SetActive(false);
             //for (int i = 1; i < dealCard.childCount; i++)
             //    Destroy(dealCard.GetChild(i).gameObject);
+            print("發牌動畫結束，執行回調");
             callback?.Invoke();
         }
     }
