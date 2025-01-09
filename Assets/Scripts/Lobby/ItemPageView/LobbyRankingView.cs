@@ -137,7 +137,7 @@ public class LobbyRankingView : MonoBehaviour
 public class Ranking
 {
     public string playerId;
-    public int totalWinnings;
+    public double totalWinnings;
     public string status;
     public bool isCurrentPlayer;
     public string rank;

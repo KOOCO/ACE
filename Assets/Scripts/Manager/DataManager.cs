@@ -251,7 +251,7 @@ public class RankData
     public string rank;
     public int avatar;
     public string nickname;
-    public int point;
+    public double point;
     public bool status;
 }
 
