@@ -3182,7 +3182,7 @@ public class GameView : MonoBehaviour
                 //player.SetRoomFee($"Room Fee - ${winner.roomFee:f2}");
                 yield return new WaitForSeconds(0.1f);
                 //player.HideRoomFee();
-                playerWinValueList[player.UserId] = playerWinValueList[player.UserId] - winner.roomFee;
+                //playerWinValueList[player.UserId] = playerWinValueList[player.UserId] - winner.roomFee;
             }
         }
     }
@@ -3218,8 +3218,7 @@ public class GameView : MonoBehaviour
 
             JudgePokerShapeUI(player, true, true);
 
-            playerWinValueList.Add(potWinnerId, changeValue);
-            print($"玩家ID: {potWinnerId}, 主池贏錢: {changeValue}");
+            playerWinValueList.Add(potWinnerId, playerData.carryChips-player.PlayerRoomChips);
 
             Vector2 winnerSeatPos = player.gameObject.transform.position;
 
@@ -3466,6 +3465,7 @@ public class GameView : MonoBehaviour
             GamePlayerInfo player = GetPlayer(playerWin.Key);
             player.IsWinnerActive = true;
             player.setWinnerDisplay($"WIN + ${playerWin.Value:f2}");
+            print($"WIN: {playerWin.Value}");
             //獲勝籌碼物件
             RectTransform rt = Instantiate(WinChipsObj, Pot_Img.transform).GetComponent<RectTransform>();
             rt.anchoredPosition = Vector2.zero;
@@ -3518,16 +3518,7 @@ public class GameView : MonoBehaviour
 
                 player.IsOpenInfoMask = false;
 
-                if (playerWinValueList.ContainsKey(sideWinnerId))
-                {
-                    playerWinValueList[sideWinnerId] = playerWinValueList[sideWinnerId] + changeValue;
-                    print($"玩家ID: {sideWinnerId}, 邊池贏錢: {playerWinValueList[sideWinnerId]}");
-                }
-                else
-                {
-                    playerWinValueList.Add(sideWinnerId, changeValue);
-                    print($"玩家ID: {sideWinnerId}, 邊池贏錢: {changeValue}");
-                }
+                playerWinValueList.Add(sideWinnerId, playerData.carryChips - player.PlayerRoomChips);
             }
 
             yield return new WaitForSeconds(0.1f);
