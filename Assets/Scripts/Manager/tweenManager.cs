@@ -189,14 +189,14 @@ public class tweenManager : MonoBehaviour
 
     public void addTargets()
     {
-        if (D_TargetsActive.Count > 0)
-            D_TargetsActive.Clear();
+        //if (D_TargetsActive.Count > 0)
+        //    D_TargetsActive.Clear();
 
-        foreach (var obj in D_Targets)
-        {
-            if (obj.gameObject.activeInHierarchy)
-                D_TargetsActive.Add(obj);
-        }
+        //foreach (var obj in D_Targets)
+        //{
+        //    if (obj.gameObject.activeInHierarchy)
+        //        D_TargetsActive.Add(obj);
+        //}
     }
     public void initDPos()
     {
@@ -217,14 +217,14 @@ public class tweenManager : MonoBehaviour
             print("©|µL¶}±ÒD¦ì");
     }
 
-    public void DPosAnim()
+    public void DPosAnim(int index)
     {
         Transform parent = D_Btn.parent;
         D_Btn.gameObject.SetActive(true);
-        int i = D_TargetsActive.IndexOf(parent);
-        i = (i+1 >= D_TargetsActive.Count) ? 0 : i+1;
-        print(i);
-        Transform target = D_TargetsActive[i];
+        //int i = D_TargetsActive.IndexOf(parent);
+        //i = (i+1 >= D_TargetsActive.Count) ? 0 : i+1;
+        //print(i);
+        Transform target = D_Targets[index];
         Sequence cardSequence = DOTween.Sequence();
         cardSequence.Append(D_Btn.DOMove(target.position, 0.5f)).OnComplete(() =>
         {

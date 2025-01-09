@@ -4420,8 +4420,6 @@ public class GameView : MonoBehaviour
         { FirebaseManager.SEAT_CHARACTER, (int)seatCharacter }
     };
         gameControl.UpdataPlayerData(userId, dataDic);
-
-        tweenManager.inst.DPosAnim();
     }
 
     /// <summary>
@@ -4436,6 +4434,7 @@ public class GameView : MonoBehaviour
                                                                         .Value;
         GamePlayerInfo buttonPlayer = GetPlayer(buttonPlayerData.userId);
         buttonPlayer.SetSeatCharacter(SeatCharacterEnum.Button);
+        tweenManager.inst.DPosAnim(buttonPlayer.SeatIndex);
 
         //SB下注
         GameRoomPlayerData sbPlayerData = gameRoomData.playerDataDic.Where(x => (SeatCharacterEnum)x.Value.seatCharacter == SeatCharacterEnum.SB)
