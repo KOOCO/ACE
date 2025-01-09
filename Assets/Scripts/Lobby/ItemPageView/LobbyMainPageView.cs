@@ -197,7 +197,7 @@ public class LobbyMainPageView : MonoBehaviour
         SwitchBg = false;
 
         InitBillBoard();
-        ViewManager.Instance.OpenWaitingView(transform);
+        ViewManager.Instance.OpenWaitingView(transform.parent);
         SwaggerAPIManager.Instance.SendGetAPI("/api/app/tables", (data) =>
         {
             Debug.Log("Tables data :: " + data);
@@ -568,7 +568,7 @@ public class LobbyMainPageView : MonoBehaviour
         //錯誤
         if (isSuccess == "false")
         {
-            ViewManager.Instance.CloseWaitingView(transform);
+            ViewManager.Instance.CloseWaitingView(transform.parent);
             Debug.LogError("Create Room Error!!!");
             return;
         }
@@ -671,7 +671,7 @@ public class LobbyMainPageView : MonoBehaviour
         SetupTable(1, "High Roller Battleground", tables[1], CryptoTableBtnSample, CryptoTableParent, CryptoTableTital_Txt);
         SetupTable(2, "Classic Battle", tables[2], VCTableBtnSample, VCTableParent, VCTableTital_Txt);
 
-        ViewManager.Instance.CloseWaitingView(transform);
+        ViewManager.Instance.CloseWaitingView(transform.parent);
     }
 
     // Helper method to set up each table

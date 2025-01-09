@@ -2199,10 +2199,10 @@ RectTransform:
   - {fileID: 7658232729530885961}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 390, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &52264641947362611
 MonoBehaviour:
@@ -2217,6 +2217,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseRequest: {fileID: 8819878342560726024}
+  this_Img: {fileID: 0}
+  BG: {fileID: 0}
   BlindACoin_Img: {fileID: 7541707705916270691}
   BlindUCoin_Img: {fileID: 0}
   MinBuyACoin_Img: {fileID: 4865467457614740026}
