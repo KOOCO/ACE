@@ -169,13 +169,16 @@ public class GamePlayerInfo : MonoBehaviour
             allInHalo.Play();
             isPlayingP = true;
         }
+        else if (IsAllIn && !allInHalo.isPlaying)
+        {
+            allInHalo.Play();
+        }
         else if(!IsAllIn)
         {
             allInHalo.Stop();
             isPlayingP = false;
         }
-
-        print($"ID: {Nickname}, IsAll In: {IsAllIn}, Is PlayingP: {isPlayingP}, Particle is on: {allInHalo.isPlaying}");
+        //print($"ID: {Nickname}, IsAll In: {IsAllIn}, Is PlayingP: {isPlayingP}, Particle is on: {allInHalo.isPlaying}");
     }
 
     /// <summary>
