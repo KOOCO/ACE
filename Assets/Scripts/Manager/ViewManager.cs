@@ -90,12 +90,6 @@ public class ViewManager : UnitySingleton<ViewManager>
     /// <returns></returns>
     public T CreateViewUnderTrans<T>(GameObject obj, Transform parent) where T : Component
     {
-        //Transform parent = mainCanvas.transform;
-        //if (GameRoomManager.Instance.GetGameRoomCanvas().sortingOrder > 0)
-        //{
-        //    parent = GameRoomManager.Instance.GetGameRoomCanvas().transform;
-        //}
-
         GameRoomManager.Instance.IsCanMoveSwitch = false;
 
         RectTransform rt = Instantiate(obj).GetComponent<RectTransform>();
