@@ -63,7 +63,7 @@ public class CryptoTableBtnSample : MonoBehaviour
                 {
                     if (joinRoomView == null)
                     {
-                        joinRoomView = ViewManager.Instance.CreateViewInCurrCanvas<JoinRoomView>(JoinRoomViewObj);
+                        joinRoomView = ViewManager.Instance.CreateViewUnderTrans<JoinRoomView>(JoinRoomViewObj, lobbyView.transform) ;
                         joinRoomView.SetCreatRoomViewInfo(TableTypeEnum.Cash, smallBlind);
                     }
                     else

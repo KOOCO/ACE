@@ -2217,8 +2217,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseRequest: {fileID: 8819878342560726024}
-  this_Img: {fileID: 0}
-  BG: {fileID: 0}
+  this_Img: {fileID: 1296560494116380633}
+  BG: {fileID: 3612512891358203767}
   BlindACoin_Img: {fileID: 7541707705916270691}
   BlindUCoin_Img: {fileID: 0}
   MinBuyACoin_Img: {fileID: 4865467457614740026}

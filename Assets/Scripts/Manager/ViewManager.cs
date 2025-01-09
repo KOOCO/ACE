@@ -83,6 +83,35 @@ public class ViewManager : UnitySingleton<ViewManager>
             return null;
         }
     }
+    /// <summary>
+    /// 創建View在指定父物件下
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public T CreateViewUnderTrans<T>(GameObject obj, Transform parent) where T : Component
+    {
+        //Transform parent = mainCanvas.transform;
+        //if (GameRoomManager.Instance.GetGameRoomCanvas().sortingOrder > 0)
+        //{
+        //    parent = GameRoomManager.Instance.GetGameRoomCanvas().transform;
+        //}
+
+        GameRoomManager.Instance.IsCanMoveSwitch = false;
+
+        RectTransform rt = Instantiate(obj).GetComponent<RectTransform>();
+        rt.SetParent(parent);
+        InitViewTr(rt);
+
+        if (rt.TryGetComponent<T>(out T component))
+        {
+            return component;
+        }
+        else
+        {
+            Debug.LogError("Not Get Component");
+            return null;
+        }
+    }
 
     #region 確認介面
 

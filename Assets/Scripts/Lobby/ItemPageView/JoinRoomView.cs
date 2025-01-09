@@ -114,7 +114,7 @@ public class JoinRoomView : MonoBehaviour
                 return;
             }
 
-            ViewManager.Instance.OpenWaitingView(transform);
+            ViewManager.Instance.OpenWaitingView(lobbyView.transform);
             //進入房間停播音樂
             //lobbyView.audioSource.Stop();
             JoinRoom newRound = new JoinRoom
@@ -428,7 +428,7 @@ private static extern void onPageLoad();
         //錯誤
         if (isSuccess == "false")
         {
-            ViewManager.Instance.CloseWaitingView(transform);
+            ViewManager.Instance.CloseWaitingView(lobbyView.transform);
             Debug.LogError("Create Room Error!!!");
             return;
         }
@@ -453,7 +453,7 @@ private static extern void onPageLoad();
                                                 0);
 
         OnEnterTable();
-        ViewManager.Instance.CloseWaitingView(transform);
+        ViewManager.Instance.CloseWaitingView(lobbyView.transform);
 
         gameObject.SetActive(false);
         DataManager.isInRoom = true;
@@ -482,7 +482,7 @@ private static extern void onPageLoad();
                                                 seat);
 
         OnEnterTable();
-        ViewManager.Instance.CloseWaitingView(transform);
+        ViewManager.Instance.CloseWaitingView(lobbyView.transform);
         gameObject.SetActive(false);
         DataManager.isInRoom = true;
         print("Is in Room: " + DataManager.isInRoom);
