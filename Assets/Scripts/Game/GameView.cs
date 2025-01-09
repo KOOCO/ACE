@@ -3219,6 +3219,7 @@ public class GameView : MonoBehaviour
             JudgePokerShapeUI(player, true, true);
 
             playerWinValueList.Add(potWinnerId, changeValue);
+            print($"玩家ID: {potWinnerId}, 主池贏錢: {changeValue}");
 
             Vector2 winnerSeatPos = player.gameObject.transform.position;
 
@@ -3520,10 +3521,12 @@ public class GameView : MonoBehaviour
                 if (playerWinValueList.ContainsKey(sideWinnerId))
                 {
                     playerWinValueList[sideWinnerId] = playerWinValueList[sideWinnerId] + changeValue;
+                    print($"玩家ID: {sideWinnerId}, 邊池贏錢: {playerWinValueList[sideWinnerId]}");
                 }
                 else
                 {
                     playerWinValueList.Add(sideWinnerId, changeValue);
+                    print($"玩家ID: {sideWinnerId}, 邊池贏錢: {changeValue}");
                 }
             }
 
