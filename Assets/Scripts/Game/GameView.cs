@@ -528,6 +528,7 @@ public class GameView : MonoBehaviour
                                    LanguageManager.Instance.GetText("If you leave now, you will not be able to get back your staked chips."));
             confirmView.SetBnt(() =>
             {
+                gameControl.JudgeHost();
                 gameControl.ExitGame();
                 //LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
             },
@@ -3185,6 +3186,7 @@ public class GameView : MonoBehaviour
                 //playerWinValueList[player.UserId] = playerWinValueList[player.UserId] - winner.roomFee;
             }
         }
+        SetTotalPot = 0;
     }
 
     IEnumerator DisplayAndDistributeMainPot()
@@ -3192,14 +3194,19 @@ public class GameView : MonoBehaviour
         double changeValue = 0;
         // Set the main pot win chips value
         thisData.PowWinChips = gameRoomData.potWinData.potWinChips;
+        var sideWinChips = gameRoomData.sideWinData?.sideWinChips ?? 0;
+        var totalPot = gameRoomData.potWinData.potWinChips + sideWinChips;
 
         // Open player info masks and display total pot
         foreach (var player in gamePlayerInfoList)
         {
             player.IsOpenInfoMask = true;
         }
-        TotalPot_Txt.text = $"{LanguageManager.Instance.GetText("Pot")} {gameRoomData.potWinData.potWinChips + gameRoomData.sideWinData?.sideWinChips}";
-        SetTotalPot = gameRoomData.potWinData.potWinChips + (int)(gameRoomData.sideWinData?.sideWinChips ?? 0);
+
+        print("底池金額: " + totalPot);
+        TotalPot_Txt.text = $"{LanguageManager.Instance.GetText("Pot")} {totalPot}";
+
+        yield return new WaitForSeconds(0.5f);
 
         // Display the winning players and distribute the pot
         foreach (var potWinnerId in gameRoomData.potWinData.potWinnersId)
@@ -3232,6 +3239,7 @@ public class GameView : MonoBehaviour
                 player.PlayerRoomChips = playerData.carryChips;
                 Destroy(rt.gameObject);
             });
+            SetTotalPot = (int)(gameRoomData.sideWinData?.sideWinChips ?? 0);
             yield return new WaitForSeconds(0.1f);
             player.IsWinnerActive = false;
         }
