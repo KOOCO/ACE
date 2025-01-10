@@ -3518,7 +3518,12 @@ public class GameView : MonoBehaviour
 
                 player.IsOpenInfoMask = false;
 
-                playerWinValueList.Add(sideWinnerId, playerData.carryChips - player.PlayerRoomChips);
+                if (playerWinValueList.ContainsKey(sideWinnerId))
+                {
+                    continue;
+                }
+                else
+                    playerWinValueList.Add(sideWinnerId, playerData.carryChips - player.PlayerRoomChips);
             }
 
             yield return new WaitForSeconds(0.1f);
