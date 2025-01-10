@@ -85,11 +85,6 @@ public class LobbyMainPageView : MonoBehaviour
     private void OnEnable()
     {
         CryptoTableTittle.SetActive(false);
-        Invoke(nameof(openTittle), 0.1f);
-    }
-    void openTittle()
-    {
-        CryptoTableTittle.SetActive(true);
     }
 
     /// <summary>
@@ -681,6 +676,7 @@ public class LobbyMainPageView : MonoBehaviour
         SetupTable(1, "High Roller Battleground", tables[1], CryptoTableBtnSample, CryptoTableParent, CryptoTableTital_Txt);
         SetupTable(2, "Classic Battle", tables[2], VCTableBtnSample, VCTableParent, VCTableTital_Txt);
 
+        CryptoTableTittle.SetActive(true);
         ViewManager.Instance.CloseWaitingView(transform.parent);
     }
 

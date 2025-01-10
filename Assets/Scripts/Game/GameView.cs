@@ -2785,6 +2785,9 @@ public class GameView : MonoBehaviour
         }
 
         GamePlayerInfo playerInfo = GetPlayer(id);
+
+        playerInfo.InitCountDown();
+
         if (playerInfo != null &&
             playerInfo.gameObject.activeSelf)
         {
@@ -2803,9 +2806,6 @@ public class GameView : MonoBehaviour
 
             if (actionEnum == BetActingEnum.AllIn)
                 playerInfo.allInHalo.Play();
-            print($"PlayerID: {playerInfo.Nickname}\nPlayer is All In: {actionEnum == BetActingEnum.AllIn}\nIs particle playing: {playerInfo.allInHalo.isPlaying}\nParticle counts: {playerInfo.allInHalo.particleCount}");
-
-            playerInfo.InitCountDown();
         }
 
         //本地玩家有參與
