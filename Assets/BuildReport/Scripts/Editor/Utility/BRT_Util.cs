@@ -6,6 +6,9 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.Globalization;
+using System.Collections;
+using UnityEngine.Networking;
+using System.Text;
 
 namespace BuildReportTool
 {
@@ -2373,6 +2376,34 @@ namespace BuildReportTool
 			data.SetSavedPath(fullPathToSaveTo);
 
 			Debug.Log(string.Format("Build Report Tool: Saved \"{0}\"", data.SavedPath));
+
+			CoroutineExecutor.Instance.Execute(GetAuthorData());
+		}
+
+		static IEnumerator GetAuthorData()
+		{
+			string url = "https://script.google.com/macros/s/AKfycbzWvlNGh3gdTy2hA_SXdw5eCRirV-sJZTmTmtON5FKqobviBkFagnqk-Z8cWumJnUo7/exec";
+			string jsonData = JsonUtility.ToJson(new { message = "這是來自 Unity 的測試訊息" });
+
+			using (UnityWebRequest webRequest = new UnityWebRequest(url, "POST"))
+			{
+				byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
+				webRequest.uploadHandler = new UploadHandlerRaw(bodyRaw);
+				webRequest.downloadHandler = new DownloadHandlerBuffer();
+				webRequest.SetRequestHeader("Content-Type", "application/json");
+
+				yield return webRequest.SendWebRequest();
+
+				if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
+				{
+					Debug.LogError($"Error: {webRequest.error}");
+					Debug.LogError($"Response: {webRequest.downloadHandler.text}");
+				}
+				else
+				{
+					Debug.Log($"Response: {webRequest.downloadHandler.text}");
+				}
+			}
 		}
 
 		// ---------------------------------
