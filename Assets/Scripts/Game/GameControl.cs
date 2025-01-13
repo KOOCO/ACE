@@ -1112,6 +1112,7 @@ public class GameControl : MonoBehaviour
                 {
                     winner.sidePotAmount += sideWinChips;
                     winner.winType = WinnerEnum.BOTH;
+                    winner.potWinnerCount = sidePotData.Keys.Count;
                 }
                 else
                 {
@@ -1124,6 +1125,7 @@ public class GameControl : MonoBehaviour
                         sidePotAmount = sideWinChips,
                         allBetChips = player.allBetChips,
                         carryChips = player.carryChips,
+                        potWinnerCount = sidePotData.Keys.Count
                     };
                     winnersRoomFee.Add(roomFeeObj);
                 }
@@ -1144,13 +1146,27 @@ public class GameControl : MonoBehaviour
             double carryChips = winner.carryChips;
             double roomRate = DataManager.Rebate / 100;
 
-            // Calculate winAmount based on winType
+            double roomFee = 0;
+
+            // 根據 potWinnerCount 的值先後計算順序
             if (winner.winType == WinnerEnum.BOTH || winner.winType == WinnerEnum.SIDE)
             {
-                winAmount += sidePotAmount;
+                if (winner.potWinnerCount == 1)
+                {
+                    roomFee = winAmount * roomRate;
+                    winAmount += sidePotAmount;
+                }
+                else
+                {
+                    winAmount += sidePotAmount;
+                    roomFee = winAmount * roomRate;
+                }
+            }
+            else
+            {
+                roomFee = winAmount * roomRate;
             }
 
-            double roomFee = winAmount * roomRate;
             double finalWinnings = winAmount - roomFee;
             double profit = winAmount - winner.allBetChips;
 
