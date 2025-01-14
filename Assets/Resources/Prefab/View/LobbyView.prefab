@@ -7853,6 +7853,7 @@ MonoBehaviour:
   baseRequest: {fileID: 113325593723988352}
   OpenGameTest_Btn: {fileID: 618214584091674823}
   GameTest_Tog: {fileID: 2487910833821867238}
+  EditorTest_Tog: {fileID: 8307200252904658127}
   IPT: {fileID: 3056485111688204808}
   customJoin_Btn: {fileID: 3418508957371279938}
   Nickname_Txt: {fileID: 7109703347446717654}
