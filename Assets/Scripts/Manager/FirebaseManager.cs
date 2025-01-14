@@ -406,3 +406,9 @@ public enum BetActingEnum
 }
 
 #endregion
+
+public class PotsData
+{
+    public double Pots;
+    public int ActivePlayers;
+}
