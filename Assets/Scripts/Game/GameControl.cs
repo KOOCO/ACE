@@ -2869,7 +2869,7 @@ public class GameControl : MonoBehaviour
         // Handle Flush
         if (isFlush)
         {
-            print("順子");
+            print("同花");
             var flushGroup = cardSuits.FirstOrDefault(group => group.Count() >= 5);
             if (flushGroup != null)
             {
@@ -2887,7 +2887,7 @@ public class GameControl : MonoBehaviour
         // Handle Straight
         if (isStraight)
         {
-            print("同花");
+            print("順子");
             var distinctRanks = cardRanks.Distinct().OrderByDescending(rank => rank).ToList();
             if (HasLowStraight(distinctRanks))
                 distinctRanks = distinctRanks.Select(rank => rank == 14 ? 1 : rank).OrderBy(rank => rank).ToList();
@@ -2895,8 +2895,21 @@ public class GameControl : MonoBehaviour
             var highestStraight = PokerShape.FindHighestConsecutiveSequence(distinctRanks);
             if (highestStraight.Count == 5)
             {
+                // 建立一個副本，逐一移除已匹配的數值
+                var remainingRanks = new HashSet<int>(highestStraight);
+
+                // 使用 `remainingRanks` 避免重複
                 var straightCards = cards
-                    .Where(card => highestStraight.Contains(card % 13 + 2))
+                    .Where(card =>
+                    {
+                        int rank = card % 13 + 2;
+                        if (remainingRanks.Contains(rank))
+                        {
+                            remainingRanks.Remove(rank); // 使用後從集合中移除
+                            return true; // 包含該牌
+                        }
+                        return false; // 排除重複牌
+                    })
                     .OrderByDescending(card => card % 13 + 2)
                     .ToList();
 
