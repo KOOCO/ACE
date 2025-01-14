@@ -15,7 +15,7 @@ public class LobbyView : MonoBehaviour
     [SerializeField]
     Button OpenGameTest_Btn;
     [SerializeField]
-    Toggle GameTest_Tog;
+    Toggle GameTest_Tog, EditorTest_Tog;
     [SerializeField]
     TMP_InputField IPT;
     [SerializeField]
@@ -169,6 +169,10 @@ public class LobbyView : MonoBehaviour
         {
             DataManager.IsOpenGameTest = isOn;
         });
+        EditorTest_Tog.onValueChanged.AddListener((isOn) =>
+        {
+            DataManager.IsTestWithEditor = isOn;
+        });
 
         //指定加入房間(需先打開對應桌的入桌介面)
         customJoin_Btn.onClick.AddListener(() =>
@@ -268,6 +272,7 @@ public class LobbyView : MonoBehaviour
     private void OnEnable()
     {
         GameTest_Tog.gameObject.SetActive(false);
+        EditorTest_Tog.gameObject.SetActive(false);
         IPT.gameObject.SetActive(false);
 
         isShowAssetList = false;
@@ -334,6 +339,7 @@ public class LobbyView : MonoBehaviour
             {
                 gameTestTouchCount = 0;
                 GameTest_Tog.gameObject.SetActive(!GameTest_Tog.gameObject.activeSelf);
+                EditorTest_Tog.gameObject.SetActive(!EditorTest_Tog.gameObject.activeSelf);
                 IPT.gameObject.SetActive(!IPT.gameObject.activeSelf);
             }
         }
@@ -486,6 +492,10 @@ public class LobbyView : MonoBehaviour
         {
             DataManager.istipAppear=true;
             DataManager.TipText = LanguageManager.Instance.GetText("Network offline");
+
+            GameControl gameControl = FindAnyObjectByType<GameControl>();
+            if (gameControl != null)
+                gameControl.RemovePlayer(DataManager.UserId);
         }
     }
 

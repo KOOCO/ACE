@@ -2699,7 +2699,7 @@ public class GameView : MonoBehaviour
 
     void OnAllPlayerLeft()
     {
-        Debug.Log("OnAllPlayerLeftCalled");
+        print("所有玩家離線");
         GetRoundCount();
         StartCoroutine(SaveResult(gameRoomData, true));
         print("遊戲結果(所有玩家離開): " + saveResultData);

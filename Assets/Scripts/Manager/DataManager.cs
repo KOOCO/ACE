@@ -227,6 +227,7 @@ public static class DataManager
     #region 遊戲
 
     public static bool IsOpenGameTest { get; set; }                                   //是否開啟遊戲測試
+    public static bool IsTestWithEditor { get; set; }                                   //是否配合編輯器測試
 
     public static int RoomTokenLength { get { return 10; } }                          //房間亂碼長度
 

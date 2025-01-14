@@ -65,7 +65,8 @@ public class GameControl : MonoBehaviour
 #endif
 
         //判斷玩家在線狀態
-        //InvokeRepeating(nameof(JudgePlayersOnline), 5, 5);
+        if(!DataManager.IsTestWithEditor)
+            InvokeRepeating(nameof(JudgePlayersOnline), 5, 5);
     }
 
     private void Update()
@@ -490,7 +491,7 @@ public class GameControl : MonoBehaviour
     /// 移除玩家
     /// </summary>
     /// <param name="id"></param>
-    private void RemovePlayer(string id)
+    public void RemovePlayer(string id)
     {
         bool allPlayersLeft = gameRoomData.playerDataDic.Count - 1 == 1;
 
