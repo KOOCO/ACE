@@ -5,6 +5,7 @@ using System.Linq;
 using System;
 using UnityEngine.Events;
 using System.Runtime.InteropServices;
+using static UnityEngine.EventSystems.EventTrigger;
 public enum WinnerEnum
 {
     MAIN,
@@ -913,9 +914,9 @@ public class GameControl : MonoBehaviour
                 double maxEligibleCriteria = potWinners[0].allBetChips;
                 double potMinBet = newPlayingPlayers[0].allBetChips;
                 List<GameRoomPlayerData> eligiblePlayers = new();
-                Dictionary<List<GameRoomPlayerData>, double> sideWinners1 = new();
+                Dictionary<List<GameRoomPlayerData>, PotsData> sideWinners1 = new();
                 sideWinnersIds = new List<string>();
-                List<double> sidePots = new();
+                List<PotsData> sidePots = new();
 
                 foreach (var player in newPlayingPlayers)
                 {
@@ -958,7 +959,12 @@ public class GameControl : MonoBehaviour
                 {
                     Debug.Log("GameControl :: SideResult : No eligible Players");
                     sideWinners1.Clear();
-                    sideWinners1.Add(potWinners, totalSidePot);
+                    PotsData potsData = new PotsData()
+                    {
+                        Pots = totalSidePot,
+                        ActivePlayers = 0
+                    };
+                    sideWinners1.Add(potWinners, potsData);
                     DistributeSidePot(sideWinners1);
                 }
 
@@ -1056,14 +1062,15 @@ public class GameControl : MonoBehaviour
     }
 
     List<string> sideWinnersIds;
-    public static List<double> CalculatePots(List<GameRoomPlayerData> players)
+    public static List<PotsData> CalculatePots(List<GameRoomPlayerData> players)
     {
         Debug.Log("GameControl :: CalculatePots : Start");
 
         var sortedPlayers = players.OrderBy(p => p.allBetChips).ToList();
         Debug.Log($"GameControl :: CalculatePots : SortedPlayers = {string.Join(", ", sortedPlayers.Select(p => p.nickname + ":" + p.allBetChips))}");
 
-        List<double> pots = new List<double>();
+        List<PotsData> pots = new List<PotsData>();
+
         double previousBet = 0;
 
         foreach (var player in sortedPlayers)
@@ -1075,7 +1082,12 @@ public class GameControl : MonoBehaviour
             {
                 int activePlayers = players.Count(p => p.allBetChips >= player.allBetChips);
                 double pot = betDifference * activePlayers;
-                pots.Add(pot);
+                PotsData potsData = new PotsData()
+                {
+                    Pots = pot,
+                    ActivePlayers = activePlayers
+                };
+                pots.Add(potsData);
                 Debug.Log($"GameControl :: CalculatePots : Pot = {pot}, ActivePlayers = {activePlayers}");
 
                 previousBet = player.allBetChips;
@@ -1086,14 +1098,14 @@ public class GameControl : MonoBehaviour
         return pots;
     }
 
-    void DistributeSidePot(Dictionary<List<GameRoomPlayerData>, double> sidePotData)
+    void DistributeSidePot(Dictionary<List<GameRoomPlayerData>, PotsData> sidePotData)
     {
         Debug.Log("GameControl :: DistributeSidePot : Start");
 
         foreach (var entry in sidePotData)
         {
             var players = entry.Key;
-            double sidePot = entry.Value;
+            double sidePot = entry.Value.Pots;
 
             Debug.Log($"GameControl :: DistributeSidePot : SidePot = {sidePot}, Players = {string.Join(", ", players?.Select(p => p.nickname) ?? new List<string>())}");
 
@@ -1113,7 +1125,7 @@ public class GameControl : MonoBehaviour
                 {
                     winner.sidePotAmount += sideWinChips;
                     winner.winType = WinnerEnum.BOTH;
-                    winner.potWinnerCount = sidePotData.Keys.Count;
+                    winner.potWinnerCount = entry.Value.ActivePlayers;
                 }
                 else
                 {
@@ -1126,7 +1138,7 @@ public class GameControl : MonoBehaviour
                         sidePotAmount = sideWinChips,
                         allBetChips = player.allBetChips,
                         carryChips = player.carryChips,
-                        potWinnerCount = sidePotData.Keys.Count
+                        potWinnerCount = entry.Value.ActivePlayers
                     };
                     winnersRoomFee.Add(roomFeeObj);
                 }
