@@ -5,7 +5,6 @@ using System.Linq;
 using System;
 using UnityEngine.Events;
 using System.Runtime.InteropServices;
-using static UnityEngine.EventSystems.EventTrigger;
 public enum WinnerEnum
 {
     MAIN,
@@ -860,12 +859,14 @@ public class GameControl : MonoBehaviour
                         potWinAmount = winnerShare,
                         allBetChips = potWinner.allBetChips,
                         carryChips = potWinner.carryChips,
+                        ActivePlayerCount = playingPlayers.Count(),
+                        roomFee = CalculateRoomFee(winnerShare)
                     };
                     winnersRoomFee.Add(roomFeeObj);
                 }
                 if (!IsHaveSide)
                 {
-                    CalculateRoomFee();
+                    UpdateRoomFee();
                 }
 
                 // Update the game room data (e.g., community cards)
@@ -946,12 +947,12 @@ public class GameControl : MonoBehaviour
 
                         sideWinners1.Clear();
                         sideWinners1.Add(sideWinner, sidePot);
-                        Debug.Log($"GameControl :: SideResult : Side pot amount: {sidePot}, distributing to winners.");
+                        Debug.Log($"GameControl :: SideResult : Side pot amount: {sidePot.Pots}, distributing to winners.");
 
                         DistributeSidePot(sideWinners1);
 
                         // Remove players whose chips are less than the minimum bet
-                        eligiblePlayers = eligiblePlayers.Where(p => (p.allBetChips - minBet) > 0)?.ToList();
+                        eligiblePlayers = eligiblePlayers.Where(p => (p.allBetChips - minBet) >= 0)?.ToList();
                         Debug.Log($"GameControl :: SideResult : Remaining eligible players: {string.Join(", ", eligiblePlayers.Select(p => p.nickname))}");
                     }
                 }
@@ -975,7 +976,7 @@ public class GameControl : MonoBehaviour
                     { FirebaseManager.SIDE_WINNERS_ID, sideWinnersIds },
                 };
 
-                CalculateRoomFee();
+                UpdateRoomFee();
 
                 JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.SIDE_WIN_DATA}",
                                                                 sidePotData,
@@ -1033,6 +1034,8 @@ public class GameControl : MonoBehaviour
                         sidePotAmount = 0,
                         allBetChips = potWinner.allBetChips,
                         carryChips = potWinner.carryChips,
+                        ActivePlayerCount = gameRoomData.playersWhoLeft.Count + 1,
+                        roomFee = CalculateRoomFee(winnerShare)
                     };
                     winnersRoomFee.Add(roomFeeObj);
                 }
@@ -1041,7 +1044,7 @@ public class GameControl : MonoBehaviour
                 foreach (var player in winnersRoomFee)
                     print(player.nickname + ", " + player.potWinAmount);
 
-                CalculateRoomFee();
+                UpdateRoomFee();
 
                 //更新底池獲勝資料
                 potWinnerIdList = new List<string>();
@@ -1125,7 +1128,11 @@ public class GameControl : MonoBehaviour
                 {
                     winner.sidePotAmount += sideWinChips;
                     winner.winType = WinnerEnum.BOTH;
-                    winner.potWinnerCount = entry.Value.ActivePlayers;
+                    winner.ActivePlayerCount = entry.Value.ActivePlayers;
+                    if (entry.Value.ActivePlayers != 1)
+                    {
+                        winner.roomFee += CalculateRoomFee(sideWinChips);
+                    }
                 }
                 else
                 {
@@ -1138,8 +1145,12 @@ public class GameControl : MonoBehaviour
                         sidePotAmount = sideWinChips,
                         allBetChips = player.allBetChips,
                         carryChips = player.carryChips,
-                        potWinnerCount = entry.Value.ActivePlayers
+                        ActivePlayerCount = entry.Value.ActivePlayers,
                     };
+                    if (entry.Value.ActivePlayers != 1)
+                    {
+                        roomFeeObj.roomFee = CalculateRoomFee(sideWinChips);
+                    }
                     winnersRoomFee.Add(roomFeeObj);
                 }
                 Debug.Log($"GameControl :: DistributeSidePot : Updated player data for {player.nickname}");
@@ -1149,8 +1160,13 @@ public class GameControl : MonoBehaviour
 
         Debug.Log("GameControl :: DistributeSidePot : End");
     }
-
-    public void CalculateRoomFee()
+    private double CalculateRoomFee(double amount)
+    {
+        double roomRate = DataManager.Rebate / 100;
+        double roomFee = amount * roomRate;
+        return roomFee;
+    }
+    public void UpdateRoomFee()
     {
         foreach (var winner in winnersRoomFee)
         {
@@ -1158,26 +1174,12 @@ public class GameControl : MonoBehaviour
             double sidePotAmount = winner.sidePotAmount;
             double carryChips = winner.carryChips;
             double roomRate = DataManager.Rebate / 100;
-
-            double roomFee = 0;
+            double roomFee = winner.roomFee;
 
             // 根據 potWinnerCount 的值先後計算順序
             if (winner.winType == WinnerEnum.BOTH || winner.winType == WinnerEnum.SIDE)
             {
-                if (winner.potWinnerCount == 1)
-                {
-                    roomFee = winAmount * roomRate;
-                    winAmount += sidePotAmount;
-                }
-                else
-                {
-                    winAmount += sidePotAmount;
-                    roomFee = winAmount * roomRate;
-                }
-            }
-            else
-            {
-                roomFee = winAmount * roomRate;
+                winAmount += sidePotAmount;
             }
 
             double finalWinnings = winAmount - roomFee;

@@ -289,7 +289,7 @@ public class RoomFee
     public double sidePotAmount = 0;
     public double allBetChips;
     public double extraContribution;
-    public int potWinnerCount;
+    public int ActivePlayerCount;
 }
 
 /// <summary>
