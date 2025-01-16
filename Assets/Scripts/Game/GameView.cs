@@ -8,6 +8,7 @@ using TMPro;
 using RequestBuf;
 using Newtonsoft.Json;
 using UnityEngine.EventSystems;
+using UnityEditor;
 
 public class GameView : MonoBehaviour
 {
@@ -183,6 +184,8 @@ public class GameView : MonoBehaviour
     [Header("等待下局")]
     public Image WaitNext_Obj;
     public List<Sprite> WaitNext_ImgList;
+
+    public string roomName = "";
 
     [SerializeField]
     List<Sprite> ActionBtn_Images;
@@ -480,6 +483,7 @@ public class GameView : MonoBehaviour
     /// </summary>
     private void ListenerEvent()
     {
+        EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
         //遮罩按鈕
         Mask_Btn.onClick.AddListener(() =>
         {
@@ -4109,7 +4113,7 @@ public class GameView : MonoBehaviour
     public void GetRoundCount()
     {
         Debug.Log(nameof(GetRoundCount));
-        JSBridgeManager.Instance.ReadDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.ROUND_DATA_PATH}/{DataManager.RoomId}/roundCount", gameObject.name, nameof(OnGetRoundCount));
+        JSBridgeManager.Instance.ReadDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.ROUND_DATA_PATH}/{DataManager.RoomId}/roundCount", roomName, nameof(OnGetRoundCount));
     }
 
     // Callback for getting the round count
@@ -4658,4 +4662,14 @@ public class GameView : MonoBehaviour
     {
         GameMask.SetActive(isShow);
     }
+#if UNITY_EDITOR
+    private void OnPlayModeStateChanged(PlayModeStateChange state)
+    {
+        if (state == PlayModeStateChange.ExitingPlayMode)
+        {
+            gameControl.JudgeHost();
+            gameControl.ExitGame();
+        }
+    }
+#endif
 }
