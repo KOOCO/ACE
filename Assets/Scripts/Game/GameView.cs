@@ -483,7 +483,9 @@ public class GameView : MonoBehaviour
     /// </summary>
     private void ListenerEvent()
     {
+#if UNITY_EDITOR
         EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+#endif
         //遮罩按鈕
         Mask_Btn.onClick.AddListener(() =>
         {
