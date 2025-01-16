@@ -69,14 +69,9 @@ public class InternetCheck : MonoBehaviour
         Debug.Log("User acknowledged the disconnection.");
     }
 
-    [DllImport("__Internal")]
-    private static extern void JS_WindowClose();
-
     private void CallJSWindowClose(string unused)
     {
-#if UNITY_WEBGL && !UNITY_EDITOR
-        JS_WindowClose();
-#endif
+        JSBridgeManager.Instance.WindowClose();
     }
 
     public void OnClickConfirmBtn()

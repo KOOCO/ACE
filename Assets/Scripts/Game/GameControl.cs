@@ -409,8 +409,10 @@ public class GameControl : MonoBehaviour
         lobbyView.checkIsIdle();
     }
 
+    #if UNITY_WEBGL
     [DllImport("__Internal")]
     private static extern void clearStoredVariable();
+#endif
 
     public void ClearRoomDataFromJS()
     {
@@ -516,9 +518,9 @@ public class GameControl : MonoBehaviour
     }
 
 
-    #endregion
+#endregion
 
-    #region 機器人
+#region 機器人
 
     /// <summary>
     /// 產生機器人
@@ -603,9 +605,9 @@ public class GameControl : MonoBehaviour
         }
     }
 
-    #endregion
+#endregion
 
-    #region 斷線判斷
+#region 斷線判斷
 
     /// <summary>
     /// 判斷房主
@@ -689,9 +691,9 @@ public class GameControl : MonoBehaviour
         }
     }
 
-    #endregion
+#endregion
 
-    #region 遊戲流程控制
+#region 遊戲流程控制
 
     /// <summary>
     /// 開始遊戲流程
@@ -1217,7 +1219,7 @@ public class GameControl : MonoBehaviour
 
             UpdataPlayerData(winner.userId, newData);
 
-            #region Cause the total calculate has been move to the GameView, so close this part
+#region Cause the total calculate has been move to the GameView, so close this part
             //if (winner.userId == DataManager.UserId)
             //{
             //    NoodleApi.PostTableChipsTransaction(winner.userId, DataManager.RoundId.ToString(), Math.Round(roomFee, 2), 21, ChipTransactionType.TableFee, (x) =>
@@ -1229,16 +1231,16 @@ public class GameControl : MonoBehaviour
             //           Debug.LogError($"TableFee ChipsTransaction Failed Error: {error}");
             //       });
             //}
-            #endregion
+#endregion
 
-            #region Old not use
+#region Old not use
             // GameRoomPlayerData playerData = GetPlayerData(winner.userId);
             // if (playerData != null)
             // {
             //     playerData.roomFee = roomFee;
             // }
             // Update player data
-            #endregion
+#endregion
         }
         CalculateValidBets();
     }

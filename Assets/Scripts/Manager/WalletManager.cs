@@ -8,10 +8,12 @@ using UnityEngine.SceneManagement;
 
 public class WalletManager : UnitySingleton<WalletManager>
 {
+    #if UNITY_WEBGL
     [DllImport("__Internal")]
     private static extern void JS_WindowDisconnect();                                 //電腦網頁_斷開連接
     [DllImport("__Internal")]
     private static extern void JS_RevokePermissions();                                //電腦網頁_撤銷權限
+#endif
 
     public override void Awake()
     {
@@ -35,7 +37,9 @@ public class WalletManager : UnitySingleton<WalletManager>
 
         if (!DataManager.IsMobilePlatform)
         {
+#if UNITY_WEBGL
             JS_WindowDisconnect();
+#endif
         }
     }
 

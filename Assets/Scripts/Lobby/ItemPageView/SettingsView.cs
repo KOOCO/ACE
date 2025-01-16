@@ -99,14 +99,10 @@ public class SettingsView : MonoBehaviour
         //Utils.SetOptionsToDropdown(Language_Dd,
         //                           LanguageManager.Instance.languageShowName.ToList());
     }
-    [DllImport("__Internal")]
-    private static extern void JS_WindowClose();
 
     private void CallJSWindowClose(string unused)
     {
-        #if UNITY_WEBGL && !UNITY_EDITOR
-        JS_WindowClose();
-        #endif
+        JSBridgeManager.Instance.WindowClose();
     }
 
     public void OnClickLogOutBtn()

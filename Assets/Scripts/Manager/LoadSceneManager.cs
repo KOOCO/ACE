@@ -215,15 +215,9 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
         }
     }
 
-
-    [DllImport("__Internal")]
-    private static extern void JS_WindowClose();
-
     private void CallJSWindowClose(string unused)
     {
-#if UNITY_WEBGL && !UNITY_EDITOR
-        JS_WindowClose();
-#endif
+        JSBridgeManager.Instance.WindowClose();
     }
 
 
