@@ -46,6 +46,7 @@ public class GameView : MonoBehaviour
     GameObject coinIconObj;
     [SerializeField]
     Image CallBtn_Img, FoldBtn_Img;
+    Vector2 originCallPos;
 
     [Header("加注操作")]
     [SerializeField]
@@ -222,7 +223,7 @@ public class GameView : MonoBehaviour
     private Dictionary<string, double> playerWinValueList = new Dictionary<string, double>();
 
     #region 遊戲過程紀錄
-    List<int> exitPlayerSeatList = new List<int>();                               //玩家離開座位
+    List<int> exitPlayerSeatList = new List<int>();                                //玩家離開座位
     GameInitHistoryData gameInitHistoryData;                    //遊戲初始資料紀錄
     ProcessHistoryData processHistoryData;                      //遊戲過程資料紀錄
     ResultHistoryData saveResultData;                           //遊戲結果資料紀錄
@@ -462,6 +463,8 @@ public class GameView : MonoBehaviour
 
         //初始底池位置
         InitPotPointPos = Pot_Img.rectTransform.anchoredPosition;
+        //初始跟注圖片位置
+        originCallPos = CallBtn_Img.transform.localPosition;
         // testApi_Btn.onClick.AddListener(sendBeaconRequest);
     }
 
@@ -486,6 +489,7 @@ public class GameView : MonoBehaviour
 #if UNITY_EDITOR
         EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
 #endif
+
         //遮罩按鈕
         Mask_Btn.onClick.AddListener(() =>
         {
@@ -4614,14 +4618,20 @@ public class GameView : MonoBehaviour
         if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
         {
             if (btnName == "Call")
+            {
                 SetCallBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteEnglish).album[shapeIndex];
+                CallBtn_Img.transform.localPosition = shapeIndex == 0 ? new Vector2(CallBtn_Img.transform.localPosition.x, 5.95f) : originCallPos;
+            }
             else
                 SetFoldBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteEnglish).album[shapeIndex];
         }
         else
         {
             if (btnName == "Call")
+            {
                 SetCallBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteChinese).album[shapeIndex];
+                CallBtn_Img.transform.localPosition = shapeIndex == 0 ? new Vector2(CallBtn_Img.transform.localPosition.x, 5.95f) : originCallPos;
+            }
             else
                 SetFoldBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteChinese).album[shapeIndex];
         }

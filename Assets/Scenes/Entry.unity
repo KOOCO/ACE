@@ -787,18 +787,6 @@ MonoBehaviour:
       Num: 5
     - Suit: 3
       Num: 9
---- !u!114 &1141374735
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1141374731}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d980a4d32d0602847a443e0970724850, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1940597935
 GameObject:
   m_ObjectHideFlags: 0
@@ -1110,6 +1098,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 878692339776887112, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1141126967248603384, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1364,7 +1356,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6689726745126147366, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 63.978
+      value: 84.1078
+      objectReference: {fileID: 0}
+    - target: {fileID: 6689726745126147366, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 20.414
       objectReference: {fileID: 0}
     - target: {fileID: 6689726745126147366, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1390,17 +1386,25 @@ PrefabInstance:
       propertyPath: m_Color.a
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7037748618245612601, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7570268491373483007, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       propertyPath: m_Name
       value: GameRoomManager
       objectReference: {fileID: 0}
     - target: {fileID: 7618067463498620995, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       propertyPath: m_Spacing
-      value: 5
+      value: 5.7
       objectReference: {fileID: 0}
     - target: {fileID: 7618067463498620995, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       propertyPath: m_Padding.m_Top
-      value: 0
+      value: -6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7618067463498620995, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
+      propertyPath: m_Padding.m_Left
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7708268745242368702, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       propertyPath: m_Pivot.y
@@ -1432,7 +1436,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7708268745242368702, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.00077620626
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7708268745242368702, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1619,7 +1623,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4486474359657938648, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
       propertyPath: version
-      value: v1.3.6.9
+      value: v1.3.7.0
       objectReference: {fileID: 0}
     - target: {fileID: 4486474359657938648, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
       propertyPath: releaseEnv
@@ -1668,9 +1672,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7169451929337079534, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1141374734}
-    - targetCorrespondingSourceObject: {fileID: 7169451929337079534, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1141374735}
   m_SourcePrefab: {fileID: 100100000, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
 --- !u!1001 &3579595187627393286
 PrefabInstance:
