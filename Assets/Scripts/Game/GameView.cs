@@ -222,7 +222,7 @@ public class GameView : MonoBehaviour
     private Dictionary<string, double> playerWinValueList = new Dictionary<string, double>();
 
     #region 遊戲過程紀錄
-    List<int> exitPlayerSeatList;                               //玩家離開座位
+    List<int> exitPlayerSeatList = new List<int>();                               //玩家離開座位
     GameInitHistoryData gameInitHistoryData;                    //遊戲初始資料紀錄
     ProcessHistoryData processHistoryData;                      //遊戲過程資料紀錄
     ResultHistoryData saveResultData;                           //遊戲結果資料紀錄
