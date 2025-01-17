@@ -1766,6 +1766,7 @@ public class GameView : MonoBehaviour
     {
         get
         {
+            print("禁用加注按鈕");
             //return Raise_Btn.interactable;
             return Raise_Btn.gameObject.activeSelf;
         }
@@ -2328,7 +2329,8 @@ public class GameView : MonoBehaviour
 
         if (IsUnableRaise == true && isJustAllIn == false)
         {
-            Raise_Btn.gameObject.SetActive(false);
+            print("無法在加注");
+            //Raise_Btn.gameObject.SetActive(false);
         }
         else
         {
@@ -2549,7 +2551,7 @@ public class GameView : MonoBehaviour
                         }
 
                         // Judge the local player's poker hand shape
-                        JudgePokerShapeUI(gamePlayerInfo, true);
+                        //JudgePokerShapeUI(gamePlayerInfo, true);
                     }
                 }
 
@@ -2920,7 +2922,7 @@ public class GameView : MonoBehaviour
                 thisData.IsPlaying = true;
                 //player.SetHandPoker(dic.Value.Item1,
                    //                 dic.Value.Item2);
-                JudgePokerShapeUI(player, true);
+                //JudgePokerShapeUI(player, true);
             }
             else
             {
@@ -4372,10 +4374,10 @@ public class GameView : MonoBehaviour
                         WaitingTip_Txt.gameObject.SetActive(false);
 
                         // Judge the local player's poker hand shape
-                        if (gameRoomData.playingPlayersIdList.Contains(DataManager.UserId))
-                        {
-                            JudgePokerShapeUI(gamePlayerInfo, true);
-                        }
+                        //if (gameRoomData.playingPlayersIdList.Contains(DataManager.UserId))
+                        //{
+                        //    JudgePokerShapeUI(gamePlayerInfo, true);
+                        //}
                     }
                 }
                 else
