@@ -60,12 +60,12 @@ public class Item
     public string memberAccount;
     public string memberID;
     public string currency;
-    public int bets;
-    public int validBet;
-    public int wins;
+    public float bets;
+    public float validBet;
+    public float wins;
     public float profit;
     public float roomFee;
-    public int insurance;
+    public float insurance;
     public string tableID;
     public long roomID;
     public int roundID;
