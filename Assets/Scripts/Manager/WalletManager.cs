@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.InteropServices;
-using Thirdweb;
+//using Thirdweb;
 using System;
 using UnityEngine.SceneManagement;
 
@@ -25,15 +25,15 @@ public class WalletManager : UnitySingleton<WalletManager>
     /// </summary>
     async public void OnWalletDisconnect()
     {
-        Debug.Log("Disconnecting...");
-        try
-        {
-            await ThirdwebManager.Instance.SDK.Wallet.Disconnect(true);
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"Failed to disconnect: {e}");
-        }
+        //Debug.Log("Disconnecting...");
+        //try
+        //{
+        //    await ThirdwebManager.Instance.SDK.Wallet.Disconnect(true);
+        //}
+        //catch (Exception e)
+        //{
+        //    Debug.LogError($"Failed to disconnect: {e}");
+        //}
 
         if (!DataManager.IsMobilePlatform)
         {
@@ -64,16 +64,16 @@ public class WalletManager : UnitySingleton<WalletManager>
     /// </summary>
     async private void CheckConnect()
     {
-        bool isConnect = await ThirdwebManager.Instance.SDK.Wallet.IsConnected();
+        //bool isConnect = await ThirdwebManager.Instance.SDK.Wallet.IsConnected();
 
-        //已斷開連線
-        if (!isConnect)
-        {
-            DataManager.UserWalletAddress = "";
-            DataManager.UserWalletBalance = "";
-            CancelCheckConnect();
-            NFTManager.Instance.CancelUpdate();
-            LoadSceneManager.Instance.LoadScene(SceneEnum.Login);            
-        }
+        ////已斷開連線
+        //if (!isConnect)
+        //{
+        //    DataManager.UserWalletAddress = "";
+        //    DataManager.UserWalletBalance = "";
+        //    CancelCheckConnect();
+        //    NFTManager.Instance.CancelUpdate();
+        //    LoadSceneManager.Instance.LoadScene(SceneEnum.Login);            
+        //}
     }
 }

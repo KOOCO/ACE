@@ -6,8 +6,8 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.Events;
-using ZXing;
-using ZXing.QrCode;
+//using ZXing;
+//using ZXing.QrCode;
 using UnityEngine.EventSystems;
 using TMPro;
 
@@ -124,26 +124,26 @@ public static class Utils
     /// </summary>
     /// <param name="text"></param>
     /// <returns></returns>
-    public static Sprite GenerateQRCodeTexture(string text)
-    {
-        BarcodeWriter barcodeWriter = new BarcodeWriter
-        {
-            Format = BarcodeFormat.QR_CODE,
-            Options = new QrCodeEncodingOptions
-            {
-                Height = 256,
-                Width = 256
-            }
-        };
+    //public static Sprite GenerateQRCodeTexture(string text)
+    //{
+        //BarcodeWriter barcodeWriter = new BarcodeWriter
+        //{
+        //    Format = BarcodeFormat.QR_CODE,
+        //    Options = new QrCodeEncodingOptions
+        //    {
+        //        Height = 256,
+        //        Width = 256
+        //    }
+        //};
 
-        Color32[] pixels = barcodeWriter.Write(text);
-        Texture2D qrCodeTexture = new Texture2D(256, 256);
-        qrCodeTexture.SetPixels32(pixels);
-        qrCodeTexture.Apply();
+        //Color32[] pixels = barcodeWriter.Write(text);
+        //Texture2D qrCodeTexture = new Texture2D(256, 256);
+        //qrCodeTexture.SetPixels32(pixels);
+        //qrCodeTexture.Apply();
 
-        Sprite sprite = Sprite.Create(qrCodeTexture, new Rect(0, 0, qrCodeTexture.width, qrCodeTexture.height), Vector2.zero);
-        return sprite;
-    }
+        //Sprite sprite = Sprite.Create(qrCodeTexture, new Rect(0, 0, qrCodeTexture.width, qrCodeTexture.height), Vector2.zero);
+        //return sprite;
+    //}
 
     /// <summary>
     /// 設置Dropdown項目

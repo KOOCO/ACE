@@ -230,6 +230,21 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7897545968852939299, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
   m_PrefabInstance: {fileID: 3151687746463192382}
   m_PrefabAsset: {fileID: 0}
+--- !u!115 &223974226
+MonoScript:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  serializedVersion: 7
+  m_DefaultReferences: {}
+  m_Icon: {fileID: 0}
+  m_Type: 0
+  m_ExecutionOrder: 0
+  m_ClassName: StaticCoroutine/CoroutineHolder
+  m_Namespace: Proyecto26
+  m_AssemblyName: Assembly-CSharp
 --- !u!1 &279344459
 GameObject:
   m_ObjectHideFlags: 0
@@ -519,6 +534,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 638422986}
   m_CullTransparentMesh: 1
+--- !u!1 &782628375
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 782628377}
+  - component: {fileID: 782628376}
+  m_Layer: 0
+  m_Name: Static Coroutine RestClient
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &782628376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 782628375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 223974226}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &782628377
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 782628375}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &812066652 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2267801237438837788, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
@@ -1623,7 +1682,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4486474359657938648, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
       propertyPath: version
-      value: v1.3.7.0
+      value: v1.3.7.1
       objectReference: {fileID: 0}
     - target: {fileID: 4486474359657938648, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
       propertyPath: releaseEnv
@@ -1635,7 +1694,7 @@ PrefabInstance:
       objectReference: {fileID: 2076772826}
     - target: {fileID: 4486474359657938648, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
       propertyPath: releaseType
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4486474359657938648, guid: c23ca7668423d0140aadd6c315e71330, type: 3}
       propertyPath: isUsingDebug
@@ -2115,6 +2174,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ThirdwebManager
       objectReference: {fileID: 0}
+    - target: {fileID: 3533504508880562748, guid: 2a591512796d2ce458267cef63290151, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5710643270851320475, guid: 2a591512796d2ce458267cef63290151, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2233,3 +2296,4 @@ SceneRoots:
   - {fileID: 6957561140366990884}
   - {fileID: 1122541821481711891}
   - {fileID: 3579595187627393286}
+  - {fileID: 782628377}

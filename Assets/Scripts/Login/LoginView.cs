@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Thirdweb.Redcode.Awaiting;
+//using Thirdweb.Redcode.Awaiting;
 using System.Numerics;
-using Thirdweb;
+//using Thirdweb;
 using System;
 using System.Threading.Tasks;
 using System.Net;
@@ -14,7 +14,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
-using Nethereum.Contracts;
+//using Nethereum.Contracts;
 using UnityEngine.Networking;
 using System.Runtime.InteropServices;
 
@@ -193,7 +193,7 @@ public class LoginView : MonoBehaviour
     string recodePassword;                                                      //紀錄的密碼
     public string localIP;                                                      //紀錄IP
 
-    ChainData _currentChainData;                                                //當前連接練
+    //ChainData _currentChainData;                                                //當前連接練
     string _address;                                                            //錢包地址
 
     Coroutine connectionEffectCoroutine;                                        //連接錢包效果
@@ -432,7 +432,7 @@ public class LoginView : MonoBehaviour
             {
                 //錢包登入
                 OnSwlwctWalletInit();
-                OnWalletDisconnect();
+                //OnWalletDisconnect();
             }
             else
             {
@@ -445,7 +445,7 @@ public class LoginView : MonoBehaviour
                 else
                 {
                     //手機登入
-                    OnMobileSignInInit();
+                    //OnMobileSignInInit();
                 }
 
             }
@@ -456,7 +456,7 @@ public class LoginView : MonoBehaviour
         {
             StopCoroutine(connectionEffectCoroutine);
             OnSwlwctWalletInit();
-            OnWalletDisconnect();
+            //OnWalletDisconnect();
         });
 
         #endregion
@@ -493,7 +493,7 @@ public class LoginView : MonoBehaviour
                 StartConnect("WalletConnect", WalletEnum.Binance);
             }
 
-            InvokeRepeating(nameof(TryBinanceConnect), 8, 3);
+            //InvokeRepeating(nameof(TryBinanceConnect), 8, 3);
         });
 
         //Coonbase連接
@@ -517,7 +517,7 @@ public class LoginView : MonoBehaviour
                 emailAddress = WalletEmail_If.text,
                 walletAddress = DataManager.UserWalletAddress,
             };
-            AppApi.RegisterPasswordLess(walletRegister, WalletRegisterCallback);
+            //AppApi.RegisterPasswordLess(walletRegister, WalletRegisterCallback);
         });
 
         #endregion
@@ -649,7 +649,7 @@ public class LoginView : MonoBehaviour
         //註冊成功登入取消按鈕
         RegisterSuccessfulCancel_Btn.onClick.AddListener(() =>
         {
-            OnMobileSignInInit();
+            //OnMobileSignInInit();
         });
 
 
@@ -660,7 +660,7 @@ public class LoginView : MonoBehaviour
         //返回手機登入
         BackToMobileSignIn_Btn.onClick.AddListener(() =>
         {
-            OnMobileSignInInit();
+            //OnMobileSignInInit();
         });
 
         //忘記密碼密碼顯示
@@ -745,7 +745,7 @@ public class LoginView : MonoBehaviour
         Utils.SetOptionsToDropdown(RegisterNumber_Dd, DataManager.CountryCode);
         Utils.SetOptionsToDropdown(LostPswNumber_Dd, DataManager.CountryCode);
 
-        _currentChainData = ThirdwebManager.Instance.supportedChains.Find(x => x.identifier == ThirdwebManager.Instance.activeChain);
+        //_currentChainData = ThirdwebManager.Instance.supportedChains.Find(x => x.identifier == ThirdwebManager.Instance.activeChain);
 
         SMSMobileNumberError_Txt.text = "";
         SMSCodeError_Txt.text = "";
@@ -880,7 +880,7 @@ public class LoginView : MonoBehaviour
         if (Connecting_Obj.activeSelf &&
             (DateTime.Now - startConnectTime).TotalSeconds >= ErrorWalletConnectTime)
         {
-            ErrorWalletConnect();
+            //ErrorWalletConnect();
         }
 
         //當前輸入框切換
@@ -998,7 +998,7 @@ public class LoginView : MonoBehaviour
                 //下載點選錢包APP
                 case "DownloadWallet":
                     DataManager.IsOpenDownloadWallet = true;
-                    JSBridgeManager.Instance.OpenDownloadWallet(currConnectingWallet);
+                    //JSBridgeManager.Instance.OpenDownloadWallet(currConnectingWallet);
                     break;
             }
         }
@@ -1069,46 +1069,46 @@ public class LoginView : MonoBehaviour
     /// <summary>
     /// 手機登入初始
     /// </summary>
-    async private void OnMobileSignInInit()
-    {
-        //手機登入
-        MobileTitle_Txt.text = LanguageManager.Instance.GetText("SIGN IN");
-        SignInNumberError_Txt.text = "";
-        MobileSignInError_Txt.text = "";
+    //async private void OnMobileSignInInit()
+    //{
+    //    //手機登入
+    //    MobileTitle_Txt.text = LanguageManager.Instance.GetText("SIGN IN");
+    //    SignInNumberError_Txt.text = "";
+    //    MobileSignInError_Txt.text = "";
 
-        await ThirdwebManager.Instance.SDK.Wallet.Disconnect(true);
+    //    await ThirdwebManager.Instance.SDK.Wallet.Disconnect(true);
 
-        SignInNumber_If.text = !string.IsNullOrEmpty(recodePhoneNumber) ?
-                               recodePhoneNumber :
-                               "";
+    //    SignInNumber_If.text = !string.IsNullOrEmpty(recodePhoneNumber) ?
+    //                           recodePhoneNumber :
+    //                           "";
 
-        SignInPassword_If.text = !string.IsNullOrEmpty(recodePassword) ?
-                                 recodePassword :
-                                 "";
+    //    SignInPassword_If.text = !string.IsNullOrEmpty(recodePassword) ?
+    //                             recodePassword :
+    //                             "";
 
-        MobileTip_Txt.text = LanguageManager.Instance.GetText("Please use your account to login in.");
+    //    MobileTip_Txt.text = LanguageManager.Instance.GetText("Please use your account to login in.");
 
-        MobileSignIn_Obj.SetActive(true);
-        MobileSiginPage_Obj.SetActive(true);
-        RegisterPage_Obj.SetActive(false);
-        RegisterSucce_Obj.SetActive(false);
-        LostPassword_Obj.SetActive(false);
+    //    MobileSignIn_Obj.SetActive(true);
+    //    MobileSiginPage_Obj.SetActive(true);
+    //    RegisterPage_Obj.SetActive(false);
+    //    RegisterSucce_Obj.SetActive(false);
+    //    LostPassword_Obj.SetActive(false);
 
-        isShowPassword = false;
-        PasswordDisplayControl(isShowPassword);
+    //    isShowPassword = false;
+    //    PasswordDisplayControl(isShowPassword);
 
-        //設定TAB切換與Enter提交方法
-        if (!DataManager.IsMobilePlatform)
-        {
-            SignInNumber_If.Select();
-            currIfList = new List<TMP_InputField>()
-            {
-                SignInNumber_If,
-                SignInPassword_If,
-            };
-            KybordEnterAction = MobileSignInSubmit;
-        }
-    }
+    //    //設定TAB切換與Enter提交方法
+    //    if (!DataManager.IsMobilePlatform)
+    //    {
+    //        SignInNumber_If.Select();
+    //        currIfList = new List<TMP_InputField>()
+    //        {
+    //            SignInNumber_If,
+    //            SignInPassword_If,
+    //        };
+    //        KybordEnterAction = MobileSignInSubmit;
+    //    }
+    //}
 
     /// <summary>
     /// 手機登入提交
@@ -1197,17 +1197,17 @@ public class LoginView : MonoBehaviour
         string AccountName = RegisterAccountName_If.text;
         bool isCorrect = true;
 
-        if (IsValidAccountName(AccountName))
-        {
+        //if (IsValidAccountName(AccountName))
+        //{
 
-            isRegisterAccountNameCorrect = true;
-        }
-        else
-        {
-            isRegisterAccountNameCorrect = false;
-            isCorrect = false;
-            return;
-        }
+        //    isRegisterAccountNameCorrect = true;
+        //}
+        //else
+        //{
+        //    isRegisterAccountNameCorrect = false;
+        //    isCorrect = false;
+        //    return;
+        //}
 
         if (!StringUtils.CheckPhoneNumber(RegisterNumber_If.text))
         {
@@ -1485,7 +1485,7 @@ public class LoginView : MonoBehaviour
         recodePhoneNumber = LostPswNumber_If.text;
         recodePassword = "";
 
-        OnMobileSignInInit();
+        //OnMobileSignInInit();
     }
 
     #endregion
@@ -1511,43 +1511,43 @@ public class LoginView : MonoBehaviour
     /// <summary>
     /// 斷開錢包連接
     /// </summary>
-    async private void OnWalletDisconnect()
-    {
-        bool isConnected = await ThirdwebManager.Instance.SDK.Wallet.IsConnected();
-        if (isConnected)
-        {
-            await ThirdwebManager.Instance.SDK.Wallet.Disconnect(true);
-            NFTManager.Instance.CancelUpdate();
-            WalletManager.Instance.CancelCheckConnect();
-            Debug.Log("Wallet Is Disconnected!");
-        }
-    }
+    //async private void OnWalletDisconnect()
+    //{
+    //    bool isConnected = await ThirdwebManager.Instance.SDK.Wallet.IsConnected();
+    //    if (isConnected)
+    //    {
+    //        await ThirdwebManager.Instance.SDK.Wallet.Disconnect(true);
+    //        NFTManager.Instance.CancelUpdate();
+    //        WalletManager.Instance.CancelCheckConnect();
+    //        Debug.Log("Wallet Is Disconnected!");
+    //    }
+    //}
 
     /// <summary>
     /// 嘗試連接Binance
     /// </summary>
-    async public void TryBinanceConnect()
-    {
-        if (DataManager.IsMobilePlatform)
-        {
-            try
-            {
-                string add = await ThirdwebManager.Instance.SDK.Wallet.GetAddress();
-                var bal = await ThirdwebManager.Instance.SDK.Wallet.GetBalance();
-                var balStr = $"{bal.value.ToEth()} {bal.symbol}";
+    //async public void TryBinanceConnect()
+    //{
+    //    if (DataManager.IsMobilePlatform)
+    //    {
+    //        try
+    //        {
+    //            string add = await ThirdwebManager.Instance.SDK.Wallet.GetAddress();
+    //            var bal = await ThirdwebManager.Instance.SDK.Wallet.GetBalance();
+    //            var balStr = $"{bal.value.ToEth()} {bal.symbol}";
 
-                DataManager.UserWalletAddress = add;
-                DataManager.UserWalletBalance = balStr;
+    //            DataManager.UserWalletAddress = add;
+    //            DataManager.UserWalletBalance = balStr;
 
-                CancelInvoke(nameof(TryBinanceConnect));
-                LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
-            }
-            catch (Exception)
-            {
-                Debug.LogError("Try Connect Fail!!!");
-            }
-        }
-    }
+    //            CancelInvoke(nameof(TryBinanceConnect));
+    //            LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
+    //        }
+    //        catch (Exception)
+    //        {
+    //            Debug.LogError("Try Connect Fail!!!");
+    //        }
+    //    }
+    //}
 
     /// <summary>
     /// 連接錢包效果
@@ -1603,66 +1603,66 @@ public class LoginView : MonoBehaviour
 
         #region 錢包連接
 
-        currConnectingWallet = walletEnum;
-        DownloadWallet_Txt.gameObject.SetActive(DataManager.IsMobilePlatform);
+        //currConnectingWallet = walletEnum;
+        //DownloadWallet_Txt.gameObject.SetActive(DataManager.IsMobilePlatform);
 
-        if (DataManager.IsMobilePlatform &&
-            DataManager.IsDefaultBrowser &&
-            Application.platform != RuntimePlatform.IPhonePlayer)
-        {
-            //在預設瀏覽器內
-            JSBridgeManager.Instance.OpenNewBrowser(DataManager.LineMail, DataManager.IGIUserIdAndName);
-            return;
-        }
+        //if (DataManager.IsMobilePlatform &&
+        //    DataManager.IsDefaultBrowser &&
+        //    Application.platform != RuntimePlatform.IPhonePlayer)
+        //{
+        //    //在預設瀏覽器內
+        //    JSBridgeManager.Instance.OpenNewBrowser(DataManager.LineMail, DataManager.IGIUserIdAndName);
+        //    return;
+        //}
 
-        //非移動平台
-        if (!DataManager.IsMobilePlatform)
-        {
-            if (walletProviderStr == "Coinbase")
-            {
-                //Coinbase 使用 Thirdweb
+        ////非移動平台
+        //if (!DataManager.IsMobilePlatform)
+        //{
+        //    if (walletProviderStr == "Coinbase")
+        //    {
+        //        //Coinbase 使用 Thirdweb
 
-                OnConnectWallet();
-            }
-            else
-            {
-                //其他錢包判斷是否有安裝錢包擴充
+        //        //OnConnectWallet();
+        //    }
+        //    else
+        //    {
+        //        //其他錢包判斷是否有安裝錢包擴充
 
-                if (JSBridgeManager.Instance.WindowCheckWallet(walletEnum))
-                {
-                    //有安裝錢包
-                    OnConnectWallet();
-                }
-                else
-                {
-                    DataManager.IsOpenDownloadWallet = true;
+        //        if (JSBridgeManager.Instance.WindowCheckWallet(walletEnum))
+        //        {
+        //            //有安裝錢包
+        //            //OnConnectWallet();
+        //        }
+        //        else
+        //        {
+        //            DataManager.IsOpenDownloadWallet = true;
 
-                    if (walletEnum == WalletEnum.Coinbase)
-                    {
-                        await Task.Delay(2000);
-                        ErrorWalletConnect();
+        //            if (walletEnum == WalletEnum.Coinbase)
+        //            {
+        //                await Task.Delay(2000);
+        //                ErrorWalletConnect();
 
-                        OnConnectWallet();
-                    }
-                    else
-                    {
-                        ErrorWalletConnect();
-                    }
-                }
-            }
-        }
-        else
-        {
-            //在移動平台
-            OnConnectWallet();
-        }
+        //                //OnConnectWallet();
+        //            }
+        //            else
+        //            {
+        //                ErrorWalletConnect();
+        //            }
+        //        }
+        //    }
+        //}
+        //else
+        //{
+        //    在移動平台
+        //    OnConnectWallet();
+        //}
 
         //連接錢包
-        void OnConnectWallet()
-        {
-            var wc = new WalletConnection(provider: Enum.Parse<WalletProvider>(walletProviderStr), chainId: BigInteger.Parse(_currentChainData.chainId));
-            Connect(wc);
-        }
+        //void OnConnectWallet()
+        //{
+        //    var wc = new WalletConnection(provider: Enum.Parse<WalletProvider>(walletProviderStr), chainId: BigInteger.Parse(_currentChainData.chainId));
+        //    Connect(wc);
+        //}
 
         #endregion
     }
@@ -1671,249 +1671,249 @@ public class LoginView : MonoBehaviour
     /// 連接錢包
     /// </summary>
     /// <param name="wc"></param>
-    async private void Connect(WalletConnection wc)
-    {
-        Debug.Log("Start Connecting....");
-        try
-        {
-            _address = await ThirdwebManager.Instance.SDK.Wallet.Connect(wc);
-        }
-        catch (Exception e)
-        {
-            ErrorWalletConnect();
+    //async private void Connect(WalletConnection wc)
+    //{
+    //    Debug.Log("Start Connecting....");
+    //    try
+    //    {
+    //        _address = await ThirdwebManager.Instance.SDK.Wallet.Connect(wc);
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        ErrorWalletConnect();
 
-            _address = null;
-            Debug.LogError($"Failed to connect: {e}");
-            return;
-        }
+    //        _address = null;
+    //        Debug.LogError($"Failed to connect: {e}");
+    //        return;
+    //    }
 
-        PostConnect(wc);
-    }
+    //    PostConnect(wc);
+    //}
 
     /// <summary>
     /// 連接錢包失敗
     /// </summary>
-    private void ErrorWalletConnect()
-    {
-        Connecting_Obj.SetActive(false);
-        RetryConnectWallet_Obj.SetActive(true);
-        ErrorConnect_Txt.text = $"{LanguageManager.Instance.GetText("Error Logging Into")} {recordConnect.TheWalletEnum}";
+    //private void ErrorWalletConnect()
+    //{
+    //    Connecting_Obj.SetActive(false);
+    //    RetryConnectWallet_Obj.SetActive(true);
+    //    ErrorConnect_Txt.text = $"{LanguageManager.Instance.GetText("Error Logging Into")} {recordConnect.TheWalletEnum}";
 
-        CancelInvoke(nameof(TryBinanceConnect));
-        if (connectionEffectCoroutine != null)
-        {
-            StopCoroutine(connectionEffectCoroutine);
-        }
-    }
+    //    //CancelInvoke(nameof(TryBinanceConnect));
+    //    if (connectionEffectCoroutine != null)
+    //    {
+    //        StopCoroutine(connectionEffectCoroutine);
+    //    }
+    //}
 
     /// <summary>
     /// 連接完成
     /// </summary>
     /// <param name="wc"></param>
-    private async void PostConnect(WalletConnection wc = null)
-    {
-        Debug.Log($"Connected to {_address}");
+    //private async void PostConnect(WalletConnection wc = null)
+    //{
+    //    Debug.Log($"Connected to {_address}");
 
-        StopCoroutine(connectionEffectCoroutine);
+    //    StopCoroutine(connectionEffectCoroutine);
 
-        var addy = _address.ShortenAddress();
-        DataManager.UserWalletAddress = _address;
+    //    var addy = _address.ShortenAddress();
+    //    DataManager.UserWalletAddress = _address;
 
-        var bal = await ThirdwebManager.Instance.SDK.Wallet.GetBalance();
-        var balStr = $"{bal.value.ToEth()} {bal.symbol}";
-        DataManager.UserWalletBalance = balStr;
+    //    var bal = await ThirdwebManager.Instance.SDK.Wallet.GetBalance();
+    //    var balStr = $"{bal.value.ToEth()} {bal.symbol}";
+    //    DataManager.UserWalletBalance = balStr;
 
-        var chain = await ThirdwebManager.Instance.SDK.Wallet.GetChainId();
+    //    var chain = await ThirdwebManager.Instance.SDK.Wallet.GetChainId();
 
-        Debug.Log($"Current Connect ChainID: {chain}");
-        Debug.Log($"Address:{DataManager.UserWalletAddress}");
-        Debug.Log($"Balance:{DataManager.UserWalletBalance}");
+    //    Debug.Log($"Current Connect ChainID: {chain}");
+    //    Debug.Log($"Address:{DataManager.UserWalletAddress}");
+    //    Debug.Log($"Balance:{DataManager.UserWalletBalance}");
 
-        //NFTManager.Instance.StartHandleUpdate();
-        WalletManager.Instance.StartCheckConnect();
+    //    //NFTManager.Instance.StartHandleUpdate();
+    //    WalletManager.Instance.StartCheckConnect();
 
-        WalletLogin();
+    //    WalletLogin();
 
-        //OpenSMSVerificationPage();
-    }
+    //    //OpenSMSVerificationPage();
+    //}
 
     /// <summary>
     /// 錢包登入
     /// </summary>
-    private void WalletLogin()
-    {
-        PasswordLessLogin wallLogin = new PasswordLessLogin()
-        {
-            walletAddress = DataManager.UserWalletAddress,
-            ipAddress = JsonStringIp,
-            machineCode = "123456789",
-        };
-        AppApi.PasswordLessLogin(wallLogin, WalletLoginCallback, OpenWalletRigisterPage);
-    }
+    //private void WalletLogin()
+    //{
+    //    PasswordLessLogin wallLogin = new PasswordLessLogin()
+    //    {
+    //        walletAddress = DataManager.UserWalletAddress,
+    //        ipAddress = JsonStringIp,
+    //        machineCode = "123456789",
+    //    };
+    //    AppApi.PasswordLessLogin(wallLogin, WalletLoginCallback, OpenWalletRigisterPage);
+    //}
 
     /// <summary>
     /// 錢包登入回傳
     /// </summary>
     /// <param name="jsonData"></param>
-    public void WalletLoginCallback(string jsonData)
-    {
-        DataManager.UserLoginType = LoginType.walletUser;
-        OnIntoLobby(jsonData);
-    }
+    //public void WalletLoginCallback(string jsonData)
+    //{
+    //    DataManager.UserLoginType = LoginType.walletUser;
+    //    OnIntoLobby(jsonData);
+    //}
 
     /// <summary>
     /// 錢包註冊回傳
     /// </summary>
     /// <param name="jsonData"></param>
-    public void WalletRegisterCallback(string jsonData)
-    {
-        if (jsonData == "SUCCESS")
-        {
-            WalletLogin();
-        }
-    }
+    //public void WalletRegisterCallback(string jsonData)
+    //{
+    //    if (jsonData == "SUCCESS")
+    //    {
+    //        WalletLogin();
+    //    }
+    //}
 
     /// <summary>
     /// 開啟錢包註冊頁面
     /// </summary>
     /// <param name="error"></param>
-    private void OpenWalletRigisterPage(string errorMsg)
-    {
-        //未註冊
-        Debug.Log("Error when try to login register first :: " + errorMsg);
-        if (errorMsg == "403")
-        {
-            ConnectionTitle_Txt.text = LanguageManager.Instance.GetText("REGISTER");
-            WalletLoadingPage_Obj.SetActive(false);
-            WalletRegisterPage_Obj.SetActive(true);
+    //private void OpenWalletRigisterPage(string errorMsg)
+    //{
+    //    //未註冊
+    //    Debug.Log("Error when try to login register first :: " + errorMsg);
+    //    if (errorMsg == "403")
+    //    {
+    //        ConnectionTitle_Txt.text = LanguageManager.Instance.GetText("REGISTER");
+    //        WalletLoadingPage_Obj.SetActive(false);
+    //        WalletRegisterPage_Obj.SetActive(true);
 
-            //設定TAB切換與Enter提交方法
-            if (!DataManager.IsMobilePlatform)
-            {
-                WalletRegister_If.Select();
-                currIfList = new List<TMP_InputField>()
-                {
-                    WalletRegister_If,
-                    WalletEmail_If,
-                };
-                KybordEnterAction = SMSOTPSubmitAction;
-            }
-        }
-    }
+    //        //設定TAB切換與Enter提交方法
+    //        if (!DataManager.IsMobilePlatform)
+    //        {
+    //            WalletRegister_If.Select();
+    //            currIfList = new List<TMP_InputField>()
+    //            {
+    //                WalletRegister_If,
+    //                WalletEmail_If,
+    //            };
+    //            KybordEnterAction = SMSOTPSubmitAction;
+    //        }
+    //    }
+    //}
 
     /// <summary>
     /// 簡訊OTP提交
     /// </summary>
-    async private void SMSOTPSubmitAction()
-    {
-        SMSMobileNumberError_Txt.text = "";
-        SMSCodeError_Txt.text = "";
+    //async private void SMSOTPSubmitAction()
+    //{
+    //    SMSMobileNumberError_Txt.text = "";
+    //    SMSCodeError_Txt.text = "";
 
-        string phoneNumber = "";//StringUtils.GetPhoneAddCode(SMSMobileNumber_Dd, WalletRegister_If.text);
-        string code = WalletEmail_If.text;
+    //    string phoneNumber = "";//StringUtils.GetPhoneAddCode(SMSMobileNumber_Dd, WalletRegister_If.text);
+    //    string code = WalletEmail_If.text;
 
-        bool isCorrect = true;
-        if (!StringUtils.CheckPhoneNumber(WalletRegister_If.text))
-        {
-            //手機號格式錯誤
-            isCorrect = false;
-            SMSMobileNumberError_Txt.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
-        }
+    //    bool isCorrect = true;
+    //    if (!StringUtils.CheckPhoneNumber(WalletRegister_If.text))
+    //    {
+    //        //手機號格式錯誤
+    //        isCorrect = false;
+    //        SMSMobileNumberError_Txt.text = LanguageManager.Instance.GetText("User Name Entered Incorrectly, Please Try Again.");
+    //    }
 
-        if (string.IsNullOrEmpty(WalletEmail_If.text))
-        {
-            //OTP為空
-            isCorrect = false;
-        }
+    //    if (string.IsNullOrEmpty(WalletEmail_If.text))
+    //    {
+    //        //OTP為空
+    //        isCorrect = false;
+    //    }
 
-        if (phoneNumber != currVerifyPhoneNumber)
-        {
-            //輸入框手機號與驗證手機號不符
-            isCorrect = false;
-        }
+    //    if (phoneNumber != currVerifyPhoneNumber)
+    //    {
+    //        //輸入框手機號與驗證手機號不符
+    //        isCorrect = false;
+    //    }
 
-        bool isConnect = await ThirdwebManager.Instance.SDK.Wallet.IsConnected();
+        //bool isConnect = await ThirdwebManager.Instance.SDK.Wallet.IsConnected();
 
-        if (isCorrect && isConnect)
-        {
+        //if (isCorrect && isConnect)
+        //{
 
-            Debug.Log($"Sign In = Phone Number : {phoneNumber} / Password: {code}");
+        //    Debug.Log($"Sign In = Phone Number : {phoneNumber} / Password: {code}");
 
-            currVerifyCode = code;
+        //    currVerifyCode = code;
 
-            SMSMobileNumberError_Txt.text = "";
-            SMSCodeError_Txt.text = "";
+        //    SMSMobileNumberError_Txt.text = "";
+        //    SMSCodeError_Txt.text = "";
 
-            ViewManager.Instance.OpenWaitingView(transform);
-            JSBridgeManager.Instance.FirebaseVerifyCode(currVerifyCode,
-                                                        "Wallet");
-        }
-        else
-        {
-            SMSCodeError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
-        }
-    }
+        //    ViewManager.Instance.OpenWaitingView(transform);
+        //    JSBridgeManager.Instance.FirebaseVerifyCode(currVerifyCode,
+        //                                                "Wallet");
+        //}
+        //else
+        //{
+        //    SMSCodeError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
+        //}
+    //}
 
     /// <summary>
     /// 錢包OTP驗證回傳
     /// </summary>
     /// <param name="isSuccess">回傳結果(true/false)</param>
     /// 
-    public void WalletOTPVerifyCallback(string isSuccess)
-    {
-        ViewManager.Instance.CloseWaitingView(transform);
+    //public void WalletOTPVerifyCallback(string isSuccess)
+    //{
+    //    ViewManager.Instance.CloseWaitingView(transform);
 
-        if (isSuccess == "false")
-        {
-            //驗證失敗
-            SMSCodeError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
-            return;
-        }
+    //    if (isSuccess == "false")
+    //    {
+    //        //驗證失敗
+    //        SMSCodeError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
+    //        return;
+    //    }
 
-        DataManager.UserLoginType = LoginType.walletUser;
-        JSBridgeManager.Instance.ReadDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{currVerifyPhoneNumber}",
-                                                      gameObject.name,
-                                                      nameof(CheckWalletData));
-    }
+    //    DataManager.UserLoginType = LoginType.walletUser;
+    //    JSBridgeManager.Instance.ReadDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{currVerifyPhoneNumber}",
+    //                                                  gameObject.name,
+    //                                                  nameof(CheckWalletData));
+    //}
 
     /// <summary>
     /// 檢查錢包登入資料
     /// </summary>
-    public void CheckWalletData(string jsonData)
-    {
-        AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
+    //public void CheckWalletData(string jsonData)
+    //{
+    //    AccountData loginData = FirebaseManager.Instance.OnFirebaseDataRead<AccountData>(jsonData);
 
-        //沒有資料
-        if (string.IsNullOrEmpty(loginData.phoneNumber))
-        {
-            checkDataCallbackFunc = WriteWalletNewUser;
-            SetUniqueData();
+    //    //沒有資料
+    //    if (string.IsNullOrEmpty(loginData.phoneNumber))
+    //    {
+    //        checkDataCallbackFunc = WriteWalletNewUser;
+    //        SetUniqueData();
 
-            return;
-        }
+    //        return;
+    //    }
 
-        ViewManager.Instance.CloseWaitingView(transform);
-        OnIntoLobby(jsonData);
-    }
+    //    ViewManager.Instance.CloseWaitingView(transform);
+    //    OnIntoLobby(jsonData);
+    //}
 
     /// <summary>
     /// 寫入錢包新用戶資料
     /// </summary>
-    private void WriteWalletNewUser()
-    {
-        //寫入資料
-        Dictionary<string, object> dataDic = new()
-        {
-            { FirebaseManager.PHONE_NUMBER,currVerifyPhoneNumber},                      //手機號
-            { FirebaseManager.INVITATION_CODE, currInviteCode },                        //邀請碼
-            { FirebaseManager.USER_ID, currUserId },                                    //UserID
-            { FirebaseManager.AVATAR_INDEX, 0},                                         //頭像編號
-        };
-        JSBridgeManager.Instance.WriteDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{LoginType.walletUser}/{currVerifyPhoneNumber}",
-                                                        dataDic,
-                                                        gameObject.name,
-                                                        nameof(WalletNewUerDataCallback));
-    }
+    //private void WriteWalletNewUser()
+    //{
+    //    //寫入資料
+    //    Dictionary<string, object> dataDic = new()
+    //    {
+    //        { FirebaseManager.PHONE_NUMBER,currVerifyPhoneNumber},                      //手機號
+    //        { FirebaseManager.INVITATION_CODE, currInviteCode },                        //邀請碼
+    //        { FirebaseManager.USER_ID, currUserId },                                    //UserID
+    //        { FirebaseManager.AVATAR_INDEX, 0},                                         //頭像編號
+    //    };
+    //    JSBridgeManager.Instance.WriteDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{LoginType.walletUser}/{currVerifyPhoneNumber}",
+    //                                                    dataDic,
+    //                                                    gameObject.name,
+    //                                                    nameof(WalletNewUerDataCallback));
+    //}
 
 
     private void RegisterPlayerToFirebase()

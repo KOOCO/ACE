@@ -6,7 +6,7 @@ using System;
 using UnityEngine.Events;
 using System.Linq;
 using TMPro;
-using Thirdweb;
+//using Thirdweb;
 using Newtonsoft.Json;
 
 public class LobbyMinePageView : MonoBehaviour
@@ -851,7 +851,7 @@ public class LobbyMinePageView : MonoBehaviour
         InviationCodeSubmit_Btn.gameObject.SetActive(string.IsNullOrEmpty(DataManager.UserBoundInviterId));
 
         //產生分享RQ Code
-        InvitationQRCode_Img.sprite = Utils.GenerateQRCodeTexture($"{DataManager.GetRedirectUri()}?{FirebaseManager.INVITATION_CODE}={DataManager.UserInvitationCode}");
+        //InvitationQRCode_Img.sprite = Utils.GenerateQRCodeTexture($"{DataManager.GetRedirectUri()}?{FirebaseManager.INVITATION_CODE}={DataManager.UserInvitationCode}");
 
         //邀請碼
         InvitationCode_Txt.text = DataManager.UserInvitationCode;

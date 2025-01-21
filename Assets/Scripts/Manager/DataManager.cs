@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
-using MetaMask.Unity;
+//using MetaMask.Unity;
 using System.Numerics;
 using System;
-using Thirdweb;
+//using Thirdweb;
 
 public static class DataManager
 {
