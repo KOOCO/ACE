@@ -515,6 +515,8 @@ public class GameControl : MonoBehaviour
         UpdateGameRoomData(data);
 
         JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{id}");
+        JudgeHost();
+        ExitGame();
     }
 
 
