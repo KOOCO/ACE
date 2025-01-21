@@ -217,6 +217,7 @@ public class GameView : MonoBehaviour
     public bool isOnFold;                                     //是否棄牌
 
     public GameObject GameMask;
+    public GameObject TopBar;
 
     bool isDealed; //是否播放過發牌動畫
 
@@ -4675,6 +4676,11 @@ public class GameView : MonoBehaviour
     public void SetGameMask(bool isShow)
     {
         GameMask.SetActive(isShow);
+    }
+
+    public void SetTopBar(bool isShow)
+    {
+        TopBar.SetActive(isShow);
     }
 #if UNITY_EDITOR
     private void OnPlayModeStateChanged(PlayModeStateChange state)
