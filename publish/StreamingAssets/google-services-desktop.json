@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "787364137649",
+    "firebase_url": "https://ace2024-e8b4a-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "ace2024-e8b4a",
+    "storage_bucket": "ace2024-e8b4a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:787364137649:android:c9031051cea1b4d095b090",
+        "android_client_info": {
+          "package_name": "com.Kooco.AsiaPoker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4dbuoslxKTnEBoAe05NnC7E8Lx3mHVbk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
