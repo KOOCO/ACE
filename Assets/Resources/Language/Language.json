@@ -1215,6 +1215,11 @@
     "zh_TW": "All In"
   },
   {
+    "ID": "AddChip",
+    "English": "+ ",
+    "zh_TW": "+ "
+  },
+  {
     "ID": "CallAny",
     "English": "Call Any",
     "zh_TW": "跟任何注"
