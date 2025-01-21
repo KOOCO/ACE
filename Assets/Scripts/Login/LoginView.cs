@@ -90,6 +90,11 @@ public class LoginView : MonoBehaviour
                     SignIn_Btn_Disable_Text;
     [SerializeField]
     bool SingInAccount, LoginPassword;
+    //於安卓平台啟用
+    [SerializeField]
+    TMP_InputField Ipt;
+    [SerializeField]
+    Button logIn_Btn;
 
     string JsonStringIp;
 
@@ -227,6 +232,7 @@ public class LoginView : MonoBehaviour
     bool isListenered;
     bool isMaintenance;
     string jsonCache = "";
+
     /*
     
 
@@ -404,7 +410,12 @@ public class LoginView : MonoBehaviour
         Privacy_text.SetActive(false);
 
         recordConnect = new RecordConnect();
-        // ListenerEvent();
+        ListenerEvent();
+
+#if UNITY_ANDROID
+        Ipt.gameObject.SetActive(true);
+        logIn_Btn.gameObject.SetActive(true);
+#endif
     }
 
     /// <summary>
@@ -569,6 +580,18 @@ public class LoginView : MonoBehaviour
 
         #endregion
 
+        #region 安卓登入
+
+        logIn_Btn.onClick.AddListener(() =>
+        {
+            print("安卓登入");
+            if(Ipt.text != "")
+                userName = Ipt.text;
+            StartCoroutine(GetAuthorData());
+        });
+
+        #endregion
+
         #region 手機注冊
 
         //手機註冊
@@ -726,7 +749,6 @@ public class LoginView : MonoBehaviour
             Privacy_text.SetActive(false);
         });
         #endregion
-
     }
 
     private void Start()
@@ -788,7 +810,7 @@ public class LoginView : MonoBehaviour
 #if UNITY_EDITOR
         loginWithURL.gameObject.SetActive(false);
 #else
-        loginWithURL.gameObject.SetActive(false);
+        //loginWithURL.gameObject.SetActive(false);
 #endif
     }
 
@@ -806,6 +828,7 @@ public class LoginView : MonoBehaviour
     {
         StartCoroutine(GetAuthorData());
     }
+
     private void Update()
     {
         SingInAccount = false;
@@ -1014,7 +1037,7 @@ public class LoginView : MonoBehaviour
                                             LanguageManager.Instance.GetText("Sent OTP to SMS"));
         Debug.Log("Phone Number :: SendOTP");
         currVerifyPhoneNumber = phoneNumber;
-        JSBridgeManager.Instance.TriggerRecaptcha($"{currVerifyPhoneNumber}");
+        //JSBridgeManager.Instance.TriggerRecaptcha($"{currVerifyPhoneNumber}");
 
         codeStartTime = DateTime.Now;
         string codeStartTimeStr = codeStartTime.ToString("yyyy-MM-dd HH:mm:ss");
@@ -2425,6 +2448,13 @@ public class LoginView : MonoBehaviour
 
             // 提取 URL 中的 session 值
             string sessionValue = ExtractSessionValue(response.data.url);
+            //Test copy session
+            TextEditor editor = new TextEditor
+            {
+                text = sessionValue
+            };
+            editor.SelectAll();
+            editor.Copy();
             //Debug.Log("Session Value: " + sessionValue);
 
             //Start LogIn

@@ -44,7 +44,7 @@ public class Entry : UnitySingleton<Entry>
     public override void Awake()
     {
 #if !UNITY_EDITOR
-        JSBridgeManager.Instance.SetupRecaptchaVerifier();
+        //JSBridgeManager.Instance.SetupRecaptchaVerifier();
 #endif
         base.Awake();
         QualitySettings.vSyncCount = 0;

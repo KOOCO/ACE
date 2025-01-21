@@ -178,7 +178,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
         {
             case SceneEnum.Login:
 #if !UNITY_EDITOR
-                JSBridgeManager.Instance.OpenRecaptchaTool();
+                //JSBridgeManager.Instance.OpenRecaptchaTool();
 #endif
                 NFTManager.Instance.CancelUpdate();
                 loginView = ViewManager.Instance.CreateViewInCurrCanvas<LoginView>(LoginViewObj);
@@ -186,7 +186,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
 
             case SceneEnum.Lobby:
 #if !UNITY_EDITOR
-                JSBridgeManager.Instance.CloseRecaptchaTool();
+                //JSBridgeManager.Instance.CloseRecaptchaTool();
 #endif
                 ViewManager.Instance.CreateViewInCurrCanvas<LobbyView>(LobbyViewObj);
                 break;
