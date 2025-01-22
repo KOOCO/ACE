@@ -229,6 +229,7 @@ public class tweenManager : MonoBehaviour
         cardSequence.Append(D_Btn.DOMove(target.position, 0.5f)).OnComplete(() =>
         {
             D_Btn.SetParent(target);
+            D_Btn.position = Vector2.zero;
         });
     }
 

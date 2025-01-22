@@ -978,11 +978,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6623381030151862796}
+  m_Father: {fileID: 3042874204827198068}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 47.5, y: -10}
+  m_AnchoredPosition: {x: -13.700012, y: -47.7}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4519541504007544326
@@ -2847,6 +2847,7 @@ RectTransform:
   m_Children:
   - {fileID: 3365209691106614534}
   - {fileID: 29211055252031606}
+  - {fileID: 2767773614423961588}
   m_Father: {fileID: 6623381030151862796}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -2965,7 +2966,6 @@ RectTransform:
   - {fileID: 3392034860925994746}
   - {fileID: 3042874204827198068}
   - {fileID: 2251624081484340100}
-  - {fileID: 2767773614423961588}
   - {fileID: 6936964146144927335}
   - {fileID: 9073656660661530448}
   - {fileID: 6494887864525025766}
@@ -2995,12 +2995,15 @@ MonoBehaviour:
   Avatar_Img: {fileID: 7231931423331606856}
   ButtonCharacter_Img: {fileID: 7318593751959046948}
   PokerShape_img: {fileID: 0}
+  CD_Back: {fileID: 0}
+  CD_Back2: {fileID: 0}
+  BlindCharacter_Img: {fileID: 0}
   Nickname_Txt: {fileID: 978484778693587703}
   Chips_Txt: {fileID: 3121584842972097785}
   BackChips_Txt: {fileID: 2745245883104775627}
-  BlindCharacter_Txt: {fileID: 3385808445302456070}
   countDown_Txt: {fileID: 8562006713110638022}
   Winner_Txt: {fileID: 5390519629324695439}
+  allInHalo: {fileID: 0}
   HandPoker_Tr: {fileID: 7051400743443898115}
   ShowHandPoker_Tr: {fileID: 9073656660661530448}
   HandPokers:
@@ -3018,17 +3021,22 @@ MonoBehaviour:
   raiseImg: {fileID: 21300000, guid: b39e9b60538bbca408b8bcddc5be4de8, type: 3}
   allInImg: {fileID: 21300000, guid: 4493879593583ca418b86524394b5e5a, type: 3}
   blindImg: {fileID: 21300000, guid: f4bba5734c60ad04ca30d0a599fc333c, type: 3}
+  addChipImg: {fileID: 0}
   foldColor: {r: 0.83921576, g: 0.039215688, b: 0.039215688, a: 1}
   callColor: {r: 0.90588236, g: 0.42745098, b: 0.09019608, a: 1}
   checkColor: {r: 0.03529412, g: 0.74509805, b: 0.92549026, a: 1}
   raiseColor: {r: 0.882353, g: 0.7411765, b: 0.098039225, a: 1}
   allInColor: {r: 1, g: 1, b: 1, a: 1}
   blindColor: {r: 0, g: 0.94117653, b: 0.16078432, a: 1}
+  addChipColor: {r: 0, g: 0, b: 0, a: 0}
+  betAnim: {fileID: 0}
+  Lead_Obj: {fileID: 0}
   Chat_Obj: {fileID: 6040977251394329404}
   roomFee_Obj: {fileID: 1459146302263772513}
   Chat_Txt: {fileID: 6031425055064152584}
   animationDuration: 1
   pokerCurrShapeIndex: 0
+  characters: []
   IsLocalPlayer: 0
 --- !u!1 &8842759508560102675
 GameObject:
