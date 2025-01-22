@@ -31,14 +31,12 @@ apply plugin: 'com.google.gms.google-services'
 
 // Android Resolver Exclusions Start
 android {
-    ndkPath "**NDKPATH**"
-    ndkVersion "**NDKVERSION**"
-    compileSdk 34
+    compileSdkVersion 34
     buildToolsVersion "**BUILDTOOLS**"
 
     defaultConfig {
-        minSdk **MINSDK**
-        targetSdk 34
+        minSdkVersion **MINSDK**
+        targetSdkVersion 34
         versionCode **VERSIONCODE**
         versionName '**VERSIONNAME**'
 
@@ -51,7 +49,8 @@ android {
         **DEFAULT_CONFIG_SETUP**
     }
 
-    namespace "com.Kooco.AsiaPoker"
+    namespace "com.unity3d.player"
+    namespace 'com.google.firebase.app.unity'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17

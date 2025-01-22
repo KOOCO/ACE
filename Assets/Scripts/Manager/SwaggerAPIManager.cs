@@ -68,7 +68,6 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     where T1 : class
     {
         string fullUrl = url + apiUrl;
-
         Debug.Log($"Send POST to URL: {fullUrl}");
 
         // Create POST request

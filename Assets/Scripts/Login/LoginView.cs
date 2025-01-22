@@ -412,7 +412,7 @@ public class LoginView : MonoBehaviour
         recordConnect = new RecordConnect();
         ListenerEvent();
 
-#if UNITY_ANDROID
+#if PLATFORM_ANDROID
         Ipt.gameObject.SetActive(true);
         logIn_Btn.gameObject.SetActive(true);
 #endif
@@ -809,8 +809,6 @@ public class LoginView : MonoBehaviour
 
 #if UNITY_EDITOR
         loginWithURL.gameObject.SetActive(false);
-#else
-        //loginWithURL.gameObject.SetActive(false);
 #endif
     }
 
@@ -2448,13 +2446,6 @@ public class LoginView : MonoBehaviour
 
             // 提取 URL 中的 session 值
             string sessionValue = ExtractSessionValue(response.data.url);
-            //Test copy session
-            TextEditor editor = new TextEditor
-            {
-                text = sessionValue
-            };
-            editor.SelectAll();
-            editor.Copy();
             //Debug.Log("Session Value: " + sessionValue);
 
             //Start LogIn

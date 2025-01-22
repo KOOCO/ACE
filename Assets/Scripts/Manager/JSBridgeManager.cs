@@ -4,7 +4,9 @@ using UnityEngine;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 using Proyecto26;
+using System.Threading.Tasks;
 #if UNITY_ANDROID
+using Firebase;
 using Firebase.Database;
 using Firebase.Extensions;
 #endif
@@ -15,6 +17,17 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
     public override void Awake()
     {
         base.Awake();
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task => {
+            if (task.Result == DependencyStatus.Available)
+            {
+                FirebaseApp app = FirebaseApp.DefaultInstance;
+                Debug.Log("Firebase initialized successfully.");
+            }
+            else
+            {
+                Debug.LogError($"Could not resolve Firebase dependencies: {task.Result}");
+            }
+        });
     }
 
 #if UNITY_ANDROID
@@ -419,11 +432,12 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
     public void ReadDataFromFirebase(string refPathPtr, string objNamePtr, string callbackFunPtr)
     {
 
-#if UNITY_EDITOR
+#if !UNITY_EDITOR
 
         RestClient.Get($"{DataManager.DatabaseUrl}{refPathPtr}.json").Then(response =>
         {
             GameObject obj = GameObject.Find(objNamePtr);
+            print(obj.name);
             obj.SendMessage(callbackFunPtr, response.Text);
 
         }).Catch(error =>
@@ -436,24 +450,7 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
                                 objNamePtr,
                                 callbackFunPtr);
 #elif UNITY_ANDROID
-        GetCurrReference(refPathPtr).GetValueAsync().ContinueWith(task =>
-        {
-            if (task.IsCompleted)
-            {
-                print("返回結果: " + task.Result);
-                DataSnapshot snapshot = task.Result;
-                if (snapshot.Value != null)
-                {
-                    if (!string.IsNullOrEmpty(objNamePtr) && !string.IsNullOrEmpty(callbackFunPtr))
-                    {
-                        GameObject obj = GameObject.Find(objNamePtr);
-                        obj.SendMessage(callbackFunPtr, snapshot);
-                    }
-                }
-                else
-                    print("沒有資料");
-            }
-        });
+        GetDataAsync(refPathPtr, objNamePtr, callbackFunPtr);
 #endif
     }
 
@@ -683,9 +680,45 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
 #endif
     }
 
-#endregion
+    /// <summary>
+    /// 異步方法for Firebase sdk回調
+    /// </summary>
+    /// <param name="refPath"></param>
+    /// <param name="objNamePtr"></param>
+    /// <param name="callbackFunPtr"></param>
+    /// <returns></returns>
+    public async void GetDataAsync(string refPath, string objNamePtr, string callbackFunPtr)
+    {
+        try
+        {
+            var snapshot = await GetCurrReference(refPath).GetValueAsync();
+            string res = "";
 
-#region 錢包(暫不使用)
+            print("返回結果: " + snapshot);
+            if (snapshot.Value == null)
+                print("沒有資料");
+            else
+                res = snapshot.GetRawJsonValue();
+
+            if (!string.IsNullOrEmpty(objNamePtr) && !string.IsNullOrEmpty(callbackFunPtr))
+            {
+                var obj = GameObject.Find(objNamePtr);
+                if (obj != null)
+                {
+                    print("開始回調 " + obj.name + " 的 " + callbackFunPtr);
+                    obj.SendMessage(callbackFunPtr, res);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            print("異步方法發生錯誤: " + ex.Message);
+        }
+    }
+
+    #endregion
+
+    #region 錢包(暫不使用)
 
     //#if UNITY_WEBGL
     //    [DllImport("__Internal")]
@@ -737,9 +770,9 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
     //#endif
     //}
 
-#endregion
+    #endregion
 
-#region 工具
+    #region 工具
 
 #if UNITY_WEBGL
     [DllImport("__Internal")]
