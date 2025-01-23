@@ -540,7 +540,6 @@ public class GameView : MonoBehaviour
             confirmView.SetBnt(() =>
             {
                 gameControl.JudgeHost();
-                print("選單離房");
                 gameControl.ExitGame();
                 //LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
             },
@@ -3327,11 +3326,7 @@ public class GameView : MonoBehaviour
             var playerRoomFee = gameControl.winnersRoomFee.FirstOrDefault(x => x.userId == playerData.Value.userId);
 
             // Determine if the player is a pot winner
-            print(allPlayers.Count());
-            print(gameRoomData != null);
-            print(gameRoomData.potWinData != null);
-            print(gameRoomData.potWinData.potWinnersId != null);
-            bool isPotWinner = gameRoomData.potWinData.potWinnersId.Contains(playerData.Value.userId);
+            bool isPotWinner = (gameRoomData.potWinData == null) ? false : gameRoomData.potWinData.potWinnersId.Contains(playerData.Value.userId);
 
             // Create player details based on their data
             var playerDetails = CreatePlayerDetails(playerData.Value, playerRoomFee, isPotWinner, isAllPlayerLeft);
