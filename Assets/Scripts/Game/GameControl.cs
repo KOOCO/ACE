@@ -436,6 +436,8 @@ public class GameControl : MonoBehaviour
         //移除監測連線狀態
         JSBridgeManager.Instance.RemoveListenerConnectState($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{DataManager.UserId}");
 
+        #region Old not use
+
         //移除房間判斷
         // if (gameRoomData.playerDataDic.Count - robotCount == 1 &&
         //     RoomType != TableTypeEnum.IntegralTable)
@@ -458,6 +460,8 @@ public class GameControl : MonoBehaviour
         // }
         // else
         // {
+
+        #endregion
         if (gameRoomData.playerDataDic.Count > 0)
         {
             string newHostId = "";
@@ -1295,6 +1299,7 @@ public class GameControl : MonoBehaviour
         }
     }
 
+    #region Old not use
     // public void ReCalculateProfitForPlayersWhoHaveBothSideAndMainPot(Dictionary<string, double> _mainPotWinnersRoomFee, Dictionary<string, double> _sidePotWinnersRoomFee)
     // {
     //     playersWithTheirRoomFee.Clear();
@@ -1331,9 +1336,7 @@ public class GameControl : MonoBehaviour
     //         }
     //     }
     // }
-
-
-
+    #endregion
 
     /// <summary>
     /// 底池贏家資料回傳
@@ -1414,6 +1417,7 @@ public class GameControl : MonoBehaviour
         //遊戲介面更新房間資料
         gameView.UpdateGameRoomData(gameRoomData);
 
+        #region Old not use
         //判斷房主
         //JudgeHost();
 
@@ -1425,6 +1429,7 @@ public class GameControl : MonoBehaviour
         //    gameView.SetBattleResult(true);
         //    return;
         //}
+        #endregion
 
         //聊天訊息
         ChatMessage();
@@ -1665,11 +1670,13 @@ public class GameControl : MonoBehaviour
                 bool isPotIntegralResult = !gameRoomData.potWinData.isHaveSide &&
                     gameRoomData.playerDataDic.Any(x => x.Value.carryChips < leastChips);
 
+                #region Old not use
                 // Display result for an integral table
                 //if (RoomType == TableTypeEnum.IntegralTable && isPotIntegralResult)
                 //{
                 //    gameView.SetBattleResult(GetLocalPlayer().carryChips >= leastChips);
                 //}
+                #endregion
 
                 // Host will handle game flow continuation
                 if (gameRoomData.hostId == DataManager.UserId)
@@ -1757,11 +1764,13 @@ public class GameControl : MonoBehaviour
                 };
                     UpdateGameRoomData(data);
 
+                    #region Cancel Intrgral
                     //if (RoomType == TableTypeEnum.IntegralTable && gameRoomData.playingPlayersIdList.Count == 1)
                     //{
                     //    gameView.SetBattleResult(GetLocalPlayer().carryChips >= leastChips);
                     //    yield break;
                     //}
+                    #endregion
 
                     isLicense = false;
                     yield return IStartGameFlow(GameFlowEnum.Licensing);
@@ -2198,6 +2207,7 @@ public class GameControl : MonoBehaviour
         List<string> playingPlayersId = new();
         foreach (var player in gameRoomData.playerDataDic.Values)
         {
+            #region Old not use
             // if (player.isPlayerLeft)
             // {
             //     Debug.Log("GameControl :: Player Removed : " + player.userId);
@@ -2205,6 +2215,8 @@ public class GameControl : MonoBehaviour
             //     continue;
             // }
             // Debug.Log("GameControl :: Player Next Player : " + player.userId);
+            #endregion
+
             // Check if the player is active and has enough chips
             if (player.isSitOut == false &&
                 player.carryChips >= leastChips)
@@ -2457,11 +2469,14 @@ public class GameControl : MonoBehaviour
                 { FirebaseManager.A_CHIPS, Math.Round(newChips) },
             };
         }
+
+        #region Old not use
         /*JSBridgeManager.Instance.UpdateDataFromFirebase(
             $"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
             data,
             nameof(lobbyView.gameObject.name),
             nameof(lobbyView.UpdateUserData));*/
+        #endregion
     }
 
     /// <summary>

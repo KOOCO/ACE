@@ -1745,14 +1745,7 @@ public class GameView : MonoBehaviour
     {
         if (gameControl.GetLocalPlayer().gameState != (int)PlayerStateEnum.AllIn)
         {
-            if (localPlayerTurn)
-            {
-                // if (isRaised)
-                //     RaiseBtn_Txt.text = LanguageManager.Instance.GetText("RaiseTo");
-                // else
-                //     RaiseBtn_Txt.text = LanguageManager.Instance.GetText("BetTo");
-            }
-            else
+            if (!localPlayerTurn)
             {
                 RaiseBtn_Txt.text = LanguageManager.Instance.GetText("CallAny");
             }
