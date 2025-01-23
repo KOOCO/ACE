@@ -439,7 +439,6 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
         RestClient.Get($"{DataManager.DatabaseUrl}{refPathPtr}.json").Then(response =>
         {
             GameObject obj = GameObject.Find(objNamePtr);
-            print(obj.name);
             obj.SendMessage(callbackFunPtr, response.Text);
 
         }).Catch(error =>

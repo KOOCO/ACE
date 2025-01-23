@@ -516,7 +516,8 @@ public class GameControl : MonoBehaviour
 
         JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{id}");
         JudgeHost();
-        ExitGame();
+        print("移除玩家離房");
+        //ExitGame();
     }
 
 

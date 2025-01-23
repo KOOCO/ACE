@@ -540,6 +540,7 @@ public class GameView : MonoBehaviour
             confirmView.SetBnt(() =>
             {
                 gameControl.JudgeHost();
+                print("選單離房");
                 gameControl.ExitGame();
                 //LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
             },
@@ -3323,9 +3324,13 @@ public class GameView : MonoBehaviour
                 continue;
 
             // Check if the player is in the winners' room fee list
-            var playerRoomFee = gameControl.winnersRoomFee.FirstOrDefault(x => x.userId == playerData.Value.userId); 
+            var playerRoomFee = gameControl.winnersRoomFee.FirstOrDefault(x => x.userId == playerData.Value.userId);
 
             // Determine if the player is a pot winner
+            print(allPlayers.Count());
+            print(gameRoomData != null);
+            print(gameRoomData.potWinData != null);
+            print(gameRoomData.potWinData.potWinnersId != null);
             bool isPotWinner = gameRoomData.potWinData.potWinnersId.Contains(playerData.Value.userId);
 
             // Create player details based on their data
@@ -4375,10 +4380,10 @@ public class GameView : MonoBehaviour
                         WaitingTip_Txt.gameObject.SetActive(false);
 
                         // Judge the local player's poker hand shape
-                        //if (gameRoomData.playingPlayersIdList.Contains(DataManager.UserId))
-                        //{
-                        //    JudgePokerShapeUI(gamePlayerInfo, true);
-                        //}
+                        if (gameRoomData.playingPlayersIdList.Contains(DataManager.UserId))
+                        {
+                            JudgePokerShapeUI(gamePlayerInfo, true);
+                        }
                     }
                 }
                 else
@@ -4688,6 +4693,7 @@ public class GameView : MonoBehaviour
         if (state == PlayModeStateChange.ExitingPlayMode)
         {
             gameControl.JudgeHost();
+            print("編輯器離房");
             gameControl.ExitGame();
         }
     }
