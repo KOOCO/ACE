@@ -17,6 +17,7 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
     public override void Awake()
     {
         base.Awake();
+#if UNITY_ANDROID
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task => {
             if (task.Result == DependencyStatus.Available)
             {
@@ -28,18 +29,19 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
                 Debug.LogError($"Could not resolve Firebase dependencies: {task.Result}");
             }
         });
+#endif
     }
 
 #if UNITY_ANDROID
     DatabaseReference GetCurrReference(string releaseType)
     {
         DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
-        print(reference.Child(releaseType).Key);
+        //print(reference.Child(releaseType).Key);
         return reference.Child(releaseType);
     }
 #endif
 
-    #region reCAPTCHA(暫不使用)
+#region reCAPTCHA(暫不使用)
 
     //#if UNITY_WEBGL
     //    [DllImport("__Internal")]
@@ -138,9 +140,9 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
     //#endif
     //    }
 
-    #endregion
+#endregion
 
-    #region Firebase
+#region Firebase
 
 #if UNITY_WEBGL
     [DllImport("__Internal")]
@@ -687,6 +689,7 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
     /// <param name="objNamePtr"></param>
     /// <param name="callbackFunPtr"></param>
     /// <returns></returns>
+#if UNITY_ANDROID
     public async void GetDataAsync(string refPath, string objNamePtr, string callbackFunPtr)
     {
         try
@@ -694,18 +697,19 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
             var snapshot = await GetCurrReference(refPath).GetValueAsync();
             string res = "";
 
-            print("返回結果: " + snapshot);
             if (snapshot.Value == null)
                 print("沒有資料");
             else
+            {
                 res = snapshot.GetRawJsonValue();
+                print("返回結果: " + res);
+            }
 
             if (!string.IsNullOrEmpty(objNamePtr) && !string.IsNullOrEmpty(callbackFunPtr))
             {
                 var obj = GameObject.Find(objNamePtr);
                 if (obj != null)
                 {
-                    print("開始回調 " + obj.name + " 的 " + callbackFunPtr);
                     obj.SendMessage(callbackFunPtr, res);
                 }
             }
@@ -715,10 +719,11 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
             print("異步方法發生錯誤: " + ex.Message);
         }
     }
+#endif
 
-    #endregion
+#endregion
 
-    #region 錢包(暫不使用)
+#region 錢包(暫不使用)
 
     //#if UNITY_WEBGL
     //    [DllImport("__Internal")]
@@ -770,9 +775,9 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
     //#endif
     //}
 
-    #endregion
+#endregion
 
-    #region 工具
+#region 工具
 
 #if UNITY_WEBGL
     [DllImport("__Internal")]
