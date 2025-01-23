@@ -3191,7 +3191,7 @@ MonoBehaviour:
   PrivacyConfirm_Btn_Txt: {fileID: 7943017785349477194}
   Operator: ede
   secretKey: 7533967
-  userName: shoaib007
+  userName: 
   localIP: 
   isCorrect: 1
   maintenance: {fileID: 8925713608533187787}
@@ -24789,7 +24789,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enter text...
+  m_text: Enter your Nickname...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
   m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
