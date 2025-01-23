@@ -432,7 +432,7 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
     public void ReadDataFromFirebase(string refPathPtr, string objNamePtr, string callbackFunPtr)
     {
 
-#if !UNITY_EDITOR
+#if UNITY_EDITOR
 
         RestClient.Get($"{DataManager.DatabaseUrl}{refPathPtr}.json").Then(response =>
         {
