@@ -120,6 +120,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
     private IEnumerator ILoadScene(SceneEnum sceneEnum)
     {
         lodingView.gameObject.SetActive(true);
+        version_Txt.text = Entry.Instance.version;
         Progress_Img.fillAmount = 0;
 
         // 异步加载场景
