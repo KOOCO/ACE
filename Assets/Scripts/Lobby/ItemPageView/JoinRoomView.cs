@@ -63,7 +63,7 @@ public class JoinRoomView : MonoBehaviour
 
         lobbyView = GameObject.FindAnyObjectByType<LobbyView>();
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_ANDROID
         this_Img.raycastTarget = false;
         BG.raycastTarget = false;
 #endif

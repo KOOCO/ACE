@@ -3040,7 +3040,8 @@ public class GameView : MonoBehaviour
         // Validate hand cards and community cards
         if (judgePoker != null && thisData.CurrCommunityPoker != null)
         {
-            // Combine player's hand cards with community cards
+            // Combine player's hand cards with community cards if when game is after flop
+            //judgePoker = isStart ? judgePoker : judgePoker.Concat(thisData.CurrCommunityPoker).ToList();
             judgePoker = judgePoker.Concat(thisData.CurrCommunityPoker).ToList();
             Debug.Log($"[JudgePokerShapeUI] Combined Cards: {string.Join(", ", judgePoker)}");
 
@@ -4370,7 +4371,7 @@ public class GameView : MonoBehaviour
                         // Judge the local player's poker hand shape
                         if (gameRoomData.playingPlayersIdList.Contains(DataManager.UserId))
                         {
-                            JudgePokerShapeUI(gamePlayerInfo, true);
+                            this.iInvoke(nameof(delay2JudgeHand), 0.5f, gamePlayerInfo);
                         }
                     }
                 }
@@ -4420,6 +4421,10 @@ public class GameView : MonoBehaviour
             gameRoomData.playerDataDic[sbPlayerData.userId].currAllBetChips = gameRoomData.smallBlind;
             gameRoomData.playerDataDic[bbPlayerData.userId].currAllBetChips = gameRoomData.smallBlind * 2;
         }
+    }
+    void delay2JudgeHand(GamePlayerInfo gamePlayerInfo)
+    {
+        JudgePokerShapeUI(gamePlayerInfo, true);
     }
 
     // Helper method to update the player's seat character in Firebase
@@ -4686,4 +4691,41 @@ public class GameView : MonoBehaviour
         }
     }
 #endif
+}
+
+public static class customMono
+{
+    /// <summary>
+    /// 擴充Invoke
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="methodName"></param>
+    /// <param name="time"></param>
+    /// <param name="value"></param>
+    /// <returns>void</returns>
+    public static void iInvoke(this MonoBehaviour target, string methodName, float time, object value)
+    {
+        if (target == null)
+        {
+            Debug.LogError("Target MonoBehaviour is null.");
+            return;
+        }
+        target.StartCoroutine(InvokeWithParams(target, methodName, time, value));
+    }
+
+    private static IEnumerator InvokeWithParams(MonoBehaviour target, string methodName, float time, object value)
+    {
+        // 等待指定時間
+        yield return new WaitForSeconds(time);
+
+        // 使用 SendMessage 調用指定方法，並傳遞參數
+        if (!string.IsNullOrEmpty(methodName))
+        {
+            target.gameObject.SendMessage(methodName, value, SendMessageOptions.DontRequireReceiver);
+        }
+        else
+        {
+            Debug.LogError("Method name cannot be null or empty.");
+        }
+    }
 }

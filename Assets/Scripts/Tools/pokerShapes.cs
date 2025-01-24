@@ -118,6 +118,17 @@ public class pokerShapes : MonoBehaviour
         int Index = Shapes.Count - 1;
         JSBridgeManager.Instance.UpdateDataToFirebase($"PokerShapes/-ODL14cFBIY9d4GKtSD_/{Index}", data);
     }
+
+    [EButton]
+    public void addNewShape()
+    {
+        for (int i = 0; i < Shapes.Count; i++)
+        {
+            int index = i;
+            string data = JsonConvert.SerializeObject(Shapes[index]);
+            JSBridgeManager.Instance.UpdateDataToFirebase($"PokerShapes/-ODL14cFBIY9d4GKtSD_/{index}", data);
+        }
+    }
 }
 
 [System.Serializable]

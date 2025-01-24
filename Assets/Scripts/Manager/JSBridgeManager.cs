@@ -482,18 +482,18 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
         RestClient.Delete($"{DataManager.DatabaseUrl}{refPathPtr}.json").Catch(error =>
         {
             Debug.LogError("Remove Data Error: " + error);
-        }); ;
-
+        });
 #elif UNITY_WEBGL
         JS_RemoveDataFromFirebase(refPathPtr,
                                   objName,
                                   callbackFun);
+        print("Delete " + refPathPtr);
 #elif UNITY_ANDROID
         GetCurrReference(refPathPtr).RemoveValueAsync().ContinueWith(task =>
         {
             if (task.IsCompleted)
             {
-                print($"Delete data success");
+                print($"Delete data success " + refPathPtr);
                 if (!string.IsNullOrEmpty(objNamePtr) && !string.IsNullOrEmpty(callbackFunPtr))
                 {
                     GameObject obj = GameObject.Find(objNamePtr);
