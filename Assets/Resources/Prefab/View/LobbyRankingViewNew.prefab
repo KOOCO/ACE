@@ -1679,6 +1679,7 @@ MonoBehaviour:
   status_Txt: {fileID: 694093481341323338}
   Award_Txt: {fileID: 832024891338929517}
   Rank_Txt: {fileID: 402043217621509838}
+  isSelfBar: 1
 --- !u!222 &3413070094793133733
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3707,6 +3708,7 @@ MonoBehaviour:
   status_Txt: {fileID: 2796949734072806631}
   Award_Txt: {fileID: 6476096301754420248}
   Rank_Txt: {fileID: 35020113694127368}
+  isSelfBar: 0
 --- !u!222 &3690540852372289344
 CanvasRenderer:
   m_ObjectHideFlags: 0
