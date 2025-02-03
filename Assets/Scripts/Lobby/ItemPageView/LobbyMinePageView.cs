@@ -8,6 +8,7 @@ using System.Linq;
 using TMPro;
 //using Thirdweb;
 using Newtonsoft.Json;
+using DG.Tweening;
 
 public class LobbyMinePageView : MonoBehaviour
 {
@@ -146,7 +147,7 @@ public class LobbyMinePageView : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI myHistory_Txt, handsPlayed_Txt, handsWon_Txt, bestGame_Txt, worstGame_Txt;
 
-    public Image Refresh;
+    public Transform Refresh;
 
     const string expandContentName = "Content";                                 //展開內容物件名稱
     const string expandTopBgName = "TopBg";                                     //收起上方物件名稱
@@ -385,7 +386,7 @@ public class LobbyMinePageView : MonoBehaviour
             lobbyView.UpdateUserData();
             NoodleApi.GetBalance();
 
-            StartCoroutine(rotateRefresh());
+            Refresh.DORotate(new Vector3(0, 0, -360), 0.5f).SetRelative(true).SetEase(Ease.Linear);
         });
 
         #endregion
@@ -868,22 +869,5 @@ public class LobbyMinePageView : MonoBehaviour
         Text_vicRateValue.text = $"{playerData.winRate.ToString("F2")} %";
         Text_highestVicPriceValue.text = $"$ {playerData.biggestPotWon.ToString("F2")}";
         Text_totalRevenueValue.text = $"$ {playerData.totalEarnings.ToString("F2")}";
-    }
-
-
-    IEnumerator rotateRefresh()
-    {
-        float turnTime = 0.5f;
-        float angle = 180f;
-        float duration = 0f;
-        float speed = angle / turnTime;
-        while (duration < turnTime)
-        {
-            float amount = speed * Time.deltaTime;
-            Refresh.GetComponent<Transform>().Rotate(Vector3.back, amount);
-            duration += Time.deltaTime;
-            yield return null;
-        }
-        duration = 0f;
     }
 }
