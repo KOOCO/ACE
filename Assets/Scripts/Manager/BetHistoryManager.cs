@@ -1,15 +1,22 @@
 //using Dynamitey.DynamicObjects;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BetHistoryManager : UnitySingleton<BetHistoryManager>
 {
     public GameObject bethistorySample;
     public TextMeshProUGUI allWin_Txt, allValidBet_Txt, allBet_Txt, totalRecord_Txt;
+    public Button Next_Btn, Prev_Btn;
+    public TextMeshProUGUI NowPage_Txt, TotalPage_Txt;
+    public Transform Content;
+    public ScrollRect ScrollView;
 
     private float allWin, allValidBet, allBet;
+    private int nowPage, totalPage;
 
     private BettingDetail detailData;
 
@@ -19,6 +26,26 @@ public class BetHistoryManager : UnitySingleton<BetHistoryManager>
     public void Init()
     {
         objPool = new ObjPool(transform, 100);
+        Next_Btn.onClick.AddListener(() =>
+        {
+            if (totalPage == 1) return;
+            nowPage++;
+            if (nowPage > totalPage)
+            {
+                nowPage = 1;
+            }
+            UpdatePage();
+        });
+        Prev_Btn.onClick.AddListener(() =>
+        {
+            if (totalPage == 1) return;
+            nowPage--;
+            if (nowPage <= 0)
+            {
+                nowPage = totalPage;
+            }
+            UpdatePage();
+        });
     }
     public void showBetHistory(string data)
     {
@@ -28,23 +55,49 @@ public class BetHistoryManager : UnitySingleton<BetHistoryManager>
         }
 
         detailData = JsonConvert.DeserializeObject<BettingDetail>(data) ?? new BettingDetail();
-        
+
+        totalPage = (int)((detailData.items.Count + 9) / 10); //算總頁數無條件進位
+        nowPage = 1;
+        string totalPagetxt = "OF " + totalPage.ToString();
+        TotalPage_Txt.text = totalPagetxt;
+        NowPage_Txt.text = nowPage.ToString();
+
         foreach (Item item in detailData.items)
         {
-            //BetHistorySample obj = Instantiate(bethistorySample, bethistorySample.GetComponent<Transform>().parent).GetComponent<BetHistorySample>();
-            BetHistorySample obj = objPool.CreateObj<BetHistorySample>(bethistorySample, bethistorySample.GetComponent<Transform>().parent);
-            obj.gameObject.SetActive(true);
-            string time = item.bettingTime.Replace("T", " ");
-            obj.setBetRecordValue(time, "", item.roomID.ToString(), item.roomFee, item.bets, item.validBet, item.wins, item.profit);
             allWin += item.wins;
             allValidBet += item.validBet;
             allBet += item.bets;
         }
+        for (int i = 0; i < 10; i++)
+        {
+            BetHistorySample obj = objPool.CreateObj<BetHistorySample>(bethistorySample, bethistorySample.GetComponent<Transform>().parent);
+        }
+        UpdatePage();
         allWin_Txt.text = $"${allWin}";
         allValidBet_Txt.text = $"${allValidBet}";
         allBet_Txt.text = $"${allBet}";
         totalRecord_Txt.text = $"{detailData.items.Count}";
 
+    }
+    private void UpdatePage()
+    {
+        NowPage_Txt.text = nowPage.ToString();
+        ScrollView.verticalNormalizedPosition = 1;
+        int count = 1;
+        for (int i = (nowPage - 1) * 10; i < nowPage * 10; i++)
+        {
+            if (i > detailData.items.Count - 1) return;
+            Item item = detailData.items[i];
+            BetHistorySample obj = Content.GetChild(count).GetComponent<BetHistorySample>();
+            UpdateObjectData(obj, item);
+            count++;
+        }
+    }
+    private void UpdateObjectData(BetHistorySample obj,Item item)
+    {
+        obj.gameObject.SetActive(true);
+        string time = item.bettingTime.Replace("T", " ");
+        obj.setBetRecordValue(time, "", item.roomID.ToString(), item.roomFee, item.bets, item.validBet, item.wins, item.profit);
     }
 }
 
