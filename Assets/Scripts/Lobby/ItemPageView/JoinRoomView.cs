@@ -4,11 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Newtonsoft.Json;
-using UnityEngine.Events;
-using System;
-using Proyecto26;
-using System.Threading.Tasks;
-using System.Runtime.InteropServices;
 
 public class JoinRoomView : MonoBehaviour
 {
@@ -469,6 +464,21 @@ private static extern void onPageLoad();
         Debug.Log("JoinRoomView :: JoinRoomCallback : " + jsonData);
 
         var gameRoomData = FirebaseManager.Instance.OnFirebaseDataRead<GameRoomData>(jsonData);
+        if (jsonData == null || gameRoomData?.smallBlind == 0)
+        {
+            JoinRoom newRound = new JoinRoom
+            {
+                memberId = DataManager.UserId,
+                tableId = DataManager.TableId,
+                amount = newCarryChipsValue
+            };
+            Debug.Log("Join Room Again");
+            Debug.Log($"MemberId {newRound.memberId} :: TableId {newRound.tableId} :: Amount {newRound.amount}");
+
+            //ViewManager.Instance.OpenWaitingView(transform);
+            AppApi.OnJoinRoom(newRound, OnJoinRoomSuccess, OnJoinRoomFail);
+            return;
+        }
         int seat = TexasHoldemUtil.SetGameSeat(gameRoomData);
 
         Debug.Log($"JoinRoomView :: {nameof(CreateNewRoomCallback)} : {jsonData}");
