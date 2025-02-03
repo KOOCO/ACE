@@ -960,7 +960,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 360, y: 390}
+  m_SizeDelta: {x: 360, y: 397}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &7470910604981307681
 CanvasRenderer:
@@ -2646,7 +2646,7 @@ MonoBehaviour:
   m_Padding:
     m_Left: -8
     m_Right: 0
-    m_Top: 2
+    m_Top: 8
     m_Bottom: 0
   m_ChildAlignment: 4
   m_StartCorner: 0
@@ -3088,6 +3088,7 @@ MonoBehaviour:
   Weekly_Txt: {fileID: 7028572363577011926}
   daily_Btn: {fileID: 16427412742859287}
   weekly_Btn: {fileID: 8937186998577411998}
+  Rank_Sv: {fileID: 1863850380148768016}
 --- !u!1 &8151815958909081052
 GameObject:
   m_ObjectHideFlags: 0
@@ -3688,7 +3689,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 170.1417, y: -21}
+  m_AnchoredPosition: {x: 170.1417, y: -27}
   m_SizeDelta: {x: 317, y: 38}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3062258542039552281

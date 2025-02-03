@@ -21,6 +21,8 @@ public class LobbyRankingView : MonoBehaviour
     TextMeshProUGUI PlayerTag_Txt, Winnings_Txt, Status_Txt, Daily_Txt, Weekly_Txt;
     [SerializeField]
     Toggle daily_Btn, weekly_Btn;
+    [SerializeField]
+    ScrollRect Rank_Sv;
     ObjPool objPool;
     bool isDaily = true;
 
@@ -61,6 +63,7 @@ public class LobbyRankingView : MonoBehaviour
             {
                 if (!isDaily)
                 {
+                    Rank_Sv.verticalNormalizedPosition = 1;
                     AppApi.GetTopPlayers("daily", SetRank);
                     isDaily = true;
                 }
@@ -72,6 +75,7 @@ public class LobbyRankingView : MonoBehaviour
             {
                 if (isDaily)
                 {
+                    Rank_Sv.verticalNormalizedPosition = 1;
                     AppApi.GetTopPlayers("weekly", SetRank);
                     isDaily = false;
                 }

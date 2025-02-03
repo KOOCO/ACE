@@ -10,6 +10,8 @@ public class RankSample : MonoBehaviour
     Image Avatar_Img;
     [SerializeField]
     TextMeshProUGUI Nickname_Txt, status_Txt, Award_Txt, Rank_Txt;
+    [SerializeField]
+    bool isSelfBar;
 
     /// <summary>
     /// 設置排名資料
@@ -23,9 +25,14 @@ public class RankSample : MonoBehaviour
                           DataManager.UserAvatarIndex :
                           rankData.avatar;
         Avatar_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[avatarIndex];
-        Nickname_Txt.text = rankData.nickname == DataManager.UserNickname ?
-                            $"<color=#E6C94E>{rankData.nickname}</color>" :
-                            $"<color=#FFFFFF>{rankData.nickname}</color>";
+        if (rankData.nickname == DataManager.UserNickname && !isSelfBar)
+        {
+            Nickname_Txt.text = $"<color=#E6C94E>{rankData.nickname}</color>";
+        }
+        else
+        {
+            Nickname_Txt.text = $"<color=#FFFFFF>{rankData.nickname}</color>";
+        }
         status_Txt.text = rankData.status ? $"<color=#36D982>{LanguageManager.Instance.GetText("Online")}</color>" : $"<color=#EC6273>{LanguageManager.Instance.GetText("Offline")}</color>";
         Award_Txt.text = "$" + rankData.point.ToString();
         Rank_Txt.text = rank;
