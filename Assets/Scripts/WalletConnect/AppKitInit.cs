@@ -45,7 +45,7 @@ namespace WalletCoonect
                 // Assign the SIWE configuration created above. Can be null if SIWE is not used.
                 siweConfig = siweConfig
             };
-            await AppKit.InitializeAsync(appKitConfig);
+            if(!AppKit.IsInitialized) await AppKit.InitializeAsync(appKitConfig);
             obj.SetActive(true);
 
             Debug.Log($"[AppKit Init] AppKit initialized. Loading menu scene...");
