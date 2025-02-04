@@ -61,6 +61,13 @@ public class BetHistoryManager : UnitySingleton<BetHistoryManager>
         string totalPagetxt = "OF " + totalPage.ToString();
         TotalPage_Txt.text = totalPagetxt;
         NowPage_Txt.text = nowPage.ToString();
+        if (detailData.items.Count == 0)
+        {
+            NowPage_Txt.text = "1";
+            TotalPage_Txt.text = "OF 1";
+            Next_Btn.onClick.RemoveAllListeners();
+            Prev_Btn.onClick.RemoveAllListeners();
+        }
 
         foreach (Item item in detailData.items)
         {
@@ -86,7 +93,14 @@ public class BetHistoryManager : UnitySingleton<BetHistoryManager>
         int count = 1;
         for (int i = (nowPage - 1) * 10; i < nowPage * 10; i++)
         {
-            if (i > detailData.items.Count - 1) return;
+            if (i > detailData.items.Count - 1)
+            {
+                for (int k = count; k <= 10; k++)
+                {
+                    Content.GetChild(k).gameObject.SetActive(false);
+                }
+                return;
+            }
             Item item = detailData.items[i];
             BetHistorySample obj = Content.GetChild(count).GetComponent<BetHistorySample>();
             UpdateObjectData(obj, item);
