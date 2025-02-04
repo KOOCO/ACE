@@ -20,6 +20,8 @@ using System.Runtime.InteropServices;
 
 public class LoginView : MonoBehaviour
 {
+    [SerializeField]
+    Button button;
     [Header("切換/版本")]
     [SerializeField]
     TextMeshProUGUI Vrsion_Txt, processing_Txt;
@@ -749,6 +751,12 @@ public class LoginView : MonoBehaviour
             Privacy_text.SetActive(false);
         });
         #endregion
+
+
+        button.onClick.AddListener(() =>
+        {
+            LoginInEditor();
+        });
     }
 
     private void Start()
