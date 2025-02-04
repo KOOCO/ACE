@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Newtonsoft.Json;
+using System.Runtime.InteropServices;
 
 public class JoinRoomView : MonoBehaviour
 {
