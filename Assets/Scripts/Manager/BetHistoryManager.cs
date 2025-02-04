@@ -49,11 +49,6 @@ public class BetHistoryManager : UnitySingleton<BetHistoryManager>
     }
     public void showBetHistory(string data)
     {
-        for (int i = 1; i < bethistorySample.GetComponent<Transform>().parent.childCount; i++)
-        {
-            bethistorySample.GetComponent<Transform>().parent.GetChild(i).gameObject.SetActive(false);
-        }
-
         detailData = JsonConvert.DeserializeObject<BettingDetail>(data) ?? new BettingDetail();
 
         totalPage = (int)((detailData.items.Count + 9) / 10); //算總頁數無條件進位
@@ -75,10 +70,6 @@ public class BetHistoryManager : UnitySingleton<BetHistoryManager>
             allValidBet += item.validBet;
             allBet += item.bets;
         }
-        for (int i = 0; i < 10; i++)
-        {
-            BetHistorySample obj = objPool.CreateObj<BetHistorySample>(bethistorySample, bethistorySample.GetComponent<Transform>().parent);
-        }
         UpdatePage();
         allWin_Txt.text = $"${allWin}";
         allValidBet_Txt.text = $"${allValidBet}";
@@ -91,18 +82,23 @@ public class BetHistoryManager : UnitySingleton<BetHistoryManager>
         NowPage_Txt.text = nowPage.ToString();
         ScrollView.verticalNormalizedPosition = 1;
         int count = 1;
+        for (int i = 1; i < bethistorySample.GetComponent<Transform>().parent.childCount; i++)
+        {
+            bethistorySample.GetComponent<Transform>().parent.GetChild(i).gameObject.SetActive(false);
+        }
         for (int i = (nowPage - 1) * 10; i < nowPage * 10; i++)
         {
             if (i > detailData.items.Count - 1)
             {
                 for (int k = count; k <= 10; k++)
                 {
+                    if (detailData.items.Count == 0) return;
                     Content.GetChild(k).gameObject.SetActive(false);
                 }
                 return;
             }
             Item item = detailData.items[i];
-            BetHistorySample obj = Content.GetChild(count).GetComponent<BetHistorySample>();
+            BetHistorySample obj = objPool.CreateObj<BetHistorySample>(bethistorySample, bethistorySample.GetComponent<Transform>().parent);
             UpdateObjectData(obj, item);
             count++;
         }
