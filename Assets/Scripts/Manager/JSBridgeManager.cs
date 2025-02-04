@@ -298,7 +298,7 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
 
 #if UNITY_EDITOR
 
-        RestClient.Post($"{DataManager.DatabaseUrl}{refPathPtr}.json", data).Then(response =>
+        RestClient.Put($"{DataManager.DatabaseUrl}{refPathPtr}.json", data).Then(response =>
         {
             if (!string.IsNullOrEmpty(objNamePtr) && !string.IsNullOrEmpty(callbackFunPtr))
             {
