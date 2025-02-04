@@ -63,6 +63,10 @@ public class LobbyMinePageView : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI ScoreRecordTitle_Txt, ScoreRecordReflashBtn_Txt,
                     VPIPpercent_Txt, PFRpercent_Txt, ATSpercent_Txt, ThreeBETpercent_Txt;
+    [SerializeField]
+    Image VPIP_Img, PFR_Img, BET3_Img;
+    [SerializeField]
+    TextMeshProUGUI VPIP_Txt, PFR_Txt, BET3_Txt;
 
     [Header("第三方連接")]
     [SerializeField]
@@ -694,15 +698,21 @@ public class LobbyMinePageView : MonoBehaviour
     {
         VPIP_Sli.value = vpip / 100;
         VPIPpercent_Txt.text = $"{vpip}%";
+        VPIP_Img.fillAmount = vpip / 100;
+        VPIP_Txt.text = $"{vpip}%";
 
         PFR_Sli.value = pfr / 100;
         PFRpercent_Txt.text = $"{pfr}%";
+        PFR_Img.fillAmount = pfr / 100;
+        PFR_Txt.text = $"{pfr}%";
 
         ATS_Sli.value = ats / 100;
         ATSpercent_Txt.text = $"{ats}%";
 
         ThreeBET_Sli.value = threeBet / 100;
         ThreeBETpercent_Txt.text = $"{threeBet}%";
+        BET3_Img.fillAmount = threeBet / 100;
+        BET3_Txt.text = $"{threeBet}%";
     }
 
     /// <summary>
