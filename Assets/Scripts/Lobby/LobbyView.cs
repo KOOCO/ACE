@@ -467,13 +467,6 @@ public class LobbyView : MonoBehaviour
             JSBridgeManager.Instance.ClearUrlQueryString();
         }
 
-        //更新主頁邀請碼訊息
-        LobbyMinePageView lobbyMinePageView = GameObject.FindAnyObjectByType<LobbyMinePageView>();
-        if (lobbyMinePageView != null)
-        {
-            lobbyMinePageView.UpdateInvitationCodeInfo();
-        }
-
         UpdateUserInfo();
         HandHistoryManager.Instance.LoadHandHistoryData();
 

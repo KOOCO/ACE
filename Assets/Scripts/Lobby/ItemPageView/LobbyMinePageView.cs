@@ -18,13 +18,13 @@ public class LobbyMinePageView : MonoBehaviour
 
     [Header("用戶訊息")]
     [SerializeField]
-    GameObject UserPorfile_Obj, WalletAddressBg_Obj;
+    GameObject UserPorfile_Obj;
     [SerializeField]
     Image playerAvatar_Img;
     [SerializeField]
-    Button EditorAvatar_Btn, CopyWalletAddress_Btn;
+    Button EditorAvatar_Btn;
     [SerializeField]
-    TextMeshProUGUI Nickname_Txt, WalletAddress_Txt, CopiedWalletAddress_Txt;
+    TextMeshProUGUI Nickname_Txt;
 
     [Header("更換頭像")]
     [SerializeField]
@@ -59,17 +59,9 @@ public class LobbyMinePageView : MonoBehaviour
 
     public Transform Refresh;
 
-    const string expandContentName = "Content";                                 //展開內容物件名稱
-    const string expandTopBgName = "TopBg";                                     //收起上方物件名稱
-    const float expandTIme = 0.1f;                                              //內容展開時間
-
-    string invitationCodeUrl;                                                   //邀請碼URL
     List<Button> avatarBtnList;                                                 //頭像按鈕
     int tempAvatarIndex;                                                        //零時頭像index
     bool isAccountBalanceExpand;                                                //是否展開帳戶餘額
-    bool isScoreRecordExpand;                                                   //是否展開分數紀錄
-    bool isInviteUIExpand;                                                      //是否展開邀請碼介面
-    bool isSettingExpand;
 
     /// <summary>
     /// 更新文本翻譯
@@ -77,8 +69,6 @@ public class LobbyMinePageView : MonoBehaviour
     private void UpdateLanguage()
     {
         #region 用戶訊息
-
-        CopiedWalletAddress_Txt.text = LanguageManager.Instance.GetText("Copied!");
         playerID_Txt.text = LanguageManager.Instance.GetText("Player ID");
 
         #endregion
@@ -123,11 +113,6 @@ public class LobbyMinePageView : MonoBehaviour
         LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
         ListenerEvent();
 
-        //錢包地址已複製文字
-        Color color = CopiedWalletAddress_Txt.color;
-        color.a = 0;
-        CopiedWalletAddress_Txt.color = color;
-
         ChangeAvatar_Tr.gameObject.SetActive(false);
         UserPorfile_Obj.gameObject.SetActive(true);
     }
@@ -138,21 +123,6 @@ public class LobbyMinePageView : MonoBehaviour
     private void ListenerEvent()
     {
         #region 用戶訊息
-
-        //複製錢包地址
-        CopyWalletAddress_Btn.onClick.AddListener(() =>
-        {
-            if (!string.IsNullOrEmpty(WalletAddress_Txt.text))
-            {
-                StringUtils.CopyText(DataManager.UserWalletAddress);
-                UnityUtils.Instance.ColorFade(CopiedWalletAddress_Txt,
-                                              null,
-                                              0.2f,
-                                              0.5f,
-                                              1.5f);
-            }
-        });
-
         //開啟更換頭像
         EditorAvatar_Btn.onClick.AddListener(() =>
         {
@@ -242,7 +212,6 @@ public class LobbyMinePageView : MonoBehaviour
                               DataManager.UserTimer);
 
         UpdateScoreRecord(50, 60, 70, 80);
-        UpdateInvitationCodeInfo();
     }
 
     /// <summary>
@@ -255,19 +224,6 @@ public class LobbyMinePageView : MonoBehaviour
 
         //暱稱
         Nickname_Txt.text = $"@{DataManager.UserNickname}";
-
-        //錢包地址 /*先呈現畫面之後再寫回來*/
-        //WalletAddress_Txt.text = "TTerwE2220ba3fffba745R...";
-
-        StringUtils.StrExceedSize(DataManager.UserWalletAddress, WalletAddress_Txt);
-
-
-        //WalletAddressBg_Obj.SetActive(true);
-        WalletAddressBg_Obj.SetActive(!string.IsNullOrEmpty(WalletAddress_Txt.text));
-
-        invitationCodeUrl = $"{DataManager.GetRedirectUri()}" +
-                            $"?invitationCode={DataManager.UserInvitationCode}" +
-                            $"&inviterId={DataManager.UserId}";
     }
 
     /// <summary>
@@ -309,137 +265,6 @@ public class LobbyMinePageView : MonoBehaviour
         BET3_Img.fillAmount = threeBet / 100;
         BET3_Txt.text = $"{threeBet}%";
     }
-
-    /// <summary>
-    /// 介面內容展開縮放
-    /// </summary>
-    /// <param name="isExpand">是否展開</param>
-    /// <param name="rt">展開內容物件</param>
-    /// <param name="img">展開按鈕圖</param>
-    /// <param name="completeCallback">完成回傳</param>
-    /// <returns></returns>
-    private IEnumerator ISwitchContent(bool isExpand, RectTransform rt, Image img, UnityAction completeCallback = null)
-    {
-        //展開內容物件
-        RectTransform contentObj = rt.Find(expandContentName).GetComponent<RectTransform>();
-        //收回高度
-        float pullbackHeight = rt.Find(expandTopBgName).GetComponent<RectTransform>().rect.height;
-        //目標高度
-        float targetHeight = isExpand == true ?
-                             contentObj.rect.height :
-                             pullbackHeight;
-        //初始高度
-        float initHeight = isExpand == true ?
-                           pullbackHeight :
-                           rt.rect.height;
-
-        contentObj.gameObject.SetActive(false);
-        rt.sizeDelta = new Vector2(rt.rect.width, initHeight);
-
-        DateTime startTime = DateTime.Now;
-        while ((DateTime.Now - startTime).TotalSeconds < expandTIme)
-        {
-            float progress = (float)(DateTime.Now - startTime).TotalSeconds / expandTIme;
-            float height = Mathf.Lerp(initHeight, targetHeight, progress);
-            rt.sizeDelta = new Vector2(rt.rect.width, height);
-
-            yield return null;
-        }
-
-        contentObj.gameObject.SetActive(isExpand);
-        rt.sizeDelta = new Vector2(rt.rect.width, targetHeight);
-        img.sprite = isExpand == true ?
-                     AssetsManager.Instance.GetAlbumAsset(AlbumEnum.ArrowAlbum).album[1] :
-                     AssetsManager.Instance.GetAlbumAsset(AlbumEnum.ArrowAlbum).album[3];
-
-        completeCallback?.Invoke();
-    }
-
-    #region 第三方連接
-
-    /// <summary>
-    /// 開始Instagram登入
-    /// </summary>
-    public void StartInstagram()
-    {
-        string authUrl = $"https://api.instagram.com/oauth/authorize?client_id=" +
-                         $"{DataManager.InstagramChannelID}&redirect_uri={DataManager.InstagramRedirectUri}" +
-                         $"&scope=user_profile,user_media&response_type=code";
-        JSBridgeManager.Instance.LocationHref(authUrl);
-    }
-
-    /// <summary>
-    /// 開始Line登入
-    /// </summary>
-    public void StartLineLogin()
-    {
-        string state = GenerateRandomString();
-        string nonce = GenerateRandomString();
-        string authUrl = $"https://access.line.me/oauth2/v2.1/authorize?response_type=code&" +
-                         $"client_id={DataManager.LineChannelId}&" +
-                         $"redirect_uri={DataManager.GetRedirectUri()}&" +
-                         $"state={state}&" +
-                         $"scope=profile%20openid%20email&nonce={nonce}";
-
-        JSBridgeManager.Instance.LocationHref(authUrl);
-    }
-    private string GenerateRandomString(int length = 16)
-    {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        var random = new System.Random();
-        return new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
-    }
-
-    #endregion
-
-    #region 邀請碼
-
-    /// <summary>
-    /// 提交邀請碼回傳
-    /// </summary>
-    /// <param name="jsonData"></param>
-    public void SubmitInvitationCodeCallback(string jsonData)
-    {
-        ViewManager.Instance.CloseWaitingView(transform);
-
-        var data = JsonUtility.FromJson<CheckUserData>(jsonData);
-
-        //查詢失敗/沒有資料
-
-        JSBridgeManager.Instance.ReadDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{data.phoneNumber}",
-                                                       gameObject.name,
-                                                       nameof(SubmitGetUserDataCallback));
-    }
-
-    /// <summary>
-    /// 提交獲取用戶資料回傳
-    /// </summary>
-    /// <param name="jsonData"></param>
-    public void SubmitGetUserDataCallback(string jsonData)
-    {
-        var data = JsonUtility.FromJson<AccountData>(jsonData);
-
-        //寫入資料
-        Dictionary<string, object> dataDic = new()
-        {
-            { FirebaseManager.BOUND_INVITER_ID, data.userId },
-        };
-        JSBridgeManager.Instance.UpdateDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{DataManager.UserLoginPhoneNumber}",
-                                                        dataDic);
-
-        ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Succesful, LanguageManager.Instance.GetText("Binding Successful"));
-    }
-
-    /// <summary>
-    /// 更新邀請碼訊息
-    /// </summary>
-    public void UpdateInvitationCodeInfo()
-    {
-
-    }
-
-    #endregion
-
     public void UpdatePlayerStatistics(string _playerData)
     {
         Debug.Log("Player Statistics :: " + _playerData);
