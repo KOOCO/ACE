@@ -8,9 +8,7 @@ using System.Linq;
 public class HistorySample : MonoBehaviour
 {
     [SerializeField]
-    Image Avatar_Img,
-          WinACoin_Img, WinUCoin_Img,
-          BlindACoin_Img, BlindUCoin_Img;
+    Image Avatar_Img,WinUCoin_Img,BlindUCoin_Img;
     [SerializeField]
     Poker[] HandPokers;
     [SerializeField]
@@ -18,8 +16,7 @@ public class HistorySample : MonoBehaviour
     [SerializeField]
     Button Play_Btn, CopyID_Btn;
     [SerializeField]
-    TextMeshProUGUI Index_Txt, Blind_Txt, Nicaname_Txt, WinChips_Txt,
-                    CoinType_Txt, TableName_Txt, RoomID_Txt;
+    TextMeshProUGUI Index_Txt, Blind_Txt, Nicaname_Txt, WinChips_Txt,TableName_Txt, RoomID_Txt;
 
     ResultHistoryData tempResultHistory;                                                //紀錄資料
     int tempIndex;                                                                      //紀錄顯示的筆數
@@ -54,13 +51,8 @@ public class HistorySample : MonoBehaviour
             return;
         }
 
-        WinACoin_Img.gameObject.SetActive(resultHistory.roomType == "Classic Battle");
         WinUCoin_Img.gameObject.SetActive(resultHistory.roomType == "High Roller Battleground");
-        CoinType_Txt.text = resultHistory.roomType == "Classic Battle" ?
-                            "A COIN" :
-                            "U COIN";
 
-        BlindACoin_Img.gameObject.SetActive(resultHistory.roomType == "Classic Battle");
         BlindUCoin_Img.gameObject.SetActive(resultHistory.roomType == "High Roller Battleground");
 
         tempResultHistory = resultHistory;
