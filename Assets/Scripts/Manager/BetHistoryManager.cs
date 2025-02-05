@@ -66,7 +66,7 @@ public class BetHistoryManager : UnitySingleton<BetHistoryManager>
 
         foreach (Item item in detailData.items)
         {
-            allWin += item.wins;
+            allWin += item.profit;
             allValidBet += item.validBet;
             allBet += item.bets;
         }

@@ -11,7 +11,7 @@ public class LobbyReportView : MonoBehaviour
     [SerializeField]
     Toggle betRecord_Tog, transactionList_Tog, handHistory_Tog;
     [SerializeField]
-    GameObject betRecord_Obj, transactionList_Obj, handHistory_Obj;
+    GameObject betRecord_Obj, handHistory_Obj;
     [SerializeField]
     List<GameObject> reportObjs;
 
@@ -36,11 +36,9 @@ public class LobbyReportView : MonoBehaviour
 
     [Header("文本")]
     public TextMeshProUGUI betRecord_Txt, transactionList_Txt, handHistory_Txt,
-        allWins_Txt, allValidBet_Txt, allBets_Txt, totalRecords_Txt, totalRecords_Txt1,
+        allWins_Txt, allValidBet_Txt, allBets_Txt, totalRecords_Txt,
         StartTime_Text, startTime_Text, EndTime_Text, endTime_Text, Game_Txt,
-        All_Txt, asiaPoker_Txt,
-        Date_Txt, Cancel_Txt, Confirm_Txt, Submit_Txt,
-        T_Number_Txt, Time_Txt, Types_Txt, Amount_Txt,
+        All_Txt,Date_Txt, Cancel_Txt, Confirm_Txt, Submit_Txt,
         hadH_Tip_Txt;
 
 
@@ -72,7 +70,6 @@ public class LobbyReportView : MonoBehaviour
         allValidBet_Txt.text = LanguageManager.Instance.GetText("All Valid Bet：");
         allBets_Txt.text = LanguageManager.Instance.GetText("All Bets：");
         totalRecords_Txt.text = LanguageManager.Instance.GetText("Total {count} Record(S)");
-        totalRecords_Txt1.text = LanguageManager.Instance.GetText("Total {count} Record(S)");
         #endregion
 
         #region 日期選擇
@@ -89,13 +86,6 @@ public class LobbyReportView : MonoBehaviour
         Game_Drop.options[1].text = LanguageManager.Instance.GetText("Texas hold'em");
         #endregion
 
-        #region 額度紀錄
-        T_Number_Txt.text = LanguageManager.Instance.GetText("Transaction Number");
-        Time_Txt.text = LanguageManager.Instance.GetText("Time");
-        Types_Txt.text = LanguageManager.Instance.GetText("Types");
-        Amount_Txt.text = LanguageManager.Instance.GetText("Amount");
-        #endregion
-
         hadH_Tip_Txt.text = LanguageManager.Instance.GetText("Show last 20 hands");
     }
 
@@ -110,15 +100,6 @@ public class LobbyReportView : MonoBehaviour
             StartTime_Txt.text = System.DateTime.Today.ToShortDateString();
             EndTime_Txt.text = System.DateTime.Today.ToShortDateString();
             Game_Drop.gameObject.SetActive(true);
-        });
-        transactionList_Tog.onValueChanged.AddListener((isOn) =>
-        {
-            if (isOn)
-                selectObj(transactionList_Obj);
-            dateSelect_Obj.SetActive(true);
-            StartTime_Txt.text = System.DateTime.Today.ToShortDateString();
-            EndTime_Txt.text = System.DateTime.Today.ToShortDateString();
-            Game_Drop.gameObject.SetActive(false);
         });
         handHistory_Tog.onValueChanged.AddListener((isOn) =>
         {
