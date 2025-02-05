@@ -802,9 +802,7 @@ MonoBehaviour:
   - {fileID: 5777990557793290032}
   Bg_Img: {fileID: 1188108338553632543}
   BillboardSample: {fileID: 3053678159731406967}
-  PointSample: {fileID: 8023382670496334366}
   BillboardContent: {fileID: 6780976698029347603}
-  BillboardPoints: {fileID: 616560779189147140}
   QuestView: {fileID: 2916295124333432222, guid: 283920420f2c80d4b9b4945f925ddf2a, type: 3}
   Integral_Btn: {fileID: 4893643968115162339}
   IntegralBtn_Txt: {fileID: 8537344941982934353}
@@ -819,7 +817,7 @@ MonoBehaviour:
   VCTableParent: {fileID: 3292186870722903568}
   VCTableTital_Txt: {fileID: 5176142854841288493}
   LineService: {fileID: 8559779028727428784}
-  billboardImgList: []
+  billboardImg: {fileID: 1406265399744803954}
   billboardSprList:
   - {fileID: 21300000, guid: 60611a6712f51284a81b0bd4ac848ce8, type: 3}
   - {fileID: 21300000, guid: 243891d8384d4e544858a9b38504feff, type: 3}

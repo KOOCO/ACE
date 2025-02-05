@@ -20,11 +20,7 @@ public class LobbyMainPageView : MonoBehaviour
 
     [Header("廣告刊版")]
     [SerializeField]
-    GameObject BillboardSample, PointSample;
-    [SerializeField]
-    RectTransform BillboardContent, BillboardPoints;
-    [SerializeField]
-    GameObject QuestView;
+    GameObject BillboardSample;
 
     [Header("積分房")]
     [SerializeField]
@@ -61,23 +57,10 @@ public class LobbyMainPageView : MonoBehaviour
     [SerializeField]
     Button LineService;
 
-    const string BillbpardBtnName = "BillbpardBtn";         //點擊判斷名稱
-    const float BillboardChangeTime = 5;                    //廣告刊版更換時間
-
     LobbyView lobbyView;
 
-    List<RectTransform> billboardList;                      //廣告刊版
-    public List<Image> billboardImgList;                    //廣告刊版圖片物件
+    public Image billboardImg;                    //廣告刊版圖片物件
     public List<Sprite> billboardSprList;                    //廣告刊版圖片
-    List<Image> billboardPointList;                         //廣告刊版點
-    List<int> billboardDisplayIndexList;                    //廣告刊版顯示
-    QuestView questView;
-
-    float billboardSizeWidth;                               //廣告刊版寬度
-    bool isStartMoveBillboard;                              //是否開始移動廣告刊版
-    bool isBillboardClick;                                  //判斷點擊廣告刊版
-    Vector2 startMousePos;                                  //移動廣告刊版起始移動點
-    DateTime billboardStartTime;                            //廣告刊版輪播起始時間
 
     string dataRoomName;                                    //查詢資料的房間名稱
     string pairPlayerUserId;                                //被配對上的玩家ID
@@ -95,14 +78,6 @@ public class LobbyMainPageView : MonoBehaviour
         set
         {
             Bg_Img.gameObject.SetActive(value);
-            if (value == true)
-            {
-                if (questView != null)
-                {
-                    Destroy(questView.gameObject);
-                    questView = null;
-                }
-            }
         }
     }
 
@@ -135,8 +110,6 @@ public class LobbyMainPageView : MonoBehaviour
 
         ListenerEvent();
         LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
-
-        billboardSizeWidth = BillboardSample.GetComponent<RectTransform>().rect.width;
     }
 
     /// <summary>
@@ -201,7 +174,6 @@ public class LobbyMainPageView : MonoBehaviour
         lobbyView = GameObject.FindAnyObjectByType<LobbyView>();
         SwitchBg = false;
 
-        InitBillBoard();
         ViewManager.Instance.OpenWaitingView(transform.parent);
         SwaggerAPIManager.Instance.SendGetAPI("/api/app/tables", (data) =>
         {
@@ -210,76 +182,11 @@ public class LobbyMainPageView : MonoBehaviour
             CreateRoomBtn();
         }, null, true);
 
-        billboardImgList[1].sprite = billboardSprList[LanguageManager.Instance.GetCurrLanguageIndex()];
+        billboardImg.sprite = billboardSprList[LanguageManager.Instance.GetCurrLanguageIndex()];
     }
 
     private void Update()
     {
-        //檢查目前廣告畫面
-        #region 廣告刊版切換
-
-        /*if (!GameRoomManager.Instance.IsShow &&
-            Input.GetMouseButtonDown(0) &&
-            Utils.GetTouchUIObj() != null &&
-            Utils.GetTouchUIObj().name == BillbpardBtnName)
-        {
-            isStartMoveBillboard = true;
-            isBillboardClick = true;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(BillboardContent, Input.mousePosition, null, out startMousePos);
-        }
-
-        if (Input.GetMouseButton(0) &&
-            isStartMoveBillboard)
-        {
-            billboardStartTime = DateTime.Now;
-
-            for (int i = 0; i < billboardList.Count; i++)
-            {
-                float startX = -billboardSizeWidth + (billboardSizeWidth * i);
-                Vector2 localPoint;
-                RectTransformUtility.ScreenPointToLocalPointInRectangle(BillboardContent, Input.mousePosition, null, out localPoint);
-                float x = startX + (localPoint.x - startMousePos.x);
-                billboardList[i].anchoredPosition = new Vector2(x, billboardList[i].anchoredPosition.y);
-            }
-
-            //廣告刊版移動至切換範圍不執行點擊事件
-            if (billboardList[1].anchoredPosition.x > billboardSizeWidth * 0.1f ||
-                billboardList[1].anchoredPosition.x < -billboardSizeWidth * 0.1f)
-            {
-                isBillboardClick = false;
-            }
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            isStartMoveBillboard = false;
-
-            int dir = 0;
-            if (billboardList[1].anchoredPosition.x > billboardSizeWidth * 0.1f)
-            {
-                dir = 1;
-            }
-            else if (billboardList[1].anchoredPosition.x < -billboardSizeWidth * 0.1f)
-            {
-                dir = -1;
-            }
-            //StartCoroutine(IChangeBillboard(dir));
-        }
-
-        //輪播廣告
-        //if ((DateTime.Now - billboardStartTime).TotalSeconds >= BillboardChangeTime)
-        //{
-        //    billboardStartTime = DateTime.Now;
-        //    StartCoroutine(IChangeBillboard(-1));
-        //}*/
-
-        #endregion
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-
-            SwaggerAPIManager.Instance.SendGetAPI("/api/app/banner-images/get-list");
-
-        }
         #region 積分房
 
         //積分配對計時器
@@ -297,190 +204,6 @@ public class LobbyMainPageView : MonoBehaviour
 
         #endregion
     }
-
-    #region 廣告刊版
-
-    /// <summary>
-    /// 初始儣告勘版
-    /// </summary>
-    private void InitBillBoard()
-    {
-        //可顯示判斷
-        billboardDisplayIndexList = new List<int>();
-        int allBillboardCount = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.BillboardAlbum).album.Length;
-        for (int i = 0; i < allBillboardCount; i++)
-        {
-            if (i == 2)
-            {
-                continue;
-            }
-
-            billboardDisplayIndexList.Add(i);
-        }
-
-        BillboardSample.SetActive(false);
-        billboardList = new List<RectTransform>();
-        billboardImgList = new List<Image>();
-        for (int i = -1; i < 2; i++)
-        {
-            int index = i;
-
-            //產生廣告按鈕
-            RectTransform billbpard = Instantiate(BillboardSample, BillboardContent).GetComponent<RectTransform>();
-            billbpard.gameObject.SetActive(true);
-            billbpard.anchoredPosition = new Vector2(billboardSizeWidth * i, 0);
-            billbpard.name = BillbpardBtnName;
-            Button billbpardBtn = billbpard.GetComponent<Button>();
-            billbpardBtn.onClick.AddListener(() =>
-            {
-                if (isBillboardClick)
-                {
-                    Debug.Log($"Billbroad Click: {DataManager.CurrBillboardIndex}");
-
-                    questView = Instantiate(QuestView, transform).GetComponent<QuestView>();
-
-                    switch (DataManager.CurrBillboardIndex)
-                    {
-                        //每日任務
-                        case 0:
-                            questView.ShowQuest(QuestEnum.Daily);
-                            break;
-
-                        //每周任務
-                        case 1:
-                            questView.ShowQuest(QuestEnum.Weekly);
-                            break;
-                    }
-                }
-            });
-            billboardList.Add(billbpard);
-
-            //初始廣告圖片設置(多了一個Mask所以往下搜尋一個子層級)
-            Image billboardBg_Img = billbpard.transform.GetChild(0).Find("BillboardBg_Img").GetComponent<Image>();
-            int billboardIndex = JudgeBillboardIndex(DataManager.CurrBillboardIndex + i, i);
-            Sprite sp = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.BillboardAlbum).album[billboardIndex];
-            billboardBg_Img.sprite = sp;
-            billboardImgList.Add(billboardBg_Img);
-        }
-
-        //產生點
-        PointSample.SetActive(false);
-        billboardPointList = new List<Image>();
-        for (int i = 0; i < allBillboardCount; i++)
-        {
-            if (!billboardDisplayIndexList.Contains(i)) continue;
-
-            GameObject pointObj = Instantiate(PointSample, BillboardPoints);
-            pointObj.SetActive(true);
-            Image poimtImg = pointObj.GetComponent<Image>();
-            billboardPointList.Add(poimtImg);
-        }
-
-        SetBillboardPoint();
-
-        billboardStartTime = DateTime.Now;
-    }
-
-    /// <summary>
-    /// 更換廣告刊版
-    /// </summary>
-    /// <param name="dir">更換方向</param>
-    private IEnumerator IChangeBillboard(int dir)
-    {
-        if (dir >= 1) dir = 1;
-        else if (dir <= -1) dir = -1;
-
-        float moveTime = 0.1f;
-
-        //廣告刊版移動
-        DateTime startTime = DateTime.Now;
-        Vector2[] startPos = billboardList.Select(x => x.anchoredPosition)
-                                          .ToArray();
-        float[] targetPosX = new float[startPos.Length];
-        for (int i = 0; i < targetPosX.Length; i++)
-        {
-            targetPosX[i] = (billboardSizeWidth * (i - 1)) + (billboardSizeWidth * dir);
-            if (dir == 0)
-            {
-                targetPosX[i] = billboardSizeWidth * (i - 1);
-            }
-        }
-
-        while ((DateTime.Now - startTime).TotalSeconds < moveTime)
-        {
-            float progress = (float)(DateTime.Now - startTime).TotalSeconds / moveTime;
-
-            for (int i = 0; i < billboardList.Count; i++)
-            {
-                float x = Mathf.Lerp(startPos[i].x, targetPosX[i], progress);
-                billboardList[i].anchoredPosition = new Vector2(x, billboardList[i].anchoredPosition.y);
-            }
-
-            yield return null;
-        }
-
-        //判斷當前顯示廣告Index
-        DataManager.CurrBillboardIndex = JudgeBillboardIndex(DataManager.CurrBillboardIndex + -dir, -dir); ;
-
-        //重新設置廣告刊版
-        for (int i = 0; i < billboardList.Count; i++)
-        {
-            float x = -billboardSizeWidth + (billboardSizeWidth * i);
-            billboardList[i].anchoredPosition = new Vector2(x, billboardList[i].anchoredPosition.y);
-            int billboardIndex = JudgeBillboardIndex(DataManager.CurrBillboardIndex + (i - 1), (i - 1));
-            Sprite sp = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.BillboardAlbum).album[billboardIndex];
-            billboardImgList[i].sprite = sp;
-        }
-
-        SetBillboardPoint();
-    }
-
-    /// <summary>
-    /// 判斷廣告刊版Index
-    /// </summary>
-    /// <param name="index"></param>
-    /// <param name="dir"></param>
-    /// <returns></returns>
-    private int JudgeBillboardIndex(int index, int dir)
-    {
-        if (dir >= 1) dir = 1;
-        else if (dir <= -1) dir = -1;
-
-        if (index < 0)
-        {
-            index = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.BillboardAlbum).album.Length - 1;
-        }
-        else if (index >= AssetsManager.Instance.GetAlbumAsset(AlbumEnum.BillboardAlbum).album.Length)
-        {
-            index = 0;
-        }
-
-        if (!billboardDisplayIndexList.Contains(index))
-        {
-            index = JudgeBillboardIndex(index + dir, dir);
-        }
-
-        return index;
-    }
-
-    /// <summary>
-    /// 設置廣告刊版點
-    /// </summary>
-    private void SetBillboardPoint()
-    {
-        foreach (var point in billboardPointList)
-        {
-            point.color = new Color(155 / 255, 155 / 255, 155 / 255, 255);
-        }
-
-        int billboardIndex = billboardDisplayIndexList.Select((v, i) => (v, i))
-                                                      .Where(x => x.v == DataManager.CurrBillboardIndex)
-                                                      .FirstOrDefault()
-                                                      .i;
-        billboardPointList[billboardIndex].color = new Color(1, 1, 1, 1);
-    }
-
-    #endregion
 
     #region 積分房
 
