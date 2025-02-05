@@ -700,18 +700,6 @@ public class LobbyView : MonoBehaviour
         }
     }
 
-    IEnumerator wait4MineLoad()
-    {
-        LobbyMinePageView mineView = Floor3.GetComponentInChildren<LobbyMinePageView>();
-        yield return new WaitUntil(() => mineView != null);
-
-        if (mineView != null)
-        {
-            print(mineView.name);
-            mineView.openSettingsView();
-        }
-    }
-
     IEnumerator openRefreshBtn()
     {
         yield return new WaitForSeconds(5);

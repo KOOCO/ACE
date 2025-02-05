@@ -40,116 +40,22 @@ public class LobbyMinePageView : MonoBehaviour
     [SerializeField]
     RectTransform AccountBalance_Obj;
     [SerializeField]
-    Button AccountBalanceExpand_Btn, AccountBalanceReflash_Btn;
-    [SerializeField]
-    Image AccountBalanceExpand_Img;
+    Button AccountBalanceReflash_Btn;
     [SerializeField]
     TextMeshProUGUI AccountBalanceTitle_Txt, AccountBalanceReflashBtn_Txt,
-                    CryptoTable_Txt, CryptoTableValue_Txt,
-                    VCTable_Txt, VCTableValue_Txt,
-                    Gold_Txt, GoldValue_Txt,
-                    Stamina_Txt, StaminaValue_Txt,
-                    OTProps_Txt, OTPropsValue_Txt;
+                    CryptoTable_Txt, CryptoTableValue_Txt;
 
     [Header("分數紀錄")]
-    [SerializeField]
-    RectTransform ScoreRecord_Obj;
-    [SerializeField]
-    Button ScoreRecordExpand_Btn, ScoreRecordReflash_Btn;
-    [SerializeField]
-    Image ScoreRecordExpand_Img;
-    [SerializeField]
-    Slider VPIP_Sli, PFR_Sli, ATS_Sli, ThreeBET_Sli;
-    [SerializeField]
-    TextMeshProUGUI ScoreRecordTitle_Txt, ScoreRecordReflashBtn_Txt,
-                    VPIPpercent_Txt, PFRpercent_Txt, ATSpercent_Txt, ThreeBETpercent_Txt;
     [SerializeField]
     Image VPIP_Img, PFR_Img, BET3_Img;
     [SerializeField]
     TextMeshProUGUI VPIP_Txt, PFR_Txt, BET3_Txt;
 
-    [Header("第三方連接")]
-    [SerializeField]
-    Button IGLink_Btn, LineLink_Btn;
-    [SerializeField]
-    GameObject IGNotYetLinked_Obj, LineNotYetLinked_Obj;
-    [SerializeField]
-    Image IGLinked_Img, LineLinked_Img;
-    [SerializeField]
-    TextMeshProUGUI SocialMediaTitle_Txt,
-                    IGNotYetLinked_Txt, LineNotYetLinked_Txt,
-                    IGLinked_Txt, LineLinked_Txt;
-
-    [Header("邀請碼")]
-    [SerializeField]
-    RectTransform Invitation_Obj;
-    [SerializeField]
-    Image Invitation_Img;
-    [SerializeField]
-    Button InvitationCodeShare_Btn, InviationCodeSubmit_Btn, CopyInvitationCode_Btn, InviteUIArrow_Btn;
-    [SerializeField]
-    TMP_InputField BoundInviterId_If;
-    [SerializeField]
-    Image InvitationQRCode_Img;
-    [SerializeField]
-    TextMeshProUGUI InvitationCodeTitle_Txt, InvitationCodeShareBtn_Txt, MyInvitationCode_Txt,
-                    InvitationCode_Txt, CopiedInvitationCode_Txt,
-                    BoundInviterTitle_Txt, BoundInviterIdf_Placeholder, InviationCodeSubmitBtn_Txt,
-                    InviationCodeError_Txt, BringFriends_Text, InviteCodeTitle_Text, Copy_Text,
-                    InvitCode_Txt;
-
-
-
-
-
-    [Header("交易紀錄")]
-    [SerializeField]
-    Button TransactionHistory_Btn;
-    [SerializeField]
-    GameObject TransactionHistoryViewObj;
-    [SerializeField]
-    TextMeshProUGUI TransactionHistoryTitle_Txt;
-
-    [Header("My NFT")]
-    [SerializeField]
-    Button MyNFT_Btn;
-    [SerializeField]
-    GameObject MyNFTViewObj;
-    [SerializeField]
-    TextMeshProUGUI MyNftTitle_Txt;
-
-    [Header("手牌紀錄")]
-    [SerializeField]
-    Button HandHistory_Btn;
-    [SerializeField]
-    GameObject LobbyHandHistoryViewObj;
-    [SerializeField]
-    TextMeshProUGUI HandHistoryTitle_Txt;
-
-    [Header("設定")]
-    [SerializeField]
-    RectTransform Settings_Obj;
-    [SerializeField]
-    Image settings_Img;
-    [SerializeField]
-    Button Settings_Btn_Expance;
-
-    [SerializeField]
-    GameObject SettingsViewObj;
-    [SerializeField]
-    Button Settings_Btn;
-    [SerializeField]
-    TextMeshProUGUI SettingsTitle_Txt;
-
     [Header("個人資料")]
     [SerializeField]
     TextMeshProUGUI Text_totalTimesValue, Text_averageVicRateValue, Text_vicRateValue, Text_highestVicPriceValue, Text_totalRevenueValue;
     [SerializeField]
-    TextMeshProUGUI playerID_Txt, P_Info_Txt, Text_totalTimes_Txt, Text_averageVicRate, Text_vicRate, Text_highestVicPrice, Text_totalRevenue, Text_bestHandcard;
-
-    [Header("我的歷史")]
-    [SerializeField]
-    TextMeshProUGUI myHistory_Txt, handsPlayed_Txt, handsWon_Txt, bestGame_Txt, worstGame_Txt;
+    TextMeshProUGUI playerID_Txt, P_Info_Txt, Text_totalTimes_Txt, Text_averageVicRate, Text_vicRate, Text_highestVicPrice, Text_totalRevenue;
 
     public Transform Refresh;
 
@@ -189,63 +95,6 @@ public class LobbyMinePageView : MonoBehaviour
         AccountBalanceTitle_Txt.text = LanguageManager.Instance.GetText("Account Balance");
         AccountBalanceReflashBtn_Txt.text = LanguageManager.Instance.GetText("REFLASH");
         CryptoTable_Txt.text = LanguageManager.Instance.GetText("U point");
-        VCTable_Txt.text = LanguageManager.Instance.GetText("A point");
-        Gold_Txt.text = LanguageManager.Instance.GetText("Gold");
-        Stamina_Txt.text = LanguageManager.Instance.GetText("Stamina");
-        OTProps_Txt.text = LanguageManager.Instance.GetText("OT Props");
-
-        #endregion
-
-        #region 分數紀錄
-
-        ScoreRecordTitle_Txt.text = LanguageManager.Instance.GetText("Score Record");
-        ScoreRecordReflashBtn_Txt.text = LanguageManager.Instance.GetText("REFLASH");
-
-        #endregion
-
-        #region 第三方連接
-
-        SocialMediaTitle_Txt.text = LanguageManager.Instance.GetText("Social Media");
-        IGNotYetLinked_Txt.text = LanguageManager.Instance.GetText("Not Yet Linked");
-        LineNotYetLinked_Txt.text = LanguageManager.Instance.GetText("Not Yet Linked");
-
-        #endregion
-
-        #region 邀請碼
-
-        InvitationCodeTitle_Txt.text = LanguageManager.Instance.GetText("Invite Friends");
-        InvitationCodeShareBtn_Txt.text = LanguageManager.Instance.GetText("Share");
-        BoundInviterIdf_Placeholder.text = LanguageManager.Instance.GetText("Please Enter Code");
-        InviationCodeSubmitBtn_Txt.text = LanguageManager.Instance.GetText("LINK NOW");
-        MyInvitationCode_Txt.text = LanguageManager.Instance.GetText("Share QR Code");
-        BringFriends_Text.text = LanguageManager.Instance.GetText("Bring Friends");
-        //BoundInviterTitle_Txt.text = LanguageManager.Instance.GetText("InviteCode");
-        InviteCodeTitle_Text.text = LanguageManager.Instance.GetText("InviteCode");
-        Copy_Text.text = LanguageManager.Instance.GetText("Copy");
-
-        #endregion
-
-        #region 交易紀錄
-
-        TransactionHistoryTitle_Txt.text = LanguageManager.Instance.GetText("Transaction History");
-
-        #endregion
-
-        #region My NFT
-
-        MyNftTitle_Txt.text = LanguageManager.Instance.GetText("My NFT");
-
-        #endregion
-
-        #region 手牌紀錄
-
-        HandHistoryTitle_Txt.text = LanguageManager.Instance.GetText("Hand History");
-
-        #endregion
-
-        #region 設定
-
-        SettingsTitle_Txt.text = LanguageManager.Instance.GetText("Settings");
 
         #endregion
 
@@ -257,17 +106,6 @@ public class LobbyMinePageView : MonoBehaviour
         Text_vicRate.text = LanguageManager.Instance.GetText("WIN RATE");
         Text_highestVicPrice.text = LanguageManager.Instance.GetText("BIGGEST POT WON");
         Text_totalRevenue.text = LanguageManager.Instance.GetText("TOTAL EARNINGS");
-        Text_bestHandcard.text = LanguageManager.Instance.GetText("BEST HANDCARD");
-
-        #endregion
-
-        #region 我的歷史
-
-        myHistory_Txt.text = LanguageManager.Instance.GetText("My History");
-        handsPlayed_Txt.text = LanguageManager.Instance.GetText("HANDS PLAYED");
-        handsWon_Txt.text = LanguageManager.Instance.GetText("HANDS WON");
-        bestGame_Txt.text = LanguageManager.Instance.GetText("BEST HAND");
-        worstGame_Txt.text = LanguageManager.Instance.GetText("WORST HAND");
 
         #endregion
 
@@ -289,28 +127,9 @@ public class LobbyMinePageView : MonoBehaviour
         Color color = CopiedWalletAddress_Txt.color;
         color.a = 0;
         CopiedWalletAddress_Txt.color = color;
-        //邀請碼已複製文字
-        CopiedInvitationCode_Txt.color = color;
 
         ChangeAvatar_Tr.gameObject.SetActive(false);
-
-        //紀錄展開物件初始化(已拿掉)
-        /*List<RectTransform> expandObjList = new()
-        {
-            AccountBalance_Obj,     //帳戶餘額
-            ScoreRecord_Obj,        //分數紀錄
-            Invitation_Obj,
-            Settings_Obj
-        };
-        foreach (var expandObj in expandObjList)
-        {
-            RectTransform contentObj = expandObj.Find(expandContentName).GetComponent<RectTransform>();
-            RectTransform TopBgObj = expandObj.Find(expandTopBgName).GetComponent<RectTransform>();
-            contentObj.gameObject.SetActive(false);
-            expandObj.sizeDelta = new Vector2(expandObj.rect.width, TopBgObj.rect.height);
-        }
-        AccountBalanceExpand_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.ArrowAlbum).album[3];
-        ScoreRecordExpand_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.ArrowAlbum).album[3];*/
+        UserPorfile_Obj.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -339,6 +158,7 @@ public class LobbyMinePageView : MonoBehaviour
         {
             //UserPorfile_Obj.SetActive(false);
             ChangeAvatar_Tr.gameObject.SetActive(true);
+            UserPorfile_Obj.gameObject.SetActive(false);
         });
 
         //關閉選擇頭像
@@ -346,6 +166,7 @@ public class LobbyMinePageView : MonoBehaviour
         {
             UserPorfile_Obj.SetActive(true);
             ChangeAvatar_Tr.gameObject.SetActive(false);
+            UserPorfile_Obj.gameObject.SetActive(true);
         });
 
         //提交更換頭像
@@ -367,21 +188,12 @@ public class LobbyMinePageView : MonoBehaviour
 
             UserPorfile_Obj.SetActive(true);
             ChangeAvatar_Tr.gameObject.SetActive(false);
+            UserPorfile_Obj.gameObject.SetActive(true);
         });
 
         #endregion
 
         #region 帳戶餘額
-
-        //帳戶餘額展開
-        //AccountBalanceExpand_Btn.onClick.AddListener(() =>
-        //{
-        //    isAccountBalanceExpand = !isAccountBalanceExpand;
-        //    StartCoroutine(ISwitchContent(isAccountBalanceExpand,
-        //                                  AccountBalance_Obj,
-        //                                  AccountBalanceExpand_Img));
-        //});
-
         //帳戶餘額刷新
         AccountBalanceReflash_Btn.onClick.AddListener(() =>
         {
@@ -394,169 +206,9 @@ public class LobbyMinePageView : MonoBehaviour
         });
 
         #endregion
-
-        #region 分數紀錄
-
-        //分數紀錄展開
-        //ScoreRecordExpand_Btn.onClick.AddListener(() =>
-        //{
-        //    isScoreRecordExpand = !isScoreRecordExpand;
-        //    StartCoroutine(ISwitchContent(isScoreRecordExpand,
-        //                                  ScoreRecord_Obj,
-        //                                  ScoreRecordExpand_Img));
-        //});
-
-        //紀錄分數刷新
-        ScoreRecordReflash_Btn.onClick.AddListener(() =>
-        {
-            UpdateScoreRecord(70, 33, 25, 60);
-        });
-
-        //  邀請碼介面展開
-        InviteUIArrow_Btn.onClick.AddListener(() =>
-        {
-            isInviteUIExpand = !isInviteUIExpand;
-            StartCoroutine(ISwitchContent(isInviteUIExpand,
-                                            Invitation_Obj,
-                                            Invitation_Img));
-        });
-
-        // 設定介面展開
-        Settings_Btn_Expance.onClick.AddListener(() =>
-        {
-            isSettingExpand = !isSettingExpand;
-            StartCoroutine(ISwitchContent(isSettingExpand,
-                                          Settings_Obj,
-                                          settings_Img));
-
-
-        });
-
-        #endregion
-
-        #region 邀請碼
-
-        //邀請碼分享
-        InvitationCodeShare_Btn.onClick.AddListener(() =>
-        {
-            string title = LanguageManager.Instance.GetText("Invitation Code");
-            string content = $"{LanguageManager.Instance.GetText("Asia Poker")}\n" +
-                             $"{LanguageManager.Instance.GetText("Invitation Code")} : {DataManager.UserInvitationCode}";
-
-            JSBridgeManager.Instance.Share(title,
-                                           content,
-                                           invitationCodeUrl);
-        });
-
-        //提交邀請碼
-        InviationCodeSubmit_Btn.onClick.AddListener(() =>
-        {
-            InviationCodeError_Txt.text = "";
-
-            if (BoundInviterId_If.text == DataManager.UserInvitationCode)
-            {
-                InviationCodeError_Txt.text = LanguageManager.Instance.GetText("Wrong Invitation Code.");
-                return;
-            }
-
-            //顯示提示框
-            ConfirmView confirmView = ViewManager.Instance.OpenConfirmView();
-            confirmView.SetContent(LanguageManager.Instance.GetText("Notice"),
-                                   LanguageManager.Instance.GetText("Cannot Be Changed After Linking."));
-            confirmView.SetBnt(() =>
-            {
-                ViewManager.Instance.OpenWaitingView(transform);
-                JSBridgeManager.Instance.CheckUserDataExist(FirebaseManager.INVITATION_CODE,
-                                                            BoundInviterId_If.text,
-                                                            gameObject.name,
-                                                            nameof(SubmitInvitationCodeCallback));
-            });
-        });
-
-        //複製邀請碼
-        CopyInvitationCode_Btn.onClick.AddListener(() =>
-        {
-            if (!string.IsNullOrEmpty(InvitCode_Txt.text))
-            {
-                StringUtils.CopyText(DataManager.UserInvitationCode);
-                UnityUtils.Instance.ColorFade(CopiedInvitationCode_Txt,
-                                              null,
-                                              0.2f,
-                                              0.5f,
-                                              1.5f);
-            }
-        });
-
-        #endregion
-
-        #region 第三方連接
-
-        //IG連接
-        IGLink_Btn.onClick.AddListener(() =>
-        {
-            StartInstagram();
-        });
-
-        //Line連接
-        LineLink_Btn.onClick.AddListener(() =>
-        {
-            StartLineLogin();
-        });
-
-        #endregion
-
-        #region 交易紀錄
-
-        //交易紀錄按鈕
-        TransactionHistory_Btn.onClick.AddListener(() =>
-        {
-            Transform lobbyView = GameObject.Find("LobbyView").transform;
-            RectTransform transactionHistoryView = Instantiate(TransactionHistoryViewObj, lobbyView).GetComponent<RectTransform>();
-            ViewManager.Instance.InitViewTr(transactionHistoryView, "TransactionHistoryView");
-        });
-
-        #endregion
-
-        #region My NFT
-
-        MyNFT_Btn.onClick.AddListener(() =>
-        {
-            Transform lobbyView = GameObject.Find("LobbyView").transform;
-            RectTransform MyNFTView = Instantiate(MyNFTViewObj, lobbyView).GetComponent<RectTransform>();
-            ViewManager.Instance.InitViewTr(MyNFTView, "MyNFTView");
-        });
-
-        #endregion
-
-        #region 手牌紀錄
-
-        HandHistory_Btn.onClick.AddListener(() =>
-        {
-            Transform lobbyView = GameObject.Find("LobbyView").transform;
-            RectTransform lobbyHandHistoryView = Instantiate(LobbyHandHistoryViewObj, lobbyView).GetComponent<RectTransform>();
-            ViewManager.Instance.InitViewTr(lobbyHandHistoryView, "LobbyHandHistoryView");
-        });
-
-        #endregion
-
-        #region 設定
-
-        //開啟設定
-        /*  Settings_Btn.onClick.AddListener(() =>
-          {
-              LobbyView lobbyView = GameObject.FindFirstObjectByType<LobbyView>();
-              if (lobbyView != null)
-              {
-                  Instantiate(SettingsViewObj, lobbyView.transform);
-              }
-          });
-        */
-
-        #endregion
     }
     private void Start()
     {
-        InviationCodeError_Txt.text = "";
 
         //產生選擇的頭像
         avatarBtnList = new List<Button>();
@@ -566,7 +218,7 @@ public class LobbyMinePageView : MonoBehaviour
         {
             Button avatarBtn = Instantiate(AvatarSapmle, AvatarListParent_Tr).GetComponent<Button>();
             avatarBtn.gameObject.SetActive(true);
-            avatarBtn.image.sprite = avatars[i];
+            avatarBtn.transform.GetChild(0).GetComponent<Image>().sprite = avatars[i];
             int index = i;
 
             avatarBtn.onClick.AddListener(() =>
@@ -593,27 +245,6 @@ public class LobbyMinePageView : MonoBehaviour
         UpdateInvitationCodeInfo();
     }
 
-    //外部調用方法
-    ///<summary>
-    ///開啟交易報表
-    ///</summary>
-    public void openTransactionHistoryView()
-    {
-        Transform lobbyView = GameObject.Find("LobbyView").transform;
-        RectTransform transactionHistoryView = Instantiate(TransactionHistoryViewObj, lobbyView).GetComponent<RectTransform>();
-        ViewManager.Instance.InitViewTr(transactionHistoryView, "TransactionHistoryView");
-    }
-    ///<summary>
-    ///開啟設定選單
-    ///</summary>
-    public void openSettingsView()
-    {
-        isSettingExpand = !isSettingExpand;
-        StartCoroutine(ISwitchContent(isSettingExpand,
-                                      Settings_Obj,
-                                      settings_Img));
-    }
-
     /// <summary>
     /// 設置用戶訊息
     /// </summary>
@@ -628,34 +259,11 @@ public class LobbyMinePageView : MonoBehaviour
         //錢包地址 /*先呈現畫面之後再寫回來*/
         //WalletAddress_Txt.text = "TTerwE2220ba3fffba745R...";
 
-        //邀請碼
-        InvitCode_Txt.text = $"{DataManager.UserInvitationCode}";
-
         StringUtils.StrExceedSize(DataManager.UserWalletAddress, WalletAddress_Txt);
 
 
         //WalletAddressBg_Obj.SetActive(true);
         WalletAddressBg_Obj.SetActive(!string.IsNullOrEmpty(WalletAddress_Txt.text));
-
-        //IG連接
-        IGNotYetLinked_Obj.SetActive(string.IsNullOrEmpty(DataManager.IGIUserIdAndName));
-        IGLink_Btn.interactable = string.IsNullOrEmpty(DataManager.IGIUserIdAndName);
-        IGLinked_Txt.text = string.IsNullOrEmpty(DataManager.IGIUserIdAndName) ?
-                            LanguageManager.Instance.GetText("LINK NOW") :
-                            LanguageManager.Instance.GetText("LINKED");
-        IGLinked_Img.sprite = string.IsNullOrEmpty(DataManager.LineMail) ?
-                        AssetsManager.Instance.GetAlbumAsset(AlbumEnum.LinkAlbum).album[0] :
-                        AssetsManager.Instance.GetAlbumAsset(AlbumEnum.LinkAlbum).album[1];
-
-        //Line連接
-        LineNotYetLinked_Obj.SetActive(string.IsNullOrEmpty(DataManager.GetLineToken));
-        LineLink_Btn.interactable = string.IsNullOrEmpty(DataManager.GetLineToken);
-        LineLinked_Txt.text = string.IsNullOrEmpty(DataManager.GetLineToken) ?
-                              LanguageManager.Instance.GetText("LINK NOW") :
-                              LanguageManager.Instance.GetText("LINKED");
-        LineLinked_Img.sprite = string.IsNullOrEmpty(DataManager.GetLineToken) ?
-                                AssetsManager.Instance.GetAlbumAsset(AlbumEnum.LinkAlbum).album[0] :
-                                AssetsManager.Instance.GetAlbumAsset(AlbumEnum.LinkAlbum).album[1];
 
         invitationCodeUrl = $"{DataManager.GetRedirectUri()}" +
                             $"?invitationCode={DataManager.UserInvitationCode}" +
@@ -679,10 +287,6 @@ public class LobbyMinePageView : MonoBehaviour
         DataManager.UserTimer = ot;
 
         CryptoTableValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserChips);
-        VCTableValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserAChips);
-        GoldValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserGold);
-        StaminaValue_Txt.text = $"{DataManager.UserEnergy}/{DataManager.UserMaxEnrtgy}";
-        OTPropsValue_Txt.text = $"{DataManager.UserTimer}";
 
         GameObject.FindAnyObjectByType<LobbyView>().UpdateUserData();
     }
@@ -696,21 +300,12 @@ public class LobbyMinePageView : MonoBehaviour
     /// <param name="threeBet"></param>
     private void UpdateScoreRecord(float vpip, float pfr, float ats, float threeBet)
     {
-        VPIP_Sli.value = vpip / 100;
-        VPIPpercent_Txt.text = $"{vpip}%";
         VPIP_Img.fillAmount = vpip / 100;
         VPIP_Txt.text = $"{vpip}%";
 
-        PFR_Sli.value = pfr / 100;
-        PFRpercent_Txt.text = $"{pfr}%";
         PFR_Img.fillAmount = pfr / 100;
         PFR_Txt.text = $"{pfr}%";
 
-        ATS_Sli.value = ats / 100;
-        ATSpercent_Txt.text = $"{ats}%";
-
-        ThreeBET_Sli.value = threeBet / 100;
-        ThreeBETpercent_Txt.text = $"{threeBet}%";
         BET3_Img.fillAmount = threeBet / 100;
         BET3_Txt.text = $"{threeBet}%";
     }
@@ -810,12 +405,6 @@ public class LobbyMinePageView : MonoBehaviour
         var data = JsonUtility.FromJson<CheckUserData>(jsonData);
 
         //查詢失敗/沒有資料
-        if (!string.IsNullOrEmpty(data.error) ||
-            data.exists == "false")
-        {
-            InviationCodeError_Txt.text = LanguageManager.Instance.GetText("Wrong Invitation Code.");
-            return;
-        }
 
         JSBridgeManager.Instance.ReadDataFromFirebase($"{Entry.Instance.releaseType}/{FirebaseManager.USER_DATA_PATH}{DataManager.UserLoginType}/{data.phoneNumber}",
                                                        gameObject.name,
@@ -847,25 +436,6 @@ public class LobbyMinePageView : MonoBehaviour
     public void UpdateInvitationCodeInfo()
     {
 
-        //邀請人Title
-        BoundInviterTitle_Txt.text = string.IsNullOrEmpty(DataManager.UserBoundInviterId) ?
-                                     LanguageManager.Instance.GetText("Enter Invitation Code") :
-                                     LanguageManager.Instance.GetText("Bound Inviter");
-
-        //邀請人ID
-        BoundInviterId_If.text = !string.IsNullOrEmpty(DataManager.UserBoundInviterId) ?
-                                  DataManager.UserBoundInviterId :
-                                  "";
-        BoundInviterId_If.interactable = string.IsNullOrEmpty(DataManager.UserBoundInviterId);
-
-        //提交按鈕
-        InviationCodeSubmit_Btn.gameObject.SetActive(string.IsNullOrEmpty(DataManager.UserBoundInviterId));
-
-        //產生分享RQ Code
-        //InvitationQRCode_Img.sprite = Utils.GenerateQRCodeTexture($"{DataManager.GetRedirectUri()}?{FirebaseManager.INVITATION_CODE}={DataManager.UserInvitationCode}");
-
-        //邀請碼
-        InvitationCode_Txt.text = DataManager.UserInvitationCode;
     }
 
     #endregion
