@@ -1,0 +1,5 @@
+C:/Users/Ariel/Work/ACE/.utmp/RelWithDebInfo/3q6o4f24/x86/CMakeFiles/edit_cache.dir
+C:/Users/Ariel/Work/ACE/.utmp/RelWithDebInfo/3q6o4f24/x86/CMakeFiles/rebuild_cache.dir
+C:/Users/Ariel/Work/ACE/.utmp/RelWithDebInfo/3q6o4f24/x86/GameActivity/CMakeFiles/game.dir
+C:/Users/Ariel/Work/ACE/.utmp/RelWithDebInfo/3q6o4f24/x86/GameActivity/CMakeFiles/edit_cache.dir
+C:/Users/Ariel/Work/ACE/.utmp/RelWithDebInfo/3q6o4f24/x86/GameActivity/CMakeFiles/rebuild_cache.dir
