@@ -8,6 +8,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
+        **DEFAULT_CONFIG_SETUP**
         classpath 'com.google.gms:google-services:4.3.15'
     }
 }
@@ -15,6 +16,7 @@ buildscript {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 // Android Resolver Dependencies Start
+    implementation 'androidx.browser:browser:1.4.0' // Assets/Thirdweb/Editor/ThirdwebDependencies.xml:3
     implementation 'com.google.android.gms:play-services-base:18.5.0' // Assets/Firebase/Editor/DatabaseDependencies.xml:17
     implementation 'com.google.firebase:firebase-analytics:22.1.2' // Assets/Firebase/Editor/DatabaseDependencies.xml:15
     implementation 'com.google.firebase:firebase-app-unity:12.5.0' // Assets/Firebase/Editor/AppDependencies.xml:22
@@ -23,13 +25,16 @@ dependencies {
     implementation 'com.google.firebase:firebase-common:21.0.0' // Assets/Firebase/Editor/AppDependencies.xml:13
     implementation 'com.google.firebase:firebase-database:21.0.0' // Assets/Firebase/Editor/DatabaseDependencies.xml:13
     implementation 'com.google.firebase:firebase-database-unity:12.5.0' // Assets/Firebase/Editor/DatabaseDependencies.xml:22
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0' // Assets/Thirdweb/Core/Plugins/MetaMask/Editor/MetaMaskDependencies.xml:41
 // Android Resolver Dependencies End
     **DEPS**
 }
 
+apply plugin: 'com.google.gms.google-services'
+
 // Android Resolver Exclusions Start
 android {
-    namespace "com.Kooco.AsiaPoker"
+    namespace "com.unity3d.player"
     ndkPath "**NDKPATH**"
     ndkVersion "**NDKVERSION**"
 	androidResources {
@@ -37,15 +42,8 @@ android {
 		ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~"
     }
 
-    compileSdkVersion 34
-    defaultConfig {
-        minSdkVersion 24
-        targetSdkVersion 34
-    }
-
-  packaging {
+  packagingOptions {
       exclude ('/lib/armeabi/*' + '*')
-      exclude ('/lib/armeabi-v7a/*' + '*')
       exclude ('/lib/mips/*' + '*')
       exclude ('/lib/mips64/*' + '*')
       exclude ('/lib/x86/*' + '*')
@@ -53,8 +51,6 @@ android {
   }
 }
 // Android Resolver Exclusions End
-
-apply plugin: 'com.google.gms.google-services'
 
 **IL_CPP_BUILD_SETUP**
 **SOURCE_BUILD_SETUP**

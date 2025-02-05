@@ -1,6 +1,4 @@
-plugins {
-    id 'com.android.application'
-}
+apply plugin: 'com.android.application'
 apply from: 'setupSymbols.gradle'
 apply from: '../shared/keepUnitySymbols.gradle'
 
@@ -13,7 +11,7 @@ android {
     ndkPath "**NDKPATH**"
     ndkVersion "**NDKVERSION**"
 
-    compileSdk 34
+    compileSdkVersion **APIVERSION**
     buildToolsVersion = "**BUILDTOOLS**"
 
     compileOptions {
@@ -23,7 +21,7 @@ android {
 
     defaultConfig {
         minSdk **MINSDK**
-        targetSdk 34
+        targetSdk **TARGETSDK**
         applicationId '**APPLICATIONID**'
         ndk {
             abiFilters **ABIFILTERS**
@@ -53,9 +51,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt')**SIGNCONFIG**
         }
     }**PACKAGING****PLAY_ASSET_PACKS****SPLITS**
-
-apply plugin: 'com.google.gms.google-services'
-
 **BUILT_APK_LOCATION**
     bundle {
         language {
