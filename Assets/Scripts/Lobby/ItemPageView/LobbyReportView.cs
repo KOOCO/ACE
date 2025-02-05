@@ -71,8 +71,8 @@ public class LobbyReportView : MonoBehaviour
         allWins_Txt.text = LanguageManager.Instance.GetText("All Wins¡G");
         allValidBet_Txt.text = LanguageManager.Instance.GetText("All Valid Bet¡G");
         allBets_Txt.text = LanguageManager.Instance.GetText("All Bets¡G");
-        totalRecords_Txt.text = LanguageManager.Instance.GetText("Total         Record(S)");
-        totalRecords_Txt1.text = LanguageManager.Instance.GetText("Total         Record(S)");
+        totalRecords_Txt.text = LanguageManager.Instance.GetText("Total {count} Record(S)");
+        totalRecords_Txt1.text = LanguageManager.Instance.GetText("Total {count} Record(S)");
         #endregion
 
         #region ¤é´Á¿ï¾Ü

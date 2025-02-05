@@ -860,9 +860,9 @@
     "zh_TW": "總投注："
   },
   {
-    "ID": "Total         Record(S)",
-    "English": "Total         Record(S)",
-    "zh_TW": "總計         筆"
+    "ID": "Total {count} Record(S)",
+    "English": "Total {count} Record(S)",
+    "zh_TW": "總計 {count} 筆"
   },
   {
     "ID": "Date",

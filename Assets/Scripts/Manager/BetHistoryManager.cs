@@ -71,10 +71,10 @@ public class BetHistoryManager : UnitySingleton<BetHistoryManager>
             allBet += item.bets;
         }
         UpdatePage();
-        allWin_Txt.text = $"${allWin}";
-        allValidBet_Txt.text = $"${allValidBet}";
-        allBet_Txt.text = $"${allBet}";
-        totalRecord_Txt.text = $"{detailData.items.Count}";
+        allWin_Txt.text = allWin_Txt.text + $"${allWin}";
+        allValidBet_Txt.text = allValidBet_Txt.text + $"${allValidBet}";
+        allBet_Txt.text = allBet_Txt.text + $"${allBet}";
+        totalRecord_Txt.text = totalRecord_Txt.text.Replace("{count}", $" {detailData.items.Count} ");
 
     }
     private void UpdatePage()
