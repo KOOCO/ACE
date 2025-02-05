@@ -92,7 +92,7 @@ public class BetHistoryManager : UnitySingleton<BetHistoryManager>
             {
                 for (int k = count; k <= 10; k++)
                 {
-                    if (detailData.items.Count == 0) return;
+                    if (k > detailData.items.Count) return;
                     Content.GetChild(k).gameObject.SetActive(false);
                 }
                 return;
