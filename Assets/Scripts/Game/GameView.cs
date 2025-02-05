@@ -860,8 +860,9 @@ public class GameView : MonoBehaviour
                                                           MenuPage_Tr,
                                                           DirectionEnum.Left,
                                                           PageMoveTime));
+            HandHistoryPage_Tr.gameObject.SetActive(true);
             StartCoroutine(UnityUtils.Instance.IViewSlide(true,
-                                                          HandHistoryPage_Tr,
+                                                          HandHistoryPage_Tr.GetChild(0).GetComponent<RectTransform>(),
                                                           DirectionEnum.Up,
                                                           PageMoveTime));
         });
@@ -870,12 +871,13 @@ public class GameView : MonoBehaviour
         HandHistoryClose_Btn.onClick.AddListener(() =>
         {
             StartCoroutine(UnityUtils.Instance.IViewSlide(false,
-                                                          HandHistoryPage_Tr,
+                                                          HandHistoryPage_Tr.GetChild(0).GetComponent<RectTransform>(),
                                                           DirectionEnum.Up,
                                                           PageMoveTime,
                                                           () =>
                                                           {
                                                               GameRoomManager.Instance.IsCanMoveSwitch = true;
+                                                              HandHistoryPage_Tr.gameObject.SetActive(false);
                                                           }));
 
         });
