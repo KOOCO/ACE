@@ -71,14 +71,14 @@ public class BetHistoryManager : UnitySingleton<BetHistoryManager>
             allValidBet += item.validBet;
             allBet += item.bets;
         }
-        await UpdatePage();
-        allWin_Txt.text = allWin_Txt.text + $"${allWin}";
-        allValidBet_Txt.text = allValidBet_Txt.text + $"${allValidBet}";
-        allBet_Txt.text = allBet_Txt.text + $"${allBet}";
-        totalRecord_Txt.text = totalRecord_Txt.text.Replace("{count}", $" {detailData.items.Count} ");
+        UpdatePage();
+        allWin_Txt.text = LanguageManager.Instance.GetText("All Wins¡G") + $"${allWin}";
+        allValidBet_Txt.text = LanguageManager.Instance.GetText("All Valid Bet¡G") + $"${allValidBet}";
+        allBet_Txt.text = LanguageManager.Instance.GetText("All Bets¡G") + $"${allBet}";
+        totalRecord_Txt.text = LanguageManager.Instance.GetText("Total {count} Record(S)").Replace("{count}", $" {detailData.items.Count} ");
 
     }
-    private async Task UpdatePage()
+    private void UpdatePage()
     {
         NowPage_Txt.text = nowPage.ToString();
         ScrollView.verticalNormalizedPosition = 1;
@@ -106,7 +106,6 @@ public class BetHistoryManager : UnitySingleton<BetHistoryManager>
             UpdateObjectData(obj, item);
             count++;
         }
-        await Task.Delay(100);
     }
     private void UpdateObjectData(BetHistorySample obj,Item item)
     {

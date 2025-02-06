@@ -5104,7 +5104,6 @@ GameObject:
   - component: {fileID: 6421996370710667188}
   - component: {fileID: 5384231852986067827}
   - component: {fileID: 5527067992421745171}
-  - component: {fileID: 3976497043862124447}
   m_Layer: 5
   m_Name: totalRecords_Txt
   m_TagString: Untagged
@@ -5230,19 +5229,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &3976497043862124447
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3169690930010193963}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57291ba7302982a428eb614a2b66a573, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ID: Total {count} Record(S)
 --- !u!1 &3296654771481294834
 GameObject:
   m_ObjectHideFlags: 0
@@ -8108,7 +8094,6 @@ GameObject:
   - component: {fileID: 5145041798670033676}
   - component: {fileID: 6618504509817537956}
   - component: {fileID: 8830314559187260368}
-  - component: {fileID: 8751824112667157176}
   m_Layer: 5
   m_Name: allBets_Txt
   m_TagString: Untagged
@@ -8234,19 +8219,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &8751824112667157176
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5188704800980289433}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57291ba7302982a428eb614a2b66a573, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ID: "All Bets\uFF1A"
 --- !u!1 &5221978171299532684
 GameObject:
   m_ObjectHideFlags: 0
@@ -9255,7 +9227,6 @@ GameObject:
   - component: {fileID: 4897867774628573867}
   - component: {fileID: 5871680043368812703}
   - component: {fileID: 6126967843531634731}
-  - component: {fileID: 4399412520490967951}
   m_Layer: 5
   m_Name: allWin_Txt
   m_TagString: Untagged
@@ -9381,19 +9352,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &4399412520490967951
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6799894070475282157}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57291ba7302982a428eb614a2b66a573, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ID: "All Wins\uFF1A"
 --- !u!1 &6885582108558220259
 GameObject:
   m_ObjectHideFlags: 0
@@ -9951,7 +9909,6 @@ GameObject:
   - component: {fileID: 5643751439787709524}
   - component: {fileID: 3833813618318508096}
   - component: {fileID: 4465227183971096681}
-  - component: {fileID: 340115938893926466}
   m_Layer: 5
   m_Name: allValidBet_Txt
   m_TagString: Untagged
@@ -10077,19 +10034,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &340115938893926466
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7035092724428328612}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57291ba7302982a428eb614a2b66a573, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ID: "All Valid Bet\uFF1A"
 --- !u!1 &7102448390544000414
 GameObject:
   m_ObjectHideFlags: 0
