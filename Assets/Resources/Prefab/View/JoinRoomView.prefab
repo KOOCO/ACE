@@ -86,6 +86,7 @@ GameObject:
   - component: {fileID: 4262599775491325559}
   - component: {fileID: 7811824842960554289}
   - component: {fileID: 5314735589297342165}
+  - component: {fileID: 2535092585430845818}
   m_Layer: 5
   m_Name: BlindsTitle_Txt
   m_TagString: Untagged
@@ -211,6 +212,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2535092585430845818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119076143116479726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57291ba7302982a428eb614a2b66a573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: Blind Bet
 --- !u!1 &1958384906647089305
 GameObject:
   m_ObjectHideFlags: 0
@@ -792,8 +806,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 9,999K
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 078675f65f8a9144e90348ab75bb07e7, type: 2}
-  m_sharedMaterial: {fileID: -6451935136126618428, guid: 078675f65f8a9144e90348ab75bb07e7, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -910,6 +924,7 @@ GameObject:
   - component: {fileID: 7295133864784342497}
   - component: {fileID: 8360467296303671044}
   - component: {fileID: 5866819080438322359}
+  - component: {fileID: 1371080001868376230}
   m_Layer: 5
   m_Name: CancelBtn_Txt
   m_TagString: Untagged
@@ -1035,6 +1050,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1371080001868376230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4265203603576135897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57291ba7302982a428eb614a2b66a573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: CANCEL
 --- !u!1 &4564727887953129579
 GameObject:
   m_ObjectHideFlags: 0
@@ -1574,6 +1602,7 @@ GameObject:
   - component: {fileID: 3141928869765310013}
   - component: {fileID: 941297693138545195}
   - component: {fileID: 4212135555486600581}
+  - component: {fileID: 5509048644637208512}
   m_Layer: 5
   m_Name: BuyBtn_Txt
   m_TagString: Untagged
@@ -1699,6 +1728,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &5509048644637208512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5001515365344319164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57291ba7302982a428eb614a2b66a573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: CONFIRM
 --- !u!1 &5312360917073280935
 GameObject:
   m_ObjectHideFlags: 0
@@ -1802,8 +1844,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 22,000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 078675f65f8a9144e90348ab75bb07e7, type: 2}
-  m_sharedMaterial: {fileID: -6451935136126618428, guid: 078675f65f8a9144e90348ab75bb07e7, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1975,8 +2017,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 10,000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 078675f65f8a9144e90348ab75bb07e7, type: 2}
-  m_sharedMaterial: {fileID: -6451935136126618428, guid: 078675f65f8a9144e90348ab75bb07e7, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2220,11 +2262,8 @@ MonoBehaviour:
   this_Img: {fileID: 1296560494116380633}
   BG: {fileID: 3612512891358203767}
   BlindACoin_Img: {fileID: 7541707705916270691}
-  BlindUCoin_Img: {fileID: 0}
   MinBuyACoin_Img: {fileID: 4865467457614740026}
-  MinBuyUCoin_Img: {fileID: 0}
   MaxBuyACoin_Img: {fileID: 5236556787668096953}
-  MaxBuyUCoin_Img: {fileID: 0}
   BuyChips_Sli: {fileID: 7285156936133587851}
   Close_Btn: {fileID: 3776154403249972148}
   Cancel_Btn: {fileID: 7366425569266978576}
@@ -2232,13 +2271,10 @@ MonoBehaviour:
   BuyPlus_Btn: {fileID: 1429546209583748990}
   BuyMinus_Btn: {fileID: 2509709087293256677}
   Title_Txt: {fileID: 4145468687967049589}
-  BlindsTitle_Txt: {fileID: 5314735589297342165}
   Blind_Txt: {fileID: 6381788671819169776}
   PreBuyChips_Txt: {fileID: 7843868103716528389}
   MinBuyChips_Txt: {fileID: 8626560412132966199}
   MaxBuyChips_Txt: {fileID: 3428091997665075926}
-  CancelBtn_Txt: {fileID: 5866819080438322359}
-  BuyBtn_Txt: {fileID: 4212135555486600581}
   sliderClickDetection: {fileID: 3512800105609572227}
 --- !u!114 &8819878342560726024
 MonoBehaviour:
@@ -2729,8 +2765,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: $2000K/$2000K
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 078675f65f8a9144e90348ab75bb07e7, type: 2}
-  m_sharedMaterial: {fileID: -6451935136126618428, guid: 078675f65f8a9144e90348ab75bb07e7, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

@@ -11,18 +11,15 @@ public class JoinRoomView : MonoBehaviour
     [SerializeField]
     Request_JoinRoom baseRequest;
     [SerializeField]
-    Image this_Img, BG, BlindACoin_Img, BlindUCoin_Img,
-          MinBuyACoin_Img, MinBuyUCoin_Img,
-          MaxBuyACoin_Img, MaxBuyUCoin_Img;
+    Image this_Img, BG, BlindACoin_Img, MinBuyACoin_Img, MaxBuyACoin_Img;
     [SerializeField]
     Slider BuyChips_Sli;
     [SerializeField]
     Button Close_Btn, Cancel_Btn, Buy_Btn, BuyPlus_Btn, BuyMinus_Btn;
     [SerializeField]
-    TextMeshProUGUI Title_Txt, BlindsTitle_Txt,
+    TextMeshProUGUI Title_Txt,
                     Blind_Txt, PreBuyChips_Txt,
-                    MinBuyChips_Txt, MaxBuyChips_Txt,
-                    CancelBtn_Txt, BuyBtn_Txt;
+                    MinBuyChips_Txt, MaxBuyChips_Txt;
     [SerializeField]
     SliderClickDetection sliderClickDetection;
 
@@ -37,24 +34,8 @@ public class JoinRoomView : MonoBehaviour
     string actionType;
     GameRoom previousRoom;
 
-    /// <summary>
-    /// 更新文本翻譯
-    /// </summary>
-    private void UpdateLanguage()
-    {
-        BlindsTitle_Txt.text = LanguageManager.Instance.GetText("Blind Bet");
-        CancelBtn_Txt.text = LanguageManager.Instance.GetText("CANCEL");
-        BuyBtn_Txt.text = LanguageManager.Instance.GetText("CONFIRM");
-    }
-
-    private void OnDestroy()
-    {
-        LanguageManager.Instance.RemoveLanguageFun(UpdateLanguage);
-    }
-
     public void Awake()
     {
-        LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
         ListenerEvent();
 
         lobbyView = GameObject.FindAnyObjectByType<LobbyView>();
@@ -111,8 +92,7 @@ public class JoinRoomView : MonoBehaviour
             }
 
             ViewManager.Instance.OpenWaitingView(lobbyView.transform);
-            //進入房間停播音樂
-            //lobbyView.audioSource.Stop();
+
             JoinRoom newRound = new JoinRoom
             {
                 memberId = DataManager.UserId,
@@ -155,17 +135,6 @@ public class JoinRoomView : MonoBehaviour
     {
         GameRoom gameRound = JsonConvert.DeserializeObject<GameRoom>(data);
         Debug.Log("Join Round Response :: " + data);
-        //if (previousRoom == null || previousRoom.id == gameRound.id)
-        //{
-        //    previousRoom = gameRound;
-        //    Debug.Log("same Room id ");
-        //}
-        //else
-        //{
-        //    CreateNewRoom();
-        //    Debug.Log("Room id different");
-        //    return;
-        //}
         DataManager.TableType = gameRound.tableType;
         DataManager.Rebate = gameRound.table.rebateSetting;
         DataManager.RoundId = gameRound.roundId;
@@ -176,26 +145,9 @@ public class JoinRoomView : MonoBehaviour
 
 #if UNITY_EDITOR
 
-        /*dataRoomName = DataManager.RoomId;
-        //創新房間資料
-        var dataDic = new Dictionary<string, object>()
-        {
-            { FirebaseManager.SMALL_BLIND, smallBlind},                         //小盲值
-            { FirebaseManager.ROOM_HOST_ID, DataManager.UserId},                //房主ID
-            { FirebaseManager.POT_CHIPS, 0},                                    //底池總籌碼
-            { FirebaseManager.COMMUNITY_POKER, new List<int>()},                //公共牌
-            { FirebaseManager.CURR_COMMUNITY_POKER, new List<int>()},           //當前公共牌
-        };
-        JSBridgeManager.Instance.UpdateDataFromFirebase(
-            $"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}/{tableType}/{smallBlind}",
-            dataDic,
-            gameObject.name,
-            nameof(JoinRoomQueryCallback));*/
         JoinRoomQueryCallback();
-        //Debug.LogError("Cause Editor can't play game, so cancel join/create room, please 'Build First'.");
         return;
 #endif
-        //CreateOrJoinRoom();
         JoinRoomQueryCallback();
 
     }
@@ -265,17 +217,6 @@ private static extern void onPageLoad();
 #endif
     }
 
-    public void CreateOrJoinRoom()
-    {
-        JSBridgeManager.Instance.JoinRoomQueryData($"{Entry.Instance.releaseType}/{FirebaseManager.ROOM_DATA_PATH}/{tableType}/{smallBlind}",
-                                                    $"{DataManager.MaxPlayerCount}",
-                                                    $"{DataManager.UserId}",
-                                                    gameObject.name,
-                                                    nameof(JoinRoomQueryCallback));
-    }
-
-
-
     /// <summary>
     /// 設定創建房間介面
     /// </summary>
@@ -294,11 +235,8 @@ private static extern void onPageLoad();
                 titleStr = "High Roller Battleground";
                 isClassic = false;
                 BlindACoin_Img.gameObject.SetActive(true);
-                //                BlindUCoin_Img.gameObject.SetActive(false);
                 MinBuyACoin_Img.gameObject.SetActive(true);
-                //           MinBuyUCoin_Img.gameObject.SetActive(false);
                 MaxBuyACoin_Img.gameObject.SetActive(true);
-                //            MaxBuyUCoin_Img.gameObject.SetActive(false);
                 break;
 
             //虛擬貨幣桌
@@ -306,11 +244,8 @@ private static extern void onPageLoad();
                 titleStr = "Classic Battle";
                 isClassic = true;
                 BlindACoin_Img.gameObject.SetActive(false);
-                //         BlindUCoin_Img.gameObject.SetActive(true);
                 MinBuyACoin_Img.gameObject.SetActive(false);
-                //        MinBuyUCoin_Img.gameObject.SetActive(true);
                 MaxBuyACoin_Img.gameObject.SetActive(false);
-                //        MaxBuyUCoin_Img.gameObject.SetActive(true);
                 break;
         }
         Title_Txt.text = LanguageManager.Instance.GetText(titleStr);
@@ -346,19 +281,6 @@ private static extern void onPageLoad();
     /// <param name="jsonData">回傳資料</param>
     public void JoinRoomQueryCallback(string roomID = "")
     {
-        // Deserialize JSON data into a QueryRoom object
-        // Debug.Log("JoinRoomView :: JoinRoomQueryCallback : " + jsonData);
-        // QueryRoom queryRoom = FirebaseManager.Instance.OnFirebaseDataRead<QueryRoom>(jsonData);
-
-        // // Handle errors
-        // if (!string.IsNullOrEmpty(queryRoom?.error))
-        // {
-        //     Debug.LogError($"JoinRoomQueryCallback Error: {queryRoom.error}");
-        //     return;
-        // }
-
-        // Debug.Log($"JoinRoomQueryCallback :: Room Name: {queryRoom?.getRoomName}, Room Count: {queryRoom?.roomCount}");
-
         // Validate dataRoomName
         if (roomID != "")
             dataRoomName = roomID;

@@ -41,7 +41,7 @@ public class GameView : MonoBehaviour
     [SerializeField]
     Button BackToSit_Btn;
     [SerializeField]
-    TextMeshProUGUI RaiseBtn_Txt, CallBtn_Txt, FoldBtn_Txt, BackToSitBtn_Txt;
+    TextMeshProUGUI RaiseBtn_Txt, CallBtn_Txt;
     [SerializeField]
     GameObject coinIconObj;
     [SerializeField]
@@ -80,8 +80,6 @@ public class GameView : MonoBehaviour
     [Header("離開按鈕")]
     [SerializeField]
     Button LogOut_Btn;
-    [SerializeField]
-    TextMeshProUGUI LogOutBtn_Txt;
 
     [Header("選單")]
     [SerializeField]
@@ -91,9 +89,7 @@ public class GameView : MonoBehaviour
     [SerializeField]
     Image MenuAvatar_Img;
     [SerializeField]
-    TextMeshProUGUI MenuCloseBtn_Txt, SitOutBtn_Txt, BuyChipsBtn_Txt, HandHistoryBtn_Txt,
-                    GameSettingsBtn_Txt, soundSwitch_Txt, audioSettings_Txt,
-                    MenuNickname_Txt, MenuWalletAddr_Txt, MenuWalletCoin_Txt, GameRules_Txt;
+    TextMeshProUGUI MenuNickname_Txt, MenuWalletAddr_Txt, MenuWalletCoin_Txt;
 
     [Header("聊天")]
     [SerializeField]
@@ -107,8 +103,7 @@ public class GameView : MonoBehaviour
     [SerializeField]
     TMP_InputField Chat_If;
     [SerializeField]
-    TextMeshProUGUI NotReadChat_Txt, NewMessageBtn_Txt,
-                    ChatSendBtn_Txt, ChatIf_Placeholder;
+    TextMeshProUGUI NotReadChat_Txt;
     bool isWating;
 
     [Header("手牌紀錄")]
@@ -116,8 +111,6 @@ public class GameView : MonoBehaviour
     RectTransform HandHistoryPage_Tr;
     [SerializeField]
     Button HandHistoryClose_Btn;
-    [SerializeField]
-    TextMeshProUGUI HandHistoryTitle_Txt, HandHistoryTip_Txt;
 
     [Header("購買籌碼")]
     [SerializeField]
@@ -127,14 +120,10 @@ public class GameView : MonoBehaviour
     [SerializeField]
     GameObject RuleView, Ch_text, En_text, GameRules_ScrollView;
     [SerializeField]
-    TextMeshProUGUI GameRules_Top, GameRules_mid;
-    [SerializeField]
     Button closeRule_Btn, got_it_btn;
 
 
     [Header("遊戲結果")]
-    [SerializeField]
-    RectTransform BattleResultView;
     [SerializeField]
     GameObject WinChipsObj;
 
@@ -177,7 +166,6 @@ public class GameView : MonoBehaviour
     [Header("提示POP")]
     public GameObject Notice;
     public TextMeshProUGUI noticeText;
-    public TextMeshProUGUI btnText;
     public Button ConfirmBtn;
 
     const float PageMoveTime = 0.25f;                           //滑動頁面移動時間
@@ -384,37 +372,7 @@ public class GameView : MonoBehaviour
     /// </summary>
     private void UpdateLanguage()
     {
-        #region 操作按鈕
-
-        if (strData != null)
-        {
-            FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
-            if (strData.CallValueStr != "" && int.Parse(strData.CallValueStr) > 0)
-                CallBtn_Txt.text = "$" + strData.CallValueStr;
-            else
-                CallBtn_Txt.text = "";
-            RaiseBtn_Txt.text = LanguageManager.Instance.GetText(strData.RaiseStr) + strData.RaiseValueStr;
-        }
-        BackToSitBtn_Txt.text = LanguageManager.Instance.GetText("Back To Sit");
-
-        #endregion
-
-        #region 選單
-        MenuCloseBtn_Txt.text = LanguageManager.Instance.GetText("MENU");
-        BuyChipsBtn_Txt.text = LanguageManager.Instance.GetText("Buy Chips");
-        HandHistoryBtn_Txt.text = LanguageManager.Instance.GetText("Hand History");
-        LogOutBtn_Txt.text = LanguageManager.Instance.GetText("Lobby");
-        GameSettingsBtn_Txt.text = LanguageManager.Instance.GetText("Game Settings");
-        GameRules_Txt.text = LanguageManager.Instance.GetText("Game Rules");
-        soundSwitch_Txt.text = LanguageManager.Instance.GetText("Sound");
-        audioSettings_Txt.text = LanguageManager.Instance.GetText("Audio Settings");
-        #endregion
-
         #region 規則
-        GameRules_Txt.text = LanguageManager.Instance.GetText("Game Rules");
-        GameRules_Top.text = LanguageManager.Instance.GetText("Game Rules");
-        GameRules_mid.text = LanguageManager.Instance.GetText("Welcome to AISA POKER! Learn the rules and start playing right away!");
-
         if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
         {
             GameRules_ScrollView.GetComponent<ScrollRect>().content = En_text.GetComponent<RectTransform>();
@@ -430,28 +388,11 @@ public class GameView : MonoBehaviour
 
         #endregion
 
-        #region 聊天
-
-        NewMessageBtn_Txt.text = LanguageManager.Instance.GetText("New Message");
-        ChatSendBtn_Txt.text = LanguageManager.Instance.GetText("Send");
-        ChatIf_Placeholder.text = LanguageManager.Instance.GetText("Enter text...");
-
-        #endregion
-
-        #region 手牌紀錄
-
-        HandHistoryTitle_Txt.text = LanguageManager.Instance.GetText("HAND HISTORY");
-        HandHistoryTip_Txt.text = LanguageManager.Instance.GetText("Show last 20 hands");
-
-        #endregion
-
         #region 等待下局
         WaitNext_Obj.sprite = WaitNext_ImgList[LanguageManager.Instance.GetCurrLanguageIndex()];
         #endregion
 
         SetSitOutDisplay();
-
-        btnText.text = LanguageManager.Instance.GetText("Confirm");
     }
 
     public void Awake()
@@ -959,7 +900,6 @@ public class GameView : MonoBehaviour
 
         gamePlayerInfoList = new List<GamePlayerInfo>();
         buyChipsView.gameObject.SetActive(false);
-        BattleResultView.gameObject.SetActive(false);
         BackToSit_Btn.gameObject.SetActive(false);
         RuleView.SetActive(false);
         TotalPot_Txt.text = $"${StringUtils.SetChipsUnit(0)}";
@@ -1269,10 +1209,6 @@ public class GameView : MonoBehaviour
     /// </summary>
     private void SetSitOutDisplay()
     {
-        SitOutBtn_Txt.text = thisData.IsSitOut ?
-                             $"{LanguageManager.Instance.GetText("Back To Sit")}" :
-                             $"{LanguageManager.Instance.GetText("Sit out next hand")}";
-
         if (!thisData.IsPlaying)
         {
             BackToSit_Btn.gameObject.SetActive(thisData.IsSitOut);
@@ -1733,7 +1669,6 @@ public class GameView : MonoBehaviour
             SetCallFoldBetStr("Fold", keyF);
         }
 
-        FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
         //CallBtn_Txt.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
         if (strData.CallValueStr != "" && int.Parse(strData.CallValueStr) > 0)
             CallBtn_Txt.text = "$" + strData.CallValueStr;
@@ -1875,7 +1810,6 @@ public class GameView : MonoBehaviour
         //WaitingTip_Txt.text = $"{LanguageManager.Instance.GetText("Waiting for the next round...")}";
         WaitingTip_Txt.gameObject.SetActive(true);
         strData.FoldStr = "Fold";
-        FoldBtn_Txt.text = LanguageManager.Instance.GetText(strData.FoldStr);
         strData.CallStr = "Check";
         strData.CallValueStr = "";
         CallBtn_Txt.text = LanguageManager.Instance.GetText(strData.CallStr) + strData.CallValueStr;
