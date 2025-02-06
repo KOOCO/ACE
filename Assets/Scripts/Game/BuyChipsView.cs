@@ -17,10 +17,9 @@ public class BuyChipsView : MonoBehaviour
     [SerializeField]
     Button Close_Btn, Cancel_Btn, Buy_Btn, BuyPlus_Btn, BuyMinus_Btn;
     [SerializeField]
-    TextMeshProUGUI Title_Txt, BuyChipsTip_Txt, BlindsTitle_Txt,
+    TextMeshProUGUI Title_Txt, BuyChipsTip_Txt,
                     Blind_Txt, PreBuyChips_Txt,
                     MinBuyChips_Txt, MaxBuyChips_Txt,
-                    CancelBtn_Txt, BuyBtn_Txt,
                     CountDownTip_Txt;
 
     [SerializeField]
@@ -40,25 +39,8 @@ public class BuyChipsView : MonoBehaviour
 
     int cdTime;                             //倒數時間
 
-    /// <summary>
-    /// 更新文本翻譯
-    /// </summary>
-    private void UpdateLanguage()
-    {
-        BlindsTitle_Txt.text = LanguageManager.Instance.GetText("Blind Bet");
-        CancelBtn_Txt.text = LanguageManager.Instance.GetText("CANCEL");
-        BuyBtn_Txt.text = LanguageManager.Instance.GetText("CONFIRM");
-        BuyChipsTip_Txt.text = LanguageManager.Instance.GetText("Start replenishing chips for the next hand");
-    }
-
-    private void OnDestroy()
-    {
-        LanguageManager.Instance.RemoveLanguageFun(UpdateLanguage);
-    }
-
     public void Awake()
     {
-        LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
         ListenerEvent();
     }
 
