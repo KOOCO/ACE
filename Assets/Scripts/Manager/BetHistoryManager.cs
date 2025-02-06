@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -47,7 +48,7 @@ public class BetHistoryManager : UnitySingleton<BetHistoryManager>
             UpdatePage();
         });
     }
-    public void showBetHistory(string data)
+    public async void showBetHistory(string data)
     {
         detailData = JsonConvert.DeserializeObject<BettingDetail>(data) ?? new BettingDetail();
 
@@ -70,14 +71,14 @@ public class BetHistoryManager : UnitySingleton<BetHistoryManager>
             allValidBet += item.validBet;
             allBet += item.bets;
         }
-        UpdatePage();
+        await UpdatePage();
         allWin_Txt.text = allWin_Txt.text + $"${allWin}";
         allValidBet_Txt.text = allValidBet_Txt.text + $"${allValidBet}";
         allBet_Txt.text = allBet_Txt.text + $"${allBet}";
         totalRecord_Txt.text = totalRecord_Txt.text.Replace("{count}", $" {detailData.items.Count} ");
 
     }
-    private void UpdatePage()
+    private async Task UpdatePage()
     {
         NowPage_Txt.text = nowPage.ToString();
         ScrollView.verticalNormalizedPosition = 1;
@@ -92,16 +93,20 @@ public class BetHistoryManager : UnitySingleton<BetHistoryManager>
             {
                 for (int k = count; k <= 10; k++)
                 {
-                    if (k > detailData.items.Count) return;
+                    if (k > detailData.items.Count)
+                    {
+                        break;
+                    }
                     Content.GetChild(k).gameObject.SetActive(false);
                 }
-                return;
+                break;
             }
             Item item = detailData.items[i];
             BetHistorySample obj = objPool.CreateObj<BetHistorySample>(bethistorySample, bethistorySample.GetComponent<Transform>().parent);
             UpdateObjectData(obj, item);
             count++;
         }
+        await Task.Delay(100);
     }
     private void UpdateObjectData(BetHistorySample obj,Item item)
     {
