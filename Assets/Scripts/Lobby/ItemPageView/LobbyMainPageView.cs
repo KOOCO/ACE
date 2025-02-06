@@ -37,7 +37,7 @@ public class LobbyMainPageView : MonoBehaviour
 
     [Header("加密貨幣桌")]
     [SerializeField]
-    GameObject CryptoTableBtnSample, CryptoTableTitle;
+    GameObject CryptoTableBtnSample;
     [SerializeField]
     RectTransform CryptoTableParent;
 
@@ -58,11 +58,6 @@ public class LobbyMainPageView : MonoBehaviour
 
     string dataRoomName;                                    //查詢資料的房間名稱
     string pairPlayerUserId;                                //被配對上的玩家ID
-
-    private void OnEnable()
-    {
-        CryptoTableTitle.SetActive(false);
-    }
 
     /// <summary>
     /// 背景開關
@@ -385,7 +380,6 @@ public class LobbyMainPageView : MonoBehaviour
         SetupTable(1, tables[1], CryptoTableBtnSample, CryptoTableParent);
         SetupTable(2, tables[2], VCTableBtnSample, VCTableParent);
 
-        CryptoTableTitle.SetActive(true);
         ViewManager.Instance.CloseWaitingView(transform.parent);
     }
 

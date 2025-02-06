@@ -33,8 +33,6 @@ public class LobbyMinePageView : MonoBehaviour
     GameObject AvatarSapmle;
     [SerializeField]
     Button CloseChangeAvatar_Btn, ChangeAvatarSubmit_Btn;
-    [SerializeField]
-    TextMeshProUGUI ChangeAvatarTitle_Txt, ChangeAvatarSubmitBtn_Txt;
 
     [Header("帳戶餘額")]
     [SerializeField]
@@ -42,8 +40,7 @@ public class LobbyMinePageView : MonoBehaviour
     [SerializeField]
     Button AccountBalanceReflash_Btn;
     [SerializeField]
-    TextMeshProUGUI AccountBalanceTitle_Txt, AccountBalanceReflashBtn_Txt,
-                    CryptoTable_Txt, CryptoTableValue_Txt;
+    TextMeshProUGUI CryptoTableValue_Txt;
 
     [Header("分數紀錄")]
     [SerializeField]
@@ -54,8 +51,6 @@ public class LobbyMinePageView : MonoBehaviour
     [Header("個人資料")]
     [SerializeField]
     TextMeshProUGUI Text_totalTimesValue, Text_averageVicRateValue, Text_vicRateValue, Text_highestVicPriceValue, Text_totalRevenueValue;
-    [SerializeField]
-    TextMeshProUGUI playerID_Txt, P_Info_Txt, Text_totalTimes_Txt, Text_averageVicRate, Text_vicRate, Text_highestVicPrice, Text_totalRevenue;
 
     public Transform Refresh;
 
@@ -63,54 +58,10 @@ public class LobbyMinePageView : MonoBehaviour
     int tempAvatarIndex;                                                        //零時頭像index
     bool isAccountBalanceExpand;                                                //是否展開帳戶餘額
 
-    /// <summary>
-    /// 更新文本翻譯
-    /// </summary>
-    private void UpdateLanguage()
-    {
-        #region 用戶訊息
-        playerID_Txt.text = LanguageManager.Instance.GetText("Player ID");
-
-        #endregion
-
-        #region 更換頭像
-
-        ChangeAvatarTitle_Txt.text = LanguageManager.Instance.GetText("Change Avatar");
-        ChangeAvatarSubmitBtn_Txt.text = LanguageManager.Instance.GetText("SUBMIT");
-
-        #endregion
-
-        #region 帳戶餘額
-
-        AccountBalanceTitle_Txt.text = LanguageManager.Instance.GetText("Account Balance");
-        AccountBalanceReflashBtn_Txt.text = LanguageManager.Instance.GetText("REFLASH");
-        CryptoTable_Txt.text = LanguageManager.Instance.GetText("U point");
-
-        #endregion
-
-        #region 個人資料
-
-        P_Info_Txt.text = LanguageManager.Instance.GetText("Personal Information");
-        Text_totalTimes_Txt.text = LanguageManager.Instance.GetText("TOTAL HANDS PLAYED");
-        Text_averageVicRate.text = LanguageManager.Instance.GetText("AVERAGE WINNING");
-        Text_vicRate.text = LanguageManager.Instance.GetText("WIN RATE");
-        Text_highestVicPrice.text = LanguageManager.Instance.GetText("BIGGEST POT WON");
-        Text_totalRevenue.text = LanguageManager.Instance.GetText("TOTAL EARNINGS");
-
-        #endregion
-
-        SetUserInfo();
-        AppApi.PlayerStatistics(UpdatePlayerStatistics);
-    }
-
-    private void OnDestroy()
-    {
-        LanguageManager.Instance.RemoveLanguageFun(UpdateLanguage);
-    }
-
     private void Awake()
     {
-        LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
+        SetUserInfo();
+        AppApi.PlayerStatistics(UpdatePlayerStatistics);
         ListenerEvent();
 
         ChangeAvatar_Tr.gameObject.SetActive(false);

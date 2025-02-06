@@ -163,6 +163,7 @@ GameObject:
   - component: {fileID: 127870543858363802}
   - component: {fileID: 6602421915103609772}
   - component: {fileID: 1745195127409051160}
+  - component: {fileID: 8803253850697899620}
   m_Layer: 5
   m_Name: Settings_Txt
   m_TagString: Untagged
@@ -288,6 +289,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &8803253850697899620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 57310791489096194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57291ba7302982a428eb614a2b66a573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: Settings
 --- !u!1 &134854299372827881
 GameObject:
   m_ObjectHideFlags: 0
@@ -1920,6 +1934,7 @@ GameObject:
   - component: {fileID: 794330322435523093}
   - component: {fileID: 5535133553887784763}
   - component: {fileID: 3771578038070127947}
+  - component: {fileID: 8451819866751946122}
   m_Layer: 5
   m_Name: Report_Txt
   m_TagString: Untagged
@@ -2045,6 +2060,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &8451819866751946122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1642880500332933213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57291ba7302982a428eb614a2b66a573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: Report
 --- !u!1 &1682176583426423762
 GameObject:
   m_ObjectHideFlags: 0
@@ -2739,6 +2767,7 @@ GameObject:
   - component: {fileID: 5403700405997708534}
   - component: {fileID: 2376007899553852616}
   - component: {fileID: 3518349737872176522}
+  - component: {fileID: 2756395548111815132}
   m_Layer: 5
   m_Name: MineBtn_Txt
   m_TagString: Untagged
@@ -2864,6 +2893,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2756395548111815132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2144597162079721041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57291ba7302982a428eb614a2b66a573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: Mine
 --- !u!1 &2292491428846720876
 GameObject:
   m_ObjectHideFlags: 0
@@ -2875,6 +2917,7 @@ GameObject:
   - component: {fileID: 3838747666426603829}
   - component: {fileID: 7240100372573948217}
   - component: {fileID: 5146385730067977559}
+  - component: {fileID: 351449691273639057}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -3000,6 +3043,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &351449691273639057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2292491428846720876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57291ba7302982a428eb614a2b66a573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: CONFIRM
 --- !u!1 &2312887304477677557
 GameObject:
   m_ObjectHideFlags: 0
@@ -3087,6 +3143,7 @@ GameObject:
   - component: {fileID: 5474373089300779345}
   - component: {fileID: 3779322268063504191}
   - component: {fileID: 3699860969951470928}
+  - component: {fileID: 1289353537609045283}
   m_Layer: 5
   m_Name: RankingBtn_Txt
   m_TagString: Untagged
@@ -3212,6 +3269,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1289353537609045283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2399795604569360178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57291ba7302982a428eb614a2b66a573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: Ranking
 --- !u!1 &2588661429109920424
 GameObject:
   m_ObjectHideFlags: 0
@@ -7857,25 +7927,12 @@ MonoBehaviour:
   IPT: {fileID: 3056485111688204808}
   customJoin_Btn: {fileID: 3418508957371279938}
   Nickname_Txt: {fileID: 7109703347446717654}
-  Stamina_Txt: {fileID: 5922715742649055925}
   CryptoChips_Txt: {fileID: 4658168872816603564}
   Avatar_Btn: {fileID: 2526328486656395023}
-  AssetList_Obj: {fileID: 7786376478511549179}
-  Assets_CryptoChips_Txt: {fileID: 5610152927081153840}
   Assets_CryptoChipsValue_Txt: {fileID: 4658168872816603564}
-  Assets_VCChips_Txt: {fileID: 6725676853513859685}
-  Assets_VCValue_Txt: {fileID: 2995131127224762152}
-  Assets_Gold_Txt: {fileID: 4937562140825995873}
-  Assets_GoldValue_Txt: {fileID: 976586946095851554}
-  Assets_Stamina_Txt: {fileID: 193127624550016251}
-  Assets_StaminaValue_Txt: {fileID: 7898728174270922471}
-  Assets_OTProps_Txt: {fileID: 7987534246591094198}
-  Assets_OTPropsValue_Txt: {fileID: 6927051646180628763}
   Floor3: {fileID: 315769212821434813}
   Mine_Btn: {fileID: 7672086213905051882}
-  Shop_Btn: {fileID: 0}
   Main_Btn: {fileID: 4812499092890763731}
-  Activity_Btn: {fileID: 0}
   Ranking_Btn: {fileID: 7046335866529988638}
   t_History_Btn: {fileID: 3331400750447362435}
   Settings_Btn: {fileID: 3965957964669112655}
@@ -7887,24 +7944,12 @@ MonoBehaviour:
   LobbyShopView: {fileID: 7532165618673014345, guid: 23d8bfa511521f544a6be501ad3cbe39, type: 3}
   LobbyActivityView: {fileID: 7532165618673014345, guid: fcb47a270d8332942938cc4fa9ccaf07, type: 3}
   LobbySettingsView: {fileID: 7532165618673014345, guid: 91d287bcee72ab643b837f4ce72bad8b, type: 3}
-  LobbyT_HistoryView: {fileID: 3537822008069001750, guid: 7846f6c4a33fa0948bc3115d1d669fa1, type: 3}
   LobbyReportView: {fileID: 7532165618673014345, guid: 1550e01eec13b684da0a25979f712e8e, type: 3}
-  MineBtn_Txt: {fileID: 3518349737872176522}
-  ShopBtn_Txt: {fileID: 0}
-  ActivityBtn_Txt: {fileID: 0}
-  RankingBtn_Txt: {fileID: 3699860969951470928}
-  t_HistoryBtn_Txt: {fileID: 3819655656664424585}
-  SettingsBtn_Txt: {fileID: 1745195127409051160}
-  Report_Txt: {fileID: 3771578038070127947}
   Floor4: {fileID: 2597165869620148159}
   QuestView: {fileID: 2916295124333432222, guid: 283920420f2c80d4b9b4945f925ddf2a, type: 3}
   SetNicknameViewObj: {fileID: 6043452908557475935, guid: 175ae92ef0320254b9b25a2c371a3300, type: 3}
-  Transfers_AnteView: {fileID: 2916295124333432222, guid: 143a68c49d5fcdc4f88e1cb78587d1ea, type: 3}
-  Transfers_Btn: {fileID: 2346216736524750537}
-  TransfersBtn_Txt: {fileID: 4026597352031316312}
   Notice: {fileID: 4279925663041948490}
   noticeText: {fileID: 3498661131989611939}
-  btnText: {fileID: 5146385730067977559}
   ConfirmBtn: {fileID: 6057978251329316811}
 --- !u!114 &113325593723988352
 MonoBehaviour:

@@ -802,20 +802,14 @@ MonoBehaviour:
   - {fileID: 5777990557793290032}
   Bg_Img: {fileID: 1188108338553632543}
   BillboardSample: {fileID: 3053678159731406967}
-  BillboardContent: {fileID: 6780976698029347603}
-  QuestView: {fileID: 2916295124333432222, guid: 283920420f2c80d4b9b4945f925ddf2a, type: 3}
   Integral_Btn: {fileID: 4893643968115162339}
   IntegralBtn_Txt: {fileID: 8537344941982934353}
   RankBattleBtnSample: {fileID: 9184920276984559661}
   RankTableParent: {fileID: 4669716624880383394}
-  RankTableTital_Txt: {fileID: 1167001867127908725}
   CryptoTableBtnSample: {fileID: 1615624873703608288}
-  CryptoTableTittle: {fileID: 2267485808810465580}
   CryptoTableParent: {fileID: 5330213269815619968}
-  CryptoTableTital_Txt: {fileID: 6407172325053128498}
   VCTableBtnSample: {fileID: 986116214013111154}
   VCTableParent: {fileID: 3292186870722903568}
-  VCTableTital_Txt: {fileID: 5176142854841288493}
   LineService: {fileID: 8559779028727428784}
   billboardImg: {fileID: 1406265399744803954}
   billboardSprList:
@@ -950,11 +944,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Launch_Btn: {fileID: 8411122286653123474}
   JoinRoomViewObj: {fileID: 7564755892930331617, guid: cb109abb0b4327a48972554651bd8438, type: 3}
-  BlindsStr_Txt: {fileID: 6945785436123766725}
   Blinds_Txt: {fileID: 5092821388511903748}
-  MinBuyStr_Txt: {fileID: 8707494421268101763}
   MinBuy_Txt: {fileID: 1122463186959778631}
-  LaunchBtn_Txt: {fileID: 6960327914982857996}
 --- !u!222 &6846927100114059709
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2622,6 +2613,7 @@ GameObject:
   - component: {fileID: 8497575637417052123}
   - component: {fileID: 5894749904721902978}
   - component: {fileID: 6945785436123766725}
+  - component: {fileID: 1172416520853351032}
   m_Layer: 5
   m_Name: BlindsStr_Txt
   m_TagString: Untagged
@@ -2748,6 +2740,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1172416520853351032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3641582454273348255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57291ba7302982a428eb614a2b66a573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: Blinds
 --- !u!1 &3641950679098096439
 GameObject:
   m_ObjectHideFlags: 0
@@ -3042,6 +3047,7 @@ GameObject:
   - component: {fileID: 612180488949484720}
   - component: {fileID: 6960327914982857996}
   - component: {fileID: 2902607398632455871}
+  - component: {fileID: 735602064303287331}
   m_Layer: 5
   m_Name: LaunchBtn_Txt
   m_TagString: Untagged
@@ -3181,6 +3187,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 0
+--- !u!114 &735602064303287331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3955109167143498015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57291ba7302982a428eb614a2b66a573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: LAUNCH
 --- !u!1 &4071430868369754319
 GameObject:
   m_ObjectHideFlags: 0
@@ -4630,6 +4649,7 @@ GameObject:
   - component: {fileID: 6836687371560036515}
   - component: {fileID: 7708682055168089518}
   - component: {fileID: 8707494421268101763}
+  - component: {fileID: 170733494059263296}
   m_Layer: 5
   m_Name: MinBuyStr_Txt
   m_TagString: Untagged
@@ -4756,6 +4776,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &170733494059263296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6238121048196490600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57291ba7302982a428eb614a2b66a573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: Min Buy-In
 --- !u!1 &6404326013569975065
 GameObject:
   m_ObjectHideFlags: 0
@@ -6088,6 +6121,7 @@ GameObject:
   - component: {fileID: 5998125274841718584}
   - component: {fileID: 7417452133027532365}
   - component: {fileID: 6407172325053128498}
+  - component: {fileID: 4784843402337602118}
   m_Layer: 5
   m_Name: CryptoTableTital_Txt
   m_TagString: Untagged
@@ -6213,6 +6247,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &4784843402337602118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8898291158449047374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57291ba7302982a428eb614a2b66a573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: CRYPTO TABLE
 --- !u!1 &8900082563894198940
 GameObject:
   m_ObjectHideFlags: 0

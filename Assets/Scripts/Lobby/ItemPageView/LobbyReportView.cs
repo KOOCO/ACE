@@ -9,7 +9,7 @@ public class LobbyReportView : MonoBehaviour
     public ZCalendar calendar;
     [Header("Tittle選單")]
     [SerializeField]
-    Toggle betRecord_Tog, transactionList_Tog, handHistory_Tog;
+    Toggle betRecord_Tog, handHistory_Tog;
     [SerializeField]
     GameObject betRecord_Obj, handHistory_Obj;
     [SerializeField]
@@ -34,13 +34,6 @@ public class LobbyReportView : MonoBehaviour
     [Header("注單查詢")]
     public BetHistoryManager bethistory;
 
-    [Header("文本")]
-    public TextMeshProUGUI betRecord_Txt, transactionList_Txt, handHistory_Txt,
-        allWins_Txt, allValidBet_Txt, allBets_Txt, totalRecords_Txt,
-        StartTime_Text, startTime_Text, EndTime_Text, endTime_Text, Game_Txt,
-        All_Txt,Date_Txt, Cancel_Txt, Confirm_Txt, Submit_Txt,
-        hadH_Tip_Txt;
-
 
     // Start is called before the first frame update
     void Start()
@@ -59,34 +52,8 @@ public class LobbyReportView : MonoBehaviour
     /// </summary>
     private void UpdateLanguage()
     {
-        #region 選單
-        betRecord_Txt.text = LanguageManager.Instance.GetText("BETS RECORD");
-        transactionList_Txt.text = LanguageManager.Instance.GetText("TRANSACTION LIST");
-        handHistory_Txt.text = LanguageManager.Instance.GetText("HAND HISTORY");
-        #endregion
-
-        #region 總資料
-        allWins_Txt.text = LanguageManager.Instance.GetText("All Wins：");
-        allValidBet_Txt.text = LanguageManager.Instance.GetText("All Valid Bet：");
-        allBets_Txt.text = LanguageManager.Instance.GetText("All Bets：");
-        totalRecords_Txt.text = LanguageManager.Instance.GetText("Total {count} Record(S)");
-        #endregion
-
-        #region 日期選擇
-        StartTime_Text.text = LanguageManager.Instance.GetText("Start Time");
-        startTime_Text.text = LanguageManager.Instance.GetText("Start");
-        EndTime_Text.text = LanguageManager.Instance.GetText("End Time");
-        endTime_Text.text = LanguageManager.Instance.GetText("End");
-        Game_Txt.text = LanguageManager.Instance.GetText("Game");
-        Date_Txt.text = LanguageManager.Instance.GetText("Date");
-        Cancel_Txt.text = LanguageManager.Instance.GetText("Cancel");
-        Confirm_Txt.text = LanguageManager.Instance.GetText("Confirm");
-        Submit_Txt.text = LanguageManager.Instance.GetText("SUBMIT");
         Game_Drop.options[0].text = LanguageManager.Instance.GetText("All");
         Game_Drop.options[1].text = LanguageManager.Instance.GetText("Texas hold'em");
-        #endregion
-
-        hadH_Tip_Txt.text = LanguageManager.Instance.GetText("Show last 20 hands");
     }
 
     void ListenEvent()

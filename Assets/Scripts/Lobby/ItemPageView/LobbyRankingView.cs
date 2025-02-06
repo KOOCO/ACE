@@ -18,35 +18,14 @@ public class LobbyRankingView : MonoBehaviour
     [SerializeField]
     Transform RankContent;
     [SerializeField]
-    TextMeshProUGUI PlayerTag_Txt, Winnings_Txt, Status_Txt, Daily_Txt, Weekly_Txt;
-    [SerializeField]
     Toggle daily_Btn, weekly_Btn;
     [SerializeField]
     ScrollRect Rank_Sv;
     ObjPool objPool;
     bool isDaily = true;
 
-    /// <summary>
-    /// 更新文本翻譯
-    /// </summary>
-    private void UpdateLanguage()
-    {
-        PlayerTag_Txt.text = $"{LanguageManager.Instance.GetText("Player")}";
-        Winnings_Txt.text = $"{LanguageManager.Instance.GetText("Winnings")}";
-        Status_Txt.text = $"{LanguageManager.Instance.GetText("Status")}";
-        Daily_Txt.text = $"{LanguageManager.Instance.GetText("DAILY")}";
-        Weekly_Txt.text = $"{LanguageManager.Instance.GetText("WEEKLY")}";
-
-    }
-
-    private void OnDestroy()
-    {
-        LanguageManager.Instance.RemoveLanguageFun(UpdateLanguage);
-    }
-
     private void Awake()
     {
-        LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
         ListenerEvent();
 
         objPool = new ObjPool(transform, 50);

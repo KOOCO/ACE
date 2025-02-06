@@ -16,6 +16,13 @@ public class LanguageItem : MonoBehaviour
     }
     private void UpdateLanguage()
     {
-        gameObject.GetComponent<TextMeshProUGUI>().text = LanguageManager.Instance.GetText(ID);
+        if (ID != null && gameObject.GetComponent<TextMeshProUGUI>() != null)
+        {
+            gameObject.GetComponent<TextMeshProUGUI>().text = LanguageManager.Instance.GetText(ID);
+        }
+        else
+        {
+            Debug.LogError("text or id is null");
+        }
     }
 }

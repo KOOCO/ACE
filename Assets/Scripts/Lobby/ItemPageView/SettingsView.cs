@@ -9,19 +9,11 @@ using System;
 
 public class SettingsView : MonoBehaviour
 {
-    //[SerializeField]
-    //Button Close_Btn;
-    //[SerializeField]
-    //TextMeshProUGUI Title_Txt;
     [Header("選單")]
     [SerializeField]
     Button language_Btn, contactUs_Btn, terms_Btn, privacy_Btn, logOut_Btn;
-    [SerializeField]
-    TextMeshProUGUI sound_Txt, language_Txt, contactUs_Txt, terms_Txt, privacy_Txt, logOut_Txt;
 
     [Header("語言")]
-    //[SerializeField]
-    //TMP_Dropdown Language_Dd;
     [SerializeField]
     GameObject languageArea;
     [SerializeField]
@@ -34,9 +26,6 @@ public class SettingsView : MonoBehaviour
     GameObject Privacy_Obj, Privacy_text, Term_text, Privacy_obj_Scroll, Term_obj_Scroll,
       Privacy_text_CH, Term_text_CH, Privacy_text_EN, Term_text_EN;
     [SerializeField]
-    TextMeshProUGUI Privacy_Title, Term_Title,
-                    TermsConfirm_Btn_Txt, PrivacyConfirm_Btn_Txt;
-    [SerializeField]
     ScrollRect Privacy_scroll, Term_scroll;
 
     /// <summary>
@@ -44,21 +33,7 @@ public class SettingsView : MonoBehaviour
     /// </summary>
     private void UpdateLanguage()
     {
-        //Title_Txt.text = LanguageManager.Instance.GetText("SETTINGS");
-        language_Txt.text = LanguageTitle_Txt.text = LanguageManager.Instance.GetText("Language");
-        contactUs_Txt.text = LanguageManager.Instance.GetText("Contact us");
-        terms_Txt.text = LanguageManager.Instance.GetText("Terms");
-        privacy_Txt.text = LanguageManager.Instance.GetText("Privacy Policy");
-        logOut_Txt.text = LanguageManager.Instance.GetText("Log Out");
-        sound_Txt.text = LanguageManager.Instance.GetText("Sound");
-
         #region 隱私政策物件
-
-        TermsConfirm_Btn_Txt.text = LanguageManager.Instance.GetText("i GOT IT");
-        PrivacyConfirm_Btn_Txt.text = LanguageManager.Instance.GetText("i GOT IT");
-        //PrivacyConfirmBtn_Txt.text = LanguageManager.Instance.GetText("Confirm");
-        Privacy_Title.text = LanguageManager.Instance.GetText("Asia Poker privacy policy");
-        Term_Title.text = LanguageManager.Instance.GetText("Asia Poker Terms of Service");
         if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
         {
             Term_obj_Scroll.GetComponent<ScrollRect>().content = Term_text_EN.GetComponent<RectTransform>();
@@ -95,9 +70,6 @@ public class SettingsView : MonoBehaviour
     {
         LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
         ListenerEvent();
-
-        //Utils.SetOptionsToDropdown(Language_Dd,
-        //                           LanguageManager.Instance.languageShowName.ToList());
     }
 
     private void CallJSWindowClose(string unused)
@@ -135,12 +107,6 @@ public class SettingsView : MonoBehaviour
     /// </summary>
     private void ListenerEvent()
     {
-        //關閉按鈕
-        //Close_Btn.onClick.AddListener(() =>
-        //{
-        //    Destroy(gameObject);
-        //});
-
         language_Btn.onClick.AddListener(() =>
         {
             languageArea.SetActive(true);
@@ -168,14 +134,6 @@ public class SettingsView : MonoBehaviour
 
         logOut_Btn.onClick.AddListener(OnClickLogOutBtn);
 
-        //更換語言
-        #region old
-        //Language_Dd.onValueChanged.AddListener((value) =>
-        //{
-        //    LanguageManager.Instance.ChangeLanguage(value);
-
-        //});
-        #endregion
         en_Tog.onValueChanged.AddListener((value) =>
         {
             en_Tog.isOn = value;
