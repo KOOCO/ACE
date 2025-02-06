@@ -3732,12 +3732,6 @@ public class GameView : MonoBehaviour
     {
         thisData.IsPlaying = false;
 
-        //正在觀看紀錄影片
-        LobbyHandHistoryView handHistoryMainView = GameObject.FindAnyObjectByType<LobbyHandHistoryView>();
-        if (handHistoryMainView != null)
-        {
-            Destroy(handHistoryMainView.gameObject);
-        }
         HistoryVideoView historyVideoView = GameObject.FindAnyObjectByType<HistoryVideoView>();
         if (historyVideoView != null)
         {

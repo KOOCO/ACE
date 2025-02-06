@@ -34,24 +34,18 @@ public class LobbyMainPageView : MonoBehaviour
     GameObject RankBattleBtnSample;
     [SerializeField]
     RectTransform RankTableParent;
-    [SerializeField]
-    TextMeshProUGUI RankTableTital_Txt;
 
     [Header("加密貨幣桌")]
     [SerializeField]
-    GameObject CryptoTableBtnSample, CryptoTableTittle;
+    GameObject CryptoTableBtnSample, CryptoTableTitle;
     [SerializeField]
     RectTransform CryptoTableParent;
-    [SerializeField]
-    TextMeshProUGUI CryptoTableTital_Txt;
 
     [Header("虛擬貨幣桌")]
     [SerializeField]
     GameObject VCTableBtnSample;
     [SerializeField]
     RectTransform VCTableParent;
-    [SerializeField]
-    TextMeshProUGUI VCTableTital_Txt;
 
     [Header("Line客服")]
     [SerializeField]
@@ -67,7 +61,7 @@ public class LobbyMainPageView : MonoBehaviour
 
     private void OnEnable()
     {
-        CryptoTableTittle.SetActive(false);
+        CryptoTableTitle.SetActive(false);
     }
 
     /// <summary>
@@ -387,23 +381,22 @@ public class LobbyMainPageView : MonoBehaviour
     private void CreateRoomBtn()
     {
         // Define each mode with their respective table index, title, sample button, and parent
-        SetupTable(0, "Rank Battle", tables[0], RankBattleBtnSample, RankTableParent, RankTableTital_Txt);
-        SetupTable(1, "High Roller Battleground", tables[1], CryptoTableBtnSample, CryptoTableParent, CryptoTableTital_Txt);
-        SetupTable(2, "Classic Battle", tables[2], VCTableBtnSample, VCTableParent, VCTableTital_Txt);
+        SetupTable(0, tables[0], RankBattleBtnSample, RankTableParent);
+        SetupTable(1, tables[1], CryptoTableBtnSample, CryptoTableParent);
+        SetupTable(2, tables[2], VCTableBtnSample, VCTableParent);
 
-        CryptoTableTittle.SetActive(true);
+        CryptoTableTitle.SetActive(true);
         ViewManager.Instance.CloseWaitingView(transform.parent);
     }
 
     // Helper method to set up each table
-    private void SetupTable(int mode, string titleKey, GameObject table, GameObject btnSample, Transform parent, TextMeshProUGUI titleText)
+    private void SetupTable(int mode, GameObject table, GameObject btnSample, Transform parent)
     {
         var selectedData = tablesData.items.Where(x => x.mode == mode && x.isEnable == true).ToList();
 
         if (selectedData.Count > 0)
         {
             table.SetActive(true);
-            titleText.text = LanguageManager.Instance.GetText(titleKey);
             btnSample.SetActive(false);
 
             foreach (var data in selectedData)

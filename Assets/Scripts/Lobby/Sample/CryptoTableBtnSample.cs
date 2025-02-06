@@ -11,33 +11,21 @@ public class CryptoTableBtnSample : MonoBehaviour
     [SerializeField]
     GameObject JoinRoomViewObj;
     [SerializeField]
-    TextMeshProUGUI BlindsStr_Txt, Blinds_Txt,
-                    MinBuyStr_Txt, MinBuy_Txt,
-                    LaunchBtn_Txt;
+    TextMeshProUGUI Blinds_Txt, MinBuy_Txt;
     public static JoinRoomView joinRoomView;
     CurrencyType currencyType;
 
 
     string tableId;
 
-    /// <summary>
-    /// 更新文本翻譯
-    /// </summary>
-    private void UpdateLanguage()
-    {
-        BlindsStr_Txt.text = LanguageManager.Instance.GetText("Blinds");
-        MinBuyStr_Txt.text = LanguageManager.Instance.GetText("Min Buy-In");
-        LaunchBtn_Txt.text = LanguageManager.Instance.GetText("LAUNCH");
-    }
 
     private void OnDestroy()
     {
-        LanguageManager.Instance.RemoveLanguageFun(UpdateLanguage);
+
     }
 
     private void Awake()
     {
-        LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
         currencyType = CurrencyType.UCoin;
     }
 

@@ -24,30 +24,22 @@ public class LobbyView : MonoBehaviour
 
     [Header("用戶訊息")]
     [SerializeField]
-    TextMeshProUGUI Nickname_Txt, Stamina_Txt,
+    TextMeshProUGUI Nickname_Txt,
                     CryptoChips_Txt;
 
     [Header("用戶資源列表")]
     [SerializeField]
     Button Avatar_Btn;
     [SerializeField]
-    GameObject AssetList_Obj;
-    [SerializeField]
-    TextMeshProUGUI Assets_CryptoChips_Txt, Assets_CryptoChipsValue_Txt,
-                    Assets_VCChips_Txt, Assets_VCValue_Txt,
-                    Assets_Gold_Txt, Assets_GoldValue_Txt,
-                    Assets_Stamina_Txt, Assets_StaminaValue_Txt,
-                    Assets_OTProps_Txt, Assets_OTPropsValue_Txt;
+    TextMeshProUGUI Assets_CryptoChipsValue_Txt;
 
     [Header("項目按鈕")]
     [SerializeField]
     RectTransform Floor3;
     [SerializeField]
-    Button Mine_Btn, Shop_Btn, Main_Btn, Activity_Btn, Ranking_Btn, t_History_Btn, Settings_Btn, Refresh_Btn, Report_Btn;
+    Button Mine_Btn, Main_Btn, Ranking_Btn, t_History_Btn, Settings_Btn, Refresh_Btn, Report_Btn;
     [SerializeField]
-    GameObject LobbyMainPageView, LobbyMinePageView, LobbyRankingView, LobbyShopView, LobbyActivityView, LobbySettingsView, LobbyT_HistoryView, LobbyReportView;
-    [SerializeField]
-    TextMeshProUGUI MineBtn_Txt, ShopBtn_Txt, ActivityBtn_Txt, RankingBtn_Txt, t_HistoryBtn_Txt, SettingsBtn_Txt, Report_Txt;
+    GameObject LobbyMainPageView, LobbyMinePageView, LobbyRankingView, LobbyShopView, LobbyActivityView, LobbySettingsView, LobbyReportView;
 
     [Header("任務介面")]
     [SerializeField]
@@ -59,18 +51,9 @@ public class LobbyView : MonoBehaviour
     [SerializeField]
     GameObject SetNicknameViewObj;
 
-    [Header("存提款介面")]
-    [SerializeField]
-    GameObject Transfers_AnteView;
-    [SerializeField]
-    Button Transfers_Btn;
-    [SerializeField]
-    TextMeshProUGUI TransfersBtn_Txt;
-
     [Header("提示POP")]
     public GameObject Notice;
     public TextMeshProUGUI noticeText;
-    public TextMeshProUGUI btnText;
     public Button ConfirmBtn;
 
     //[Header("背景音樂")][SerializeField] public AudioSource audioSource;
@@ -98,44 +81,8 @@ public class LobbyView : MonoBehaviour
 
     bool isShowAssetList;               //是否顯示用戶資源列表
 
-    /// <summary>
-    /// 更新文本翻譯
-    /// </summary>
-    private void UpdateLanguage()
-    {
-        #region 用戶資源列表
-
-        Assets_CryptoChips_Txt.text = LanguageManager.Instance.GetText("Crypto Table");
-        Assets_VCChips_Txt.text = LanguageManager.Instance.GetText("VC Table");
-        Assets_Gold_Txt.text = LanguageManager.Instance.GetText("Gold");
-        Assets_Stamina_Txt.text = LanguageManager.Instance.GetText("Stamina");
-        Assets_OTProps_Txt.text = LanguageManager.Instance.GetText("OT Props");
-
-        #endregion
-
-        #region 項目按鈕
-
-        MineBtn_Txt.text = LanguageManager.Instance.GetText("Mine");
-        //ShopBtn_Txt.text = LanguageManager.Instance.GetText("Shop");
-        //ActivityBtn_Txt.text = LanguageManager.Instance.GetText("Activity");
-        RankingBtn_Txt.text = LanguageManager.Instance.GetText("Ranking");
-        t_HistoryBtn_Txt.text = LanguageManager.Instance.GetText("Transaction History");
-        Report_Txt.text = LanguageManager.Instance.GetText("Report");
-        SettingsBtn_Txt.text = LanguageManager.Instance.GetText("Settings");
-
-        #endregion
-
-        #region 存提款
-
-        TransfersBtn_Txt.text = LanguageManager.Instance.GetText("Transfers");
-
-        #endregion
-        btnText.text = LanguageManager.Instance.GetText("Confirm");
-    }
-
     private void OnDestroy()
     {
-        LanguageManager.Instance.RemoveLanguageFun(UpdateLanguage);
 
         /*
         //移除監聽在線狀態
@@ -147,7 +94,6 @@ public class LobbyView : MonoBehaviour
     private void Awake()
     {
         isFirstIn = true;
-        LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
         ListenerEvent();
     }
 
@@ -238,24 +184,7 @@ public class LobbyView : MonoBehaviour
             NoodleApi.GetBalance();
         });
 
-        //商店
-        /*Shop_Btn.onClick.AddListener(() =>
-        {
-            OpenItemPage(ItemType.Shop);
-        });*/
-
-        //活動
-        /*Activity_Btn.onClick.AddListener(() =>
-        {
-            OpenItemPage(ItemType.Activity);
-        });*/
-
         #endregion
-
-        Transfers_Btn.onClick.AddListener(() =>
-        {
-            DisplayFloor4UI(Transfers_AnteView);
-        });
 
         ConfirmBtn.onClick.AddListener(() =>
         {
@@ -559,13 +488,8 @@ public class LobbyView : MonoBehaviour
     {
         Nickname_Txt.text = $"@{DataManager.UserNickname}";
         Avatar_Btn.image.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[DataManager.UserAvatarIndex];
-        Stamina_Txt.text = $"{DataManager.UserEnergy}/{DataManager.UserMaxEnrtgy}";
 
         Assets_CryptoChipsValue_Txt.text = $"${StringUtils.SetChipsUnit(DataManager.UserChips)}";
-        Assets_VCValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserAChips);
-        Assets_GoldValue_Txt.text = StringUtils.SetChipsUnit(DataManager.UserGold);
-        Assets_StaminaValue_Txt.text = $"{DataManager.UserEnergy}/{DataManager.UserMaxEnrtgy}";
-        Assets_OTPropsValue_Txt.text = $"{DataManager.UserTimer}";
     }
 
     /// <summary>
@@ -643,7 +567,6 @@ public class LobbyView : MonoBehaviour
                 itemObj = LobbyActivityView;
                 break;
             case ItemType.t_History:
-                itemObj = LobbyT_HistoryView;
                 break;
             case ItemType.Settings:
                 itemObj = LobbySettingsView;
