@@ -82,16 +82,6 @@ public class LobbyMainPageView : MonoBehaviour
     }
 
     /// <summary>
-    /// 積分房資料
-    /// </summary>
-    private IntegralData integralData;
-    public class IntegralData
-    {
-        public bool isPairing;              //是否正在配對中
-        public DateTime startPairTime;      //開始配對時間
-    }
-
-    /// <summary>
     /// 更新文本翻譯
     /// </summary>
     private void UpdateLanguage()
@@ -106,7 +96,7 @@ public class LobbyMainPageView : MonoBehaviour
 
     private void Awake()
     {
-        integralData = new IntegralData();
+        //integralData = new IntegralData();
 
         ListenerEvent();
         LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
@@ -117,6 +107,7 @@ public class LobbyMainPageView : MonoBehaviour
     /// </summary>
     private void ListenerEvent()
     {
+        /*
         //積分房
         Integral_Btn.onClick.AddListener(() =>
         {
@@ -167,6 +158,7 @@ public class LobbyMainPageView : MonoBehaviour
         {
             StartLineLogin();
         });
+        */
     }
 
     private void Start()
@@ -189,23 +181,34 @@ public class LobbyMainPageView : MonoBehaviour
     {
         #region 積分房
 
-        //積分配對計時器
-        if (integralData.isPairing)
-        {
-            TimeSpan waitingTime = DateTime.Now - integralData.startPairTime;
-            IntegralBtn_Txt.text = $"{LanguageManager.Instance.GetText("Pairing")}:{(int)waitingTime.TotalMinutes} : {waitingTime.Seconds:00}";
+        ////積分配對計時器
+        //if (integralData.isPairing)
+        //{
+        //    TimeSpan waitingTime = DateTime.Now - integralData.startPairTime;
+        //    IntegralBtn_Txt.text = $"{LanguageManager.Instance.GetText("Pairing")}:{(int)waitingTime.TotalMinutes} : {waitingTime.Seconds:00}";
 
-            //配對中房間已達上限
-            if (GameRoomManager.Instance.GetRoomCount >= GameRoomManager.Instance.maxRoomCount)
-            {
-                IntegralEndPair();
-            }
-        }
+        //    //配對中房間已達上限
+        //    if (GameRoomManager.Instance.GetRoomCount >= GameRoomManager.Instance.maxRoomCount)
+        //    {
+        //        IntegralEndPair();
+        //    }
+        //}
 
         #endregion
     }
 
     #region 積分房
+
+    /*
+    /// <summary>
+    /// 積分房資料
+    /// </summary>
+    private IntegralData integralData;
+    public class IntegralData
+    {
+        public bool isPairing;              //是否正在配對中
+        public DateTime startPairTime;      //開始配對時間
+    }
 
     public void CheckRoomCallback(string jsonData)
     {
@@ -374,19 +377,8 @@ public class LobbyMainPageView : MonoBehaviour
                 $"{Entry.Instance.releaseType}/{TableTypeEnum.IntegralTable}/{FirebaseManager.INTEGRAL_WAIT_DATA}/{DataManager.UserId}");
     }
 
-
+    */
     #endregion
-
-    public class GetBanner
-    {
-        public string Filter;
-        public string StartDate;
-        public string EndDate;
-        public bool IsEnabled;
-        public string Sorting;
-        public int SkipCount;
-        public int MaxResultCount;
-    }
 
     /// <summary>
     /// 創建房間按鈕
@@ -437,18 +429,18 @@ public class LobbyMainPageView : MonoBehaviour
 
 
     #region Line客服加好友
+    
+    /*
     public void StartLineLogin()
     {
         string state = GenerateRandomString();
         string nonce = GenerateRandomString();
         string authUrl = $"https://line.me/ti/p/@309jwned";
-        /*
-                    +
-                     $"client_id={DataManager.LineChannelId}&" +
-                     $"redirect_uri={DataManager.RedirectUri}&" +
-                     $"state={state}&" +
-                     $"scope=profile%20openid%20email&nonce={nonce}";
-        */
+                    //+
+                    // $"client_id={DataManager.LineChannelId}&" +
+                    // $"redirect_uri={DataManager.RedirectUri}&" +
+                    // $"state={state}&" +
+                    // $"scope=profile%20openid%20email&nonce={nonce}";
 
         //JSBridgeManager.Instance.LocationHref(authUrl);
 
@@ -460,6 +452,7 @@ public class LobbyMainPageView : MonoBehaviour
         var random = new System.Random();
         return new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
     }
+    */
     #endregion
 
 }
