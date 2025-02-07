@@ -9402,14 +9402,13 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8052038508647786115}
   - {fileID: 8726592497616941318}
   m_Father: {fileID: 2900075148466073770}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -100.85811, y: 186}
-  m_SizeDelta: {x: 201.7162, y: 3461.1}
+  m_AnchoredPosition: {x: -100, y: 200}
+  m_SizeDelta: {x: 200, y: 3461.1}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1258199901529808189
 GameObject:
@@ -9996,145 +9995,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &1378987404155500368
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6080547422602561786}
-  - component: {fileID: 2747272771417940516}
-  - component: {fileID: 7985156471350091768}
-  m_Layer: 5
-  m_Name: CH_Txt (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &6080547422602561786
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1378987404155500368}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2417172932802116850}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 151.4, y: -332.2}
-  m_SizeDelta: {x: 298.9059, y: 924.3156}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &2747272771417940516
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1378987404155500368}
-  m_CullTransparentMesh: 1
---- !u!114 &7985156471350091768
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1378987404155500368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: "\r\u5FB7\u5DDE\u64B2\u514B\u662F\u4E16\u754C\u4E0A\u6700\u53D7\u6B61\u8FCE\u7684\u64B2\u514B\u904A\u6232\u3002\u5728\u64B2\u514B\u71B1\u6F6E\u671F\u9593\u5E2D\u6372\u4E86\u7F8E\u570B\u3002\u73FE\u5728\u5B83\u4EE5\u73FE\u91D1\u904A\u6232\u548C\u9326\u6A19\u8CFD\u5F62\u5F0F\u5728\u5168\u4E16\u754C\u7BC4\u570D\u5167\u9032\u884C\u3002\u898F\u5247\u7C21\u55AE\u660E\u4E86\uFF0C\u904A\u6232\u7BC0\u594F\u7DCA\u5F35\u4E14\u6709\u8DA3\uFF0C\u4F46\u5B83\u770B\u4F3C\u7C21\u55AE
-    : \u904A\u6232\u4EE5\u300C\u82B1\u4E00\u5206\u9418\u5B78\u7FD2\uFF0C\u4F46\u8981\u82B1\u4E00\u751F\u6642\u9593\u624D\u80FD\u638C\u63E1\u300D\u800C\u805E\u540D\u3002\r\n\r\n\u904A\u6232\u73A9\u6CD5
-    \r\n\r1.\u7FFB\u524D \r\n\r\u5169\u500B\u5F37\u5236\u4E0B\u6CE8\uFF08\u300C\u76F2\u6CE8\u300D\uFF09\u88AB\u653E\u7F6E\uFF0C\u5C0F\u76F2\u6CE8\u7531\u838A\u5BB6\u5DE6\u908A\u7684\u73A9\u5BB6\u653E\u7F6E\uFF0C\u5927\u76F2\u6CE8\u7531\u5C0F\u76F2\u6CE8\u5DE6\u908A\u7684\u73A9\u5BB6\u653E\u7F6E\u3002\u6BCF\u500B\u73A9\u5BB6\u90FD\u6703\u6536\u5230\u5169\u5F35\u300C\u5E95\u724C\u300D\u3002
-    \r\n\r\u5F9E\u5927\u76F2\u6CE8\u5DE6\u5074\u73A9\u5BB6\u9806\u6642\u91DD\u79FB\u52D5\uFF0C\u6BCF\u4F4D\u73A9\u5BB6\u4F9D\u5E8F\u9032\u884C\u8DDF\u6CE8\u3001\u52A0\u6CE8\u6216\u68C4\u724C\u3002\u5982\u679C\u5728\u672C\u8F2A\u7D50\u675F\u6642\u6709\u4E0D\u53EA\u4E00\u4F4D\u73A9\u5BB6\u4FDD\u6301\u6D3B\u8E8D\u72C0\u614B\uFF08\u6301\u6709\u5E95\u724C\uFF09\uFF0C\u5247\u767C\u7FFB\u724C\u3002\r\n\r\n2.\u7FFB\u724C\r\n\r\u767C\u51FA\u4E09\u5F35\u9762\u671D\u4E0A\u7684\u516C\u5171\u724C\uFF08\u7FFB\u724C\uFF09\u3002\u5F9E\u6700\u9760\u8FD1\u6309\u9215\u4F4D\u7684\u73A9\u5BB6\u958B\u59CB\uFF0C\u73A9\u5BB6\u518D\u6B21\u9806\u6642\u91DD\u65B9\u5411\u9032\u884C\u904E\u724C\u3001\u4E0B\u6CE8\u3001\u52A0\u6CE8\u6216\u68C4\u724C\u3002\u5982\u679C\u5728\u672C\u8F2A\u7D50\u675F\u6642\u6709\u4E0D\u53EA\u4E00\u4F4D\u73A9\u5BB6\u4FDD\u6301\u6D3B\u8E8D\u72C0\u614B\uFF08\u6301\u6709\u5E95\u724C\uFF09\uFF0C\u5247\u767C\u724C\u3002\r\n\r\n3.\u8F49\u724C\r\n\r\u767C\u51FA\u7B2C\u56DB\u5F35\u516C\u5171\u724C\u3002\u9084\u6709\u53E6\u4E00\u8F2A\u4E0B\u6CE8\uFF08\u5982\u7FFB\u724C\u5708\uFF09\uFF0C\u5982\u679C\u8D85\u904E\u4E00\u540D\u73A9\u5BB6\u5728\u8A72\u8F2A\u7D50\u675F\u6642\u4FDD\u6301\u6D3B\u8E8D\uFF0C\u5247\u767C\u6CB3\u724C\u3002\r\n\r\n4.\u6CB3\u724C\r\n\r\u767C\u51FA\u7B2C\u4E94\u5F35\u4E5F\u662F\u6700\u5F8C\u4E00\u5F35\u516C\u5171\u724C\u3002\u6709\u6700\u5F8C\u4E00\u8F2A\u4E0B\u6CE8\uFF0C\u5982\u679C\u8D85\u904E\u4E00\u540D\u73A9\u5BB6\u5728\u6700\u5F8C\u4E00\u8F2A\u4E0B\u6CE8\u4ECD\u8655\u65BC\u6D3B\u8E8D\u72C0\u614B\uFF0C\u5247\u8A72\u624B\u724C\u9054\u5230\u300C\u6524\u724C\u300D\u3002\r\n\r\n5.\u6524\u724C\r\n\r\u73A9\u5BB6\u4EAE\u51FA\u5E95\u724C\uFF08\u9806\u5E8F\u53D6\u6C7A\u65BC\u6CB3\u724C\u5708\u884C\u52D5\u6216\u724C\u684C\u4F4D\u7F6E\uFF09\uFF0C\u724C\u578B\u6700\u9AD8\u7684\u73A9\u5BB6\u8D0F\u5F97\u5E95\u6C60\u3002"
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 13.5
-  m_fontSizeBase: 13.5
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &1397838934929824010
 GameObject:
   m_ObjectHideFlags: 0
@@ -19425,163 +19285,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &2632665947300593070
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8052038508647786115}
-  - component: {fileID: 6705622134401979087}
-  - component: {fileID: 4328447449503798970}
-  m_Layer: 5
-  m_Name: EN_Txt (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &8052038508647786115
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2632665947300593070}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8985875858311556971}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 151.401, y: -519}
-  m_SizeDelta: {x: 298.9059, y: 678.7352}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &6705622134401979087
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2632665947300593070}
-  m_CullTransparentMesh: 1
---- !u!114 &4328447449503798970
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2632665947300593070}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: "\rTexas hold'em is the most popular poker game in the world. Sweeping
-    America during the poker craze. It is now played worldwide in cash games and
-    tournament formats. The rules are simple and clear, and the game is intense and
-    fun, but it's deceptively simple: the game is famous for taking a minute to learn
-    but a lifetime to master. \r\n\r\nGame play\r\n\r\nPreflop\r\n\r\nTwo mandatory
-    bets (\"blinds\") are placed, the small blind is placed by the player to the
-    left of the dealer, and the big blind is placed by the player to the left of
-    the small blind. Each player receives two \"hole cards.\" \r\n\r\nPlayers move
-    clockwise from the left side of the big blind, and each player calls, raises,
-    or folds in sequence. If more than one player remains active (holding a hole
-    card) at the end of the round, the flop card is dealt. \r\n\r\nflop\r\n\r\nThree
-    community cards are dealt face up (flop). Starting from the player closest to
-    the button, players check, bet, raise or fold again in a clockwise direction.
-    If more than one player remains active (holding cards) at the end of the round,
-    the cards are dealt. \r\n\r\nturn card\r\n\r\nThe fourth community card is dealt.
-    There is another round of betting (like the flop), and if more than one player
-    remains active at the end of the round, the river card is dealt. \r\n\r\nriver
-    card\r\n\r\nThe fifth and final community card is dealt. There is a final round
-    of betting, and if more than one player is still active during the final betting
-    round, the hand reaches a \"showdown.\" \r\n\r\nShowdown\r\n\r\nPlayers reveal
-    their hole cards (the order depends on river action or table position), and the
-    player with the highest card wins the pot.\r\n\r\n\r\n"
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 13.3
-  m_fontSizeBase: 13.3
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &2633782870349658042
 GameObject:
   m_ObjectHideFlags: 0
@@ -25386,11 +25089,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2417172932802116850}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -460}
-  m_SizeDelta: {x: 310, y: 4030}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 298, y: 3887.2866}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &8789326948496798598
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -25419,7 +25122,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 2d4942e1e5ed19c4594fcbe3a66d9d72, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f3a6edf79ba1a61429ff4f6e0e661248, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -30507,7 +30210,9 @@ MonoBehaviour:
   buyChipsView: {fileID: 3206520187363870020}
   RuleView: {fileID: 4799676544336673318}
   GameRules_ScrollView: {fileID: 4620344953342553396}
-  RuleObjList: []
+  RuleObjList:
+  - {fileID: 1258103158685079522}
+  - {fileID: 8341266579032353488}
   closeRule_Btn: {fileID: 6078647380719725015}
   got_it_btn: {fileID: 9051381404753615518}
   WinChipsObj: {fileID: 2644066895869908512, guid: 2d51c37f43d33154f9ac2a504a2e1a24, type: 3}
@@ -59547,11 +59252,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8985875858311556971}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -500}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 310, y: 4458}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &2272859296073917971
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -59848,7 +59553,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2417172932802116850
 RectTransform:
   m_ObjectHideFlags: 0
@@ -59861,14 +59566,13 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6080547422602561786}
   - {fileID: 7602720394361132299}
   m_Father: {fileID: 2900075148466073770}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -101.000015, y: 206.12988}
-  m_SizeDelta: {x: 201.7162, y: 3128.119}
+  m_AnchoredPosition: {x: -100, y: 200}
+  m_SizeDelta: {x: 200, y: 3128.119}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &8377645881175659465
 GameObject:
