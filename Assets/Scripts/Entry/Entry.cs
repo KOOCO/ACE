@@ -280,6 +280,7 @@ public class Entry : UnitySingleton<Entry>
     #endregion
 
     #region 心跳 in Web
+    private bool isHeartbeatScheduled = false;
     public void initHeartBeat(string userID)
     {
         if (!isListenered)
@@ -329,7 +330,13 @@ public class Entry : UnitySingleton<Entry>
             PlayerPrefs.SetString("ServerStatus", "normal");
             PlayerPrefs.Save();
         }
-        Invoke(nameof(StartHeartbeat), 5);
+
+        // 只在沒有排程時才開始倒數
+        if (!isHeartbeatScheduled)
+        {
+            isHeartbeatScheduled = true;
+            StartCoroutine(HeartbeatCooldown());
+        }
     }
     public void checkUpdate(string s)
     {
@@ -342,6 +349,13 @@ public class Entry : UnitySingleton<Entry>
             PlayerPrefs.Save();
         }
         //print(nullC);
+    }
+
+    IEnumerator HeartbeatCooldown()
+    {
+        yield return new WaitForSeconds(5);
+        StartHeartbeat();
+        isHeartbeatScheduled = false;
     }
 
     public void stopListenHB()

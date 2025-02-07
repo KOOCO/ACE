@@ -616,6 +616,14 @@ public class LobbyView : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 安卓離桌後重啟心跳
+    /// </summary>
+    public void reStartHertbeat()
+    {
+        Entry.Instance.initHeartBeat(DataManager.UserId);
+    }
+
     IEnumerator openRefreshBtn()
     {
         yield return new WaitForSeconds(5);

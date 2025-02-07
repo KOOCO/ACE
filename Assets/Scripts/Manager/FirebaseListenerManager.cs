@@ -57,7 +57,8 @@ public class FirebaseListenerManager : MonoBehaviour
         reference.ValueChanged += valueChangedHandler;
         listeners[nodePath] = valueChangedHandler;
 
-        Debug.Log($"Subscribed to node: {nodePath}");
+        Debug.Log($"訂閱節點: {nodePath}");
+        Debug.Log($"監聽器數: {listeners.Count}");
     }
 
     /// <summary>
@@ -75,7 +76,8 @@ public class FirebaseListenerManager : MonoBehaviour
         reference.ValueChanged -= listeners[nodePath];
         listeners.Remove(nodePath);
 
-        Debug.Log($"Unsubscribed from node: {nodePath}");
+        Debug.Log($"移除節點: {nodePath}");
+        Debug.Log($"監聽器數: {listeners.Count}");
     }
 
     /// <summary>

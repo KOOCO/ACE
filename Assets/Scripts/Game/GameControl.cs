@@ -443,6 +443,7 @@ public class GameControl : MonoBehaviour
 #endif
     }
 
+    [Obsolete]
     void OnLeaveTable()
     {
         //移除倒數
@@ -453,6 +454,9 @@ public class GameControl : MonoBehaviour
                                                    .Count();
         //停止監聽遊戲房間資料
         JSBridgeManager.Instance.StopListeningForDataChanges($"{QueryRoomPath}");
+#if UNITY_ANDROID
+        Entry.Instance.stopListenHB();
+#endif
 
         //移除監測連線狀態
         JSBridgeManager.Instance.RemoveListenerConnectState($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{DataManager.UserId}");
@@ -513,6 +517,10 @@ public class GameControl : MonoBehaviour
         //}
         //本地玩家房間關閉
         GameRoomManager.Instance.RemoveGameRoom(transform.name);
+#if UNITY_ANDROID
+        LobbyView lobbyView = FindAnyObjectByType<LobbyView>();
+        lobbyView.reStartHertbeat();
+#endif
     }
     /// <summary>
     /// 移除玩家
