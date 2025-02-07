@@ -16468,6 +16468,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3160137638914150731}
+  - component: {fileID: 65107692793467155}
   m_Layer: 5
   m_Name: Menu
   m_TagString: Untagged
@@ -16487,6 +16488,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1878992007672308977}
   - {fileID: 3546415950024513289}
   m_Father: {fileID: 6670946787786061185}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -16495,6 +16497,40 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 390, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &65107692793467155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2167127872074750695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 753006d4703512343af96aca8f49749b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MenuPage_Tr: {fileID: 3546415950024513289}
+  MenuClose_Btn: {fileID: 1115244144489512955}
+  SitOut_Btn: {fileID: 6766343566948756954}
+  BuyChips_Btn: {fileID: 6598117583903154225}
+  GameRules_Btn: {fileID: 8900101275761685681}
+  HandHistory_Btn: {fileID: 9013087433615290804}
+  Mask_Btn: {fileID: 1115244144489512955}
+  LogOut_Btn: {fileID: 2345417321227503460}
+  MenuAvatar_Img: {fileID: 5057604088493802312}
+  MenuNickname_Txt: {fileID: 7645453557826017615}
+  MenuWalletAddr_Txt: {fileID: 6228956401512909656}
+  MenuWalletCoin_Txt: {fileID: 5610928042755898657}
+  buyChipsView: {fileID: 3206520187363870020}
+  RuleView: {fileID: 4799676544336673318}
+  GameRules_ScrollView: {fileID: 4620344953342553396}
+  RuleObjList:
+  - {fileID: 1258103158685079522}
+  - {fileID: 8341266579032353488}
+  closeRule_Btn: {fileID: 6078647380719725015}
+  got_it_btn: {fileID: 9051381404753615518}
+  HandHistoryPage_Tr: {fileID: 6442408185117287109}
+  HandHistoryClose_Btn: {fileID: 2656183058658840595}
 --- !u!1 &2200431456000317290
 GameObject:
   m_ObjectHideFlags: 0
@@ -30181,18 +30217,8 @@ MonoBehaviour:
   - {fileID: 1388083466303464111}
   - {fileID: 8804952024603824700}
   - {fileID: 8579695171039118248}
-  LogOut_Btn: {fileID: 2345417321227503460}
-  MenuPage_Tr: {fileID: 3546415950024513289}
   Menu_Btn: {fileID: 4139764132997417176}
-  MenuClose_Btn: {fileID: 9121892890228547593}
-  SitOut_Btn: {fileID: 6766343566948756954}
-  BuyChips_Btn: {fileID: 6598117583903154225}
-  GameRules_Btn: {fileID: 8900101275761685681}
-  HandHistory_Btn: {fileID: 9013087433615290804}
-  MenuAvatar_Img: {fileID: 5057604088493802312}
-  MenuNickname_Txt: {fileID: 7645453557826017615}
-  MenuWalletAddr_Txt: {fileID: 6228956401512909656}
-  MenuWalletCoin_Txt: {fileID: 5610928042755898657}
+  GameMenu: {fileID: 65107692793467155}
   ChatPage_Tr: {fileID: 2650940697778809434}
   ChatContent_Tr: {fileID: 7161370105925558879}
   NotReadChat_Tr: {fileID: 549597411896904175}
@@ -30205,16 +30231,6 @@ MonoBehaviour:
   ChatArea_Sr: {fileID: 7660861425399434392}
   Chat_If: {fileID: 2692987931153142205}
   NotReadChat_Txt: {fileID: 7573914742494665441}
-  HandHistoryPage_Tr: {fileID: 6442408185117287109}
-  HandHistoryClose_Btn: {fileID: 2656183058658840595}
-  buyChipsView: {fileID: 3206520187363870020}
-  RuleView: {fileID: 4799676544336673318}
-  GameRules_ScrollView: {fileID: 4620344953342553396}
-  RuleObjList:
-  - {fileID: 1258103158685079522}
-  - {fileID: 8341266579032353488}
-  closeRule_Btn: {fileID: 6078647380719725015}
-  got_it_btn: {fileID: 9051381404753615518}
   WinChipsObj: {fileID: 2644066895869908512, guid: 2d51c37f43d33154f9ac2a504a2e1a24, type: 3}
   GamePause_Obj: {fileID: 2292812178963915797}
   GameContinue_Btn: {fileID: 2288723802441286916}
@@ -43339,6 +43355,126 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &6373319382140617340
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1878992007672308977}
+  - component: {fileID: 6702721682163710309}
+  - component: {fileID: 8868355278742369564}
+  - component: {fileID: 1115244144489512955}
+  m_Layer: 5
+  m_Name: Back_Btn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1878992007672308977
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6373319382140617340}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3160137638914150731}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &6702721682163710309
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6373319382140617340}
+  m_CullTransparentMesh: 1
+--- !u!114 &8868355278742369564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6373319382140617340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.6}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1115244144489512955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6373319382140617340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 8868355278742369564}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6375479702154459158
 GameObject:
   m_ObjectHideFlags: 0

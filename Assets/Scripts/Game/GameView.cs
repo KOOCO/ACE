@@ -9,6 +9,7 @@ using RequestBuf;
 using Newtonsoft.Json;
 using UnityEngine.EventSystems;
 using UnityEditor;
+using UnityEngine.Events;
 
 public class GameView : MonoBehaviour
 {
@@ -79,19 +80,11 @@ public class GameView : MonoBehaviour
     [SerializeField]
     List<Poker> CommunityPokerList = new();
 
-    [Header("離開按鈕")]
-    [SerializeField]
-    Button LogOut_Btn;
-
     [Header("選單")]
     [SerializeField]
-    RectTransform MenuPage_Tr;
+    Button Menu_Btn;
     [SerializeField]
-    Button Menu_Btn, MenuClose_Btn, SitOut_Btn, BuyChips_Btn, GameRules_Btn, HandHistory_Btn;
-    [SerializeField]
-    Image MenuAvatar_Img;
-    [SerializeField]
-    TextMeshProUGUI MenuNickname_Txt, MenuWalletAddr_Txt, MenuWalletCoin_Txt;
+    GameMenu GameMenu;
 
     [Header("聊天")]
     [SerializeField]
@@ -107,25 +100,6 @@ public class GameView : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI NotReadChat_Txt;
     bool isWating;
-
-    [Header("手牌紀錄")]
-    [SerializeField]
-    RectTransform HandHistoryPage_Tr;
-    [SerializeField]
-    Button HandHistoryClose_Btn;
-
-    [Header("購買籌碼")]
-    [SerializeField]
-    BuyChipsView buyChipsView;
-
-    [Header("遊戲規則")]
-    [SerializeField]
-    GameObject RuleView, GameRules_ScrollView;
-    [SerializeField]
-    List<GameObject> RuleObjList;
-    [SerializeField]
-    Button closeRule_Btn, got_it_btn;
-
 
     [Header("遊戲結果")]
     [SerializeField]
@@ -243,14 +217,6 @@ public class GameView : MonoBehaviour
     /// </summary>
     private void UpdateLanguage()
     {
-        #region 規則
-        int languageIndex = LanguageManager.Instance.GetCurrLanguageIndex();
-        int OtherIndex = (languageIndex - 1 < 0) ? 1 : languageIndex - 1;
-        GameRules_ScrollView.GetComponent<ScrollRect>().content = RuleObjList[languageIndex].GetComponent<RectTransform>();
-        RuleObjList[languageIndex].SetActive(true);
-        RuleObjList[OtherIndex].SetActive(false);
-        #endregion
-
         #region 等待下局
         WaitNext_Obj.sprite = WaitNext_ImgList[LanguageManager.Instance.GetCurrLanguageIndex()];
         #endregion
@@ -298,19 +264,7 @@ public class GameView : MonoBehaviour
         //遮罩按鈕
         Mask_Btn.onClick.AddListener(() =>
         {
-            if (MenuPage_Tr.gameObject.activeSelf)
-            {
-                Mask_Btn.gameObject.SetActive(false);
-                StartCoroutine(UnityUtils.Instance.IViewSlide(false,
-                                                              MenuPage_Tr,
-                                                              DirectionEnum.Left,
-                                                              gameData.PageMoveTime,
-                                                              () =>
-                                                              {
-                                                                  GameRoomManager.Instance.IsCanMoveSwitch = true;
-                                                              }));
-            }
-            else if (ChatPage_Tr.gameObject.activeSelf)
+            if (ChatPage_Tr.gameObject.activeSelf)
             {
                 CloseChatPage();
             }
@@ -327,88 +281,11 @@ public class GameView : MonoBehaviour
         //開啟選單
         Menu_Btn.onClick.AddListener(() =>
         {
-            GameRoomManager.Instance.IsCanMoveSwitch = false;
-            Mask_Btn.gameObject.SetActive(true);
-            StartCoroutine(UnityUtils.Instance.IViewSlide(true,
-                                                          MenuPage_Tr,
-                                                          DirectionEnum.Left,
-                                                          gameData.PageMoveTime));
+            GameMenu.ShowMenu(true);
         });
-
-        //離開房間
-        LogOut_Btn.onClick.AddListener(() =>
-        {
-            ConfirmView confirmView = ViewManager.Instance.OpenConfirmView();
-            confirmView.SetContent(LanguageManager.Instance.GetText("return to the lobby?"),
-                                   LanguageManager.Instance.GetText("If you leave now, you will not be able to get back your staked chips."));
-            confirmView.SetBnt(() =>
-            {
-                gameControl.JudgeHost();
-                gameControl.ExitGame();
-                //LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
-            },
-            true,
-            () =>
-            {
-                GameRoomManager.Instance.IsCanMoveSwitch = true;
-            });
-        });
-
-        //關閉選單
-        MenuClose_Btn.onClick.AddListener(() =>
-        {
-            CloseMenu();
-        });
-
-        //購買籌碼
-        BuyChips_Btn.onClick.AddListener(() =>
-        {
-            buyChipsView.gameObject.SetActive(true);
-            buyChipsView.SetBuyChipsViewInfo(gameControl,
-                                             true,
-                                             gameData.thisData.SmallBlindValue,
-                                             transform.name,
-                                             gameData.RoomType,
-                                             BuyChips);
-        });
-
-        //開始規則
-        GameRules_Btn.onClick.AddListener(() =>
-        {
-            RuleView.SetActive(true);
-            CloseMenu();
-
-
-        });
-
-        closeRule_Btn.onClick.AddListener(() =>
-        {
-            RuleView.SetActive(false);
-
-
-        });
-        got_it_btn.onClick.AddListener(() =>
-        {
-            RuleView.SetActive(false);
-        });
-        //離開/回到座位
-        SitOut_Btn.onClick.AddListener(() =>
-        {
-            gameData.thisData.IsSitOut = !gameData.thisData.IsSitOut;
-            SetSitOutDisplay();
-
-            var data = new Dictionary<string, object>()
-            {
-                { FirebaseManager.IS_SIT_OUT, gameData.thisData.IsSitOut},         //是否保留座位離開
-            };
-            gameControl.UpdataPlayerData(DataManager.UserId,
-                                         data);
-
-            if (gameData.thisData.IsSitOut)
-                ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Succesful,
-                                            LanguageManager.Instance.GetText("Sit out next hand"));
-            CloseMenu();
-        });
+        GameMenu.LeaveRoom += menuLeaveRoom;
+        GameMenu.OpenBuyView += openBuyChipView;
+        GameMenu.SitOut += sitOut;
 
         #endregion
 
@@ -654,40 +531,6 @@ public class GameView : MonoBehaviour
 
         #endregion
 
-        #region 手牌紀錄
-
-        //開啟手牌紀錄
-        HandHistory_Btn.onClick.AddListener(() =>
-        {
-            Mask_Btn.gameObject.SetActive(false);
-            StartCoroutine(UnityUtils.Instance.IViewSlide(false,
-                                                          MenuPage_Tr,
-                                                          DirectionEnum.Left,
-                                                          gameData.PageMoveTime));
-            HandHistoryPage_Tr.gameObject.SetActive(true);
-            StartCoroutine(UnityUtils.Instance.IViewSlide(true,
-                                                          HandHistoryPage_Tr.GetChild(0).GetComponent<RectTransform>(),
-                                                          DirectionEnum.Up,
-                                                          gameData.PageMoveTime));
-        });
-
-        //關閉手牌紀錄
-        HandHistoryClose_Btn.onClick.AddListener(() =>
-        {
-            StartCoroutine(UnityUtils.Instance.IViewSlide(false,
-                                                          HandHistoryPage_Tr.GetChild(0).GetComponent<RectTransform>(),
-                                                          DirectionEnum.Up,
-                                                          gameData.PageMoveTime,
-                                                          () =>
-                                                          {
-                                                              GameRoomManager.Instance.IsCanMoveSwitch = true;
-                                                              HandHistoryPage_Tr.gameObject.SetActive(false);
-                                                          }));
-
-        });
-
-        #endregion
-
         roomID_Txt.GetComponent<Button>().onClick.AddListener(() =>
         {
 #if UNITY_EDITOR
@@ -744,7 +587,31 @@ public class GameView : MonoBehaviour
             JSBridgeManager.Instance.WindowClose();
         });
     }
+    private void menuLeaveRoom()
+    {
+        gameControl.JudgeHost();
+        gameControl.ExitGame();
+    }
+    private void openBuyChipView()
+    {
+        GameMenu.OpenBuyChipView(gameControl, true, gameData.thisData.SmallBlindValue, transform.name, gameData.RoomType, BuyChips);
+    }
+    private void sitOut()
+    {
+        gameData.thisData.IsSitOut = !gameData.thisData.IsSitOut;
+        SetSitOutDisplay();
 
+        var data = new Dictionary<string, object>()
+            {
+                { FirebaseManager.IS_SIT_OUT, gameData.thisData.IsSitOut},         //是否保留座位離開
+            };
+        gameControl.UpdataPlayerData(DataManager.UserId,
+                                     data);
+
+        if (gameData.thisData.IsSitOut)
+            ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Succesful,
+                                        LanguageManager.Instance.GetText("Sit out next hand"));
+    }
     private void OnEnable()
     {
         gameData.thisData = new ThisData();
@@ -762,16 +629,9 @@ public class GameView : MonoBehaviour
         }
 
         gameData.gamePlayerInfoList = new List<GamePlayerInfo>();
-        buyChipsView.gameObject.SetActive(false);
         BackToSit_Btn.gameObject.SetActive(false);
-        RuleView.SetActive(false);
+        GameMenu.ShowRule(false);
         TotalPot_Txt.text = $"${StringUtils.SetChipsUnit(0)}";
-
-        //選單玩家訊息
-        StringUtils.StrExceedSize(DataManager.UserWalletAddress, MenuWalletAddr_Txt);
-        MenuNickname_Txt.text = $"@{DataManager.UserNickname}";
-        MenuWalletCoin_Txt.text = DataManager.UserChips.ToString("F2");
-        MenuAvatar_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[DataManager.UserAvatarIndex];
 
         SetNotReadChatCount = 0;
 
@@ -789,9 +649,8 @@ public class GameView : MonoBehaviour
         LocalChatSample.SetActive(false);
         NewMessage_Btn.gameObject.SetActive(false);
         Mask_Btn.gameObject.SetActive(false);
-        MenuPage_Tr.gameObject.SetActive(false);
+        GameMenu.Init();
         ChatPage_Tr.gameObject.SetActive(false);
-        HandHistoryPage_Tr.gameObject.SetActive(false);
         roomID_Txt.text = $"ID: {DataManager.RoomId}";
 
         //清除座位上玩家
@@ -1012,9 +871,6 @@ public class GameView : MonoBehaviour
         gameData.RoomType = roomType;
         if (roomType == TableTypeEnum.IntegralTable)
         {
-            BuyChips_Btn.interactable = false;
-            SitOut_Btn.interactable = false;
-
             for (int i = 0; i < SeatButtonList.Count; i++)
             {
                 if (i != 0 && i != 3)
@@ -1068,21 +924,6 @@ public class GameView : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 關閉選單
-    /// </summary>
-    private void CloseMenu()
-    {
-        Mask_Btn.gameObject.SetActive(false);
-        StartCoroutine(UnityUtils.Instance.IViewSlide(false,
-                                                      MenuPage_Tr,
-                                                      DirectionEnum.Left,
-                                                      gameData.PageMoveTime,
-                                                      () =>
-                                                      {
-                                                          GameRoomManager.Instance.IsCanMoveSwitch = true;
-                                                      }));
-    }
 
     /// <summary>
     /// 設置離/回座顯示
@@ -3556,27 +3397,15 @@ public class GameView : MonoBehaviour
         if (gameData.RoomType == TableTypeEnum.Cash ||
             gameData.RoomType == TableTypeEnum.VCTable)
         {
-            if (buyChipsView.gameObject.activeSelf == false)
-            {
-                buyChipsView.gameObject.SetActive(true);
-                buyChipsView.SetBuyChipsViewInfo(gameControl,
-                                                 false,
-                                                 gameRoomData.smallBlind,
-                                                 transform.name,
-                                                 gameData.RoomType,
-                                                 InsufficientChipsBuyChipsCallback);
+            //if (buyChipsView.gameObject.activeSelf == false)
+            //{
+                GameMenu.OpenBuyChipView(gameControl, false, gameRoomData.smallBlind, transform.name, gameData.RoomType, InsufficientChipsBuyChipsCallback);
 
                 gameData.thisData.LocalGamePlayerInfo.Init();
                 gameData.thisData.LocalGamePlayerInfo.IsOpenInfoMask = true;
-                //已從文字物件改為圖片
-                // WaitingTip_Txt.text = $"{LanguageManager.Instance.GetText("Waiting for the next round...")}";
                 WaitingTip_Txt.gameObject.SetActive(true);
-            }
+            //}
         }
-        //else if (RoomType == TableTypeEnum.IntegralTable)
-        //{
-        //    SetBattleResult(false);
-        //}
     }
 
     /// <summary>
@@ -3585,7 +3414,7 @@ public class GameView : MonoBehaviour
     /// <param name="buyValue"></param>
     private void InsufficientChipsBuyChipsCallback(double buyValue)
     {
-        buyChipsView.gameObject.SetActive(false);
+        GameMenu.CloseBuyChipView();
         gameControl.PreBuyChipsValue = Math.Floor(buyValue);
         gameControl.UpdateCarryChips();
 
@@ -3604,7 +3433,7 @@ public class GameView : MonoBehaviour
     /// <param name="buyValue"></param>
     public void BuyChips(double buyValue)
     {
-        buyChipsView.gameObject.SetActive(false);
+        GameMenu.CloseBuyChipView();
         ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Sending,
                                             LanguageManager.Instance.GetText("Start replenishing chips for the next hand"));
         gameControl.PreBuyChipsValue = Math.Floor(buyValue);
@@ -3620,8 +3449,7 @@ public class GameView : MonoBehaviour
     public void BuyChipsGoBack()
     {
         ViewManager.Instance.CloseWaitingView(transform);
-        CloseMenu();
-        buyChipsView.gameObject.SetActive(false);
+        GameMenu.CloseBuyChipView();
 
         double newChips = gameRoomData.playerDataDic.Where(x => x.Value.userId == DataManager.UserId)
                                                     .FirstOrDefault()
