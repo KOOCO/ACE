@@ -339,7 +339,7 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
 
         //房間腳本
         GameView gameView = room.GetComponent<GameView>();
-        gameView.RoomType = roomType;
+        gameView.SetRoomType(roomType);
         gameView.roomName = roomName;
 
         //遊戲控制

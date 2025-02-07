@@ -1960,7 +1960,7 @@ public class GameControl : MonoBehaviour
                 string id = gameRoomData.currActionerId;
                 UpdateBetAction(id, BetActingEnum.Fold, 0);
                 if (player.UserId == DataManager.UserId)
-                    gameView.isOnFold = true;
+                    gameView.gameData.isOnFold = true;
             }
             else
             {

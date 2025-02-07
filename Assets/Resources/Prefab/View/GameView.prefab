@@ -30506,9 +30506,8 @@ MonoBehaviour:
   HandHistoryClose_Btn: {fileID: 2656183058658840595}
   buyChipsView: {fileID: 3206520187363870020}
   RuleView: {fileID: 4799676544336673318}
-  Ch_text: {fileID: 8341266579032353488}
-  En_text: {fileID: 1258103158685079522}
   GameRules_ScrollView: {fileID: 4620344953342553396}
+  RuleObjList: []
   closeRule_Btn: {fileID: 6078647380719725015}
   got_it_btn: {fileID: 9051381404753615518}
   WinChipsObj: {fileID: 2644066895869908512, guid: 2d51c37f43d33154f9ac2a504a2e1a24, type: 3}
@@ -30582,7 +30581,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 607890cd9022b884698e4c42cc56008a, type: 3}
   - {fileID: 21300000, guid: 50044b20c6a7ede4194bf991ed2dc111, type: 3}
   - {fileID: 21300000, guid: c90241aeb1c7ce848ad56ce72d5361e3, type: 3}
-  isOnFold: 0
   GameMask: {fileID: 3861146355253552650}
   TopBar: {fileID: 6770274400286711367}
   testApi_Btn: {fileID: 5835559540771385357}
