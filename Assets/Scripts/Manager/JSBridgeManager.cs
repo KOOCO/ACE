@@ -281,7 +281,7 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
         {
             if (task.IsCompleted)
             {
-                print($"Saved quit data - {jsonData}");
+                print($"Write part data - {jsonData}");
                 if (!string.IsNullOrEmpty(objNamePtr) && !string.IsNullOrEmpty(callbackFunPtr))
                 {
                     GameObject obj = GameObject.Find(objNamePtr);
@@ -320,7 +320,7 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
         {
             if (task.IsCompleted)
             {
-                print($"Saved quit data - {data}");
+                print($"Write quit data - {data}");
                 if (!string.IsNullOrEmpty(objNamePtr) && !string.IsNullOrEmpty(callbackFunPtr))
                 {
                     GameObject obj = GameObject.Find(objNamePtr);
@@ -344,7 +344,7 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
     {
         string jsonData = JsonConvert.SerializeObject(data);
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_ANDROID
 
         RestClient.Patch($"{DataManager.DatabaseUrl}{refPathPtr}.json", jsonData).Then(response =>
         {
@@ -365,26 +365,13 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
                                   jsonData,
                                   objNamePtr,
                                   callbackFunPtr);
-#elif UNITY_ANDROID
-        GetCurrReference(refPathPtr).SetRawJsonValueAsync(jsonData).ContinueWith(task =>
-        {
-            if (task.IsCompleted)
-            {
-                print($"Saved quit data - {jsonData}");
-                if (!string.IsNullOrEmpty(objNamePtr) && !string.IsNullOrEmpty(callbackFunPtr))
-                {
-                    GameObject obj = GameObject.Find(objNamePtr);
-                    obj.SendMessage(callbackFunPtr, jsonData);
-                }
-            }
-        });
 #endif
     }
     public void UpdateDataToFirebase(string refPathPtr, string data, string objNamePtr = null, string callbackFunPtr = null)
     {
         //string jsonData = JsonConvert.SerializeObject(data);
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_ANDROID
 
         RestClient.Patch($"{DataManager.DatabaseUrl}{refPathPtr}.json", data).Then(response =>
         {
@@ -405,19 +392,6 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
                                   data,
                                   objNamePtr,
                                   callbackFunPtr);
-#elif UNITY_ANDROID
-        GetCurrReference(refPathPtr).SetRawJsonValueAsync(data).ContinueWith(task =>
-        {
-            if (task.IsCompleted)
-            {
-                print($"Saved quit data - {data}");
-                if (!string.IsNullOrEmpty(objNamePtr) && !string.IsNullOrEmpty(callbackFunPtr))
-                {
-                    GameObject obj = GameObject.Find(objNamePtr);
-                    obj.SendMessage(callbackFunPtr, data);
-                }
-            }
-        });
 #endif
     }
 

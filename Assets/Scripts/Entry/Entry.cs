@@ -284,6 +284,7 @@ public class Entry : UnitySingleton<Entry>
     {
         if (!isListenered)
         {
+            print("開啟心跳監聽");
             isListenered = true;
             JSBridgeManager.Instance.StartListeningForDataChanges(
                         $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{userID}",

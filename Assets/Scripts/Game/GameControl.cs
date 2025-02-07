@@ -41,6 +41,8 @@ public class GameControl : MonoBehaviour
     List<int> localHand { get; set; }                           //本地玩家手牌
     int cdSound { get; set; }                                   //倒數聲音計時器
 
+    bool isLIstened;
+
     //Test
     bool isCoroutineRunning;
 
@@ -54,6 +56,7 @@ public class GameControl : MonoBehaviour
 
 #endif
 
+        isLIstened = false;
         StopAllCoroutines();
     }
 
@@ -62,6 +65,10 @@ public class GameControl : MonoBehaviour
 #if UNITY_EDITOR
         startRepeatEditorRead();
         return;
+#endif
+
+#if UNITY_ANDROID
+        setLocalIsOnline();
 #endif
 
         //判斷玩家在線狀態
@@ -200,6 +207,7 @@ public class GameControl : MonoBehaviour
     /// 讀取房間資料回傳
     /// </summary>
     /// <param name="jsonData"></param>
+    [Obsolete]
     public void ReadGameRoomDataCallback(string jsonData)
     {
         var data = FirebaseManager.Instance.OnFirebaseDataRead<GameRoomData>(jsonData);
@@ -223,15 +231,20 @@ public class GameControl : MonoBehaviour
         }
         return;
 #elif !UNITY_EDITOR
-        //開始監聽遊戲房間資料
-        JSBridgeManager.Instance.StartListeningForDataChanges($"{QueryRoomPath}",
-                                                              gameObject.name,
-                                                              nameof(GameRoomDataCallback));
 
-        //開始監聽連線狀態
-        JSBridgeManager.Instance.StartListenerConnectState($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{DataManager.UserId}");
+        if (!isLIstened)
+        {
+            print("開啟局內監聽器");
+            isLIstened = true;
+            //開始監聽遊戲房間資料
+            JSBridgeManager.Instance.StartListeningForDataChanges($"{QueryRoomPath}",
+                                                                  gameObject.name,
+                                                                  nameof(GameRoomDataCallback));
 
-        print("開啟監聽器");
+            //開始監聽連線狀態
+            JSBridgeManager.Instance.StartListenerConnectState($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{DataManager.UserId}");
+        }
+
         //產生機器人
         if (isWaitingCreateRobot)
         {
@@ -284,6 +297,14 @@ public class GameControl : MonoBehaviour
                 $"{Entry.Instance.releaseType}/{TableTypeEnum.IntegralTable}/{FirebaseManager.INTEGRAL_WAIT_DATA}/{pairPlayerId}",
                 data);
         }
+    }
+
+    /// <summary>
+    /// 暫時添加方法，待後台能改變安卓玩家狀態後需禁用
+    /// </summary>
+    void setLocalIsOnline()
+    {
+        GetLocalPlayer().online = true;
     }
 
     /// <summary>
