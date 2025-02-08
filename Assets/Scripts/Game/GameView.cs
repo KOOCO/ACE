@@ -1392,7 +1392,8 @@ public class GameView : MonoBehaviour
 
         //CallBtn_Txt.text = LanguageManager.Instance.GetText(gameData.strData.CallStr) + gameData.strData.CallValueStr;
         if (gameData.strData.CallValueStr != "" && int.Parse(gameData.strData.CallValueStr) > 0)
-            CallBtn_Txt.text = "$" + gameData.strData.CallValueStr;
+            //CallBtn_Txt.text = "$" + gameData.strData.CallValueStr;
+            CallBtn_Txt.text = setCallStr("$" + gameData.strData.CallValueStr);
         else
             CallBtn_Txt.text = "";
         //coinIconObj.SetActive(false);
@@ -2038,7 +2039,8 @@ public class GameView : MonoBehaviour
         }
 
         if (gameData.strData.CallValueStr != "" && int.Parse(gameData.strData.CallValueStr) > 0)
-            CallBtn_Txt.text = "$" + gameData.strData.CallValueStr;
+            //CallBtn_Txt.text = "$" + gameData.strData.CallValueStr;
+            CallBtn_Txt.text = setCallStr("$" + gameData.strData.CallValueStr); 
         else
             CallBtn_Txt.text = "";
 
@@ -4274,6 +4276,24 @@ public class GameView : MonoBehaviour
             else
                 SetFoldBetImage(AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteChinese).album[shapeIndex]);
         }
+    }
+
+    public string setCallStr(string str)
+    {
+        string s = "";
+        List<string> strs = new List<string>();
+        for(int i = 0; i < str.Length; i++)
+        {
+            int index = i;
+            if (index == 1)
+                continue;
+            else
+                s = $"<sprite name=\"{str.Substring(index,1)}\">";
+            strs.Add(s);
+        }
+        strs.Insert(1, " ");
+
+        return string.Join("", strs);
     }
 
     /// <summary>
