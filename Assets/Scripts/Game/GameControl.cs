@@ -2950,15 +2950,24 @@ public class GameControl : MonoBehaviour
         if (isStraight)
         {
             print("順子");
+            bool hasLowStraight = false;
             var distinctRanks = cardRanks.Distinct().OrderByDescending(rank => rank).ToList();
             if (HasLowStraight(distinctRanks))
+            {
+                hasLowStraight = true;
                 distinctRanks = distinctRanks.Select(rank => rank == 14 ? 1 : rank).OrderBy(rank => rank).ToList();
-
+            }
             var highestStraight = PokerShape.FindHighestConsecutiveSequence(distinctRanks);
             if (highestStraight.Count == 5)
             {
+                if (hasLowStraight)
+                {
+                    highestStraight = highestStraight.Select(rank => rank == 1 ? 14 : rank).OrderBy(rank => rank).ToList();
+                    hasLowStraight = false;
+                }
                 // 建立一個副本，逐一移除已匹配的數值
                 var remainingRanks = new HashSet<int>(highestStraight);
+                print(string.Join(", ", remainingRanks));
 
                 // 使用 `remainingRanks` 避免重複
                 var straightCards = cards
