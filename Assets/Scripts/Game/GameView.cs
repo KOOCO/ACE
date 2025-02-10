@@ -78,7 +78,7 @@ public class GameView : MonoBehaviour
 
     [Header("公共牌")]
     [SerializeField]
-    List<Poker> CommunityPokerList = new();
+    CommunityPoker CommunityPoker;
 
     [Header("選單")]
     [SerializeField]
@@ -1359,11 +1359,7 @@ public class GameView : MonoBehaviour
     public void GameInit()
     {
         print("初始化");
-        foreach (var poker in CommunityPokerList)
-        {
-            poker.gameObject.SetActive(false);
-            poker.SetColor = 1;
-        }
+        CommunityPoker.Init();
         foreach (var player in gameData.gamePlayerInfoList)
         {
             //player.SetPokerShapeTxtStr = "";
@@ -2032,8 +2028,8 @@ public class GameView : MonoBehaviour
         {
             for (int i = 0; i < currCommunityPoker.Count; i++)
             {
-                CommunityPokerList[i].gameObject.SetActive(true);
-                CommunityPokerList[i].PokerNum = currCommunityPoker[i];
+                CommunityPoker.Show(i, true);
+                CommunityPoker.Set(i, currCommunityPoker[i]);
             }
         }
     }
@@ -2430,7 +2426,7 @@ public class GameView : MonoBehaviour
         //播放翻牌動畫
         if (gameRoomData.currCommunityPoker?.Count == 3)
         {
-            if (!CommunityPokerList[0].gameObject.activeSelf)
+            if (!CommunityPoker.GetPoker(0).gameObject.activeSelf)
             {
                 tweenManager.inst.playCommunity();
                 yield return new WaitForSeconds(0.25f * gameRoomData.currCommunityPoker.Count);
@@ -2438,7 +2434,7 @@ public class GameView : MonoBehaviour
         }
         else if (gameRoomData.currCommunityPoker?.Count == 5)
         {
-            if (!CommunityPokerList[0].gameObject.activeSelf)
+            if (!CommunityPoker.GetPoker(0).gameObject.activeSelf)
             {
                 tweenManager.inst.playCommunity5();
                 yield return new WaitForSeconds(0.15f * gameRoomData.currCommunityPoker.Count);
@@ -2449,12 +2445,12 @@ public class GameView : MonoBehaviour
         {
             for (int i = 0; i < currCommunityPoker.Count; i++)
             {
-                if (CommunityPokerList[i].gameObject.activeSelf == false)
+                if (CommunityPoker.GetPoker(i).gameObject.activeSelf == false)
                 {
                     PlaySound("SoundShowCard");
-                    CommunityPokerList[i].gameObject.SetActive(true);
-                    CommunityPokerList[i].PokerNum = currCommunityPoker[i];
-                    StartCoroutine(CommunityPokerList[i].IHorizontalFlopEffect(currCommunityPoker[i]));
+                    CommunityPoker.Show(i, true);
+                    CommunityPoker.Set(i, currCommunityPoker[i]);
+                    StartCoroutine(CommunityPoker.GetPoker(i).IHorizontalFlopEffect(currCommunityPoker[i]));
                     yield return new WaitForSeconds(0.1f);
                 }
             }
@@ -2495,7 +2491,7 @@ public class GameView : MonoBehaviour
             Debug.Log($"[JudgePokerShapeUI] Combined Cards: {string.Join(", ", judgePoker)}");
 
             // Combine hand cards and community cards as Poker objects
-            List<Poker> allPokers = handPoker.Concat(CommunityPokerList).ToList();
+            List<Poker> allPokers = handPoker.Concat(CommunityPoker.GetList()).ToList();
 
             // Disable visual effects for all cards
             foreach (var poker in allPokers)
@@ -3067,7 +3063,7 @@ public class GameView : MonoBehaviour
                 playersPoker.Add(poker);
             }
         }
-        List<Poker> allPokerList = CommunityPokerList.Concat(playersPoker.ToList()).ToList();
+        List<Poker> allPokerList = CommunityPoker.GetList().Concat(playersPoker.ToList()).ToList();
         foreach (var poker in allPokerList)
         {
             poker.PokerEffectEnable = true;
@@ -3736,9 +3732,9 @@ public class GameView : MonoBehaviour
         if (gameRoomData.currGameFlow < (int)GameFlowEnum.Flop)
         {
             //公共牌
-            for (int i = 0; i < CommunityPokerList.Count(); i++)
+            for (int i = 0; i < CommunityPoker.GetList().Count(); i++)
             {
-                CommunityPokerList[i].gameObject.SetActive(false);
+                CommunityPoker.Show(i, false);
             }
         }
     }
