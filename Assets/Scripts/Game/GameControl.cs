@@ -1071,7 +1071,7 @@ public class GameControl : MonoBehaviour
                         sidePotAmount = 0,
                         allBetChips = potWinner.allBetChips,
                         carryChips = potWinner.carryChips,
-                        ActivePlayerCount = gameRoomData.playersWhoLeft.Count + 1,
+                        ActivePlayerCount = 1,
                         roomFee = CalculateRoomFee(winnerShare)
                     };
                     winnersRoomFee.Add(roomFeeObj);

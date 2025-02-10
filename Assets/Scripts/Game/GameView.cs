@@ -2638,7 +2638,7 @@ public class GameView : MonoBehaviour
         yield return IConcentrateBetChips();
 
         //播放翻牌動畫
-        if (gameRoomData.currCommunityPoker.Count == 3)
+        if (gameRoomData.currCommunityPoker?.Count == 3)
         {
             if (!CommunityPokerList[0].gameObject.activeSelf)
             {
@@ -2646,7 +2646,7 @@ public class GameView : MonoBehaviour
                 yield return new WaitForSeconds(0.25f * gameRoomData.currCommunityPoker.Count);
             }
         }
-        else if (gameRoomData.currCommunityPoker.Count == 5)
+        else if (gameRoomData.currCommunityPoker?.Count == 5)
         {
             if (!CommunityPokerList[0].gameObject.activeSelf)
             {
