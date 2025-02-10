@@ -332,8 +332,8 @@ public class GameView : MonoBehaviour
             }
 
             gameData.strData.RaiseValueStr = newRaiseValue >= gameData.thisData.LocalPlayerChips ?
-                                    $"\n{StringUtils.SetChipsUnit(gameData.thisData.LocalPlayerChips)}" :
-                                    $"\n{StringUtils.SetChipsUnit(newRaiseValue)}";
+                                    $"\n${StringUtils.SetChipsUnit(gameData.thisData.LocalPlayerChips)}" :
+                                    $"\n${StringUtils.SetChipsUnit(newRaiseValue)}";
             RaiseBtn_Txt.text = LanguageManager.Instance.GetText(gameData.strData.RaiseStr) + gameData.strData.RaiseValueStr;
             coinIconObj.SetActive(true);
 
@@ -465,7 +465,7 @@ public class GameView : MonoBehaviour
                     gameData.strData.RaiseStr = acting == BetActingEnum.Bet ?
                                        "BetTo" :
                                        "RaiseTo";
-                    gameData.strData.RaiseValueStr = $"\n{StringUtils.SetChipsUnit(gameData.thisData.CurrRaiseValue)}";
+                    gameData.strData.RaiseValueStr = $"\n${StringUtils.SetChipsUnit(gameData.thisData.CurrRaiseValue)}";
                     //RaiseBtn_Txt.text = LanguageManager.Instance.GetText(gameData.strData.RaiseStr) + gameData.strData.RaiseValueStr;
                 }
             }
