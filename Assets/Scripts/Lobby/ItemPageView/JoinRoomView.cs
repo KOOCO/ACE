@@ -387,7 +387,7 @@ private static extern void onPageLoad();
         Debug.Log("JoinRoomView :: JoinRoomCallback : " + jsonData);
 
         var gameRoomData = FirebaseManager.Instance.OnFirebaseDataRead<GameRoomData>(jsonData);
-        if (jsonData == null || gameRoomData?.smallBlind == 0)
+        if (jsonData == "null" || gameRoomData?.smallBlind == 0)
         {
             JoinRoom newRound = new JoinRoom
             {
