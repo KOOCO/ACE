@@ -1619,16 +1619,16 @@ public class GameControl : MonoBehaviour
                 }
 
                 // Game test check
-                if (DataManager.IsOpenGameTest && !gameView.IsStartGameTest)
+                if (DataManager.IsOpenGameTest && !gameView.GameTest.IsStartGameTest)
                 {
                     gameView.UpdateGameRoomInfo(gameRoomData);
-                    gameView.IsOpenGameTestObj = true;
+                    gameView.GameTest.IsOpenGameTestObj = true;
                     yield break;
                 }
 
                 if (DataManager.IsOpenGameTest)
                 {
-                    gameView.IsStartGameTest = false;
+                    gameView.GameTest.IsStartGameTest = false;
                 }
 
                 gameView.UpdateGameRoomInfo(gameRoomData);
@@ -2576,7 +2576,7 @@ public class GameControl : MonoBehaviour
             if (DataManager.IsOpenGameTest)
             {
                 //測試
-                poker = (13 * gameView.CP_SuitTogList[i].value) + gameView.CP_NumTogList[i].value;
+                poker = (13 * gameView.GameTest.CP_SuitTogList[i].value) + gameView.GameTest.CP_NumTogList[i].value;
                 community.Add(poker);
             }
             else
@@ -2601,8 +2601,8 @@ public class GameControl : MonoBehaviour
             if (DataManager.IsOpenGameTest)
             {
                 //測試
-                handPoker[0] = (13 * gameView.PH0_SuitTogList[player.Value.gameSeat].value) + gameView.PN0_NumTogList[player.Value.gameSeat].value;
-                handPoker[1] = (13 * gameView.PH1_SuitTogList[player.Value.gameSeat].value) + gameView.PN1_NumTogList[player.Value.gameSeat].value;
+                handPoker[0] = (13 * gameView.GameTest.PH0_SuitTogList[player.Value.gameSeat].value) + gameView.GameTest.PN0_NumTogList[player.Value.gameSeat].value;
+                handPoker[1] = (13 * gameView.GameTest.PH1_SuitTogList[player.Value.gameSeat].value) + gameView.GameTest.PN1_NumTogList[player.Value.gameSeat].value;
             }
             else
             {

@@ -40,7 +40,7 @@ public class pokerShapes : MonoBehaviour
             //print(jsonData);
             GameView gameView = GameRoomManager.Instance.GameRoomList_Tr.GetComponentInChildren<GameView>();
             if (gameView != null)
-                gameView.updateShapeDropList();
+                gameView.GameTest.updateShapeDropList();
         }
     }
 
