@@ -36,6 +36,8 @@ public class GameData
 
     public StrData strData;
 
+    public GameRoomData gameRoomData;                                  //房間資料
+
     public Dictionary<int, string> betStringsE = new Dictionary<int, string>
     {
         {0, "Call"},

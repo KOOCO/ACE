@@ -10038,6 +10038,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830433608134079136}
+  - component: {fileID: 1941489991468493656}
   m_Layer: 5
   m_Name: ActionButtons
   m_TagString: Untagged
@@ -10065,6 +10066,56 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1941489991468493656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1378407387273358927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e64ea95a5789874d8e842c701f3cd8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionButtonsMainObject: {fileID: 833458388458001409}
+  Raise_Btn: {fileID: 1731130837798298710}
+  Call_Btn: {fileID: 4507901033771419328}
+  Fold_Btn: {fileID: 415474277880085598}
+  RaiseClose_Btn: {fileID: 2876887741454468671}
+  AutoActionFrame_Tr: {fileID: 3645123124189837803}
+  ShowPokerBtnList:
+  - {fileID: 6442092456366520562}
+  - {fileID: 8007092420552672186}
+  BackToSit_Btn: {fileID: 1598480768956187184}
+  RaiseBtn_Txt: {fileID: 6015941751485632776}
+  CallBtn_Txt: {fileID: 4521782613114109918}
+  coinIconObj: {fileID: 2083196681583221917}
+  CallBtn_Img: {fileID: 5203815342580886901}
+  FoldBtn_Img: {fileID: 4948789458185554736}
+  PotPercentRaiseBtnList:
+  - {fileID: 3774084892407284726}
+  - {fileID: 2264770284372880175}
+  - {fileID: 4763716026862210303}
+  - {fileID: 4868112859917267451}
+  Raise_Sli: {fileID: 2924325969328221652}
+  Raise_Tr: {fileID: 3656675319560090802}
+  SliderClickDetection: {fileID: 8497240110013165630}
+  AllIn_Btn: {fileID: 6016297310270321856}
+  MinRaise_Btn: {fileID: 8907055444093339590}
+  PotPercentRaiseTxtList:
+  - {fileID: 3822966450781430804}
+  - {fileID: 726218794466087385}
+  - {fileID: 9026415216214178231}
+  - {fileID: 5512054817622769750}
+  RaiseSliHandle_Txt: {fileID: 5891405694151759854}
+  CurrRaise_Txt: {fileID: 7246607505373565422}
+  MinRaiseBtn_Txt: {fileID: 6428766809210545359}
+  AllinBtn_Txt: {fileID: 621792538001396858}
+  ActionBtn_Images:
+  - {fileID: 21300000, guid: 607890cd9022b884698e4c42cc56008a, type: 3}
+  - {fileID: 21300000, guid: 50044b20c6a7ede4194bf991ed2dc111, type: 3}
+  - {fileID: 21300000, guid: c90241aeb1c7ce848ad56ce72d5361e3, type: 3}
 --- !u!1 &1397838934929824010
 GameObject:
   m_ObjectHideFlags: 0
@@ -30240,40 +30291,7 @@ MonoBehaviour:
   - {fileID: 2219748225832017332}
   - {fileID: 7916488212442784977}
   - {fileID: 1482773719850572044}
-  actionButtonsMainObject: {fileID: 833458388458001409}
-  Raise_Btn: {fileID: 1731130837798298710}
-  Call_Btn: {fileID: 4507901033771419328}
-  Fold_Btn: {fileID: 415474277880085598}
-  RaiseClose_Btn: {fileID: 2876887741454468671}
-  AutoActionFrame_Tr: {fileID: 3645123124189837803}
-  ShowPokerBtnList:
-  - {fileID: 6442092456366520562}
-  - {fileID: 8007092420552672186}
-  BackToSit_Btn: {fileID: 1598480768956187184}
-  RaiseBtn_Txt: {fileID: 6015941751485632776}
-  CallBtn_Txt: {fileID: 4521782613114109918}
-  coinIconObj: {fileID: 2083196681583221917}
-  CallBtn_Img: {fileID: 5203815342580886901}
-  FoldBtn_Img: {fileID: 4948789458185554736}
-  PotPercentRaiseBtnList:
-  - {fileID: 3774084892407284726}
-  - {fileID: 2264770284372880175}
-  - {fileID: 4763716026862210303}
-  - {fileID: 4868112859917267451}
-  Raise_Sli: {fileID: 2924325969328221652}
-  Raise_Tr: {fileID: 3656675319560090802}
-  SliderClickDetection: {fileID: 8497240110013165630}
-  AllIn_Btn: {fileID: 6016297310270321856}
-  MinRaise_Btn: {fileID: 8907055444093339590}
-  PotPercentRaiseTxtList:
-  - {fileID: 3822966450781430804}
-  - {fileID: 726218794466087385}
-  - {fileID: 9026415216214178231}
-  - {fileID: 5512054817622769750}
-  RaiseSliHandle_Txt: {fileID: 5891405694151759854}
-  CurrRaise_Txt: {fileID: 7246607505373565422}
-  MinRaiseBtn_Txt: {fileID: 6428766809210545359}
-  AllinBtn_Txt: {fileID: 621792538001396858}
+  actionButtons: {fileID: 1941489991468493656}
   Pot_Img: {fileID: 3133094170602993138}
   winnerHandImage: {fileID: 2704309589154737187}
   TotalPot_Txt: {fileID: 1008066242075854149}
@@ -30282,9 +30300,9 @@ MonoBehaviour:
   sbBlinds_Txt: {fileID: 6401502633905118363}
   winnerText: {fileID: 2136819970679497342}
   WaitingTip_Txt: {fileID: 5501043469677685429}
-  CommunityPoker: {fileID: 2733931076798718065}
+  communityPoker: {fileID: 2733931076798718065}
   Menu_Btn: {fileID: 4139764132997417176}
-  GameMenu: {fileID: 65107692793467155}
+  gameMenu: {fileID: 65107692793467155}
   ChatPage_Tr: {fileID: 2650940697778809434}
   ChatContent_Tr: {fileID: 7161370105925558879}
   NotReadChat_Tr: {fileID: 549597411896904175}
@@ -30309,10 +30327,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3de0477425abf0a419f42d58402f4e47, type: 3}
   - {fileID: 21300000, guid: 2f6821a9e3faa1c4da77922238a953df, type: 3}
   roomName: 
-  ActionBtn_Images:
-  - {fileID: 21300000, guid: 607890cd9022b884698e4c42cc56008a, type: 3}
-  - {fileID: 21300000, guid: 50044b20c6a7ede4194bf991ed2dc111, type: 3}
-  - {fileID: 21300000, guid: c90241aeb1c7ce848ad56ce72d5361e3, type: 3}
   GameMask: {fileID: 3861146355253552650}
   TopBar: {fileID: 6770274400286711367}
   testApi_Btn: {fileID: 5835559540771385357}

@@ -84,10 +84,10 @@ public class GameTest : MonoBehaviour
                 item.SetActive(false);
             }
 
-            if (gameView.gameRoomData != null &&
-                gameView.gameRoomData.playerDataDic != null)
+            if (gameView.gameData.gameRoomData != null &&
+                gameView.gameData.gameRoomData.playerDataDic != null)
             {
-                foreach (var item in gameView.gameRoomData.playerDataDic)
+                foreach (var item in gameView.gameData.gameRoomData.playerDataDic)
                 {
                     PlayerTestObjList[item.Value.gameSeat].SetActive(true);
                 }

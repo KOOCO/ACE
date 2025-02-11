@@ -36,6 +36,8 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
     [SerializeField]
     GameObject GameViewObj;
 
+    public Dictionary<string, GameData> GameDataList = new Dictionary<string, GameData>();
+
     public readonly int maxRoomCount = 2;
     public readonly float moveTargetDictance = 108;     //移動房間所需移動距離
 
@@ -137,6 +139,7 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
         thisData.AddSwitchBtnParnetWidth = SwitchBtnSample.rect.width + (SwitchBtnParent.GetComponent<HorizontalLayoutGroup>().spacing * 2);
         thisData.SwitchBtnIndexList = new List<int>();
         thisData.SwitchBtnList = new List<SwitchRoomBtn>();
+        GameDataList.Clear();
 
         BgMask_Obj.SetActive(false);
 
@@ -339,8 +342,10 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
 
         //房間腳本
         GameView gameView = room.GetComponent<GameView>();
-        gameView.SetRoomType(roomType);
         gameView.roomName = roomName;
+        GameDataList.Add(roomName, gameView.gameData);
+        gameView.SetRoomType(roomType);
+        gameView.Initialize();
 
         //遊戲控制
         GameControl gameControl = room.GetComponent<GameControl>();
@@ -351,6 +356,8 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
         gameControl.MaxRoomPeople = roomType == TableTypeEnum.IntegralTable ?
                                     2 :
                                     DataManager.MaxPlayerCount;
+
+        //房間資料
         if (isNewRoom)
         {
             gameControl.CreateFirstPlayer(carryChips,
@@ -386,7 +393,7 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
 
             Destroy(thisData.RoomDic[roomName].Item1.gameObject);
             Destroy(thisData.RoomDic[roomName].Item2.gameObject);
-
+            GameDataList.Remove(roomName);
 
             thisData.RoomDic.Remove(roomName); 
         }
@@ -536,6 +543,22 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
         foreach (var room in thisData.RoomDic)
         {
             room.Value.Item1.GetComponent<GameControl>().UpdateGameRoom();
+        }
+    }
+
+    /// <summary>
+    /// 取得房間資料
+    /// </summary>
+    /// <param name="isEnable"></param>
+    public GameData GetGameData(string roomName)
+    {
+        if (GameDataList.ContainsKey(roomName))
+        {
+            return GameDataList[roomName];
+        }
+        else
+        {
+            return new GameData();
         }
     }
 
