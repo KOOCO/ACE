@@ -30292,14 +30292,7 @@ MonoBehaviour:
   - {fileID: 7916488212442784977}
   - {fileID: 1482773719850572044}
   actionButtons: {fileID: 1941489991468493656}
-  Pot_Img: {fileID: 3133094170602993138}
-  winnerHandImage: {fileID: 2704309589154737187}
-  TotalPot_Txt: {fileID: 1008066242075854149}
-  WinType_Txt: {fileID: 8013912900794345424}
-  roomID_Txt: {fileID: 7589743800055292266}
-  sbBlinds_Txt: {fileID: 6401502633905118363}
-  winnerText: {fileID: 2136819970679497342}
-  WaitingTip_Txt: {fileID: 5501043469677685429}
+  gamePot: {fileID: 1072965553543983578}
   communityPoker: {fileID: 2733931076798718065}
   Menu_Btn: {fileID: 4139764132997417176}
   gameMenu: {fileID: 65107692793467155}
@@ -60385,6 +60378,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7844272492958613397}
+  - component: {fileID: 1072965553543983578}
   m_Layer: 5
   m_Name: PotInfo
   m_TagString: Untagged
@@ -60416,6 +60410,25 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1072965553543983578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8482728752471224513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d60ae311ced55f4691001e73cd06dbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Pot_Img: {fileID: 3133094170602993138}
+  winnerHandImage: {fileID: 2704309589154737187}
+  TotalPot_Txt: {fileID: 1008066242075854149}
+  roomID_Txt: {fileID: 7589743800055292266}
+  sbBlinds_Txt: {fileID: 6401502633905118363}
+  winnerText: {fileID: 2136819970679497342}
+  WaitingTip_Txt: {fileID: 5501043469677685429}
 --- !u!1 &8509718646641065672
 GameObject:
   m_ObjectHideFlags: 0

@@ -77,7 +77,6 @@ public class ActionButtons : MonoBehaviour
     }
     public void Init(string roomName)
     {
-        //gameData = gameObject.transform.parent.GetComponent<GameView>().gameData;
         gameData = GameRoomManager.Instance.GetGameData(roomName);
         gameData.strData.FoldStr = "Fold";
         gameData.strData.CallStr = "Check";
@@ -94,7 +93,6 @@ public class ActionButtons : MonoBehaviour
             int keyF = gameData.betStringsE.FirstOrDefault(x => x.Value == gameData.strData.FoldStr).Key;
             int keyC = gameData.betStringsE.FirstOrDefault(x => x.Value == gameData.strData.CallStr).Key;
             SetCallFoldBetStr("Call", keyC);
-            //print("¸òª`«ö¶s¤å¦r: " + betStringsE[keyC] + " " + gameData.strData.CallStr);
             SetCallFoldBetStr("Fold", keyF);
         }
         else
@@ -102,7 +100,6 @@ public class ActionButtons : MonoBehaviour
             int keyF = gameData.betStringsC.FirstOrDefault(x => x.Value == LanguageManager.Instance.GetText(gameData.strData.FoldStr)).Key;
             int keyC = gameData.betStringsC.FirstOrDefault(x => x.Value == LanguageManager.Instance.GetText(gameData.strData.CallStr)).Key;
             SetCallFoldBetStr("Call", keyC);
-            //print("¸òª`«ö¶s¤å¦r: " + betStringsE[keyC] + " " + gameData.strData.CallStr);
             SetCallFoldBetStr("Fold", keyF);
         }
 
@@ -261,10 +258,9 @@ public class ActionButtons : MonoBehaviour
                 {
                     acting = BetActingEnum.Bet;
                 }
-                // CalculateEffectiveBets();
+
                 if (Raise_Tr.gameObject.activeSelf || isAllIn == true)
                 {
-                    double currRaiseBet = 0;
 
                     double betValue = isAllIn == true ?
                                   gameData.thisData.LocalPlayerChips :
@@ -286,7 +282,6 @@ public class ActionButtons : MonoBehaviour
                                        "BetTo" :
                                        "RaiseTo";
                     gameData.strData.RaiseValueStr = $"\n${StringUtils.SetChipsUnit(gameData.thisData.CurrRaiseValue)}";
-                    //RaiseBtn_Txt.text = LanguageManager.Instance.GetText(gameData.strData.RaiseStr) + gameData.strData.RaiseValueStr;
                 }
             }
             else
