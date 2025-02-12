@@ -780,9 +780,9 @@ public class GameView : MonoBehaviour
         //CallBtn_Txt.text = LanguageManager.Instance.GetText(gameData.strData.CallStr) + gameData.strData.CallValueStr;
         if (gameData.strData.CallValueStr != "" && int.Parse(gameData.strData.CallValueStr) > 0)
             //CallBtn_Txt.text = "$" + gameData.strData.CallValueStr;
-            actionButtons.SetCallBtnText("$" + gameData.strData.CallValueStr);
+            actionButtons.CallBtnText = "$" + gameData.strData.CallValueStr;
         else
-            actionButtons.SetCallBtnText("");
+            actionButtons.CallBtnText = "";
         //coinIconObj.SetActive(false);
         UpdateRaiseBtn(localPlayerTurn, isRaised);
     }
@@ -793,7 +793,7 @@ public class GameView : MonoBehaviour
         {
             if (!localPlayerTurn)
             {
-                actionButtons.SetRaiseBtnText(LanguageManager.Instance.GetText("CallAny"));
+                actionButtons.RaiseBtnText = LanguageManager.Instance.GetText("CallAny");
             }
         }
     }
@@ -1248,7 +1248,9 @@ public class GameView : MonoBehaviour
             {
                 //棄牌
                 case BetActingEnum.Fold:
-                    actionButtons.SetFoldBtn();
+                    actionButtons.SetAutoAction(false);
+                    actionButtons.SetActingButtonEnable = false;
+                    actionButtons.ShowRaise = false;
                     GameRoomManager.Instance.EnanbleBtn(false);
                     Menu_Btn.interactable = true;
                     gameData.thisData.isFold = true;
@@ -2000,7 +2002,7 @@ public class GameView : MonoBehaviour
             //大小盲
             case GameFlowEnum.SetBlind:
                 actionButtons.SetActingButtonEnable = gameData.thisData.IsPlaying;
-                actionButtons.ShowActionBtns(gameData.thisData.IsPlaying);
+                actionButtons.ShowActionBtns = gameData.thisData.IsPlaying;
 
                 break;
 
@@ -2787,8 +2789,8 @@ public class GameView : MonoBehaviour
                     { FirebaseManager.ALL_BET_CHIPS, gameRoomData.smallBlind * 2},              //該局總下注籌碼
                     { FirebaseManager.GAME_STATE, (int)PlayerStateEnum.AllIn},              //該局總下注籌碼
                 };
-                if(bbPlayer.UserId == DataManager.UserId)
-                    actionButtons.ShowActionBtns(false);
+                if (bbPlayer.UserId == DataManager.UserId)
+                    actionButtons.ShowActionBtns = false;
             }
             gameControl.UpdataPlayerData(bbPlayerData.userId,
                                          data);

@@ -152,18 +152,25 @@ public class GameMenu : MonoBehaviour
             }));
         }
     }
-
+    /// <summary>
+    /// 開啟購買籌碼頁面
+    /// </summary>
     public void OpenBuyChipView(GameControl gameControl, bool isJustBuyChips, double smallBlind, string roomName,
         TableTypeEnum tableTypeEnum, UnityAction<double> sendBuyCallback)
     {
         buyChipsView.gameObject.SetActive(true);
         buyChipsView.SetBuyChipsViewInfo(gameControl, isJustBuyChips, smallBlind, roomName, tableTypeEnum, sendBuyCallback);
     }
+    /// <summary>
+    /// 關閉購買籌碼頁面
+    /// </summary>
     public void CloseBuyChipView()
     {
         buyChipsView.gameObject.SetActive(false);
     }
-
+    /// <summary>
+    /// 開啟遊戲規則頁面
+    /// </summary>
     public void ShowRule(bool isShow)
     {
         if (isShow)

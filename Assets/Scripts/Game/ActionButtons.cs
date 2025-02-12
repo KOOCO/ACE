@@ -103,7 +103,7 @@ public class ActionButtons : MonoBehaviour
             SetCallFoldBetStr("Fold", keyF);
         }
 
-        Raise_Tr.gameObject.SetActive(false);
+        ShowRaise = false;
         foreach (var show in ShowPokerBtnList)
         {
             show.gameObject.SetActive(false);
@@ -202,7 +202,7 @@ public class ActionButtons : MonoBehaviour
                                   AutoActingEnum.None :
                                   AutoActingEnum.CheckAndFold;
             }
-            Raise_Tr.gameObject.SetActive(false);
+            ShowRaise = false;
             GameRoomManager.Instance.EnanbleBtn(false);
             SetMenuBtn.Invoke(true);
 
@@ -223,8 +223,7 @@ public class ActionButtons : MonoBehaviour
                              AutoActingEnum.None :
                              AutoActingEnum.Check;
             }
-            // CalculateEffectiveBets();
-            Raise_Tr.gameObject.SetActive(false);
+            ShowRaise = false;
             GameRoomManager.Instance.EnanbleBtn(false);
             SetMenuBtn.Invoke(true);
             SetActionButton = false;
@@ -268,14 +267,14 @@ public class ActionButtons : MonoBehaviour
 
                     UpdateBetAction.Invoke(acting, betValue);
 
-                    Raise_Tr.gameObject.SetActive(false);
+                    ShowRaise = false;
                     GameRoomManager.Instance.EnanbleBtn(false);
                     SetMenuBtn.Invoke(true);
                     SetActionButton = false;
                 }
                 else
                 {
-                    Raise_Tr.gameObject.SetActive(true);
+                    ShowRaise = true;
                     GameRoomManager.Instance.EnanbleBtn(true);
                     SetMenuBtn.Invoke(false); //開啟下注拉條時menu不能按
                     gameData.strData.RaiseStr = acting == BetActingEnum.Bet ?
@@ -294,7 +293,7 @@ public class ActionButtons : MonoBehaviour
 
         RaiseClose_Btn.onClick.AddListener(() =>
         {
-            Raise_Tr.gameObject.SetActive(false);
+            ShowRaise = false;
             GameRoomManager.Instance.EnanbleBtn(false);
             SetMenuBtn.Invoke(true);
         });
@@ -501,49 +500,76 @@ public class ActionButtons : MonoBehaviour
         }
     }
 
-
-    public void SetCallBetImage(Sprite value)
-    {
-        if (CallBtn_Img != null)
-        {
-            CallBtn_Img.gameObject.SetActive(true);
-
-            if (value != null)
-            {
-                CallBtn_Img.sprite = value;
-                CallBtn_Img.preserveAspect = true;
-            }
-            else
-                CallBtn_Img.gameObject.SetActive(false);
-        }
-    }
-    public void SetFoldBetImage(Sprite value)
-    {
-        if (FoldBtn_Img != null)
-        {
-            FoldBtn_Img.gameObject.SetActive(true);
-
-            if (value != null)
-            {
-                FoldBtn_Img.sprite = value;
-                FoldBtn_Img.preserveAspect = true;
-            }
-            else
-                FoldBtn_Img.gameObject.SetActive(false);
-        }
-    }
     /// <summary>
-    /// 設置離/回座顯示
+    /// 設定跟注按鈕
     /// </summary>
-    public void SetSitOutDisplay()
+    /// <param name="value"></param>
+    public Sprite SetCallBetImage
     {
-        if (!gameData.thisData.IsPlaying)
+        set
         {
-            BackToSit_Btn.gameObject.SetActive(gameData.thisData.IsSitOut);
+            if (CallBtn_Img != null)
+            {
+                CallBtn_Img.gameObject.SetActive(true);
+
+                if (value != null)
+                {
+                    CallBtn_Img.sprite = value;
+                    CallBtn_Img.preserveAspect = true;
+                }
+                else
+                    CallBtn_Img.gameObject.SetActive(false);
+            }
         }
     }
     /// <summary>
-    /// 設定加註至文字
+    /// 設定棄牌按鈕
+    /// </summary>
+    private Sprite foldBetImage
+    {
+        set
+        {
+            if (FoldBtn_Img != null)
+            {
+                FoldBtn_Img.gameObject.SetActive(true);
+
+                if (value != null)
+                {
+                    FoldBtn_Img.sprite = value;
+                    FoldBtn_Img.preserveAspect = true;
+                }
+                else
+                    FoldBtn_Img.gameObject.SetActive(false);
+            }
+        }
+    }
+    /// <summary>
+    /// 棄牌
+    /// </summary>
+    public void OnFold()
+    {
+        UpdateBetAction.Invoke(BetActingEnum.Fold, 0);
+        gameData.isOnFold = true;
+    }
+    /// <summary>
+    /// 取得當前棄牌按鈕狀態
+    /// </summary>
+    public Sprite FoldBtnImage()
+    {
+        return FoldBtn_Img.sprite;
+    }
+    /// <summary>
+    /// 加注條顯示
+    /// </summary>
+    public bool ShowRaise
+    {
+        set
+        {
+            Raise_Tr.gameObject.SetActive(value);
+        }
+    }
+    /// <summary>
+    /// 設定加注至文字
     /// </summary>
     public double SetRaiseToText
     {
@@ -567,38 +593,51 @@ public class ActionButtons : MonoBehaviour
         }
     }
     /// <summary>
-    /// 棄牌
+    /// 設定跟注按鈕文字
     /// </summary>
-    public void OnFold()
+    public string CallBtnText
     {
-        UpdateBetAction.Invoke(BetActingEnum.Fold, 0);
-        gameData.isOnFold = true;
-    }
-    public void SetFoldBtn()
-    {
-        SetAutoAction(false);
-        SetActingButtonEnable = false;
-        Raise_Tr.gameObject.SetActive(false);
-    }
-    public void SetCallBtnText(string text)
-    {
-        if (text != "")
+        set
         {
-            CallBtn_Txt.text = setCallStr(text);
+            if (value != "")
+            {
+                CallBtn_Txt.text = setCallStr(value);
+            }
         }
     }
-    public void SetRaiseBtnText(string text)
+    /// <summary>
+    /// 設定加注按鈕文字
+    /// </summary>
+    public string RaiseBtnText
     {
-        RaiseBtn_Txt.text = text;
+        set
+        {
+            RaiseBtn_Txt.text = value;
+        }
     }
-    public Sprite FoldBtnImage()
+    /// <summary>
+    /// 設置離/回座顯示
+    /// </summary>
+    public void SetSitOutDisplay()
     {
-        return FoldBtn_Img.sprite;
+        if (!gameData.thisData.IsPlaying)
+        {
+            BackToSit_Btn.gameObject.SetActive(gameData.thisData.IsSitOut);
+        }
     }
-    public void ShowActionBtns(bool isShow)
+    /// <summary>
+    /// 顯示行動按鈕
+    /// </summary>
+    public bool ShowActionBtns
     {
-        actionButtonsMainObject.SetActive(isShow);
+        set
+        {
+            actionButtonsMainObject.SetActive(value);
+        }
     }
+    /// <summary>
+    /// 顯示手牌按鈕
+    /// </summary>
     public void ShowPokerList()
     {
         foreach (var show in ShowPokerBtnList)
@@ -609,7 +648,6 @@ public class ActionButtons : MonoBehaviour
     /// <summary>
     /// 設置下注按鈕文字
     /// </summary>
-    /// <param name="shapeIndex"></param>
     public void SetCallFoldBetStr(string btnName, int shapeIndex)
     {
         if (btnName == "Call" && CallBtn_Img == null)
@@ -621,21 +659,21 @@ public class ActionButtons : MonoBehaviour
         {
             if (btnName == "Call")
             {
-                SetCallBetImage(AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteEnglish).album[shapeIndex]);
+                SetCallBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteEnglish).album[shapeIndex];
                 CallBtn_Img.transform.localPosition = shapeIndex == 0 ? new Vector2(CallBtn_Img.transform.localPosition.x, 5.95f) : originCallPos;
             }
             else
-                SetFoldBetImage(AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteEnglish).album[shapeIndex]);
+                foldBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteEnglish).album[shapeIndex];
         }
         else
         {
             if (btnName == "Call")
             {
-                SetCallBetImage(AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteChinese).album[shapeIndex]);
+                SetCallBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteChinese).album[shapeIndex];
                 CallBtn_Img.transform.localPosition = shapeIndex == 0 ? new Vector2(CallBtn_Img.transform.localPosition.x, 5.95f) : originCallPos;
             }
             else
-                SetFoldBetImage(AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteChinese).album[shapeIndex]);
+                foldBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteChinese).album[shapeIndex];
         }
     }
 
@@ -832,7 +870,7 @@ public class ActionButtons : MonoBehaviour
         }
 
         //加注區域物件
-        Raise_Tr.gameObject.SetActive(false);
+        ShowRaise = false;
         GameRoomManager.Instance.EnanbleBtn(false);
         SetMenuBtn.Invoke(true);
         if (isJustAllIn == false)
@@ -904,10 +942,11 @@ public class ActionButtons : MonoBehaviour
     }
 
     private AutoActingEnum autoActingEnum;
-    /// <summary>
-    /// 自動操作
-    /// </summary>
 }
+
+/// <summary>
+/// 自動操作
+/// </summary>
 public enum AutoActingEnum
 {
     None,
