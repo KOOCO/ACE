@@ -62,10 +62,10 @@ public class GameControl : MonoBehaviour
 
     private void Start()
     {
-#if UNITY_EDITOR
-        startRepeatEditorRead();
-        return;
-#endif
+//#if UNITY_EDITOR
+//        startRepeatEditorRead();
+//        return;
+//#endif
 
 #if UNITY_ANDROID
         setLocalIsOnline();
@@ -166,7 +166,7 @@ public class GameControl : MonoBehaviour
                 gameRoomData.hostId == DataManager.UserId)
             {
                 isGameStart = true;
-                Debug.Log("IStartGameFlow :: Update Licensing");
+                Debug.Log("開始遊戲流程::重新發牌");
                 isLicense = false;
                 StartCoroutine(IStartGameFlow(GameFlowEnum.Licensing));
             }
@@ -218,20 +218,7 @@ public class GameControl : MonoBehaviour
         //更新房間玩家訊息
         gameView.UpdateGameRoomInfo(gameRoomData);
 
-#if UNITY_EDITOR
-
         print("讀取房間資料");
-        //產生機器人
-        if (isWaitingCreateRobot)
-        {
-            isWaitingCreateRobot = false;
-            CreateRobot(true);
-
-            print("是否等待產生機器人: " + isWaitingCreateRobot);
-        }
-        return;
-#elif !UNITY_EDITOR
-
         if (!isLIstened)
         {
             print("開啟局內監聽器");
@@ -253,7 +240,6 @@ public class GameControl : MonoBehaviour
 
             print("是否等待產生機器人: " + isWaitingCreateRobot);
         }
-#endif
     }
 
     #endregion
@@ -741,7 +727,8 @@ public class GameControl : MonoBehaviour
 
     public IEnumerator IStartGameFlow(GameFlowEnum gameFlow)
     {
-        Debug.Log($"{nameof(IStartGameFlow)} :: {gameFlow} :: hostId :: {gameRoomData.hostId} :: {DataManager.UserId}");
+        Debug.Log($"{nameof(IStartGameFlow)} :: {gameFlow} :: hostId :: {gameRoomData.hostId} :: {DataManager.UserId} :: PreUpdateGameFlow: {preUpdateGameFlow}");
+
         if (preUpdateGameFlow == gameFlow ||
             gameRoomData.hostId != DataManager.UserId)
         {
@@ -794,6 +781,7 @@ public class GameControl : MonoBehaviour
             //發牌
             case GameFlowEnum.Licensing:
 
+                print("發牌階段&初始化遊戲資料");
                 //遊戲資料初始化
                 GameDataInit();
                 AudioManager.Instance.playTittle("爵士２");
@@ -1583,16 +1571,15 @@ public class GameControl : MonoBehaviour
                 // Get local player data
                 GameRoomPlayerData playerData = GetLocalPlayer();
 
-                Debug.Log(nameof(ILocalGameFlowBehavior) + " Licensing");
                 // Check if the player has insufficient chips
                 if (playerData.carryChips < leastChips && PreBuyChipsValue < leastChips)
                 {
                     gameView.OnInsufficientChips();
                     playerData.gameState = (int)PlayerStateEnum.Waiting;
                     data = new Dictionary<string, object>()
-                {
-                    { FirebaseManager.GAME_STATE, (int)PlayerStateEnum.Waiting },
-                };
+                    {
+                        { FirebaseManager.GAME_STATE, (int)PlayerStateEnum.Waiting },
+                    };
                     UpdataPlayerData(playerData.userId, data);
                 }
 
@@ -1613,7 +1600,7 @@ public class GameControl : MonoBehaviour
                             UpdataPlayerData(item.userId, data);
                         }
                     }
-                    preUpdateGameFlow = GameFlowEnum.None;
+                    preUpdateGameFlow = GameFlowEnum.Licensing;
                     preLocalGameFlow = GameFlowEnum.None;
                     yield break;
                 }
@@ -1849,7 +1836,7 @@ public class GameControl : MonoBehaviour
 #endif
             )
         {
-            print("倒數歸0，若此時遊戲卡住可再按空白鍵重啟監聽模擬\n若下一輪無法觸發則須重進房間");
+            //print("倒數歸0，若此時遊戲卡住可再按空白鍵重啟監聽模擬\n若下一輪無法觸發則須重進房間");
             return;
         }
 
@@ -1864,7 +1851,7 @@ public class GameControl : MonoBehaviour
         if (cdCoroutine != null) StopCoroutine(cdCoroutine);
         cdCoroutine = StartCoroutine(ICountdown());
 
-        CancelInvoke(nameof(EditorReadRoomData));
+        //CancelInvoke(nameof(EditorReadRoomData));
     }
     /// <summary>
     /// 行動倒數
@@ -1998,7 +1985,7 @@ public class GameControl : MonoBehaviour
                     gameRoomData.actionCD == DataManager.RobotActionTime)
                 {
                     RobotControl.RobotBet(gameRoomData);
-                    startRepeatEditorRead();
+                    //startRepeatEditorRead();
 
                     yield break;
                 }
@@ -2014,7 +2001,7 @@ public class GameControl : MonoBehaviour
         }
 
 #if UNITY_EDITOR
-        EditorReadRoomData();
+        //EditorReadRoomData();
 #endif
     }
 
@@ -2308,7 +2295,7 @@ public class GameControl : MonoBehaviour
     {
         JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}",
                                                         data);
-        print(data);
+        print("更新資料: " +string.Join(", " , data));
     }
 
     /// <summary>
@@ -2458,7 +2445,7 @@ public class GameControl : MonoBehaviour
             { FirebaseManager.ACTIONP_PLAYER_COUNT, actionPlayerCount },             //當前流程行動玩家次數
         };
         UpdateGameRoomData(data);
-        startRepeatEditorRead();
+        //startRepeatEditorRead();
     } 
 
 #endregion
@@ -2538,9 +2525,13 @@ public class GameControl : MonoBehaviour
         JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.BET_ACTION_DATA}",
                                                         betActionData);
 
-        gameView.GetPlayerAction(gameRoomData);
+        Invoke(nameof(delay2GetAction), 0.2f);
 
         PreBuyChipsValue = 0;
+    }
+    void delay2GetAction()
+    {
+        gameView.GetPlayerAction(gameRoomData);
     }
 
     /// <summary>
