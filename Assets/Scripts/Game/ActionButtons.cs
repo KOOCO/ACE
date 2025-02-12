@@ -81,7 +81,7 @@ public class ActionButtons : MonoBehaviour
         gameData.strData.FoldStr = "Fold";
         gameData.strData.CallStr = "Check";
         gameData.strData.CallValueStr = "";
-        CallBtn_Txt.text = LanguageManager.Instance.GetText(gameData.strData.CallStr) + gameData.strData.CallValueStr;
+        CallBtn_Txt.text = "";
         gameData.strData.RaiseStr = "CallAny";
         gameData.strData.RaiseValueStr = "";
         RaiseBtn_Txt.text = LanguageManager.Instance.GetText(gameData.strData.RaiseStr) + gameData.strData.RaiseValueStr;

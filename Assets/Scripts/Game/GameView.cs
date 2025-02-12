@@ -394,6 +394,7 @@ public class GameView : MonoBehaviour
 
     private void SetLocalPlayerPreFlopActions(bool isBigBlind, bool isSmallBlind, bool isRaised, GameRoomPlayerData localPlayer)
     {
+        GamePlayerInfo locPlayer = GetPlayer(DataManager.UserId);
         if (isRaised)
         {
             // If a raise has occurred, show Fold and Call with amount for the local player
@@ -401,26 +402,37 @@ public class GameView : MonoBehaviour
             {
                 // Big Blind sees Check/Fold and Check pre-flop with no raise
                 print("如果加注了，大盲注看到Check/Fold和Check翻牌前沒有加注");
-                gameData.strData.FoldStr = LanguageManager.Instance.GetText("Fold");
-                if (gameData.thisData.LocalPlayerCurrBetValue == gameData.thisData.CurrCallValue)
+                if (locPlayer.CurrRoomChips > 0)
                 {
-                    print("等於當前跟注金額");
-                    gameData.strData.CallStr = LanguageManager.Instance.GetText("Check");
-                    gameData.strData.CallValueStr = "";
-                }
-                else
-                {
-                    if (gameData.thisData.CurrCallValue > gameData.thisData.LocalPlayerChips)
+                    gameData.strData.FoldStr = LanguageManager.Instance.GetText("Fold");
+                    if (gameData.thisData.LocalPlayerCurrBetValue == gameData.thisData.CurrCallValue)
                     {
-                        //print("當前加注小於玩家籌碼: " + (gameData.thisData.CurrRaiseValue < gameData.thisData.LocalPlayerChips));
-                        gameData.strData.CallStr = LanguageManager.Instance.GetText("AllIn");
+                        print("等於當前跟注金額");
+                        gameData.strData.CallStr = LanguageManager.Instance.GetText("Check");
                         gameData.strData.CallValueStr = "";
                     }
                     else
                     {
-                        gameData.strData.CallStr = LanguageManager.Instance.GetText("Call");
-                        gameData.strData.CallValueStr = $" {gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                        if (gameData.thisData.CurrCallValue > gameData.thisData.LocalPlayerChips)
+                        {
+                            //print("當前加注小於玩家籌碼: " + (gameData.thisData.CurrRaiseValue < gameData.thisData.LocalPlayerChips));
+                            gameData.strData.CallStr = LanguageManager.Instance.GetText("AllIn");
+                            gameData.strData.CallValueStr = "";
+                        }
+                        else
+                        {
+                            gameData.strData.CallStr = LanguageManager.Instance.GetText("Call");
+                            gameData.strData.CallValueStr = $" {gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                            //print("設置跟注文字: " + gameData.strData.CallValueStr);
+                        }
                     }
+                }
+                else
+                {
+                    print("玩家已All In");
+                    gameData.strData.FoldStr = "";
+                    gameData.strData.CallStr = "";
+                    gameData.strData.CallValueStr = "";
                 }
             }
             else
@@ -438,6 +450,7 @@ public class GameView : MonoBehaviour
                     //print("當前加注小於玩家籌碼: " + (gameData.thisData.CurrRaiseValue < gameData.thisData.LocalPlayerChips));
                     gameData.strData.CallStr = LanguageManager.Instance.GetText("Call");
                     gameData.strData.CallValueStr = $" {gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                    //print("設置跟注文字: " + gameData.strData.CallValueStr);
                 }
             }
         }
@@ -458,6 +471,7 @@ public class GameView : MonoBehaviour
                 gameData.strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                 gameData.strData.CallStr = LanguageManager.Instance.GetText("Call");
                 gameData.strData.CallValueStr = $" {gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                //print("設置跟注文字: " + gameData.strData.CallValueStr);
             }
             else
             {
@@ -466,6 +480,7 @@ public class GameView : MonoBehaviour
                 gameData.strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                 gameData.strData.CallStr = LanguageManager.Instance.GetText("Call");
                 gameData.strData.CallValueStr = $" {gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                //print("設置跟注文字: " + gameData.strData.CallValueStr);
             }
         }
 
@@ -499,6 +514,7 @@ public class GameView : MonoBehaviour
                 {
                     gameData.strData.CallStr = LanguageManager.Instance.GetText("Call");
                     gameData.strData.CallValueStr = $" {gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                    //print("設置跟注文字: " + gameData.strData.CallValueStr);
                 }
             }
         }
@@ -546,18 +562,19 @@ public class GameView : MonoBehaviour
                     }
                     else
                     {
-                        //print($"玩家籌碼:{gameData.thisData.LocalPlayerChips}, 當前跟注:{gameData.thisData.CurrCallValue}");
                         if (gameData.thisData.CurrRaiseValue < gameData.thisData.LocalPlayerChips || (gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips) < locPlayer.CurrRoomChips)
                         {
-                            //print("當前加注小於玩家籌碼: " + (gameData.thisData.CurrRaiseValue < gameData.thisData.LocalPlayerChips));
-                            gameData.strData.CallStr = (gameData.thisData.LocalPlayerChips <= gameData.thisData.CurrCallValue) ? "" : LanguageManager.Instance.GetText("Call");
+                            print("當前加注小於玩家籌碼: " + (gameData.thisData.CurrRaiseValue <= gameData.thisData.LocalPlayerChips));
+                            gameData.strData.CallStr = (gameData.thisData.LocalPlayerChips <= gameData.thisData.CurrCallValue) ? LanguageManager.Instance.GetText("Check") : LanguageManager.Instance.GetText("Call");
                             gameData.strData.CallValueStr = (gameData.thisData.LocalPlayerChips <= gameData.thisData.CurrCallValue) ? "" : $" {gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                            //print("設置跟注文字: " + gameData.strData.CallValueStr);
                         }
                         else
                         {
                             gameData.strData.CallStr = LanguageManager.Instance.GetText("AllIn");
                             gameData.strData.CallValueStr = "";
                         }
+                        //print($"玩家籌碼:{gameData.thisData.LocalPlayerChips}, 當前跟注:{gameData.thisData.CurrCallValue}, 當前加注: {gameData.thisData.CurrRaiseValue}, 本地玩家所有下注: {localPlayer.currAllBetChips}");
                     }
                 }
                 else
@@ -577,6 +594,7 @@ public class GameView : MonoBehaviour
                     bool check = gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips == 0;
                     gameData.strData.CallStr = (check || gameData.thisData.LocalPlayerChips <= gameData.thisData.CurrCallValue) ? "" : LanguageManager.Instance.GetText("Call");
                     gameData.strData.CallValueStr = (check || gameData.thisData.LocalPlayerChips <= gameData.thisData.CurrCallValue) ? "" : $" {gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                    //print("設置跟注文字: " + gameData.strData.CallValueStr);
                 }
                 else
                 {
@@ -614,6 +632,7 @@ public class GameView : MonoBehaviour
                 gameData.strData.CallValueStr = gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips == 0
                     ? ""
                     : $" {gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                //print("設置跟注文字: " + gameData.strData.CallValueStr);
             }
             else
             {
@@ -624,6 +643,7 @@ public class GameView : MonoBehaviour
                 gameData.strData.CallValueStr = gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips == 0
                     ? ""
                     : $" {gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                //print("設置跟注文字: " + gameData.strData.CallValueStr);
             }
         }
 
@@ -653,7 +673,8 @@ public class GameView : MonoBehaviour
                     //print(locPlayer.PlayerRoomChips);
                     gameData.strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                     gameData.strData.CallStr = LanguageManager.Instance.GetText("Call"); ;
-                    gameData.strData.CallValueStr = $" {gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips}";
+                    gameData.strData.CallValueStr = (gameData.gameRoomData.currGameFlow != 1) ? $" {gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips}" : "";
+                    //print("設置跟注文字: " + gameData.strData.CallValueStr);
                 }
                 else
                 {
