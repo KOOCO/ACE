@@ -26985,6 +26985,7 @@ GameObject:
   - component: {fileID: 2650940697778809434}
   - component: {fileID: 6006767800059491656}
   - component: {fileID: 6788708860052311707}
+  - component: {fileID: 2633602466413370298}
   m_Layer: 5
   m_Name: ChatPage_Tr
   m_TagString: Untagged
@@ -27054,6 +27055,31 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2633602466413370298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3729649754020613515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97b4a908ab4128544bf84186957fd58d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ChatPage_Tr: {fileID: 2650940697778809434}
+  ChatContent_Tr: {fileID: 7161370105925558879}
+  NotReadChat_Tr: {fileID: 549597411896904175}
+  Chat_Btn: {fileID: 605825118304539918}
+  ChatClose_Btn: {fileID: 3246562491949423702}
+  ChatSend_Btn: {fileID: 4799246849655263717}
+  NewMessage_Btn: {fileID: 2683976295927941584}
+  Mask_Btn: {fileID: 5384433124382939452}
+  OtherChatSample: {fileID: 552192274331787213}
+  LocalChatSample: {fileID: 8650875614192055968}
+  ChatArea_Sr: {fileID: 7660861425399434392}
+  Chat_If: {fileID: 2692987931153142205}
+  NotReadChat_Txt: {fileID: 7573914742494665441}
 --- !u!1 &3747977294265472164
 GameObject:
   m_ObjectHideFlags: 0
@@ -30296,18 +30322,7 @@ MonoBehaviour:
   communityPoker: {fileID: 2733931076798718065}
   Menu_Btn: {fileID: 4139764132997417176}
   gameMenu: {fileID: 65107692793467155}
-  ChatPage_Tr: {fileID: 2650940697778809434}
-  ChatContent_Tr: {fileID: 7161370105925558879}
-  NotReadChat_Tr: {fileID: 549597411896904175}
-  Chat_Btn: {fileID: 605825118304539918}
-  ChatClose_Btn: {fileID: 3246562491949423702}
-  ChatSend_Btn: {fileID: 4799246849655263717}
-  NewMessage_Btn: {fileID: 2683976295927941584}
-  OtherChatSample: {fileID: 552192274331787213}
-  LocalChatSample: {fileID: 8650875614192055968}
-  ChatArea_Sr: {fileID: 7660861425399434392}
-  Chat_If: {fileID: 2692987931153142205}
-  NotReadChat_Txt: {fileID: 7573914742494665441}
+  gameChat: {fileID: 2633602466413370298}
   WinChipsObj: {fileID: 2644066895869908512, guid: 2d51c37f43d33154f9ac2a504a2e1a24, type: 3}
   GamePause_Obj: {fileID: 2292812178963915797}
   GameContinue_Btn: {fileID: 2288723802441286916}
