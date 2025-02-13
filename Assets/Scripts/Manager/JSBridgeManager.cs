@@ -213,6 +213,7 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
     /// <param name="pathPtr">資料路徑</param>
     /// <param name="objNamePtr">回傳物件名</param>
     /// <param name="callbackFunPtr">回傳方法名</param>
+    [Obsolete]
     public void StartListeningForDataChanges(string pathPtr, string objNamePtr, string callbackFunPtr)
     {
 #if UNITY_WEBGL
@@ -232,11 +233,12 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
     /// 停止監聽資料
     /// </summary>
     /// <param name="pathPtr">資料路徑</param>
+    [Obsolete]
     public void StopListeningForDataChanges(string pathPtr)
     {
-#if UNITY_EDITOR
-        return;
-#elif UNITY_WEBGL
+        //#if UNITY_EDITOR
+        //        return;
+#if UNITY_WEBGL
         JS_StopListeningForDataChanges(pathPtr);
 #elif UNITY_ANDROID
         FirebaseListenerManager.inst.Unsubscribe(pathPtr);
@@ -353,6 +355,7 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
                 GameObject obj = GameObject.Find(objNamePtr);
                 obj.SendMessage(callbackFunPtr, response.Text);
             }
+            print("Update from FB: " + response.Text);
         }).Catch(error =>
         {
             Debug.LogError(jsonData);
@@ -380,6 +383,7 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
                 GameObject obj = GameObject.Find(objNamePtr);
                 obj.SendMessage(callbackFunPtr, response.Text);
             }
+            print("Update to FB: " + response.Text);
         }).Catch(error =>
         {
             Debug.LogError(data);

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,6 +34,8 @@ public class GameTest : MonoBehaviour
     public List<TMP_Dropdown> robot_SuitTogList;
     public List<TMP_Dropdown> robot_NumTogList;
     public bool IsStartGameTest;                                //是否開始遊戲測試
+
+    public GameControl gameControl;
 
     private void Awake()
     {
@@ -223,5 +226,48 @@ public class GameTest : MonoBehaviour
         robot_SuitTogList[1].value = pokerShapes.inst.Shapes[shapeIndex].Robot[1].Suit;
         robot_NumTogList[0].value = pokerShapes.inst.Shapes[shapeIndex].Robot[0].Num;
         robot_NumTogList[1].value = pokerShapes.inst.Shapes[shapeIndex].Robot[1].Num;
+    }
+
+    //Test initGame
+    public void initGameTest()
+    {
+        int poker;
+        //52張撲克
+        List<int> pokerList = new List<int>();
+        for (int i = 0; i < 52; i++)
+        {
+            pokerList.Add(i);
+        }
+
+        foreach (var player in gameControl.gameRoomData.playerDataDic)
+        {
+            int[] handPoker = new int[2];
+
+            for (int i = 0; i < 2; i++)
+            {
+                poker = Licensing();
+                handPoker[i] = poker;
+            }
+
+            //更新玩家資料
+            Dictionary<string, object> dataDic = new Dictionary<string, object>()
+            {
+                { FirebaseManager.HAND_POKER, handPoker.ToList()},              //手牌
+                { FirebaseManager.CURR_ALL_BET_CHIPS, 0},                       //該回合總下注籌碼
+                { FirebaseManager.ALL_BET_CHIPS, 0},                            //該局總下注籌碼
+                { FirebaseManager.GAME_STATE, PlayerStateEnum.Playing},         //遊戲狀態(等待/遊戲中/棄牌/All In)
+            };
+            JSBridgeManager.Instance.UpdateDataFromFirebase($"{gameControl.QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{player.Key}",
+                                                            dataDic);
+        }
+
+        //發牌
+        int Licensing()
+        {
+            int index = new System.Random().Next(0, pokerList.Count);
+            int poker = pokerList[index];
+            pokerList.RemoveAt(index);
+            return poker;
+        }
     }
 }

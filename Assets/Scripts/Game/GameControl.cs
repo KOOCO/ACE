@@ -27,7 +27,7 @@ public class GameControl : MonoBehaviour
     public double PreBuyChipsValue { get; set; }                //下一手購買籌碼值
     public double leastChips { get; set; }                      //最少所需籌碼
 
-    GameRoomData gameRoomData;                                  //房間資料
+    public GameRoomData gameRoomData;                                  //房間資料
     Coroutine cdCoroutine;                                      //倒數Coroutine
 
     int prePlayerCount { get; set; }                            //上個紀錄的遊戲人數
@@ -1600,7 +1600,7 @@ public class GameControl : MonoBehaviour
                             UpdataPlayerData(item.userId, data);
                         }
                     }
-                    preUpdateGameFlow = GameFlowEnum.Licensing;
+                    preUpdateGameFlow = GameFlowEnum.None;
                     preLocalGameFlow = GameFlowEnum.None;
                     yield break;
                 }
@@ -2216,8 +2216,43 @@ public class GameControl : MonoBehaviour
                     { FirebaseManager.PLAYER_HAND_SHAPE, -1 },
                 };
             UpdataPlayerData(id,
-                             data);
+                             data,
+                             callbackAfterPlayerDataUpdate);
         }
+
+        //移除底池結果資料
+        JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.POT_WIN_DATA}");
+
+        //移除邊池結果資料
+        JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.SIDE_WIN_DATA}");
+    }
+
+    /// <summary>
+    /// 更新玩家個人資料
+    /// </summary>
+    /// <param name="id">玩家ID</param>
+    /// <param name="dataDic">更新資料</param>
+    /// <param name="callback">回傳執行</param>
+    public void UpdataPlayerData(string id, Dictionary<string, object> dataDic, UnityAction<string> callback = null)
+    {
+        if (callback == null)
+        {
+            JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{id}",
+                                                dataDic);
+        }
+        else
+        {
+            JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{id}",
+                                                dataDic,
+                                                gameObject.name,
+                                                callback.Method.Name);
+        }
+    }
+
+    void callbackAfterPlayerDataUpdate(string json)
+    {
+        print(json);
+        var data = new Dictionary<string, object>();
 
         //遊戲中玩家
         List<string> playingPlayersId = new();
@@ -2246,44 +2281,19 @@ public class GameControl : MonoBehaviour
         //設置Button座位
         int newButtonSeat = SetButtonSeat();
 
-        //更新房間資料
-        data = new Dictionary<string, object>()
+        if (string.IsNullOrEmpty(json) || json != "null")
         {
-            { FirebaseManager.POT_CHIPS, 0},                                                    //底池
-            { FirebaseManager.PLAYING_PLAYER_ID, playingPlayersId},                             //遊戲中玩家ID
-            { FirebaseManager.COMMUNITY_POKER, SetPoker()},                                     //公共牌
-            { FirebaseManager.CURR_COMMUNITY_POKER, new List<int>()},                           //當前公共牌座位
-            { FirebaseManager.BUTTON_SEAT, newButtonSeat},                                      //Button座位
-            { FirebaseManager.GAME_START_TIME, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}    //遊戲開始時間
-        };
-        UpdateGameRoomData(data);
-
-        //移除底池結果資料
-        JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.POT_WIN_DATA}");
-
-        //移除邊池結果資料
-        JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.SIDE_WIN_DATA}");
-    }
-
-    /// <summary>
-    /// 更新玩家個人資料
-    /// </summary>
-    /// <param name="id">玩家ID</param>
-    /// <param name="dataDic">更新資料</param>
-    /// <param name="callback">回傳執行</param>
-    public void UpdataPlayerData(string id, Dictionary<string, object> dataDic, UnityAction<string> callback = null)
-    {
-        if (callback == null)
-        {
-            JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{id}",
-                                                dataDic);
-        }
-        else
-        {
-            JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{id}",
-                                                dataDic,
-                                                gameObject.name,
-                                                callback.Method.Name);
+            //更新房間資料
+           data = new Dictionary<string, object>()
+            {
+                { FirebaseManager.POT_CHIPS, 0},                                                    //底池
+                { FirebaseManager.PLAYING_PLAYER_ID, playingPlayersId},                             //遊戲中玩家ID
+                { FirebaseManager.COMMUNITY_POKER, SetPoker()},                                     //公共牌
+                { FirebaseManager.CURR_COMMUNITY_POKER, new List<int>()},                           //當前公共牌座位
+                { FirebaseManager.BUTTON_SEAT, newButtonSeat},                                      //Button座位
+                { FirebaseManager.GAME_START_TIME, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}    //遊戲開始時間
+            };
+            UpdateGameRoomData(data);
         }
     }
 
@@ -2525,7 +2535,8 @@ public class GameControl : MonoBehaviour
         JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.BET_ACTION_DATA}",
                                                         betActionData);
 
-        Invoke(nameof(delay2GetAction), 0.2f);
+        //Invoke(nameof(delay2GetAction), 0.2f);
+        gameView.GetPlayerAction(gameRoomData);
 
         PreBuyChipsValue = 0;
     }
@@ -2615,6 +2626,7 @@ public class GameControl : MonoBehaviour
             };
             JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{player.Key}",
                                                             dataDic);
+            print("設置玩家手牌: " + string.Join(", ", handPoker));
         }
 
         return community;
