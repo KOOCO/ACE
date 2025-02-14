@@ -232,6 +232,10 @@ public class GameView : MonoBehaviour
 
         Notice.gameObject.SetActive(DataManager.istipAppear);
         noticeText.text = DataManager.TipText;
+
+        string callSprName = actionButtons.CallBtn_Img.sprite.name;
+        if (callSprName != "跟注" && callSprName != "caLL")
+            actionButtons.CallBtnText = "";
     }
 
     #region Action接收
@@ -423,7 +427,7 @@ public class GameView : MonoBehaviour
                         {
                             gameData.strData.CallStr = LanguageManager.Instance.GetText("Call");
                             gameData.strData.CallValueStr = $" {gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips}";
-                            //print("設置跟注文字: " + gameData.strData.CallValueStr);
+                            //print("設置跟注文字: " + gameData.strData.CallStr + gameData.strData.CallValueStr);
                         }
                     }
                 }
@@ -448,9 +452,9 @@ public class GameView : MonoBehaviour
                 else
                 {
                     //print("當前加注小於玩家籌碼: " + (gameData.thisData.CurrRaiseValue < gameData.thisData.LocalPlayerChips));
-                    gameData.strData.CallStr = LanguageManager.Instance.GetText("Call");
+                    gameData.strData.CallStr = (gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips) <= 0 ? LanguageManager.Instance.GetText("Check") : LanguageManager.Instance.GetText("Call");
                     gameData.strData.CallValueStr = $" {gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips}";
-                    //print("設置跟注文字: " + gameData.strData.CallValueStr);
+                    //print("設置跟注文字: " + gameData.strData.CallStr + gameData.strData.CallValueStr);
                 }
             }
         }
@@ -471,7 +475,7 @@ public class GameView : MonoBehaviour
                 gameData.strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                 gameData.strData.CallStr = LanguageManager.Instance.GetText("Call");
                 gameData.strData.CallValueStr = $" {gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips}";
-                //print("設置跟注文字: " + gameData.strData.CallValueStr);
+                //print("設置跟注文字: " + gameData.strData.CallStr + gameData.strData.CallValueStr);
             }
             else
             {
@@ -480,7 +484,7 @@ public class GameView : MonoBehaviour
                 gameData.strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                 gameData.strData.CallStr = LanguageManager.Instance.GetText("Call");
                 gameData.strData.CallValueStr = $" {gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips}";
-                //print("設置跟注文字: " + gameData.strData.CallValueStr);
+                //print("設置跟注文字: " + gameData.strData.CallStr + gameData.strData.CallValueStr);
             }
         }
 
@@ -514,7 +518,7 @@ public class GameView : MonoBehaviour
                 {
                     gameData.strData.CallStr = LanguageManager.Instance.GetText("Call");
                     gameData.strData.CallValueStr = $" {gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips}";
-                    //print("設置跟注文字: " + gameData.strData.CallValueStr);
+                    //print("設置跟注文字: " + gameData.strData.CallStr + gameData.strData.CallValueStr);
                 }
             }
         }
@@ -567,7 +571,7 @@ public class GameView : MonoBehaviour
                             print("當前加注小於玩家籌碼: " + (gameData.thisData.CurrRaiseValue <= gameData.thisData.LocalPlayerChips));
                             gameData.strData.CallStr = (gameData.thisData.LocalPlayerChips <= gameData.thisData.CurrCallValue) ? LanguageManager.Instance.GetText("Check") : LanguageManager.Instance.GetText("Call");
                             gameData.strData.CallValueStr = (gameData.thisData.LocalPlayerChips <= gameData.thisData.CurrCallValue) ? "" : $" {gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips}";
-                            //print("設置跟注文字: " + gameData.strData.CallValueStr);
+                            //print("設置跟注文字: " + gameData.strData.CallStr + gameData.strData.CallValueStr);
                         }
                         else
                         {
@@ -594,7 +598,7 @@ public class GameView : MonoBehaviour
                     bool check = gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips == 0;
                     gameData.strData.CallStr = (check || gameData.thisData.LocalPlayerChips <= gameData.thisData.CurrCallValue) ? "" : LanguageManager.Instance.GetText("Call");
                     gameData.strData.CallValueStr = (check || gameData.thisData.LocalPlayerChips <= gameData.thisData.CurrCallValue) ? "" : $" {gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips}";
-                    //print("設置跟注文字: " + gameData.strData.CallValueStr);
+                    //print("設置跟注文字: " + gameData.strData.CallStr + gameData.strData.CallValueStr);
                 }
                 else
                 {
@@ -632,7 +636,7 @@ public class GameView : MonoBehaviour
                 gameData.strData.CallValueStr = gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips == 0
                     ? ""
                     : $" {gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips}";
-                //print("設置跟注文字: " + gameData.strData.CallValueStr);
+                //print("設置跟注文字: " + gameData.strData.CallStr + gameData.strData.CallValueStr);
             }
             else
             {
@@ -643,7 +647,7 @@ public class GameView : MonoBehaviour
                 gameData.strData.CallValueStr = gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips == 0
                     ? ""
                     : $" {gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips}";
-                //print("設置跟注文字: " + gameData.strData.CallValueStr);
+                //print("設置跟注文字: " + gameData.strData.CallStr + gameData.strData.CallValueStr);
             }
         }
 
@@ -674,7 +678,7 @@ public class GameView : MonoBehaviour
                     gameData.strData.FoldStr = LanguageManager.Instance.GetText("Fold");
                     gameData.strData.CallStr = LanguageManager.Instance.GetText("Call"); ;
                     gameData.strData.CallValueStr = (gameData.gameRoomData.currGameFlow != 1) ? $" {gameData.gameRoomData.currCallValue - localPlayer.currAllBetChips}" : "";
-                    //print("設置跟注文字: " + gameData.strData.CallValueStr);
+                    //print("設置跟注文字: " + gameData.strData.CallStr + gameData.strData.CallValueStr);
                 }
                 else
                 {
@@ -710,27 +714,33 @@ public class GameView : MonoBehaviour
 
     private void UpdateActionButtonTexts(bool isRaised, bool localPlayerTurn = false)
     {
+        int keyF = 0;
+        int keyC = 0;
+
         if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
         {
-            int keyF = gameData.betStringsE.FirstOrDefault(x => x.Value == gameData.strData.FoldStr).Key;
-            int keyC = gameData.betStringsE.FirstOrDefault(x => x.Value == gameData.strData.CallStr).Key;
+            keyF = gameData.betStringsE.FirstOrDefault(x => x.Value == gameData.strData.FoldStr).Key;
+            keyC = gameData.betStringsE.FirstOrDefault(x => x.Value == gameData.strData.CallStr).Key;
             actionButtons.SetCallFoldBetStr("Call", keyC);
             //print("跟注按鈕文字: " + betStringsE[keyC] + " " + gameData.strData.CallStr);
             actionButtons.SetCallFoldBetStr("Fold", keyF);
         }
         else
         {
-            int keyF = gameData.betStringsC.FirstOrDefault(x => x.Value == gameData.strData.FoldStr).Key;
-            int keyC = gameData.betStringsC.FirstOrDefault(x => x.Value == gameData.strData.CallStr).Key;
+            keyF = gameData.betStringsC.FirstOrDefault(x => x.Value == gameData.strData.FoldStr).Key;
+            keyC = gameData.betStringsC.FirstOrDefault(x => x.Value == gameData.strData.CallStr).Key;
             actionButtons.SetCallFoldBetStr("Call", keyC);
-            //print("跟注按鈕文字: " + betStringsE[keyC] + " " + gameData.strData.CallStr);
+            print("跟注按鈕文字: " + gameData.betStringsC[keyC] + " " + gameData.strData.CallStr);
             actionButtons.SetCallFoldBetStr("Fold", keyF);
         }
 
         //CallBtn_Txt.text = LanguageManager.Instance.GetText(gameData.strData.CallStr) + gameData.strData.CallValueStr;
-        if (gameData.strData.CallValueStr != "" && int.Parse(gameData.strData.CallValueStr) > 0)
-            //CallBtn_Txt.text = "$" + gameData.strData.CallValueStr;
+        if (gameData.strData.CallValueStr != "" && int.Parse(gameData.strData.CallValueStr) > 0 && keyC == 0)
+        //CallBtn_Txt.text = "$" + gameData.strData.CallValueStr;
+        {
+            print(keyC);
             actionButtons.CallBtnText = "$" + gameData.strData.CallValueStr;
+        }
         else
             actionButtons.CallBtnText = "";
         //coinIconObj.SetActive(false);

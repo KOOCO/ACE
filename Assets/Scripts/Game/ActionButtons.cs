@@ -25,7 +25,7 @@ public class ActionButtons : MonoBehaviour
     [SerializeField]
     GameObject coinIconObj;
     [SerializeField]
-    Image CallBtn_Img, FoldBtn_Img;
+    public Image CallBtn_Img, FoldBtn_Img;
     Vector2 originCallPos;
 
     [Header("¥[ª`¾Þ§@")]
@@ -597,12 +597,13 @@ public class ActionButtons : MonoBehaviour
     /// </summary>
     public string CallBtnText
     {
+        get
+        {
+            return CallBtn_Txt.text;
+        }
         set
         {
-            if (value != "")
-            {
-                CallBtn_Txt.text = setCallStr(value);
-            }
+            CallBtn_Txt.text = setCallStr(value);
         }
     }
     /// <summary>
@@ -841,22 +842,27 @@ public class ActionButtons : MonoBehaviour
                 gameData.strData.CallValueStr = $" {StringUtils.SetChipsUnit(gameData.thisData.CallDifference)}";
             }
         }
+
+        int keyC = 0;
         if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
         {
-            int keyC = gameData.betStringsE.FirstOrDefault(x => x.Value == gameData.strData.CallStr).Key;
+            keyC = gameData.betStringsE.FirstOrDefault(x => x.Value == gameData.strData.CallStr).Key;
             SetCallFoldBetStr("Call", keyC);
             //print("¸òª`«ö¶s¤å¦r: " + betStringsE[keyC] + " " + gameData.strData.CallStr);
         }
         else
         {
-            int keyC = gameData.betStringsC.FirstOrDefault(x => x.Value == LanguageManager.Instance.GetText(gameData.strData.CallStr)).Key;
+            keyC = gameData.betStringsC.FirstOrDefault(x => x.Value == LanguageManager.Instance.GetText(gameData.strData.CallStr)).Key;
             SetCallFoldBetStr("Call", keyC);
             //print("¸òª`«ö¶s¤å¦r: " + betStringsE[keyC] + " " + gameData.strData.CallStr);
         }
 
-        if (gameData.strData.CallValueStr != "" && int.Parse(gameData.strData.CallValueStr) > 0)
-            //CallBtn_Txt.text = "$" + gameData.strData.CallValueStr;
+        if (gameData.strData.CallValueStr != "" && int.Parse(gameData.strData.CallValueStr) > 0 && keyC == 0)
+        //CallBtn_Txt.text = "$" + gameData.strData.CallValueStr;
+        {
+            print(keyC);
             CallBtn_Txt.text = setCallStr("$" + gameData.strData.CallValueStr);
+        }
         else
             CallBtn_Txt.text = "";
 
@@ -927,16 +933,19 @@ public class ActionButtons : MonoBehaviour
     {
         string s = "";
         List<string> strs = new List<string>();
-        for (int i = 0; i < str.Length; i++)
+        if (str != "" && str != " ")
         {
-            int index = i;
-            if (index == 1)
-                continue;
-            else
-                s = $"<sprite name=\"{str.Substring(index, 1)}\">";
-            strs.Add(s);
+            for (int i = 0; i < str.Length; i++)
+            {
+                int index = i;
+                if (index == 1)
+                    continue;
+                else
+                    s = $"<sprite name=\"{str.Substring(index, 1)}\">";
+                strs.Add(s);
+            }
+            strs.Insert(1, " ");
         }
-        strs.Insert(1, " ");
 
         return string.Join("", strs);
     }
