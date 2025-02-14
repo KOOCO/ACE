@@ -49,7 +49,7 @@ public class tweenManager : MonoBehaviour
     private void Awake()
     {
         inst = this;
-        print(inst == null);
+        //print(inst == null);
 
         foreach (var obj in Cards)
             obj.SetActive(false);

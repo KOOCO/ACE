@@ -2379,14 +2379,14 @@ public class GameView : MonoBehaviour
             // If there are only two players, assign SB to Button player and BB to the next player
             else if (gameRoomData.playingPlayersIdList.Count == 2)
             {
-                sbPlayerData = buttonPlayerData;
-                bbPlayerData = gameControl.GetNextPlayer(gameRoomData.buttonSeat);
+                bbPlayerData = buttonPlayerData;
+                sbPlayerData = gameControl.GetNextPlayer(gameRoomData.buttonSeat);
             }
             // For three or more players, assign SB and BB accordingly
             else
             {
-                sbPlayerData = gameControl.GetNextPlayer(gameRoomData.buttonSeat);
-                bbPlayerData = gameControl.GetNextPlayer(sbPlayerData.gameSeat);
+                bbPlayerData = gameControl.GetNextPlayer(gameRoomData.buttonSeat);
+                sbPlayerData = gameControl.GetNextPlayer(bbPlayerData.gameSeat);
             }
 
             // Update SB and BB seats in the database
