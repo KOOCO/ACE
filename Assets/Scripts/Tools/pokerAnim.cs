@@ -7,10 +7,12 @@ public class pokerAnim : MonoBehaviour
     public string tweenName;
     public Transform getTrans;
     Vector3 oriPos;
+    Quaternion oriAng;
 
     private void Awake()
     {
         oriPos = transform.position;
+        oriAng = transform.localRotation;
     }
 
     private void OnEnable()
@@ -46,23 +48,22 @@ public class pokerAnim : MonoBehaviour
     private void OnDisable()
     {
         transform.position = oriPos;
-        transform.localRotation = new Quaternion(0, 0, 0, 0);
+        transform.localRotation = oriAng;
     }
 
     public void Back()
     {
         transform.position = oriPos;
-        transform.localRotation = new Quaternion(0, 0, 0, 0);
+        transform.localRotation = oriAng;
     }
 
     public void onComplete(bool destroy)
     {
         transform.position = oriPos;
-        transform.localRotation = new Quaternion(0, 0, 0, 0);
+        transform.localRotation = oriAng;
         if (destroy)
             Destroy(gameObject);
         else
-            gameObject.SetActive(false);
-        
+            gameObject.SetActive(false);        
     }
 }
