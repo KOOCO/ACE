@@ -811,6 +811,8 @@ public class GameControl : MonoBehaviour
             //大小盲
             case GameFlowEnum.SetBlind:
 
+                oldButtonSeat = gameRoomData.buttonSeat;
+
                 //更新遊戲流程
                 data = new Dictionary<string, object>()
                 {
@@ -2308,7 +2310,6 @@ public class GameControl : MonoBehaviour
     {
         JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}",
                                                         data);
-        oldButtonSeat = gameRoomData.buttonSeat;
         print("更新資料: " +string.Join(", " , data));
     }
 
