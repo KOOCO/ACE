@@ -2385,8 +2385,8 @@ public class GameView : MonoBehaviour
             // For three or more players, assign SB and BB accordingly
             else
             {
-                bbPlayerData = gameControl.GetNextPlayer(gameRoomData.buttonSeat);
-                sbPlayerData = gameControl.GetNextPlayer(bbPlayerData.gameSeat);
+                sbPlayerData = gameControl.GetNextPlayer(gameRoomData.buttonSeat);
+                bbPlayerData = gameControl.GetNextPlayer(sbPlayerData.gameSeat);
             }
 
             // Update SB and BB seats in the database
