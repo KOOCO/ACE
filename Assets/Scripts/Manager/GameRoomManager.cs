@@ -194,6 +194,7 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
         IsShowGameRoom = false;
         CloseAllBtnFrame();
         GameObject.Find("Floo3").GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -62, 0);
+        GameObject.Find("LobbyView").GetComponent<LobbyView>().callOpenItemPage(LobbyView.ItemType.Main);        
     }
 
     /// <summary>
@@ -508,6 +509,7 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
         IsShowGameRoom = true;
         BgMask_Obj.SetActive(true);
 
+        GameObject.Find("LobbyView").GetComponent<LobbyView>().callOpenItemPage(LobbyView.ItemType.None);
         StartCoroutine(IRoomMove());
     }
 

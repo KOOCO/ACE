@@ -67,8 +67,9 @@ public class LobbyView : MonoBehaviour
     /// <summary>
     /// 項目按鈕類型
     /// </summary>
-    enum ItemType
+    public enum ItemType
     {
+        None,
         Mine,
         Shop,
         Main,
@@ -585,6 +586,11 @@ public class LobbyView : MonoBehaviour
             ViewManager.Instance.InitViewTr(itemPageView, itemType.ToString());
         }
     }
+    //外部調用
+    public void callOpenItemPage(ItemType itemType)
+    {
+        OpenItemPage(itemType);
+    }
 
     public void CloseNotice()
     {
@@ -611,7 +617,6 @@ public class LobbyView : MonoBehaviour
         }
         else
         {
-
             Destroy(Floor4.GetChild(0).gameObject);
         }
     }
