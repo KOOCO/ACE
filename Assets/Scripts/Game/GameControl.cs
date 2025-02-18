@@ -41,6 +41,7 @@ public class GameControl : MonoBehaviour
     List<int> localHand { get; set; }                           //本地玩家手牌
     int cdSound { get; set; }                                   //倒數聲音計時器
     int oldButtonSeat;                                   //本輪東家位置
+    int currRoundCount;                                   //當前輪數
 
     bool isLIstened;
 
@@ -71,6 +72,8 @@ public class GameControl : MonoBehaviour
 #if UNITY_ANDROID
         setLocalIsOnline();
 #endif
+
+        currRoundCount = 0;
 
         //判斷玩家在線狀態
         if(!DataManager.IsTestWithEditor)
@@ -1708,10 +1711,12 @@ public class GameControl : MonoBehaviour
                     else
                     {
                         data = new Dictionary<string, object>()
-                    {
-                        { FirebaseManager.GAME_END_TIME, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") },
-                    };
+                        {
+                            { FirebaseManager.GAME_END_TIME, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") },
+                        };
                         UpdateGameRoomData(data);
+
+                        increpmentRound();
 
                         if (RoomType == TableTypeEnum.IntegralTable && isPotIntegralResult)
                         {
@@ -1747,10 +1752,12 @@ public class GameControl : MonoBehaviour
                 if (gameRoomData.hostId == DataManager.UserId)
                 {
                     data = new Dictionary<string, object>()
-                {
-                    { FirebaseManager.GAME_END_TIME, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") },
-                };
+                    {
+                        { FirebaseManager.GAME_END_TIME, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") },
+                    };
                     UpdateGameRoomData(data);
+
+                    increpmentRound();
 
                     if (RoomType == TableTypeEnum.IntegralTable && isSideIntegralResult)
                     {
@@ -1778,10 +1785,12 @@ public class GameControl : MonoBehaviour
                 if (gameRoomData.hostId == DataManager.UserId)
                 {
                     data = new Dictionary<string, object>()
-                {
-                    { FirebaseManager.GAME_END_TIME, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") },
-                };
+                    {
+                        { FirebaseManager.GAME_END_TIME, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") },
+                    };
                     UpdateGameRoomData(data);
+
+                    increpmentRound();
 
                     #region Cancel Intrgral
                     //if (RoomType == TableTypeEnum.IntegralTable && gameRoomData.playingPlayersIdList.Count == 1)
@@ -2283,21 +2292,21 @@ public class GameControl : MonoBehaviour
 
         //設置Button座位
         int newButtonSeat = SetButtonSeat();
-        if (newButtonSeat == oldButtonSeat)
+        if (newButtonSeat == oldButtonSeat && currRoundCount >0)
             newButtonSeat = SetButtonSeat();
 
         if (string.IsNullOrEmpty(json) || json != "null")
         {
             //更新房間資料
             data = new Dictionary<string, object>()
-                {
-                    { FirebaseManager.POT_CHIPS, 0},                                                    //底池
-                    { FirebaseManager.PLAYING_PLAYER_ID, playingPlayersId},                             //遊戲中玩家ID
-                    { FirebaseManager.COMMUNITY_POKER, SetPoker()},                                     //公共牌
-                    { FirebaseManager.CURR_COMMUNITY_POKER, new List<int>()},                           //當前公共牌座位
-                    { FirebaseManager.BUTTON_SEAT, newButtonSeat},                                      //Button座位
-                    { FirebaseManager.GAME_START_TIME, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}    //遊戲開始時間
-                };
+            {
+                { FirebaseManager.POT_CHIPS, 0},                                                    //底池
+                { FirebaseManager.PLAYING_PLAYER_ID, playingPlayersId},                             //遊戲中玩家ID
+                { FirebaseManager.COMMUNITY_POKER, SetPoker()},                                     //公共牌
+                { FirebaseManager.CURR_COMMUNITY_POKER, new List<int>()},                           //當前公共牌座位
+                { FirebaseManager.BUTTON_SEAT, newButtonSeat},                                      //Button座位
+                { FirebaseManager.GAME_START_TIME, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}    //遊戲開始時間
+            };
             UpdateGameRoomData(data);
         }
     }
@@ -2462,6 +2471,11 @@ public class GameControl : MonoBehaviour
         UpdateGameRoomData(data);
         //startRepeatEditorRead();
     } 
+
+    public void increpmentRound()
+    {
+        currRoundCount++;
+    }
 
 #endregion
 
@@ -2668,7 +2682,7 @@ public class GameControl : MonoBehaviour
         }
         while (!playerOrderSeat.Any(x => x.gameSeat == gameRoomData.buttonSeat));
 
-        print("設置莊家位: " + gameRoomData.buttonSeat + "舊庄位: " + oldButtonSeat);         
+        print($"設置莊家位: {gameRoomData.buttonSeat} 舊庄位: {oldButtonSeat} 當前輪數: {currRoundCount}");         
         return gameRoomData.buttonSeat;
     }
 
