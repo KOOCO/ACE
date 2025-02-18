@@ -1164,7 +1164,6 @@ public class GameView : MonoBehaviour
     /// <param name="gameRoomData"></param>
     public void GetPlayerAction(GameRoomData gameRoomData)
     {
-        Debug.LogError(gameRoomData.betActionDataDic.updateCarryChips);
         string id = gameRoomData.betActionDataDic.betActionerId;
         BetActingEnum actionEnum = (BetActingEnum)gameRoomData.betActionDataDic.betAction;
         double betValue = gameRoomData.betActionDataDic.betActionValue;
@@ -2116,16 +2115,17 @@ public class GameView : MonoBehaviour
         {
             { FirebaseManager.PLAYERS_WHO_LEFT, gameData.gameRoomData.playersWhoLeft},                 //遊戲中玩家ID
         };
-        gameControl.UpdateGameRoomData(gameRoomData1);
-
-        gameData.exitPlayerSeatList = new List<int>();
-        gameData.processHistoryData = new ProcessHistoryData
+        gameControl.UpdateGameRoomData(gameRoomData1, () =>
         {
-            processStepHistoryDataList = new List<ProcessStepHistoryData>()
-        };
+            gameData.exitPlayerSeatList = new List<int>();
+            gameData.processHistoryData = new ProcessHistoryData
+            {
+                processStepHistoryDataList = new List<ProcessStepHistoryData>()
+            };
 
-        // Update hand history view if available
-        GameObject.FindAnyObjectByType<HandHistoryView>()?.UpdateHitoryDate();
+            // Update hand history view if available
+            GameObject.FindAnyObjectByType<HandHistoryView>()?.UpdateHitoryDate();
+        });
     }
 
     public void SaveResultDataToFirebase()

@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 using Proyecto26;
-using System.Threading.Tasks;
+using UnityEngine.Events;
 #if UNITY_ANDROID
 using Firebase;
 using Firebase.Database;
@@ -342,7 +342,7 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
     /// </summary>
     /// <param name="refPathPtr">資料路徑</param>
     /// <param name="data">資料</param>
-    public void UpdateDataFromFirebase(string refPathPtr, Dictionary<string, object> data, string objNamePtr = null, string callbackFunPtr = null)
+    public void UpdateDataFromFirebase(string refPathPtr, Dictionary<string, object> data, string objNamePtr = null, string callbackFunPtr = null, UnityAction callback = null)
     {
         string jsonData = JsonConvert.SerializeObject(data);
 
@@ -350,6 +350,7 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
 
         RestClient.Patch($"{DataManager.DatabaseUrl}{refPathPtr}.json", jsonData).Then(response =>
         {
+            if (callback != null) callback.Invoke();
             if (!string.IsNullOrEmpty(objNamePtr) && !string.IsNullOrEmpty(callbackFunPtr))
             {
                 GameObject obj = GameObject.Find(objNamePtr);
@@ -368,6 +369,7 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
                                   jsonData,
                                   objNamePtr,
                                   callbackFunPtr);
+        if (callback != null) callback.Invoke();
 #endif
     }
     public void UpdateDataToFirebase(string refPathPtr, string data, string objNamePtr = null, string callbackFunPtr = null)
