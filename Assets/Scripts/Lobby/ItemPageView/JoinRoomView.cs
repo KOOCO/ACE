@@ -143,13 +143,8 @@ public class JoinRoomView : MonoBehaviour
 
         SendRoomDataToJS(DataManager.UserId);
 
-#if UNITY_EDITOR
-
         JoinRoomQueryCallback();
-        return;
-#endif
-        JoinRoomQueryCallback();
-
+        lobbyView.callOpenItemPage(LobbyView.ItemType.None);
     }
     void OnJoinRoomFail(string error)
     {

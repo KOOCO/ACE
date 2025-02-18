@@ -49,7 +49,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
         {
             StartCoroutine(ILoadScene(sceneEnum));
         }
-        else if (SceneManager.GetActiveScene().name == "Login")
+        else if (SceneManager.GetActiveScene().name == "Login" || SceneManager.GetActiveScene().name == "Lobby")
         {
 
             StartCoroutine(IEntryInToLobby(sceneEnum));
@@ -119,6 +119,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
     /// <returns></returns>
     private IEnumerator ILoadScene(SceneEnum sceneEnum)
     {
+        print("載入場景: " + sceneEnum.ToString());
         lodingView.gameObject.SetActive(true);
         version_Txt.text = Entry.Instance.version;
         Progress_Img.fillAmount = 0;

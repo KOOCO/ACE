@@ -374,13 +374,16 @@ public class GameControl : MonoBehaviour
             DataManager.DataUpdated = true;
             OnLeaveTable();
             ClearRoomDataFromJS();
+            
         },
         (error) =>
         {
             Debug.LogError($"Failed to leave the room. Error: {error}");
         });
-
         DataManager.isInRoom = false;
+
+        LobbyView lobbyView = GameObject.Find("LobbyView").GetComponent<LobbyView>();
+        lobbyView.callOpenItemPage(LobbyView.ItemType.Main);
     }
     public void idleExit()
     {
@@ -414,8 +417,10 @@ public class GameControl : MonoBehaviour
         {
             Debug.LogError($"Failed to leave the room. Error: {error}");
         });
+        DataManager.isInRoom = false;
 
         LobbyView lobbyView = GameObject.Find("LobbyView").GetComponent<LobbyView>();
+        lobbyView.callOpenItemPage(LobbyView.ItemType.Main);
         lobbyView.checkIsIdle();
     }
 
@@ -506,6 +511,7 @@ public class GameControl : MonoBehaviour
         //}
         //本地玩家房間關閉
         GameRoomManager.Instance.RemoveGameRoom(transform.name);
+        //LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
 #if UNITY_ANDROID
         LobbyView lobbyView = FindAnyObjectByType<LobbyView>();
         lobbyView.reStartHertbeat();
