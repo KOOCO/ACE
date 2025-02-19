@@ -800,6 +800,7 @@ public class GameControl : MonoBehaviour
                 GameDataInit(() =>
                 {
                     AudioManager.Instance.playTittle("爵士２");
+                    MusicSwitchBtn.IsPlayAudio();
 
                     //積分房只剩下玩家1名
                     //if (RoomType == TableTypeEnum.IntegralTable &&

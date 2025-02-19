@@ -795,9 +795,10 @@ public class GamePlayerInfo : MonoBehaviour
             betActionEnum == BetActionEnum.AllIn ||
             betActionEnum == BetActionEnum.AddChip)
         {
-            if(betActionEnum==BetActionEnum.AllIn)
+            if (betActionEnum == BetActionEnum.AllIn)
             {
                 AudioManager.Instance.playTittle("AllinBGM");
+                MusicSwitchBtn.IsPlayAudio();
             }
             if (isEffect)
             {
