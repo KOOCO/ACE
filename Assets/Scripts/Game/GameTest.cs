@@ -41,6 +41,87 @@ public class GameTest : MonoBehaviour
     {
         EventListener();
     }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            gameControl.CreateRobot(true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            //EditorReadRoomData();
+            Debug.Log($"玩家是否為房主: {gameControl.gameRoomData.hostId == DataManager.UserId}");
+        }
+
+#if UNITY_EDITOR
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            gameControl.RemoveRobot();
+        }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            string id = gameControl.gameRoomData.currActionerId;
+            gameControl.UpdateBetAction(id,
+                            BetActingEnum.Call,
+                            gameControl.gameRoomData.currCallValue);
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            string id = gameControl.gameRoomData.currActionerId;
+            gameControl.UpdateBetAction(id,
+                            BetActingEnum.Check,
+                            0);
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            string id = gameControl.gameRoomData.currActionerId;
+            gameControl.UpdateBetAction(id,
+                            BetActingEnum.Raise,
+                            gameControl.gameRoomData.currCallValue + gameControl.gameRoomData.smallBlind);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            string id = gameControl.gameRoomData.currActionerId;
+            gameControl.UpdateBetAction(id,
+                            BetActingEnum.Fold,
+                            0);
+        }
+
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            string id = gameControl.gameRoomData.currActionerId;
+            GameRoomPlayerData p = gameControl.gameRoomData.playerDataDic.Where(x => x.Value.userId == id)
+                                                             .FirstOrDefault()
+                                                             .Value;
+            gameControl.UpdateBetAction(id,
+                            BetActingEnum.AllIn,
+                            p.carryChips);
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            //更新房主
+            var dataDic = new Dictionary<string, object>()
+                {
+                     { FirebaseManager.ROOM_HOST_ID, "robot1"},
+                };
+            JSBridgeManager.Instance.UpdateDataFromFirebase($"{gameControl.QueryRoomPath}",
+                                                            dataDic);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            gameControl.startRepeatEditorRead();
+        }
+
+#endif
+    }
     private void EventListener()
     {
         //測試開始

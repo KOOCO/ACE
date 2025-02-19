@@ -82,85 +82,6 @@ public class GameControl : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            CreateRobot(true);
-        }
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            //EditorReadRoomData();
-            Debug.Log($"玩家是否為房主: {gameRoomData.hostId == DataManager.UserId}");
-        }
-
-#if UNITY_EDITOR
-
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            RemoveRobot();
-        }
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            string id = gameRoomData.currActionerId;
-            UpdateBetAction(id,
-                            BetActingEnum.Call,
-                            gameRoomData.currCallValue);
-        }
-
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            string id = gameRoomData.currActionerId;
-            UpdateBetAction(id,
-                            BetActingEnum.Check,
-                            0);
-        }
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            string id = gameRoomData.currActionerId;
-            UpdateBetAction(id,
-                            BetActingEnum.Raise,
-                            gameRoomData.currCallValue + gameRoomData.smallBlind);
-        }
-
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            string id = gameRoomData.currActionerId;
-            UpdateBetAction(id,
-                            BetActingEnum.Fold,
-                            0);
-        }
-
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            string id = gameRoomData.currActionerId;
-            GameRoomPlayerData p = gameRoomData.playerDataDic.Where(x => x.Value.userId == id)
-                                                             .FirstOrDefault()
-                                                             .Value;
-            UpdateBetAction(id,
-                            BetActingEnum.AllIn,
-                            p.carryChips);
-        }
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            //更新房主
-            var dataDic = new Dictionary<string, object>()
-                {
-                     { FirebaseManager.ROOM_HOST_ID, "robot1"},
-                };
-            JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}",
-                                                            dataDic);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            startRepeatEditorRead();
-        }
-
-#endif
-
         if (gameRoomData != null &&
             gameRoomData.playerDataDic != null)
         {
@@ -556,7 +477,7 @@ public class GameControl : MonoBehaviour
     /// <summary>
     /// 產生機器人
     /// </summary>
-    private void CreateRobot(bool randonSeat = false)
+    public void CreateRobot(bool randonSeat = false)
     {
         print("生成機器人");
 
@@ -622,7 +543,7 @@ public class GameControl : MonoBehaviour
     /// <summary>
     /// 移除機器人
     /// </summary>
-    private void RemoveRobot()
+    public void RemoveRobot()
     {
 
         Debug.Log($"{nameof(RemoveRobot)} :: Removing Robot from game");
@@ -3284,7 +3205,7 @@ public class GameControl : MonoBehaviour
     /// <summary>
     /// 模擬監聽器
     /// </summary>
-    void startRepeatEditorRead()
+    public void startRepeatEditorRead()
     {
 #if UNITY_EDITOR
         //EditorReadRoomData();
