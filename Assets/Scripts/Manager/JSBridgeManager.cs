@@ -770,7 +770,13 @@ public class JSBridgeManager : UnitySingleton<JSBridgeManager>
 #if UNITY_WEBGL
         JS_GetPlayerIPAddress();
 #elif UNITY_ANDROID
-        return;
+        
+        if(Application.internetReachability == NetworkReachability.NotReachable)
+        {
+            PlayerPrefs.SetInt("nullData", 3);
+            PlayerPrefs.Save();
+        }
+
 #endif
     }
 

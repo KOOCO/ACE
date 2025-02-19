@@ -6,7 +6,8 @@ using UnityEngine;
 public class FirebaseListenerManager : MonoBehaviour
 {
     public static FirebaseListenerManager inst;
-    private Dictionary<string, System.EventHandler<ValueChangedEventArgs>> listeners = new Dictionary<string, System.EventHandler<ValueChangedEventArgs>>();
+    private Dictionary<string, DatabaseReference> activeReferences = new Dictionary<string, DatabaseReference>();
+    private Dictionary<DatabaseReference, System.EventHandler<ValueChangedEventArgs>> listeners = new Dictionary<DatabaseReference, System.EventHandler<ValueChangedEventArgs>>();
 
     private void Awake()
     {
@@ -25,9 +26,10 @@ public class FirebaseListenerManager : MonoBehaviour
         }
 
         DatabaseReference reference = FirebaseDatabase.DefaultInstance.GetReference(nodePath);
+        activeReferences[nodePath] = reference;
 
         // 確保每個節點只有一個監聽器
-        if (listeners.ContainsKey(nodePath))
+        if (listeners.ContainsKey(reference))
         {
             Debug.LogWarning($"Listener for node {nodePath} already exists.");
             return;
@@ -49,13 +51,13 @@ public class FirebaseListenerManager : MonoBehaviour
                 return;
             }
 
-            string responseText = string.IsNullOrEmpty(args.Snapshot.GetRawJsonValue()) || args.Snapshot.GetRawJsonValue() == "null" ? "" : args.Snapshot.GetRawJsonValue();
+            string responseText = string.IsNullOrEmpty(args.Snapshot.GetRawJsonValue()) || args.Snapshot.GetRawJsonValue() == "null" ? "" : args.Snapshot.GetRawJsonValue(); 
             obj.SendMessage(callbackFunPtr, responseText, SendMessageOptions.DontRequireReceiver);
         };
 
         // 添加監聽器
         reference.ValueChanged += valueChangedHandler;
-        listeners[nodePath] = valueChangedHandler;
+        listeners[reference] = valueChangedHandler;
 
         Debug.Log($"訂閱節點: {nodePath}");
         Debug.Log($"監聽器數: {listeners.Count}");
@@ -66,17 +68,18 @@ public class FirebaseListenerManager : MonoBehaviour
     /// </summary>
     public void Unsubscribe(string nodePath)
     {
-        if (!listeners.ContainsKey(nodePath))
+        if (activeReferences.TryGetValue(nodePath, out var reference))
         {
-            Debug.LogWarning($"No listener found for node {nodePath}.");
-            return;
+            if (listeners.TryGetValue(reference, out var handler))
+            {
+                reference.ValueChanged -= handler;
+                listeners.Remove(reference);
+            }
+
+            Debug.Log($"移除節點: {reference}");
+            activeReferences.Remove(nodePath);
         }
 
-        DatabaseReference reference = FirebaseDatabase.DefaultInstance.GetReference(nodePath);
-        reference.ValueChanged -= listeners[nodePath];
-        listeners.Remove(nodePath);
-
-        Debug.Log($"移除節點: {nodePath}");
         Debug.Log($"監聽器數: {listeners.Count}");
     }
 
@@ -87,7 +90,7 @@ public class FirebaseListenerManager : MonoBehaviour
     {
         foreach (var kvp in listeners)
         {
-            DatabaseReference reference = FirebaseDatabase.DefaultInstance.GetReference(kvp.Key);
+            DatabaseReference reference = kvp.Key;
             reference.ValueChanged -= kvp.Value;
         }
 
