@@ -770,8 +770,7 @@ public class GameControl : MonoBehaviour
                 JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{item.userId}",
                                                                 playerData);
             }
-            //重製下注行為
-            preBetActionerId = "";
+            //重製下注行為         
             var betActionData = new Dictionary<string, object>()
             {
                 { FirebaseManager.BET_ACTIONER_ID, ""},                 //行動玩家ID
@@ -2238,7 +2237,7 @@ public class GameControl : MonoBehaviour
     private void GameDataInit(UnityAction callback)
     {
         var data = new Dictionary<string, object>();
-
+        preBetActionerId = "";
         //更新玩家個人資料
         int count = 0;
         foreach (var id in gameRoomData.playerDataDic.Keys)
