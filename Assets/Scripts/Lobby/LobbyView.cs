@@ -192,6 +192,7 @@ public class LobbyView : MonoBehaviour
             if (PlayerPrefs.GetInt("nullData") >= 3)
             {
                 PlayerPrefs.SetInt("nullData", 0);
+                PlayerPrefs.Save();
                 JSBridgeManager.Instance.WindowClose();
             }
             else
@@ -234,7 +235,7 @@ public class LobbyView : MonoBehaviour
 
         Refresh_Btn.onClick.Invoke();
 
-        InvokeRepeating(nameof(checkIsMaintenance), 0 , 5);
+        //InvokeRepeating(nameof(checkIsMaintenance), 0 , 5);
         InvokeRepeating(nameof(checkIsOffline), 0 , 5);
         /*
 #if UNITY_EDITOR
@@ -321,7 +322,7 @@ public class LobbyView : MonoBehaviour
             DataManager.UserAvatarIndex = loginData.avatarIndex;
             DataManager.UserStatus = loginData.online;
 
-            StartHeartbeat();
+            //StartHeartbeat();
 
 #if !UNITY_EDITOR
 
@@ -403,12 +404,14 @@ public class LobbyView : MonoBehaviour
         isFirstIn = false;
     }
 
-    void checkIsMaintenance()
+    public void checkIsMaintenance(string data)
     {
-        if (PlayerPrefs.GetString("ServerStatus") == serverStatus.maintenance.ToString())
-        {
+        if (data == "normal")
+            return;
+        else if (data == serverStatus.maintenance.ToString())
             JSBridgeManager.Instance.WindowClose();
-        }
+        else
+            Debug.LogError("Error status!!! Please check dataBase");
     }
     void checkIsOffline()
     {

@@ -165,6 +165,7 @@ public class GameView : MonoBehaviour
         {
             PlayerPrefs.SetInt("nullData", 0);
             PlayerPrefs.SetString("PlayerIsOnline", "True");
+            PlayerPrefs.Save();
             JSBridgeManager.Instance.WindowClose();
         });
     }

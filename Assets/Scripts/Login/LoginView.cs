@@ -231,6 +231,7 @@ public class LoginView : MonoBehaviour
 
     bool isListenered;
     bool isMaintenance;
+    bool isLogin;
     string jsonCache = "";
 
     /*
@@ -405,6 +406,8 @@ public class LoginView : MonoBehaviour
     private void Awake()
     {
         LanguageManager.Instance.AddUpdateLanguageFunc(UpdateLanguage, gameObject);
+
+        isLogin = false;
 
         Term_text.SetActive(false);
         Privacy_text.SetActive(false);
@@ -805,7 +808,7 @@ public class LoginView : MonoBehaviour
         AudioManager.Instance.playTittle("爵士２");
         MusicSwitchBtn.IsPlayAudio();
 
-        InvokeRepeating(nameof(checkIsMaintenance), 0, 5);
+        //InvokeRepeating(nameof(checkIsMaintenance), 0, 5);
 
 #if UNITY_EDITOR
         loginWithURL.gameObject.SetActive(false);
@@ -1529,6 +1532,8 @@ public class LoginView : MonoBehaviour
         SMSCodeError_Txt.text = "";
     }
 
+    #region 連接錢包(暫不使用)
+
     /// <summary>
     /// 斷開錢包連接
     /// </summary>
@@ -1569,6 +1574,8 @@ public class LoginView : MonoBehaviour
     //        }
     //    }
     //}
+
+    #endregion
 
     /// <summary>
     /// 連接錢包效果
@@ -1687,6 +1694,8 @@ public class LoginView : MonoBehaviour
 
         #endregion
     }
+
+    #region 連接錢包(暫不使用)
 
     /// <summary>
     /// 連接錢包
@@ -1853,26 +1862,26 @@ public class LoginView : MonoBehaviour
     //        isCorrect = false;
     //    }
 
-        //bool isConnect = await ThirdwebManager.Instance.SDK.Wallet.IsConnected();
+    //bool isConnect = await ThirdwebManager.Instance.SDK.Wallet.IsConnected();
 
-        //if (isCorrect && isConnect)
-        //{
+    //if (isCorrect && isConnect)
+    //{
 
-        //    Debug.Log($"Sign In = Phone Number : {phoneNumber} / Password: {code}");
+    //    Debug.Log($"Sign In = Phone Number : {phoneNumber} / Password: {code}");
 
-        //    currVerifyCode = code;
+    //    currVerifyCode = code;
 
-        //    SMSMobileNumberError_Txt.text = "";
-        //    SMSCodeError_Txt.text = "";
+    //    SMSMobileNumberError_Txt.text = "";
+    //    SMSCodeError_Txt.text = "";
 
-        //    ViewManager.Instance.OpenWaitingView(transform);
-        //    JSBridgeManager.Instance.FirebaseVerifyCode(currVerifyCode,
-        //                                                "Wallet");
-        //}
-        //else
-        //{
-        //    SMSCodeError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
-        //}
+    //    ViewManager.Instance.OpenWaitingView(transform);
+    //    JSBridgeManager.Instance.FirebaseVerifyCode(currVerifyCode,
+    //                                                "Wallet");
+    //}
+    //else
+    //{
+    //    SMSCodeError_Txt.text = LanguageManager.Instance.GetText("Invalid Code, Please Try Again.");
+    //}
     //}
 
     /// <summary>
@@ -1936,6 +1945,7 @@ public class LoginView : MonoBehaviour
     //                                                    nameof(WalletNewUerDataCallback));
     //}
 
+    #endregion
 
     private void RegisterPlayerToFirebase()
     {
@@ -2280,7 +2290,6 @@ public class LoginView : MonoBehaviour
                 nameof(delayCallHeartbeat));
 #else
         Entry.Instance.initHeartBeat(DataManager.UserId);
-        JudgeLoggedIn(jsonCache);
 #endif
     }
     /// <summary>
@@ -2321,6 +2330,7 @@ public class LoginView : MonoBehaviour
                 if (!isMaintenance)
                 {
                     PlayerPrefs.SetInt("idleCount", 0);
+                    isLogin = true;
                     LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
                     Debug.Log("用戶未登入，正常");
                 }
@@ -2352,13 +2362,18 @@ public class LoginView : MonoBehaviour
 
     #endregion
 
-    void checkIsMaintenance()
+    public void checkIsMaintenance(string data)
     {
-        if (PlayerPrefs.GetString("ServerStatus") == serverStatus.maintenance.ToString())
+        if (data == "normal") { }
+        else if (data == serverStatus.maintenance.ToString())
         {
             isMaintenance = true;
             LoadSceneManager.Instance.DoShowView();
         }
+        else
+            Debug.LogError("Error status!!! Please check dataBase");
+        if(!isLogin)
+            JudgeLoggedIn(jsonCache);
     }
 
     //外部調用
