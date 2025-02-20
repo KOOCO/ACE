@@ -40,6 +40,7 @@ public class Entry : UnitySingleton<Entry>
     public ReleaseEnvironment releaseEnv;
 
     bool isListenered;
+    string serverStatus;
 
     public override void Awake()
     {
@@ -280,7 +281,7 @@ public class Entry : UnitySingleton<Entry>
     #endregion
 
     #region 心跳 in Web
-    private bool isHeartbeatScheduled = false;
+    /*private bool isHeartbeatScheduled = false;
     public void initHeartBeat(string userID)
     {
         if (!isListenered)
@@ -310,7 +311,7 @@ public class Entry : UnitySingleton<Entry>
                     nameof(checkUpdate));
         JSBridgeManager.Instance.GetPlayerIPAddress();
     }
-    void delayCallHeartbeat(string jsonData)
+    public void delayCallHeartbeat(string jsonData)
     {
         //print("After 5 second in Entry: " + jsonData);
 
@@ -320,14 +321,19 @@ public class Entry : UnitySingleton<Entry>
             string pStatus = hb.playerStatus;
             string sStatus = hb.serverStatus;
             PlayerPrefs.SetString("PlayerStatus", pStatus);
-            PlayerPrefs.SetString("ServerStatus", sStatus);
-            PlayerPrefs.Save();
+            serverStatus = sStatus;
+            //PlayerPrefs.SetString("ServerStatus", sStatus);
+            FindAnyObjectByType<LoginView>().checkIsMaintenance(serverStatus);
+            FindAnyObjectByType<LobbyView>().checkIsMaintenance(serverStatus);
             //print($"PS: {PlayerPrefs.GetString("PlayerStatus")}, SS: {PlayerPrefs.GetString("ServerStatus")}");
         }
         else
         {
             PlayerPrefs.SetString("PlayerStatus", "normal");
-            PlayerPrefs.SetString("ServerStatus", "normal");
+            serverStatus = "normal";
+            //PlayerPrefs.SetString("ServerStatus", sStatus);
+            FindAnyObjectByType<LoginView>().checkIsMaintenance(serverStatus);
+            FindAnyObjectByType<LobbyView>().checkIsMaintenance(serverStatus);
             PlayerPrefs.Save();
         }
 
@@ -363,6 +369,6 @@ public class Entry : UnitySingleton<Entry>
         JSBridgeManager.Instance.StopListeningForDataChanges(
                         $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}");
         isListenered = false;
-    }
+    }*/
     #endregion
 }

@@ -2289,7 +2289,7 @@ public class LoginView : MonoBehaviour
                 gameObject.name,
                 nameof(delayCallHeartbeat));
 #else
-        Entry.Instance.initHeartBeat(DataManager.UserId);
+        WebAndroidHB.Instance.initHeartBeat(DataManager.UserId);
 #endif
     }
     /// <summary>
