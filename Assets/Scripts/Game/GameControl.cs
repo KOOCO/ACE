@@ -370,7 +370,7 @@ public class GameControl : MonoBehaviour
         //停止監聽遊戲房間資料
         JSBridgeManager.Instance.StopListeningForDataChanges($"{QueryRoomPath}");
 #if UNITY_ANDROID
-        WebAndroidHB.Instance.stopListenHB();
+        AndroidHB.Instance.stopListenHB();
 #endif
 
         //移除監測連線狀態

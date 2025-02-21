@@ -281,7 +281,10 @@ public class Entry : UnitySingleton<Entry>
     #endregion
 
     #region 心跳 in Web
-    /*private bool isHeartbeatScheduled = false;
+
+#if UNITY_WEBGL
+    private bool isHeartbeatScheduled = false;
+
     public void initHeartBeat(string userID)
     {
         if (!isListenered)
@@ -300,7 +303,7 @@ public class Entry : UnitySingleton<Entry>
     {
         heartbeatData HB = null;
 
-        HB = new heartbeatData(true, DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString(), PlayerPrefs.GetString("PlayerStatus"), PlayerPrefs.GetString("ServerStatus"));
+        HB = new heartbeatData(true, DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString(), PlayerPrefs.GetString("PlayerStatus"), serverStatus);
 
         string data = JsonConvert.SerializeObject(HB);
 
@@ -310,6 +313,7 @@ public class Entry : UnitySingleton<Entry>
                     gameObject.name,
                     nameof(checkUpdate));
         JSBridgeManager.Instance.GetPlayerIPAddress();
+        isHeartbeatScheduled = false;
     }
     public void delayCallHeartbeat(string jsonData)
     {
@@ -323,8 +327,12 @@ public class Entry : UnitySingleton<Entry>
             PlayerPrefs.SetString("PlayerStatus", pStatus);
             serverStatus = sStatus;
             //PlayerPrefs.SetString("ServerStatus", sStatus);
-            FindAnyObjectByType<LoginView>().checkIsMaintenance(serverStatus);
-            FindAnyObjectByType<LobbyView>().checkIsMaintenance(serverStatus);
+            LoginView loginView = FindAnyObjectByType<LoginView>();
+            if (loginView != null)
+                loginView.checkIsMaintenance(serverStatus);
+            LobbyView lobbyView = FindAnyObjectByType<LobbyView>();
+            if (lobbyView != null)
+                lobbyView.checkIsMaintenance(serverStatus);
             //print($"PS: {PlayerPrefs.GetString("PlayerStatus")}, SS: {PlayerPrefs.GetString("ServerStatus")}");
         }
         else
@@ -332,8 +340,12 @@ public class Entry : UnitySingleton<Entry>
             PlayerPrefs.SetString("PlayerStatus", "normal");
             serverStatus = "normal";
             //PlayerPrefs.SetString("ServerStatus", sStatus);
-            FindAnyObjectByType<LoginView>().checkIsMaintenance(serverStatus);
-            FindAnyObjectByType<LobbyView>().checkIsMaintenance(serverStatus);
+            LoginView loginView = FindAnyObjectByType<LoginView>();
+            if (loginView != null)
+                loginView.checkIsMaintenance(serverStatus);
+            LobbyView lobbyView = FindAnyObjectByType<LobbyView>();
+            if (lobbyView != null)
+                lobbyView.checkIsMaintenance(serverStatus);
             PlayerPrefs.Save();
         }
 
@@ -341,7 +353,7 @@ public class Entry : UnitySingleton<Entry>
         if (!isHeartbeatScheduled)
         {
             isHeartbeatScheduled = true;
-            StartCoroutine(HeartbeatCooldown());
+            Invoke(nameof(StartHeartbeat), 5);
         }
     }
     public void checkUpdate(string s)
@@ -357,18 +369,12 @@ public class Entry : UnitySingleton<Entry>
         //print(nullC);
     }
 
-    IEnumerator HeartbeatCooldown()
-    {
-        yield return new WaitForSeconds(5);
-        StartHeartbeat();
-        isHeartbeatScheduled = false;
-    }
-
     public void stopListenHB()
     {
         JSBridgeManager.Instance.StopListeningForDataChanges(
                         $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}");
         isListenered = false;
-    }*/
+    }
+#endif
     #endregion
 }

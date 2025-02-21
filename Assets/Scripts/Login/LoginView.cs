@@ -2288,8 +2288,10 @@ public class LoginView : MonoBehaviour
                 $"{Entry.Instance.releaseType}/{FirebaseManager.HEARTBEAT_DATA_PATH}/{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}/{DataManager.UserId}",
                 gameObject.name,
                 nameof(delayCallHeartbeat));
-#else
-        WebAndroidHB.Instance.initHeartBeat(DataManager.UserId);
+#elif UNITY_WEBGL
+        Entry.Instance.initHeartBeat(DataManager.UserId);
+#elif UNITY_ANDROID
+        AndroidHB.Instance.initHeartBeat(DataManager.UserId);
 #endif
     }
     /// <summary>
@@ -2360,7 +2362,7 @@ public class LoginView : MonoBehaviour
         JudgeLoggedIn(jsonCache);
     }
 
-    #endregion
+#endregion
 
     public void checkIsMaintenance(string data)
     {
@@ -2382,7 +2384,7 @@ public class LoginView : MonoBehaviour
         ViewManager.Instance.OpenTipMsgView(transform, status,
                                             LanguageManager.Instance.GetText(message));
     }
-    #region Get all sesseion
+#region Get all sesseion
     ///<summary>
     ///Get auhtorize Session
     /// </summary>
@@ -2486,7 +2488,7 @@ public class LoginView : MonoBehaviour
         }
         return null; // 如果未找到 session 参数，返回 null
     }
-    #endregion
+#endregion
 
     public void setMaintenanceObj(bool b)
     {

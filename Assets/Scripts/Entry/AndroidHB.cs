@@ -3,9 +3,9 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class WebAndroidHB : MonoBehaviour
+public class AndroidHB : MonoBehaviour
 {
-    public static WebAndroidHB Instance;
+    public static AndroidHB Instance;
 
     bool isListenered;
     string serverStatus;
@@ -15,7 +15,7 @@ public class WebAndroidHB : MonoBehaviour
         Instance = this;
     }
 
-    #region ¤ß¸õ in Web
+    #region ¤ß¸õ in Android
     private bool isHeartbeatScheduled = false;
     public void initHeartBeat(string userID)
     {
@@ -35,7 +35,7 @@ public class WebAndroidHB : MonoBehaviour
     {
         heartbeatData HB = null;
 
-        HB = new heartbeatData(true, DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString(), PlayerPrefs.GetString("PlayerStatus"), PlayerPrefs.GetString("ServerStatus"));
+        HB = new heartbeatData(true, DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString(), PlayerPrefs.GetString("PlayerStatus"), serverStatus);
 
         string data = JsonConvert.SerializeObject(HB);
 

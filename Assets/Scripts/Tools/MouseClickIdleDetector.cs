@@ -18,7 +18,12 @@ public class MouseClickIdleDetector : MonoBehaviour
         {
             timeSinceLastClick = 0f; // 重置时间累计
             PlayerPrefs.SetString("PlayerIsOnline", "True");
-            WebAndroidHB.Instance.initHeartBeat(DataManager.UserId);
+
+#if UNITY_WEBGL
+            Entry.Instance.initHeartBeat(DataManager.UserId);
+#elif UNITY_ANDROID
+            AndroidHB.Instance.initHeartBeat(DataManager.UserId);
+#endif
         }
         else
         {
@@ -33,7 +38,11 @@ public class MouseClickIdleDetector : MonoBehaviour
             if (!isIdle)
             {
                 Debug.Log("player is idle");
-                WebAndroidHB.Instance.stopListenHB();
+#if UNITY_WEBGL
+                Entry.Instance.stopListenHB();
+#elif UNITY_ANDROID
+                AndroidHB.Instance.stopListenHB();
+#endif
                 isIdle = true;
             }
 

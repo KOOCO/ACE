@@ -629,7 +629,9 @@ public class LobbyView : MonoBehaviour
     /// </summary>
     public void reStartHertbeat()
     {
-        WebAndroidHB.Instance.initHeartBeat(DataManager.UserId);
+#if UNITY_ANDROID
+        AndroidHB.Instance.initHeartBeat(DataManager.UserId);
+#endif
     }
 
     IEnumerator openRefreshBtn()
