@@ -30338,6 +30338,7 @@ MonoBehaviour:
   GamePause_Obj: {fileID: 2292812178963915797}
   GameContinue_Btn: {fileID: 2288723802441286916}
   GameTest: {fileID: 3208416092432948473}
+  Pause_Btn: {fileID: 7146954638027070447}
   Notice: {fileID: 5909967843340443392}
   noticeText: {fileID: 1704506777170104001}
   ConfirmBtn: {fileID: 2036287523325695988}

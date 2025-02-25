@@ -2216,8 +2216,11 @@ public class GameControl : MonoBehaviour
 
                 //設置Button座位
                 int newButtonSeat = SetButtonSeat();
-                if (newButtonSeat == oldButtonSeat && currRoundCount > 0)
+            if ((newButtonSeat == oldButtonSeat && currRoundCount > 0) || (newButtonSeat != 0 && currRoundCount == 0))
+                {
+                    print("莊位相同，重新設置");
                     newButtonSeat = SetButtonSeat();
+                }
                 //更新房間資料
                 data = new Dictionary<string, object>()
                 {

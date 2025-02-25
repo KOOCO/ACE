@@ -61,6 +61,7 @@ public class GameView : MonoBehaviour
     [Header("遊戲測試用")]
     [SerializeField]
     public GameTest GameTest;
+    public Button Pause_Btn;
 
     [Header("提示POP")]
     public GameObject Notice;
@@ -160,6 +161,15 @@ public class GameView : MonoBehaviour
         gameChat.UpdateChatMsg += UpdateChatMsg;
 
         #endregion
+
+        //Test
+        Pause_Btn.onClick.AddListener(() =>
+        {
+            if (Time.timeScale != 0)
+                Time.timeScale = 0;
+            else
+                Time.timeScale = 1;
+        });
 
         ConfirmBtn.onClick.AddListener(() =>
         {
