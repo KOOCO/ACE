@@ -39,6 +39,10 @@ public class Entry : UnitySingleton<Entry>
     [Header("發布環境")]
     public ReleaseEnvironment releaseEnv;
 
+    [Header("Session")]
+    [SerializeField]
+    string Operator, secretKey;
+
     bool isListenered;
     string serverStatus;
 
@@ -276,6 +280,52 @@ public class Entry : UnitySingleton<Entry>
     public void HtmlDebug(string str)
     {
         Debug.Log($"Browser Debug: {str}");
+    }
+
+    #endregion
+
+    #region Get Session
+
+    ///<summary>
+    ///Get auhtorize Session
+    /// </summary>
+    public IEnumerator GetAuthorData(UnityAction<string> sessionCallback)
+    {
+        // 建立 UnityWebRequest，設定請求的 URL
+        string url = $"https://noodle-dev.azurewebsites.net/api/authorize";
+        UnityWebRequest request = UnityWebRequest.Get(url);
+
+        // 設定請求頭
+        request.SetRequestHeader("accept", "application/json");
+        request.SetRequestHeader("Operator", Operator);
+        request.SetRequestHeader("SecretKey", secretKey);
+        request.SetRequestHeader("RequestVerificationToken", "CfDJ8LFzIbsr735Dofa_0sFAIEosFVjQldc81reOa8sHc5iXtzrFEVMuypibJHs7pcsEnjsQM8WCuU9mQCzIWo17KmSKKzSvPU_SlvqeXTlAtpes7VZCCw6rQRz6sCfKI9tFFG8opdHZflZ2i2SMXfRKr9M");
+        request.SetRequestHeader("X-Requested-With", "XMLHttpRequest");
+
+        // 發送請求並等待回應
+        yield return request.SendWebRequest();
+
+        // 檢查請求是否出現錯誤
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError("Error: " + request.error);
+        }
+        else
+        {
+            // 輸出請求結果
+            //Debug.Log("Response: " + request.downloadHandler.text);
+
+            string jsonResponse = request.downloadHandler.text;
+
+            // 使用 JsonUtility 解析 JSON
+            GeneralResponse responseData = JsonUtility.FromJson<GeneralResponse>(jsonResponse);
+            string sessionValue = responseData.data.session;
+
+            //Start get Lobby session
+            yield return new WaitUntil(() => sessionValue != "");
+            if(sessionCallback!=null)
+                sessionCallback?.Invoke(sessionValue);
+        }
     }
 
     #endregion

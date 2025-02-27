@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using UnityEngine.Events;
 using UnityEngine;
+using System;
 
 public class NoodleApi
 {
@@ -30,6 +31,23 @@ public class NoodleApi
     {
         TableCashout tableCashout = new TableCashout(DataManager.AccessCode, DataManager.NoodleMemberId, long.Parse(DataManager.RoomId), DataManager.TableId);
         SwaggerAPIManager.Instance.SendPostAPI($"/api/app/games/ace/table-cash-out", tableCashout, _success, _error);
+    }
+
+    public static void PostTransaction(string userName, int amount)
+    {
+        string session = "";
+        Transaction transaction = new Transaction(userName, amount, DateTime.Now.ToString());
+
+        LobbyView lobbyView = GameObject.FindAnyObjectByType<LobbyView>();
+        if (lobbyView != null)
+        {
+            Entry.Instance.StartCoroutine(Entry.Instance.GetAuthorData(value =>
+            {
+                session = value;
+                Debug.Log(session + " " + JsonConvert.SerializeObject(transaction));
+                lobbyView.StartCoroutine(lobbyView.PostTransactionData(session, transaction));
+            }));
+        }
     }
 
     public static void PostTableChipsTransaction(string memberId, string roundId, double amount, int chipTransactionType, ChipTransactionType transacType, UnityAction<string> _success = null, UnityAction<string> _error = null)

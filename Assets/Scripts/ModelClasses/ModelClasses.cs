@@ -350,6 +350,21 @@ public class TableChipsTransactionResponse
     }
 }
 
+public class Transaction
+{
+    public string userName;
+    public int amount ;
+    public string note = "";
+    public string transferId = "";
+
+    public Transaction(string userName, int amount, string transferId)
+    {
+        this.userName = userName;
+        this.amount = amount;
+        this.transferId = transferId;
+    }
+}
+
 public class TableChipsTransaction
 {
     public string accessCode;
