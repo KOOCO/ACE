@@ -46,6 +46,7 @@ public class NoodleApi
                 session = value;
                 Debug.Log(session + " " + JsonConvert.SerializeObject(transaction));
                 lobbyView.StartCoroutine(lobbyView.PostTransactionData(session, transaction));
+                GetBalance();
             }));
         }
     }
