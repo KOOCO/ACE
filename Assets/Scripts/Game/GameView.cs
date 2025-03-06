@@ -72,6 +72,9 @@ public class GameView : MonoBehaviour
     public Image WaitNext_Obj;
     public List<Sprite> WaitNext_ImgList;
 
+    [Header("背景上方圖")]
+    public GameObject GameTopBar;
+
     public string roomName = "";
 
     AudioPool audioPool;
@@ -101,7 +104,14 @@ public class GameView : MonoBehaviour
 
         GameMask.SetActive(false);
         ListenerEvent();
-
+        if(Application.isMobilePlatform)
+        {
+            GameTopBar.SetActive(true);
+        }
+        else
+        {
+            GameTopBar.SetActive(false);
+        }
     }
 
 

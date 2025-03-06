@@ -30346,6 +30346,7 @@ MonoBehaviour:
   WaitNext_ImgList:
   - {fileID: 21300000, guid: 3de0477425abf0a419f42d58402f4e47, type: 3}
   - {fileID: 21300000, guid: 2f6821a9e3faa1c4da77922238a953df, type: 3}
+  GameTopBar: {fileID: 6770274400286711367}
   roomName: 
   GameMask: {fileID: 3861146355253552650}
   TopBar: {fileID: 6770274400286711367}
@@ -46254,7 +46255,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5984780631597560557
 RectTransform:
   m_ObjectHideFlags: 0
