@@ -72,9 +72,6 @@ public class GameView : MonoBehaviour
     public Image WaitNext_Obj;
     public List<Sprite> WaitNext_ImgList;
 
-    [Header("背景上方圖")]
-    public GameObject GameTopBar;
-
     public string roomName = "";
 
     AudioPool audioPool;
@@ -104,14 +101,7 @@ public class GameView : MonoBehaviour
 
         GameMask.SetActive(false);
         ListenerEvent();
-        if(Application.isMobilePlatform)
-        {
-            GameTopBar.SetActive(true);
-        }
-        else
-        {
-            GameTopBar.SetActive(false);
-        }
+        SetTopBar(true);
     }
 
 
@@ -2642,7 +2632,14 @@ public class GameView : MonoBehaviour
 
     public void SetTopBar(bool isShow)
     {
-        TopBar.SetActive(isShow);
+        if (!Application.isMobilePlatform)
+        {
+            TopBar.SetActive(false);
+        }
+        else
+        {
+            TopBar.SetActive(isShow);
+        }
     }
 #if UNITY_EDITOR
     private void OnPlayModeStateChanged(PlayModeStateChange state)
