@@ -1877,6 +1877,7 @@ public class GameControl : MonoBehaviour
 
             if (player.UserId == DataManager.UserId)
             {
+                print("本地玩家回合");
                 gameView.LocalPlayerRound(gameRoomData);
             }
 
@@ -1901,7 +1902,7 @@ public class GameControl : MonoBehaviour
 
         if (player.UserId == DataManager.UserId)
         {
-            gameView.CheckActionArea(gameRoomData);
+            //gameView.CheckActionArea(gameRoomData);
             switchRoomBtn.SetCdTimeText($"{gameRoomData.actionCD}");
         }
         else
