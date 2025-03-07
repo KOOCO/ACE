@@ -690,6 +690,7 @@ public class ActionButtons : MonoBehaviour
             //任何跟注
             case AutoActingEnum.CallAny:
                 OnCallAndCheck();
+                gameData.thisData.isLocalPlayerTurn = false;
                 break;
 
             //過牌
@@ -697,6 +698,7 @@ public class ActionButtons : MonoBehaviour
                 if (gameData.thisData.IsFirstRaisePlayer == true)
                 {
                     OnCallAndCheck();
+                    gameData.thisData.isLocalPlayerTurn = false;
                 }
                 else
                 {
@@ -714,6 +716,7 @@ public class ActionButtons : MonoBehaviour
                     {
                         ShowBetArea();
                     }
+                    gameData.thisData.isLocalPlayerTurn = false;
                 }
                 break;
 
@@ -730,6 +733,7 @@ public class ActionButtons : MonoBehaviour
                         print("首次加注後棄牌");
                         OnFold();
                     }
+                    gameData.thisData.isLocalPlayerTurn = false;
                 }
                 else
                 {
@@ -748,21 +752,26 @@ public class ActionButtons : MonoBehaviour
                         }
                         else
                             OnFold();
+
+                        gameData.thisData.isLocalPlayerTurn = false;
                     }
                     else if (gameData.thisData.LocalPlayerCurrBetValue == gameData.thisData.CurrCallValue)
                     {
                         print("當前下注金額等於當前跟注");
                         OnCallAndCheck();
+                        gameData.thisData.isLocalPlayerTurn = false;
                     }
                     else if (gameData.thisData.CurrCallValue <= gameData.thisData.SmallBlindValue * 2)
                     {
                         print("當前跟注金額小於大盲");
                         OnCallAndCheck();
+                        gameData.thisData.isLocalPlayerTurn = false;
                     }
                     else
                     {
                         print("未加注棄牌else");
                         OnFold();
+                        gameData.thisData.isLocalPlayerTurn = false;
                     }
                 }
                 break;
