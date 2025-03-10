@@ -1467,7 +1467,7 @@ public class GameView : MonoBehaviour
 
     List<int> HighlightCard(List<int> cards, bool isStraight, bool isFlush)
     {
-        var data = gameControl.CalculateRank(cards, isStraight, isFlush);
+        var data = gameControl.judgePoker.CalculateRank(cards, isStraight, isFlush);
 
         List<int> myCards = new List<int>();
         List<int> myRank = new List<int>();

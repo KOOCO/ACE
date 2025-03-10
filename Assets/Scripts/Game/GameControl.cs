@@ -18,6 +18,8 @@ public class GameControl : MonoBehaviour
     GameView gameView;
     [SerializeField]
     RobotControl RobotControl;
+    [SerializeField]
+    public JudgePokerShape judgePoker;
 
     public string QueryRoomPath { get; set; }                   //查詢房間資料路徑
     public double SmallBlind { get; set; }                      //小盲值
@@ -68,6 +70,7 @@ public class GameControl : MonoBehaviour
         //        startRepeatEditorRead();
         //        return;
         //#endif
+        judgePoker = GetComponent<JudgePokerShape>();
 
 #if UNITY_ANDROID
         setLocalIsOnline();
@@ -2852,7 +2855,7 @@ public class GameControl : MonoBehaviour
                 Debug.Log($"GameControl :: {player.nickname} : Returned Cards :: {string.Join(" , ", matchPoker)}");
                 bool isStraight = result == 6 || result == 2 || result == 1 ? true : false;
                 bool _isFlush = result == 5 || result == 2 || result == 1 ? true : false;
-                var _matchPoker = CalculateRank(matchPoker, isStraight, _isFlush);
+                var _matchPoker = judgePoker.CalculateRank(matchPoker, isStraight, _isFlush);
 
                 List<int> myCards = new List<int>();
                 List<int> myRank = new List<int>();
@@ -2909,238 +2912,7 @@ public class GameControl : MonoBehaviour
 
         return winners;
     }
-    public Dictionary<List<int>, List<int>> CalculateRank(List<int> cards, bool isStraight = false, bool isFlush = false)
-    {
-        var result = new Dictionary<List<int>, List<int>>();
-
-        // Convert cards to ranks and suits
-        var cardRanks = cards.Select(card => card % 13 + 2).ToList(); // Convert to ranks (2 to 14)
-        string res = string.Join(", ", cardRanks);
-        print("牌號: " + res);
-        var cardSuits = cards.GroupBy(card => card / 13); // Group by suit
-
-        // Handle Straight Flush
-        if (isStraight && isFlush)
-        {
-            print("同花順");
-            foreach (var suitGroup in cardSuits)
-            {
-                if (suitGroup.Count() >= 5)
-                {
-                    var suitedRanks = suitGroup
-                        .Select(card => card % 13 + 2)
-                        .Distinct()
-                        .OrderByDescending(rank => rank)
-                        .ToList();
-
-                    // Handle Ace-low straight
-                    if (HasLowStraight(suitedRanks))
-                        suitedRanks = suitedRanks.Select(rank => rank == 14 ? 1 : rank).OrderBy(rank => rank).ToList();
-
-                    var highestStraightFlush = PokerShape.FindHighestConsecutiveSequence(suitedRanks);
-                    if (highestStraightFlush.Count == 5)
-                    {
-                        highestStraightFlush = highestStraightFlush.Select(rank => rank == 1 ? 14 : rank).ToList();
-
-                        var suitedCards = suitGroup
-                            .Where(card => highestStraightFlush.Contains(card % 13 + 2))
-                            .OrderByDescending(card => card % 13 + 2)
-                            .ToList();
-
-                        result[highestStraightFlush] = suitedCards;
-                        return result;
-                    }
-                }
-            }
-        }
-
-        // Handle Flush
-        if (isFlush)
-        {
-            print("同花");
-            var flushGroup = cardSuits.FirstOrDefault(group => group.Count() >= 5);
-            if (flushGroup != null)
-            {
-                var flushCards = flushGroup
-                    .OrderByDescending(card => card % 13 + 2)
-                    .Take(5)
-                    .ToList();
-
-                var flushRanks = flushCards.Select(card => card % 13 + 2).ToList();
-                result[flushRanks] = flushCards;
-                return result;
-            }
-        }
-
-        // Handle Straight
-        if (isStraight)
-        {
-            print("順子");
-            bool hasLowStraight = false;
-            var distinctRanks = cardRanks.Distinct().OrderByDescending(rank => rank).ToList();
-            if (HasLowStraight(distinctRanks))
-            {
-                hasLowStraight = true;
-                distinctRanks = distinctRanks.Select(rank => rank == 14 ? 1 : rank).OrderBy(rank => rank).ToList();
-            }
-            var highestStraight = PokerShape.FindHighestConsecutiveSequence(distinctRanks);
-            if (highestStraight.Count == 5)
-            {
-                if (hasLowStraight)
-                {
-                    highestStraight = highestStraight.Select(rank => rank == 1 ? 14 : rank).OrderBy(rank => rank).ToList();
-                    hasLowStraight = false;
-                }
-                // 建立一個副本，逐一移除已匹配的數值
-                var remainingRanks = new HashSet<int>(highestStraight);
-                print(string.Join(", ", remainingRanks));
-
-                // 使用 `remainingRanks` 避免重複
-                var straightCards = cards
-                    .Where(card =>
-                    {
-                        int rank = card % 13 + 2;
-                        if (remainingRanks.Contains(rank))
-                        {
-                            remainingRanks.Remove(rank); // 使用後從集合中移除
-                            return true; // 包含該牌
-                        }
-                        return false; // 排除重複牌
-                    })
-                    .OrderByDescending(card => card % 13 + 2)
-                    .ToList();
-
-                result[highestStraight] = straightCards;
-                return result;
-            }
-        }
-        var groupedRanks = cards
-            .GroupBy(card => card % 13) // Group by rank
-            .Select(group => new
-            {
-                Rank = group.Key + 2, // Convert to ranks (2 to 14)
-                Count = group.Count(),
-                Cards = group.ToList()
-            })
-            .OrderByDescending(group => group.Count) // Sort by group size (pairs/trips/quads first)
-            .ThenByDescending(group => group.Rank) // Then by rank
-            .ToList();
-
-        // Combine groups into a sorted list of cards
-        var sortedCards = groupedRanks
-            .SelectMany(group => group.Cards) // Flatten groups into a single list
-            .ToList();
-
-        var sortedRanks = groupedRanks
-            .SelectMany(group => Enumerable.Repeat(group.Rank, group.Cards.Count)) // Maintain rank grouping
-            .ToList();
-
-        var fourOfAKindGroup = groupedRanks.FirstOrDefault(group => group.Count == 4);
-        if (fourOfAKindGroup != null)
-        {
-            print("四條");
-            // Get the kicker
-            var kicker = groupedRanks
-                .Where(group => group.Rank != fourOfAKindGroup.Rank)
-                .OrderByDescending(group => group.Rank)
-                .FirstOrDefault();
-
-            var fourOfAKindCards = fourOfAKindGroup.Cards;
-            if (kicker != null)
-            {
-                fourOfAKindCards.Add(kicker.Cards.First());
-            }
-
-            // Take the first 5 cards for the final hand
-            sortedCards = fourOfAKindCards.Take(5).ToList();
-            sortedRanks = sortedCards.Select(card => card % 13 + 2).ToList();
-
-            result[sortedRanks] = sortedCards;
-            return result;
-        }
-
-        var threeOfAKindGroup = groupedRanks.FirstOrDefault(group => group.Count == 3);
-        if (threeOfAKindGroup != null)
-        {
-            print("三條");
-
-            var pairGroup = groupedRanks.FirstOrDefault(group => group.Count == 2 && group.Rank != threeOfAKindGroup.Rank);
-            if (pairGroup != null)
-            {
-                print("找到葫蘆");
-
-                // 將三條和對子組合形成葫蘆
-                var fullHouseCards = threeOfAKindGroup.Cards.ToList(); // 複製三條的牌
-                fullHouseCards.AddRange(pairGroup.Cards); // 加入對子的牌
-
-                // 取得前 5 張卡片（這裡一定是五張）
-                sortedCards = fullHouseCards.Take(5).ToList();
-                sortedRanks = sortedCards.Select(card => card % 13 + 2).ToList();
-
-                result[sortedRanks] = sortedCards;
-
-                return result; // 返回結果
-            }
-
-            // Get the top two kickers
-            var kickers = groupedRanks
-                .Where(group => group.Rank != threeOfAKindGroup.Rank)
-                .OrderByDescending(group => group.Rank)
-                .Take(2)
-                .SelectMany(group => group.Cards)
-                .Take(2)
-                .ToList();
-
-            var threeOfAKindCards = threeOfAKindGroup.Cards;
-
-            // Combine three-of-a-kind cards with the kickers
-            threeOfAKindCards.AddRange(kickers);
-
-            // Take the first 5 cards for the final hand
-            sortedCards = threeOfAKindCards.Take(5).ToList();
-            sortedRanks = sortedCards.Select(card => card % 13 + 2).ToList();
-
-            result[sortedRanks] = sortedCards;
-
-            return result;
-        }
-        var pairGroups = groupedRanks.Where(group => group.Count == 2).OrderByDescending(group => group.Rank).Take(2).ToList();
-        if (pairGroups.Count == 2)
-        {
-            print("一對");
-            // Get the kickers (remaining cards not in the two pairs)
-            var kicker = groupedRanks
-                .Where(group => !pairGroups.Any(pairGroup => pairGroup.Rank == group.Rank))
-                .OrderByDescending(group => group.Rank)
-                .FirstOrDefault();
-
-            var twoPairCards = pairGroups.SelectMany(group => group.Cards).ToList();
-
-            // Add the kicker to complete the hand
-            if (kicker != null)
-            {
-                twoPairCards.Add(kicker.Cards.First());
-            }
-
-            // Take the first 5 cards for the final hand
-            sortedCards = twoPairCards.Take(5).ToList();
-            sortedRanks = sortedCards.Select(card => card % 13 + 2).ToList();
-
-            result[sortedRanks] = sortedCards;
-            return result;
-        }
-        // Keep only the top 5 cards
-        sortedRanks = sortedRanks.Take(5).ToList();
-        sortedCards = sortedCards.Take(5).ToList();
-
-        result[sortedRanks] = sortedCards;
-        return result;
-    }
-
-    private bool HasLowStraight(List<int> ranks)
-    {
-        return ranks.Contains(14) && ranks.Contains(2) && ranks.Contains(3) && ranks.Contains(4) && ranks.Contains(5);
-    }
+    
     public static int CompareHands(List<int> hand1, List<int> hand2)
     {
         // Compare cards one by one
