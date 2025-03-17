@@ -253,7 +253,6 @@ public class GameView : MonoBehaviour
         if (callSprName != "跟注" && callSprName != "caLL")
             actionButtons.CallBtnText = "";
 
-        gameData.thisData.isLocalPlayerTurn = gameControl.gameRoomData.currActionerId == DataManager.UserId;
     }
 
     #region Action接收
