@@ -2000,8 +2000,6 @@ public class GameControl : MonoBehaviour
         {
             return;
         }
-        Debug.LogError(preBetActionerId);
-        Debug.LogError(gameRoomData.betActionDataDic.betActionerId);
         if (string.IsNullOrEmpty(gameRoomData.betActionDataDic.betActionerId) ||
             preBetActionerId == gameRoomData.betActionDataDic.betActionerId)
         {
@@ -2475,10 +2473,7 @@ public class GameControl : MonoBehaviour
                     { FirebaseManager.ACTIONP_PLAYER_COUNT, actionPlayerCount },             //當前流程行動玩家次數
                 };
                 Debug.Log("UpdateGameRoomData");
-                UpdateGameRoomData(data, () =>
-                {
-                    Debug.Log("callback");
-                });
+                UpdateGameRoomData(data);
                 //startRepeatEditorRead();
             });
         });
