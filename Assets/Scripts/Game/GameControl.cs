@@ -764,7 +764,7 @@ public class GameControl : MonoBehaviour
 
             //翻牌
             case GameFlowEnum.Flop:
-
+                preBetActionerId = "";
                 //更新公共牌翻牌流程
                 UpdateCommunityFlopSeason(GameFlowEnum.Flop,
                                           3);
@@ -772,7 +772,7 @@ public class GameControl : MonoBehaviour
 
             //轉牌
             case GameFlowEnum.Turn:
-
+                preBetActionerId = "";
                 //更新公共牌翻牌流程
                 UpdateCommunityFlopSeason(GameFlowEnum.Turn,
                                           4);
@@ -780,7 +780,7 @@ public class GameControl : MonoBehaviour
 
             //河牌
             case GameFlowEnum.River:
-
+                preBetActionerId = "";
                 //更新公共牌翻牌流程
                 UpdateCommunityFlopSeason(GameFlowEnum.River,
                                           5);
@@ -2000,7 +2000,8 @@ public class GameControl : MonoBehaviour
         {
             return;
         }
-
+        Debug.LogError(preBetActionerId);
+        Debug.LogError(gameRoomData.betActionDataDic.betActionerId);
         if (string.IsNullOrEmpty(gameRoomData.betActionDataDic.betActionerId) ||
             preBetActionerId == gameRoomData.betActionDataDic.betActionerId)
         {
@@ -2473,7 +2474,11 @@ public class GameControl : MonoBehaviour
                     { FirebaseManager.ACTION_CD, -1 },                                        //行動倒數時間
                     { FirebaseManager.ACTIONP_PLAYER_COUNT, actionPlayerCount },             //當前流程行動玩家次數
                 };
-                UpdateGameRoomData(data);
+                Debug.Log("UpdateGameRoomData");
+                UpdateGameRoomData(data, () =>
+                {
+                    Debug.Log("callback");
+                });
                 //startRepeatEditorRead();
             });
         });
