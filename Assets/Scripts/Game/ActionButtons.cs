@@ -718,6 +718,8 @@ public class ActionButtons : MonoBehaviour
                     }
                     gameData.thisData.isLocalPlayerTurn = false;
                 }
+
+                gameData.thisData.isLocalPlayerTurn = gameData.gameRoomData.currActionerId == DataManager.UserId;
                 break;
 
             //¹LµP©Î±óµP

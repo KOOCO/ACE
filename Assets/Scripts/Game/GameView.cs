@@ -236,6 +236,11 @@ public class GameView : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            gameControl.CreateRobot(true);
+        }
+
         if (Input.GetKey(KeyCode.Backspace))
         {
             PlayerPrefs.DeleteAll();
@@ -247,6 +252,8 @@ public class GameView : MonoBehaviour
         string callSprName = actionButtons.CallBtn_Img.sprite.name;
         if (callSprName != "跟注" && callSprName != "caLL")
             actionButtons.CallBtnText = "";
+
+        gameData.thisData.isLocalPlayerTurn = gameControl.gameRoomData.currActionerId == DataManager.UserId;
     }
 
     #region Action接收
