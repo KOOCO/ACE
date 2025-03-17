@@ -12,7 +12,7 @@ public class GameMenu : MonoBehaviour
     [SerializeField]
     RectTransform MenuPage_Tr;
     [SerializeField]
-    Button MenuClose_Btn, SitOut_Btn, BuyChips_Btn, GameRules_Btn, HandHistory_Btn, Mask_Btn, LogOut_Btn;
+    Button MenuClose_Btn, SitOut_Btn, BuyChips_Btn, GameRules_Btn, HandHistory_Btn, Mask_Btn, LogOut_Btn, MenuBack_Btn;
     [SerializeField]
     Image MenuAvatar_Img;
     [SerializeField]
@@ -81,6 +81,10 @@ public class GameMenu : MonoBehaviour
 
         //Ãö³¬¿ï³æ
         MenuClose_Btn.onClick.AddListener(() =>
+        {
+            ShowMenu(false);
+        });
+        MenuBack_Btn.onClick.AddListener(() =>
         {
             ShowMenu(false);
         });

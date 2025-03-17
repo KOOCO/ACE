@@ -16640,6 +16640,7 @@ MonoBehaviour:
   HandHistory_Btn: {fileID: 9013087433615290804}
   Mask_Btn: {fileID: 1115244144489512955}
   LogOut_Btn: {fileID: 2345417321227503460}
+  MenuBack_Btn: {fileID: 9121892890228547593}
   MenuAvatar_Img: {fileID: 5057604088493802312}
   MenuNickname_Txt: {fileID: 7645453557826017615}
   MenuWalletAddr_Txt: {fileID: 6228956401512909656}
@@ -30365,6 +30366,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameView: {fileID: 7434345039931009829}
   RobotControl: {fileID: 432701657448135999}
+  judgePoker: {fileID: 0}
   isLicense: 0
   hostUpdated: 0
 --- !u!114 &432701657448135999
