@@ -76,6 +76,7 @@ public class GameView : MonoBehaviour
 
     AudioPool audioPool;
 
+    public GameObject BGMask;
     public GameObject GameMask;
     public GameObject TopBar;
 
@@ -252,7 +253,6 @@ public class GameView : MonoBehaviour
         string callSprName = actionButtons.CallBtn_Img.sprite.name;
         if (callSprName != "跟注" && callSprName != "caLL")
             actionButtons.CallBtnText = "";
-
     }
 
     #region Action接收
@@ -1538,11 +1538,16 @@ public class GameView : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
+        BGMask.SetActive(true);
+
+        yield return new WaitForSeconds(0.25f);
+
         if (!gameRoomData.potWinData?.isHaveSide ?? true)
         {
             yield return DisplayAndDistributeMainPot();
             yield return DisplayRoomFeeAll();
             yield return ShowResult();
+            yield return new WaitForSeconds(0.8f);
             yield return SaveResult(gameRoomData);
         }
     }
@@ -1643,6 +1648,7 @@ public class GameView : MonoBehaviour
     IEnumerator SaveResult(GameRoomData gameRoomData, bool isAllPlayerLeft = false)
     {
         gamePot.SetWinnerStringTxt("");
+        BGMask.SetActive(false);
         if (gameRoomData == null || gameRoomData.playingPlayersIdList == null)
         {
             print (gameRoomData == null);

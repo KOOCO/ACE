@@ -11,7 +11,7 @@ public class GamePot : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI TotalPot_Txt, roomID_Txt, sbBlinds_Txt, winnerText;
     [SerializeField]
-    GameObject WaitingTip_Txt;
+    GameObject WaitingTip_Txt, settleVFX_Obj;
 
     private GameData gameData;
 
@@ -50,10 +50,12 @@ public class GamePot : MonoBehaviour
             {
                 winnerHandImage?.gameObject.SetActive(true);
                 winnerText.text = value;
+                settleVFX_Obj.SetActive(true);
             }
             else
             {
                 winnerHandImage.gameObject.SetActive(false);
+                settleVFX_Obj.SetActive(false);
             }
         }
     }
