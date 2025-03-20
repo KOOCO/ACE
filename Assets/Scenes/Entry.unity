@@ -1274,6 +1274,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 49767376}
     - target: {fileID: 2532252652223830062, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
+      propertyPath: GameViewObj
+      value: 
+      objectReference: {fileID: 1006146305165993334, guid: 18f03811b3b6b6f47b81e90462d80f91, type: 3}
+    - target: {fileID: 2532252652223830062, guid: 0abfb256ca5afce46a47d627a63cc82f, type: 3}
       propertyPath: GoLobby_Btn
       value: 
       objectReference: {fileID: 312381470}
