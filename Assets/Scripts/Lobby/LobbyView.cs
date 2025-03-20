@@ -685,6 +685,6 @@ public class LobbyView : MonoBehaviour
 
     public void testAddScene()
     {
-        LoadSceneManager.Instance.LoadScene("Game");
+        //LoadSceneManager.Instance.LoadScene("Game");
     }
 }
