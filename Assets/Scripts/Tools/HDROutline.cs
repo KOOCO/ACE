@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 
 [AddComponentMenu("UI/HDR Outline", 15)]
-public class HDSROutline : Outline
+public class HDROutline : Outline
 {
     [ColorUsage(true, true)] // 让 Inspector 支持 HDR 颜色
     public Color hdrColor = Color.white;

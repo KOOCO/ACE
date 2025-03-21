@@ -266,8 +266,6 @@ public class JudgePokerShape : MonoBehaviour
     /// <param name="matchNumList">符合撲克數字</param>
     public void OpenMatchPokerFrame(List<Poker> pokerList, List<int> matchNumList)
     {
-        print($"開啟牌型外框 牌號: {string.Join(", ", matchNumList)}");
-
         foreach (var poker in pokerList)
         {
             poker.setFrameActive = false;
@@ -282,7 +280,6 @@ public class JudgePokerShape : MonoBehaviour
                 {
                     if (poker.PokerNum == matchNum)
                     {
-                        Debug.Log("開啟牌框");
                         poker.setFrameActive = true;
                     }
                 }

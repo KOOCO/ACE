@@ -1475,7 +1475,6 @@ public class GameView : MonoBehaviour
     {
         List<int> resList;
         var data = gameControl.judgePoker.CalculateRank(cards, out resList, isStraight, isFlush);
-        print($"發送預組資料 {string.Join(", ", resList)}");
         gameControl.judgePoker.OpenMatchPokerFrame(allPokers, resList);
 
         List<int> myCards = new List<int>();

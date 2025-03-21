@@ -174,7 +174,6 @@ public static class PokerShape
                     {
                         poker.StartWinEffect();
                         poker.SetColor = 1;
-                        Debug.Log("開啟牌框");
                         poker.setFrameActive = true;
                     }
                 }
