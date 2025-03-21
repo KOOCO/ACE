@@ -160,6 +160,7 @@ public static class PokerShape
         {
             poker.PokerEffectEnable = true;
             poker.SetColor = isWinEffect ? 0.5f : 1;
+            //poker.setFrameActive = false;
         }
 
         // Highlight matched cards
@@ -169,12 +170,12 @@ public static class PokerShape
             {
                 if (poker.PokerNum == matchNum)
                 {
-                    //poker.PokerEffectEnable = true;
-
                     if (isWinEffect)
                     {
                         poker.StartWinEffect();
                         poker.SetColor = 1;
+                        Debug.Log("開啟牌框");
+                        poker.setFrameActive = true;
                     }
                 }
             }

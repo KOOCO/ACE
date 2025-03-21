@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class JudgePokerShape : MonoBehaviour
 {
-    public Dictionary<List<int>, List<int>> CalculateRank(List<int> cards, bool isStraight = false, bool isFlush = false)
+    public Dictionary<List<int>, List<int>> CalculateRank(List<int> cards, out List<int> targetList, bool isStraight = false, bool isFlush = false)
     {
         var result = new Dictionary<List<int>, List<int>>();
 
@@ -42,6 +42,7 @@ public class JudgePokerShape : MonoBehaviour
                             .OrderByDescending(card => card % 13 + 2)
                             .ToList();
 
+                        targetList = suitedCards;
                         result[highestStraightFlush] = suitedCards;
                         return result;
                     }
@@ -62,6 +63,7 @@ public class JudgePokerShape : MonoBehaviour
                     .ToList();
 
                 var flushRanks = flushCards.Select(card => card % 13 + 2).ToList();
+                targetList = flushCards;
                 result[flushRanks] = flushCards;
                 return result;
             }
@@ -105,6 +107,7 @@ public class JudgePokerShape : MonoBehaviour
                     .OrderByDescending(card => card % 13 + 2)
                     .ToList();
 
+                targetList = straightCards;
                 result[highestStraight] = straightCards;
                 return result;
             }
@@ -141,6 +144,7 @@ public class JudgePokerShape : MonoBehaviour
                 .FirstOrDefault();
 
             var fourOfAKindCards = fourOfAKindGroup.Cards;
+            targetList = new List<int>(fourOfAKindCards);
             if (kicker != null)
             {
                 fourOfAKindCards.Add(kicker.Cards.First());
@@ -172,8 +176,8 @@ public class JudgePokerShape : MonoBehaviour
                 sortedCards = fullHouseCards.Take(5).ToList();
                 sortedRanks = sortedCards.Select(card => card % 13 + 2).ToList();
 
+                targetList = sortedCards;
                 result[sortedRanks] = sortedCards;
-
                 return result; // 返回結果
             }
 
@@ -187,7 +191,7 @@ public class JudgePokerShape : MonoBehaviour
                 .ToList();
 
             var threeOfAKindCards = threeOfAKindGroup.Cards;
-
+            targetList = new List<int>(threeOfAKindCards);
             // Combine three-of-a-kind cards with the kickers
             threeOfAKindCards.AddRange(kickers);
 
@@ -202,7 +206,7 @@ public class JudgePokerShape : MonoBehaviour
         var pairGroups = groupedRanks.Where(group => group.Count == 2).OrderByDescending(group => group.Rank).Take(2).ToList();
         if (pairGroups.Count == 2)
         {
-            print("一對");
+            print("兩對");
             // Get the kickers (remaining cards not in the two pairs)
             var kicker = groupedRanks
                 .Where(group => !pairGroups.Any(pairGroup => pairGroup.Rank == group.Rank))
@@ -210,6 +214,7 @@ public class JudgePokerShape : MonoBehaviour
                 .FirstOrDefault();
 
             var twoPairCards = pairGroups.SelectMany(group => group.Cards).ToList();
+            targetList = new List<int>(twoPairCards);
 
             // Add the kicker to complete the hand
             if (kicker != null)
@@ -228,6 +233,7 @@ public class JudgePokerShape : MonoBehaviour
         sortedRanks = sortedRanks.Take(5).ToList();
         sortedCards = sortedCards.Take(5).ToList();
 
+        targetList = new List<int>(takeOnePair(sortedCards));
         result[sortedRanks] = sortedCards;
         return result;
     }
@@ -235,5 +241,52 @@ public class JudgePokerShape : MonoBehaviour
     private bool HasLowStraight(List<int> ranks)
     {
         return ranks.Contains(14) && ranks.Contains(2) && ranks.Contains(3) && ranks.Contains(4) && ranks.Contains(5);
+    }
+
+    List<int> takeOnePair(List<int> sortedCards)
+    {
+        var sortedRanks = sortedCards.Select(card => card % 13 + 2).ToList();
+
+        var duplicateRanks = sortedRanks.GroupBy(rank => rank)
+                                .Where(group => group.Count() == 2)
+                                .Select(group => group.Key) 
+                                .ToList();
+
+        var pairedCards = sortedCards.Where(card => duplicateRanks.Contains(card % 13 + 2)).ToList();
+        if (pairedCards.Count != 0)
+            return pairedCards;
+        else
+            return new List<int>();
+    }
+
+    /// <summary>
+    /// 開啟符合撲克外框
+    /// </summary>
+    /// <param name="pokerList">撲克</param>
+    /// <param name="matchNumList">符合撲克數字</param>
+    public void OpenMatchPokerFrame(List<Poker> pokerList, List<int> matchNumList)
+    {
+        print($"開啟牌型外框 牌號: {string.Join(", ", matchNumList)}");
+
+        foreach (var poker in pokerList)
+        {
+            poker.setFrameActive = false;
+        }
+
+        // Highlight matched cards
+        if (matchNumList.Count != 0)
+        {
+            foreach (var matchNum in matchNumList)
+            {
+                foreach (var poker in pokerList)
+                {
+                    if (poker.PokerNum == matchNum)
+                    {
+                        Debug.Log("開啟牌框");
+                        poker.setFrameActive = true;
+                    }
+                }
+            }
+        }
     }
 }

@@ -129,6 +129,12 @@ public class pokerShapes : MonoBehaviour
             JSBridgeManager.Instance.UpdateDataToFirebase($"PokerShapes/-ODL14cFBIY9d4GKtSD_/{index}", data);
         }
     }
+
+    [EButton]
+    public void getShape()
+    {
+        JSBridgeManager.Instance.ReadDataFromFirebase("PokerShapes/-ODL14cFBIY9d4GKtSD_", gameObject.name, nameof(getShapeData));
+    }
 }
 
 [System.Serializable]

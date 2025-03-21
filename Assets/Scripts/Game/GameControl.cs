@@ -2855,7 +2855,8 @@ public class GameControl : MonoBehaviour
                 Debug.Log($"GameControl :: {player.nickname} : Returned Cards :: {string.Join(" , ", matchPoker)}");
                 bool isStraight = result == 6 || result == 2 || result == 1 ? true : false;
                 bool _isFlush = result == 5 || result == 2 || result == 1 ? true : false;
-                var _matchPoker = judgePoker.CalculateRank(matchPoker, isStraight, _isFlush);
+                List<int> resList;
+                var _matchPoker = judgePoker.CalculateRank(matchPoker, out resList, isStraight, _isFlush);
 
                 List<int> myCards = new List<int>();
                 List<int> myRank = new List<int>();

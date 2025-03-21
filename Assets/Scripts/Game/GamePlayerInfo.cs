@@ -199,9 +199,11 @@ public class GamePlayerInfo : MonoBehaviour
         HandPokers[0].PokerNum = -1;
         HandPokers[0].gameObject.SetActive(false);
         HandPokers[0].PokerEffectEnable = true;
+        HandPokers[0].setFrameActive = false;
         HandPokers[1].PokerNum = -1;
         HandPokers[1].gameObject.SetActive(false);
         HandPokers[1].PokerEffectEnable = true;
+        HandPokers[1].setFrameActive = false;
         Winner_Obj.SetActive(false);
         SetBackChips = 0;
         //SetPokerShapeTxtStr = "";
