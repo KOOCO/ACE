@@ -18,14 +18,6 @@ public class ShopSample : MonoBehaviour
     [SerializeField]
     Image currencyIcon;
 
-    AssetsManager assetsManager = new();
-
-
-    private void Start()
-    {
-        assetsManager = AssetsManager.Instance;
-    }
-
     /// <summary>
     /// 設置商店物品資料
     /// </summary>
