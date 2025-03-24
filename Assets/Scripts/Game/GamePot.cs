@@ -50,12 +50,12 @@ public class GamePot : MonoBehaviour
             {
                 winnerHandImage?.gameObject.SetActive(true);
                 winnerText.text = value;
-                settleVFX_Obj.SetActive(true);
+                //settleVFX_Obj.SetActive(true);
             }
             else
             {
                 winnerHandImage.gameObject.SetActive(false);
-                settleVFX_Obj.SetActive(false);
+                //settleVFX_Obj.SetActive(false);
             }
         }
     }

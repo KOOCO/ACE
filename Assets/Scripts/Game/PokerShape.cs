@@ -172,7 +172,7 @@ public static class PokerShape
                 {
                     if (isWinEffect)
                     {
-                        poker.StartWinEffect();
+                        //poker.StartWinEffect();
                         poker.SetColor = 1;
                         poker.setFrameActive = true;
                     }

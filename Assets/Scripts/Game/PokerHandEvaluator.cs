@@ -7,7 +7,7 @@ using UnityEngine.Events;
 public class PokerWinRateCalculator
 {
     //模擬次數
-    private const int simulationCount = 15000;
+    private const int simulationCount = 10000;
     //玩家手牌
     private List<int> playerHand;
     //公共牌

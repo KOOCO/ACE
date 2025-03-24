@@ -62,7 +62,8 @@ public class ThisData
 {
     public GamePlayerInfo LocalGamePlayerInfo;         //本地玩家
     public int LocalPlayerSeat;                        //本地玩家座位
-    public double LocalPlayerChips;                    //本地玩家籌碼
+    public double LocalPlayerChips;                    //本地玩家
+                                                       //
     public double LocalPlayerCurrBetValue;             //本地玩家當前下注值
     public double TotalPot;                            //當前底池
     public double CallDifference;                      //當前跟注差額

@@ -505,16 +505,16 @@ public class GamePlayerInfo : MonoBehaviour
         }
 
         //本地玩家開牌
-        if ((IsLocalPlayer && flowKind == "OnLicensing") || (!IsLocalPlayer && flowKind == "PotResult"))
+        if (IsLocalPlayer && flowKind == "OnLicensing")
         {
             StartCoroutine(HandPokers[0].IHorizontalFlopEffect(hand0));
             StartCoroutine(HandPokers[1].IHorizontalFlopEffect(hand1));
 
-            if(!IsLocalPlayer && flowKind == "PotResult")
-            {
-                tweenManager.inst.biggerAnim(HandPokers[0].transform, true);
-                tweenManager.inst.biggerAnim(HandPokers[1].transform, true);
-            }
+            //if(!IsLocalPlayer && flowKind == "PotResult")
+            //{
+            //    tweenManager.inst.biggerAnim(HandPokers[0].transform, true);
+            //    tweenManager.inst.biggerAnim(HandPokers[1].transform, true);
+            //}
         }
         else
         {
