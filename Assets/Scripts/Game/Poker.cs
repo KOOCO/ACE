@@ -67,6 +67,16 @@ public class Poker : MonoBehaviour
             }
         }
     }
+    public bool setFrameFlash
+    {
+        set
+        {
+            if (Number_Img.GetComponent<ComponentGroup>() && value == true)
+            {
+                Number_Img.GetComponent<ComponentGroup>().flashFrame();
+            }
+        }
+    }
 
     /// <summary>
     /// 播放贏家效果

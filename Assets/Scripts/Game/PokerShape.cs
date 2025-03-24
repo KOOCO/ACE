@@ -175,6 +175,7 @@ public static class PokerShape
                         //poker.StartWinEffect();
                         poker.SetColor = 1;
                         poker.setFrameActive = true;
+                        poker.setFrameFlash = true;
                     }
                 }
             }

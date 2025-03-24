@@ -66355,7 +66355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 2.433572, g: 0.54787225, b: 1.6690991, a: 1}
-  m_EffectDistance: {x: 1, y: -1}
+  m_EffectDistance: {x: 1.5, y: 1.5}
   m_UseGraphicAlpha: 1
   hdrColor: {r: 2.433572, g: 0.54787225, b: 1.6690991, a: 1}
 --- !u!114 &3289942386266867248
@@ -66371,7 +66371,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 2.8940213, g: 0.65153354, b: 1.9849046, a: 1}
-  m_EffectDistance: {x: 1, y: -1}
+  m_EffectDistance: {x: 1.2, y: 1.2}
   m_UseGraphicAlpha: 1
   hdrColor: {r: 2.8940213, g: 0.65153354, b: 1.9849046, a: 1}
 --- !u!1001 &382506677229609713
@@ -66665,7 +66665,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 2.433572, g: 0.54787225, b: 1.6690991, a: 1}
-  m_EffectDistance: {x: 1, y: -1}
+  m_EffectDistance: {x: 1.5, y: 1.5}
   m_UseGraphicAlpha: 1
   hdrColor: {r: 2.433572, g: 0.54787225, b: 1.6690991, a: 1}
 --- !u!114 &4198228031163762022
@@ -66681,7 +66681,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 2.8940213, g: 0.65153354, b: 1.9849046, a: 1}
-  m_EffectDistance: {x: 1, y: -1}
+  m_EffectDistance: {x: 1.2, y: 1.2}
   m_UseGraphicAlpha: 1
   hdrColor: {r: 2.8940213, g: 0.65153354, b: 1.9849046, a: 1}
 --- !u!1001 &1539506109701936794
@@ -68463,7 +68463,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 2.433572, g: 0.54787225, b: 1.6690991, a: 1}
-  m_EffectDistance: {x: 1, y: -1}
+  m_EffectDistance: {x: 1.5, y: 1.5}
   m_UseGraphicAlpha: 1
   hdrColor: {r: 2.433572, g: 0.54787225, b: 1.6690991, a: 1}
 --- !u!114 &7806463160570180300
@@ -68479,7 +68479,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 2.8940213, g: 0.65153354, b: 1.9849046, a: 1}
-  m_EffectDistance: {x: 1, y: -1}
+  m_EffectDistance: {x: 1.2, y: 1.2}
   m_UseGraphicAlpha: 1
   hdrColor: {r: 2.8940213, g: 0.65153354, b: 1.9849046, a: 1}
 --- !u!114 &3940266109423962587 stripped
@@ -68608,7 +68608,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 2.433572, g: 0.54787225, b: 1.6690991, a: 1}
-  m_EffectDistance: {x: 1, y: -1}
+  m_EffectDistance: {x: 1.5, y: 1.5}
   m_UseGraphicAlpha: 1
   hdrColor: {r: 2.433572, g: 0.54787225, b: 1.6690991, a: 1}
 --- !u!114 &6628414460461418268
@@ -68624,7 +68624,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 2.8940213, g: 0.65153354, b: 1.9849046, a: 1}
-  m_EffectDistance: {x: 1, y: -1}
+  m_EffectDistance: {x: 1.2, y: 1.2}
   m_UseGraphicAlpha: 1
   hdrColor: {r: 2.8940213, g: 0.65153354, b: 1.9849046, a: 1}
 --- !u!224 &8743168178320344286 stripped
@@ -72644,7 +72644,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 2.433572, g: 0.54787225, b: 1.6690991, a: 1}
-  m_EffectDistance: {x: 1, y: -1}
+  m_EffectDistance: {x: 1.5, y: 1.5}
   m_UseGraphicAlpha: 1
   hdrColor: {r: 2.433572, g: 0.54787225, b: 1.6690991, a: 1}
 --- !u!114 &2781429102682283784
@@ -72660,7 +72660,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 2.8940213, g: 0.65153354, b: 1.9849046, a: 1}
-  m_EffectDistance: {x: 1, y: -1}
+  m_EffectDistance: {x: 1.2, y: 1.2}
   m_UseGraphicAlpha: 1
   hdrColor: {r: 2.8940213, g: 0.65153354, b: 1.9849046, a: 1}
 --- !u!1001 &4224643258213708856
@@ -73072,7 +73072,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 2.433572, g: 0.54787225, b: 1.6690991, a: 1}
-  m_EffectDistance: {x: 1, y: -1}
+  m_EffectDistance: {x: 1.5, y: 1.5}
   m_UseGraphicAlpha: 1
   hdrColor: {r: 2.433572, g: 0.54787225, b: 1.6690991, a: 1}
 --- !u!114 &755396347140623713
@@ -73088,7 +73088,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 2.8940213, g: 0.65153354, b: 1.9849046, a: 1}
-  m_EffectDistance: {x: 1, y: -1}
+  m_EffectDistance: {x: 1.2, y: 1.2}
   m_UseGraphicAlpha: 1
   hdrColor: {r: 2.8940213, g: 0.65153354, b: 1.9849046, a: 1}
 --- !u!224 &5956350618782579801 stripped
@@ -73497,7 +73497,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 2.433572, g: 0.54787225, b: 1.6690991, a: 1}
-  m_EffectDistance: {x: 1, y: -1}
+  m_EffectDistance: {x: 1.5, y: 1.5}
   m_UseGraphicAlpha: 1
   hdrColor: {r: 2.433572, g: 0.54787225, b: 1.6690991, a: 1}
 --- !u!114 &9106943853011216257
@@ -73513,7 +73513,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 2.8940213, g: 0.65153354, b: 1.9849046, a: 1}
-  m_EffectDistance: {x: 1, y: -1}
+  m_EffectDistance: {x: 1.2, y: 1.2}
   m_UseGraphicAlpha: 1
   hdrColor: {r: 2.8940213, g: 0.65153354, b: 1.9849046, a: 1}
 --- !u!224 &4948114908249985082 stripped
