@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+#if UNITY_ANDROID
 using Firebase.Database;
+#endif
 using UnityEngine;
 
 public class FirebaseListenerManager : MonoBehaviour
