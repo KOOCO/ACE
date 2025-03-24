@@ -1,4 +1,3 @@
-using NBitcoin;
 using System.Collections.Generic;
 using UnityEngine;
 

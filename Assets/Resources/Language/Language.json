@@ -1598,5 +1598,60 @@ ASIA POKER 團隊"
     "ID": "Lobby",
     "English": "Lobby",
     "zh_TW": "返回大廳"
+  },
+  {
+    "ID": "MakeTransaction",
+    "English": "Make Transaction",
+    "zh_TW": "進行交易"
+  },
+  {
+    "ID": "ConfirmTransaction",
+    "English": "Confirm Transaction",
+    "zh_TW": "確認交易"
+  },
+  {
+    "ID": "Other",
+    "English": "Other",
+    "zh_TW": "其他"
+  },
+  {
+    "ID": "InApp",
+    "English": "Please scan within the OKX or TrustWallet App",
+    "zh_TW": "請在OKX或TrustWallet App內掃描"
+  },
+  {
+    "ID": "TransactionTip",
+    "English": "After scanning and making the payment,\n please enter the hashkey and address on the\n <color=#6DF2AB>Confirm Transaction</color> page to complete the transaction.",
+    "zh_TW": "請務必在掃描且付款後\n於<color=#6DF2AB>確認交易</color>頁面輸入hashkey跟地址以完成交易"
+  },
+  {
+    "ID": "Address",
+    "English": "Address",
+    "zh_TW": "地址"
+  },
+  {
+    "ID": "AddressInput",
+    "English": "Your Wallet Address",
+    "zh_TW": "你的地址"
+  },
+  {
+    "ID": "Address",
+    "English": "Address",
+    "zh_TW": "地址"
+  },
+  {
+    "ID": "HashKeyInput",
+    "English": "Transaction Hash Key",
+    "zh_TW": "交易Hash Key"
+  },
+  {
+    "ID": "CheckTransaction",
+    "English": "Checking the Transaction...",
+    "zh_TW": "交易確認中..."
+  },
+  {
+    "ID": "Submit",
+    "English": "Submit",
+    "zh_TW": "送出"
   }
 ]

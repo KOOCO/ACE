@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: d40b41b9c5adaf04ab6f160508d50bb7
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 287323
+  packageName: QR Code Sharing System
+  packageVersion: 1.0
+  assetPath: Assets/QRCodeShare/DemoScene/DemoScene.unity
+  uploadId: 670055

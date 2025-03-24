@@ -39,9 +39,9 @@ public class LobbyView : MonoBehaviour
     [SerializeField]
     RectTransform Floor3;
     [SerializeField]
-    Button Mine_Btn, Main_Btn, Ranking_Btn, t_History_Btn, Settings_Btn, Refresh_Btn, Report_Btn;
+    Button Mine_Btn, Main_Btn, Ranking_Btn, t_History_Btn, Settings_Btn, Refresh_Btn, Report_Btn, transaction_Btn;
     [SerializeField]
-    GameObject LobbyMainPageView, LobbyMinePageView, LobbyRankingView, LobbyShopView, LobbyActivityView, LobbySettingsView, LobbyReportView;
+    GameObject LobbyMainPageView, LobbyMinePageView, LobbyRankingView, LobbyShopView, LobbyActivityView, LobbySettingsView, LobbyReportView, TransactionView;
 
     [Header("任務介面")]
     [SerializeField]
@@ -79,7 +79,7 @@ public class LobbyView : MonoBehaviour
         Ranking,
         t_History,
         Settings,
-        Report
+        Report,
     }
 
     bool isShowAssetList;               //是否顯示用戶資源列表
@@ -185,6 +185,12 @@ public class LobbyView : MonoBehaviour
             Refresh_Btn.interactable = false;
             StartCoroutine(openRefreshBtn());
             NoodleApi.GetBalance();
+        });
+
+        //儲值
+        transaction_Btn.onClick.AddListener(() =>
+        {
+            TransactionView.SetActive(true);
         });
 
         #endregion

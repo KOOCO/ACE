@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 5e9e583517b89244fa9ec079316c37ac
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 287323
+  packageName: QR Code Sharing System
+  packageVersion: 1.0
+  assetPath: Assets/QRCodeShare/Scripts/QRCodeShare.cs
+  uploadId: 670055

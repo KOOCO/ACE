@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: e1b79493b2ef5fb4a84602660d0820f3
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 287323
+  packageName: QR Code Sharing System
+  packageVersion: 1.0
+  assetPath: Assets/QRCodeShare/README.md
+  uploadId: 670055
