@@ -1432,6 +1432,12 @@ public class GameView : MonoBehaviour
                 {
                     // Set player's poker shape
                     player.SetPokerShapeStr(resultIndex);
+                    var winRateCalc = new PokerWinRateCalculator(handPoker.Select(p => p.PokerNum).ToList(), gameData.thisData.CurrCommunityPoker);
+                    winRateCalc.CalculateWinRate((res) =>
+                    {
+                        print("勝率: " + res);
+                        GetPlayer(DataManager.UserId).setWinRate = res;
+                    });
 
                     if (resultIndex < PokerShape.HandRanks.Count)
                     {

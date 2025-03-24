@@ -14,9 +14,11 @@ public class GamePlayerInfo : MonoBehaviour
     [SerializeField]
     Image CDMask_Img, Avatar_Img, ButtonCharacter_Img, PokerShape_img, CD_Back, CD_Back2, BlindCharacter_Img;
     [SerializeField]
-    TextMeshProUGUI Nickname_Txt, Chips_Txt, BackChips_Txt, countDown_Txt, Winner_Txt;
+    TextMeshProUGUI Nickname_Txt, Chips_Txt, BackChips_Txt, countDown_Txt, Winner_Txt, winRate_Txt;
     [SerializeField]
     public ParticleSystem allInHalo;
+    [SerializeField]
+    Slider winRateBar;
 
     [Header("手牌")]
     [SerializeField]
@@ -212,6 +214,11 @@ public class GamePlayerInfo : MonoBehaviour
         Lead_Obj.SetActive(false);
         ShowHandPokers[0].PokerEffectEnable = true;
         ShowHandPokers[1].PokerEffectEnable = true;
+        if (winRateBar != null)
+        {
+            winRateBar.value = 0;
+            winRateBar.gameObject.SetActive(false);
+        }
         if (!IsAllIn)
             allInHalo.Stop();
     }
@@ -313,6 +320,29 @@ public class GamePlayerInfo : MonoBehaviour
             //Winner_Txt.text = LanguageManager.Instance.GetText("Winner");
         }
     }
+    
+    /// <summary>
+    /// 設定勝率顯示
+    /// </summary>
+    public float setWinRate
+    {
+        set
+        {
+            if (winRateBar != null)
+            {
+                if (value > 0)
+                {
+                    winRateBar.gameObject.SetActive(true);
+                    winRateBar.value = (value / 100);
+                }
+                else
+                    winRateBar.gameObject.SetActive(false);
+
+                winRate_Txt.text = ((int)value).ToString();
+            }
+        }
+    }
+
     public void setWinnerDisplay(string Result)
     {
         Winner_Txt.text = Result;
