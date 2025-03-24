@@ -1,10 +1,10 @@
-#if UNITY_ANDROID
 using System.Collections.Generic;
 using Firebase.Database;
 using UnityEngine;
 
 public class FirebaseListenerManager : MonoBehaviour
 {
+#if UNITY_ANDROID
     public static FirebaseListenerManager inst;
     private Dictionary<string, DatabaseReference> activeReferences = new Dictionary<string, DatabaseReference>();
     private Dictionary<DatabaseReference, System.EventHandler<ValueChangedEventArgs>> listeners = new Dictionary<DatabaseReference, System.EventHandler<ValueChangedEventArgs>>();
@@ -96,5 +96,5 @@ public class FirebaseListenerManager : MonoBehaviour
 
         listeners.Clear();
     }
-}
 #endif
+}
