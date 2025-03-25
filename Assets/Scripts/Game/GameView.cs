@@ -1601,6 +1601,7 @@ public class GameView : MonoBehaviour
 
         print("底池金額: " + totalPot);
         gamePot.TotalPotText = $"{LanguageManager.Instance.GetText("Pot")} {totalPot}";
+        LayoutRebuilder.ForceRebuildLayoutImmediate(gamePot.TotalPot_Txt.GetComponentInParent<Image>().rectTransform);
 
         yield return new WaitForSeconds(0.5f);
 

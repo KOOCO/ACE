@@ -8,8 +8,9 @@ public class GamePot : MonoBehaviour
 {
     [SerializeField]
     Image Pot_Img, winnerHandImage;
-    [SerializeField]
-    TextMeshProUGUI TotalPot_Txt, roomID_Txt, sbBlinds_Txt, winnerText;
+    public TextMeshProUGUI TotalPot_Txt;
+    [SerializeField]    
+    TextMeshProUGUI roomID_Txt, sbBlinds_Txt, winnerText;
     [SerializeField]
     GameObject WaitingTip_Txt, settleVFX_Obj;
 
