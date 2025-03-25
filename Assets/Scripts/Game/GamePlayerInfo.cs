@@ -505,7 +505,7 @@ public class GamePlayerInfo : MonoBehaviour
         }
 
         //本地玩家開牌
-        if (IsLocalPlayer && flowKind == "OnLicensing")
+        if ((IsLocalPlayer && flowKind == "OnLicensing") || (!IsLocalPlayer && flowKind == "PotResult"))
         {
             StartCoroutine(HandPokers[0].IHorizontalFlopEffect(hand0));
             StartCoroutine(HandPokers[1].IHorizontalFlopEffect(hand1));

@@ -1416,6 +1416,7 @@ public class GameView : MonoBehaviour
 
             // Combine hand cards and community cards as Poker objects
             List<Poker> allPokers = handPoker.Concat(communityPoker.GetList()).ToList();
+            List<Poker> allFramePokers = GetPlayer(DataManager.UserId).GetHandPoker.Concat(communityPoker.GetList()).ToList();
 
             // Disable visual effects for all cards
             foreach (var poker in allPokers)
@@ -1433,11 +1434,14 @@ public class GameView : MonoBehaviour
                     // Set player's poker shape
                     player.SetPokerShapeStr(resultIndex);
                     var winRateCalc = new PokerWinRateCalculator(handPoker.Select(p => p.PokerNum).ToList(), gameData.thisData.CurrCommunityPoker);
-                    winRateCalc.CalculateWinRate((res) =>
+                    if (gameData.thisData.CurrCommunityPoker.Count != 0)
                     {
-                        print("勝率: " + res);
-                        GetPlayer(DataManager.UserId).setWinRate = res;
-                    });
+                        winRateCalc.CalculateWinRate((res) =>
+                        {
+                            print("勝率: " + res);
+                            GetPlayer(DataManager.UserId).setWinRate = res;
+                        });
+                    }
 
                     if (resultIndex < PokerShape.HandRanks.Count)
                     {
@@ -1448,7 +1452,10 @@ public class GameView : MonoBehaviour
                         {
                             bool isStraight = resultIndex == 6 || resultIndex == 2 || resultIndex == 1 ? true : false;
                             bool _isFlush = resultIndex == 5 || resultIndex == 2 || resultIndex == 1 ? true : false;
-                            PokerShape.OpenMatchPokerFrame(allPokers, HighlightCard(allPokers, matchPokerList, isStraight, _isFlush), isWinEffect);
+                            if(isWinEffect)
+                                PokerShape.OpenMatchPokerFrame(allPokers, HighlightCard(allPokers, matchPokerList, isStraight, _isFlush), isWinEffect);
+                            else
+                                PokerShape.OpenMatchPokerFrame(allPokers, HighlightCard(allFramePokers, matchPokerList, isStraight, _isFlush), isWinEffect);
                             Debug.Log($"[JudgePokerShapeUI] Match Poker Frame Opened | isWinEffect: {isWinEffect} | {string.Join(", ", matchPokerList.Select(p => p))}");
 
                             // Set winner details if win effects are enabled

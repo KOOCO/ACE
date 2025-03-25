@@ -308,11 +308,11 @@ public class tweenManager : MonoBehaviour
                 animObj.GetComponent<pokerAnim>().getTrans = seats[0];
                 animObj.SetActive(true);
 
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.05f);
             }
 
             seats.RemoveAt(0);
-            yield return new WaitForSeconds(0.05f);
+            //yield return new WaitForSeconds(0.05f);
         }
 
         yield return new WaitForSeconds(1f);
