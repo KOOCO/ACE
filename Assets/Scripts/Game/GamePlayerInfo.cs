@@ -18,7 +18,11 @@ public class GamePlayerInfo : MonoBehaviour
     [SerializeField]
     public ParticleSystem allInHalo;
     [SerializeField]
-    Slider winRateBar;
+    GameObject winRateObj;
+    [SerializeField]
+    Image winRateBar, winRate_Img;
+    [SerializeField]
+    Sprite winRateSpr_C, winRateSpr_E;
 
     [Header("手牌")]
     [SerializeField]
@@ -149,7 +153,7 @@ public class GamePlayerInfo : MonoBehaviour
         }
         // }
 
-
+        winRate_Img.sprite = (LanguageManager.Instance.GetCurrLanguageIndex() == 0) ? winRateSpr_E : winRateSpr_C;
     }
 
     private void Awake()
@@ -216,8 +220,8 @@ public class GamePlayerInfo : MonoBehaviour
         ShowHandPokers[1].PokerEffectEnable = true;
         if (winRateBar != null)
         {
-            winRateBar.value = 0;
-            winRateBar.gameObject.SetActive(false);
+            winRateBar.fillAmount = 0;
+            winRateObj.SetActive(false);
         }
         if (!IsAllIn)
             allInHalo.Stop();
@@ -332,13 +336,13 @@ public class GamePlayerInfo : MonoBehaviour
             {
                 if (value > 0)
                 {
-                    winRateBar.gameObject.SetActive(true);
-                    winRateBar.value = (value / 100);
+                    winRateObj.SetActive(true);
+                    winRateBar.fillAmount = (value / 100);
                 }
                 else
                     winRateBar.gameObject.SetActive(false);
 
-                winRate_Txt.text = ((int)value).ToString();
+                winRate_Txt.text = ((int)value).ToString() + " %";
             }
         }
     }
