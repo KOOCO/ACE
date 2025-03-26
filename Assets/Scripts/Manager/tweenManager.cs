@@ -86,7 +86,7 @@ public class tweenManager : MonoBehaviour
         //}
 
         dealCard.gameObject.SetActive(true);
-        StartCoroutine(animChain(Seats, callback));
+        StartCoroutine(waitShuffle(Seats, callback));
     }
 
     public void playFold()
@@ -255,6 +255,15 @@ public class tweenManager : MonoBehaviour
     public void getAnim(string Name, Transform obj)
     {
         gameObject.SendMessage(Name, obj);
+    }
+
+    IEnumerator waitShuffle(List<Transform> Seats, UnityAction callback)
+    {
+        dealCard.GetChild(1).gameObject.SetActive(true);
+        yield return new WaitForSeconds(1.2f);
+
+        dealCard.GetChild(1).gameObject.SetActive(false);
+        yield return animChain(Seats, callback);
     }
 
     IEnumerator animChain(Transform PTrans)
