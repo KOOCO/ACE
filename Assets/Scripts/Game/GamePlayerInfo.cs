@@ -75,6 +75,11 @@ public class GamePlayerInfo : MonoBehaviour
     /// 是否為本地玩家
     /// </summary>
     public bool IsLocalPlayer;
+    
+    /// <summary>
+    /// 是否結算狀態
+    /// </summary>
+    public bool IsWinEffect;
 
     /// <summary>
     /// 是否有在進行遊戲
@@ -185,6 +190,11 @@ public class GamePlayerInfo : MonoBehaviour
             isPlayingP = false;
         }
         //print($"ID: {Nickname}, IsAll In: {IsAllIn}, Is PlayingP: {isPlayingP}, Particle is on: {allInHalo.isPlaying}");
+        if(!IsLocalPlayer && !IsWinEffect)
+        {
+            HandPokers[0].setFrameActive = false;
+            HandPokers[1].setFrameActive = false;
+        }
     }
 
     /// <summary>
@@ -194,6 +204,7 @@ public class GamePlayerInfo : MonoBehaviour
     {
         IsFold = false;
         IsAllIn = false;
+        IsWinEffect = false;
         CurrBetAction = BetActionEnum.None;
         CurrBetValue = 0;
         ButtonCharacter_Img.gameObject.SetActive(false);

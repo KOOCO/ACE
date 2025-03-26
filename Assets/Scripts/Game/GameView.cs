@@ -239,7 +239,7 @@ public class GameView : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            gameControl.CreateRobot(true);
+            gameControl.CreateRobot(false);
         }
 
         if (Input.GetKey(KeyCode.Backspace))
@@ -1416,7 +1416,6 @@ public class GameView : MonoBehaviour
 
             // Combine hand cards and community cards as Poker objects
             List<Poker> allPokers = handPoker.Concat(communityPoker.GetList()).ToList();
-            List<Poker> allFramePokers = GetPlayer(DataManager.UserId).GetHandPoker.Concat(communityPoker.GetList()).ToList();
 
             // Disable visual effects for all cards
             foreach (var poker in allPokers)
@@ -1452,11 +1451,7 @@ public class GameView : MonoBehaviour
                         {
                             bool isStraight = resultIndex == 6 || resultIndex == 2 || resultIndex == 1 ? true : false;
                             bool _isFlush = resultIndex == 5 || resultIndex == 2 || resultIndex == 1 ? true : false;
-                            if(isWinEffect)
-                                PokerShape.OpenMatchPokerFrame(allPokers, HighlightCard(allPokers, matchPokerList, isStraight, _isFlush), isWinEffect);
-                            else
-                                PokerShape.OpenMatchPokerFrame(allPokers, HighlightCard(allFramePokers, matchPokerList, isStraight, _isFlush), isWinEffect);
-                            Debug.Log($"[JudgePokerShapeUI] Match Poker Frame Opened | isWinEffect: {isWinEffect} | {string.Join(", ", matchPokerList.Select(p => p))}");
+                            PokerShape.OpenMatchPokerFrame(allPokers, HighlightCard(allPokers, matchPokerList, isStraight, _isFlush), isWinEffect);
 
                             // Set winner details if win effects are enabled
                             if (isWinEffect)
@@ -1464,6 +1459,8 @@ public class GameView : MonoBehaviour
                                 player.PokerShapeIndex = resultIndex;
                                 gamePot.SetWinnerStringTxt(LanguageManager.Instance.GetText(
                                     AssetsManager.Instance.GetStringAlbumAsset(StringAlbumEnum.HandRanksStringAlbum).strAlbum[resultIndex]));
+                                foreach (var player in SeatGamePlayerInfoList)
+                                    player.IsWinEffect = true;
                             }
                         }
                     }

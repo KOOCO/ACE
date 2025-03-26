@@ -362,8 +362,8 @@ public class GameControl : MonoBehaviour
     }
 
     [Obsolete]
-    void OnLeaveTable()
-    {
+    void OnLeaveTable() 
+    {     
         //移除倒數
         if (cdCoroutine != null) StopCoroutine(cdCoroutine);
 
@@ -410,16 +410,23 @@ public class GameControl : MonoBehaviour
             string newHostId = "";
             if (gameRoomData.hostId == DataManager.UserId)
             {
-                newHostId = gameRoomData.playingPlayersIdList
-                                    .FirstOrDefault(x => x != DataManager.UserId && !x.StartsWith(FirebaseManager.ROBOT_ID));
+                foreach (var player in gameRoomData.playerDataDic.Values)
+                {
+                    if (!player.userId.Contains(FirebaseManager.ROBOT_ID) &&
+                        player.userId != DataManager.UserId)
+                    {
+                        newHostId = player.userId;
+                        break;
+                    }
+                }
             }
 
-            Debug.Log("GameControl :: OnLeaveTable : more then one Player : " + QueryRoomPath + " New Host : " + newHostId);
+            Debug.Log("GameControl :: OnLeaveTable : more then one Player : " + QueryRoomPath + " 新房主: " + newHostId);
 
             //更新房主
             if (!string.IsNullOrEmpty(newHostId) && newHostId != "")
             {
-                Debug.Log("GameControl :: OnLeaveTable : Setting new host : " + newHostId);
+                Debug.Log("GameControl :: OnLeaveTable : 設置新房主: " + newHostId);
                 var dataDic = new Dictionary<string, object>()
                     {
                          { FirebaseManager.ROOM_HOST_ID, newHostId},
@@ -572,6 +579,7 @@ public class GameControl : MonoBehaviour
 #if UNITY_EDITOR
         return;
 #endif
+        print("切換房主");
 
         if (gameRoomData.playerDataDic == null)
         {
@@ -591,12 +599,12 @@ public class GameControl : MonoBehaviour
             string newHostID = "";
             foreach (var player in gameRoomData.playerDataDic.Values)
             {
-                if (!player.userId.StartsWith(FirebaseManager.ROBOT_ID) &&
+                if (!player.userId.Contains(FirebaseManager.ROBOT_ID) &&
                     player.online == true)
                 {
                     newHostID = player.userId;
                     break;
-                }
+                }                    
             }
 
             //尋找新房主錯誤
@@ -1407,6 +1415,12 @@ public class GameControl : MonoBehaviour
 
         //行動倒數
         CountDown();
+
+        var deleteID = gameRoomData.playerDataDic.FirstOrDefault(id => gameRoomData.playersWhoLeft.Contains(id));
+        if(!string.IsNullOrEmpty(deleteID.ToString()))
+            JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{deleteID}");
+        if (gameRoomData.playerDataDic.ContainsKey("seatCharacter"))
+            JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/seatCharacter");
 
         if (gameRoomData.playerDataDic != null &&
             gameRoomData.playingPlayersIdList != null)
