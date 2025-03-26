@@ -1416,9 +1416,14 @@ public class GameControl : MonoBehaviour
         //行動倒數
         CountDown();
 
-        var deleteID = gameRoomData.playerDataDic.FirstOrDefault(id => gameRoomData.playersWhoLeft.Contains(id));
-        if(!string.IsNullOrEmpty(deleteID.ToString()))
-            JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{deleteID}");
+        var deleteID = new KeyValuePair<string, GameRoomPlayerData>();
+        if (gameRoomData.playersWhoLeft != null)
+        {
+            print(deleteID);
+            deleteID = gameRoomData.playerDataDic.FirstOrDefault(id => gameRoomData.playersWhoLeft.Contains(id));
+            if (!string.IsNullOrEmpty(deleteID.ToString()))
+                JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{deleteID}");
+        }        
         if (gameRoomData.playerDataDic.ContainsKey("seatCharacter"))
             JSBridgeManager.Instance.RemoveDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/seatCharacter");
 
