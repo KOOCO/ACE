@@ -940,8 +940,8 @@
     "zh_TW": "勝負"
   },
   {
-    "ID": "Transaction Number",
-    "English": "Transaction Number",
+    "ID": "Transaction ID",
+    "English": "Transaction ID",
     "zh_TW": "交易編號"
   },
   {
@@ -1571,18 +1571,8 @@
   },
   {
     "ID": "Maintenance content",
-    "English": "Dear players:
-
-Our Texas Hold'em poker tables are about to undergo routine maintenance to ensure the smoothest gaming experience for you! You can take a short break during the maintenance period, and we will prepare more exciting poker challenges for you later.
-
-Thank you for your understanding and support! After the maintenance is over, we will invite you back to the battlefield immediately!
-
-ASIA POKER TEAM","zh_TW": "緊急通知：
-各位玩家請注意，我們需要進行一次臨時維護，以確保您的撲克之旅始終保持最佳狀態。維護期間遊戲將暫時無法進行，但我們會盡快完成，讓您重返桌上風雲！
-
-感謝您的耐心等候，我們隨時為您準備好牌桌！
-
-ASIA POKER 團隊"
+    "English": "Dear players:\n\nOur Texas Hold'em poker tables are about to undergo routine maintenance to ensure the smoothest gaming experience for you! You can take a short break during the maintenance period, and we will prepare more exciting poker challenges for you later.\n\nThank you for your understanding and support! After the maintenance is over, we will invite you back to the battlefield immediately!\n\nASIA POKER TEAM",
+    "zh_TW": "緊急通知：\n各位玩家請注意，我們需要進行一次臨時維護，以確保您的撲克之旅始終保持最佳狀態。維護期間遊戲將暫時無法進行，但我們會盡快完成，讓您重返桌上風雲！\n\n感謝您的耐心等候，我們隨時為您準備好牌桌！\n\nASIA POKER 團隊"
   },
   {
     "ID": "Session expired. Please log in again.",
@@ -1653,5 +1643,20 @@ ASIA POKER 團隊"
     "ID": "Submit",
     "English": "Submit",
     "zh_TW": "送出"
+  },
+  {
+    "ID": "CommingSoon",
+    "English": "Comming Soon",
+    "zh_TW": "即將推出"
+  },
+  {
+    "ID": "TRANSACION LIST",
+    "English": "TRANSACION LIST",
+    "zh_TW": "交易紀錄"
+  },
+  {
+    "ID": "State",
+    "English": "State",
+    "zh_TW": "狀態"
   }
 ]

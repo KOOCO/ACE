@@ -1,4 +1,3 @@
-//using Dynamitey.DynamicObjects;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -48,8 +47,9 @@ public class BetHistoryManager : UnitySingleton<BetHistoryManager>
             UpdatePage();
         });
     }
-    public async void showBetHistory(string data)
+    public void ShowBetHistory(string data)
     {
+        if (data == null) return;
         detailData = JsonConvert.DeserializeObject<BettingDetail>(data) ?? new BettingDetail();
 
         totalPage = (int)((detailData.items.Count + 9) / 10); //算總頁數無條件進位

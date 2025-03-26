@@ -83,7 +83,8 @@ public class HistorySample : MonoBehaviour
 
         Play_Btn.onClick.AddListener(() =>
         {
-            HandHistoryManager.Instance.PlayVideo(index);
+            //HandHistoryManager.Instance.PlayVideo(index);
+            ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Succesful, LanguageManager.Instance.GetText("CommingSoon"));
         });
         CopyID_Btn.onClick.AddListener(() =>
         {
