@@ -7,6 +7,8 @@ public class RobotControl : MonoBehaviour
 {
     [SerializeField]
     GameControl gameControl;
+    [SerializeField]
+    bool isTest;      //如果需要測試多機器人的話可以打開這個讓他們全部棄牌，加快輪轉時間
 
     /// <summary>
     /// 機器人下注
@@ -24,14 +26,14 @@ public class RobotControl : MonoBehaviour
 
         BetActingEnum action = BetActingEnum.Fold;
         double betValue = 0;
-        int foldRate = new System.Random().Next(0, 100);
+        int foldRate = isTest ? 0 : new System.Random().Next(0, 100);
 
         //是否只能All In
         bool isJustAllIn = robotData.carryChips <= gameRoomData.currCallValue;
         //首位加注玩家
         bool isFirst = gameRoomData.actionPlayerCount == 0;
 
-        if (foldRate >= 0)
+        if (foldRate > 0)
         {
             action = BetActingEnum.Call;
 
@@ -66,6 +68,8 @@ public class RobotControl : MonoBehaviour
                 }
             }
         }
+        else
+            action = BetActingEnum.Fold;
 
         //更新資料(機器人下注行為)
         gameControl.UpdateBetAction(gameRoomData.currActionerId,

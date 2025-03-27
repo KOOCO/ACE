@@ -348,12 +348,14 @@ public class GamePlayerInfo : MonoBehaviour
                 if (value > 0)
                 {
                     winRateObj.SetActive(true);
-                    winRateBar.fillAmount = (value / 100);
+                    float oNum = winRateBar.fillAmount;
+                    StartCoroutine(StringUtils.LerpValue(winRateObj, oNum, (value / 100), 0.5f, res => winRateBar.fillAmount = res));
                 }
                 else
                     winRateBar.gameObject.SetActive(false);
 
-                winRate_Txt.text = ((int)value).ToString() + " %";
+                //winRate_Txt.text = ((int)value).ToString() + " %";
+                StringUtils.ChipsChangeEffect(winRate_Txt, (int)value, "", " %");
             }
         }
     }

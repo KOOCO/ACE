@@ -243,6 +243,28 @@ public static class StringUtils
     }
 
     /// <summary>
+    /// 籌碼變化效果
+    /// </summary>
+    public static IEnumerator LerpValue(GameObject obj, float start, float end, float duration, Action<float> onCompletee)
+    {
+        if (obj != null)
+            yield return new WaitUntil(() => obj.activeSelf);
+
+        float elapsedTime = 0f;
+        float currentValue = 0f;
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / duration;
+            currentValue = Mathf.Lerp(start, end, t);
+
+            onCompletee?.Invoke(currentValue);
+            yield return null;
+        }
+    }
+
+
+    /// <summary>
     /// 判斷單位
     /// </summary>
     /// <param name="str"></param>

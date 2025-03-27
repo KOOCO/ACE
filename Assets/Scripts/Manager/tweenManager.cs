@@ -14,7 +14,7 @@ public class tweenManager : MonoBehaviour
     //public Transform Target;
     [Header("µoµP")]
     public Transform dealCard;
-    public List<Transform> playerSeats;
+    public List<Transform> playerSeats; 
 
     [Header("±óµP")]
     public Transform foldCard;
@@ -73,10 +73,10 @@ public class tweenManager : MonoBehaviour
 
     public void setSeats(UnityAction callback)
     {
-        List<Transform>Seats = new List<Transform>();
-        foreach(var obj in playerSeats)
+        List<Transform> Seats = new List<Transform>();
+        foreach (var obj in playerSeats)
         {
-            if (obj.gameObject.activeSelf)
+            if (obj.gameObject.activeInHierarchy)
                 Seats.Add(obj);
         }
         //foreach(var info in Seats)
@@ -116,7 +116,7 @@ public class tweenManager : MonoBehaviour
     public void dealAnim(Transform obj, Transform target)
     {
         Sequence cardSequence = DOTween.Sequence();
-        cardSequence.Append(obj.DOMove(target.position, 1)).Insert(0, obj.DOLookAt2D(target.position, 0));
+        cardSequence.Append(obj.DOMove(target.position, 0.8f)).Insert(0, obj.DOLookAt2D(target.position, 0)).Insert(1, obj.DORotate(new Vector3(0, 0, 0), 0.1f)).AppendInterval(0.5f);
         cardSequence.OnComplete(()=>
         {
             obj.GetComponent<pokerAnim>().onComplete(true);
@@ -313,11 +313,12 @@ public class tweenManager : MonoBehaviour
         {
             for (int i = 0; i < 2; i++)
             {
+                int index = i;
                 GameObject animObj = Instantiate(dealCard.GetChild(0).gameObject, dealCard);
-                animObj.GetComponent<pokerAnim>().getTrans = seats[0];
+                animObj.GetComponent<pokerAnim>().getTrans = seats[0].GetChild(index);
                 animObj.SetActive(true);
 
-                yield return new WaitForSeconds(0.05f);
+                yield return new WaitForSeconds(0.05f);                
             }
 
             seats.RemoveAt(0);
