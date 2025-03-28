@@ -75,186 +75,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &237984362928076864
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4608807460682550338}
-  - component: {fileID: 7272927606612290362}
-  - component: {fileID: 8361583725447300999}
-  m_Layer: 5
-  m_Name: CH_Txt (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &4608807460682550338
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 237984362928076864}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4363048554908667812}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 162.97, y: -1132}
-  m_SizeDelta: {x: 298.9059, y: 1226.6333}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &7272927606612290362
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 237984362928076864}
-  m_CullTransparentMesh: 1
---- !u!114 &8361583725447300999
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 237984362928076864}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: "Introduction\r\nWelcomeAsia Poker Platform (hereinafter referred to as\u201CThis
-    platform\u201D). This privacy policy aims to explain how this platform collects,
-    uses, stores and protects your personal information. Please read and understand
-    the contents of this policy carefully. \r\n1. Collection of member information\r\nWhen
-    you use this platform, we may collect the following types of personal information:\n\r\na.
-    Registration information: When you register for an account, we will collect your
-    basic information, including but not limited to name, email address, phone number
-    and other contact information. \n\r\nb. Usage data: When you use this platform,
-    we will collect your usage records,IP Address, browser type, device information,
-    operating system information, etc. \n\r\nc. Transaction information: When you
-    conduct transactions on this platform, we will collect relevant transaction information,
-    including transaction amount, payment method, transaction date, etc. \n\r\nd.
-    Communication information: When you contact our customer service or participate
-    in our community activities, we may collect your communication content and contact
-    information. \n\r\n2. How we use your information\nThe personal information we
-    collect will be used for the following purposes:\n\r\na. Providing services:
-    Use your registration information to create and manage your account and provide
-    the services you require. \n\r\nb. Improve services: Based on your usage data,
-    analyze user behavior to improve the functionality and user experience of this
-    platform. \n\r\nc. Security: Use transaction data and usage data to monitor and
-    prevent fraud and ensure transaction security. \n\r\nd. Marketing and promotion:
-    Based on your communication information, send you the latest product information,
-    promotions and market surveys, etc. Sharing and Disclosure of Information. \n\r\n3.
-    In the future, we may share your information under the following circumstances:\n\r\na.
-    Regulatory requirements: We may disclose your personal information as required
-    by law or government authorities. \r\nb. Business cooperation: In the future
-    we may cooperate with third parties, such as social media platforms (such asInstagram,
-    Twitter,LINE etc.) to improve service quality, we will notify you in advance
-    and obtain your consent.\n\r\n4. Data retention\n\r\nWe will retain your personal
-    data in accordance with legal requirements and the provisions of this policy.
-    Generally, we will retain your information for a period of time (default is one
-    year) after you terminate your use of the Platform, after which we will securely
-    delete or anonymize your personal information. \n\r\n5. Data security\n\r\nWe
-    take appropriate technical and organizational measures to protect your personal
-    data from unauthorized access, use or disclosure. However, transmissions over
-    the Internet are not completely secure, and we cannot guarantee the security
-    of the information you transmit to us. \n\r\n6. Your rights\n\r\nYou have the
-    right to access, correct or delete the personal data we hold about you at any
-    time. If you wish to exercise these rights or have any questions, please contact
-    us through our customer service contact details.\n \r\n7. Policy updates\n\r\nWe
-    may update this privacy policy from time to time. When there are major changes
-    to the platform policy, we will announce it through this platform or notify you
-    directly. \n\r\n8. Contact us\r\nIf you have any questions about this Privacy
-    Policy or require more information,\r\nPlease contact us via:\n\r\ne-mail:support@asiapoker.com
-    \r\nTelephone:+886-123-456-789 \r\nthank you forAsia Poker support and trust.\r\n"
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 13.5
-  m_fontSizeBase: 13.5
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &278704570831889083
 GameObject:
   m_ObjectHideFlags: 0
@@ -663,6 +483,42 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &642766543555703404
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4224518866904591774}
+  m_Layer: 5
+  m_Name: EN
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &4224518866904591774
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 642766543555703404}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2990126310660435173}
+  m_Father: {fileID: 1654801986087197955}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 2279.6}
+  m_Pivot: {x: 0, y: 1}
 --- !u!1 &1026755949032314062
 GameObject:
   m_ObjectHideFlags: 0
@@ -694,8 +550,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1095971274578995343}
-  - {fileID: 4363048554908667812}
+  - {fileID: 8903637972600761719}
+  - {fileID: 4224518866904591774}
   m_Father: {fileID: 1070066645438271167}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1467,178 +1323,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &1727759791983676062
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5781004974589773595}
-  - component: {fileID: 8462162686916208424}
-  - component: {fileID: 1947802452278945830}
-  m_Layer: 5
-  m_Name: CH_Txt (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &5781004974589773595
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1727759791983676062}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1095971274578995343}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 162.97, y: -952.79407}
-  m_SizeDelta: {x: 298.9059, y: 1564.2693}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &8462162686916208424
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1727759791983676062}
-  m_CullTransparentMesh: 1
---- !u!114 &1947802452278945830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1727759791983676062}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: "\u5F15\u8A00 \r\n\r\n\u6B61\u8FCE\u4F7F\u7528 Asia Poker \u5E73\u53F0\uFF08\u4EE5\u4E0B\u7C21\u7A31\u201C\u672C\u5E73\u53F0\u201D\uFF09\u3002\u672C\u96B1\u79C1\u6B0A\u653F\u7B56\u65E8\u5728\u8AAA\u660E\u672C\u5E73\u53F0
-    \u5982\u4F55\u8490\u96C6\u3001\u4F7F\u7528\u3001\u5132\u5B58\u548C\u4FDD\u8B77\u60A8\u7684\u500B\u4EBA\u8CC7\u6599\u3002\u8ACB\u60A8\u4ED4\u7D30\u95B1\u8B80\u4E26\u7406\u89E3\u672C\u653F\u7B56\u7684\u5BB9\u3002
-    \r\n\r\n\u4E00\u3001\u6703\u54E1\u8CC7\u6599\u8490\u96C6 \r\n\r\n\u7576\u60A8\u4F7F\u7528\u672C\u5E73\u53F0\uFF0C\u6211\u5011\u53EF\u80FD\u6703\u8490\u96C6\u4EE5\u4E0B\u985E\u578B\u4E4B\u500B\u4EBA\u8CC7\u6599\uFF1A
-    \r\n\r\n\u8A3B\u518A\u8CC7\u8A0A\uFF1A\u7576\u60A8\u8A3B\u518A\u5E33\u6236\u6642\uFF0C\u6211\u5011\u6703\u8490\u96C6\u60A8\u7684\u57FA\u672C\u4FE1\u606F\uFF0C\u5305\u62EC\u4F46\u4E0D\u9650\u65BC
-    \u59D3\u540D\u3001\u96FB\u5B50\u90F5\u4EF6\u5730\u5740\u3001\u96FB\u8A71\u865F\u78BC\u548C\u5176\u4ED6\u806F\u7D61\u65B9\u5F0F\u3002
-    \r\n\r\n\u4F7F\u7528\u8CC7\u6599\uFF1A\u7576\u60A8\u4F7F\u7528\u672C\u5E73\u53F0\u6642\uFF0C\u6211\u5011\u6703\u8490\u96C6\u60A8\u7684\u4F7F\u7528\u8A18\u9304\u3001IP
-    \u5730\u5740\u3001\u700F \u89BD\u5668\u985E\u578B\u3001\u8A2D\u5099\u4FE1\u606F\u548C\u64CD\u4F5C\u7CFB\u7D71\u4FE1\u606F\u7B49\u3002
-    \r\n\r\n\u4EA4\u6613\u8CC7\u6599\uFF1A\u7576\u60A8\u5728\u672C\u5E73\u53F0\u4E0A\u9032\u884C\u4EA4\u6613\u6642\uFF0C\u6211\u5011\u6703\u8490\u96C6\u76F8\u95DC\u7684\u4EA4\u6613\u4FE1\u606F\uFF0C
-    \u5305\u62EC\u4EA4\u6613\u91D1\u984D\u3001\u652F\u4ED8\u65B9\u5F0F\u548C\u4EA4\u6613\u65E5\u671F\u7B49\u3002
-    \r\n\r\n\u901A\u8A0A\u8CC7\u6599\uFF1A\u7576\u60A8\u8207\u6211\u5011\u7684\u5BA2\u670D\u806F\u7E6B\u6216\u53C3\u8207\u6211\u5011\u7684\u793E\u7FA4\u6D3B\u52D5\u6642\uFF0C\u6211\u5011\u53EF\u80FD
-    \u6703\u8490\u96C6\u60A8\u7684\u901A\u8A0A\u5167\u5BB9\u548C\u806F\u7D61\u65B9\u5F0F\u3002
-    \r\n\r\n\u4E8C\u3001\u6211\u5011\u5982\u4F55\u4F7F\u7528\u60A8\u7684\u8CC7\u6599
-    \r\n\r\n\u6211\u5011\u8490\u96C6\u7684\u500B\u4EBA\u8CC7\u6599\u5C07\u88AB\u7528\u65BC\u4EE5\u4E0B\u7528\u9014\uFF1A
-    \r\n\r\n\u63D0\u4F9B\u670D\u52D9\uFF1A\u4F7F\u7528\u60A8\u7684\u8A3B\u518A\u8CC7\u8A0A\u4F86\u5EFA\u7ACB\u548C\u7BA1\u7406\u60A8\u7684\u5E33\u6236\uFF0C\u63D0\u4F9B\u60A8\u6240\u9700\u7684\u670D
-    \u52D9\u3002 \r\n\r\n\u6539\u5584\u670D\u52D9\uFF1A\u6839\u64DA\u60A8\u7684\u4F7F\u7528\u8CC7\u6599\uFF0C\u5206\u6790\u7528\u6236\u884C\u70BA\u4EE5\u6539\u5584\u672C\u5E73\u53F0\u7684\u529F\u80FD\u548C\u7528
-    \u6236\u9AD4\u9A57\u3002 \r\n\r\n\u5B89\u5168\u4FDD\u969C\uFF1A\u4F7F\u7528\u4EA4\u6613\u8CC7\u6599\u548C\u4F7F\u7528\u8CC7\u6599\u4F86\u76E3\u63A7\u548C\u9632\u6B62\u6B3A\u8A50\u884C\u70BA\uFF0C\u78BA\u4FDD\u4EA4\u6613
-    \u5B89\u5168\u3002 \r\n\r\n\u884C\u92B7\u548C\u63A8\u5EE3\uFF1A\u57FA\u65BC\u60A8\u7684\u901A\u8A0A\u8CC7\u6599\uFF0C\u5411\u60A8\u767C\u9001\u6700\u65B0\u7684\u7522\u54C1\u8CC7\u8A0A\u3001\u4FC3\u92B7\u6D3B\u52D5
-    \u548C\u5E02\u5834\u8ABF\u67E5\u7B49\u3002\u8CC7\u6599\u7684\u5206\u4EAB\u8207\u62AB\u9732\u3002
-    \r\n\r\n\u4E09\u3001\u672A\u4F86\uFF0C\u6211\u5011\u53EF\u80FD\u6703\u5728\u4EE5\u4E0B\u60C5\u6CC1\u4E0B\u5206\u4EAB\u60A8\u7684\u8CC7\u6599\uFF1A
-    \r\n\r\n\u6CD5\u898F\u8981\u6C42\uFF1A\u6839\u64DA\u6CD5\u5F8B\u6216\u653F\u5E9C\u6A5F\u95DC\u7684\u8981\u6C42\uFF0C\u6211\u5011\u53EF\u80FD\u6703\u62AB\u9732\u60A8\u7684\u500B\u4EBA\u8CC7
-    \u6599\u3002 \r\n\r\n\u696D\u52D9\u5408\u4F5C\uFF1A\u5728\u672A\u4F86\u6211\u5011\u53EF\u80FD\u6703\u8207\u7B2C\u4E09\u65B9\u5408\u4F5C\uFF0C\u4F8B\u5982\u793E\u4EA4\u5A92\u9AD4\u5E73\u53F0\uFF08\u5982
-    Instagram\u3001\u63A8\u7279\u3001LINE \u7B49\uFF09\u4F86\u63D0\u5347\u670D\u52D9\u8CEA\u91CF\uFF0C\u5C46\u6642\u6211\u5011\u6703\u63D0\u524D\u901A\u77E5\u4E26\u5FB5
-    \u5F97\u60A8\u7684\u540C\u610F\u3002\r\n\r\n\u56DB\u3001\u8CC7\u6599\u4FDD\u7559
-    \r\n\r\n\u6211\u5011\u6703\u6839\u64DA\u6CD5\u5F8B\u8981\u6C42\u548C\u672C\u653F\u7B56\u7684\u898F\u5B9A\u4FDD\u7559\u60A8\u7684\u500B\u4EBA\u8CC7\u6599\u3002\u901A\u5E38\uFF0C\u6211\u5011\u6703\u5728
-    \u60A8\u7D42\u6B62\u4F7F\u7528\u672C\u5E73\u53F0\u5F8C\u4FDD\u7559\u60A8\u7684\u8CC7\u6599\u4E00\u6BB5\u6642\u9593\uFF08\u9810\u8A2D\u70BA\u4E00\u5E74\uFF09\uFF0C\u4E4B\u5F8C\u6211\u5011\u6703\u5B89
-    \u5168\u5730\u522A\u9664\u6216\u533F\u540D\u5316\u60A8\u7684\u500B\u4EBA\u8CC7\u6599\u3002
-    \r\n\r\n\u4E94\u3001\u8CC7\u6599\u5B89\u5168 \r\n\r\n\u6211\u5011\u63A1\u53D6\u9069\u7576\u7684\u6280\u8853\u548C\u7D44\u7E54\u63AA\u65BD\u4F86\u4FDD\u8B77\u60A8\u7684\u500B\u4EBA\u8CC7\u6599\u514D\u65BC\u672A\u7D93\u6388\u6B0A\u7684\u5B58
-    \u53D6\u3001\u4F7F\u7528\u6216\u6D29\u9732\u3002\u7136\u800C\uFF0C\u4E92\u806F\u7DB2\u7684\u50B3\u8F38\u4E26\u975E\u5B8C\u5168\u5B89\u5168\uFF0C\u6211\u5011\u7121\u6CD5\u4FDD\u8B49\u60A8\u50B3
-    \u8F38\u7D66\u6211\u5011\u7684\u8CC7\u6599\u7684\u5B89\u5168\u6027\u3002 \r\n\r\n\u516D\u3001\u60A8\u7684\u6B0A\u5229
-    \r\n\r\n\u60A8\u6709\u6B0A\u96A8\u6642\u67E5\u95B1\u3001\u66F4\u6B63\u6216\u522A\u9664\u6211\u5011\u6240\u6301\u6709\u7684\u60A8\u7684\u500B\u4EBA\u8CC7\u6599\u3002\u5982\u679C\u60A8\u5E0C\u671B\u884C
-    \u4F7F\u9019\u4E9B\u6B0A\u5229\u6216\u6709\u4EFB\u4F55\u7591\u554F\uFF0C\u8ACB\u901A\u904E\u6211\u5011\u7684\u5BA2\u670D\u806F\u7E6B\u65B9\u5F0F\u8207\u6211\u5011\u806F\u7E6B\u3002
-    \r\n\r\n\u4E03\u3001\u653F\u7B56\u66F4\u65B0 \r\n\r\n\u6211\u5011\u53EF\u80FD\u6703\u4E0D\u5B9A\u671F\u66F4\u65B0\u672C\u96B1\u79C1\u6B0A\u653F\u7B56\u3002\u7576\u5E73\u53F0\u653F\u7B56\u9032\u884C\u91CD\u5927\u4FEE\u6539\u6642\uFF0C\u6211\u5011
-    \u5C07\u901A\u904E\u672C\u5E73\u53F0\u516C\u544A\u6216\u76F4\u63A5\u901A\u77E5\u60A8\u3002
-    \r\n\r\n\u516B\u3001\u806F\u7E6B\u6211\u5011 \r\n\r\n\u5982\u679C\u60A8\u5C0D\u672C\u96B1\u79C1\u6B0A\u653F\u7B56\u6709\u4EFB\u4F55\u7591\u554F\u6216\u9700\u8981\u66F4\u591A\u4FE1\u606F\uFF0C
-    \r\n\r\n\u8ACB\u901A\u904E\u4EE5\u4E0B\u65B9\u5F0F\u806F\u7E6B\u6211\u5011\uFF1A
-    \r\n\r\n\u96FB\u5B50\u90F5\u4EF6\uFF1Asupport@asiapoker.com \r\n\r\n\u96FB\u8A71\uFF1A+886-123-456-789
-    \r\n\r\n\u611F\u8B1D\u60A8\u5C0D Asia Poker \u7684\u652F\u6301\u8207\u4FE1\u4EFB\u3002"
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 13.5
-  m_fontSizeBase: 13.5
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &1738933712511743148
 GameObject:
   m_ObjectHideFlags: 0
@@ -2232,42 +1916,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!1 &2665672741160460652
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4363048554908667812}
-  m_Layer: 5
-  m_Name: EN
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &4363048554908667812
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2665672741160460652}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 4608807460682550338}
-  m_Father: {fileID: 1654801986087197955}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 2251.1}
-  m_Pivot: {x: 0, y: 1}
 --- !u!1 &2692718408656182144
 GameObject:
   m_ObjectHideFlags: 0
@@ -2343,226 +1991,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &3086573795838664685
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3455910881665296388}
-  - component: {fileID: 8860824068221796687}
-  - component: {fileID: 1875290009416963103}
-  m_Layer: 5
-  m_Name: CH_Txt (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &3455910881665296388
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3086573795838664685}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1195076868526194591}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 162.97, y: -1807}
-  m_SizeDelta: {x: 298.9059, y: 1226.6333}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &8860824068221796687
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3086573795838664685}
-  m_CullTransparentMesh: 1
---- !u!114 &1875290009416963103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3086573795838664685}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: "1. Comply with membership regulations and legal regulations:\n\r\nYou
-    understand that after you register as a member, you can use the various services
-    provided by this platform(Hereinafter referred to as this service). When members
-    use this service, they agree not only to abide by these terms of service, but
-    also to accept the company's membership regulations.(Including various game rules,
-    betting rules, announcements and precautions, etc.)and relevant laws and regulations.
-    Members who use this service should abide by the permissions of the user's local
-    laws. Any violation will not be the responsibility of this service. \n\r\n2.
-    Service introduction:\n\r\nThe company aims to create a high-quality entertainment
-    service platform that is \"safe and reliable\", \"instantly convenient\", \"fair
-    and just\" and \"professionally operated\". It emphasizes that members are not
-    limited by time and space.24 You can participate in a fair and just game by being
-    online at any time, and you can also enjoy the fun of competing with players
-    from all over the world. We uphold a customer-oriented attitude, continue to
-    develop and innovate, and understand customer needs are the business philosophy
-    that our company is proud of. , hoping to create new entertainment value and
-    achieve the goal of popularization, and become a leading index entertainment
-    website. \r\nVirtual currency banking services: Our company provides an online
-    cash flow payment platform, and the points you purchase will enable you to enjoy
-    services consistent with our platform. If you use false and unfair methods to
-    \"recharge\", the company will also reserve the right to terminate your membership
-    and use of various services at any time.\n \r\n3. Real login obligations:\n\r\nBased
-    on the various services provided by our company, you agree to log in your correct,
-    true and complete personal information according to the items prompted in the
-    registration application process when registering; when your personal information
-    changes, please update it immediately to ensure Maintain the accuracy, authenticity
-    and completeness of your personal information. If you log in false information
-    or use someone else's name to infringe the rights of others or violate the law,
-    you shall bear legal responsibility; and agree that the personal information
-    you provided is untrue or the personal information has changed but has not been
-    updated so that it is different from the original login. If the information does
-    not match, the company has the right to terminate your membership and the right
-    to use various membership services at any time. \n\r\n4. Stopping and changing
-    services:\n\r\nThe member login information is false. \r\nUse the name of another
-    person to apply for this service. \r\nViolates the principle of game fairness.
-    \r\nWhen participating in a game or competition, deliberately exploit system
-    vulnerabilities or exploit game weaknesses to influence the outcome. \r\nWhen
-    violating these Terms of Service. \r\nThe company does not allow unfair betting
-    methods, bilateral betting, risk-free betting and any risk-free unfreezing betting
-    methods. If any player who finds the above problems is found, the company will
-    terminate the game.\r\n\rThe right to use the home account. If there is any dispute,
-    the company has the final decision. Under any circumstances, the Service will
-    not be liable to any member or third party for any trouble, inconvenience or
-    damage that may arise from stopping or changing services or terminating member
-    account services. \n\r\n5. Service suspension or interruption:\n\r\nThe Company
-    may suspend or interrupt all or part of this service under any of the following
-    circumstances, and shall not be liable for any compensation to users:\n\r\n1.When
-    relocating, replacing or maintaining system equipment related to this service.\n\n2.The
-    service is stopped or interrupted due to reasons that cannot be attributed to
-    the Company. \n\n3.The service is stopped or interrupted due to force majeure.
-    \n\r\nIf all or part of the services must be suspended or interrupted due to
-    the company's migration, replacement or maintenance of the system equipment related
-    to this website, the company will notify you by email or make an announcement
-    on this website before the suspension or interruption. \r\nThe suspension or
-    interruption of this service may cause you inconvenience, data loss or other
-    economic and time losses. You should usually take appropriate protective measures
-    to protect your rights and interests. \n\r\n6. Custody obligations:\n\r\nMembers
-    are obliged to properly keep their account numbers and passwords on this website
-    and are responsible for all activities performed after logging into the system
-    with this account number and password. In order to protect members' own rights
-    and interests, please do not disclose or provide your account number and password
-    to a third party, or lend or transfer it to others for use. \n\r\n7. Agree to
-    the game rules:\n\r\nIn order to avoid disputes when users play games on this
-    platform, various rules are explained in detail in the game center. Please be
-    sure to read the rules of this service in detail. Once a member starts using
-    this service, he is deemed to have accepted all the rules. Regulation. \n\r\n8.
-    Additions and modifications to membership regulations:\n\r\nIf these terms of
-    service are updated or modified, you agree to be bound by the revised terms from
-    the time they are announced on this website, and this website will not notify
-    members individually. If you continue to use this service after the announcement,
-    you will be deemed to have agreed to the revised terms. \n\r\n9. Privacy Statement:\n\r\nWe
-    are committed to protecting the privacy of our customers and providing the safest
-    gaming platform. The information we collect on this website will provide you
-    with the best service. We will not sell or lease your personal information to
-    third parties and store it in a secure Our operating system is non-public, and
-    our assisting partners who have access to customers' personal information must
-    also abide by the privacy and confidentiality rules we have established. \n\r\n10.
-    Disclaimer:\n\r\nThe laws of some regions or countries have not clearly defined
-    the legality of online gambling, and even some regions or countries have clearly
-    regulated online gambling as illegal. We do not intend to invite anyone to illegally
-    use this service platform in these regions or countries. Users must determine
-    whether it is legal to use online gambling in the region or country where you
-    live, and take full responsibility. Members who use this service must comply
-    with the permissions of the user's local laws. If there is any violation, the
-    company will not be responsible. scope.\r\n"
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 13.5
-  m_fontSizeBase: 13.5
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &3108589026224426810
 GameObject:
   m_ObjectHideFlags: 0
@@ -2715,6 +2143,193 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: Language
+--- !u!1 &3124004209511179146
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2002589589067907333}
+  - component: {fileID: 137235730791353838}
+  - component: {fileID: 5066481591321059852}
+  - component: {fileID: 5376230362446700935}
+  m_Layer: 5
+  m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2002589589067907333
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3124004209511179146}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8903637972600761719}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 2224.13}
+  m_Pivot: {x: 0.5, y: 1}
+--- !u!222 &137235730791353838
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3124004209511179146}
+  m_CullTransparentMesh: 1
+--- !u!114 &5066481591321059852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3124004209511179146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: "\u5F15\u8A00 \r\n\r\n\u6B61\u8FCE\u4F7F\u7528 Asia Poker \u5E73\u53F0\uFF08\u4EE5\u4E0B\u7C21\u7A31\u201C\u672C\u5E73\u53F0\u201D\uFF09\u3002\u672C\u96B1\u79C1\u6B0A\u653F\u7B56\u65E8\u5728\u8AAA\u660E\u672C\u5E73\u53F0
+    \u5982\u4F55\u8490\u96C6\u3001\u4F7F\u7528\u3001\u5132\u5B58\u548C\u4FDD\u8B77\u60A8\u7684\u500B\u4EBA\u8CC7\u6599\u3002\u8ACB\u60A8\u4ED4\u7D30\u95B1\u8B80\u4E26\u7406\u89E3\u672C\u653F\u7B56\u7684\u5BB9\u3002
+    \r\n\r\n\u4E00\u3001\u6703\u54E1\u8CC7\u6599\u8490\u96C6 \r\n\r\n\u7576\u60A8\u4F7F\u7528\u672C\u5E73\u53F0\uFF0C\u6211\u5011\u53EF\u80FD\u6703\u8490\u96C6\u4EE5\u4E0B\u985E\u578B\u4E4B\u500B\u4EBA\u8CC7\u6599\uFF1A
+    \r\n\r\n\u8A3B\u518A\u8CC7\u8A0A\uFF1A\u7576\u60A8\u8A3B\u518A\u5E33\u6236\u6642\uFF0C\u6211\u5011\u6703\u8490\u96C6\u60A8\u7684\u57FA\u672C\u4FE1\u606F\uFF0C\u5305\u62EC\u4F46\u4E0D\u9650\u65BC
+    \u59D3\u540D\u3001\u96FB\u5B50\u90F5\u4EF6\u5730\u5740\u3001\u96FB\u8A71\u865F\u78BC\u548C\u5176\u4ED6\u806F\u7D61\u65B9\u5F0F\u3002
+    \r\n\r\n\u4F7F\u7528\u8CC7\u6599\uFF1A\u7576\u60A8\u4F7F\u7528\u672C\u5E73\u53F0\u6642\uFF0C\u6211\u5011\u6703\u8490\u96C6\u60A8\u7684\u4F7F\u7528\u8A18\u9304\u3001IP
+    \u5730\u5740\u3001\u700F \u89BD\u5668\u985E\u578B\u3001\u8A2D\u5099\u4FE1\u606F\u548C\u64CD\u4F5C\u7CFB\u7D71\u4FE1\u606F\u7B49\u3002
+    \r\n\r\n\u4EA4\u6613\u8CC7\u6599\uFF1A\u7576\u60A8\u5728\u672C\u5E73\u53F0\u4E0A\u9032\u884C\u4EA4\u6613\u6642\uFF0C\u6211\u5011\u6703\u8490\u96C6\u76F8\u95DC\u7684\u4EA4\u6613\u4FE1\u606F\uFF0C
+    \u5305\u62EC\u4EA4\u6613\u91D1\u984D\u3001\u652F\u4ED8\u65B9\u5F0F\u548C\u4EA4\u6613\u65E5\u671F\u7B49\u3002
+    \r\n\r\n\u901A\u8A0A\u8CC7\u6599\uFF1A\u7576\u60A8\u8207\u6211\u5011\u7684\u5BA2\u670D\u806F\u7E6B\u6216\u53C3\u8207\u6211\u5011\u7684\u793E\u7FA4\u6D3B\u52D5\u6642\uFF0C\u6211\u5011\u53EF\u80FD
+    \u6703\u8490\u96C6\u60A8\u7684\u901A\u8A0A\u5167\u5BB9\u548C\u806F\u7D61\u65B9\u5F0F\u3002
+    \r\n\r\n\u4E8C\u3001\u6211\u5011\u5982\u4F55\u4F7F\u7528\u60A8\u7684\u8CC7\u6599
+    \r\n\r\n\u6211\u5011\u8490\u96C6\u7684\u500B\u4EBA\u8CC7\u6599\u5C07\u88AB\u7528\u65BC\u4EE5\u4E0B\u7528\u9014\uFF1A
+    \r\n\r\n\u63D0\u4F9B\u670D\u52D9\uFF1A\u4F7F\u7528\u60A8\u7684\u8A3B\u518A\u8CC7\u8A0A\u4F86\u5EFA\u7ACB\u548C\u7BA1\u7406\u60A8\u7684\u5E33\u6236\uFF0C\u63D0\u4F9B\u60A8\u6240\u9700\u7684\u670D
+    \u52D9\u3002 \r\n\r\n\u6539\u5584\u670D\u52D9\uFF1A\u6839\u64DA\u60A8\u7684\u4F7F\u7528\u8CC7\u6599\uFF0C\u5206\u6790\u7528\u6236\u884C\u70BA\u4EE5\u6539\u5584\u672C\u5E73\u53F0\u7684\u529F\u80FD\u548C\u7528
+    \u6236\u9AD4\u9A57\u3002 \r\n\r\n\u5B89\u5168\u4FDD\u969C\uFF1A\u4F7F\u7528\u4EA4\u6613\u8CC7\u6599\u548C\u4F7F\u7528\u8CC7\u6599\u4F86\u76E3\u63A7\u548C\u9632\u6B62\u6B3A\u8A50\u884C\u70BA\uFF0C\u78BA\u4FDD\u4EA4\u6613
+    \u5B89\u5168\u3002 \r\n\r\n\u884C\u92B7\u548C\u63A8\u5EE3\uFF1A\u57FA\u65BC\u60A8\u7684\u901A\u8A0A\u8CC7\u6599\uFF0C\u5411\u60A8\u767C\u9001\u6700\u65B0\u7684\u7522\u54C1\u8CC7\u8A0A\u3001\u4FC3\u92B7\u6D3B\u52D5
+    \u548C\u5E02\u5834\u8ABF\u67E5\u7B49\u3002\u8CC7\u6599\u7684\u5206\u4EAB\u8207\u62AB\u9732\u3002
+    \r\n\r\n\u4E09\u3001\u672A\u4F86\uFF0C\u6211\u5011\u53EF\u80FD\u6703\u5728\u4EE5\u4E0B\u60C5\u6CC1\u4E0B\u5206\u4EAB\u60A8\u7684\u8CC7\u6599\uFF1A
+    \r\n\r\n\u6CD5\u898F\u8981\u6C42\uFF1A\u6839\u64DA\u6CD5\u5F8B\u6216\u653F\u5E9C\u6A5F\u95DC\u7684\u8981\u6C42\uFF0C\u6211\u5011\u53EF\u80FD\u6703\u62AB\u9732\u60A8\u7684\u500B\u4EBA\u8CC7
+    \u6599\u3002 \r\n\r\n\u696D\u52D9\u5408\u4F5C\uFF1A\u5728\u672A\u4F86\u6211\u5011\u53EF\u80FD\u6703\u8207\u7B2C\u4E09\u65B9\u5408\u4F5C\uFF0C\u4F8B\u5982\u793E\u4EA4\u5A92\u9AD4\u5E73\u53F0\uFF08\u5982
+    Instagram\u3001\u63A8\u7279\u3001LINE \u7B49\uFF09\u4F86\u63D0\u5347\u670D\u52D9\u8CEA\u91CF\uFF0C\u5C46\u6642\u6211\u5011\u6703\u63D0\u524D\u901A\u77E5\u4E26\u5FB5
+    \u5F97\u60A8\u7684\u540C\u610F\u3002\r\n\r\n\u56DB\u3001\u8CC7\u6599\u4FDD\u7559
+    \r\n\r\n\u6211\u5011\u6703\u6839\u64DA\u6CD5\u5F8B\u8981\u6C42\u548C\u672C\u653F\u7B56\u7684\u898F\u5B9A\u4FDD\u7559\u60A8\u7684\u500B\u4EBA\u8CC7\u6599\u3002\u901A\u5E38\uFF0C\u6211\u5011\u6703\u5728
+    \u60A8\u7D42\u6B62\u4F7F\u7528\u672C\u5E73\u53F0\u5F8C\u4FDD\u7559\u60A8\u7684\u8CC7\u6599\u4E00\u6BB5\u6642\u9593\uFF08\u9810\u8A2D\u70BA\u4E00\u5E74\uFF09\uFF0C\u4E4B\u5F8C\u6211\u5011\u6703\u5B89
+    \u5168\u5730\u522A\u9664\u6216\u533F\u540D\u5316\u60A8\u7684\u500B\u4EBA\u8CC7\u6599\u3002
+    \r\n\r\n\u4E94\u3001\u8CC7\u6599\u5B89\u5168 \r\n\r\n\u6211\u5011\u63A1\u53D6\u9069\u7576\u7684\u6280\u8853\u548C\u7D44\u7E54\u63AA\u65BD\u4F86\u4FDD\u8B77\u60A8\u7684\u500B\u4EBA\u8CC7\u6599\u514D\u65BC\u672A\u7D93\u6388\u6B0A\u7684\u5B58
+    \u53D6\u3001\u4F7F\u7528\u6216\u6D29\u9732\u3002\u7136\u800C\uFF0C\u4E92\u806F\u7DB2\u7684\u50B3\u8F38\u4E26\u975E\u5B8C\u5168\u5B89\u5168\uFF0C\u6211\u5011\u7121\u6CD5\u4FDD\u8B49\u60A8\u50B3
+    \u8F38\u7D66\u6211\u5011\u7684\u8CC7\u6599\u7684\u5B89\u5168\u6027\u3002 \r\n\r\n\u516D\u3001\u60A8\u7684\u6B0A\u5229
+    \r\n\r\n\u60A8\u6709\u6B0A\u96A8\u6642\u67E5\u95B1\u3001\u66F4\u6B63\u6216\u522A\u9664\u6211\u5011\u6240\u6301\u6709\u7684\u60A8\u7684\u500B\u4EBA\u8CC7\u6599\u3002\u5982\u679C\u60A8\u5E0C\u671B\u884C
+    \u4F7F\u9019\u4E9B\u6B0A\u5229\u6216\u6709\u4EFB\u4F55\u7591\u554F\uFF0C\u8ACB\u901A\u904E\u6211\u5011\u7684\u5BA2\u670D\u806F\u7E6B\u65B9\u5F0F\u8207\u6211\u5011\u806F\u7E6B\u3002
+    \r\n\r\n\u4E03\u3001\u653F\u7B56\u66F4\u65B0 \r\n\r\n\u6211\u5011\u53EF\u80FD\u6703\u4E0D\u5B9A\u671F\u66F4\u65B0\u672C\u96B1\u79C1\u6B0A\u653F\u7B56\u3002\u7576\u5E73\u53F0\u653F\u7B56\u9032\u884C\u91CD\u5927\u4FEE\u6539\u6642\uFF0C\u6211\u5011
+    \u5C07\u901A\u904E\u672C\u5E73\u53F0\u516C\u544A\u6216\u76F4\u63A5\u901A\u77E5\u60A8\u3002
+    \r\n\r\n\u516B\u3001\u806F\u7E6B\u6211\u5011 \r\n\r\n\u5982\u679C\u60A8\u5C0D\u672C\u96B1\u79C1\u6B0A\u653F\u7B56\u6709\u4EFB\u4F55\u7591\u554F\u6216\u9700\u8981\u66F4\u591A\u4FE1\u606F\uFF0C
+    \r\n\r\n\u8ACB\u901A\u904E\u4EE5\u4E0B\u65B9\u5F0F\u806F\u7E6B\u6211\u5011\uFF1A
+    \r\n\r\n\u96FB\u5B50\u90F5\u4EF6\uFF1Asupport@asiapoker.com \r\n\r\n\u96FB\u8A71\uFF1A+886-123-456-789
+    \r\n\r\n\u611F\u8B1D\u60A8\u5C0D Asia Poker \u7684\u652F\u6301\u8207\u4FE1\u4EFB\u3002"
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 16
+  m_fontSizeBase: 16
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &5376230362446700935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3124004209511179146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &3407857160555881780
 GameObject:
   m_ObjectHideFlags: 0
@@ -2808,8 +2423,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 18
+  m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2898,11 +2513,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2506223062425038695}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -65.05476, y: 0}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 50, y: 0}
   m_SizeDelta: {x: 134.52, y: 27.5073}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &1741455925823159869
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2958,8 +2573,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 18
+  m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3437,11 +3052,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 5660968066304331071}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -87.951584, y: 0}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 50, y: 0}
   m_SizeDelta: {x: 88.7263, y: 27.5073}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &6803270162251155100
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3497,8 +3112,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 18
+  m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3657,14 +3272,209 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1814447197286199782}
+  - {fileID: 2014118656135926754}
   m_Father: {fileID: 2485681074481033563}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 239.11963}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 2279.6}
   m_Pivot: {x: 0, y: 1}
+--- !u!1 &4355383205489872835
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2990126310660435173}
+  - component: {fileID: 3737731973938124226}
+  - component: {fileID: 2097897965728300439}
+  - component: {fileID: 7318616862321665975}
+  m_Layer: 5
+  m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2990126310660435173
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4355383205489872835}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4224518866904591774}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 2751.7}
+  m_Pivot: {x: 0.5, y: 1}
+--- !u!222 &3737731973938124226
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4355383205489872835}
+  m_CullTransparentMesh: 1
+--- !u!114 &2097897965728300439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4355383205489872835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: "Introduction\r\nWelcomeAsia Poker Platform (hereinafter referred to as\u201CThis
+    platform\u201D). This privacy policy aims to explain how this platform collects,
+    uses, stores and protects your personal information. Please read and understand
+    the contents of this policy carefully. \r\n1. Collection of member information\r\nWhen
+    you use this platform, we may collect the following types of personal information:\n\r\na.
+    Registration information: When you register for an account, we will collect your
+    basic information, including but not limited to name, email address, phone number
+    and other contact information. \n\r\nb. Usage data: When you use this platform,
+    we will collect your usage records,IP Address, browser type, device information,
+    operating system information, etc. \n\r\nc. Transaction information: When you
+    conduct transactions on this platform, we will collect relevant transaction information,
+    including transaction amount, payment method, transaction date, etc. \n\r\nd.
+    Communication information: When you contact our customer service or participate
+    in our community activities, we may collect your communication content and contact
+    information. \n\r\n2. How we use your information\nThe personal information we
+    collect will be used for the following purposes:\n\r\na. Providing services:
+    Use your registration information to create and manage your account and provide
+    the services you require. \n\r\nb. Improve services: Based on your usage data,
+    analyze user behavior to improve the functionality and user experience of this
+    platform. \n\r\nc. Security: Use transaction data and usage data to monitor and
+    prevent fraud and ensure transaction security. \n\r\nd. Marketing and promotion:
+    Based on your communication information, send you the latest product information,
+    promotions and market surveys, etc. Sharing and Disclosure of Information. \n\r\n3.
+    In the future, we may share your information under the following circumstances:\n\r\na.
+    Regulatory requirements: We may disclose your personal information as required
+    by law or government authorities. \r\nb. Business cooperation: In the future
+    we may cooperate with third parties, such as social media platforms (such asInstagram,
+    Twitter,LINE etc.) to improve service quality, we will notify you in advance
+    and obtain your consent.\n\r\n4. Data retention\n\r\nWe will retain your personal
+    data in accordance with legal requirements and the provisions of this policy.
+    Generally, we will retain your information for a period of time (default is one
+    year) after you terminate your use of the Platform, after which we will securely
+    delete or anonymize your personal information. \n\r\n5. Data security\n\r\nWe
+    take appropriate technical and organizational measures to protect your personal
+    data from unauthorized access, use or disclosure. However, transmissions over
+    the Internet are not completely secure, and we cannot guarantee the security
+    of the information you transmit to us. \n\r\n6. Your rights\n\r\nYou have the
+    right to access, correct or delete the personal data we hold about you at any
+    time. If you wish to exercise these rights or have any questions, please contact
+    us through our customer service contact details.\n \r\n7. Policy updates\n\r\nWe
+    may update this privacy policy from time to time. When there are major changes
+    to the platform policy, we will announce it through this platform or notify you
+    directly. \n\r\n8. Contact us\r\nIf you have any questions about this Privacy
+    Policy or require more information,\r\nPlease contact us via:\n\r\ne-mail:support@asiapoker.com
+    \r\nTelephone:+886-123-456-789 \r\nthank you forAsia Poker support and trust.\r\n"
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 16
+  m_fontSizeBase: 16
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &7318616862321665975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4355383205489872835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &4364708799354341332
 GameObject:
   m_ObjectHideFlags: 0
@@ -3757,8 +3567,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 13
-  m_fontSizeBase: 13
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4059,8 +3869,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 18
+  m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4209,8 +4019,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4431,11 +4241,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2792080594710173967}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -87.951584, y: 0}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 50, y: -0.000015258789}
   m_SizeDelta: {x: 88.7263, y: 27.5073}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &4119801036436471773
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4491,8 +4301,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 18
+  m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4691,7 +4501,7 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!1 &5353794013787880456
+--- !u!1 &5436849538671466459
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4699,7 +4509,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1195076868526194591}
+  - component: {fileID: 1895985890044007051}
   m_Layer: 5
   m_Name: EN
   m_TagString: Untagged
@@ -4707,25 +4517,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!224 &1195076868526194591
+--- !u!224 &1895985890044007051
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5353794013787880456}
+  m_GameObject: {fileID: 5436849538671466459}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3455910881665296388}
+  - {fileID: 754045376708140553}
   m_Father: {fileID: 2485681074481033563}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 3592.357}
+  m_SizeDelta: {x: 0, y: 2279.6}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &5447471138684583910
 GameObject:
@@ -4820,8 +4630,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4952,42 +4762,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &5915955120153281018
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1095971274578995343}
-  m_Layer: 5
-  m_Name: CH
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1095971274578995343
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5915955120153281018}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5781004974589773595}
-  m_Father: {fileID: 1654801986087197955}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -4.3946533, y: 89.88037}
-  m_SizeDelta: {x: 0, y: 1886}
-  m_Pivot: {x: 0, y: 1}
 --- !u!1 &5938734867477880578
 GameObject:
   m_ObjectHideFlags: 0
@@ -5242,6 +5016,204 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!1 &6121241090339459841
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2014118656135926754}
+  - component: {fileID: 6225519801564172752}
+  - component: {fileID: 9016684525314136456}
+  - component: {fileID: 714365902935719685}
+  m_Layer: 5
+  m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2014118656135926754
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6121241090339459841}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5426053367149581644}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 2890.71}
+  m_Pivot: {x: 0.5, y: 1}
+--- !u!222 &6225519801564172752
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6121241090339459841}
+  m_CullTransparentMesh: 1
+--- !u!114 &9016684525314136456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6121241090339459841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: " \r\n\r\n\u4E00\u3001\u9075\u5B88\u6703\u54E1\u898F\u7BC4\u53CA\u6CD5\u5F8B\u898F\u5B9A\uFF1A
+    \r\n\r\n\u60A8\u4E86\u89E3\u60A8\u8A3B\u518A\u6210\u70BA\u6703\u54E1\u5F8C\uFF0C\u5373\u53EF\u4F7F\u7528\u672C\u5E73\u53F0\u6240\u63D0\u4F9B\u4E4B\u5404\u9805\u670D\u52D9(\u4EE5\u4E0B\u7A31\u672C\u670D\u52D9)\u3002\u7576\u6703\u54E1\u4F7F\u7528\u672C\u670D\u52D9\u6642\uFF0C\u5373\u8868\u793A\u9664\u4E86\u540C\u610F\u9075\u5B88\u672C\u670D\u52D9\u689D\u6B3E\u5916\uFF0C\u9084\u540C\u610F\u63A5\u53D7\u672C
+    \u516C\u53F8\u5C0D\u6703\u54E1\u898F\u7BC4(\u5305\u62EC\u5404\u9805\u904A\u6232\u898F\u5247\u3001\u6295\u6CE8\u898F\u5247\u3001\u516C\u544A\u53CA\u6CE8\u610F\u4E8B\u9805\u7B49)\u53CA\u76F8\u95DC\u6CD5\u4EE4\u898F\u5B9A\u4E4B\u62D8\u675F\uFF0C\u4F7F\u7528\u672C\u670D\u52D9\u4E4B\u6703\u54E1\u8ACB\u9075\u5B88\u4F7F\u7528\u8005\u7576\u5730\u6CD5\u4EE4\u4E4B\u8A31\u53EF\uFF0C\u5982\u6709\u9055\u53CD\u4E4B\u60C5\u4E8B\u6055\u975E\u672C\u670D\u52D9\u4E4B\u8CA0\u8CAC\u7BC4\u570D\u3002
+    \r\n\r\n\u4E8C\u3001\u670D\u52D9\u7C21\u4ECB\uFF1A \r\n\r\n(\u4E00)\u672C\u516C\u53F8\u65E8\u5728\u5275\u9020\u4E00\u500B\u300E\u5B89\u5168\u53EF\u9760\u300F\u3001\u300E\u5373\u6642\u4FBF\u5229\u300F\u3001\u300E\u516C\u5E73\u516C\u6B63\u300F\u3001\u300E\u5C08\u696D\u71DF
+    \u904B\u300F\u7684\u512A\u8CEA\u5A1B\u6A02\u670D\u52D9\u5E73\u53F0\uFF0C\u5F37\u8ABF\u7684\u662F\u8B93\u6703\u54E1\u4E0D\u53D7\u6642\u7A7A\u7684\u9650\u5236\uFF0C24
+    \u5C0F\u6642\u96A8\u6642\u4E0A\u7DDA \u5C31\u53EF\u4EE5\u53C3\u8207\u4E00\u500B\u516C\u5E73\u516C\u6B63\u7684\u904A\u6232\uFF0C\u4EA6\u53EF\u4EE5\u4EAB\u53D7\u5230\u8207\u4E16\u754C\u5404\u5730\u73A9\u5BB6\u5207\u78CB\u7684\u6A02\u8DA3\uFF0C
+    \u6211\u5011\u79C9\u6301\u4EE5\u5BA2\u70BA\u5C0A\u7684\u614B\u5EA6\uFF0C\u4E0D\u65B7\u958B\u767C\u5275\u65B0\u53CA\u4E86\u89E3\u5BA2\u6236\u9700\u6C42\u662F\u672C\u516C\u53F8\u5F15\u4EE5\u70BA\u50B2\u7684\u7D93\u71DF\u7406\u5FF5\uFF0C\u5180\u671B\u80FD\u5275\u9020\u51FA\u5D84\u65B0\u7684\u5A1B\u6A02\u50F9\u503C\u4EE5\u53CA\u9054\u5230\u591A\u65B9\u666E\u53CA\u7684\u76EE\u7684\uFF0C\u6210\u70BA\u5177\u6709
+    \u9818\u5C0E\u6307\u6A19\u6027\u7684\u5A1B\u6A02\u7DB2\u7AD9\u3002 \r\n\r\n(\u4E8C)\u865B\u64EC\u8CA8\u5E63\u9280\u884C\u670D\u52D9\uFF1A\u672C\u516C\u53F8\u63D0\u4F9B\u7DB2\u8DEF\u91D1\u6D41\u4ED8\u8CBB\u5E73\u53F0\uFF0C\u4F60\u6240\u8CFC\u8CB7\u7684\u9EDE\u6578\u5C07\u53EF
+    \u4EAB\u53D7\u7B26\u5408\u672C\u516C\u53F8\u5E73\u53F0\u7684\u670D\u52D9\u3002\u82E5\u60A8\u4F7F\u7528\u865B\u507D\u4E0D\u6B63\u4E4B\u65B9\u5F0F\u9032\u884C\u300C\u5132\u503C\u300D\uFF0C\u672C\u516C\u53F8\u4E5F
+    \u5C07\u4FDD\u7559\u96A8\u6642\u7D42\u6B62\u60A8\u6703\u54E1\u8CC7\u683C\u53CA\u4F7F\u7528\u5404\u9805\u670D\u52D9\u4E4B\u6B0A\u5229\u3002
+    \r\n\r\n\u4E09\u3001\u771F\u5BE6\u767B\u9304\u7FA9\u52D9\uFF1A \r\n\r\n\u57FA\u65BC\u672C\u516C\u53F8\u6240\u63D0\u4F9B\u4E4B\u5404\u9805\u670D\u52D9\uFF0C\u60A8\u540C\u610F\u65BC\u8A3B\u518A\u6642\u4F9D\u8A3B\u518A\u7533\u8ACB\u7A0B\u5E8F\u6240\u63D0\u793A\u4E4B\u9805
+    \u76EE\uFF0C\u767B\u9304\u60A8\u672C\u4EBA\u6B63\u78BA\u3001\u771F\u5BE6\u53CA\u5B8C\u6574\u4E4B\u500B\u4EBA\u8CC7\u6599\uFF1B\u7576\u60A8\u7684\u500B\u4EBA\u8CC7\u6599\u6709\u7570\u52D5\u6642\uFF0C\u8ACB
+    \u7ACB\u5373\u66F4\u65B0\uFF0C\u4EE5\u7DAD\u6301\u60A8\u500B\u4EBA\u8CC7\u6599\u4E4B\u6B63\u78BA\u3001\u771F\u5BE6\u53CA\u5B8C\u6574\u3002\u5982\u56E0\u60A8\u767B\u9304\u4E0D\u5BE6\u8CC7\u6599\u6216\u5192
+    \u7528\u4ED6\u4EBA\u540D\u7FA9\u4EE5\u81F4\u65BC\u4FB5\u5BB3\u4ED6\u4EBA\u4E4B\u6B0A\u5229\u6216\u9055\u6CD5\u6642\uFF0C\u61C9\u81EA\u8CA0\u6CD5\u5F8B\u8CAC\u4EFB\uFF1B\u4E26\u540C\u610F\u60A8\u6240\u63D0
+    \u4F9B\u4E4B\u500B\u4EBA\u8CC7\u6599\u4E0D\u5BE6\u6216\u500B\u4EBA\u8CC7\u6599\u6709\u7570\u52D5\u4F46\u6C92\u6709\u66F4\u65B0\u4EE5\u81F4\u65BC\u8207\u539F\u767B\u9304\u4E4B\u8CC7\u6599\u4E0D\u7B26
+    \u6642\uFF0C\u672C\u516C\u53F8\u6709\u6B0A\u96A8\u6642\u7D42\u6B62\u60A8\u7684\u6703\u54E1\u8CC7\u683C\u53CA\u4F7F\u7528\u5404\u9805\u6703\u54E1\u670D\u52D9\u4E4B\u6B0A\u5229\u3002
+    \r\n\r\n\u56DB\u3001\u670D\u52D9\u4E4B\u505C\u6B62\u8207\u66F4\u6539\uFF1A \r\n\r\n1.\u6703\u54E1\u767B\u9304\u4E4B\u8CC7\u6599\u4E0D\u5BE6\u3002
+    2.\u4F7F\u7528\u4ED6\u4EBA\u7684\u540D\u7FA9\u7533\u8ACB\u672C\u670D\u52D9\u3002
+    3.\u9055\u53CD\u904A\u6232\u516C\u5E73\u539F \u5247\u3002 4.\u53C3\u8207\u904A\u6232\u6216\u6BD4\u8CFD\u6642\uFF0C\u6545\u610F\u947D\u7814\u7CFB\u7D71\u6F0F\u6D1E\u6216\u5229\u7528\u904A\u6232\u5F31\u9EDE\u4EE5\u5F71\u97FF\u7D50\u679C\u3002
+    5. \u9055\u53CD\u672C\u670D\u52D9\u689D\u6B3E\u6642\u3002 6.\u672C\u516C\u53F8\u4E0D\u5141\u8A31\u4E0D\u516C\u5E73\u7684\u4E0B\u6CE8\u65B9\u5F0F\u3001\u96D9\u908A\u4E0B\u6CE8\u3001\u7121\u98A8\u96AA\u4E0B
+    \u6CE8\u53CA\u4EFB\u4F55\u7121\u98A8\u96AA\u89E3\u51CD\u4E4B\u4E0B\u6CE8\u65B9\u5F0F\uFF0C\u5982\u6709\u767C\u73FE\u4E0A\u8FF0\u554F\u984C\u4E4B\u73A9\u5BB6\uFF0C\u672C\u516C\u53F8\u6709\u7D42\u6B62\u73A9\r\n\r\n\u5BB6\u5E33\u865F\u4F7F\u7528\u4E4B\u6B0A\u529B\u3002\u5982\u6709\u4EFB\u4F55\u722D\u8B70\u554F\u984C\uFF0C\u672C\u516C\u53F8\u6709\u6700\u7D42\u6C7A\u5B9A\u6B0A\u3002\u7121\u8AD6\u4EFB\u4F55\u60C5
+    \u5F62\uFF0C\u5C31\u505C\u6B62\u6216\u66F4\u6539\u670D\u52D9\u6216\u7D42\u6B62\u6703\u54E1\u5E33\u6236\u670D\u52D9\u6240\u53EF\u80FD\u7522\u751F\u4E4B\u56F0\u64FE\u3001\u4E0D\u4FBF\u6216\u640D\u5BB3\uFF0C
+    \u672C\u670D\u52D9\u5C0D\u4EFB\u4F55\u6703\u54E1\u6216\u7B2C\u4E09\u4EBA\u5747\u4E0D\u8CA0\u4EFB\u4F55\u8CAC\u4EFB\u3002
+    \r\n\r\n\u4E94\u3001\u670D\u52D9\u66AB\u505C\u6216\u4E2D\u65B7\uFF1A \r\n\r\n(\u4E00)\u672C\u516C\u53F8\u65BC\u4E0B\u5217\u60C5\u5F62\u4E4B\u4E00\u6642\uFF0C\u5F97\u66AB\u505C\u6216\u4E2D\u65B7\u672C\u670D\u52D9\u4E4B\u5168\u90E8\u6216\u4E00\u90E8\uFF0C\u5C0D\u65BC\u4F7F\u7528
+    \u8005\u4E0D\u8CA0\u64D4\u4EFB\u4F55\u8CE0\u511F\u8CAC\u4EFB\uFF1A \r\n\r\n1.\u5C0D\u65BC\u672C\u670D\u52D9\u76F8\u95DC\u4FC2\u7D71\u8A2D\u5099\u9032\u884C\u9077\u79FB\u3001\u66F4\u63DB\u6216\u7DAD\u8B77\u6642\u3002
+    2.\u56E0\u4E0D\u53EF\u6B78\u8CAC\u65BC\u672C\u516C\u53F8 \u6240\u9020\u6210\u670D\u52D9\u505C\u6B62\u6216\u4E2D\u65B7\u3002
+    3.\u56E0\u4E0D\u53EF\u6297\u529B\u6240\u9020\u6210\u670D\u52D9\u505C\u6B62\u6216\u4E2D\u65B7\u3002
+    \r\n\r\n(\u4E8C)\u5982\u56E0\u672C\u516C\u53F8\u5C0D\u65BC\u672C\u7DB2\u7AD9\u76F8\u95DC\u4FC2\u7D71\u8A2D\u5099\u9032\u884C\u9077\u79FB\u3001\u66F4\u63DB\u6216\u7DAD\u8B77\u800C\u5FC5\u9808\u66AB\u505C\u6216
+    \u4E2D\u65B7\u5168\u90E8\u6216\u4E00\u90E8\u4E4B\u670D\u52D9\u6642\uFF0C\u672C\u516C\u53F8\u65BC\u66AB\u505C\u6216\u4E2D\u65B7\u524D\u5C07\u4EE5\u96FB\u5B50\u90F5\u4EF6\u901A\u77E5\u6216\u65BC\u672C\u7DB2
+    \u7AD9\u4E0A\u516C\u544A\u3002 \r\n\r\n(\u4E09)\u5C0D\u65BC\u672C\u670D\u52D9\u4E4B\u66AB\u505C\u6216\u4E2D\u65B7\uFF0C\u53EF\u80FD\u9020\u6210\u60A8\u4F7F\u7528\u4E0A\u7684\u4E0D\u4FBF\u3001\u8CC7\u6599\u907A\u5931\u6216\u5176\u4ED6\u7D93
+    \u6FDF\u53CA\u6642\u9593\u4E0A\u4E4B\u640D\u5931\uFF0C\u60A8\u5E73\u6642\u61C9\u63A1\u53D6\u9069\u7576\u7684\u9632\u8B77\u63AA\u65BD\uFF0C\u4EE5\u4FDD\u969C\u60A8\u7684\u6B0A\u76CA\u3002
+    \r\n\r\n\u516D\u3001\u4FDD\u7BA1\u7FA9\u52D9\uFF1A \r\n\r\n\u6703\u54E1\u6709\u7FA9\u52D9\u59A5\u5584\u4FDD\u7BA1\u5728\u672C\u7DB2\u7AD9\u4E4B\u5E33\u865F\u8207\u5BC6\u78BC\uFF0C\u4E26\u70BA\u6B64\u7D44\u5E33\u865F\u8207\u5BC6\u78BC\u767B\u5165\u7CFB\u7D71\u5F8C
+    \u6240\u9032\u884C\u4E4B\u4E00\u5207\u6D3B\u52D5\u8CA0\u8CAC\u3002\u70BA\u7DAD\u8B77\u6703\u54E1\u81EA\u8EAB\u6B0A\u76CA\uFF0C\u8ACB\u52FF\u5C07\u5E33\u865F\u8207\u5BC6\u78BC\u6D29\u9732\u6216\u63D0\u4F9B
+    \u4E88\u7B2C\u4E09\u4EBA\u77E5\u6089\uFF0C\u6216\u51FA\u501F\u6216\u8F49\u8B93\u4ED6\u4EBA\u4F7F\u7528\u3002
+    \r\n\r\n\u4E03\u3001\u540C\u610F\u5404\u9805\u904A\u6232\u898F\u5247\uFF1A \r\n\r\n\u70BA\u907F\u514D\u4F7F\u7528\u8005\u65BC\u672C\u5E73\u53F0\u904A\u6232\u6642\u7522\u751F\u722D\u8B70\uFF0C\u5404\u9805\u898F\u5247\u65BC\u904A\u6232\u4E2D\u5FC3\u5747\u6709\u8A73\u7D30\u8AAA\u660E\uFF0C
+    \u8ACB\u52D9\u5FC5\u8A73\u7D30\u95B1\u8B80\u672C\u670D\u52D9\u6240\u5B9A\u4E4B\u5404\u9805\u898F\u5247\uFF0C\u6703\u54E1\u4E00\u7D93\u958B\u59CB\u4F7F\u7528\u672C\u670D\u52D9\uFF0C\u5373\u88AB\u8996\u70BA
+    \u5DF2\u63A5\u53D7\u6240\u6709\u4E4B\u898F\u5B9A\u3002 \r\n\r\n\u516B\u3001\u6703\u54E1\u898F\u7BC4\u4E4B\u589E\u8A02\u53CA\u4FEE\u6539\uFF1A
+    \r\n\r\n\u672C\u670D\u52D9\u689D\u6B3E\u5982\u6709\u589E\u8A02\u6216\u4FEE\u6539\uFF0C\u60A8\u540C\u610F\u81EA\u8A72\u4FEE\u8A02\u689D\u6B3E\u65BC\u672C\u7DB2\u7AD9\u516C\u544A\u4E4B\u6642\u8D77\u53D7\u5176\u62D8
+    \u675F\uFF0C\u672C\u7DB2\u7AD9\u5C07\u4E0D\u5C0D\u6703\u54E1\u500B\u5225\u901A\u77E5\u3002\u5982\u60A8\u65BC\u516C\u544A\u5F8C\u7E7C\u7E8C\u4F7F\u7528\u672C\u670D\u52D9\uFF0C\u5247\u8996\u70BA\u60A8\u5DF2
+    \u7D93\u540C\u610F\u8A72\u4FEE\u8A02\u689D\u6B3E\u3002 \r\n\r\n\u4E5D\u3001\u96B1\u79C1\u6B0A\u8072\u660E\uFF1A\r\n\r\n\u6211\u5011\u81F4\u529B\u70BA\u5BA2\u6236\u4FDD\u8B77\u96B1\u79C1\u4E26\u63D0\u4F9B\u4E00\u500B\u6700\u5B89\u5168\u7684\u904A\u6232\u5E73\u53F0\uFF0C\u6211\u5011\u5728\u6B64\u7DB2\u7AD9\u8490\u96C6\u7684
+    \u8CC7\u6599\u5C07\u6703\u70BA\u60A8\u63D0\u4F9B\u6700\u5353\u8D8A\u7684\u670D\u52D9\uFF0C\u6211\u5011\u4E0D\u6703\u51FA\u8CE3\u6216\u79DF\u8CC3\u60A8\u7684\u500B\u4EBA\u8CC7\u6599\u7D66\u7B2C\u4E09
+    \u65B9\uFF0C\u4E26\u5132\u5B58\u5728\u5B89\u5168\u7684\u3001\u975E\u516C\u958B\u7684\u4F5C\u696D\u7CFB\u7D71\uFF0C\u5C0D\u65BC\u6709\u6A5F\u6703\u63A5\u89F8\u5BA2\u6236\u7684\u500B\u4EBA\u8CC7\u6599\u7684
+    \u5354\u52A9\u5925\u4F34\u4E5F\u5FC5\u9700\u9075\u5B88\u6211\u5011\u8A02\u7ACB\u7684\u96B1\u79C1\u4FDD\u5BC6\u898F\u5247\u3002
+    \r\n\r\n\u5341\u3001\u514D\u8CAC\u8072\u660E\uFF1A \r\n\r\n\u90E8\u4EFD\u5730\u5340\u6216\u570B\u5BB6\u6CD5\u5F8B\u5C1A\u672A\u660E\u5B9A\u7DDA\u4E0A\u535A\u5F69\u7684\u5408\u6CD5\u6027\u554F\u984C\uFF0C\u751A\u81F3\u67D0\u4E9B\u5730\u5340\u6216\u570B\u5BB6\u5DF2
+    \u660E\u78BA\u898F\u7BC4\u7DDA\u4E0A\u535A\u5F69\u70BA\u975E\u6CD5\u884C\u70BA\u3002\u6211\u5011\u7121\u610F\u9080\u8ACB\u4EFB\u4F55\u4EBA\u5728\u9019\u4E9B\u5730\u5340\u6216\u570B\u5BB6\u975E\u6CD5\u4F7F
+    \u7528\u672C\u670D\u52D9\u5E73\u53F0\u3002\u4F7F\u7528\u8005\u5FC5\u9700\u78BA\u5B9A\u5728\u60A8\u6240\u5C45\u4F4F\u7684\u5730\u5340\u6216\u570B\u5BB6\u4F7F\u7528\u7DDA\u4E0A\u535A\u5F69\u662F\u5426\u5408
+    \u6CD5\uFF0C\u4E26\u8CA0\u5B8C\u5168\u7684\u8CAC\u4EFB\uFF0C\u4F7F\u7528\u672C\u670D\u52D9\u4E4B\u6703\u54E1\u8ACB\u9075\u5B88\u4F7F\u7528\u8005\u7576\u5730\u6CD5\u4EE4\u4E4B\u8A31\u53EF\uFF0C\u5982\u6709
+    \u9055\u53CD\u4E4B\u60C5\u4E8B\u6055\u975E\u672C\u516C\u53F8\u4E4B\u8CA0\u8CAC\u7BC4\u570D\u3002"
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 16
+  m_fontSizeBase: 16
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &714365902935719685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6121241090339459841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &6225258282726869281
 GameObject:
   m_ObjectHideFlags: 0
@@ -5375,189 +5347,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!1 &6257953383481163842
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1814447197286199782}
-  - component: {fileID: 4756416442107702495}
-  - component: {fileID: 6583825464477963692}
-  m_Layer: 5
-  m_Name: CH_Txt (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1814447197286199782
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6257953383481163842}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5426053367149581644}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 162.97, y: -1121.612}
-  m_SizeDelta: {x: 298.9059, y: 1226.6333}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &4756416442107702495
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6257953383481163842}
-  m_CullTransparentMesh: 1
---- !u!114 &6583825464477963692
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6257953383481163842}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: " \r\n\r\n\u4E00\u3001\u9075\u5B88\u6703\u54E1\u898F\u7BC4\u53CA\u6CD5\u5F8B\u898F\u5B9A\uFF1A
-    \r\n\r\n\u60A8\u4E86\u89E3\u60A8\u8A3B\u518A\u6210\u70BA\u6703\u54E1\u5F8C\uFF0C\u5373\u53EF\u4F7F\u7528\u672C\u5E73\u53F0\u6240\u63D0\u4F9B\u4E4B\u5404\u9805\u670D\u52D9(\u4EE5\u4E0B\u7A31\u672C\u670D\u52D9)\u3002\u7576\u6703\u54E1\u4F7F\u7528\u672C\u670D\u52D9\u6642\uFF0C\u5373\u8868\u793A\u9664\u4E86\u540C\u610F\u9075\u5B88\u672C\u670D\u52D9\u689D\u6B3E\u5916\uFF0C\u9084\u540C\u610F\u63A5\u53D7\u672C
-    \u516C\u53F8\u5C0D\u6703\u54E1\u898F\u7BC4(\u5305\u62EC\u5404\u9805\u904A\u6232\u898F\u5247\u3001\u6295\u6CE8\u898F\u5247\u3001\u516C\u544A\u53CA\u6CE8\u610F\u4E8B\u9805\u7B49)\u53CA\u76F8\u95DC\u6CD5\u4EE4\u898F\u5B9A\u4E4B\u62D8\u675F\uFF0C\u4F7F\u7528\u672C\u670D\u52D9\u4E4B\u6703\u54E1\u8ACB\u9075\u5B88\u4F7F\u7528\u8005\u7576\u5730\u6CD5\u4EE4\u4E4B\u8A31\u53EF\uFF0C\u5982\u6709\u9055\u53CD\u4E4B\u60C5\u4E8B\u6055\u975E\u672C\u670D\u52D9\u4E4B\u8CA0\u8CAC\u7BC4\u570D\u3002
-    \r\n\r\n\u4E8C\u3001\u670D\u52D9\u7C21\u4ECB\uFF1A \r\n\r\n(\u4E00)\u672C\u516C\u53F8\u65E8\u5728\u5275\u9020\u4E00\u500B\u300E\u5B89\u5168\u53EF\u9760\u300F\u3001\u300E\u5373\u6642\u4FBF\u5229\u300F\u3001\u300E\u516C\u5E73\u516C\u6B63\u300F\u3001\u300E\u5C08\u696D\u71DF
-    \u904B\u300F\u7684\u512A\u8CEA\u5A1B\u6A02\u670D\u52D9\u5E73\u53F0\uFF0C\u5F37\u8ABF\u7684\u662F\u8B93\u6703\u54E1\u4E0D\u53D7\u6642\u7A7A\u7684\u9650\u5236\uFF0C24
-    \u5C0F\u6642\u96A8\u6642\u4E0A\u7DDA \u5C31\u53EF\u4EE5\u53C3\u8207\u4E00\u500B\u516C\u5E73\u516C\u6B63\u7684\u904A\u6232\uFF0C\u4EA6\u53EF\u4EE5\u4EAB\u53D7\u5230\u8207\u4E16\u754C\u5404\u5730\u73A9\u5BB6\u5207\u78CB\u7684\u6A02\u8DA3\uFF0C
-    \u6211\u5011\u79C9\u6301\u4EE5\u5BA2\u70BA\u5C0A\u7684\u614B\u5EA6\uFF0C\u4E0D\u65B7\u958B\u767C\u5275\u65B0\u53CA\u4E86\u89E3\u5BA2\u6236\u9700\u6C42\u662F\u672C\u516C\u53F8\u5F15\u4EE5\u70BA\u50B2\u7684\u7D93\u71DF\u7406\u5FF5\uFF0C\u5180\u671B\u80FD\u5275\u9020\u51FA\u5D84\u65B0\u7684\u5A1B\u6A02\u50F9\u503C\u4EE5\u53CA\u9054\u5230\u591A\u65B9\u666E\u53CA\u7684\u76EE\u7684\uFF0C\u6210\u70BA\u5177\u6709
-    \u9818\u5C0E\u6307\u6A19\u6027\u7684\u5A1B\u6A02\u7DB2\u7AD9\u3002 \r\n\r\n(\u4E8C)\u865B\u64EC\u8CA8\u5E63\u9280\u884C\u670D\u52D9\uFF1A\u672C\u516C\u53F8\u63D0\u4F9B\u7DB2\u8DEF\u91D1\u6D41\u4ED8\u8CBB\u5E73\u53F0\uFF0C\u4F60\u6240\u8CFC\u8CB7\u7684\u9EDE\u6578\u5C07\u53EF
-    \u4EAB\u53D7\u7B26\u5408\u672C\u516C\u53F8\u5E73\u53F0\u7684\u670D\u52D9\u3002\u82E5\u60A8\u4F7F\u7528\u865B\u507D\u4E0D\u6B63\u4E4B\u65B9\u5F0F\u9032\u884C\u300C\u5132\u503C\u300D\uFF0C\u672C\u516C\u53F8\u4E5F
-    \u5C07\u4FDD\u7559\u96A8\u6642\u7D42\u6B62\u60A8\u6703\u54E1\u8CC7\u683C\u53CA\u4F7F\u7528\u5404\u9805\u670D\u52D9\u4E4B\u6B0A\u5229\u3002
-    \r\n\r\n\u4E09\u3001\u771F\u5BE6\u767B\u9304\u7FA9\u52D9\uFF1A \r\n\r\n\u57FA\u65BC\u672C\u516C\u53F8\u6240\u63D0\u4F9B\u4E4B\u5404\u9805\u670D\u52D9\uFF0C\u60A8\u540C\u610F\u65BC\u8A3B\u518A\u6642\u4F9D\u8A3B\u518A\u7533\u8ACB\u7A0B\u5E8F\u6240\u63D0\u793A\u4E4B\u9805
-    \u76EE\uFF0C\u767B\u9304\u60A8\u672C\u4EBA\u6B63\u78BA\u3001\u771F\u5BE6\u53CA\u5B8C\u6574\u4E4B\u500B\u4EBA\u8CC7\u6599\uFF1B\u7576\u60A8\u7684\u500B\u4EBA\u8CC7\u6599\u6709\u7570\u52D5\u6642\uFF0C\u8ACB
-    \u7ACB\u5373\u66F4\u65B0\uFF0C\u4EE5\u7DAD\u6301\u60A8\u500B\u4EBA\u8CC7\u6599\u4E4B\u6B63\u78BA\u3001\u771F\u5BE6\u53CA\u5B8C\u6574\u3002\u5982\u56E0\u60A8\u767B\u9304\u4E0D\u5BE6\u8CC7\u6599\u6216\u5192
-    \u7528\u4ED6\u4EBA\u540D\u7FA9\u4EE5\u81F4\u65BC\u4FB5\u5BB3\u4ED6\u4EBA\u4E4B\u6B0A\u5229\u6216\u9055\u6CD5\u6642\uFF0C\u61C9\u81EA\u8CA0\u6CD5\u5F8B\u8CAC\u4EFB\uFF1B\u4E26\u540C\u610F\u60A8\u6240\u63D0
-    \u4F9B\u4E4B\u500B\u4EBA\u8CC7\u6599\u4E0D\u5BE6\u6216\u500B\u4EBA\u8CC7\u6599\u6709\u7570\u52D5\u4F46\u6C92\u6709\u66F4\u65B0\u4EE5\u81F4\u65BC\u8207\u539F\u767B\u9304\u4E4B\u8CC7\u6599\u4E0D\u7B26
-    \u6642\uFF0C\u672C\u516C\u53F8\u6709\u6B0A\u96A8\u6642\u7D42\u6B62\u60A8\u7684\u6703\u54E1\u8CC7\u683C\u53CA\u4F7F\u7528\u5404\u9805\u6703\u54E1\u670D\u52D9\u4E4B\u6B0A\u5229\u3002
-    \r\n\r\n\u56DB\u3001\u670D\u52D9\u4E4B\u505C\u6B62\u8207\u66F4\u6539\uFF1A \r\n\r\n1.\u6703\u54E1\u767B\u9304\u4E4B\u8CC7\u6599\u4E0D\u5BE6\u3002
-    2.\u4F7F\u7528\u4ED6\u4EBA\u7684\u540D\u7FA9\u7533\u8ACB\u672C\u670D\u52D9\u3002
-    3.\u9055\u53CD\u904A\u6232\u516C\u5E73\u539F \u5247\u3002 4.\u53C3\u8207\u904A\u6232\u6216\u6BD4\u8CFD\u6642\uFF0C\u6545\u610F\u947D\u7814\u7CFB\u7D71\u6F0F\u6D1E\u6216\u5229\u7528\u904A\u6232\u5F31\u9EDE\u4EE5\u5F71\u97FF\u7D50\u679C\u3002
-    5. \u9055\u53CD\u672C\u670D\u52D9\u689D\u6B3E\u6642\u3002 6.\u672C\u516C\u53F8\u4E0D\u5141\u8A31\u4E0D\u516C\u5E73\u7684\u4E0B\u6CE8\u65B9\u5F0F\u3001\u96D9\u908A\u4E0B\u6CE8\u3001\u7121\u98A8\u96AA\u4E0B
-    \u6CE8\u53CA\u4EFB\u4F55\u7121\u98A8\u96AA\u89E3\u51CD\u4E4B\u4E0B\u6CE8\u65B9\u5F0F\uFF0C\u5982\u6709\u767C\u73FE\u4E0A\u8FF0\u554F\u984C\u4E4B\u73A9\u5BB6\uFF0C\u672C\u516C\u53F8\u6709\u7D42\u6B62\u73A9\r\n\r\n\u5BB6\u5E33\u865F\u4F7F\u7528\u4E4B\u6B0A\u529B\u3002\u5982\u6709\u4EFB\u4F55\u722D\u8B70\u554F\u984C\uFF0C\u672C\u516C\u53F8\u6709\u6700\u7D42\u6C7A\u5B9A\u6B0A\u3002\u7121\u8AD6\u4EFB\u4F55\u60C5
-    \u5F62\uFF0C\u5C31\u505C\u6B62\u6216\u66F4\u6539\u670D\u52D9\u6216\u7D42\u6B62\u6703\u54E1\u5E33\u6236\u670D\u52D9\u6240\u53EF\u80FD\u7522\u751F\u4E4B\u56F0\u64FE\u3001\u4E0D\u4FBF\u6216\u640D\u5BB3\uFF0C
-    \u672C\u670D\u52D9\u5C0D\u4EFB\u4F55\u6703\u54E1\u6216\u7B2C\u4E09\u4EBA\u5747\u4E0D\u8CA0\u4EFB\u4F55\u8CAC\u4EFB\u3002
-    \r\n\r\n\u4E94\u3001\u670D\u52D9\u66AB\u505C\u6216\u4E2D\u65B7\uFF1A \r\n\r\n(\u4E00)\u672C\u516C\u53F8\u65BC\u4E0B\u5217\u60C5\u5F62\u4E4B\u4E00\u6642\uFF0C\u5F97\u66AB\u505C\u6216\u4E2D\u65B7\u672C\u670D\u52D9\u4E4B\u5168\u90E8\u6216\u4E00\u90E8\uFF0C\u5C0D\u65BC\u4F7F\u7528
-    \u8005\u4E0D\u8CA0\u64D4\u4EFB\u4F55\u8CE0\u511F\u8CAC\u4EFB\uFF1A \r\n\r\n1.\u5C0D\u65BC\u672C\u670D\u52D9\u76F8\u95DC\u4FC2\u7D71\u8A2D\u5099\u9032\u884C\u9077\u79FB\u3001\u66F4\u63DB\u6216\u7DAD\u8B77\u6642\u3002
-    2.\u56E0\u4E0D\u53EF\u6B78\u8CAC\u65BC\u672C\u516C\u53F8 \u6240\u9020\u6210\u670D\u52D9\u505C\u6B62\u6216\u4E2D\u65B7\u3002
-    3.\u56E0\u4E0D\u53EF\u6297\u529B\u6240\u9020\u6210\u670D\u52D9\u505C\u6B62\u6216\u4E2D\u65B7\u3002
-    \r\n\r\n(\u4E8C)\u5982\u56E0\u672C\u516C\u53F8\u5C0D\u65BC\u672C\u7DB2\u7AD9\u76F8\u95DC\u4FC2\u7D71\u8A2D\u5099\u9032\u884C\u9077\u79FB\u3001\u66F4\u63DB\u6216\u7DAD\u8B77\u800C\u5FC5\u9808\u66AB\u505C\u6216
-    \u4E2D\u65B7\u5168\u90E8\u6216\u4E00\u90E8\u4E4B\u670D\u52D9\u6642\uFF0C\u672C\u516C\u53F8\u65BC\u66AB\u505C\u6216\u4E2D\u65B7\u524D\u5C07\u4EE5\u96FB\u5B50\u90F5\u4EF6\u901A\u77E5\u6216\u65BC\u672C\u7DB2
-    \u7AD9\u4E0A\u516C\u544A\u3002 \r\n\r\n(\u4E09)\u5C0D\u65BC\u672C\u670D\u52D9\u4E4B\u66AB\u505C\u6216\u4E2D\u65B7\uFF0C\u53EF\u80FD\u9020\u6210\u60A8\u4F7F\u7528\u4E0A\u7684\u4E0D\u4FBF\u3001\u8CC7\u6599\u907A\u5931\u6216\u5176\u4ED6\u7D93
-    \u6FDF\u53CA\u6642\u9593\u4E0A\u4E4B\u640D\u5931\uFF0C\u60A8\u5E73\u6642\u61C9\u63A1\u53D6\u9069\u7576\u7684\u9632\u8B77\u63AA\u65BD\uFF0C\u4EE5\u4FDD\u969C\u60A8\u7684\u6B0A\u76CA\u3002
-    \r\n\r\n\u516D\u3001\u4FDD\u7BA1\u7FA9\u52D9\uFF1A \r\n\r\n\u6703\u54E1\u6709\u7FA9\u52D9\u59A5\u5584\u4FDD\u7BA1\u5728\u672C\u7DB2\u7AD9\u4E4B\u5E33\u865F\u8207\u5BC6\u78BC\uFF0C\u4E26\u70BA\u6B64\u7D44\u5E33\u865F\u8207\u5BC6\u78BC\u767B\u5165\u7CFB\u7D71\u5F8C
-    \u6240\u9032\u884C\u4E4B\u4E00\u5207\u6D3B\u52D5\u8CA0\u8CAC\u3002\u70BA\u7DAD\u8B77\u6703\u54E1\u81EA\u8EAB\u6B0A\u76CA\uFF0C\u8ACB\u52FF\u5C07\u5E33\u865F\u8207\u5BC6\u78BC\u6D29\u9732\u6216\u63D0\u4F9B
-    \u4E88\u7B2C\u4E09\u4EBA\u77E5\u6089\uFF0C\u6216\u51FA\u501F\u6216\u8F49\u8B93\u4ED6\u4EBA\u4F7F\u7528\u3002
-    \r\n\r\n\u4E03\u3001\u540C\u610F\u5404\u9805\u904A\u6232\u898F\u5247\uFF1A \r\n\r\n\u70BA\u907F\u514D\u4F7F\u7528\u8005\u65BC\u672C\u5E73\u53F0\u904A\u6232\u6642\u7522\u751F\u722D\u8B70\uFF0C\u5404\u9805\u898F\u5247\u65BC\u904A\u6232\u4E2D\u5FC3\u5747\u6709\u8A73\u7D30\u8AAA\u660E\uFF0C
-    \u8ACB\u52D9\u5FC5\u8A73\u7D30\u95B1\u8B80\u672C\u670D\u52D9\u6240\u5B9A\u4E4B\u5404\u9805\u898F\u5247\uFF0C\u6703\u54E1\u4E00\u7D93\u958B\u59CB\u4F7F\u7528\u672C\u670D\u52D9\uFF0C\u5373\u88AB\u8996\u70BA
-    \u5DF2\u63A5\u53D7\u6240\u6709\u4E4B\u898F\u5B9A\u3002 \r\n\r\n\u516B\u3001\u6703\u54E1\u898F\u7BC4\u4E4B\u589E\u8A02\u53CA\u4FEE\u6539\uFF1A
-    \r\n\r\n\u672C\u670D\u52D9\u689D\u6B3E\u5982\u6709\u589E\u8A02\u6216\u4FEE\u6539\uFF0C\u60A8\u540C\u610F\u81EA\u8A72\u4FEE\u8A02\u689D\u6B3E\u65BC\u672C\u7DB2\u7AD9\u516C\u544A\u4E4B\u6642\u8D77\u53D7\u5176\u62D8
-    \u675F\uFF0C\u672C\u7DB2\u7AD9\u5C07\u4E0D\u5C0D\u6703\u54E1\u500B\u5225\u901A\u77E5\u3002\u5982\u60A8\u65BC\u516C\u544A\u5F8C\u7E7C\u7E8C\u4F7F\u7528\u672C\u670D\u52D9\uFF0C\u5247\u8996\u70BA\u60A8\u5DF2
-    \u7D93\u540C\u610F\u8A72\u4FEE\u8A02\u689D\u6B3E\u3002 \r\n\r\n\u4E5D\u3001\u96B1\u79C1\u6B0A\u8072\u660E\uFF1A\r\n\r\n\u6211\u5011\u81F4\u529B\u70BA\u5BA2\u6236\u4FDD\u8B77\u96B1\u79C1\u4E26\u63D0\u4F9B\u4E00\u500B\u6700\u5B89\u5168\u7684\u904A\u6232\u5E73\u53F0\uFF0C\u6211\u5011\u5728\u6B64\u7DB2\u7AD9\u8490\u96C6\u7684
-    \u8CC7\u6599\u5C07\u6703\u70BA\u60A8\u63D0\u4F9B\u6700\u5353\u8D8A\u7684\u670D\u52D9\uFF0C\u6211\u5011\u4E0D\u6703\u51FA\u8CE3\u6216\u79DF\u8CC3\u60A8\u7684\u500B\u4EBA\u8CC7\u6599\u7D66\u7B2C\u4E09
-    \u65B9\uFF0C\u4E26\u5132\u5B58\u5728\u5B89\u5168\u7684\u3001\u975E\u516C\u958B\u7684\u4F5C\u696D\u7CFB\u7D71\uFF0C\u5C0D\u65BC\u6709\u6A5F\u6703\u63A5\u89F8\u5BA2\u6236\u7684\u500B\u4EBA\u8CC7\u6599\u7684
-    \u5354\u52A9\u5925\u4F34\u4E5F\u5FC5\u9700\u9075\u5B88\u6211\u5011\u8A02\u7ACB\u7684\u96B1\u79C1\u4FDD\u5BC6\u898F\u5247\u3002
-    \r\n\r\n\u5341\u3001\u514D\u8CAC\u8072\u660E\uFF1A \r\n\r\n\u90E8\u4EFD\u5730\u5340\u6216\u570B\u5BB6\u6CD5\u5F8B\u5C1A\u672A\u660E\u5B9A\u7DDA\u4E0A\u535A\u5F69\u7684\u5408\u6CD5\u6027\u554F\u984C\uFF0C\u751A\u81F3\u67D0\u4E9B\u5730\u5340\u6216\u570B\u5BB6\u5DF2
-    \u660E\u78BA\u898F\u7BC4\u7DDA\u4E0A\u535A\u5F69\u70BA\u975E\u6CD5\u884C\u70BA\u3002\u6211\u5011\u7121\u610F\u9080\u8ACB\u4EFB\u4F55\u4EBA\u5728\u9019\u4E9B\u5730\u5340\u6216\u570B\u5BB6\u975E\u6CD5\u4F7F
-    \u7528\u672C\u670D\u52D9\u5E73\u53F0\u3002\u4F7F\u7528\u8005\u5FC5\u9700\u78BA\u5B9A\u5728\u60A8\u6240\u5C45\u4F4F\u7684\u5730\u5340\u6216\u570B\u5BB6\u4F7F\u7528\u7DDA\u4E0A\u535A\u5F69\u662F\u5426\u5408
-    \u6CD5\uFF0C\u4E26\u8CA0\u5B8C\u5168\u7684\u8CAC\u4EFB\uFF0C\u4F7F\u7528\u672C\u670D\u52D9\u4E4B\u6703\u54E1\u8ACB\u9075\u5B88\u4F7F\u7528\u8005\u7576\u5730\u6CD5\u4EE4\u4E4B\u8A31\u53EF\uFF0C\u5982\u6709
-    \u9055\u53CD\u4E4B\u60C5\u4E8B\u6055\u975E\u672C\u516C\u53F8\u4E4B\u8CA0\u8CAC\u7BC4\u570D\u3002"
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 13.5
-  m_fontSizeBase: 13.5
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 1.6651611, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &6333957566950563136
 GameObject:
   m_ObjectHideFlags: 0
@@ -5825,11 +5614,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3692964113979383959}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -75.74153, y: 0}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 50, y: 0.000015258789}
   m_SizeDelta: {x: 113.1464, y: 27.5073}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &8981528432136557477
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5885,8 +5674,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 18
+  m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6081,10 +5870,10 @@ MonoBehaviour:
   Term_text: {fileID: 8565325459034139829}
   Privacy_obj_Scroll: {fileID: 8946755068826823170}
   Term_obj_Scroll: {fileID: 8193004788391465583}
-  Privacy_text_CH: {fileID: 5915955120153281018}
+  Privacy_text_CH: {fileID: 0}
   Term_text_CH: {fileID: 4222838943046455449}
-  Privacy_text_EN: {fileID: 2665672741160460652}
-  Term_text_EN: {fileID: 5353794013787880456}
+  Privacy_text_EN: {fileID: 0}
+  Term_text_EN: {fileID: 0}
   Privacy_scroll: {fileID: 7116014337782907861}
   Term_scroll: {fileID: 2264951630300860327}
 --- !u!1 &7770661885848333362
@@ -6376,6 +6165,42 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &8096280692292340620
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8903637972600761719}
+  m_Layer: 5
+  m_Name: CH
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8903637972600761719
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8096280692292340620}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2002589589067907333}
+  m_Father: {fileID: 1654801986087197955}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 2279.6}
+  m_Pivot: {x: 0, y: 1}
 --- !u!1 &8193004788391465583
 GameObject:
   m_ObjectHideFlags: 0
@@ -6465,7 +6290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Content: {fileID: 1095971274578995343}
+  m_Content: {fileID: 0}
   m_Horizontal: 1
   m_Vertical: 1
   m_MovementType: 2
@@ -6575,8 +6400,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 13
-  m_fontSizeBase: 13
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6694,6 +6519,241 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &8400183542175535018
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 754045376708140553}
+  - component: {fileID: 637752554534143999}
+  - component: {fileID: 9120619454810930271}
+  - component: {fileID: 7574540510524701269}
+  m_Layer: 5
+  m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &754045376708140553
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8400183542175535018}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1895985890044007051}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 4535.64}
+  m_Pivot: {x: 0.5, y: 1}
+--- !u!222 &637752554534143999
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8400183542175535018}
+  m_CullTransparentMesh: 1
+--- !u!114 &9120619454810930271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8400183542175535018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: "1. Comply with membership regulations and legal regulations:\n\r\nYou
+    understand that after you register as a member, you can use the various services
+    provided by this platform(Hereinafter referred to as this service). When members
+    use this service, they agree not only to abide by these terms of service, but
+    also to accept the company's membership regulations.(Including various game rules,
+    betting rules, announcements and precautions, etc.)and relevant laws and regulations.
+    Members who use this service should abide by the permissions of the user's local
+    laws. Any violation will not be the responsibility of this service. \n\r\n2.
+    Service introduction:\n\r\nThe company aims to create a high-quality entertainment
+    service platform that is \"safe and reliable\", \"instantly convenient\", \"fair
+    and just\" and \"professionally operated\". It emphasizes that members are not
+    limited by time and space.24 You can participate in a fair and just game by being
+    online at any time, and you can also enjoy the fun of competing with players
+    from all over the world. We uphold a customer-oriented attitude, continue to
+    develop and innovate, and understand customer needs are the business philosophy
+    that our company is proud of. , hoping to create new entertainment value and
+    achieve the goal of popularization, and become a leading index entertainment
+    website. \r\nVirtual currency banking services: Our company provides an online
+    cash flow payment platform, and the points you purchase will enable you to enjoy
+    services consistent with our platform. If you use false and unfair methods to
+    \"recharge\", the company will also reserve the right to terminate your membership
+    and use of various services at any time.\n \r\n3. Real login obligations:\n\r\nBased
+    on the various services provided by our company, you agree to log in your correct,
+    true and complete personal information according to the items prompted in the
+    registration application process when registering; when your personal information
+    changes, please update it immediately to ensure Maintain the accuracy, authenticity
+    and completeness of your personal information. If you log in false information
+    or use someone else's name to infringe the rights of others or violate the law,
+    you shall bear legal responsibility; and agree that the personal information
+    you provided is untrue or the personal information has changed but has not been
+    updated so that it is different from the original login. If the information does
+    not match, the company has the right to terminate your membership and the right
+    to use various membership services at any time. \n\r\n4. Stopping and changing
+    services:\n\r\nThe member login information is false. \r\nUse the name of another
+    person to apply for this service. \r\nViolates the principle of game fairness.
+    \r\nWhen participating in a game or competition, deliberately exploit system
+    vulnerabilities or exploit game weaknesses to influence the outcome. \r\nWhen
+    violating these Terms of Service. \r\nThe company does not allow unfair betting
+    methods, bilateral betting, risk-free betting and any risk-free unfreezing betting
+    methods. If any player who finds the above problems is found, the company will
+    terminate the game.\r\n\rThe right to use the home account. If there is any dispute,
+    the company has the final decision. Under any circumstances, the Service will
+    not be liable to any member or third party for any trouble, inconvenience or
+    damage that may arise from stopping or changing services or terminating member
+    account services. \n\r\n5. Service suspension or interruption:\n\r\nThe Company
+    may suspend or interrupt all or part of this service under any of the following
+    circumstances, and shall not be liable for any compensation to users:\n\r\n1.When
+    relocating, replacing or maintaining system equipment related to this service.\n\n2.The
+    service is stopped or interrupted due to reasons that cannot be attributed to
+    the Company. \n\n3.The service is stopped or interrupted due to force majeure.
+    \n\r\nIf all or part of the services must be suspended or interrupted due to
+    the company's migration, replacement or maintenance of the system equipment related
+    to this website, the company will notify you by email or make an announcement
+    on this website before the suspension or interruption. \r\nThe suspension or
+    interruption of this service may cause you inconvenience, data loss or other
+    economic and time losses. You should usually take appropriate protective measures
+    to protect your rights and interests. \n\r\n6. Custody obligations:\n\r\nMembers
+    are obliged to properly keep their account numbers and passwords on this website
+    and are responsible for all activities performed after logging into the system
+    with this account number and password. In order to protect members' own rights
+    and interests, please do not disclose or provide your account number and password
+    to a third party, or lend or transfer it to others for use. \n\r\n7. Agree to
+    the game rules:\n\r\nIn order to avoid disputes when users play games on this
+    platform, various rules are explained in detail in the game center. Please be
+    sure to read the rules of this service in detail. Once a member starts using
+    this service, he is deemed to have accepted all the rules. Regulation. \n\r\n8.
+    Additions and modifications to membership regulations:\n\r\nIf these terms of
+    service are updated or modified, you agree to be bound by the revised terms from
+    the time they are announced on this website, and this website will not notify
+    members individually. If you continue to use this service after the announcement,
+    you will be deemed to have agreed to the revised terms. \n\r\n9. Privacy Statement:\n\r\nWe
+    are committed to protecting the privacy of our customers and providing the safest
+    gaming platform. The information we collect on this website will provide you
+    with the best service. We will not sell or lease your personal information to
+    third parties and store it in a secure Our operating system is non-public, and
+    our assisting partners who have access to customers' personal information must
+    also abide by the privacy and confidentiality rules we have established. \n\r\n10.
+    Disclaimer:\n\r\nThe laws of some regions or countries have not clearly defined
+    the legality of online gambling, and even some regions or countries have clearly
+    regulated online gambling as illegal. We do not intend to invite anyone to illegally
+    use this service platform in these regions or countries. Users must determine
+    whether it is legal to use online gambling in the region or country where you
+    live, and take full responsibility. Members who use this service must comply
+    with the permissions of the user's local laws. If there is any violation, the
+    company will not be responsible. scope.\r\n"
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 16
+  m_fontSizeBase: 16
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &7574540510524701269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8400183542175535018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &8565325459034139829
 GameObject:
   m_ObjectHideFlags: 0
@@ -6894,11 +6954,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2618182620093676765}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -87.951584, y: 0}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 50, y: 0}
   m_SizeDelta: {x: 88.7263, y: 27.5073}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &3368713515832511482
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6954,8 +7014,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 18
+  m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -7130,7 +7190,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5426053367149581644}
-  - {fileID: 1195076868526194591}
+  - {fileID: 1895985890044007051}
   m_Father: {fileID: 8922230236851120312}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
