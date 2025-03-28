@@ -19,9 +19,13 @@ public class pokerAnim : MonoBehaviour
     {
         switch (tweenName)
         {
-            case "dealAnim":
+            case "dealAnim_Local":
                 if(getTrans != null)
-                    tweenManager.inst.dealAnim(transform, getTrans);
+                    tweenManager.inst.dealAnim_Local(transform, getTrans);
+                break;
+            case "dealAnim_Other":
+                if(getTrans != null)
+                    tweenManager.inst.dealAnim_Other(transform, getTrans);
                 break;
             case "foldAnim":
                 if(getTrans != null)
