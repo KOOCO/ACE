@@ -5870,10 +5870,10 @@ MonoBehaviour:
   Term_text: {fileID: 8565325459034139829}
   Privacy_obj_Scroll: {fileID: 8946755068826823170}
   Term_obj_Scroll: {fileID: 8193004788391465583}
-  Privacy_text_CH: {fileID: 0}
+  Privacy_text_CH: {fileID: 8096280692292340620}
   Term_text_CH: {fileID: 4222838943046455449}
-  Privacy_text_EN: {fileID: 0}
-  Term_text_EN: {fileID: 0}
+  Privacy_text_EN: {fileID: 642766543555703404}
+  Term_text_EN: {fileID: 5436849538671466459}
   Privacy_scroll: {fileID: 7116014337782907861}
   Term_scroll: {fileID: 2264951630300860327}
 --- !u!1 &7770661885848333362
