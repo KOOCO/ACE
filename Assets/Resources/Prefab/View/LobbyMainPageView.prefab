@@ -946,6 +946,11 @@ MonoBehaviour:
   JoinRoomViewObj: {fileID: 7564755892930331617, guid: cb109abb0b4327a48972554651bd8438, type: 3}
   Blinds_Txt: {fileID: 5092821388511903748}
   MinBuy_Txt: {fileID: 1122463186959778631}
+  Bg_Img: {fileID: 1689870952768631025}
+  levelBGList:
+  - {fileID: 21300000, guid: 10ef8f15bf1662e47a84958091eace0f, type: 3}
+  - {fileID: 21300000, guid: 211bbd173af826e4a90902e5e463a810, type: 3}
+  - {fileID: 21300000, guid: b12b780709f38fa4c826c99a80eadcf1, type: 3}
 --- !u!222 &6846927100114059709
 CanvasRenderer:
   m_ObjectHideFlags: 0

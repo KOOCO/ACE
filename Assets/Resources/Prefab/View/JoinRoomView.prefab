@@ -2276,6 +2276,11 @@ MonoBehaviour:
   MinBuyChips_Txt: {fileID: 8626560412132966199}
   MaxBuyChips_Txt: {fileID: 3428091997665075926}
   sliderClickDetection: {fileID: 3512800105609572227}
+  Bg_Img: {fileID: 3612512891358203767}
+  levelBGList:
+  - {fileID: 21300000, guid: 2d641fe427a62c54ca2e2ac20061be85, type: 3}
+  - {fileID: 21300000, guid: 932e32d5a42443b43bd24d61934a312b, type: 3}
+  - {fileID: 21300000, guid: 920d181fb53d0784c93492cc077341a7, type: 3}
 --- !u!114 &8819878342560726024
 MonoBehaviour:
   m_ObjectHideFlags: 0

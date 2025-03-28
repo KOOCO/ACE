@@ -23,6 +23,11 @@ public class JoinRoomView : MonoBehaviour
     [SerializeField]
     SliderClickDetection sliderClickDetection;
 
+    [SerializeField]
+    private Image Bg_Img;
+    [SerializeField]
+    private List<Sprite> levelBGList;
+
     LobbyView lobbyView;
     string dataRoomName;                 //查詢資料的房間名稱
     double smallBlind;                   //小盲值
@@ -217,10 +222,14 @@ private static extern void onPageLoad();
     /// </summary>
     /// <param name="tableType">遊戲桌類型</param>
     /// <param name="smallBlind">小盲值</param>
-    public void SetCreatRoomViewInfo(TableTypeEnum tableType, double smallBlind)
+    public void SetCreatRoomViewInfo(TableTypeEnum tableType, double smallBlind, int levelIndex = -1)
     {
         this.smallBlind = smallBlind;
         this.tableType = tableType;
+        if (levelIndex != -1)
+        {
+            Bg_Img.sprite = levelBGList[levelIndex];
+        }
 
         string titleStr = "";
         switch (tableType)

@@ -15,6 +15,13 @@ public class CryptoTableBtnSample : MonoBehaviour
     public static JoinRoomView joinRoomView;
     CurrencyType currencyType;
 
+    [SerializeField]
+    private Image Bg_Img;
+    [SerializeField]
+    private List<Sprite> levelBGList;
+
+    private int levelIndex;
+
 
     string tableId;
 
@@ -38,6 +45,10 @@ public class CryptoTableBtnSample : MonoBehaviour
     {
         tableId = _tableId;
         Blinds_Txt.text = $"$ {StringUtils.SetChipsUnit(smallBlind)} / {StringUtils.SetChipsUnit(smallBlind * 2)}";
+        double minBuy = (smallBlind * 2) * DataManager.MinMagnification;
+        int levelIndex = (minBuy <= 200) ? 0 : (minBuy <= 400) ? 1 : 2;
+        Bg_Img.sprite = levelBGList[levelIndex];
+
         MinBuy_Txt.text = $"$ {StringUtils.SetChipsUnit((smallBlind * 2) * DataManager.MinMagnification)}";
 
         Launch_Btn.onClick.AddListener(() =>
@@ -52,11 +63,11 @@ public class CryptoTableBtnSample : MonoBehaviour
                     if (joinRoomView == null)
                     {
                         joinRoomView = ViewManager.Instance.CreateViewUnderTrans<JoinRoomView>(JoinRoomViewObj, lobbyView.transform) ;
-                        joinRoomView.SetCreatRoomViewInfo(TableTypeEnum.Cash, smallBlind);
+                        joinRoomView.SetCreatRoomViewInfo(TableTypeEnum.Cash, smallBlind, levelIndex);
                     }
                     else
                     {
-                        joinRoomView.SetCreatRoomViewInfo(TableTypeEnum.Cash, smallBlind);
+                        joinRoomView.SetCreatRoomViewInfo(TableTypeEnum.Cash, smallBlind, levelIndex);
                         joinRoomView.gameObject.SetActive(!joinRoomView.gameObject.activeSelf);
                     }
                 }
