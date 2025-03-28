@@ -113,10 +113,19 @@ public class tweenManager : MonoBehaviour
         StartCoroutine(communityChain5());
     }
 
-    public void dealAnim(Transform obj, Transform target)
+    public void dealAnim_Local(Transform obj, Transform target)
     {
         Sequence cardSequence = DOTween.Sequence();
-        cardSequence.Append(obj.DOMove(target.position, 0.8f)).Insert(0, obj.DOLookAt2D(target.position, 0)).Insert(1, obj.DORotate(new Vector3(0, 0, 0), 0.1f)).AppendInterval(0.5f);
+        cardSequence.Append(obj.DOMove(target.position, 0.5f)).Insert(0, obj.DOLookAt2D(target.position, 0)).Insert(1, obj.DORotate(new Vector3(0, 0, 0), 0.1f)).AppendInterval(0.5f);
+        cardSequence.OnComplete(()=>
+        {
+            obj.GetComponent<pokerAnim>().onComplete(true);
+        });
+    }
+    public void dealAnim_Other(Transform obj, Transform target)
+    {
+        Sequence cardSequence = DOTween.Sequence();
+        cardSequence.Append(obj.DOMove(target.position, 0.3f)).Insert(0, obj.DOLookAt2D(target.position, 0)).Insert(0, obj.DOScale(0.45f, 0.3f)).Insert(1, obj.DORotate(new Vector3(0, 0, 0), 0.1f)).AppendInterval(0.5f);
         cardSequence.OnComplete(()=>
         {
             obj.GetComponent<pokerAnim>().onComplete(true);
@@ -259,11 +268,11 @@ public class tweenManager : MonoBehaviour
 
     IEnumerator waitShuffle(List<Transform> Seats, UnityAction callback)
     {
-        dealCard.GetChild(1).gameObject.SetActive(true);
+        dealCard.GetChild(2).gameObject.SetActive(true);
         yield return new WaitForSeconds(1.2f);
 
-        dealCard.GetChild(1).gameObject.SetActive(false);
-        yield return animChain(Seats, callback);
+        dealCard.GetChild(2).gameObject.SetActive(false);
+        yield return animChainL(Seats, callback);
     }
 
     IEnumerator animChain(Transform PTrans)
@@ -307,6 +316,21 @@ public class tweenManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         communityCard5.gameObject.SetActive(false);
     }
+    IEnumerator animChainL(List<Transform> seats, UnityAction callback)
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            int index = i;
+            GameObject animObj = Instantiate(dealCard.GetChild(0).gameObject, dealCard);
+            animObj.GetComponent<pokerAnim>().getTrans = seats[0].GetChild(index);
+            animObj.SetActive(true);
+
+            yield return new WaitForSeconds(0.05f);
+        }
+        seats.RemoveAt(0);
+
+        yield return animChain(seats, callback);
+    }
     IEnumerator animChain(List<Transform> seats, UnityAction callback)
     {
         while (seats.Count > 0)
@@ -314,7 +338,7 @@ public class tweenManager : MonoBehaviour
             for (int i = 0; i < 2; i++)
             {
                 int index = i;
-                GameObject animObj = Instantiate(dealCard.GetChild(0).gameObject, dealCard);
+                GameObject animObj = Instantiate(dealCard.GetChild(1).gameObject, dealCard);
                 animObj.GetComponent<pokerAnim>().getTrans = seats[0].GetChild(index);
                 animObj.SetActive(true);
 
