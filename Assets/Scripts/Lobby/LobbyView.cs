@@ -42,6 +42,8 @@ public class LobbyView : MonoBehaviour
     Button Mine_Btn, Main_Btn, Ranking_Btn, t_History_Btn, Settings_Btn, Refresh_Btn, Report_Btn, transaction_Btn;
     [SerializeField]
     GameObject LobbyMainPageView, LobbyMinePageView, LobbyRankingView, LobbyShopView, LobbyActivityView, LobbySettingsView, LobbyReportView, TransactionView;
+    [SerializeField]
+    List<GameObject> SelectBGList;
 
     [Header("任務介面")]
     [SerializeField]
@@ -531,7 +533,10 @@ public class LobbyView : MonoBehaviour
     private void OpenItemPage(ItemType itemType)
     {
         LobbyMainPageView mainPageView = null;
-
+        foreach(GameObject bg in SelectBGList)
+        {
+            bg.SetActive(false);
+        }
         // Find existing pages
         for (int i = 0; i < Floor3.childCount; i++)
         {
@@ -568,9 +573,11 @@ public class LobbyView : MonoBehaviour
                 break;
             case ItemType.Mine:
                 itemObj = LobbyMinePageView;
+                SelectBGList[0].SetActive(true);
                 break;
             case ItemType.Ranking:
                 itemObj = LobbyRankingView;
+                SelectBGList[2].SetActive(true);
                 break;
             case ItemType.Shop:
                 itemObj = LobbyShopView;
@@ -582,9 +589,11 @@ public class LobbyView : MonoBehaviour
                 break;
             case ItemType.Settings:
                 itemObj = LobbySettingsView;
+                SelectBGList[3].SetActive(true);
                 break;
             case ItemType.Report:
                 itemObj = LobbyReportView;
+                SelectBGList[1].SetActive(true);
                 break;
             default:
                 Debug.LogWarning("Unknown item type: " + itemType);
