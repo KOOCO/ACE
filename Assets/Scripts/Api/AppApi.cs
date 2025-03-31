@@ -117,6 +117,27 @@ public class AppApi : MonoBehaviour
         SwaggerAPIManager.Instance.SendGetAPI(apiEndpoint, _success, _error, true);
     }
 
+    public static void robotPreFlop(robotHand handData, UnityAction<string> _success = null, UnityAction<string> _error = null)
+    {
+        string jsonData = JsonConvert.SerializeObject(handData);
+        //print("機器人手牌 Encrypt: " + EncryptJson(jsonData));
+        encryptRobotData eRD = new encryptRobotData(EncryptJson(jsonData));
+
+        apiEndpoint = $"/api/app/games/ace/pre-flop";
+        //Encrypt version
+        SwaggerAPIManager.Instance.SendPostAPI<encryptRobotData>(apiEndpoint, eRD, _success, _error, false);
+    }
+    public static void robotAfterFlop(robotShape shapeData, UnityAction<string> _success = null, UnityAction<string> _error = null)
+    {
+        string jsonData = JsonConvert.SerializeObject(shapeData);
+        //print("機器人手牌 Encrypt: " + EncryptJson(jsonData));
+        encryptRobotData eRD = new encryptRobotData(EncryptJson(jsonData));
+
+        apiEndpoint = $"/api/app/games/ace/post-flop";
+        //Encrypt version
+        SwaggerAPIManager.Instance.SendPostAPI<encryptRobotData>(apiEndpoint, eRD, _success, _error, false);
+    }
+
     #region Generate Aes
     public static Aes CreateAes()
     {

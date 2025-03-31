@@ -550,6 +550,66 @@ public class PlayerStatistics
 
 #endregion
 
+#region
+
+public class robotHand
+{
+    public string startingHand;
+
+    public robotHand(string startingH)
+    {
+        startingHand = startingH;
+    }
+}
+
+public class robotShape
+{
+    public int pokerHand;
+
+    public robotShape(int PH)
+    {
+        pokerHand = PH;
+    }
+}
+
+public class encryptRobotData
+{
+    public string text;
+
+    public encryptRobotData(string text)
+    {
+        this.text = text;
+    }
+}
+
+public class actionData
+{
+    public int action;
+    public decimal raisePercentage;
+
+    public actionData(int action, decimal raiseP)
+    {
+        this.action = action;
+        raisePercentage = raiseP;
+    }
+}
+
+public class robotResponse
+{
+    public actionData data;
+    public string code;
+    public string[] messages;
+
+    public robotResponse(actionData data, string code, string[] messages)
+    {
+        this.data = data;
+        this.code = code;
+        this.messages = messages;
+    }
+}
+
+#endregion
+
 #region Hand History
 public class HandHistory
 {

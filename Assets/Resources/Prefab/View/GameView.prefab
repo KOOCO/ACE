@@ -7079,8 +7079,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c7e2ecb81904c8468e29bc705279bc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameView: {fileID: 4302607148417090403}
   gameControl: {fileID: 722172294660696453}
-  isTest: 1
+  isTest: 0
 --- !u!114 &7730910463845472246
 MonoBehaviour:
   m_ObjectHideFlags: 0
