@@ -67,7 +67,6 @@ public class GamePot : MonoBehaviour
     {
         set
         {
-            Pot_Img.enabled = value;
             Pot_Img.rectTransform.anchoredPosition = gameData.InitPotPointPos;
         }
     }

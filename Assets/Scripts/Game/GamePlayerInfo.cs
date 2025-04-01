@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class GamePlayerInfo : MonoBehaviour
 {
@@ -35,6 +36,10 @@ public class GamePlayerInfo : MonoBehaviour
     [Header("下注籌碼")]
     [SerializeField]
     RectTransform BetChips_Tr;
+    [SerializeField]
+    GameObject ChipItem_Obj;
+    [SerializeField]
+    ChipsTween ChipsTween;
 
     [Header("行動")]
     [SerializeField]
@@ -45,8 +50,6 @@ public class GamePlayerInfo : MonoBehaviour
     Sprite foldImg, callImg, checkImg, raiseImg, allInImg, blindImg, addChipImg;
     [SerializeField]
     Color foldColor, callColor, checkColor, raiseColor, allInColor, blindColor, addChipColor;
-    [SerializeField]
-    Transform betAnim;
 
     [Header("保險")]
     [SerializeField]
@@ -411,17 +414,6 @@ public class GamePlayerInfo : MonoBehaviour
     }
 
     /// <summary>
-    /// 下注物件激活開關
-    /// </summary>
-    public bool SwitchBetChipsActive
-    {
-        set
-        {
-            BetChips_Tr.gameObject.SetActive(value);
-        }
-    }
-
-    /// <summary>
     /// 開訊息遮罩
     /// </summary>
     public bool IsOpenInfoMask
@@ -751,7 +743,6 @@ public class GamePlayerInfo : MonoBehaviour
     /// <param name="chips">玩家籌碼</param>
     public void PlayerBet(double betValue, double chips)
     {
-        BetChips_Tr.gameObject.SetActive(true);
         PlayerRoomChips = chips;
         CurrBetValue = betValue;
     }
@@ -762,17 +753,8 @@ public class GamePlayerInfo : MonoBehaviour
     /// <param name="potPointPos">底池位置</param>
     public void ConcentrateBetChips(Vector2 potPointPos)
     {
-        float during = 0.5f;//效果時間
-
-        ObjMoveUtils.ObjMoveToTarget(BetChips_Tr, potPointPos, during,
-                                    () =>
-                                    {
-                                        if (BetChips_Tr != null)
-                                        {
-                                            BetChips_Tr.anchoredPosition = betChipsr_TrInitPos;
-                                            BetChips_Tr.gameObject.SetActive(false);
-                                        }
-                                    });
+        //float during = 0.5f;//效果時間
+        BetChips_Tr.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -803,32 +785,32 @@ public class GamePlayerInfo : MonoBehaviour
             case BetActionEnum.Raise:
                 Action_Img.sprite = raiseImg;
                 Action_Txt.color = raiseColor;
-                tweenManager.inst.playBet(betAnim);
+                playerBet();
                 break;
 
             case BetActionEnum.Bet:
                 Action_Img.sprite = raiseImg;
                 Action_Txt.color = raiseColor;
-                tweenManager.inst.playBet(betAnim);
+                playerBet();
                 break;
 
             case BetActionEnum.Call:
                 Action_Img.sprite = callImg;
                 Action_Txt.color = callColor;
-                tweenManager.inst.playBet(betAnim);
+                playerBet();
                 break;
 
             case BetActionEnum.AllIn:
                 Action_Img.sprite = allInImg;
                 Action_Txt.color = allInColor;
-                tweenManager.inst.playBet(betAnim);
+                playerBet();
                 allInHalo.Play();
                 break;
 
             case BetActionEnum.Blinds:
                 Action_Img.sprite = blindImg;
                 Action_Txt.color = blindColor;
-                tweenManager.inst.playBet(betAnim);
+                playerBet();
                 break;
             
             case BetActionEnum.AddChip:
@@ -878,6 +860,16 @@ public class GamePlayerInfo : MonoBehaviour
 
         //float txtWidth = Action_Txt.preferredHeight;
         //Action_Img.rectTransform.sizeDelta = new Vector2(Action_Img.rectTransform.rect.width, txtWidth + 5);
+    }
+    private void playerBet()
+    {
+        var chip = Instantiate(ChipItem_Obj, ChipsTween.transform);
+        chip.transform.position = Avatar_Img.transform.position;
+        ChipsTween.PlayBet(chip.transform, BetChips_Tr.position + new Vector3(12, 12, 0), () =>
+        {
+            BetChips_Tr.gameObject.SetActive(true);
+            chip.SetActive(false);
+        });
     }
 
     /// <summary>

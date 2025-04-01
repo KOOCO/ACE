@@ -18,6 +18,10 @@ public class GameView : MonoBehaviour
     [SerializeField]
     public GameControl gameControl;
 
+    [Header("籌碼動畫腳本")]
+    [SerializeField]
+    public ChipsTween chipsTween;
+
     public GameData gameData = new GameData();
 
     [Header("座位上玩家訊息")]
@@ -796,6 +800,7 @@ public class GameView : MonoBehaviour
         gameChat.Init(roomName);
         gamePot.ShowWaitingTip = true;
         gamePot.TotalPot = 0;
+        chipsTween.GameInit();
         foreach (var player in gameData.gamePlayerInfoList)
         {
             //player.SetPokerShapeTxtStr = "";
@@ -1088,8 +1093,6 @@ public class GameView : MonoBehaviour
         gamePlayerInfo.GetHandPoker[1].gameObject.SetActive(playerData.gameState == (int)PlayerStateEnum.Playing ||
                                                             playerData.gameState == (int)PlayerStateEnum.AllIn);
 
-
-        gamePlayerInfo.SwitchBetChipsActive = playerData.currAllBetChips > 0;
         if (playerData.gameState == (int)PlayerStateEnum.Waiting)
         {
             gamePlayerInfo.DisplayBetAction(false);
@@ -1295,6 +1298,7 @@ public class GameView : MonoBehaviour
                 {
                     player.ConcentrateBetChips(gamePot.PotTransform.position);
                 }
+                chipsTween.ConcentrateChips();
 
                 yield return new WaitForSeconds(0.5f);
 
@@ -1603,6 +1607,7 @@ public class GameView : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         // Display the winning players and distribute the pot
+        int index = 0;
         foreach (var potWinnerId in gameData.gameRoomData.potWinData.potWinnersId)
         {
             changeValue = gameData.gameRoomData.potWinData.potWinChips / gameData.gameRoomData.potWinData.potWinnersId.Count();
@@ -1622,20 +1627,11 @@ public class GameView : MonoBehaviour
             gameData.playerWinValueList.Add(potWinnerId, playerData.carryChips-player.PlayerRoomChips);
 
             Vector2 winnerSeatPos = player.gameObject.transform.position;
-
-            RectTransform rt = Instantiate(WinChipsObj, gamePot.PotTransform).GetComponent<RectTransform>();
-            rt.anchoredPosition = Vector2.zero;
-            gamePot.PotActive = false;
-
-            ObjMoveUtils.ObjMoveToTarget(rt, winnerSeatPos, 0.5f, () =>
-            {
-                PlaySound("SoundWinPot");
-                player.PlayerRoomChips = playerData.carryChips;
-                Destroy(rt.gameObject);
-            });
+            chipsTween.Result(gameData.gameRoomData.potWinData.potWinnersId.Count, index, winnerSeatPos);
             gamePot.TotalPot = (int)(gameData.gameRoomData.sideWinData?.sideWinChips ?? 0);
             yield return new WaitForSeconds(0.1f);
             player.IsWinnerActive = false;
+            index++;
         }
 
         yield return new WaitForSeconds(0.1f);
@@ -1809,8 +1805,8 @@ public class GameView : MonoBehaviour
             player.setWinnerDisplay($"WIN + ${playerWin.Value:f2}");
             print($"WIN: {playerWin.Value}");
             //獲勝籌碼物件
-            RectTransform rt = Instantiate(WinChipsObj, gamePot.PotTransform).GetComponent<RectTransform>();
-            rt.anchoredPosition = Vector2.zero;
+            //RectTransform rt = Instantiate(WinChipsObj, gamePot.PotTransform).GetComponent<RectTransform>();
+            //rt.anchoredPosition = Vector2.zero;
             yield return new WaitForSeconds(0.5f);
         }
     }

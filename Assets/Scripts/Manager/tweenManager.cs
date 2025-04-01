@@ -55,22 +55,6 @@ public class tweenManager : MonoBehaviour
             obj.SetActive(false);
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        //foreach (var obj in D_Targets)
-        //{
-        //    if (obj.gameObject.activeInHierarchy)
-        //        D_TargetsActive.Add(obj);
-        //}
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void setSeats(UnityAction callback)
     {
         List<Transform> Seats = new List<Transform>();
@@ -79,11 +63,6 @@ public class tweenManager : MonoBehaviour
             if (obj.gameObject.activeInHierarchy)
                 Seats.Add(obj);
         }
-        //foreach(var info in Seats)
-        //{
-        //    if (!info.GetComponent<GamePlayerInfo>().IsPlaying)
-        //        Seats.RemoveAt(Seats.IndexOf(info));
-        //}
 
         dealCard.gameObject.SetActive(true);
         StartCoroutine(waitShuffle(Seats, callback));
@@ -93,12 +72,6 @@ public class tweenManager : MonoBehaviour
     {
         foldCard.gameObject.SetActive(true);
         StartCoroutine(animChain(foldCard));
-    }
-    
-    public void playBet(Transform Target)
-    {
-        Target.gameObject.SetActive(true);
-        StartCoroutine(animChain(Target));
     }
     
     public void playCommunity()
