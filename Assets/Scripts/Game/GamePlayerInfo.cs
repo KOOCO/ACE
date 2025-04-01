@@ -664,7 +664,8 @@ public class GamePlayerInfo : MonoBehaviour
 
             CDMask_Img.fillAmount = value;
 
-            //countDown_Txt.gameObject.SetActive(true);
+            if(IsLocalPlayer)
+                countDown_Txt.gameObject.SetActive(true);
             countDown_Txt.text = cd.ToString();
             yield return null;
         }
