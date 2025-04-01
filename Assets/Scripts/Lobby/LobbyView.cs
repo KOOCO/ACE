@@ -448,6 +448,13 @@ public class LobbyView : MonoBehaviour
         }
     }
 
+    public void forceToExit()
+    {
+        GameControl gameControl = FindAnyObjectByType<GameControl>();
+        if (gameControl != null)
+            gameControl.RemovePlayer(DataManager.UserId);
+    }
+
     #region HB in Unity
     //Test callBack in Unity
     void StartHeartbeat()

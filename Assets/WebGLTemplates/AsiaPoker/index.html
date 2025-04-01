@@ -67,7 +67,7 @@
             console.log('handleBackSwipe')
             if (!isBackWarningDisplayed) {
                 // Prevent the back action, show a warning
-                showWarningNotification();
+                showWarningNotification("Swipe again to exit the game.");
 
                 // Set the flag to allow exit on the next swipe
                 isBackWarningDisplayed = true;
@@ -91,7 +91,7 @@
                 console.log('popstate2');
                 if (!isBackWarningDisplayed) {
                     // Prevent the back action, show a warning
-                    showWarningNotification();
+                    showWarningNotification("Swipe again to exit the game.");
 
                     // Set the flag to allow exit on the next swipe
                     isBackWarningDisplayed = true;
@@ -109,7 +109,7 @@
                 console.log('hashchange');
                 if (!isBackWarningDisplayed) {
                     // Prevent the back action, show a warning
-                    showWarningNotification();
+                    showWarningNotification("Swipe again to exit the game.");
 
                     // Set the flag to allow exit on the next swipe
                     isBackWarningDisplayed = true;
@@ -123,6 +123,17 @@
                     window.history.back();
                 }
             });
+	    // 阻止直接關閉或改網址
+	    window.addEventListener("beforeunload", (event) => {
+      		event.preventDefault();
+    		event.returnValue = "確定要直接離開遊戲嗎？";
+	    });
+
+	    // 監聽頁面被卸載
+	    window.addEventListener("pagehide", (event) => {
+    		   console.log("頁面關閉或網址變更");
+    		   window.unityInstance.SendMessage("LobbyView", "forceToExit");
+	    });
             function pushHistory() {
                 var state = { title: "", url: url };
                 window.history.pushState(state, "", url);
@@ -133,9 +144,9 @@
             window.history.pushState(null, null, window.location.href);
 
         // Function to show notification
-        function showWarningNotification() {
+        function showWarningNotification(input) {
             // Use any UI component or alert to show the message
-            alert("Swipe again to exit the game.");
+            alert(input);
             // You can replace the alert with a more user-friendly modal or in-game UI
         }
     </script>
