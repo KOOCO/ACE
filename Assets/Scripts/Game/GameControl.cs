@@ -2000,6 +2000,8 @@ public class GameControl : MonoBehaviour
                     }
                     else
                     {
+                        gameView.judgeRobotShape(player);
+                        print("機器人牌型" + player.pokerCurrShapeIndex);
                         AppApi.robotAfterFlop(new robotShape(player.pokerCurrShapeIndex), (x) =>
                         {
                             print("機器人動作 " + x);

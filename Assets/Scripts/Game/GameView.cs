@@ -1437,7 +1437,7 @@ public class GameView : MonoBehaviour
                     // Set player's poker shape
                     player.SetPokerShapeStr(resultIndex);
                     var winRateCalc = new PokerWinRateCalculator(handPoker.Select(p => p.PokerNum).ToList(), gameData.thisData.CurrCommunityPoker);
-                    if (gameData.thisData.CurrCommunityPoker.Count != 0)
+                    if (isOpenMatchPokerFrame && gameData.thisData.CurrCommunityPoker.Count != 0)
                     {
                         winRateCalc.CalculateWinRate((res) =>
                         {
@@ -1505,6 +1505,10 @@ public class GameView : MonoBehaviour
         Debug.Log("My Ranks :: " + string.Join(",", myRank));
 
         return myCards.Take(5).ToList();
+    }
+    public void judgeRobotShape(GamePlayerInfo robot)
+    {
+        JudgePokerShapeUI(robot, false);
     }
 
     /// <summary>

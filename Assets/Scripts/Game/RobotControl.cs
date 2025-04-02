@@ -34,65 +34,107 @@ public class RobotControl : MonoBehaviour
         BetActingEnum action = BetActingEnum.None;
         double betValue = 0;
         #region old Editor
-        int foldRate = isTest ? 0 : new System.Random().Next(0, 100);
+        //int foldRate = isTest ? 0 : new System.Random().Next(0, 100);
+        int foldRate = new System.Random().Next(0, 100);
 
-        //是否只能All In
-        bool isJustAllIn = robotData.carryChips <= gameRoomData.currCallValue;
-        //首位加注玩家
-        bool isFirst = gameRoomData.actionPlayerCount == 0;
-
-        if (foldRate > 0)
+        if (isTest)
         {
-            action = BetActingEnum.Call;
+            //是否只能All In
+            bool isJustAllIn = robotData.carryChips <= gameRoomData.currCallValue;
+            //首位加注玩家
+            bool isFirst = gameRoomData.actionPlayerCount == 0;
 
-            if (isJustAllIn)
+            if (foldRate > 0)
             {
-                action = BetActingEnum.AllIn;
-                betValue = robotData.carryChips;
-            }
-            else
-            {
-                if (isFirst == true)
+                action = BetActingEnum.Call;
+
+                if (isJustAllIn)
                 {
-                    if (robotData.currAllBetChips == gameRoomData.currCallValue)
-                    {
-                        action = BetActingEnum.Check;
-                    }
-                    else
-                    {
-                        betValue = gameRoomData.currCallValue;
-                    }
+                    action = BetActingEnum.AllIn;
+                    betValue = robotData.carryChips;
                 }
                 else
                 {
-                    if (robotData.currAllBetChips == gameRoomData.currCallValue)
+                    if (isFirst == true)
                     {
-                        action = BetActingEnum.Check;
+                        if (robotData.currAllBetChips == gameRoomData.currCallValue)
+                        {
+                            action = BetActingEnum.Check;
+                        }
+                        else
+                        {
+                            betValue = gameRoomData.currCallValue;
+                        }
                     }
                     else
                     {
-                        betValue = gameRoomData.currCallValue;
+                        if (robotData.currAllBetChips == gameRoomData.currCallValue)
+                        {
+                            action = BetActingEnum.Check;
+                        }
+                        else
+                        {
+                            betValue = gameRoomData.currCallValue;
+                        }
                     }
                 }
             }
         }
-        else
-            action = BetActingEnum.Fold;
         #endregion
 
-        //action = judgeAction(actionData.action);
-        //if (actionData.raisePercentage != 0)
-        //{
-        //    action = BetActingEnum.Raise;
-        //    double bb = gameRoomData.smallBlind * 2;
-        //    betValue = Mathf.Floor((float)(gameView.gameData.thisData.CurrRaiseValue + (bb * (1 + (double)actionData.raisePercentage / 100))));
-        //}
-        //else if (action == BetActingEnum.Call)
-        //    betValue = gameRoomData.currCallValue;
-        //else if (action == BetActingEnum.AllIn)
-        //    betValue = robotData.carryChips;
+        if (!isTest)
+        {
+            action = BetActingEnum.Call;
+            bool isFirst = gameRoomData.actionPlayerCount == 0;
 
-        //print("實際下注: " + action);
+            //跟舊版雷同，防止機器人是小盲時做出非法操作(強迫跟注)
+            if (isFirst == true)
+            {
+                if (robotData.currAllBetChips == gameRoomData.currCallValue)
+                {
+                    action = judgeAction(actionData.action);
+                    if (actionData.raisePercentage != 0)
+                    {
+                        action = BetActingEnum.Raise;
+                        double bb = gameRoomData.smallBlind * 2;
+                        betValue = Mathf.Floor((float)(gameView.gameData.thisData.CurrRaiseValue + (bb * (1 + (double)actionData.raisePercentage / 100))));
+                    }
+                    else if (action == BetActingEnum.AllIn)
+                        betValue = robotData.carryChips;
+                }
+                else
+                {
+                    if (actionData.action != 5)
+                        betValue = gameRoomData.currCallValue;
+                    else
+                        action = BetActingEnum.Fold;
+                }
+            }
+            else
+            {
+                if (robotData.currAllBetChips == gameRoomData.currCallValue)
+                {
+                    action = judgeAction(actionData.action);
+                    if (actionData.raisePercentage != 0)
+                    {
+                        action = BetActingEnum.Raise;
+                        double bb = gameRoomData.smallBlind * 2;
+                        betValue = Mathf.Floor((float)(gameView.gameData.thisData.CurrRaiseValue + (bb * (1 + (double)actionData.raisePercentage / 100))));
+                    }
+                    else if (action == BetActingEnum.AllIn)
+                        betValue = robotData.carryChips;
+                }
+                else
+                {
+                    if (actionData.action != 5)
+                        betValue = gameRoomData.currCallValue;
+                    else
+                        action = BetActingEnum.Fold;
+                }
+            }
+
+            print("實際下注: " + action + " 金額: " + betValue);
+        }
         //更新資料(機器人下注行為)
         gameControl.UpdateBetAction(gameRoomData.currActionerId,
                                     action,
