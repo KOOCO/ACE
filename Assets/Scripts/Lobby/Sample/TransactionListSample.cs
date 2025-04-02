@@ -8,7 +8,7 @@ using System;
 public class TransactionListSample : MonoBehaviour
 {
     [SerializeField]
-    public TextMeshProUGUI T_Number_Txt, T_Time_Txt, typesValue_Txt, Amount_Txt, State_Txt;
+    public TextMeshProUGUI T_Time_Txt, typesValue_Txt, Amount_Txt, State_Txt;
     [SerializeField]
     public Button item_Btn;
     //[SerializeField]
@@ -17,8 +17,8 @@ public class TransactionListSample : MonoBehaviour
     [Header("文本翻譯")]
     public TextMeshProUGUI Types_Txt;
 
-    private TransactionDetailData detailData = null;
-    public Action<TransactionDetailData> ClickItem;
+    private TransactionData detailData = null;
+    public Action<TransactionData> ClickItem;
 
     // Start is called before the first frame update
     void Start()
@@ -31,27 +31,46 @@ public class TransactionListSample : MonoBehaviour
     }
 
     /// <summary>
-    /// 更新文本翻譯
-    /// </summary>
-    private void UpdateLanguage(string type)
-    {
-        if(type == "In")
-            Types_Txt.text = LanguageManager.Instance.GetText("Transfer In");
-        else if(type == "Out")
-            Types_Txt.text = LanguageManager.Instance.GetText("Transfer Out");
-    }
-
-    /// <summary>
     /// 設置額度紀錄值
     /// </summary>
     /// <param name="type">use "In" or "Out"</param>
-    public void setTransactionListValue(TransactionDetailData data)
+    public void setTransactionListValue(TransactionData data)
     {
         detailData = data;
-        T_Number_Txt.text = data.TransactionID;
-        T_Time_Txt.text = data.Time;
-        UpdateLanguage(data.Type);
-        Amount_Txt.text = data.Amount.ToString();
-        State_Txt.text = data.State;
+        string time = data.creationTime.Replace("T", "\n<color=#698CD6>");
+        int dotIndex = time.IndexOf('.');
+        if (dotIndex != -1)
+        {
+            time = time.Substring(0, dotIndex);
+        }
+        T_Time_Txt.text = time;
+        switch (data.transactionType)
+        {
+            case 1:
+                Types_Txt.text = LanguageManager.Instance.GetText("Transfer In");
+                break;
+            case 2:
+                Types_Txt.text = LanguageManager.Instance.GetText("Transfer Out");
+                break;
+        }
+        Amount_Txt.text = data.amount.ToString();
+        switch(data.transactionStatus)
+        {
+            case 0:
+                State_Txt.text= LanguageManager.Instance.GetText("Created");
+                break;
+            case 1:
+                State_Txt.text = LanguageManager.Instance.GetText("Pending");
+                break;
+            case 2:
+                State_Txt.text = LanguageManager.Instance.GetText("Completed");
+                break;
+            case 3:
+                State_Txt.text = LanguageManager.Instance.GetText("Failed");
+                break;
+            case 4:
+                State_Txt.text = LanguageManager.Instance.GetText("SystemFailed");
+                break;
+        }
     }
 }

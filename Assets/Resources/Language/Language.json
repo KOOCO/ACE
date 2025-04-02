@@ -1658,5 +1658,35 @@
     "ID": "State",
     "English": "State",
     "zh_TW": "狀態"
+  },
+  {
+    "ID": "Transaction Amount",
+    "English": "Transaction Amount",
+    "zh_TW": "交易金額"
+  },
+  {
+    "ID": "Created",
+    "English": "Created",
+    "zh_TW": "已建立"
+  },
+  {
+    "ID": "Pending",
+    "English": "Pending",
+    "zh_TW": "確認中"
+  },
+  {
+    "ID": "Completed",
+    "English": "Completed",
+    "zh_TW": "完成"
+  },
+  {
+    "ID": "Failed",
+    "English": "Failed",
+    "zh_TW": "失敗"
+  },
+  {
+    "ID": "SystemFailed",
+    "English": "SystemFailed",
+    "zh_TW": "系統失敗"
   }
 ]

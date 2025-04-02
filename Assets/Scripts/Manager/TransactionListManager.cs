@@ -21,7 +21,7 @@ public class TransactionListManager : MonoBehaviour
     [SerializeField]
     private TransactionDetail detailView;
 
-    private int nowPage, totalPage;
+    private int nowPage, totalPage, pageSize;
     private ObjPool objPool;
     private TransactionListData transListdata;
 
@@ -36,6 +36,7 @@ public class TransactionListManager : MonoBehaviour
             {
                 nowPage = 1;
             }
+            AppApi.GetTransactionList(nowPage, ShowTransactionList);
             UpdatePage();
         });
         Prev_Btn.onClick.AddListener(() =>
@@ -47,18 +48,19 @@ public class TransactionListManager : MonoBehaviour
                 nowPage = totalPage;
             }
             UpdatePage();
+            AppApi.GetTransactionList(nowPage, ShowTransactionList);
         });
     }
     public void ShowTransactionList(string data)
     {
         if(data == null) return;
         transListdata = JsonConvert.DeserializeObject<TransactionListData>(data) ?? new TransactionListData();
-        totalPage = (int)((transListdata.Detail.Count + 9) / 10); //算總頁數無條件進位
-        nowPage = 1;
+        totalPage = transListdata.meta.totalPages;
+        nowPage = transListdata.meta.currentPage;
+        pageSize = transListdata.meta.pageSize;
         string totalPagetxt = "OF " + totalPage.ToString();
         TotalPage_Txt.text = totalPagetxt;
-        NowPage_Txt.text = nowPage.ToString();
-        if (transListdata.Detail.Count == 0)
+        if (transListdata.meta.totalRecords == 0)
         {
             NowPage_Txt.text = "1";
             TotalPage_Txt.text = "OF 1";
@@ -66,7 +68,7 @@ public class TransactionListManager : MonoBehaviour
             Prev_Btn.onClick.RemoveAllListeners();
         }
         UpdatePage();
-        totalRecord_Txt.text = LanguageManager.Instance.GetText("Total {count} Record(S)").Replace("{count}", $" {transListdata.Detail.Count} ");
+        totalRecord_Txt.text = LanguageManager.Instance.GetText("Total {count} Record(S)").Replace("{count}", $" {transListdata.meta.totalRecords} ");
 
     }
     private void UpdatePage()
@@ -78,13 +80,13 @@ public class TransactionListManager : MonoBehaviour
         {
             Content.GetChild(i).gameObject.SetActive(false);
         }
-        for (int i = (nowPage - 1) * 10; i < nowPage * 10; i++)
+        for (int i = 0; i < transListdata.data.Count; i++)
         {
-            if (i > transListdata.Detail.Count - 1)
+            if (i > transListdata.meta.totalRecords - 1)
             {
-                for (int k = count; k <= 10; k++)
+                for (int k = count; k <= pageSize; k++)
                 {
-                    if (k > transListdata.Detail.Count)
+                    if (k > transListdata.meta.totalRecords)
                     {
                         break;
                     }
@@ -92,18 +94,18 @@ public class TransactionListManager : MonoBehaviour
                 }
                 break;
             }
-            TransactionDetailData detail = transListdata.Detail[i];
+            TransactionData detail = transListdata.data[i];
             TransactionListSample obj = objPool.CreateObj<TransactionListSample>(transactionListSample, Content);
             obj.ClickItem += ShowDetailView;
             UpdateObjectData(obj, detail);
             count++;
         }
     }
-    private void ShowDetailView(TransactionDetailData data)
+    private void ShowDetailView(TransactionData data)
     {
         detailView.ShowDetail(data);
     }
-    private void UpdateObjectData(TransactionListSample obj, TransactionDetailData detail)
+    private void UpdateObjectData(TransactionListSample obj, TransactionData detail)
     {
         obj.gameObject.SetActive(true);
         obj.setTransactionListValue(detail);
@@ -111,15 +113,23 @@ public class TransactionListManager : MonoBehaviour
 }
 public class TransactionListData
 {
-    public int TotalCount;
-    public List<TransactionDetailData> Detail;
+    public Meta meta;
+    public List<TransactionData> data;
 }
-public class TransactionDetailData
+public class Meta
 {
-    public string TransactionID;
-    public string HashKey;
-    public string Time;
-    public string Type;
-    public float Amount;
-    public string State;
+    public int currentPage;
+    public int pageSize;
+    public int totalPages;
+    public int totalRecords;
+}
+public class TransactionData
+{
+    public string hashKey;
+    public int currencyCode;
+    public int transactionType;
+    public double amount;
+    public int transactionStatus;
+    public string creationTime;
+    public string id;
 }

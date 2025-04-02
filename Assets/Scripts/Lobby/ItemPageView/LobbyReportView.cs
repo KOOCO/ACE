@@ -81,9 +81,7 @@ public class LobbyReportView : MonoBehaviour
         {
             if (isOn)
                 selectObj(transList_Obj);
-            dateSelect_Obj.SetActive(false);
-            string data = "{\"TotalCount\":12,\"Detail\":[{\"TransactionID\":\"S4gzKkqhtksWk3OfsNRUSWJTew\",\"HashKey\":\"3Z89C98xre9FUIo6GPIYH4QblTphvY52rAACaVwl7GuIQFOGGVE2JHiBSZBt2t7m\",\"Time\":\"2023-06-06T07:02:23\",\"Type\":\"Transfer In\",\"Amount\":495.73,\"State\":\"Failed\"},{\"TransactionID\":\"2xSa0NlNzm5VJv6yAX30aQXmf1\",\"HashKey\":\"f2plIx6DlN8xUaAZMpyanCYNz1Pc7ROSdvYNrscz72vUqq8LNt7tVePNbDFOZ2Av\",\"Time\":\"2022-11-21T22:36:46\",\"Type\":\"Transfer Out\",\"Amount\":909.13,\"State\":\"Complete\"},{\"TransactionID\":\"DFodL7MDf7VI1tODjdKLIJicdV\",\"HashKey\":\"i612xUY2hBnXhvvf4psb8ZJtzzr1Av0DKtYSbbbq2WxZKE5cOWbep5XXuZUdLqlQ\",\"Time\":\"2023-04-04T22:22:05\",\"Type\":\"Transfer Out\",\"Amount\":310.37,\"State\":\"Failed\"},{\"TransactionID\":\"w38WxeJ1I1gKScQhvgdR8j8wov\",\"HashKey\":\"6xeV22slo8xzF9XuP3d0thiwdb6a50hCQxAirrJxsy4Q3DNFkHcF1DAK6kDOcJK1\",\"Time\":\"2023-10-21T10:14:45\",\"Type\":\"Transfer Out\",\"Amount\":525.87,\"State\":\"Failed\"},{\"TransactionID\":\"v254vNJyXw5gCmnNEK4kPcDmMt\",\"HashKey\":\"i612xUY2hBnXhvvf4psb8ZJtzzr1Av0DKtYSbbbq2WxZKE5cOWbep5XXuZUdLqlQ\",\"Time\":\"2023-04-04T22:22:05\",\"Type\":\"Transfer Out\",\"Amount\":310.37,\"State\":\"Failed\"},{\"TransactionID\":\"w38WxeJ1I1gKScQhvgdR8j8wov\",\"HashKey\":\"6xeV22slo8xzF9XuP3d0thiwdb6a50hCQxAirrJxsy4Q3DNFkHcF1DAK6kDOcJK1\",\"Time\":\"2023-10-21T10:14:45\",\"Type\":\"Transfer Out\",\"Amount\":525.87,\"State\":\"Failed\"},{\"TransactionID\":\"v254vNJyXw5gCmnNEK4kPcDmMt\",\"HashKey\":\"i612xUY2hBnXhvvf4psb8ZJtzzr1Av0DKtYSbbbq2WxZKE5cOWbep5XXuZUdLqlQ\",\"Time\":\"2023-04-04T22:22:05\",\"Type\":\"Transfer Out\",\"Amount\":310.37,\"State\":\"Failed\"},{\"TransactionID\":\"w38WxeJ1I1gKScQhvgdR8j8wov\",\"HashKey\":\"6xeV22slo8xzF9XuP3d0thiwdb6a50hCQxAirrJxsy4Q3DNFkHcF1DAK6kDOcJK1\",\"Time\":\"2023-10-21T10:14:45\",\"Type\":\"Transfer Out\",\"Amount\":525.87,\"State\":\"Failed\"},{\"TransactionID\":\"v254vNJyXw5gCmnNEK4kPcDmMt\",\"HashKey\":\"i612xUY2hBnXhvvf4psb8ZJtzzr1Av0DKtYSbbbq2WxZKE5cOWbep5XXuZUdLqlQ\",\"Time\":\"2023-04-04T22:22:05\",\"Type\":\"Transfer Out\",\"Amount\":310.37,\"State\":\"Failed\"},{\"TransactionID\":\"w38WxeJ1I1gKScQhvgdR8j8wov\",\"HashKey\":\"6xeV22slo8xzF9XuP3d0thiwdb6a50hCQxAirrJxsy4Q3DNFkHcF1DAK6kDOcJK1\",\"Time\":\"2023-10-21T10:14:45\",\"Type\":\"Transfer Out\",\"Amount\":525.87,\"State\":\"Failed\"},{\"TransactionID\":\"v254vNJyXw5gCmnNEK4kPcDmMt\",\"HashKey\":\"i612xUY2hBnXhvvf4psb8ZJtzzr1Av0DKtYSbbbq2WxZKE5cOWbep5XXuZUdLqlQ\",\"Time\":\"2023-04-04T22:22:05\",\"Type\":\"Transfer Out\",\"Amount\":310.37,\"State\":\"Failed\"},{\"TransactionID\":\"w38WxeJ1I1gKScQhvgdR8j8wov\",\"HashKey\":\"6xeV22slo8xzF9XuP3d0thiwdb6a50hCQxAirrJxsy4Q3DNFkHcF1DAK6kDOcJK1\",\"Time\":\"2023-10-21T10:14:45\",\"Type\":\"Transfer Out\",\"Amount\":525.87,\"State\":\"Failed\"}]}";
-            transactionList.ShowTransactionList(data);
+            AppApi.GetTransactionList(1, GetTransactionData);
         });
 
         startTime_Btn.onClick.AddListener(() =>{
@@ -121,7 +119,11 @@ public class LobbyReportView : MonoBehaviour
         dateSelect_Obj.SetActive(false);
         bethistory.ShowBetHistory(data);
     }
-
+    private void GetTransactionData(string data)
+    {
+        dateSelect_Obj.SetActive(false);
+        transactionList.ShowTransactionList(data);
+    }
     public void confirmDateRange(string first, string last)
     {
         startTime_Txt.text = first;

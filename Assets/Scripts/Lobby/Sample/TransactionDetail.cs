@@ -34,7 +34,6 @@ public class TransactionDetail : MonoBehaviour
             editor.SelectAll();
             editor.Copy();
 #endif
-
             JSBridgeManager.Instance.CopyString(transIDFull);
             ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Succesful, LanguageManager.Instance.GetText("Copy Success!"));
         });
@@ -53,23 +52,59 @@ public class TransactionDetail : MonoBehaviour
             ViewManager.Instance.OpenTipMsgView(transform, messageStatus.Succesful, LanguageManager.Instance.GetText("Copy Success!"));
         });
     }    
-    public void ShowDetail(TransactionDetailData data)
+    public void ShowDetail(TransactionData data)
     {
         gameObject.SetActive(true);
-        transIDFull = data.TransactionID;
-        hashKeyFull = data.HashKey;
-        string transID = data.TransactionID;
-        string head = transID.Substring(0, 6);
-        string tail = transID.Substring(transID.Length - 6);
+        transIDFull = data.id;
+        hashKeyFull = data.hashKey;
+        string head = transIDFull.Substring(0, 6);
+        string tail = transIDFull.Substring(transIDFull.Length - 6);
         transID_Txt.text = head + "..." + tail;
-        string hashKey = data.HashKey;
-        head = hashKey.Substring(0, 6);
-        tail = hashKey.Substring(hashKey.Length - 6);
-        hashKey_Txt.text = head + "..." + tail;
-        time_Txt.text = data.Time;
-        type_Txt.text = data.Type;
-        amount_Txt.text = data.Amount.ToString();
-        state_Txt.text = data.State;
+        if (hashKeyFull.Length > 6)
+        {
+            head = hashKeyFull.Substring(0, 6);
+            tail = hashKeyFull.Substring(hashKeyFull.Length - 6);
+            hashKey_Txt.text = head + "..." + tail;
+        }
+        else
+        {
+            hashKey_Txt.text = hashKeyFull;
+        }
+        string time = data.creationTime.Replace("T", " <color=#698CD6>");
+        int dotIndex = time.IndexOf('.');
+        if (dotIndex != -1)
+        {
+            time = time.Substring(0, dotIndex);
+        }
+        time_Txt.text = time;
+        switch (data.transactionType)
+        {
+            case 1:
+                type_Txt.text = LanguageManager.Instance.GetText("Transfer In");
+                break;
+            case 2:
+                type_Txt.text = LanguageManager.Instance.GetText("Transfer Out");
+                break;
+        }
+        amount_Txt.text = data.amount.ToString();
+        switch (data.transactionStatus)
+        {
+            case 0:
+                state_Txt.text = LanguageManager.Instance.GetText("Created");
+                break;
+            case 1:
+                state_Txt.text = LanguageManager.Instance.GetText("Pending");
+                break;
+            case 2:
+                state_Txt.text = LanguageManager.Instance.GetText("Completed");
+                break;
+            case 3:
+                state_Txt.text = LanguageManager.Instance.GetText("Failed");
+                break;
+            case 4:
+                state_Txt.text = LanguageManager.Instance.GetText("SystemFailed");
+                break;
+        }
 
     }
 }

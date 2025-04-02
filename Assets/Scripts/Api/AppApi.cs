@@ -137,7 +137,18 @@ public class AppApi : MonoBehaviour
         //Encrypt version
         SwaggerAPIManager.Instance.SendPostAPI<encryptRobotData>(apiEndpoint, eRD, _success, _error, false);
     }
-
+    public static void SendTransaction(CryptoTransaction transaction, UnityAction<string> _success = null, UnityAction<string> _error = null)
+    {
+        apiEndpoint = $"/api/app/games/ace/crypto-transaction";
+        string jsonData = JsonConvert.SerializeObject(transaction);
+        encryptCryptoTransaction data = new encryptCryptoTransaction(EncryptJson(jsonData));
+        SwaggerAPIManager.Instance.SendPostAPI<encryptCryptoTransaction>(apiEndpoint, data, _success, _error, true);
+    }
+    public static void GetTransactionList(int pageNumber, UnityAction<string> _success = null, UnityAction _error = null)
+    {
+        apiEndpoint = $"/api/app/games/ace/crypto-transactions/{DataManager.UserId}?requestedPage={pageNumber}&recordsPerPage=10";
+        SwaggerAPIManager.Instance.SendGetAPI(apiEndpoint, _success, _error);
+    }
     #region Generate Aes
     public static Aes CreateAes()
     {
