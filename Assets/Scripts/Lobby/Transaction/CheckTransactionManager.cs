@@ -12,7 +12,7 @@ public class CheckTransactionManager : MonoBehaviour
     [SerializeField]
     private TMP_InputField address_Field, hash_Field, amount_Field;
     [SerializeField]
-    private GameObject checkingTip_Obj;
+    private TextMeshProUGUI tip_Txt;
     private void Start()
     {
         sumbit_Btn.onClick.AddListener(() =>
@@ -21,30 +21,40 @@ public class CheckTransactionManager : MonoBehaviour
             {
                 string hashKey = hash_Field.text;
                 float amount;
-                if (float.TryParse(amount_Field.text, out amount))
+                if (hashKey.Length == 64 && System.Text.RegularExpressions.Regex.IsMatch(hashKey, "^[a-fA-F0-9]+$"))
                 {
-                    checkingTip_Obj.SetActive(true);
-                    CryptoTransaction transaction = new CryptoTransaction()
+                    if (float.TryParse(amount_Field.text, out amount))
                     {
-                        uniqueSerial = Guid.NewGuid().ToString(),
-                        noodleMemberId = DataManager.NoodleMemberId,
-                        memberId = DataManager.UserId,
-                        hashKey = hashKey,
-                        currencyCode = 100003,
-                        transactionType = 1,
-                        amount = amount
-                    };
-                    Debug.Log(DataManager.UserId);
-                    AppApi.SendTransaction(transaction, (x) =>
+                        CryptoTransaction transaction = new CryptoTransaction()
+                        {
+                            uniqueSerial = Guid.NewGuid().ToString(),
+                            noodleMemberId = DataManager.NoodleMemberId,
+                            memberId = DataManager.UserId,
+                            hashKey = hashKey,
+                            currencyCode = 100003,
+                            transactionType = 1,
+                            amount = amount
+                        };
+                        Debug.Log(DataManager.UserId);
+                        AppApi.SendTransaction(transaction, (x) =>
+                        {
+                            Debug.Log(x);
+                            tip_Txt.text = LanguageManager.Instance.GetText("CheckTransaction");
+                        }, (error) => tip_Txt.text = LanguageManager.Instance.GetText("ValidationError"));
+                    }
+                    else
                     {
-                        Debug.Log(x);
-                    }, (error) => Debug.LogError("交易驗證錯誤"));
+                        tip_Txt.text = LanguageManager.Instance.GetText("AmountError");
+                    }
                 }
                 else
                 {
-                    Debug.Log("金額輸入格式錯誤");
+                    tip_Txt.text = LanguageManager.Instance.GetText("HashKeyError");
                 }
-
+            }
+            else
+            {
+                tip_Txt.text = LanguageManager.Instance.GetText("CannotEmpty");
             }
         });
     }

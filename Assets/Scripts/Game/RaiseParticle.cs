@@ -55,6 +55,7 @@ public class RaiseParticle : MonoBehaviour
         particleBomb.gameObject.SetActive(false);
         particle.gameObject.SetActive(false);
         particle2.gameObject.SetActive(false);
+        particleBomb.gameObject.SetActive(false);
     }
 
     public void OnEndDrag()

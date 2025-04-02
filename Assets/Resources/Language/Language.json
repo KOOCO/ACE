@@ -1636,8 +1636,8 @@
   },
   {
     "ID": "CheckTransaction",
-    "English": "Checking the Transaction...",
-    "zh_TW": "交易確認中..."
+    "English": "Transaction has been submitted.\nPlease go to <color=#6DF2AB>Report > TRANSACTION</color> LIST\nto check the verification status.",
+    "zh_TW": "交易已提交，請至<color=#6DF2AB>報表>交易紀錄</color>查看驗證狀態"
   },
   {
     "ID": "Submit",
@@ -1688,5 +1688,25 @@
     "ID": "SystemFailed",
     "English": "SystemFailed",
     "zh_TW": "系統失敗"
+  },
+  {
+    "ID": "CannotEmpty",
+    "English": "Cannot be empty.",
+    "zh_TW": "欄位不可為空"
+  },
+  {
+    "ID": "HashKeyError",
+    "English": "HashKey format error.",
+    "zh_TW": "HashKey格式錯誤"
+  },
+  {
+    "ID": "AmountError",
+    "English": "Amount format error.",
+    "zh_TW": "金額格式錯誤"
+  },
+  {
+    "ID": "ValidationError",
+    "English": "Transaction validation error.",
+    "zh_TW": "交易驗證錯誤"
   }
 ]
