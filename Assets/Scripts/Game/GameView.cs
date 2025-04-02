@@ -1265,8 +1265,8 @@ public class GameView : MonoBehaviour
                                         chips);
             }
 
-            if (actionEnum == BetActingEnum.AllIn)
-                playerInfo.allInHalo.Play();
+            //if (actionEnum == BetActingEnum.AllIn)
+            //    playerInfo.allInHalo.Play();
         }
 
         //本地玩家有參與

@@ -16,8 +16,8 @@ public class GamePlayerInfo : MonoBehaviour
     Image CDMask_Img, Avatar_Img, ButtonCharacter_Img, PokerShape_img, CD_Back, CD_Back2, BlindCharacter_Img;
     [SerializeField]
     TextMeshProUGUI Nickname_Txt, Chips_Txt, BackChips_Txt, countDown_Txt, Winner_Txt, winRate_Txt;
-    [SerializeField]
-    public ParticleSystem allInHalo;
+    //[SerializeField]
+    //public ParticleSystem allInHalo;
     [SerializeField]
     GameObject winRateObj;
     [SerializeField]
@@ -178,20 +178,20 @@ public class GamePlayerInfo : MonoBehaviour
 
     private void Update()
     {
-        if (IsAllIn && !isPlayingP)
-        {
-            allInHalo.Play();
-            isPlayingP = true;
-        }
-        else if (IsAllIn && !allInHalo.isPlaying)
-        {
-            allInHalo.Play();
-        }
-        else if(!IsAllIn)
-        {
-            allInHalo.Stop();
-            isPlayingP = false;
-        }
+        //if (IsAllIn && !isPlayingP)
+        //{
+        //    allInHalo.Play();
+        //    isPlayingP = true;
+        //}
+        //else if (IsAllIn && !allInHalo.isPlaying)
+        //{
+        //    allInHalo.Play();
+        //}
+        //else if(!IsAllIn)
+        //{
+        //    allInHalo.Stop();
+        //    isPlayingP = false;
+        //}
         //print($"ID: {Nickname}, IsAll In: {IsAllIn}, Is PlayingP: {isPlayingP}, Particle is on: {allInHalo.isPlaying}");
         if(!IsLocalPlayer && !IsWinEffect)
         {
@@ -237,8 +237,8 @@ public class GamePlayerInfo : MonoBehaviour
             winRateBar.fillAmount = 0;
             winRateObj.SetActive(false);
         }
-        if (!IsAllIn)
-            allInHalo.Stop();
+        //if (!IsAllIn)
+        //    allInHalo.Stop();
     }
 
     public Transform getDPos()
@@ -805,7 +805,7 @@ public class GamePlayerInfo : MonoBehaviour
                 Action_Img.sprite = allInImg;
                 Action_Txt.color = allInColor;
                 playerBet();
-                allInHalo.Play();
+                //allInHalo.Play();
                 break;
 
             case BetActionEnum.Blinds:
