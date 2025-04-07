@@ -2597,9 +2597,8 @@ public class GameControl : MonoBehaviour
         };
         //JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.BET_ACTION_DATA}",
         //                                                betActionData);
-        UpdateGameRoomData(betActionData, () =>
+        JSBridgeManager.Instance.UpdateDataFromFirebase($"{QueryRoomPath}/{FirebaseManager.BET_ACTION_DATA}", betActionData, null, null, () =>
         {
-            //Invoke(nameof(delay2GetAction), 0.2f);
             gameView.GetPlayerAction(gameRoomData);
             PreBuyChipsValue = 0;
         });
