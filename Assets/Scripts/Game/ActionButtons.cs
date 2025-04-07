@@ -690,7 +690,7 @@ public class ActionButtons : MonoBehaviour
             //任何跟注
             case AutoActingEnum.CallAny:
                 OnCallAndCheck();
-                gameData.thisData.isLocalPlayerTurn = false;
+                SetActionButton = false;
                 break;
 
             //過牌
@@ -698,28 +698,29 @@ public class ActionButtons : MonoBehaviour
                 if (gameData.thisData.IsFirstRaisePlayer == true)
                 {
                     OnCallAndCheck();
-                    gameData.thisData.isLocalPlayerTurn = false;
+                    SetActionButton = false;
                 }
                 else
                 {
                     if (gameData.thisData.LocalPlayerCurrBetValue == gameData.thisData.CurrCallValue)
                     {
                         OnCallAndCheck();
+                        SetActionButton = false;
                     }
                     else if (gameData.thisData.LocalPlayerCurrBetValue < gameData.thisData.SmallBlindValue * 2 &&
                              gameData.gameRoomData.currCallValue <= gameData.thisData.SmallBlindValue * 2 &&
                              gameData.gameRoomData.currGameFlow == (int)GameFlowEnum.SetBlind)
                     {
                         OnCallAndCheck();
+                        SetActionButton = false;
                     }
                     else
                     {
                         ShowBetArea();
+                        SetActionButton = gameData.gameRoomData.currActionerId == DataManager.UserId;
                     }
-                    gameData.thisData.isLocalPlayerTurn = false;
                 }
 
-                gameData.thisData.isLocalPlayerTurn = gameData.gameRoomData.currActionerId == DataManager.UserId;
                 break;
 
             //過牌或棄牌
@@ -735,7 +736,7 @@ public class ActionButtons : MonoBehaviour
                         print("首次加注後棄牌");
                         OnFold();
                     }
-                    gameData.thisData.isLocalPlayerTurn = false;
+                    SetActionButton = false;
                 }
                 else
                 {
@@ -755,25 +756,25 @@ public class ActionButtons : MonoBehaviour
                         else
                             OnFold();
 
-                        gameData.thisData.isLocalPlayerTurn = false;
+                        SetActionButton = false;
                     }
                     else if (gameData.thisData.LocalPlayerCurrBetValue == gameData.thisData.CurrCallValue)
                     {
                         print("當前下注金額等於當前跟注");
                         OnCallAndCheck();
-                        gameData.thisData.isLocalPlayerTurn = false;
+                        SetActionButton = false;
                     }
                     else if (gameData.thisData.CurrCallValue <= gameData.thisData.SmallBlindValue * 2)
                     {
                         print("當前跟注金額小於大盲");
                         OnCallAndCheck();
-                        gameData.thisData.isLocalPlayerTurn = false;
+                        SetActionButton = false;
                     }
                     else
                     {
                         print("未加注棄牌else");
                         OnFold();
-                        gameData.thisData.isLocalPlayerTurn = false;
+                        SetActionButton = false;
                     }
                 }
                 break;
