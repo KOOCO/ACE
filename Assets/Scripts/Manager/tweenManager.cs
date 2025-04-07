@@ -60,7 +60,7 @@ public class tweenManager : MonoBehaviour
         List<Transform> Seats = new List<Transform>();
         foreach (var obj in playerSeats)
         {
-            if (obj.gameObject.activeInHierarchy)
+            if (obj.gameObject.activeInHierarchy && !obj.parent.GetComponent<GamePlayerInfo>().IsOpenInfoMask)
                 Seats.Add(obj);
         }
 
@@ -89,7 +89,7 @@ public class tweenManager : MonoBehaviour
     public void dealAnim_Local(Transform obj, Transform target)
     {
         Sequence cardSequence = DOTween.Sequence();
-        cardSequence.Append(obj.DOMove(target.position, 0.5f)).Insert(0, obj.DOLookAt2D(target.position, 0)).Insert(1, obj.DORotate(new Vector3(0, 0, 0), 0.1f)).AppendInterval(0.5f);
+        cardSequence.Append(obj.DOMove(target.position, 0.5f)).Join(obj.DOLookAt2D(target.position, 0)).Join(obj.DORotate(new Vector3(0, 0, 0), 0.5f)).AppendInterval(0.2f);
         cardSequence.OnComplete(()=>
         {
             obj.GetComponent<pokerAnim>().onComplete(true);
@@ -98,7 +98,7 @@ public class tweenManager : MonoBehaviour
     public void dealAnim_Other(Transform obj, Transform target)
     {
         Sequence cardSequence = DOTween.Sequence();
-        cardSequence.Append(obj.DOMove(target.position, 0.3f)).Insert(0, obj.DOLookAt2D(target.position, 0)).Insert(0, obj.DOScale(0.45f, 0.3f)).Insert(1, obj.DORotate(new Vector3(0, 0, 0), 0.1f)).AppendInterval(0.5f);
+        cardSequence.Append(obj.DOMove(target.position, 0.5f)).Join(obj.DOLookAt2D(target.position, 0)).Join(obj.DOScale(0.45f, 0.5f)).Join(obj.DORotate(new Vector3(0, 0, 0), 0.5f)).AppendInterval(0.2f);
         cardSequence.OnComplete(()=>
         {
             obj.GetComponent<pokerAnim>().onComplete(true);
@@ -291,47 +291,33 @@ public class tweenManager : MonoBehaviour
     }
     IEnumerator animChainL(List<Transform> seats, UnityAction callback)
     {
-        for (int i = 0; i < 2; i++)
-        {
-            int index = i;
-            GameObject animObj = Instantiate(dealCard.GetChild(0).gameObject, dealCard);
-            animObj.GetComponent<pokerAnim>().getTrans = seats[0].GetChild(index);
-            animObj.SetActive(true);
-
-            yield return new WaitForSeconds(0.05f);
-        }
-        seats.RemoveAt(0);
-
-        yield return animChain(seats, callback);
-    }
-    IEnumerator animChain(List<Transform> seats, UnityAction callback)
-    {
-        while (seats.Count > 0)
+        for (int j = 0; j < seats.Count; j++)
         {
             for (int i = 0; i < 2; i++)
             {
-                int index = i;
-                GameObject animObj = Instantiate(dealCard.GetChild(1).gameObject, dealCard);
-                animObj.GetComponent<pokerAnim>().getTrans = seats[0].GetChild(index);
-                animObj.SetActive(true);
-
-                yield return new WaitForSeconds(0.05f);                
+                if (j == 0)
+                {
+                    GameObject animObj = Instantiate(dealCard.GetChild(0).gameObject, dealCard);
+                    animObj.GetComponent<pokerAnim>().getTrans = seats[j].GetChild(i);
+                    animObj.SetActive(true);
+                }
+                else
+                {
+                    GameObject animObj = Instantiate(dealCard.GetChild(1).gameObject, dealCard);
+                    animObj.GetComponent<pokerAnim>().getTrans = seats[j].GetChild(i);
+                    animObj.SetActive(true);
+                }
+                yield return new WaitForSeconds(0.05f);
             }
-
-            seats.RemoveAt(0);
-            //yield return new WaitForSeconds(0.05f);
         }
-
-        yield return new WaitForSeconds(1f);
-
-        if (seats.Count <= 0)
-        {
-            dealCard.gameObject.SetActive(false);
-            //for (int i = 1; i < dealCard.childCount; i++)
-            //    Destroy(dealCard.GetChild(i).gameObject);
-            print("發牌動畫結束，執行回調");
-            callback?.Invoke();
-        }
+        yield return new WaitForSeconds(0.5f);
+        seats.Clear();
+        dealCard.gameObject.SetActive(false);
+        //for (int i = 1; i < dealCard.childCount; i++)
+        //    Destroy(dealCard.GetChild(i).gameObject);
+        print("發牌動畫結束，執行回調");
+        callback?.Invoke();
+        //yield return animChain(seats, callback);
     }
 }
 
@@ -349,6 +335,8 @@ public static class DOTween2DExtensions
         Vector2 direction = (destination - (Vector2)target.position).normalized; // 計算方向
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg; // 方向轉角度
         angle -= 90f;
+        if (angle > 180) angle -= 180;
+        else if (angle < -180) angle += 180;
         return target.DORotate(new Vector3(0, 0, angle), duration); // 只旋轉 Z 軸
     }
 }
