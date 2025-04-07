@@ -89,7 +89,7 @@ public class tweenManager : MonoBehaviour
     public void dealAnim_Local(Transform obj, Transform target)
     {
         Sequence cardSequence = DOTween.Sequence();
-        cardSequence.Append(obj.DOMove(target.position, 0.5f)).Join(obj.DOLookAt2D(target.position, 0)).Join(obj.DORotate(new Vector3(0, 0, 0), 0.5f)).AppendInterval(0.2f);
+        cardSequence.Append(obj.DOMove(target.position, 0.5f)).Join(obj.DOLookAt2D(target.position, 0)).Join(obj.DORotate(new Vector3(0, 0, 0), 0.5f)).AppendInterval(0.5f);
         cardSequence.OnComplete(()=>
         {
             obj.GetComponent<pokerAnim>().onComplete(true);
@@ -98,7 +98,7 @@ public class tweenManager : MonoBehaviour
     public void dealAnim_Other(Transform obj, Transform target)
     {
         Sequence cardSequence = DOTween.Sequence();
-        cardSequence.Append(obj.DOMove(target.position, 0.5f)).Join(obj.DOLookAt2D(target.position, 0)).Join(obj.DOScale(0.45f, 0.5f)).Join(obj.DORotate(new Vector3(0, 0, 0), 0.5f)).AppendInterval(0.2f);
+        cardSequence.Append(obj.DOMove(target.position, 0.5f)).Join(obj.DOLookAt2D(target.position, 0)).Join(obj.DOScale(0.45f, 0.5f)).Join(obj.DORotate(new Vector3(0, 0, 0), 0.5f)).AppendInterval(0.5f);
         cardSequence.OnComplete(()=>
         {
             obj.GetComponent<pokerAnim>().onComplete(true);
