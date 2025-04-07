@@ -422,6 +422,10 @@ public class GamePlayerInfo : MonoBehaviour
         {
             InfoMask_Obj.SetActive(value);
         }
+        get
+        {
+            return InfoMask_Obj.activeInHierarchy;
+        }
     }
 
     /// <summary>
@@ -768,6 +772,10 @@ public class GamePlayerInfo : MonoBehaviour
     public void DisplayBetAction(bool isShow, double betValue = 0, BetActionEnum betActionEnum = BetActionEnum.None, bool isEffect = true)
     {
         Action_Img.gameObject.SetActive(isShow);
+        if (isShow) Action_Img.transform.DOScale(1.2f, 0.2f).OnComplete(() =>
+        {
+            Action_Img.transform.DOScale(1f, 0.2f);
+        });
 
         switch (betActionEnum)
         {
