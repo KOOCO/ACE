@@ -409,7 +409,6 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
             room.Value.Item1.anchoredPosition = new Vector2(Mathf.Max(0, room.Value.Item1.anchoredPosition.x - screenSize),
                                                             room.Value.Item1.anchoredPosition.y);
             room.Value.Item1.GetComponent<GameView>().SetGameMask(false);
-            room.Value.Item1.GetComponent<GameView>().SetTopBar(true);
         }
 
         StartCoroutine(IJudgeShowSwitchBtn());
@@ -494,14 +493,10 @@ public class GameRoomManager : UnitySingleton<GameRoomManager>
                 case 0:
                     GameRoomList_Tr.GetChild(0).GetComponent<GameView>().SetGameMask(false);
                     GameRoomList_Tr.GetChild(1).GetComponent<GameView>().SetGameMask(true);
-                    GameRoomList_Tr.GetChild(0).GetComponent<GameView>().SetTopBar(true);
-                    GameRoomList_Tr.GetChild(1).GetComponent<GameView>().SetTopBar(false);
                     break;
                 case 1:
                     GameRoomList_Tr.GetChild(1).GetComponent<GameView>().SetGameMask(false);
                     GameRoomList_Tr.GetChild(0).GetComponent<GameView>().SetGameMask(true);
-                    GameRoomList_Tr.GetChild(0).GetComponent<GameView>().SetTopBar(false);
-                    GameRoomList_Tr.GetChild(1).GetComponent<GameView>().SetTopBar(true);
                     break;
             }
         }
