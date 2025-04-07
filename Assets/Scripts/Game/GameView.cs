@@ -82,7 +82,6 @@ public class GameView : MonoBehaviour
 
     public GameObject BGMask;
     public GameObject GameMask;
-    public GameObject TopBar;
 
     public Button testApi_Btn;
 
@@ -106,7 +105,6 @@ public class GameView : MonoBehaviour
 
         GameMask.SetActive(false);
         ListenerEvent();
-        SetTopBar(true);
     }
 
 
@@ -2653,18 +2651,6 @@ public class GameView : MonoBehaviour
     public void SetGameMask(bool isShow)
     {
         GameMask.SetActive(isShow);
-    }
-
-    public void SetTopBar(bool isShow)
-    {
-        if (!Application.isMobilePlatform)
-        {
-            TopBar.SetActive(false);
-        }
-        else
-        {
-            TopBar.SetActive(isShow);
-        }
     }
 #if UNITY_EDITOR
     private void OnPlayModeStateChanged(PlayModeStateChange state)
