@@ -2033,6 +2033,8 @@ public class GameControl : MonoBehaviour
     /// </summary>
     public void ShowBetAction()
     {
+        bool isAddChip;
+        isAddChip = gameRoomData.betActionDataDic.betAction == 8;
         gameView.UpdateActionBtns();
         if (gameRoomData.betActionDataDic == null ||
             string.IsNullOrEmpty(gameRoomData.betActionDataDic.betActionerId))
@@ -2055,7 +2057,17 @@ public class GameControl : MonoBehaviour
         gameView.GetPlayerAction(gameRoomData);
         if (cdCoroutine != null) StopCoroutine(cdCoroutine);
 
-        StartCoroutine(IJudgeNextSeason());
+        print("After ShowBetAction");
+        if (!isAddChip)
+            StartCoroutine(IJudgeNextSeason());
+        else
+            StartCoroutine(waitAfterAddChip());
+    }
+    IEnumerator waitAfterAddChip()
+    {
+        yield return new WaitUntil(() => gameRoomData.playingPlayersIdList.Count > 1);
+        print("補錢流程完畢");
+        yield return IJudgeNextSeason();
     }
 
     /// <summary>
