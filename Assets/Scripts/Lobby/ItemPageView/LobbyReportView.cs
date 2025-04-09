@@ -64,24 +64,30 @@ public class LobbyReportView : MonoBehaviour
         betRecord_Tog.onValueChanged.AddListener((isOn) =>
         {
             if (isOn)
+            {
                 selectObj(betRecord_Obj);
-            dateSelect_Obj.SetActive(true);
-            bethistory.gameObject.SetActive(false);
-            StartTime_Txt.text = System.DateTime.Today.ToShortDateString();
-            EndTime_Txt.text = System.DateTime.Today.ToShortDateString();
-            Game_Drop.gameObject.SetActive(true);
+                dateSelect_Obj.SetActive(true);
+                bethistory.gameObject.SetActive(false);
+                StartTime_Txt.text = System.DateTime.Today.ToShortDateString();
+                EndTime_Txt.text = System.DateTime.Today.ToShortDateString();
+                Game_Drop.gameObject.SetActive(true);
+            }
         });
         handHistory_Tog.onValueChanged.AddListener((isOn) =>
         {
             if (isOn)
+            {
                 selectObj(handHistory_Obj);
-            dateSelect_Obj.SetActive(false);
+                dateSelect_Obj.SetActive(false);
+            }
         });
         transList_Tog.onValueChanged.AddListener((isOn) =>
         {
             if (isOn)
+            {
                 selectObj(transList_Obj);
-            AppApi.GetTransactionList(1, GetTransactionData);
+                AppApi.GetTransactionList(1, GetTransactionData);
+            }
         });
 
         startTime_Btn.onClick.AddListener(() =>{
