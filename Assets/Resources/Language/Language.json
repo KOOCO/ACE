@@ -1221,8 +1221,8 @@
   },
   {
     "ID": "CallAny",
-    "English": "Call Any",
-    "zh_TW": "跟任何注"
+    "English": "Auto Call",
+    "zh_TW": "自動跟注"
   },
   {
     "ID": "RaiseTo",
