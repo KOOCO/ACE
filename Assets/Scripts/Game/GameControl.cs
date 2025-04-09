@@ -160,14 +160,14 @@ public class GameControl : MonoBehaviour
             JSBridgeManager.Instance.StartListenerConnectState($"{QueryRoomPath}/{FirebaseManager.PLAYER_DATA_LIST}/{DataManager.UserId}");
         }
 
-        //產生機器人
-        if (isWaitingCreateRobot)
-        {
-            isWaitingCreateRobot = false;
-            CreateRobot(true);
+        //產生機器人 (已由後端負責)
+        //if (isWaitingCreateRobot)
+        //{
+        //    isWaitingCreateRobot = false;
+        //    CreateRobot(true);
 
-            print("是否等待產生機器人: " + isWaitingCreateRobot);
-        }
+        //    print("是否等待產生機器人: " + isWaitingCreateRobot);
+        //}
     }
 
     #endregion
