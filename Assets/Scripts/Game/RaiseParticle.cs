@@ -55,7 +55,6 @@ public class RaiseParticle : MonoBehaviour
         particleBomb.gameObject.SetActive(false);
         particle.gameObject.SetActive(false);
         particle2.gameObject.SetActive(false);
-        particleBomb.gameObject.SetActive(false);
     }
 
     public void OnEndDrag()
@@ -64,5 +63,6 @@ public class RaiseParticle : MonoBehaviour
         var emission2 = particle2.emission;
         emission.rateOverDistance = 0;
         emission2.rateOverDistance = 0;
+        particleBomb.gameObject.SetActive(false);
     }
 }

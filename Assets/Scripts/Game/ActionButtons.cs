@@ -565,6 +565,7 @@ public class ActionButtons : MonoBehaviour
     {
         set
         {
+            Raise_Sli.value = 0;
             Raise_Tr.gameObject.SetActive(value);
         }
     }
