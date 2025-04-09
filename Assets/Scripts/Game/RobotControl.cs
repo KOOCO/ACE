@@ -86,50 +86,59 @@ public class RobotControl : MonoBehaviour
         {
             action = BetActingEnum.Call;
             bool isFirst = gameRoomData.actionPlayerCount == 0;
+            bool isJustAllIn = robotData.carryChips <= gameRoomData.currCallValue;
 
             //跟舊版雷同，防止機器人是小盲時做出非法操作(強迫跟注)
-            if (isFirst == true)
+            if (isJustAllIn && actionData.action != 5)
             {
-                if (robotData.currAllBetChips == gameRoomData.currCallValue)
-                {
-                    action = judgeAction(actionData.action);
-                    if (actionData.raisePercentage != 0)
-                    {
-                        action = BetActingEnum.Raise;
-                        double bb = gameRoomData.smallBlind * 2;
-                        betValue = Mathf.Floor((float)(gameView.gameData.thisData.CurrRaiseValue + (bb * (1 + (double)actionData.raisePercentage / 100))));
-                    }
-                    else if (action == BetActingEnum.AllIn)
-                        betValue = robotData.carryChips;
-                }
-                else
-                {
-                    if (actionData.action != 5)
-                        betValue = gameRoomData.currCallValue;
-                    else
-                        action = BetActingEnum.Fold;
-                }
+                action = BetActingEnum.AllIn;
+                betValue = robotData.carryChips;
             }
             else
             {
-                if (robotData.currAllBetChips == gameRoomData.currCallValue)
+                if (isFirst == true)
                 {
-                    action = judgeAction(actionData.action);
-                    if (actionData.raisePercentage != 0)
+                    if (robotData.currAllBetChips == gameRoomData.currCallValue)
                     {
-                        action = BetActingEnum.Raise;
-                        double bb = gameRoomData.smallBlind * 2;
-                        betValue = Mathf.Floor((float)(gameView.gameData.thisData.CurrRaiseValue + (bb * (1 + (double)actionData.raisePercentage / 100))));
+                        action = judgeAction(actionData.action);
+                        if (actionData.raisePercentage != 0)
+                        {
+                            action = BetActingEnum.Raise;
+                            double bb = gameRoomData.smallBlind * 2;
+                            betValue = Mathf.Floor((float)(gameView.gameData.thisData.CurrRaiseValue + (bb * (1 + (double)actionData.raisePercentage / 100))));
+                        }
+                        else if (action == BetActingEnum.AllIn)
+                            betValue = robotData.carryChips;
                     }
-                    else if (action == BetActingEnum.AllIn)
-                        betValue = robotData.carryChips;
+                    else
+                    {
+                        if (actionData.action != 5)
+                            betValue = gameRoomData.currCallValue;
+                        else
+                            action = BetActingEnum.Fold;
+                    }
                 }
                 else
                 {
-                    if (actionData.action != 5)
-                        betValue = gameRoomData.currCallValue;
+                    if (robotData.currAllBetChips == gameRoomData.currCallValue)
+                    {
+                        action = judgeAction(actionData.action);
+                        if (actionData.raisePercentage != 0)
+                        {
+                            action = BetActingEnum.Raise;
+                            double bb = gameRoomData.smallBlind * 2;
+                            betValue = Mathf.Floor((float)(gameView.gameData.thisData.CurrRaiseValue + (bb * (1 + (double)actionData.raisePercentage / 100))));
+                        }
+                        else if (action == BetActingEnum.AllIn)
+                            betValue = robotData.carryChips;
+                    }
                     else
-                        action = BetActingEnum.Fold;
+                    {
+                        if (actionData.action != 5)
+                            betValue = gameRoomData.currCallValue;
+                        else
+                            action = BetActingEnum.Fold;
+                    }
                 }
             }
 
