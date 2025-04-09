@@ -1419,8 +1419,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: POT +$9,999k
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 078675f65f8a9144e90348ab75bb07e7, type: 2}
-  m_sharedMaterial: {fileID: -6451935136126618428, guid: 078675f65f8a9144e90348ab75bb07e7, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1732,8 +1732,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: $
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 078675f65f8a9144e90348ab75bb07e7, type: 2}
-  m_sharedMaterial: {fileID: -6451935136126618428, guid: 078675f65f8a9144e90348ab75bb07e7, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2961,9 +2961,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3392034860925994746}
   - {fileID: 6679146944818550409}
   - {fileID: 7051400743443898115}
-  - {fileID: 3392034860925994746}
   - {fileID: 3042874204827198068}
   - {fileID: 2251624081484340100}
   - {fileID: 6936964146144927335}
@@ -3003,7 +3003,12 @@ MonoBehaviour:
   BackChips_Txt: {fileID: 2745245883104775627}
   countDown_Txt: {fileID: 8562006713110638022}
   Winner_Txt: {fileID: 5390519629324695439}
-  allInHalo: {fileID: 0}
+  winRate_Txt: {fileID: 0}
+  winRateObj: {fileID: 0}
+  winRateBar: {fileID: 0}
+  winRate_Img: {fileID: 0}
+  winRateSpr_C: {fileID: 0}
+  winRateSpr_E: {fileID: 0}
   HandPoker_Tr: {fileID: 7051400743443898115}
   ShowHandPoker_Tr: {fileID: 9073656660661530448}
   HandPokers:
@@ -3013,6 +3018,8 @@ MonoBehaviour:
   - {fileID: 5600320583076421385}
   - {fileID: 702535450186454651}
   BetChips_Tr: {fileID: 2767773614423961588}
+  ChipItem_Obj: {fileID: 0}
+  ChipsTween: {fileID: 0}
   Action_Img: {fileID: 2973949544830673677}
   Action_Txt: {fileID: 8931161839843536060}
   foldImg: {fileID: 21300000, guid: e3bbd13af5c56fb48be3bf4203ef992f, type: 3}
@@ -3029,7 +3036,6 @@ MonoBehaviour:
   allInColor: {r: 1, g: 1, b: 1, a: 1}
   blindColor: {r: 0, g: 0.94117653, b: 0.16078432, a: 1}
   addChipColor: {r: 0, g: 0, b: 0, a: 0}
-  betAnim: {fileID: 0}
   Lead_Obj: {fileID: 0}
   Chat_Obj: {fileID: 6040977251394329404}
   roomFee_Obj: {fileID: 1459146302263772513}
@@ -3038,6 +3044,7 @@ MonoBehaviour:
   pokerCurrShapeIndex: 0
   characters: []
   IsLocalPlayer: 0
+  IsWinEffect: 0
 --- !u!1 &8842759508560102675
 GameObject:
   m_ObjectHideFlags: 0
