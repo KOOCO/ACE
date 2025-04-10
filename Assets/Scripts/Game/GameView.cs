@@ -1430,7 +1430,7 @@ public class GameView : MonoBehaviour
             {
                 Debug.Log($"[JudgePokerShapeUI] Player: {player.Nickname} | Result Index: {resultIndex} | Matched Cards Count: {matchPokerList.Count}");
                 // Verify if the player's cards are active
-                if (player.GetHandPoker[0].gameObject.activeSelf)
+                if (player.GetHandPoker[0].gameObject.activeSelf && gameData.gameRoomData.playingPlayersIdList.Contains(DataManager.UserId))
                 {
                     // Set player's poker shape
                     player.SetPokerShapeStr(resultIndex);
@@ -1567,6 +1567,15 @@ public class GameView : MonoBehaviour
             yield return ShowResult();
             yield return new WaitForSeconds(0.8f);
             yield return SaveResult(gameRoomData);
+        }
+        var local = gameControl.GetLocalPlayer();
+        if (local != null)
+        {
+            var localPlayer = GetPlayer(local.userId);
+            if (localPlayer != null)
+            {
+                localPlayer.ShowWinRate(false);
+            }
         }
     }
 

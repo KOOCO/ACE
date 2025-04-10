@@ -362,6 +362,10 @@ public class GamePlayerInfo : MonoBehaviour
             }
         }
     }
+    public void ShowWinRate(bool isShow)
+    {
+        if (winRateObj != null) winRateObj.SetActive(isShow);
+    }
 
     public void setWinnerDisplay(string Result)
     {
