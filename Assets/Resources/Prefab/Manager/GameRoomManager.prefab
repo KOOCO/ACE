@@ -813,8 +813,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisBtn: {fileID: 1819150143641046536}
+  CurrRoomIcon_Obj: {fileID: 0}
+  CdIcon_Obj: {fileID: 0}
   roomName_Txt: {fileID: 7784357365859003831}
-  selectFrame_Tr: {fileID: 6992467604173802570}
 --- !u!222 &4409100428550005343
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -964,8 +965,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: INTEGRAL
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
+  m_sharedMaterial: {fileID: 491667887584919328, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1085,12 +1086,14 @@ MonoBehaviour:
   GameRoomList_Tr: {fileID: 17353678597013140}
   GameRoomList_Sr: {fileID: 4571191433088155793}
   SwitchBtnSample: {fileID: 6689726745126147366}
-  AddRoom_Btn: {fileID: 2922197897413261631}
   SwitchBtnParent: {fileID: 7708268745242368702}
-  AddRoomBtn_Tr: {fileID: 2393589969454604811}
+  GoLobbyBtn_Tr: {fileID: 0}
+  GoLobby_Btn: {fileID: 0}
   BgMask_Obj: {fileID: 5006379669206431660}
   GameViewObj: {fileID: 4348048500220203413, guid: 18f03811b3b6b6f47b81e90462d80f91, type: 3}
   IsShow: 0
+  SwitchBackground: {fileID: 0}
+  Mask: {fileID: 0}
 --- !u!1 &7658684593567816870
 GameObject:
   m_ObjectHideFlags: 0
