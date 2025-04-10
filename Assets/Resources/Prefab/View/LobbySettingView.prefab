@@ -2179,7 +2179,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 2224.13}
+  m_SizeDelta: {x: 0, y: 2043.01}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &137235730791353838
 CanvasRenderer:
@@ -2210,7 +2210,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "\u5F15\u8A00 \r\n\r\n\u6B61\u8FCE\u4F7F\u7528 Asia Poker \u5E73\u53F0\uFF08\u4EE5\u4E0B\u7C21\u7A31\u201C\u672C\u5E73\u53F0\u201D\uFF09\u3002\u672C\u96B1\u79C1\u6B0A\u653F\u7B56\u65E8\u5728\u8AAA\u660E\u672C\u5E73\u53F0
-    \u5982\u4F55\u8490\u96C6\u3001\u4F7F\u7528\u3001\u5132\u5B58\u548C\u4FDD\u8B77\u60A8\u7684\u500B\u4EBA\u8CC7\u6599\u3002\u8ACB\u60A8\u4ED4\u7D30\u95B1\u8B80\u4E26\u7406\u89E3\u672C\u653F\u7B56\u7684\u5BB9\u3002
+    \u5982\u4F55\u8490\u96C6\u3001\u4F7F\u7528\u3001\u5132\u5B58\u548C\u4FDD\u8B77\u60A8\u7684\u500B\u4EBA\u8CC7\u6599\u3002\u8ACB\u60A8\u4ED4\u7D30\u95B1\u8B80\u4E26\u7406\u89E3\u672C\u653F\u7B56\u7684\u5167\u5BB9\u3002
     \r\n\r\n\u4E00\u3001\u6703\u54E1\u8CC7\u6599\u8490\u96C6 \r\n\r\n\u7576\u60A8\u4F7F\u7528\u672C\u5E73\u53F0\uFF0C\u6211\u5011\u53EF\u80FD\u6703\u8490\u96C6\u4EE5\u4E0B\u985E\u578B\u4E4B\u500B\u4EBA\u8CC7\u6599\uFF1A
     \r\n\r\n\u8A3B\u518A\u8CC7\u8A0A\uFF1A\u7576\u60A8\u8A3B\u518A\u5E33\u6236\u6642\uFF0C\u6211\u5011\u6703\u8490\u96C6\u60A8\u7684\u57FA\u672C\u4FE1\u606F\uFF0C\u5305\u62EC\u4F46\u4E0D\u9650\u65BC
     \u59D3\u540D\u3001\u96FB\u5B50\u90F5\u4EF6\u5730\u5740\u3001\u96FB\u8A71\u865F\u78BC\u548C\u5176\u4ED6\u806F\u7D61\u65B9\u5F0F\u3002
@@ -2247,8 +2247,8 @@ MonoBehaviour:
     \r\n\r\n\u96FB\u5B50\u90F5\u4EF6\uFF1Asupport@asiapoker.com \r\n\r\n\u96FB\u8A71\uFF1A+886-123-456-789
     \r\n\r\n\u611F\u8B1D\u60A8\u5C0D Asia Poker \u7684\u652F\u6301\u8207\u4FE1\u4EFB\u3002"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
+  m_sharedMaterial: {fileID: 491667887584919328, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2396,10 +2396,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: i GOT IT
+  m_text: I GOT IT
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
+  m_sharedMaterial: {fileID: 491667887584919328, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2548,8 +2548,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Privacy Policy
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
+  m_sharedMaterial: {fileID: 491667887584919328, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3087,8 +3087,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Language
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
+  m_sharedMaterial: {fileID: 491667887584919328, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3278,7 +3278,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 2279.6}
+  m_SizeDelta: {x: 0, y: 2670.5542}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &4355383205489872835
 GameObject:
@@ -3392,7 +3392,7 @@ MonoBehaviour:
     Policy or require more information,\r\nPlease contact us via:\n\r\ne-mail:support@asiapoker.com
     \r\nTelephone:+886-123-456-789 \r\nthank you forAsia Poker support and trust.\r\n"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
   m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -3458,7 +3458,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &7318616862321665975
@@ -3542,8 +3542,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u7E41\u9AD4\u4E2D\u6587"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
+  m_sharedMaterial: {fileID: 491667887584919328, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3844,8 +3844,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: i GOT IT
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
+  m_sharedMaterial: {fileID: 491667887584919328, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3994,8 +3994,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Asia Poker \u670D\u52D9\u689D\u6B3E"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
+  m_sharedMaterial: {fileID: 491667887584919328, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4276,8 +4276,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Terms
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
+  m_sharedMaterial: {fileID: 491667887584919328, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4605,8 +4605,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Asia Poker \u96B1\u79C1\u6B0A\u653F\u7B56 "
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
+  m_sharedMaterial: {fileID: 491667887584919328, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5052,7 +5052,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 2890.71}
+  m_SizeDelta: {x: 0, y: 2638.88}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &6225519801564172752
 CanvasRenderer:
@@ -5083,10 +5083,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: " \r\n\r\n\u4E00\u3001\u9075\u5B88\u6703\u54E1\u898F\u7BC4\u53CA\u6CD5\u5F8B\u898F\u5B9A\uFF1A
-    \r\n\r\n\u60A8\u4E86\u89E3\u60A8\u8A3B\u518A\u6210\u70BA\u6703\u54E1\u5F8C\uFF0C\u5373\u53EF\u4F7F\u7528\u672C\u5E73\u53F0\u6240\u63D0\u4F9B\u4E4B\u5404\u9805\u670D\u52D9(\u4EE5\u4E0B\u7A31\u672C\u670D\u52D9)\u3002\u7576\u6703\u54E1\u4F7F\u7528\u672C\u670D\u52D9\u6642\uFF0C\u5373\u8868\u793A\u9664\u4E86\u540C\u610F\u9075\u5B88\u672C\u670D\u52D9\u689D\u6B3E\u5916\uFF0C\u9084\u540C\u610F\u63A5\u53D7\u672C
-    \u516C\u53F8\u5C0D\u6703\u54E1\u898F\u7BC4(\u5305\u62EC\u5404\u9805\u904A\u6232\u898F\u5247\u3001\u6295\u6CE8\u898F\u5247\u3001\u516C\u544A\u53CA\u6CE8\u610F\u4E8B\u9805\u7B49)\u53CA\u76F8\u95DC\u6CD5\u4EE4\u898F\u5B9A\u4E4B\u62D8\u675F\uFF0C\u4F7F\u7528\u672C\u670D\u52D9\u4E4B\u6703\u54E1\u8ACB\u9075\u5B88\u4F7F\u7528\u8005\u7576\u5730\u6CD5\u4EE4\u4E4B\u8A31\u53EF\uFF0C\u5982\u6709\u9055\u53CD\u4E4B\u60C5\u4E8B\u6055\u975E\u672C\u670D\u52D9\u4E4B\u8CA0\u8CAC\u7BC4\u570D\u3002
-    \r\n\r\n\u4E8C\u3001\u670D\u52D9\u7C21\u4ECB\uFF1A \r\n\r\n(\u4E00)\u672C\u516C\u53F8\u65E8\u5728\u5275\u9020\u4E00\u500B\u300E\u5B89\u5168\u53EF\u9760\u300F\u3001\u300E\u5373\u6642\u4FBF\u5229\u300F\u3001\u300E\u516C\u5E73\u516C\u6B63\u300F\u3001\u300E\u5C08\u696D\u71DF
-    \u904B\u300F\u7684\u512A\u8CEA\u5A1B\u6A02\u670D\u52D9\u5E73\u53F0\uFF0C\u5F37\u8ABF\u7684\u662F\u8B93\u6703\u54E1\u4E0D\u53D7\u6642\u7A7A\u7684\u9650\u5236\uFF0C24
+    \r\n\r\n\u60A8\u4E86\u89E3\u60A8\u8A3B\u518A\u6210\u70BA\u6703\u54E1\u5F8C\uFF0C\u5373\u53EF\u4F7F\u7528\u672C\u5E73\u53F0\u6240\u63D0\u4F9B\u4E4B\u5404\u9805\u670D\u52D9(\u4EE5\u4E0B\u7A31\u672C\u670D\u52D9)\u3002\u7576\u6703\u54E1\u4F7F\u7528\u672C\u670D\u52D9\u6642\uFF0C\u5373\u8868\u793A\u9664\u4E86\u540C\u610F\u9075\u5B88\u672C\u670D\u52D9\u689D\u6B3E\u5916\uFF0C\u9084\u540C\u610F\u63A5\u53D7\u672C\u516C\u53F8\u5C0D\u6703\u54E1\u898F\u7BC4(\u5305\u62EC\u5404\u9805\u904A\u6232\u898F\u5247\u3001\u6295\u6CE8\u898F\u5247\u3001\u516C\u544A\u53CA\u6CE8\u610F\u4E8B\u9805\u7B49)\u53CA\u76F8\u95DC\u6CD5\u4EE4\u898F\u5B9A\u4E4B\u62D8\u675F\uFF0C\u4F7F\u7528\u672C\u670D\u52D9\u4E4B\u6703\u54E1\u8ACB\u9075\u5B88\u4F7F\u7528\u8005\u7576\u5730\u6CD5\u4EE4\u4E4B\u8A31\u53EF\uFF0C\u5982\u6709\u9055\u53CD\u4E4B\u60C5\u4E8B\u6055\u975E\u672C\u670D\u52D9\u4E4B\u8CA0\u8CAC\u7BC4\u570D\u3002
+    \r\n\r\n\u4E8C\u3001\u670D\u52D9\u7C21\u4ECB\uFF1A \r\n\r\n(\u4E00)\u672C\u516C\u53F8\u65E8\u5728\u5275\u9020\u4E00\u500B\u300E\u5B89\u5168\u53EF\u9760\u300F\u3001\u300E\u5373\u6642\u4FBF\u5229\u300F\u3001\u300E\u516C\u5E73\u516C\u6B63\u300F\u3001\u300E\u5C08\u696D\u71DF\u904B\u300F\u7684\u512A\u8CEA\u5A1B\u6A02\u670D\u52D9\u5E73\u53F0\uFF0C\u5F37\u8ABF\u7684\u662F\u8B93\u6703\u54E1\u4E0D\u53D7\u6642\u7A7A\u7684\u9650\u5236\uFF0C24
     \u5C0F\u6642\u96A8\u6642\u4E0A\u7DDA \u5C31\u53EF\u4EE5\u53C3\u8207\u4E00\u500B\u516C\u5E73\u516C\u6B63\u7684\u904A\u6232\uFF0C\u4EA6\u53EF\u4EE5\u4EAB\u53D7\u5230\u8207\u4E16\u754C\u5404\u5730\u73A9\u5BB6\u5207\u78CB\u7684\u6A02\u8DA3\uFF0C
     \u6211\u5011\u79C9\u6301\u4EE5\u5BA2\u70BA\u5C0A\u7684\u614B\u5EA6\uFF0C\u4E0D\u65B7\u958B\u767C\u5275\u65B0\u53CA\u4E86\u89E3\u5BA2\u6236\u9700\u6C42\u662F\u672C\u516C\u53F8\u5F15\u4EE5\u70BA\u50B2\u7684\u7D93\u71DF\u7406\u5FF5\uFF0C\u5180\u671B\u80FD\u5275\u9020\u51FA\u5D84\u65B0\u7684\u5A1B\u6A02\u50F9\u503C\u4EE5\u53CA\u9054\u5230\u591A\u65B9\u666E\u53CA\u7684\u76EE\u7684\uFF0C\u6210\u70BA\u5177\u6709
     \u9818\u5C0E\u6307\u6A19\u6027\u7684\u5A1B\u6A02\u7DB2\u7AD9\u3002 \r\n\r\n(\u4E8C)\u865B\u64EC\u8CA8\u5E63\u9280\u884C\u670D\u52D9\uFF1A\u672C\u516C\u53F8\u63D0\u4F9B\u7DB2\u8DEF\u91D1\u6D41\u4ED8\u8CBB\u5E73\u53F0\uFF0C\u4F60\u6240\u8CFC\u8CB7\u7684\u9EDE\u6578\u5C07\u53EF
@@ -5102,27 +5100,24 @@ MonoBehaviour:
     2.\u4F7F\u7528\u4ED6\u4EBA\u7684\u540D\u7FA9\u7533\u8ACB\u672C\u670D\u52D9\u3002
     3.\u9055\u53CD\u904A\u6232\u516C\u5E73\u539F \u5247\u3002 4.\u53C3\u8207\u904A\u6232\u6216\u6BD4\u8CFD\u6642\uFF0C\u6545\u610F\u947D\u7814\u7CFB\u7D71\u6F0F\u6D1E\u6216\u5229\u7528\u904A\u6232\u5F31\u9EDE\u4EE5\u5F71\u97FF\u7D50\u679C\u3002
     5. \u9055\u53CD\u672C\u670D\u52D9\u689D\u6B3E\u6642\u3002 6.\u672C\u516C\u53F8\u4E0D\u5141\u8A31\u4E0D\u516C\u5E73\u7684\u4E0B\u6CE8\u65B9\u5F0F\u3001\u96D9\u908A\u4E0B\u6CE8\u3001\u7121\u98A8\u96AA\u4E0B
-    \u6CE8\u53CA\u4EFB\u4F55\u7121\u98A8\u96AA\u89E3\u51CD\u4E4B\u4E0B\u6CE8\u65B9\u5F0F\uFF0C\u5982\u6709\u767C\u73FE\u4E0A\u8FF0\u554F\u984C\u4E4B\u73A9\u5BB6\uFF0C\u672C\u516C\u53F8\u6709\u7D42\u6B62\u73A9\r\n\r\n\u5BB6\u5E33\u865F\u4F7F\u7528\u4E4B\u6B0A\u529B\u3002\u5982\u6709\u4EFB\u4F55\u722D\u8B70\u554F\u984C\uFF0C\u672C\u516C\u53F8\u6709\u6700\u7D42\u6C7A\u5B9A\u6B0A\u3002\u7121\u8AD6\u4EFB\u4F55\u60C5
+    \u6CE8\u53CA\u4EFB\u4F55\u7121\u98A8\u96AA\u89E3\u51CD\u4E4B\u4E0B\u6CE8\u65B9\u5F0F\uFF0C\u5982\u6709\u767C\u73FE\u4E0A\u8FF0\u554F\u984C\u4E4B\u73A9\u5BB6\uFF0C\u672C\u516C\u53F8\u6709\u7D42\u6B62\u73A9\u5BB6\u5E33\u865F\u4F7F\u7528\u4E4B\u6B0A\u529B\u3002\u5982\u6709\u4EFB\u4F55\u722D\u8B70\u554F\u984C\uFF0C\u672C\u516C\u53F8\u6709\u6700\u7D42\u6C7A\u5B9A\u6B0A\u3002\u7121\u8AD6\u4EFB\u4F55\u60C5
     \u5F62\uFF0C\u5C31\u505C\u6B62\u6216\u66F4\u6539\u670D\u52D9\u6216\u7D42\u6B62\u6703\u54E1\u5E33\u6236\u670D\u52D9\u6240\u53EF\u80FD\u7522\u751F\u4E4B\u56F0\u64FE\u3001\u4E0D\u4FBF\u6216\u640D\u5BB3\uFF0C
     \u672C\u670D\u52D9\u5C0D\u4EFB\u4F55\u6703\u54E1\u6216\u7B2C\u4E09\u4EBA\u5747\u4E0D\u8CA0\u4EFB\u4F55\u8CAC\u4EFB\u3002
-    \r\n\r\n\u4E94\u3001\u670D\u52D9\u66AB\u505C\u6216\u4E2D\u65B7\uFF1A \r\n\r\n(\u4E00)\u672C\u516C\u53F8\u65BC\u4E0B\u5217\u60C5\u5F62\u4E4B\u4E00\u6642\uFF0C\u5F97\u66AB\u505C\u6216\u4E2D\u65B7\u672C\u670D\u52D9\u4E4B\u5168\u90E8\u6216\u4E00\u90E8\uFF0C\u5C0D\u65BC\u4F7F\u7528
-    \u8005\u4E0D\u8CA0\u64D4\u4EFB\u4F55\u8CE0\u511F\u8CAC\u4EFB\uFF1A \r\n\r\n1.\u5C0D\u65BC\u672C\u670D\u52D9\u76F8\u95DC\u4FC2\u7D71\u8A2D\u5099\u9032\u884C\u9077\u79FB\u3001\u66F4\u63DB\u6216\u7DAD\u8B77\u6642\u3002
+    \r\n\r\n\u4E94\u3001\u670D\u52D9\u66AB\u505C\u6216\u4E2D\u65B7\uFF1A \r\n\r\n(\u4E00)\u672C\u516C\u53F8\u65BC\u4E0B\u5217\u60C5\u5F62\u4E4B\u4E00\u6642\uFF0C\u5F97\u66AB\u505C\u6216\u4E2D\u65B7\u672C\u670D\u52D9\u4E4B\u5168\u90E8\u6216\u4E00\u90E8\u5206\uFF0C\u5C0D\u65BC\u4F7F\u7528\u8005\u4E0D\u8CA0\u64D4\u4EFB\u4F55\u8CE0\u511F\u8CAC\u4EFB\uFF1A
+    \r\n\r\n1.\u5C0D\u65BC\u672C\u670D\u52D9\u76F8\u95DC\u4FC2\u7D71\u8A2D\u5099\u9032\u884C\u9077\u79FB\u3001\u66F4\u63DB\u6216\u7DAD\u8B77\u6642\u3002
     2.\u56E0\u4E0D\u53EF\u6B78\u8CAC\u65BC\u672C\u516C\u53F8 \u6240\u9020\u6210\u670D\u52D9\u505C\u6B62\u6216\u4E2D\u65B7\u3002
     3.\u56E0\u4E0D\u53EF\u6297\u529B\u6240\u9020\u6210\u670D\u52D9\u505C\u6B62\u6216\u4E2D\u65B7\u3002
     \r\n\r\n(\u4E8C)\u5982\u56E0\u672C\u516C\u53F8\u5C0D\u65BC\u672C\u7DB2\u7AD9\u76F8\u95DC\u4FC2\u7D71\u8A2D\u5099\u9032\u884C\u9077\u79FB\u3001\u66F4\u63DB\u6216\u7DAD\u8B77\u800C\u5FC5\u9808\u66AB\u505C\u6216
     \u4E2D\u65B7\u5168\u90E8\u6216\u4E00\u90E8\u4E4B\u670D\u52D9\u6642\uFF0C\u672C\u516C\u53F8\u65BC\u66AB\u505C\u6216\u4E2D\u65B7\u524D\u5C07\u4EE5\u96FB\u5B50\u90F5\u4EF6\u901A\u77E5\u6216\u65BC\u672C\u7DB2
-    \u7AD9\u4E0A\u516C\u544A\u3002 \r\n\r\n(\u4E09)\u5C0D\u65BC\u672C\u670D\u52D9\u4E4B\u66AB\u505C\u6216\u4E2D\u65B7\uFF0C\u53EF\u80FD\u9020\u6210\u60A8\u4F7F\u7528\u4E0A\u7684\u4E0D\u4FBF\u3001\u8CC7\u6599\u907A\u5931\u6216\u5176\u4ED6\u7D93
-    \u6FDF\u53CA\u6642\u9593\u4E0A\u4E4B\u640D\u5931\uFF0C\u60A8\u5E73\u6642\u61C9\u63A1\u53D6\u9069\u7576\u7684\u9632\u8B77\u63AA\u65BD\uFF0C\u4EE5\u4FDD\u969C\u60A8\u7684\u6B0A\u76CA\u3002
+    \u7AD9\u4E0A\u516C\u544A\u3002 \r\n\r\n(\u4E09)\u5C0D\u65BC\u672C\u670D\u52D9\u4E4B\u66AB\u505C\u6216\u4E2D\u65B7\uFF0C\u53EF\u80FD\u9020\u6210\u60A8\u4F7F\u7528\u4E0A\u7684\u4E0D\u4FBF\u3001\u8CC7\u6599\u907A\u5931\u6216\u5176\u4ED6\u7D93\u6FDF\u53CA\u6642\u9593\u4E0A\u4E4B\u640D\u5931\uFF0C\u60A8\u5E73\u6642\u61C9\u63A1\u53D6\u9069\u7576\u7684\u9632\u8B77\u63AA\u65BD\uFF0C\u4EE5\u4FDD\u969C\u60A8\u7684\u6B0A\u76CA\u3002
     \r\n\r\n\u516D\u3001\u4FDD\u7BA1\u7FA9\u52D9\uFF1A \r\n\r\n\u6703\u54E1\u6709\u7FA9\u52D9\u59A5\u5584\u4FDD\u7BA1\u5728\u672C\u7DB2\u7AD9\u4E4B\u5E33\u865F\u8207\u5BC6\u78BC\uFF0C\u4E26\u70BA\u6B64\u7D44\u5E33\u865F\u8207\u5BC6\u78BC\u767B\u5165\u7CFB\u7D71\u5F8C
     \u6240\u9032\u884C\u4E4B\u4E00\u5207\u6D3B\u52D5\u8CA0\u8CAC\u3002\u70BA\u7DAD\u8B77\u6703\u54E1\u81EA\u8EAB\u6B0A\u76CA\uFF0C\u8ACB\u52FF\u5C07\u5E33\u865F\u8207\u5BC6\u78BC\u6D29\u9732\u6216\u63D0\u4F9B
     \u4E88\u7B2C\u4E09\u4EBA\u77E5\u6089\uFF0C\u6216\u51FA\u501F\u6216\u8F49\u8B93\u4ED6\u4EBA\u4F7F\u7528\u3002
     \r\n\r\n\u4E03\u3001\u540C\u610F\u5404\u9805\u904A\u6232\u898F\u5247\uFF1A \r\n\r\n\u70BA\u907F\u514D\u4F7F\u7528\u8005\u65BC\u672C\u5E73\u53F0\u904A\u6232\u6642\u7522\u751F\u722D\u8B70\uFF0C\u5404\u9805\u898F\u5247\u65BC\u904A\u6232\u4E2D\u5FC3\u5747\u6709\u8A73\u7D30\u8AAA\u660E\uFF0C
     \u8ACB\u52D9\u5FC5\u8A73\u7D30\u95B1\u8B80\u672C\u670D\u52D9\u6240\u5B9A\u4E4B\u5404\u9805\u898F\u5247\uFF0C\u6703\u54E1\u4E00\u7D93\u958B\u59CB\u4F7F\u7528\u672C\u670D\u52D9\uFF0C\u5373\u88AB\u8996\u70BA
     \u5DF2\u63A5\u53D7\u6240\u6709\u4E4B\u898F\u5B9A\u3002 \r\n\r\n\u516B\u3001\u6703\u54E1\u898F\u7BC4\u4E4B\u589E\u8A02\u53CA\u4FEE\u6539\uFF1A
-    \r\n\r\n\u672C\u670D\u52D9\u689D\u6B3E\u5982\u6709\u589E\u8A02\u6216\u4FEE\u6539\uFF0C\u60A8\u540C\u610F\u81EA\u8A72\u4FEE\u8A02\u689D\u6B3E\u65BC\u672C\u7DB2\u7AD9\u516C\u544A\u4E4B\u6642\u8D77\u53D7\u5176\u62D8
-    \u675F\uFF0C\u672C\u7DB2\u7AD9\u5C07\u4E0D\u5C0D\u6703\u54E1\u500B\u5225\u901A\u77E5\u3002\u5982\u60A8\u65BC\u516C\u544A\u5F8C\u7E7C\u7E8C\u4F7F\u7528\u672C\u670D\u52D9\uFF0C\u5247\u8996\u70BA\u60A8\u5DF2
-    \u7D93\u540C\u610F\u8A72\u4FEE\u8A02\u689D\u6B3E\u3002 \r\n\r\n\u4E5D\u3001\u96B1\u79C1\u6B0A\u8072\u660E\uFF1A\r\n\r\n\u6211\u5011\u81F4\u529B\u70BA\u5BA2\u6236\u4FDD\u8B77\u96B1\u79C1\u4E26\u63D0\u4F9B\u4E00\u500B\u6700\u5B89\u5168\u7684\u904A\u6232\u5E73\u53F0\uFF0C\u6211\u5011\u5728\u6B64\u7DB2\u7AD9\u8490\u96C6\u7684
-    \u8CC7\u6599\u5C07\u6703\u70BA\u60A8\u63D0\u4F9B\u6700\u5353\u8D8A\u7684\u670D\u52D9\uFF0C\u6211\u5011\u4E0D\u6703\u51FA\u8CE3\u6216\u79DF\u8CC3\u60A8\u7684\u500B\u4EBA\u8CC7\u6599\u7D66\u7B2C\u4E09
+    \r\n\r\n\u672C\u670D\u52D9\u689D\u6B3E\u5982\u6709\u589E\u8A02\u6216\u4FEE\u6539\uFF0C\u60A8\u540C\u610F\u81EA\u8A72\u4FEE\u8A02\u689D\u6B3E\u65BC\u672C\u7DB2\u7AD9\u516C\u544A\u4E4B\u6642\u8D77\u53D7\u5176\u62D8\u675F\uFF0C\u672C\u7DB2\u7AD9\u5C07\u4E0D\u5C0D\u6703\u54E1\u500B\u5225\u901A\u77E5\u3002\u5982\u60A8\u65BC\u516C\u544A\u5F8C\u7E7C\u7E8C\u4F7F\u7528\u672C\u670D\u52D9\uFF0C\u5247\u8996\u70BA\u60A8\u5DF2
+    \u7D93\u540C\u610F\u8A72\u4FEE\u8A02\u689D\u6B3E\u3002 \r\n\r\n\u4E5D\u3001\u96B1\u79C1\u6B0A\u8072\u660E\uFF1A\r\n\r\n\u6211\u5011\u81F4\u529B\u70BA\u5BA2\u6236\u4FDD\u8B77\u96B1\u79C1\u4E26\u63D0\u4F9B\u4E00\u500B\u6700\u5B89\u5168\u7684\u904A\u6232\u5E73\u53F0\uFF0C\u6211\u5011\u5728\u6B64\u7DB2\u7AD9\u8490\u96C6\u7684\u8CC7\u6599\u5C07\u6703\u70BA\u60A8\u63D0\u4F9B\u6700\u5353\u8D8A\u7684\u670D\u52D9\uFF0C\u6211\u5011\u4E0D\u6703\u51FA\u8CE3\u6216\u79DF\u8CC3\u60A8\u7684\u500B\u4EBA\u8CC7\u6599\u7D66\u7B2C\u4E09
     \u65B9\uFF0C\u4E26\u5132\u5B58\u5728\u5B89\u5168\u7684\u3001\u975E\u516C\u958B\u7684\u4F5C\u696D\u7CFB\u7D71\uFF0C\u5C0D\u65BC\u6709\u6A5F\u6703\u63A5\u89F8\u5BA2\u6236\u7684\u500B\u4EBA\u8CC7\u6599\u7684
     \u5354\u52A9\u5925\u4F34\u4E5F\u5FC5\u9700\u9075\u5B88\u6211\u5011\u8A02\u7ACB\u7684\u96B1\u79C1\u4FDD\u5BC6\u898F\u5247\u3002
     \r\n\r\n\u5341\u3001\u514D\u8CAC\u8072\u660E\uFF1A \r\n\r\n\u90E8\u4EFD\u5730\u5340\u6216\u570B\u5BB6\u6CD5\u5F8B\u5C1A\u672A\u660E\u5B9A\u7DDA\u4E0A\u535A\u5F69\u7684\u5408\u6CD5\u6027\u554F\u984C\uFF0C\u751A\u81F3\u67D0\u4E9B\u5730\u5340\u6216\u570B\u5BB6\u5DF2
@@ -5131,8 +5126,8 @@ MonoBehaviour:
     \u6CD5\uFF0C\u4E26\u8CA0\u5B8C\u5168\u7684\u8CAC\u4EFB\uFF0C\u4F7F\u7528\u672C\u670D\u52D9\u4E4B\u6703\u54E1\u8ACB\u9075\u5B88\u4F7F\u7528\u8005\u7576\u5730\u6CD5\u4EE4\u4E4B\u8A31\u53EF\uFF0C\u5982\u6709
     \u9055\u53CD\u4E4B\u60C5\u4E8B\u6055\u975E\u672C\u516C\u53F8\u4E4B\u8CA0\u8CAC\u7BC4\u570D\u3002"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
+  m_sharedMaterial: {fileID: 491667887584919328, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5649,8 +5644,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Sound
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
+  m_sharedMaterial: {fileID: 491667887584919328, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -6014,7 +6009,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7587781145230211289
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6375,8 +6370,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: English
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
+  m_sharedMaterial: {fileID: 491667887584919328, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -6555,7 +6550,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 4535.64}
+  m_SizeDelta: {x: 0, y: 4341.38}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &637752554534143999
 CanvasRenderer:
@@ -6671,8 +6666,8 @@ MonoBehaviour:
     with the permissions of the user's local laws. If there is any violation, the
     company will not be responsible. scope.\r\n"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
+  m_sharedMaterial: {fileID: 491667887584919328, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -6771,7 +6766,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2125199913120803829
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6989,8 +6984,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Log Out
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
-  m_sharedMaterial: {fileID: -4543751221255232905, guid: 67393bfc3a860b042baa08f7fbeadd93, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
+  m_sharedMaterial: {fileID: 491667887584919328, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
