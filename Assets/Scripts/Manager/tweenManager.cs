@@ -38,6 +38,8 @@ public class tweenManager : MonoBehaviour
     public List<Transform> D_Targets;
     public List<Transform> D_TargetsActive;
 
+    public GameView gameView;
+
     bool isComplete;
 
     //.Sequence cardSequence;
@@ -58,11 +60,21 @@ public class tweenManager : MonoBehaviour
     public void setSeats(UnityAction callback)
     {
         List<Transform> Seats = new List<Transform>();
-        foreach (var obj in playerSeats)
+        for (int i = 0; i < playerSeats.Count; i++)
         {
-            if (obj.gameObject.activeInHierarchy && !obj.parent.GetComponent<GamePlayerInfo>().IsOpenInfoMask)
-                Seats.Add(obj);
+            foreach (var item in gameView.gameData.gameRoomData.playerDataDic.Values)
+            {
+                if (i == item.gameSeat && item.gameState == (int)PlayerStateEnum.Playing)
+                {
+                    Seats.Add(playerSeats[i]);
+                }
+            }
         }
+        //foreach (var obj in playerSeats)
+        //{
+        //    if (obj.gameObject.activeInHierarchy && !obj.parent.GetComponent<GamePlayerInfo>().IsOpenInfoMask)
+                
+        //}
 
         dealCard.gameObject.SetActive(true);
         StartCoroutine(waitShuffle(Seats, callback));
