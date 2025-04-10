@@ -9,6 +9,8 @@ public class ChipsTween : MonoBehaviour
     public List<GameObject> Stacks;
 
     private List<Transform> chips = new List<Transform>();
+
+    private int curIndex = 0;
     public void GameInit()
     {
         foreach(Transform chip in chips)
@@ -23,6 +25,7 @@ public class ChipsTween : MonoBehaviour
             stack.SetActive(false);
         }
         chips.Clear();
+        curIndex = 0;
     }
     public void PlayBet(Transform obj,Vector3 target, Action callback)
     {
@@ -33,9 +36,10 @@ public class ChipsTween : MonoBehaviour
     }
     public void ConcentrateChips()
     {
-        int count = 0;
-        foreach (Transform item in chips) {
-            int index = count / 5;
+        for (int i = curIndex; i < chips.Count; i++)
+        {
+            int index = i / 5;
+            var item = chips[i];
             item.gameObject.SetActive(true);
             item.DOMove(PotPos.position, 0.5f).SetEase(Ease.Linear).OnComplete(() =>
             {
@@ -43,8 +47,8 @@ public class ChipsTween : MonoBehaviour
                 Stacks[index].SetActive(false);
                 Stacks[index].SetActive(true);
             });
-            count++;
         }
+        curIndex = chips.Count;
     }
     public void Result(int winnerCount, int index, Vector3 winnerSeatPos)
     {
