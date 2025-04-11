@@ -174,7 +174,7 @@ public class LobbyMinePageView : MonoBehaviour
         playerAvatar_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[DataManager.UserAvatarIndex];
 
         //暱稱
-        Nickname_Txt.text = $"@{DataManager.UserNickname}";
+        Nickname_Txt.text = $"{DataManager.UserNickname}";
     }
 
     /// <summary>

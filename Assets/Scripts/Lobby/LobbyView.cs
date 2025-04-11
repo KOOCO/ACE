@@ -507,7 +507,7 @@ public class LobbyView : MonoBehaviour
     /// </summary>
     public void UpdateUserInfo()
     {
-        Nickname_Txt.text = $"@{DataManager.UserNickname}";
+        Nickname_Txt.text = $"{DataManager.UserNickname}";
         Avatar_Btn.image.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[DataManager.UserAvatarIndex];
 
         Assets_CryptoChipsValue_Txt.text = $"${StringUtils.SetChipsUnit(DataManager.UserChips)}";
