@@ -7356,15 +7356,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.80784315}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.6}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 60eee459afbe3bf4883247d4a81e475f, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 6db7d8c1abd7c4e4689713edcd7b1b78, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -69182,7 +69182,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4987173251276599138, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 85.54
+      value: 29.47
       objectReference: {fileID: 0}
     - target: {fileID: 4987173251276599138, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: m_SizeDelta.y
@@ -69194,7 +69194,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4987173251276599138, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 52.77
+      value: 24.735
       objectReference: {fileID: 0}
     - target: {fileID: 4987173251276599138, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -70102,7 +70102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8931161839843536060, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: m_text
-      value: Fold $9,999k
+      value: 'Fold '
       objectReference: {fileID: 0}
     - target: {fileID: 8931161839843536060, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: m_fontSize
@@ -81015,7 +81015,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4987173251276599138, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 85.54
+      value: 44.6
       objectReference: {fileID: 0}
     - target: {fileID: 4987173251276599138, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: m_SizeDelta.y
@@ -81027,7 +81027,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4987173251276599138, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 52.77
+      value: 32.3
       objectReference: {fileID: 0}
     - target: {fileID: 4987173251276599138, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -81931,7 +81931,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8931161839843536060, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: m_text
-      value: Fold $9,999k
+      value: Call $4
       objectReference: {fileID: 0}
     - target: {fileID: 8931161839843536060, guid: 78a6cb2b399b62b47a2154646bdbba1f, type: 3}
       propertyPath: m_fontSize
