@@ -38,6 +38,9 @@ public class tweenManager : MonoBehaviour
     public List<Transform> D_Targets;
     public List<Transform> D_TargetsActive;
 
+    [Header("±óµP¾B¸n")]
+    public GameObject Mask;
+
     public GameView gameView;
 
     bool isComplete;
@@ -83,6 +86,7 @@ public class tweenManager : MonoBehaviour
     public void playFold()
     {
         foldCard.gameObject.SetActive(true);
+        Mask.SetActive(true);
         StartCoroutine(animChain(foldCard));
     }
     
@@ -271,6 +275,7 @@ public class tweenManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(1f);
+        Mask.SetActive(false);
         PTrans.gameObject.SetActive(false);
     }
     IEnumerator communityChain()
