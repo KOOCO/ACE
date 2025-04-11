@@ -198,6 +198,12 @@ public class GamePlayerInfo : MonoBehaviour
             HandPokers[0].setFrameActive = false;
             HandPokers[1].setFrameActive = false;
         }
+        if(IsFold && IsWinEffect)
+        {
+            //print("非玩家棄牌結算");
+            HandPokers[0].setFrameActive = false;
+            HandPokers[1].setFrameActive = false;
+        }
     }
 
     /// <summary>
