@@ -1027,7 +1027,7 @@ public class GameView : MonoBehaviour
         if (gameRoomData.currGameFlow != (int)GameFlowEnum.PotResult &&
             gameRoomData.currGameFlow != (int)GameFlowEnum.SideResult)
         {
-            gamePot.TotalPotText = $"${StringUtils.SetChipsUnit(Math.Floor(gameRoomData.potChips))}";
+            gamePot.TotalPotText = $"{StringUtils.SetChipsUnit(Math.Floor(gameRoomData.potChips))}";
             gameData.thisData.TotalPot = gameRoomData.potChips;
         }
 
@@ -2318,7 +2318,7 @@ public class GameView : MonoBehaviour
         {
             if (gamePot.TotalPotText != StringUtils.SetChipsUnit(Math.Floor(gameRoomData.potChips)))
             {
-                StringUtils.ChipsChangeEffect(gamePot.TotalPotTextUI, Math.Floor(gameRoomData.potChips), "$");
+                StringUtils.ChipsChangeEffect(gamePot.TotalPotTextUI, Math.Floor(gameRoomData.potChips));
             }
         }
 
