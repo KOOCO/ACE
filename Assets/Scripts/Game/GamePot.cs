@@ -21,7 +21,7 @@ public class GamePot : MonoBehaviour
         gameData = GameRoomManager.Instance.GetGameData(roomName);
         //ªì©l©³¦À¦ì¸m
         gameData.InitPotPointPos = Pot_Img.rectTransform.anchoredPosition;
-        TotalPot_Txt.text = $"${StringUtils.SetChipsUnit(0)}";
+        TotalPot_Txt.text = $"{StringUtils.SetChipsUnit(0)}";
         roomID_Txt.text = $"ID: {DataManager.RoomId}";
         EventListener();
     }
@@ -79,7 +79,7 @@ public class GamePot : MonoBehaviour
         {
             if (TotalPot_Txt.text != StringUtils.SetChipsUnit(value))
             {
-                StringUtils.ChipsChangeEffect(TotalPot_Txt, Math.Floor(value), "$");
+                StringUtils.ChipsChangeEffect(TotalPot_Txt, Math.Floor(value));
             }
             gameData.thisData.TotalPot = value;
         }

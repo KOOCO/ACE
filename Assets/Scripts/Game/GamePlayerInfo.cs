@@ -462,7 +462,7 @@ public class GamePlayerInfo : MonoBehaviour
 
         CurrRoomChips = initChips;
         Avatar_Img.sprite = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.AvatarAlbum).album[avatar];
-        Nickname_Txt.text = $"@{nickName}";
+        Nickname_Txt.text = nickName;
         Chips_Txt.text = $"{StringUtils.SetChipsUnit(Math.Floor(initChips))}";
     }
 
