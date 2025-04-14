@@ -255,6 +255,8 @@ public class GameView : MonoBehaviour
         string callSprName = actionButtons.CallBtn_Img.sprite.name;
         if (callSprName != "跟注" && callSprName != "caLL")
             actionButtons.CallBtnText = "";
+
+        //print("本地玩家是否遊戲中: " + gameData.thisData.LocalGamePlayerInfo.IsPlaying);
     }
 
     #region Action接收
@@ -1453,7 +1455,8 @@ public class GameView : MonoBehaviour
                         {
                             bool isStraight = resultIndex == 6 || resultIndex == 2 || resultIndex == 1 ? true : false;
                             bool _isFlush = resultIndex == 5 || resultIndex == 2 || resultIndex == 1 ? true : false;
-                            PokerShape.OpenMatchPokerFrame(allPokers, HighlightCard(allPokers, matchPokerList, isStraight, _isFlush), isWinEffect);
+                            if (gameData.thisData.LocalGamePlayerInfo.IsPlaying)
+                                PokerShape.OpenMatchPokerFrame(allPokers, HighlightCard(allPokers, matchPokerList, isStraight, _isFlush), isWinEffect);
 
                             // Set winner details if win effects are enabled
                             if (isWinEffect)
@@ -1487,7 +1490,8 @@ public class GameView : MonoBehaviour
     {
         List<int> resList;
         var data = gameControl.judgePoker.CalculateRank(cards, out resList, isStraight, isFlush);
-        gameControl.judgePoker.OpenMatchPokerFrame(allPokers, resList);
+        if(gameData.thisData.LocalGamePlayerInfo.IsPlaying)
+            gameControl.judgePoker.OpenMatchPokerFrame(allPokers, resList);
 
         List<int> myCards = new List<int>();
         List<int> myRank = new List<int>();
