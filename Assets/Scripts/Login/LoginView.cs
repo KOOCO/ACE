@@ -794,7 +794,8 @@ public class LoginView : MonoBehaviour
             codeStartTime = DateTime.Now.AddSeconds(-codeCountDownTime);
         }
 
-        ///自動連接Coinbase
+        ///
+        /// 連接Coinbase
         if (!DataManager.IsNotFirstInLogin &&
             DataManager.IsInCoinbase)
         {
@@ -2090,7 +2091,6 @@ public class LoginView : MonoBehaviour
     public class Local_IP
     {
         public string IPAddress { get; set; }
-
     }
 
     /// <summary>
@@ -2421,11 +2421,11 @@ public class LoginView : MonoBehaviour
             string jsonResponse = request.downloadHandler.text;
 
             // 使用 JsonUtility 解析 JSON
-            GeneralResponse response = JsonUtility.FromJson<GeneralResponse>(jsonResponse);
-            print(response.data.url);
+            urlData response = JsonUtility.FromJson<urlData>(jsonResponse);
+            print(response.url);
 
             // 提取 URL 中的 session 值
-            string sessionValue = ExtractSessionValue(response.data.url);
+            string sessionValue = ExtractSessionValue(response.url);
             //Debug.Log("Session Value: " + sessionValue);
 
             //Start LogIn
@@ -2483,6 +2483,11 @@ public class GeneralResponse
 [Serializable]
 public class GeneralData
 {
-    public string url;     // 如果有 URL 的话会解析
     public string session; // 如果有 Session 的话会解析
+}
+
+[Serializable]
+public class urlData
+{
+    public string url;     // 如果有 URL 的话会解析
 }
