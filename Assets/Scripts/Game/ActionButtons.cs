@@ -95,10 +95,22 @@ public class ActionButtons : MonoBehaviour
             SetCallFoldBetStr("Call", keyC);
             SetCallFoldBetStr("Fold", keyF);
         }
-        else
+        else if (LanguageManager.Instance.GetCurrLanguageIndex() == 1)
         {
             int keyF = gameData.betStringsC.FirstOrDefault(x => x.Value == LanguageManager.Instance.GetText(gameData.strData.FoldStr)).Key;
             int keyC = gameData.betStringsC.FirstOrDefault(x => x.Value == LanguageManager.Instance.GetText(gameData.strData.CallStr)).Key;
+            SetCallFoldBetStr("Call", keyC);
+            SetCallFoldBetStr("Fold", keyF);
+        }else if (LanguageManager.Instance.GetCurrLanguageIndex() == 2)
+        {
+            int keyF = gameData.betStringsJ.FirstOrDefault(x => x.Value == LanguageManager.Instance.GetText(gameData.strData.FoldStr)).Key;
+            int keyC = gameData.betStringsJ.FirstOrDefault(x => x.Value == LanguageManager.Instance.GetText(gameData.strData.CallStr)).Key;
+            SetCallFoldBetStr("Call", keyC);
+            SetCallFoldBetStr("Fold", keyF);
+        }else 
+        {
+            int keyF = gameData.betStringsK.FirstOrDefault(x => x.Value == LanguageManager.Instance.GetText(gameData.strData.FoldStr)).Key;
+            int keyC = gameData.betStringsK.FirstOrDefault(x => x.Value == LanguageManager.Instance.GetText(gameData.strData.CallStr)).Key;
             SetCallFoldBetStr("Call", keyC);
             SetCallFoldBetStr("Fold", keyF);
         }
@@ -667,7 +679,7 @@ public class ActionButtons : MonoBehaviour
             else
                 foldBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteEnglish).album[shapeIndex];
         }
-        else
+        else if (LanguageManager.Instance.GetCurrLanguageIndex() == 1)
         {
             if (btnName == "Call")
             {
@@ -677,6 +689,26 @@ public class ActionButtons : MonoBehaviour
             else
                 foldBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteChinese).album[shapeIndex];
         }
+        //else if (LanguageManager.Instance.GetCurrLanguageIndex() == 2)
+        //{
+        //    if (btnName == "Call")
+        //    {
+        //        SetCallBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteJapanese).album[shapeIndex];
+        //        CallBtn_Img.transform.localPosition = shapeIndex == 0 ? new Vector2(CallBtn_Img.transform.localPosition.x, 5.95f) : originCallPos;
+        //    }
+        //    else
+        //        foldBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteJapanese).album[shapeIndex];
+        //}
+        //else
+        //{
+        //    if (btnName == "Call")
+        //    {
+        //        SetCallBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteKorean).album[shapeIndex];
+        //        CallBtn_Img.transform.localPosition = shapeIndex == 0 ? new Vector2(CallBtn_Img.transform.localPosition.x, 5.95f) : originCallPos;
+        //    }
+        //    else
+        //        foldBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteKorean).album[shapeIndex];
+        //}
     }
 
     /// <summary>
@@ -863,11 +895,20 @@ public class ActionButtons : MonoBehaviour
             SetCallFoldBetStr("Call", keyC);
             //print("¸òª`«ö¶s¤å¦r: " + betStringsE[keyC] + " " + gameData.strData.CallStr);
         }
-        else
+        else if (LanguageManager.Instance.GetCurrLanguageIndex() == 1)
         {
             keyC = gameData.betStringsC.FirstOrDefault(x => x.Value == LanguageManager.Instance.GetText(gameData.strData.CallStr)).Key;
             SetCallFoldBetStr("Call", keyC);
             //print("¸òª`«ö¶s¤å¦r: " + betStringsE[keyC] + " " + gameData.strData.CallStr);
+        }
+        else if (LanguageManager.Instance.GetCurrLanguageIndex() == 2)
+        {
+            keyC = gameData.betStringsJ.FirstOrDefault(x => x.Value == LanguageManager.Instance.GetText(gameData.strData.CallStr)).Key;
+            SetCallFoldBetStr("Call", keyC);
+        }else
+        {
+            keyC = gameData.betStringsK.FirstOrDefault(x => x.Value == LanguageManager.Instance.GetText(gameData.strData.CallStr)).Key;
+            SetCallFoldBetStr("Call", keyC);
         }
 
         if (gameData.strData.CallValueStr != "" && int.Parse(gameData.strData.CallValueStr) > 0 && keyC == 0)

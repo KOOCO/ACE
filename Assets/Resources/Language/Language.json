@@ -1,1712 +1,2396 @@
 ﻿[
-  {
-    "ID": "通用",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "Asia Poker",
-    "English": "Asia Poker",
-    "zh_TW": "亞洲撲克"
-  },
-  {
-    "ID": "Texas hold'em",
-    "English": "Texas hold'em ",
-    "zh_TW": "德州撲克"
-  },
-  {
-    "ID": "ACE",
-    "English": "ACE",
-    "zh_TW": "亞洲撲克"
-  },
-  {
-    "ID": "Retry",
-    "English": "RETRY",
-    "zh_TW": "重新嘗試"
-  },
-  {
-    "ID": "SUBMIT",
-    "English": "SUBMIT",
-    "zh_TW": "提交"
-  },
-  {
-    "ID": "REFLASH",
-    "English": "Refresh",
-    "zh_TW": "重新整理"
-  },
-  {
-    "ID": "Copied!",
-    "English": "Copied!",
-    "zh_TW": "已複製!"
-  },
-  {
-    "ID": "Cancel",
-    "English": "Cancel",
-    "zh_TW": "取消"
-  },
-  {
-    "ID": "CANCEL",
-    "English": "CANCEL",
-    "zh_TW": "取消"
-  },
-  {
-    "ID": "Confirm",
-    "English": "Confirm",
-    "zh_TW": "確認"
-  },
-  {
-    "ID": "CONFIRM",
-    "English": "CONFIRM",
-    "zh_TW": "確認"
-  },
-  {
-    "ID": "Buy",
-    "English": "Buy",
-    "zh_TW": "購買"
-  },
-  {
-    "ID": "Enter text...",
-    "English": "Enter text...",
-    "zh_TW": "輸入文字..."
-  },
-  {
-    "ID": "Send",
-    "English": "Send",
-    "zh_TW": "傳送訊息"
-  },
-  {
-    "ID": "Hand",
-    "English": "Hand",
-    "zh_TW": "手牌"
-  },
-  {
-    "ID": "Now Loading...",
-    "English": "Now Loading...",
-    "zh_TW": "正在加載..."
-  },
-  {
-    "ID": "Win",
-    "English": "Win",
-    "zh_TW": "獲勝"
-  },
-  {
-    "ID": "Fail",
-    "English": "Fail",
-    "zh_TW": "失敗"
-  },
-  {
-    "ID": "Language",
-    "English": "Language",
-    "zh_TW": "語言"
-  },
-  {
-    "ID": "Prompt",
-    "English": "Prompt",
-    "zh_TW": "提示"
-  },
-  {
-    "ID": "Enter New Password.",
-    "English": "Enter New Password.",
-    "zh_TW": "輸入新密碼。"
-  },
-  {
-    "ID": "Allowed Characters: Alphanumeric A-Z, 0-9.",
-    "English": "Allowed Characters: Alphanumeric A-Z, 0-9.",
-    "zh_TW": "允許的字元：字母數字 A-Z、0-9。"
-  },
-  {
-    "ID": "At Least 8 Chars.",
-    "English": "At Least 8 Chars.",
-    "zh_TW": "至少 8 個字元。"
-  },
-  {
-    "ID": "Enter Nickname.",
-    "English": "Enter Nickname.",
-    "zh_TW": "輸入暱稱。"
-  },
-  {
-    "ID": "Enter at least one special character.",
-    "English": "Enter at least one special character.",
-    "zh_TW": "至少輸入一個特殊字元"
-  },
-  {
-    "ID": "Enter at least one uppercase and lowercase.",
-    "English": "Contains at least one uppercase and lowercase.",
-    "zh_TW": "至少輸入一個大寫和小寫"
-  },
-  {
-    "ID": "Less Than 10 Chars.",
-    "English": "Less Than 10 Chars.",
-    "zh_TW": "少於 10 個字元。"
-  },
-  {
-    "ID": "INTEGRAL",
-    "English": "RANK",
-    "zh_TW": "積分"
-  },
-  {
-    "ID": "CRYPTO TABLE",
-    "English": "CRYPTO TABLE",
-    "zh_TW": "加密貨幣桌"
-  },
-  {
-    "ID": "VIRTUAL CURRENCY TABLE",
-    "English": "VIRTUAL CURRENCY TABLE",
-    "zh_TW": "虛擬貨幣桌"
-  },
-  {
-    "ID": "CRYPTO",
-    "English": "CRYPTO",
-    "zh_TW": "加密桌"
-  },
-  {
-    "ID": "VC",
-    "English": "VC",
-    "zh_TW": "虛擬桌"
-  },
-  {
-    "ID": "Integral Table",
-    "English": "Rank Table",
-    "zh_TW": "積分房"
-  },
-  {
-    "ID": "Crypto Table",
-    "English": "Crypto Table",
-    "zh_TW": "加密貨幣桌"
-  },
-  {
-    "ID": "VC Table",
-    "English": "VC Table",
-    "zh_TW": "虛擬貨幣桌"
-  },
-  {
-    "ID": "GO TO INTEGRAL",
-    "English": "RANK MODE",
-    "zh_TW": "積分"
-  },
-  {
-    "ID": "Classic Battle",
-    "English": "Classic Battle",
-    "zh_TW": "經典對戰"
-  },
-  {
-    "ID": "High Roller Battleground",
-    "English": "High Roller Battleground",
-    "zh_TW": "賭豪戰場"
-  },
-  {
-    "ID": "Gold",
-    "English": "Gold",
-    "zh_TW": "黃金"
-  },
-  {
-    "ID": "Stamina",
-    "English": "Stamina",
-    "zh_TW": "能量"
-  },
-  {
-    "ID": "OT Props",
-    "English": "OT Props",
-    "zh_TW": "延時"
-  },
-  {
-    "ID": "Type",
-    "English": "Type",
-    "zh_TW": "類型"
-  },
-  {
-    "ID": "Title",
-    "English": "Title",
-    "zh_TW": "標題"
-  },
-  {
-    "ID": "Status",
-    "English": "Status",
-    "zh_TW": "狀態"
-  },
-  {
-    "ID": "P&L",
-    "English": "P&L",
-    "zh_TW": "交易結果"
-  },
-  {
-    "ID": "CASH",
-    "English": "CASH",
-    "zh_TW": "加密貨幣"
-  },
-  {
-    "ID": "Cash",
-    "English": "Cash",
-    "zh_TW": "加密貨幣"
-  },
-  {
-    "ID": "U COIN",
-    "English": "U COIN",
-    "zh_TW": "U幣"
-  },
-  {
-    "ID": "A COIN",
-    "English": "A COIN",
-    "zh_TW": "A幣"
-  },
-  {
-    "ID": "GOLD",
-    "English": "GOLD",
-    "zh_TW": "黃金"
-  },
-  {
-    "ID": "GOLDEN",
-    "English": "GOLDEN",
-    "zh_TW": "黃金"
-  },
-  {
-    "ID": "OF",
-    "English": "OF",
-    "zh_TW": "之"
-  },
-  {
-    "ID": "Points",
-    "English": "Points",
-    "zh_TW": "黃金"
-  },
-  {
-    "ID": "Golden",
-    "English": "Golden",
-    "zh_TW": "黃金"
-  },
-  {
-    "ID": "My NFT",
-    "English": "My NFT",
-    "zh_TW": "我的 NFT"
-  },
-  {
-    "ID": "My History",
-    "English": "My History(Last Three Month)",
-    "zh_TW": "我的歷史紀錄(最近3個月)"
-  },
-  {
-    "ID": "Transaction History",
-    "English": "Transaction History",
-    "zh_TW": "交易紀錄"
-  },
-  {
-    "ID": "Change Avatar",
-    "English": "Change Avatar",
-    "zh_TW": "更換頭像"
-  },
-  {
-    "ID": "Personal Information",
-    "English": "PersonalInformation",
-    "zh_TW": "個人資料"
-  },
-  {
-    "ID": "Account Balance",
-    "English": "Account Balance",
-    "zh_TW": "帳戶餘額"
-  },
-  {
-    "ID": "Score Record",
-    "English": "Score Record",
-    "zh_TW": "成績記錄"
-  },
-  {
-    "ID": "Social Media",
-    "English": "Social Media",
-    "zh_TW": "社群媒體"
-  },
-  {
-    "ID": "HAND HISTORY",
-    "English": "HAND HISTORY",
-    "zh_TW": "手牌紀錄"
-  },
-  {
-    "ID": "Hand History",
-    "English": "Hand History",
-    "zh_TW": "手牌紀錄"
-  },
-  {
-    "ID": "TOTAL HANDS PLAYED",
-    "English": "TOTAL HANDS PLAYED",
-    "zh_TW": "總局數"
-  },
-  {
-    "ID": "AVERAGE WINNING",
-    "English": "AVERAGE WINNING",
-    "zh_TW": "平均獲勝率"
-  },
-  {
-    "ID": "WIN RATE",
-    "English": "WIN RATE",
-    "zh_TW": "獲勝率"
-  },
-  {
-    "ID": "BIGGEST POT WON",
-    "English": "BIGGEST POT WON",
-    "zh_TW": "最高獲勝金額"
-  },
-  {
-    "ID": "TOTAL EARNINGS",
-    "English": "TOTAL EARNINGS",
-    "zh_TW": "總收入"
-  },
-  {
-    "ID": "BEST HANDCARD",
-    "English": "BEST HANDCARD",
-    "zh_TW": "最佳手牌"
-  },
-  {
-    "ID": "HANDS PLAYED",
-    "English": "HANDS PLAYED: ",
-    "zh_TW": "玩過的手牌："
-  },
-  {
-    "ID": "HANDS WON",
-    "English": "HANDS WON: ",
-    "zh_TW": "手牌獲勝數："
-  },
-  {
-    "ID": "BEST HAND",
-    "English": "BEST HAND ",
-    "zh_TW": "最佳牌局"
-  },
-  {
-    "ID": "WORST HAND",
-    "English": "WORST HAND ",
-    "zh_TW": "最差牌局"
-  },
-  {
-    "ID": "Settings",
-    "English": "Settings",
-    "zh_TW": "設定"
-  },
-  {
-    "ID": "SETTINGS",
-    "English": "SETTINGS",
-    "zh_TW": "設定"
-  },
-  {
-    "ID": "Game Rules",
-    "English": "Game Rules",
-    "zh_TW": "遊戲規則"
-  },
-  {
-    "ID": "Welcome to AISA POKER! Learn the rules and start playing right away!",
-    "English": "Welcome to ASIA POKER!\n Learn the rules and start playing right away!",
-    "zh_TW": "歡迎來到Asia Poker！\n 了解規則後，馬上開始遊戲！"
-  },
-  {
-    "ID": "Min Buy-In",
-    "English": "Min Buy-In",
-    "zh_TW": "最低買入額"
-  },
-  {
-    "ID": "LAUNCH",
-    "English": "LAUNCH",
-    "zh_TW": "入桌"
-  },
-  {
-    "ID": "詢問彈窗",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "return to the lobby?",
-    "English": "Return to the lobby?",
-    "zh_TW": "返回大廳？"
-  },
-  {
-    "ID": "If you leave now, you will not be able to get back your staked chips.",
-    "English": "If you leave now, you will not be able to get back your staked chips.",
-    "zh_TW": "如果您現在離開，您將無法取回已下注的籌碼"
-  },
-  {
-    "ID": "Cannot Be Changed After Linking.",
-    "English": "Cannot Be Changed After Linking.",
-    "zh_TW": "連結後不能變更!!!"
-  },
-  {
-    "ID": "Notice",
-    "English": "Notice",
-    "zh_TW": "注意"
-  },
-  {
-    "ID": "錯誤訊息",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "User Name Entered Incorrectly, Please Try Again.",
-    "English": "User Name Entered Incorrectly, Please Try Again.",
-    "zh_TW": "使用者名稱格式錯誤，請重新輸入"
-  },
-  {
-    "ID": "Invalid Code, Please Try Again.",
-    "English": "Invalid Code, Please Try Again.",
-    "zh_TW": "密碼無效，請重新輸入。"
-  },
-  {
-    "ID": "Invalid Username or Password!",
-    "English": "Invalid Username or Password!",
-    "zh_TW": "無效的帳號或密碼！"
-  },
-  {
-    "ID": "Network offline",
-    "English": "The network interruption has been detected, please log in again.",
-    "zh_TW": "偵測到網路中斷，請重新登入。"
-  },
-  {
-    "ID": "Idle warn",
-    "English": "We have detected that you have idle in the last game, so the system has kicked you out of the table, to remind you that in order to protect the rights of other players, if you idle again in the next game, we will have to ask you to leave the game.",
-    "zh_TW": "偵測到您於上一局遊戲存在掛機行為，因此系統將您踢出牌桌，提醒您，為了維護其他玩家的權益，若下一局再有掛機行為，我們將不得不請你離線。"
-  },
-  {
-    "ID": "You don,t have enough Ucoins",
-    "English": "You don,t have enough Ucoins",
-    "zh_TW": "您的U幣不足"
-  },
-  {
-    "ID": "Please Agree To The Privacy Policy.",
-    "English": "Please Agree To The Privacy Policy.",
-    "zh_TW": "請同意隱私權政策。"
-  },
-  {
-    "ID": "Mobile Number Has Been Used, Please Try Again.",
-    "English": "Mobile Number Has Been Used, Please Try Again.",
-    "zh_TW": "手機號已使用，請重新輸入。"
-  },
-  {
-    "ID": "Duplicate Nickname, Please Try Again.",
-    "English": "Duplicate Nickname, Please Try Again.",
-    "zh_TW": "暱稱重複，請重新輸入。"
-  },
-  {
-    "ID": "Please Enter A Nickname.",
-    "English": "Please Enter A Nickname.",
-    "zh_TW": "請輸入暱稱。"
-  },
-  {
-    "ID": "Wrong Invitation Code.",
-    "English": "Wrong Invitation Code.",
-    "zh_TW": "錯誤的邀請碼。"
-  },
-  {
-    "ID": "Duplicate Login.",
-    "English": "Duplicate Login.",
-    "zh_TW": "帳號已登入。"
-  },
-  {
-    "ID": "Not enough chips.",
-    "English": "Not enough chips.",
-    "zh_TW": "籌碼不足。"
-  },
-  {
-    "ID": "Exceeded maximum selection date range",
-    "English": "Exceeded maximum selection date range",
-    "zh_TW": "超過最大選取範圍"
-  },
-  {
-    "ID": "登入(LoginView)",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "Sent OTP to SMS",
-    "English": "Sent OTP to SMS",
-    "zh_TW": "已發送 OTP 至簡訊"
-  },
-  {
-    "ID": "Wallet",
-    "English": "Wallet",
-    "zh_TW": "錢包"
-  },
-  {
-    "ID": "Mobile",
-    "English": "Mobile",
-    "zh_TW": "手機"
-  },
-  {
-    "ID": "MobileNumber",
-    "English": "Mobile Number",
-    "zh_TW": "手機號碼"
-  },
-  {
-    "ID": "OTP Code",
-    "English": "OTP Code",
-    "zh_TW": "一次性代碼"
-  },
-  {
-    "ID": "RESEND",
-    "English": "RESEND",
-    "zh_TW": "重發"
-  },
-  {
-    "ID": "SEND CODE",
-    "English": "SEND CODE",
-    "zh_TW": "傳送代碼"
-  },
-  {
-    "ID": "Password",
-    "English": "Password",
-    "zh_TW": "密碼"
-  },
-  {
-    "ID": "Reset Password",
-    "English": "Reset Password",
-    "zh_TW": "重新設密碼"
-  },
-  {
-    "ID": "SIGN IN",
-    "English": "SIGN IN",
-    "zh_TW": "登入"
-  },
-  {
-    "ID": "Sign Up",
-    "English": "Sign Up",
-    "zh_TW": "報名"
-  },
-  {
-    "ID": "REGISTER",
-    "English": "REGISTER",
-    "zh_TW": "註冊"
-  },
-  {
-    "ID": "Lost Password",
-    "English": "Lost Password",
-    "zh_TW": "忘記密碼"
-  },
-  {
-    "ID": "Please Enter Here",
-    "English": "Please Enter Here",
-    "zh_TW": "請在此輸入"
-  },
-  {
-    "ID": "Please Enter The OTP Code",
-    "English": "Please Enter The OTP Code",
-    "zh_TW": "請輸入一次性密碼"
-  },
-  {
-    "ID": "Your Phone Number",
-    "English": "Your Phone Number",
-    "zh_TW": "您的手機號碼"
-  },
-  {
-    "ID": "Remember Me",
-    "English": "Remember Me",
-    "zh_TW": "記住帳號密碼"
-  },
-  {
-    "ID": "Account",
-    "English": "Account",
-    "zh_TW": "帳號"
-  },
-  {
-    "ID": "Your UserName",
-    "English": "Your UserName",
-    "zh_TW": "你的使用者名稱"
-  },
-  {
-    "ID": "Your Account",
-    "English": "Your Account",
-    "zh_TW": "您的帳號"
-  },
-  {
-    "ID": "Email",
-    "English": "Email",
-    "zh_TW": "信箱"
-  },
-  {
-    "ID": "Your Email",
-    "English": "Your Email",
-    "zh_TW": "您的信箱"
-  },
-  {
-    "ID": "i GOT IT",
-    "English": "i GOT IT",
-    "zh_TW": "我明白了"
-  },
-  {
-    "ID": "錢包連接頁面",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "Please, Sign In With Your Wallet.",
-    "English": "Please, Sign In With Your Wallet.",
-    "zh_TW": "請使用您的錢包登入。"
-  },
-  {
-    "ID": "Connect Using Browser Wallet",
-    "English": "Connect Using Browser Wallet",
-    "zh_TW": "使用瀏覽器錢包連接"
-  },
-  {
-    "ID": "Don't Have An Account? <color=#79E84B><link=Sign Up Here!><u>Sign Up Here!</u></link></color>",
-    "English": "Don't Have An Account? <color=#79E84B><link=Sign Up Here!><u>Sign Up Here!</u></link></color>",
-    "zh_TW": "沒有帳戶？ <color=#79E84B><link=Sign Up Here!><u>在此註冊！</u></link></color>"
-  },
-  {
-    "ID": "錢包連接中頁面",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "If you have not downloaded the wallet, please download it first. <color=#79E84B><link=DownloadWallet><u>Download Here!</u></link></color>",
-    "English": "If you have not downloaded the wallet, please download it first. <color=#79E84B><link=DownloadWallet><u>Download Here!</u></link></color>",
-    "zh_TW": "如果您未下載錢包，請先下載。 <color=#79E84B><link=DownloadWallet><u>在這裡下載!</u></link></color>"
-  },
-  {
-    "ID": "Log In Using",
-    "English": "Log In Using",
-    "zh_TW": "登入到"
-  },
-  {
-    "ID": "Load Into",
-    "English": "Load Into",
-    "zh_TW": "連接到"
-  },
-  {
-    "ID": "Error Logging Into",
-    "English": "Error Logging Into",
-    "zh_TW": "連接錢包超時"
-  },
-  {
-    "ID": "簡訊驗證",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "SMS Verification",
-    "English": "SMS Verification",
-    "zh_TW": "簡訊驗證"
-  },
-  {
-    "ID": "手機登入",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "Please use your account to login in.",
-    "English": "Please use your account to login in.",
-    "zh_TW": "請使用您的帳號登入。"
-  },
-  {
-    "ID": "You Will Receive A New Account.",
-    "English": "You Will Receive A New Account.",
-    "zh_TW": "您將收到一個新帳戶。"
-  },
-  {
-    "ID": "<color=#79E84B><link=Forgot Password?><u>Forgot Password?</u></link></color>",
-    "English": "<color=#79E84B><link=Forgot Password?><u>Forgot Password?</u></link></color>",
-    "zh_TW": "<color=#79E84B><link=Forgot Password?><u>忘記密碼?</u></link></color>"
-  },
-  {
-    "ID": "手機註冊",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "<size=14><color=#FFFFFF>Registration Successful</color></size>\\n<size=12><color=#C6C2C2>Account Successfully Created</color></size>",
-    "English": "<size=14><color=#FFFFFF>Registration Successful</color></size>\\n<size=12><color=#C6C2C2>Account Successfully Created</color></size>",
-    "zh_TW": "<size=14><color=#FFFFFF>註冊成功</color></size>\\n<size=12><color=#C6C2C2>成功建立帳戶</color></size>"
-  },
-  {
-    "ID": "隱私權政策",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "Agree To The <color=#79E84B><link=Terms><u>Terms</u></link></color> & <color=#79E84B><link=Privacy Policy><u>Privacy Policy</u></link></color>",
-    "English": "Agree To The <color=#79E84B><link=Terms><u>Terms</u></link></color> & <color=#79E84B><link=Privacy Policy><u>Privacy Policy</u></link></color>",
-    "zh_TW": "同意 <color=#79E84B><link=Terms><u>條款</u></link></color> & <color=#79E84B><link=Privacy Policy><u>隱私權政策</u></link></color>"
-  },
-  {
-    "ID": "Contact us",
-    "English": "Contact us",
-    "zh_TW": "聯繫我們"
-  },
-  {
-    "ID": "Privacy Policy",
-    "English": "Privacy Policy",
-    "zh_TW": "隱私權政策"
-  },
-  {
-    "ID": "Terms",
-    "English": "Terms",
-    "zh_TW": "條款"
-  },
-  {
-    "ID": "Asia Poker privacy policy",
-    "English": "Asia Poker privacy policy",
-    "zh_TW": "Asia Poker 隱私權政策"
-  },
-  {
-    "ID": "Asia Poker Terms of Service",
-    "English": "Asia Poker Terms of Service",
-    "zh_TW": "Asia Poker 服務條款"
-  },
-  {
-    "ID": "設置暱稱",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "Set Your Nickname",
-    "English": "Set Your Nickname",
-    "zh_TW": "設置暱稱"
-  },
-  {
-    "ID": "Nickname",
-    "English": "Nickname",
-    "zh_TW": "暱稱"
-  },
-  {
-    "ID": "Enter nickname",
-    "English": "Enter nickname",
-    "zh_TW": "輸入暱稱"
-  },
-  {
-    "ID": "大廳",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "Pairing",
-    "English": "Pairing",
-    "zh_TW": "配對中"
-  },
-  {
-    "ID": "Account abnormal",
-    "English": "Account abnormal, please contact customer service.",
-    "zh_TW": "帳號異常，請聯繫客服"
-  },
-  {
-    "ID": "MaxRoomTip",
-    "English": "Maximum game room reached!",
-    "zh_TW": "已達最大遊戲房間!"
-  },
-  {
-    "ID": "Mine",
-    "English": "Mine",
-    "zh_TW": "我的"
-  },
-  {
-    "ID": "Shop",
-    "English": "Shop",
-    "zh_TW": "商城"
-  },
-  {
-    "ID": "Activity",
-    "English": "PROMO",
-    "zh_TW": "活動"
-  },
-  {
-    "ID": "Ranking",
-    "English": "Ranking",
-    "zh_TW": "排名"
-  },
-  {
-    "ID": "存提款",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "Transfers",
-    "English": "Transfers",
-    "zh_TW": "存提款"
-  },
-  {
-    "ID": "交易紀錄",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "TRANSACTION HISTORY",
-    "English": "TRANSACTION HISTORY",
-    "zh_TW": "交易記錄"
-  },
-  {
-    "ID": "Only Show Transactions From The Last 3 Months.",
-    "English": "Only Show Transactions From The Last 3 Months.",
-    "zh_TW": "僅顯示最近 3 個月的交易。"
-  },
-  {
-    "ID": "BETS RECORD",
-    "English": "BETS RECORD",
-    "zh_TW": "下注紀錄"
-  },
-  {
-    "ID": "TRANSACTION LIST",
-    "English": "TRANSACTION LIST",
-    "zh_TW": "額度紀錄"
-  },
-  {
-    "ID": "HAND HISTORY",
-    "English": "HAND HISTORY",
-    "zh_TW": "手牌紀錄"
-  },
-  {
-    "ID": "All Wins：",
-    "English": "All Wins：",
-    "zh_TW": "總輸贏："
-  },
-  {
-    "ID": "All Valid Bet：",
-    "English": "All Valid Bet：",
-    "zh_TW": "總有效投注："
-  },
-  {
-    "ID": "All Bets：",
-    "English": "All Bets：",
-    "zh_TW": "總投注："
-  },
-  {
-    "ID": "Total {count} Record(S)",
-    "English": "Total {count} Record(S)",
-    "zh_TW": "總計 {count} 筆"
-  },
-  {
-    "ID": "Date",
-    "English": "Date",
-    "zh_TW": "日期"
-  },
-  {
-    "ID": "Game Date",
-    "English": "Date",
-    "zh_TW": "遊戲日期"
-  },
-  {
-    "ID": "Game",
-    "English": "Game",
-    "zh_TW": "遊戲"
-  },
-  {
-    "ID": "VIRTUAL CODE",
-    "English": "VIRTUAL CODE",
-    "zh_TW": "虛擬程式碼"
-  },
-  {
-    "ID": "Date Range",
-    "English": "Date Range",
-    "zh_TW": "日期範圍"
-  },
-  {
-    "ID": "Start Time",
-    "English": "Start Time",
-    "zh_TW": "開始時間"
-  },
-  {
-    "ID": "End Time",
-    "English": "End Time",
-    "zh_TW": "結束時間"
-  },
-  {
-    "ID": "Start",
-    "English": "Start",
-    "zh_TW": "開始"
-  },
-  {
-    "ID": "End",
-    "English": "End",
-    "zh_TW": "結束"
-  },
-  {
-    "ID": "Room ID",
-    "English": "Room ID",
-    "zh_TW": "房號"
-  },
-  {
-    "ID": "Room rate",
-    "English": "Room rate",
-    "zh_TW": "房費"
-  },
-  {
-    "ID": "Bets",
-    "English": "Bets",
-    "zh_TW": "下注金額"
-  },
-  {
-    "ID": "Valid Bet",
-    "English": "Valid Bet",
-    "zh_TW": "有效投注"
-  },
-  {
-    "ID": "Wins",
-    "English": "Wins",
-    "zh_TW": "獲勝金額"
-  },
-  {
-    "ID": "Profit",
-    "English": "Profit",
-    "zh_TW": "勝負"
-  },
-  {
-    "ID": "Transaction ID",
-    "English": "Transaction ID",
-    "zh_TW": "交易編號"
-  },
-  {
-    "ID": "Time",
-    "English": "Time",
-    "zh_TW": "時間"
-  },
-  {
-    "ID": "Types",
-    "English": "Types",
-    "zh_TW": "類型"
-  },
-  {
-    "ID": "Amount",
-    "English": "Amount",
-    "zh_TW": "金額"
-  },
-  {
-    "ID": "Transfer In",
-    "English": "Transfer In",
-    "zh_TW": "轉入"
-  },
-  {
-    "ID": "Transfer Out",
-    "English": "Transfer Out",
-    "zh_TW": "轉出"
-  },
-  {
-    "ID": "All Type",
-    "English": "All Type",
-    "zh_TW": "所有類型"
-  },
-  {
-    "ID": "BUY-IN",
-    "English": "BUY-IN",
-    "zh_TW": "買入"
-  },
-  {
-    "ID": "ANTE",
-    "English": "ANTE",
-    "zh_TW": "賭注"
-  },
-  {
-    "ID": "All",
-    "English": "All",
-    "zh_TW": "全部"
-  },
-  {
-    "ID": "All Status",
-    "English": "All Status",
-    "zh_TW": "所有狀態"
-  },
-  {
-    "ID": "PROCESSING",
-    "English": "PROCESSING",
-    "zh_TW": "處理中"
-  },
-  {
-    "ID": "SUCCESS",
-    "English": "SUCCESS",
-    "zh_TW": "成功"
-  },
-  {
-    "ID": "FAIL",
-    "English": "FAIL",
-    "zh_TW": "失敗"
-  },
-  {
-    "ID": "Pledge",
-    "English": "Pledge",
-    "zh_TW": "質押"
-  },
-  {
-    "ID": "我的NFT",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "NFT is not owned yet.",
-    "English": "NFT is not owned yet.",
-    "zh_TW": "NFT 尚未擁有。"
-  },
-  {
-    "ID": "排名",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "SEASON",
-    "English": "SEASON",
-    "zh_TW": "季賽"
-  },
-  {
-    "ID": "Previous",
-    "English": "Previous",
-    "zh_TW": "上個賽季"
-  },
-  {
-    "ID": "Current",
-    "English": "Current",
-    "zh_TW": "當前賽季"
-  },
-  {
-    "ID": "My Rank",
-    "English": "My Rank",
-    "zh_TW": "我的排名"
-  },
-  {
-    "ID": "Time Lest",
-    "English": "Time Lest",
-    "zh_TW": "賽季結束"
-  },
-  {
-    "ID": "D",
-    "English": "D",
-    "zh_TW": "天"
-  },
-  {
-    "ID": "H",
-    "English": "H",
-    "zh_TW": "時"
-  },
-  {
-    "ID": "M",
-    "English": "M",
-    "zh_TW": "分"
-  },
-  {
-    "ID": "個人主頁面",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "LINK NOW",
-    "English": "Link Now",
-    "zh_TW": "立即連結"
-  },
-  {
-    "ID": "LINKED",
-    "English": "LINKED",
-    "zh_TW": "已連接"
-  },
-  {
-    "ID": "Not Yet Linked",
-    "English": "Not Yet Linked",
-    "zh_TW": "尚未連結"
-  },
-  {
-    "ID": "InviteCode",
-    "English": "INVITE CODE",
-    "zh_TW": "邀請碼"
-  },
-  {
-    "ID": "Invite Friends",
-    "English": "Invite Friends",
-    "zh_TW": "邀請朋友"
-  },
-  {
-    "ID": "Bound Inviter",
-    "English": "Bound Inviter",
-    "zh_TW": "邀請人"
-  },
-  {
-    "ID": "Enter Invitation Code",
-    "English": "Enter Invitation Code",
-    "zh_TW": "輸入邀請碼"
-  },
-  {
-    "ID": "My Invitation Code",
-    "English": "My Invitation Code",
-    "zh_TW": "我的邀請碼"
-  },
-  {
-    "ID": "Share",
-    "English": "Share",
-    "zh_TW": "分享"
-  },
-  {
-    "ID": "Binding Successful",
-    "English": "Binding Successful",
-    "zh_TW": "綁定成功"
-  },
-  {
-    "ID": "Copy Success!",
-    "English": "Copy Successful",
-    "zh_TW": "複製成功！"
-  },
-  {
-    "ID": "Copy",
-    "English": "Copy",
-    "zh_TW": "複製"
-  },
-  {
-    "ID": "Share QR Code",
-    "English": "Share QR Code!",
-    "zh_TW": "分享QRcode!"
-  },
-  {
-    "ID": "Bring Friends",
-    "English": "Bring Friends, Play Texas Hold'em, Win Rewards!",
-    "zh_TW": "帶上朋友，玩德州撲克，贏取獎勵！"
-  },
-  {
-    "ID": "Please Enter Code",
-    "English": "Please Enter Code",
-    "zh_TW": "請輸入邀請碼"
-  },
-  {
-    "ID": "手牌紀錄",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "Show last 20 hands",
-    "English": "Show last 20 hands",
-    "zh_TW": "已顯示最近20局手牌"
-  },
-  {
-    "ID": "德州撲克遊戲",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "Pot",
-    "English": "Pot",
-    "zh_TW": "底池"
-  },
-  {
-    "ID": "Side",
-    "English": "Side",
-    "zh_TW": "邊池"
-  },
-  {
-    "ID": "Blinds",
-    "English": "Blinds",
-    "zh_TW": "盲注"
-  },
-  {
-    "ID": "Blind Bet",
-    "English": "Blinds",
-    "zh_TW": "盲注"
-  },
-  {
-    "ID": "Check",
-    "English": "Check",
-    "zh_TW": "過牌"
-  },
-  {
-    "ID": "Fold",
-    "English": "Fold",
-    "zh_TW": "棄牌"
-  },
-  {
-    "ID": "Raise",
-    "English": "Raise",
-    "zh_TW": "加注"
-  },
-  {
-    "ID": "Bet",
-    "English": "Bet",
-    "zh_TW": "下注"
-  },
-  {
-    "ID": "Call",
-    "English": "Call",
-    "zh_TW": "跟注"
-  },
-  {
-    "ID": "AllIn",
-    "English": "All In",
-    "zh_TW": "All In"
-  },
-  {
-    "ID": "AddChip",
-    "English": "+ ",
-    "zh_TW": "+ "
-  },
-  {
-    "ID": "CallAny",
-    "English": "Auto Call",
-    "zh_TW": "自動跟注"
-  },
-  {
-    "ID": "RaiseTo",
-    "English": "RaiseTo",
-    "zh_TW": "加注至"
-  },
-  {
-    "ID": "BetTo",
-    "English": "BetTo",
-    "zh_TW": "下注至"
-  },
-  {
-    "ID": "CheckOrFold",
-    "English": "Fold / Check",
-    "zh_TW": "棄牌 / 過牌"
-  },
-  {
-    "ID": "Winner",
-    "English": "Winner",
-    "zh_TW": "贏家"
-  },
-  {
-    "ID": "Waiting for the next round...",
-    "English": "Waiting for the next round...",
-    "zh_TW": "等待下一局..."
-  },
-  {
-    "ID": "Back To Sit",
-    "English": "Back To Sit",
-    "zh_TW": "回到座位"
-  },
-  {
-    "ID": "Sit out next hand",
-    "English": "Sit out next hand",
-    "zh_TW": "下一局留座離桌"
-  },
-  {
-    "ID": "Start replenishing chips for the next hand",
-    "English": "Start replenishing chips for the next hand",
-    "zh_TW": "籌碼將在下一手開始補充"
-  },
-  {
-    "ID": "遊戲內選單",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "MENU",
-    "English": "MENU",
-    "zh_TW": "選單"
-  },
-  {
-    "ID": "Buy Chips",
-    "English": "Buy Chips",
-    "zh_TW": "購買籌碼"
-  },
-  {
-    "ID": "Log Out",
-    "English": "Log Out",
-    "zh_TW": "登出"
-  },
-  {
-    "ID": "Game Settings",
-    "English": "Game Settings",
-    "zh_TW": "遊戲設定"
-  },
-  {
-    "ID": "Exit the game after the countdown ends.",
-    "English": "Exit the game after the countdown ends.",
-    "zh_TW": "倒數結束後離開遊戲。"
-  },
-  {
-    "ID": "聊天",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "New Message",
-    "English": "New Message",
-    "zh_TW": "新訊息"
-  },
-  {
-    "ID": "牌型名稱",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "RoyalFlush",
-    "English": "Royal Flush",
-    "zh_TW": "皇家同花順"
-  },
-  {
-    "ID": "StraightFlush",
-    "English": "Straight Flush",
-    "zh_TW": "同花順"
-  },
-  {
-    "ID": "FourOfKind",
-    "English": "Four of Kind",
-    "zh_TW": "四條"
-  },
-  {
-    "ID": "FullHouse",
-    "English": "Full House",
-    "zh_TW": "葫蘆"
-  },
-  {
-    "ID": "Flush",
-    "English": "Flush",
-    "zh_TW": "同花"
-  },
-  {
-    "ID": "Straight",
-    "English": "Straight",
-    "zh_TW": "順子"
-  },
-  {
-    "ID": "ThreeOfAKind",
-    "English": "Three of a Kind",
-    "zh_TW": "三條"
-  },
-  {
-    "ID": "TwoPairs",
-    "English": "Two Pairs",
-    "zh_TW": "兩對"
-  },
-  {
-    "ID": "OnePair",
-    "English": "One Pair",
-    "zh_TW": "一對"
-  },
-  {
-    "ID": "HightCard",
-    "English": "High Card",
-    "zh_TW": "高牌"
-  },
-  {
-    "ID": "商城",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "STAMINA",
-    "English": "STAMINA",
-    "zh_TW": "能量"
-  },
-  {
-    "ID": "EXTRATIME",
-    "English": "EXTRA TIME",
-    "zh_TW": "延時"
-  },
-  {
-    "ID": "ExtraTime",
-    "English": "ExtraTime",
-    "zh_TW": "延時"
-  },
-  {
-    "ID": "Percentage",
-    "English": "Percentage",
-    "zh_TW": "百分比"
-  },
-  {
-    "ID": "Second",
-    "English": "Second",
-    "zh_TW": "秒"
-  },
-  {
-    "ID": "Mall Message",
-    "English": "Mall Message",
-    "zh_TW": "商城訊息"
-  },
-  {
-    "ID": "Purchase",
-    "English": "Purchase",
-    "zh_TW": "購買"
-  },
-  {
-    "ID": "CANCLE",
-    "English": "CANCEL",
-    "zh_TW": "取消"
-  },
-  {
-    "ID": "PurchaseSuccess",
-    "English": "Purchase Success!!",
-    "zh_TW": "購買完成!!"
-  },
-  {
-    "ID": "Insufficient balance",
-    "English": "Insufficient balance.",
-    "zh_TW": "餘額不足"
-  },
-  {
-    "ID": "Please proceed with collateralization",
-    "English": "Please proceed with collateralization.",
-    "zh_TW": "請繼續抵押"
-  },
-  {
-    "ID": "INTEGRAL RULE",
-    "English": "INTEGRAL RULE",
-    "zh_TW": "積分規則"
-  },
-  {
-    "ID": "Award",
-    "English": "Award",
-    "zh_TW": "獎勵"
-  },
-  {
-    "ID": "Player",
-    "English": "Player",
-    "zh_TW": "玩家"
-  },
-  {
-    "ID": "Player ID",
-    "English": "PLAYER ID: ",
-    "zh_TW": "玩家暱稱："
-  },
-  {
-    "ID": "Rank",
-    "English": "Rank",
-    "zh_TW": "積分"
-  },
-  {
-    "ID": "AsiaPoker 隱私權政策",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "AsiaPoker 條款",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "遊戲規則",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "積分規則",
-    "English": null,
-    "zh_TW": null
-  },
-  {
-    "ID": "目前用不到",
-    "English": "Weighted Scoring: Based on the opponent’sMMR Adjust the gap. If defeatedMMR Higher than your opponent, get more points ; lose to MMR Lower than your opponent, more points will be deducted. ",
-    "zh_TW": "加權計分：根據對手的 MMR 差距進行調整。若擊敗 MMR 高於自己 的對手，獲得更多積分；敗給 MMR 低於自己的對手，扣除 更多積分"
-  },
-  {
-    "ID": "目前用不到",
-    "English": "Hide Points (MMR）： \ninitialMMR: New players participate in several placement matches,determine the initial value based on the winning rate and opponent’s strengthMMR. \nDynamic adjustment: After each game, the result will be adjusted according to the outcome and opponent.MMR Adjust player'sMMR, the specific calculation formula is as follows: NewMMR=old MMR+K×(match result−expected results) \nAmong them, the result of the competition is1(win) or0(failure), the expected result depends on the player and opponentMMR Differencevaluecalculate.",
-    "zh_TW": "隱藏積分（MMR）： \n初始 MMR：新玩家進行若干定位賽，根據勝率和對手實力確定初始 MMR。 \n動態調整：每局比賽結束後根據勝負結果和對手 MMR 調整玩家的 MMR，\n具體計算公式如下： 新 MMR=舊 MMR+K×(比賽結果−預期結果) \n其中，比賽結果為1（勝利）或0（失敗），預期結果根據玩家和對手的 MMR 差值計算。"
-  },
-  {
-    "ID": "Royal Straight Flush",
-    "English": "ROYAL STRAIGHT FLUSH",
-    "zh_TW": "皇家同花順"
-  },
-  {
-    "ID": "Straight Flush",
-    "English": "STRAIGHT FLUSH",
-    "zh_TW": "同花順"
-  },
-  {
-    "ID": "Four of a kind",
-    "English": "FOUR OF A KIND",
-    "zh_TW": "鐵支"
-  },
-  {
-    "ID": "Full House",
-    "English": "FULL HOUSE",
-    "zh_TW": "葫蘆"
-  },
-  {
-    "ID": "Flush",
-    "English": "FLUSH",
-    "zh_TW": "同花"
-  },
-  {
-    "ID": "Straight",
-    "English": "STRAIGHT",
-    "zh_TW": "同花"
-  },
-  {
-    "ID": "Three of a kind",
-    "English": "THREE OF A KIND",
-    "zh_TW": "三條"
-  },
-  {
-    "ID": "Two Pair",
-    "English": "TWO PAIR",
-    "zh_TW": "兩對"
-  },
-  {
-    "ID": "One Pair",
-    "English": "ONE PAIR",
-    "zh_TW": "一對"
-  },
-  {
-    "ID": "High Card",
-    "English": "HIGH CARD",
-    "zh_TW": "高牌"
-  },
-  {
-    "ID": "Winnings",
-    "English": "Winnings",
-    "zh_TW": "贏分"
-  },
-  {
-    "ID": "DAILY",
-    "English": "DAILY",
-    "zh_TW": "每日"
-  },
-  {
-    "ID": "WEEKLY",
-    "English": "WEEKLY",
-    "zh_TW": "每周"
-  },
-  {
-    "ID": "Online",
-    "English": "Online",
-    "zh_TW": "在線"
-  },
-  {
-    "ID": "Offline",
-    "English": "Offline",
-    "zh_TW": "離線"
-  },
-  {
-    "ID": "Sound",
-    "English": "Sound",
-    "zh_TW": "音樂"
-  },
-  {
-    "ID": "Audio Settings",
-    "English": "Audio",
-    "zh_TW": "音效"
-  },
-  {
-    "ID": "Report",
-    "English": "Report",
-    "zh_TW": "報表"
-  },
-  {
-    "ID": "MAINTENANCE",
-    "English": "MAINTENANCE",
-    "zh_TW": "維護"
-  },
-  {
-    "ID": "Maintenance content",
-    "English": "Dear players:\n\nOur Texas Hold'em poker tables are about to undergo routine maintenance to ensure the smoothest gaming experience for you! You can take a short break during the maintenance period, and we will prepare more exciting poker challenges for you later.\n\nThank you for your understanding and support! After the maintenance is over, we will invite you back to the battlefield immediately!\n\nASIA POKER TEAM",
-    "zh_TW": "緊急通知：\n各位玩家請注意，我們需要進行一次臨時維護，以確保您的撲克之旅始終保持最佳狀態。維護期間遊戲將暫時無法進行，但我們會盡快完成，讓您重返桌上風雲！\n\n感謝您的耐心等候，我們隨時為您準備好牌桌！\n\nASIA POKER 團隊"
-  },
-  {
-    "ID": "Session expired. Please log in again.",
-    "English": "Session expired. Please log in again.",
-    "zh_TW": "登入已過期，請重新登入"
-  },
-  {
-    "ID": "Ok",
-    "English": "Ok",
-    "zh_TW": "確定"
-  },
-  {
-    "ID": "Lobby",
-    "English": "Lobby",
-    "zh_TW": "返回大廳"
-  },
-  {
-    "ID": "MakeTransaction",
-    "English": "Make Transaction",
-    "zh_TW": "進行交易"
-  },
-  {
-    "ID": "ConfirmTransaction",
-    "English": "Confirm Transaction",
-    "zh_TW": "確認交易"
-  },
-  {
-    "ID": "Other",
-    "English": "Other",
-    "zh_TW": "其他"
-  },
-  {
-    "ID": "InApp",
-    "English": "Please scan within the OKX or TrustWallet App",
-    "zh_TW": "請在OKX或TrustWallet App內掃描"
-  },
-  {
-    "ID": "TransactionTip",
-    "English": "After scanning and making the payment,\n please enter the hashkey and address on the\n <color=#6DF2AB>Confirm Transaction</color> page to complete the transaction.",
-    "zh_TW": "請務必在掃描且付款後\n於<color=#6DF2AB>確認交易</color>頁面輸入hashkey跟地址以完成交易"
-  },
-  {
-    "ID": "Address",
-    "English": "Address",
-    "zh_TW": "地址"
-  },
-  {
-    "ID": "AddressInput",
-    "English": "Your Wallet Address",
-    "zh_TW": "你的地址"
-  },
-  {
-    "ID": "Address",
-    "English": "Address",
-    "zh_TW": "地址"
-  },
-  {
-    "ID": "HashKeyInput",
-    "English": "Transaction Hash Key",
-    "zh_TW": "交易Hash Key"
-  },
-  {
-    "ID": "CheckTransaction",
-    "English": "Transaction has been submitted.\nPlease go to <color=#6DF2AB>Report > TRANSACTION</color> LIST\nto check the verification status.",
-    "zh_TW": "交易已提交，請至<color=#6DF2AB>報表>交易紀錄</color>查看驗證狀態"
-  },
-  {
-    "ID": "Submit",
-    "English": "Submit",
-    "zh_TW": "送出"
-  },
-  {
-    "ID": "CommingSoon",
-    "English": "Comming Soon",
-    "zh_TW": "即將推出"
-  },
-  {
-    "ID": "TRANSACION LIST",
-    "English": "TRANSACION LIST",
-    "zh_TW": "交易紀錄"
-  },
-  {
-    "ID": "State",
-    "English": "State",
-    "zh_TW": "狀態"
-  },
-  {
-    "ID": "Transaction Amount",
-    "English": "Transaction Amount",
-    "zh_TW": "交易金額"
-  },
-  {
-    "ID": "Created",
-    "English": "Created",
-    "zh_TW": "已建立"
-  },
-  {
-    "ID": "Pending",
-    "English": "Pending",
-    "zh_TW": "確認中"
-  },
-  {
-    "ID": "Completed",
-    "English": "Completed",
-    "zh_TW": "完成"
-  },
-  {
-    "ID": "Failed",
-    "English": "Failed",
-    "zh_TW": "失敗"
-  },
-  {
-    "ID": "SystemFailed",
-    "English": "SystemFailed",
-    "zh_TW": "系統失敗"
-  },
-  {
-    "ID": "CannotEmpty",
-    "English": "Cannot be empty.",
-    "zh_TW": "欄位不可為空"
-  },
-  {
-    "ID": "HashKeyError",
-    "English": "HashKey format error.",
-    "zh_TW": "HashKey格式錯誤"
-  },
-  {
-    "ID": "AmountError",
-    "English": "Amount format error.",
-    "zh_TW": "金額格式錯誤"
-  },
-  {
-    "ID": "ValidationError",
-    "English": "Transaction validation error.",
-    "zh_TW": "交易驗證錯誤"
-  }
-]
+    {
+        "ID": "通用",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+    },
+    {
+        "ID": "Asia Poker",
+        "English": "Asia Poker",
+        "zh_TW": "亞洲撲克",
+        "ja_JP": "アジアポーカー",
+        "ko_KR": "아시아 포커"
+    },
+    {
+        "ID": "Texas hold'em",
+        "English": "Texas hold'em",
+        "zh_TW": "德州撲克",
+        "ja_JP": "テキサスホールデム",
+        "ko_KR": "텍사스 홀덤"
+    },
+    {
+        "ID": "ACE",
+        "English": "ACE",
+        "zh_TW": "亞洲撲克",
+        "ja_JP": "エース",
+        "ko_KR": "에이스"
+    },
+    {
+        "ID": "Retry",
+        "English": "RETRY",
+        "zh_TW": "重新嘗試",
+        "ja_JP": "リトライ",
+        "ko_KR": "다시 시도"
+    },
+    {
+        "ID": "SUBMIT",
+        "English": "SUBMIT",
+        "zh_TW": "提交",
+        "ja_JP": "送信",
+        "ko_KR": "제출"
+    },
+    {
+        "ID": "REFLASH",
+        "English": "Refresh",
+        "zh_TW": "重新整理",
+        "ja_JP": "更新",
+        "ko_KR": "새로고침"
+    },
+    {
+        "ID": "Copied!",
+        "English": "Copied!",
+        "zh_TW": "已複製!",
+        "ja_JP": "コピーしました！",
+        "ko_KR": "복사 완료!"
+    },
+    {
+        "ID": "Cancel",
+        "English": "Cancel",
+        "zh_TW": "取消",
+        "ja_JP": "キャンセル",
+        "ko_KR": "취소"
+    },
+    {
+        "ID": "CANCEL",
+        "English": "CANCEL",
+        "zh_TW": "取消",
+        "ja_JP": "キャンセル",
+        "ko_KR": "취소"
+    },
+    {
+        "ID": "Confirm",
+        "English": "Confirm",
+        "zh_TW": "確認",
+        "ja_JP": "確認",
+        "ko_KR": "확인"
+    },
+    {
+        "ID": "CONFIRM",
+        "English": "CONFIRM",
+        "zh_TW": "確認",
+        "ja_JP": "確認",
+        "ko_KR": "확인"
+    },
+    {
+        "ID": "Buy",
+        "English": "Buy",
+        "zh_TW": "購買",
+        "ja_JP": "購入",
+        "ko_KR": "구매"
+    },
+    {
+        "ID": "Enter text...",
+        "English": "Enter text...",
+        "zh_TW": "輸入文字...",
+        "ja_JP": "テキストを入力...",
+        "ko_KR": "텍스트 입력..."
+    },
+    {
+        "ID": "Send",
+        "English": "Send",
+        "zh_TW": "傳送訊息",
+        "ja_JP": "送信",
+        "ko_KR": "보내기"
+    },
+    {
+        "ID": "Hand",
+        "English": "Hand",
+        "zh_TW": "手牌",
+        "ja_JP": "ハンド",
+        "ko_KR": "핸드"
+    },
+    {
+        "ID": "Now Loading...",
+        "English": "Now Loading...",
+        "zh_TW": "正在加載...",
+        "ja_JP": "ロード中...",
+        "ko_KR": "로딩 중..."
+    },
+    {
+        "ID": "Win",
+        "English": "Win",
+        "zh_TW": "獲勝",
+        "ja_JP": "勝利",
+        "ko_KR": "승리"
+    },
+    {
+        "ID": "Fail",
+        "English": "Fail",
+        "zh_TW": "失敗",
+        "ja_JP": "失敗",
+        "ko_KR": "실패"
+    },
+    {
+        "ID": "Language",
+        "English": "Language",
+        "zh_TW": "語言",
+        "ja_JP": "言語",
+        "ko_KR": "언어"
+    },
+    {
+        "ID": "Prompt",
+        "English": "Prompt",
+        "zh_TW": "提示",
+        "ja_JP": "プロンプト",
+        "ko_KR": "프롬프트"
+    },
+    {
+        "ID": "Enter New Password.",
+        "English": "Enter New Password.",
+        "zh_TW": "輸入新密碼。",
+        "ja_JP": "新しいパスワードを入力してください。",
+        "ko_KR": "새 비밀번호를 입력하세요."
+    },
+    {
+        "ID": "Allowed Characters: Alphanumeric A-Z, 0-9.",
+        "English": "Allowed Characters: Alphanumeric A-Z, 0-9.",
+        "zh_TW": "允許的字元：字母數字 A-Z、0-9。",
+        "ja_JP": "使用可能な文字：英数字 A-Z、0-9。",
+        "ko_KR": "허용된 문자: 영숫자 A-Z, 0-9."
+    },
+    {
+        "ID": "At Least 8 Chars.",
+        "English": "At Least 8 Chars.",
+        "zh_TW": "至少 8 個字元。",
+        "ja_JP": "8文字以上。",
+        "ko_KR": "최소 8자."
+    },
+    {
+        "ID": "Enter Nickname.",
+        "English": "Enter Nickname.",
+        "zh_TW": "輸入暱稱。",
+        "ja_JP": "ニックネームを入力してください。",
+        "ko_KR": "닉네임을 입력하세요."
+    },
+    {
+        "ID": "Enter at least one special character.",
+        "English": "Enter at least one special character.",
+        "zh_TW": "至少輸入一個特殊字元",
+        "ja_JP": "少なくとも1つの特殊文字を入力してください。",
+        "ko_KR": "최소 하나의 특수 문자를 입력하세요."
+    },
+    {
+        "ID": "Enter at least one uppercase and lowercase.",
+        "English": "Contains at least one uppercase and lowercase.",
+        "zh_TW": "至少輸入一個大寫和小寫",
+        "ja_JP": "少なくとも1つの大文字と小文字を含めてください。",
+        "ko_KR": "최소 하나의 대문자와 소문자를 포함하세요."
+    },
+    {
+        "ID": "Less Than 10 Chars.",
+        "English": "Less Than 10 Chars.",
+        "zh_TW": "少於 10 個字元。",
+        "ja_JP": "10文字未満。",
+        "ko_KR": "10자 미만."
+    },
+    {
+        "ID": "INTEGRAL",
+        "English": "RANK",
+        "zh_TW": "積分",
+        "ja_JP": "ランク",
+        "ko_KR": "랭킹"
+    },
+    {
+        "ID": "CRYPTO TABLE",
+        "English": "CRYPTO TABLE",
+        "zh_TW": "加密貨幣桌",
+        "ja_JP": "クリプトテーブル",
+        "ko_KR": "암호화폐 테이블"
+    },
+    {
+        "ID": "VIRTUAL CURRENCY TABLE",
+        "English": "VIRTUAL CURRENCY TABLE",
+        "zh_TW": "虛擬貨幣桌",
+        "ja_JP": "仮想通貨テーブル",
+        "ko_KR": "가상화폐 테이블"
+    },
+    {
+        "ID": "CRYPTO",
+        "English": "CRYPTO",
+        "zh_TW": "加密桌",
+        "ja_JP": "クリプト",
+        "ko_KR": "암호화폐"
+    },
+    {
+        "ID": "VC",
+        "English": "VC",
+        "zh_TW": "虛擬桌",
+        "ja_JP": "仮想通貨",
+        "ko_KR": "가상화폐"
+    },
+    {
+        "ID": "Integral Table",
+        "English": "Rank Table",
+        "zh_TW": "積分房",
+        "ja_JP": "ランクテーブル",
+        "ko_KR": "랭킹 테이블"
+    },
+    {
+        "ID": "Crypto Table",
+        "English": "Crypto Table",
+        "zh_TW": "加密貨幣桌",
+        "ja_JP": "クリプトテーブル",
+        "ko_KR": "암호화폐 테이블"
+    },
+    {
+        "ID": "VC Table",
+        "English": "VC Table",
+        "zh_TW": "虛擬貨幣桌",
+        "ja_JP": "仮想通貨テーブル",
+        "ko_KR": "가상화폐 테이블"
+    },
+    {
+        "ID": "GO TO INTEGRAL",
+        "English": "RANK MODE",
+        "zh_TW": "積分",
+        "ja_JP": "ランクモード",
+        "ko_KR": "랭킹 모드"
+    },
+    {
+        "ID": "Classic Battle",
+        "English": "Classic Battle",
+        "zh_TW": "經典對戰",
+        "ja_JP": "クラシックバトル",
+        "ko_KR": "클래식 배틀"
+    },
+    {
+        "ID": "High Roller Battleground",
+        "English": "High Roller Battleground",
+        "zh_TW": "賭豪戰場",
+        "ja_JP": "ハイローラーバトルグラウンド",
+        "ko_KR": "하이 롤러 배틀그라운드"
+    },
+    {
+        "ID": "Gold",
+        "English": "Gold",
+        "zh_TW": "黃金",
+        "ja_JP": "ゴールド",
+        "ko_KR": "골드"
+    },
+    {
+        "ID": "Stamina",
+        "English": "Stamina",
+        "zh_TW": "能量",
+        "ja_JP": "スタミナ",
+        "ko_KR": "스태미나"
+    },
+    {
+        "ID": "OT Props",
+        "English": "OT Props",
+        "zh_TW": "延時",
+        "ja_JP": "オーバータイムプロップ",
+        "ko_KR": "연장 시간 아이템"
+    },
+    {
+        "ID": "Type",
+        "English": "Type",
+        "zh_TW": "類型",
+        "ja_JP": "タイプ",
+        "ko_KR": "유형"
+    },
+    {
+        "ID": "Title",
+        "English": "Title",
+        "zh_TW": "標題",
+        "ja_JP": "タイトル",
+        "ko_KR": "제목"
+    },
+    {
+        "ID": "Status",
+        "English": "Status",
+        "zh_TW": "狀態",
+        "ja_JP": "ステータス",
+        "ko_KR": "상태"
+    },
+    {
+        "ID": "P&L",
+        "English": "P&L",
+        "zh_TW": "交易結果",
+        "ja_JP": "損益",
+        "ko_KR": "손익"
+    },
+    {
+        "ID": "CASH",
+        "English": "CASH",
+        "zh_TW": "加密貨幣",
+        "ja_JP": "キャッシュ",
+        "ko_KR": "캐시"
+    },
+    {
+        "ID": "Cash",
+        "English": "Cash",
+        "zh_TW": "加密貨幣",
+        "ja_JP": "キャッシュ",
+        "ko_KR": "캐시"
+    },
+    {
+        "ID": "U COIN",
+        "English": "U COIN",
+        "zh_TW": "U幣",
+        "ja_JP": "Uコイン",
+        "ko_KR": "U코인"
+    },
+    {
+        "ID": "A COIN",
+        "English": "A COIN",
+        "zh_TW": "A幣",
+        "ja_JP": "Aコイン",
+        "ko_KR": "A코인"
+    },
+    {
+        "ID": "GOLD",
+        "English": "GOLD",
+        "zh_TW": "黃金",
+        "ja_JP": "ゴールド",
+        "ko_KR": "골드"
+    },
+    {
+        "ID": "GOLDEN",
+        "English": "GOLDEN",
+        "zh_TW": "黃金",
+        "ja_JP": "ゴールデン",
+        "ko_KR": "골든"
+    },
+    {
+        "ID": "OF",
+        "English": "OF",
+        "zh_TW": "之",
+        "ja_JP": "の",
+        "ko_KR": "의"
+    },
+    {
+        "ID": "Points",
+        "English": "Points",
+        "zh_TW": "黃金",
+        "ja_JP": "ポイント",
+        "ko_KR": "포인트"
+    },
+    {
+        "ID": "Golden",
+        "English": "Golden",
+        "zh_TW": "黃金",
+        "ja_JP": "ゴールデン",
+        "ko_KR": "골든"
+    },
+    {
+        "ID": "My NFT",
+        "English": "My NFT",
+        "zh_TW": "我的 NFT",
+        "ja_JP": "私のNFT",
+        "ko_KR": "내 NFT"
+    },
+    {
+        "ID": "My History",
+        "English": "My History(Last Three Month)",
+        "zh_TW": "我的歷史紀錄(最近3個月)",
+        "ja_JP": "私の履歴（過去3ヶ月）",
+        "ko_KR": "내 기록(최근 3개월)"
+    },
+    {
+        "ID": "Transaction History",
+        "English": "Transaction History",
+        "zh_TW": "交易紀錄",
+        "ja_JP": "取引履歴",
+        "ko_KR": "거래 내역"
+    },
+    {
+        "ID": "Change Avatar",
+        "English": "Change Avatar",
+        "zh_TW": "更換頭像",
+        "ja_JP": "アバターの変更",
+        "ko_KR": "아바타 변경"
+    },
+    {
+        "ID": "Personal Information",
+        "English": "PersonalInformation",
+        "zh_TW": "個人資料",
+        "ja_JP": "個人情報",
+        "ko_KR": "개인 정보"
+    },
+    {
+        "ID": "Account Balance",
+        "English": "Account Balance",
+        "zh_TW": "帳戶餘額",
+        "ja_JP": "アカウント残高",
+        "ko_KR": "계정 잔액"
+    },
+    {
+        "ID": "Score Record",
+        "English": "Score Record",
+        "zh_TW": "成績記錄",
+        "ja_JP": "スコア記録",
+        "ko_KR": "점수 기록"
+    },
+    {
+        "ID": "Social Media",
+        "English": "Social Media",
+        "zh_TW": "社群媒體",
+        "ja_JP": "ソーシャルメディア",
+        "ko_KR": "소셜 미디어"
+    },
+    {
+        "ID": "HAND HISTORY",
+        "English": "HAND HISTORY",
+        "zh_TW": "手牌紀錄",
+        "ja_JP": "ハンド履歴",
+        "ko_KR": "핸드 기록"
+    },
+    {
+        "ID": "Hand History",
+        "English": "Hand History",
+        "zh_TW": "手牌紀錄",
+        "ja_JP": "ハンド履歴",
+        "ko_KR": "핸드 기록"
+    },
+    {
+        "ID": "TOTAL HANDS PLAYED",
+        "English": "TOTAL HANDS PLAYED",
+        "zh_TW": "總局數",
+        "ja_JP": "プレイしたハンドの総数",
+        "ko_KR": "플레이한 총 핸드 수"
+    },
+    {
+        "ID": "AVERAGE WINNING",
+        "English": "AVERAGE WINNING",
+        "zh_TW": "平均獲勝率",
+        "ja_JP": "平均勝率",
+        "ko_KR": "평균 승률"
+    },
+    {
+        "ID": "WIN RATE",
+        "English": "WIN RATE",
+        "zh_TW": "獲勝率",
+        "ja_JP": "勝率",
+        "ko_KR": "승률"
+    },
+    {
+        "ID": "BIGGEST POT WON",
+        "English": "BIGGEST POT WON",
+        "zh_TW": "最高獲勝金額",
+        "ja_JP": "最大獲得ポット",
+        "ko_KR": "최대 획득 팟"
+    },
+    {
+        "ID": "TOTAL EARNINGS",
+        "English": "TOTAL EARNINGS",
+        "zh_TW": "總收入",
+        "ja_JP": "総収益",
+        "ko_KR": "총 수익"
+    },
+    {
+        "ID": "BEST HANDCARD",
+        "English": "BEST HANDCARD",
+        "zh_TW": "最佳手牌",
+        "ja_JP": "最高のハンド",
+        "ko_KR": "최고의 핸드"
+    },
+    {
+        "ID": "HANDS PLAYED",
+        "English": "HANDS PLAYED: ",
+        "zh_TW": "玩過的手牌：",
+        "ja_JP": "プレイしたハンド：",
+        "ko_KR": "플레이한 핸드:"
+    },
+    {
+        "ID": "HANDS WON",
+        "English": "HANDS WON: ",
+        "zh_TW": "手牌獲勝數：",
+        "ja_JP": "勝利したハンド：",
+        "ko_KR": "승리한 핸드:"
+    },
+    {
+        "ID": "BEST HAND",
+        "English": "BEST HAND ",
+        "zh_TW": "最佳牌局",
+        "ja_JP": "最高のハンド",
+        "ko_KR": "최고의 핸드"
+    },
+    {
+        "ID": "WORST HAND",
+        "English": "WORST HAND ",
+        "zh_TW": "最差牌局",
+        "ja_JP": "最悪のハンド",
+        "ko_KR": "최악의 핸드"
+    },
+    {
+        "ID": "Settings",
+        "English": "Settings",
+        "zh_TW": "設定",
+        "ja_JP": "設定",
+        "ko_KR": "설정"
+    },
+    {
+        "ID": "SETTINGS",
+        "English": "SETTINGS",
+        "zh_TW": "設定",
+        "ja_JP": "設定",
+        "ko_KR": "설정"
+    },
+    {
+        "ID": "Game Rules",
+        "English": "Game Rules",
+        "zh_TW": "遊戲規則",
+        "ja_JP": "ゲームルール",
+        "ko_KR": "게임 규칙"
+    },
+    {
+        "ID": "Welcome to AISA POKER! Learn the rules and start playing right away!",
+        "English": "Welcome to ASIA POKER!\n Learn the rules and start playing right away!",
+        "zh_TW": "歡迎來到Asia Poker！\n 了解規則後，馬上開始遊戲！",
+        "ja_JP": "アジアポーカーへようこそ！\nルールを学んで、すぐにプレイを始めましょう！",
+        "ko_KR": "아시아 포커에 오신 것을 환영합니다!\n규칙을 배우고 바로 게임을 시작하세요!"
+    },
+    {
+        "ID": "Min Buy_In",
+        "English": "Min Buy_In",
+        "zh_TW": "最低買入額",
+        "ja_JP": "最小バイイン",
+        "ko_KR": "최소 바이인"
+    },
+    {
+        "ID": "LAUNCH",
+        "English": "LAUNCH",
+        "zh_TW": "入桌",
+        "ja_JP": "開始",
+        "ko_KR": "시작"
+    },
+    {
+        "ID": "詢問彈窗",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+    },
+    {
+        "ID": "return to the lobby?",
+        "English": "Return to the lobby?",
+        "zh_TW": "返回大廳？",
+        "ja_JP": "ロビーに戻りますか？",
+        "ko_KR": "로비로 돌아가시겠습니까?"
+    },
+    {
+        "ID": "If you leave now, you will not be able to get back your staked chips.",
+        "English": "If you leave now, you will not be able to get back your staked chips.",
+        "zh_TW": "如果您現在離開，您將無法取回已下注的籌碼",
+        "ja_JP": "今退出すると、賭けたチップは戻りません。",
+        "ko_KR": "지금 나가시면 베팅한 칩을 돌려받을 수 없습니다."
+    },
+    {
+        "ID": "Cannot Be Changed After Linking.",
+        "English": "Cannot Be Changed After Linking.",
+        "zh_TW": "連結後不能變更!!!",
+        "ja_JP": "リンク後は変更できません。",
+        "ko_KR": "연결 후에는 변경할 수 없습니다."
+    },
+    {
+        "ID": "Notice",
+        "English": "Notice",
+        "zh_TW": "注意",
+        "ja_JP": "お知らせ",
+        "ko_KR": "공지"
+    },
+    {
+        "ID": "錯誤訊息",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+    },
+    {
+        "ID": "User Name Entered Incorrectly, Please Try Again.",
+        "English": "User Name Entered Incorrectly, Please Try Again.",
+        "zh_TW": "使用者名稱格式錯誤，請重新輸入",
+        "ja_JP": "ユーザー名が正しくありません。もう一度お試しください。",
+        "ko_KR": "사용자 이름이 잘못 입력되었습니다. 다시 시도해 주세요."
+    },
+    {
+        "ID": "Invalid Code, Please Try Again.",
+        "English": "Invalid Code, Please Try Again.",
+        "zh_TW": "密碼無效，請重新輸入。",
+        "ja_JP": "コードが無効です。もう一度お試しください。",
+        "ko_KR": "잘못된 코드입니다. 다시 시도해 주세요."
+    },
+    {
+        "ID": "Invalid Username or Password!",
+        "English": "Invalid Username or Password!",
+        "zh_TW": "無效的帳號或密碼！",
+        "ja_JP": "ユーザー名またはパスワードが無効です！",
+        "ko_KR": "잘못된 사용자 이름 또는 비밀번호입니다!"
+    },
+    {
+        "ID": "Network offline",
+        "English": "The network interruption has been detected, please log in again.",
+        "zh_TW": "偵測到網路中斷，請重新登入。",
+        "ja_JP": "ネットワークの中断が検出されました。もう一度ログインしてください。",
+        "ko_KR": "네트워크 중단이 감지되었습니다. 다시 로그인해 주세요."
+    },
+    {
+        "ID": "Idle warn",
+        "English": "We have detected that you have idle in the last game, so the system has kicked you out of the table, to remind you that in order to protect the rights of other players, if you idle again in the next game, we will have to ask you to leave the game.",
+        "zh_TW": "偵測到您於上一局遊戲存在掛機行為，因此系統將您踢出牌桌，提醒您，為了維護其他玩家的權益，若下一局再有掛機行為，我們將不得不請你離線。",
+        "ja_JP": "前回のゲームで放置行為が検出されたため、システムによりテーブルから退出させられました。他のプレイヤーの権利を守るため、次回のゲームで再び放置した場合、ゲームから退出していただく必要があります。",
+        "ko_KR": "지난 게임에서 방치 행위가 감지되어 시스템에 의해 테이블에서 퇴장당했습니다. 다른 플레이어의 권리를 보호하기 위해 다음 게임에서 다시 방치할 경우 게임에서 나가셔야 합니다."
+    },
+    {
+        "ID": "You don,t have enough Ucoins",
+        "English": "You don,t have enough Ucoins",
+        "zh_TW": "您的U幣不足",
+        "ja_JP": "Uコインが不足しています。",
+        "ko_KR": "U코인이 부족합니다."
+    },
+    {
+        "ID": "Please Agree To The Privacy Policy.",
+        "English": "Please Agree To The Privacy Policy.",
+        "zh_TW": "請同意隱私權政策。",
+        "ja_JP": "プライバシーポリシーに同意してください。",
+        "ko_KR": "개인정보 처리방침에 동의해 주세요."
+    },
+    {
+        "ID": "Mobile Number Has Been Used, Please Try Again.",
+        "English": "Mobile Number Has Been Used, Please Try Again.",
+        "zh_TW": "手機號已使用，請重新輸入。",
+        "ja_JP": "電話番号がすでに使用されています。もう一度お試しください。",
+        "ko_KR": "휴대폰 번호가 이미 사용되었습니다. 다시 시도해 주세요."
+    },
+    {
+        "ID": "Duplicate Nickname, Please Try Again.",
+        "English": "Duplicate Nickname, Please Try Again.",
+        "zh_TW": "暱稱重複，請重新輸入。",
+        "ja_JP": "ニックネームが重複しています。もう一度お試しください。",
+        "ko_KR": "닉네임이 중복되었습니다. 다시 시도해 주세요."
+    },
+    {
+        "ID": "Please Enter A Nickname.",
+        "English": "Please Enter A Nickname.",
+        "zh_TW": "請輸入暱稱。",
+        "ja_JP": "ニックネームを入力してください。",
+        "ko_KR": "닉네임을 입력해 주세요."
+    },
+    {
+        "ID": "Wrong Invitation Code.",
+        "English": "Wrong Invitation Code.",
+        "zh_TW": "錯誤的邀請碼。",
+        "ja_JP": "招待コードが間違っています。",
+        "ko_KR": "잘못된 초대 코드입니다."
+    },
+    {
+        "ID": "Duplicate Login.",
+        "English": "Duplicate Login.",
+        "zh_TW": "帳號已登入。",
+        "ja_JP": "重複ログイン。",
+        "ko_KR": "중복 로그인."
+    },
+    {
+        "ID": "Not enough chips.",
+        "English": "Not enough chips.",
+        "zh_TW": "籌碼不足。",
+        "ja_JP": "チップが不足しています。",
+        "ko_KR": "칩이 부족합니다."
+    },
+    {
+        "ID": "Exceeded maximum selection date range",
+        "English": "Exceeded maximum selection date range",
+        "zh_TW": "超過最大選取範圍",
+        "ja_JP": "最大選択日付範囲を超えました。",
+        "ko_KR": "최대 선택 날짜 범위를 초과했습니다."
+    },
+    {
+        "ID": "登入(LoginView)",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+    },
+    {
+        "ID": "Sent OTP to SMS",
+        "English": "Sent OTP to SMS",
+        "zh_TW": "已發送 OTP 至簡訊",
+        "ja_JP": "SMSにOTPを送信しました。",
+        "ko_KR": "SMS로 OTP를 전송했습니다."
+    },
+    {
+        "ID": "Wallet",
+        "English": "Wallet",
+        "zh_TW": "錢包",
+        "ja_JP": "ウォレット",
+        "ko_KR": "지갑"
+    },
+    {
+        "ID": "Mobile",
+        "English": "Mobile",
+        "zh_TW": "手機",
+        "ja_JP": "モバイル",
+        "ko_KR": "모바일"
+    },
+    {
+        "ID": "MobileNumber",
+        "English": "Mobile Number",
+        "zh_TW": "手機號碼",
+        "ja_JP": "電話番号",
+        "ko_KR": "휴대폰 번호"
+    },
+    {
+        "ID": "OTP Code",
+        "English": "OTP Code",
+        "zh_TW": "一次性代碼",
+        "ja_JP": "OTPコード",
+        "ko_KR": "OTP 코드"
+    },
+    {
+        "ID": "RESEND",
+        "English": "RESEND",
+        "zh_TW": "重發",
+        "ja_JP": "再送信",
+        "ko_KR": "다시 보내기"
+    },
+    {
+        "ID": "SEND CODE",
+        "English": "SEND CODE",
+        "zh_TW": "傳送代碼",
+        "ja_JP": "コードを送信",
+        "ko_KR": "코드 보내기"
+    },
+    {
+        "ID": "Password",
+        "English": "Password",
+        "zh_TW": "密碼",
+        "ja_JP": "パスワード",
+        "ko_KR": "비밀번호"
+    },
+    {
+        "ID": "Reset Password",
+        "English": "Reset Password",
+        "zh_TW": "重新設密碼",
+        "ja_JP": "パスワードのリセット",
+        "ko_KR": "비밀번호 재설정"
+    },
+    {
+        "ID": "SIGN IN",
+        "English": "SIGN IN",
+        "zh_TW": "登入",
+        "ja_JP": "サインイン",
+        "ko_KR": "로그인"
+    },
+    {
+        "ID": "Sign Up",
+        "English": "Sign Up",
+        "zh_TW": "報名",
+        "ja_JP": "サインアップ",
+        "ko_KR": "가입"
+    },
+    {
+        "ID": "REGISTER",
+        "English": "REGISTER",
+        "zh_TW": "註冊",
+        "ja_JP": "登録",
+        "ko_KR": "등록"
+    },
+    {
+        "ID": "Lost Password",
+        "English": "Lost Password",
+        "zh_TW": "忘記密碼",
+        "ja_JP": "パスワードを忘れた",
+        "ko_KR": "비밀번호 분실"
+    },
+    {
+        "ID": "Please Enter Here",
+        "English": "Please Enter Here",
+        "zh_TW": "請在此輸入",
+        "ja_JP": "こちらに入力してください",
+        "ko_KR": "여기에 입력해 주세요"
+    },
+    {
+        "ID": "Please Enter The OTP Code",
+        "English": "Please Enter The OTP Code",
+        "zh_TW": "請輸入一次性密碼",
+        "ja_JP": "OTPコードを入力してください",
+        "ko_KR": "OTP 코드를 입력해 주세요"
+    },
+    {
+        "ID": "Your Phone Number",
+        "English": "Your Phone Number",
+        "zh_TW": "您的手機號碼",
+        "ja_JP": "あなたの電話番号",
+        "ko_KR": "당신의 휴대폰 번호"
+    },
+    {
+        "ID": "Remember Me",
+        "English": "Remember Me",
+        "zh_TW": "記住帳號密碼",
+        "ja_JP": "ログイン情報を記憶",
+        "ko_KR": "로그인 정보 기억"
+    },
+    {
+        "ID": "Account",
+        "English": "Account",
+        "zh_TW": "帳號",
+        "ja_JP": "アカウント",
+        "ko_KR": "계정"
+    },
+    {
+        "ID": "Your UserName",
+        "English": "Your UserName",
+        "zh_TW": "你的使用者名稱",
+        "ja_JP": "あなたのユーザー名",
+        "ko_KR": "당신의 사용자 이름"
+    },
+    {
+        "ID": "Your Account",
+        "English": "Your Account",
+        "zh_TW": "您的帳號",
+        "ja_JP": "あなたのアカウント",
+        "ko_KR": "당신의 계정"
+    },
+    {
+        "ID": "Email",
+        "English": "Email",
+        "zh_TW": "信箱",
+        "ja_JP": "メール",
+        "ko_KR": "이메일"
+    },
+    {
+        "ID": "Your Email",
+        "English": "Your Email",
+        "zh_TW": "您的信箱",
+        "ja_JP": "あなたのメール",
+        "ko_KR": "당신의 이메일"
+    },
+    {
+        "ID": "i GOT IT",
+        "English": "i GOT IT",
+        "zh_TW": "我明白了",
+        "ja_JP": "了解しました",
+        "ko_KR": "알겠습니다"
+    },
+    {
+        "ID": "錢包連接頁面",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+    },
+    {
+        "ID": "Please, Sign In With Your Wallet.",
+        "English": "Please, Sign In With Your Wallet.",
+        "zh_TW": "請使用您的錢包登入。",
+        "ja_JP": "ウォレットでサインインしてください。",
+        "ko_KR": "지갑으로 로그인해 주세요."
+    },
+    {
+        "ID": "Connect Using Browser Wallet",
+        "English": "Connect Using Browser Wallet",
+        "zh_TW": "使用瀏覽器錢包連接",
+        "ja_JP": "ブラウザウォレットで接続",
+        "ko_KR": "브라우저 지갑으로 연결"
+    },
+    {
+        "ID": "Don't Have An Account? <color=#79E84B><link=Sign Up Here!><u>Sign Up Here!</u></link></color>",
+        "English": "Don't Have An Account? <color=#79E84B><link=Sign Up Here!><u>Sign Up Here!</u></link></color>",
+        "zh_TW": "沒有帳戶？ <color=#79E84B><link=Sign Up Here!><u>在此註冊！</u></link></color>",
+        "ja_JP": "アカウントがありませんか？ <color=#79E84B><link=Sign Up Here!><u>こちらで登録！</u></link></color>",
+        "ko_KR": "계정이 없으신가요? <color=#79E84B><link=Sign Up Here!><u>여기서 가입하세요!</u></link></color>"
+    },
+    {
+        "ID": "錢包連接中頁面",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+    },
+    {
+        "ID": "If you have not downloaded the wallet, please download it first. <color=#79E84B><link=DownloadWallet><u>Download Here!</u></link></color>",
+        "English": "If you have not downloaded the wallet, please download it first. <color=#79E84B><link=DownloadWallet><u>Download Here!</u></link></color>",
+        "zh_TW": "如果您未下載錢包，請先下載。 <color=#79E84B><link=DownloadWallet><u>在這裡下載!</u></link></color>",
+        "ja_JP": "ウォレットをダウンロードしていない場合は、まずダウンロードしてください。 <color=#79E84B><link=DownloadWallet><u>こちらからダウンロード！</u></link></color>",
+        "ko_KR": "지갑을 다운로드하지 않은 경우, 먼저 다운로드해 주세요. <color=#79E84B><link=DownloadWallet><u>여기서 다운로드!</u></link></color>"
+    },
+    {
+        "ID": "Log In Using",
+        "English": "Log In Using",
+        "zh_TW": "登入到",
+        "ja_JP": "を使用してログイン",
+        "ko_KR": "를 사용하여 로그인"
+    },
+    {
+        "ID": "Load Into",
+        "English": "Load Into",
+        "zh_TW": "連接到",
+        "ja_JP": "に接続",
+        "ko_KR": "에 연결"
+    },
+    {
+        "ID": "Error Logging Into",
+        "English": "Error Logging Into",
+        "zh_TW": "連接錢包超時",
+        "ja_JP": "ログインエラー",
+        "ko_KR": "로그인 오류"
+    },
+    {
+        "ID": "簡訊驗證",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+    },
+    {
+        "ID": "SMS Verification",
+        "English": "SMS Verification",
+        "zh_TW": "簡訊驗證",
+        "ja_JP": "SMS認証",
+        "ko_KR": "SMS 인증"
+    },
+    {
+        "ID": "手機登入",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+    },
+    {
+        "ID": "Please use your account to login in.",
+        "English": "Please use your account to login in.",
+        "zh_TW": "請使用您的帳號登入。",
+        "ja_JP": "アカウントを使用してログインしてください。",
+        "ko_KR": "계정을 사용하여 로그인해 주세요."
+    },
+    {
+        "ID": "You Will Receive A New Account.",
+        "English": "You Will Receive A New Account.",
+        "zh_TW": "您將收到一個新帳戶。",
+        "ja_JP": "新しいアカウントを受け取ります。",
+        "ko_KR": "새 계정을 받게 됩니다."
+    },
+    {
+        "ID": "<color=#79E84B><link=Forgot Password?><u>Forgot Password?</u></link></color>",
+        "English": "<color=#79E84B><link=Forgot Password?><u>Forgot Password?</u></link></color>",
+        "zh_TW": "<color=#79E84B><link=Forgot Password?><u>忘記密碼?</u></link></color>",
+        "ja_JP": "<color=#79E84B><link=Forgot Password?><u>パスワードを忘れた？</u></link></color>",
+        "ko_KR": "<color=#79E84B><link=Forgot Password?><u>비밀번호를 잊으셨나요?</u></link></color>"
+    },
+    {
+        "ID": "手機註冊",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+    },
+    {
+        "ID": "<size=14><color=#FFFFFF>Registration Successful</color></size>\\n<size=12><color=#C6C2C2>Account Successfully Created</color></size>",
+        "English": "<size=14><color=#FFFFFF>Registration Successful</color></size>\\n<size=12><color=#C6C2C2>Account Successfully Created</color></size>",
+        "zh_TW": "<size=14><color=#FFFFFF>註冊成功</color></size>\\n<size=12><color=#C6C2C2>成功建立帳戶</color></size>",
+        "ja_JP": "<size=14><color=#FFFFFF>登録成功</color></size>\\n<size=12><color=#C6C2C2>アカウントが正常に作成されました</color></size>",
+        "ko_KR": "<size=14><color=#FFFFFF>등록 성공</color></size>\\n<size=12><color=#C6C2C2>계정이 성공적으로 생성되었습니다</color></size>"
+    },
+    {
+        "ID": "隱私權政策",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+    },
+    {
+        "ID": "Agree To The <color=#79E84B><link=Terms><u>Terms</u></link></color> & <color=#79E84B><link=Privacy Policy><u>Privacy Policy</u></link></color>",
+        "English": " Agree To The <color=#79E84B><link=Terms><u>Terms</u></link></color> & <color=#79E84B><link=Privacy Policy><u>Privacy Policy</u></link></color>",
+        "zh_TW": "同意 <color=#79E84B><link=Terms><u>條款</u></link></color> & <color=#79E84B><link=Privacy Policy><u>隱私權政策</u></link></color>",
+        "ja_JP": "<color=#79E84B><link=Terms><u>利用規約</u></link></color> および <color=#79E84B><link=Privacy Policy><u>プライバシーポリシー</u></link></color> に同意する",
+        "ko_KR": "<color=#79E84B><link=Terms><u>이용 약관</u></link></color> 및 <color=#79E84B><link=Privacy Policy><u>개인정보 처리방침</u></link></color>에 동의"
+    },
+    {
+        "ID": "Contact us",
+        "English": "Contact us",
+        "zh_TW": "聯繫我們",
+        "ja_JP": "お問い合わせ",
+        "ko_KR": "문의하기"
+    },
+    {
+        "ID": "Privacy Policy",
+        "English": "Privacy Policy",
+        "zh_TW": "隱私權政策",
+        "ja_JP": "プライバシーポリシー",
+        "ko_KR": "개인정보 처리방침"
+    },
+    {
+        "ID": "Terms",
+        "English": "Terms",
+        "zh_TW": "條款",
+        "ja_JP": "利用規約",
+        "ko_KR": "이용 약관"
+    },
+    {
+        "ID": "Asia Poker privacy policy",
+        "English": "Asia Poker privacy policy",
+        "zh_TW": "Asia Poker 隱私權政策",
+        "ja_JP": "アジアポーカープライバシーポリシー",
+        "ko_KR": "아시아 포커 개인정보 처리방침"
+    },
+    {
+        "ID": "Asia Poker Terms of Service",
+        "English": "Asia Poker Terms of Service",
+        "zh_TW": "Asia Poker 服務條款",
+        "ja_JP": "アジアポーカー利用規約",
+        "ko_KR": "아시아 포커 이용 약관"
+    },
+    {
+        "ID": "設置暱稱",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+    },
+    {
+        "ID": "Set Your Nickname",
+        "English": "Set Your Nickname",
+        "zh_TW": "設置暱稱",
+        "ja_JP": "ニックネームを設定",
+        "ko_KR": "닉네임 설정"
+    },
+    {
+        "ID": "Nickname",
+        "English": "Nickname",
+        "zh_TW": "暱稱",
+        "ja_JP": "ニックネーム",
+        "ko_KR": "닉네임"
+    },
+    {
+        "ID": "Enter nickname",
+        "English": "Enter nickname",
+        "zh_TW": "輸入暱稱",
+        "ja_JP": "ニックネームを入力",
+        "ko_KR": "닉네임 입력"
+    },
+    {
+        "ID": "大廳",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+    },
+    {
+        "ID": "Pairing",
+        "English": "Pairing",
+        "zh_TW": "配對中",
+        "ja_JP": "マッチング中",
+        "ko_KR": "매칭 중"
+    },
+    {
+        "ID": "Account abnormal",
+        "English": "Account abnormal, please contact customer service.",
+        "zh_TW": "帳號異常，請聯繫客服",
+        "ja_JP": "アカウントに異常があります。カスタマーサービスにご連絡ください。",
+        "ko_KR": "계정에 이상이 있습니다. 고객 서비스에 문의해 주세요."
+    },
+    {
+        "ID": "MaxRoomTip",
+        "English": "Maximum game room reached!",
+        "zh_TW": "已達最大遊戲房間!",
+        "ja_JP": "ゲームルームの最大数に達しました！",
+        "ko_KR": "최대 게임 룸 수에 도달했습니다!"
+    },
+    {
+        "ID": "Mine",
+        "English": "Mine",
+        "zh_TW": "我的",
+        "ja_JP": "マイページ",
+        "ko_KR": "내 페이지"
+    },
+    {
+        "ID": "Shop",
+        "English": "Shop",
+        "zh_TW": "商城",
+        "ja_JP": "ショップ",
+        "ko_KR": "상점"
+    },
+    {
+        "ID": "Activity",
+        "English": "PROMO",
+        "zh_TW": "活動",
+        "ja_JP": "プロモーション",
+        "ko_KR": "프로모션"
+    },
+    {
+        "ID": "Ranking",
+        "English": "Ranking",
+        "zh_TW": "排名",
+        "ja_JP": "ランキング",
+        "ko_KR": "랭킹"
+    },
+    {
+        "ID": "存提款",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+    },
+    {
+        "ID": "Transfers",
+        "English": "Transfers",
+        "zh_TW": "存提款",
+        "ja_JP": "送金",
+        "ko_KR": "이체"
+    },
+    {
+        "ID": "交易紀錄",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+    },
+    {
+        "ID": "TRANSACTION HISTORY",
+        "English": "TRANSACTION HISTORY",
+        "zh_TW": "交易記錄",
+        "ja_JP": "取引履歴",
+        "ko_KR": "거래 내역"
+    },
+    {
+        "ID": "Only Show Transactions From The Last 3 Months.",
+        "English": "Only Show Transactions From The Last 3 Months.",
+        "zh_TW": "僅顯示最近 3 個月的交易。",
+        "ja_JP": "過去3か月の取引のみ表示します。",
+        "ko_KR": "최근 3개월의 거래만 표시합니다."
+    },
+    {
+        "ID": "BETS RECORD",
+        "English": "BETS RECORD",
+        "zh_TW": "下注紀錄",
+        "ja_JP": "ベット履歴",
+        "ko_KR": "베팅 기록"
+    },
+    {
+        "ID": "TRANSACTION LIST",
+        "English": "TRANSACTION LIST",
+        "zh_TW": "額度紀錄",
+        "ja_JP": "取引リスト",
+        "ko_KR": "거래 목록"
+    },
+    {
+        "ID": "HAND HISTORY",
+        "English": "HAND HISTORY",
+        "zh_TW": "手牌紀錄",
+        "ja_JP": "ハンド履歴",
+        "ko_KR": "핸드 기록"
+    },
+    {
+        "ID": "All Wins：",
+        "English": "All Wins：",
+        "zh_TW": "總輸贏：",
+        "ja_JP": "総勝利：",
+        "ko_KR": "총 승리:"
+    },
+    {
+        "ID": "All Valid Bet：",
+        "English": "All Valid Bet：",
+        "zh_TW": "總有效投注：",
+        "ja_JP": "総有効ベット：",
+        "ko_KR": "총 유효 베팅:"
+    },
+    {
+        "ID": "All Bets：",
+        "English": "All Bets：",
+        "zh_TW": "總投注：",
+        "ja_JP": "総ベット：",
+        "ko_KR": "총 베팅:"
+    },
+    {
+        "ID": "Total {count} Record(S)",
+        "English": "Total {count} Record(S)",
+        "zh_TW": "總計 {count} 筆",
+        "ja_JP": "合計 {count} 件",
+        "ko_KR": "총 {count} 건"
+    },
+    {
+        "ID": "Date",
+        "English": "Date",
+        "zh_TW": "日期",
+        "ja_JP": "日付",
+        "ko_KR": "날짜"
+    },
+    {
+        "ID": "Game Date",
+        "English": "Date",
+        "zh_TW": "遊戲日期",
+        "ja_JP": "ゲーム日付",
+        "ko_KR": "게임 날짜"
+    },
+    {
+        "ID": "Game",
+        "English": "Game",
+        "zh_TW": "遊戲",
+        "ja_JP": "ゲーム",
+        "ko_KR": "게임"
+    },
+    {
+        "ID": "VIRTUAL CODE",
+        "English": "VIRTUAL CODE",
+        "zh_TW": "虛擬程式碼",
+        "ja_JP": "仮想コード",
+        "ko_KR": "가상 코드"
+    },
+    {
+        "ID": "Date Range",
+        "English": "Date Range",
+        "zh_TW": "日期範圍",
+        "ja_JP": "日付範囲",
+        "ko_KR": "날짜 범위"
+    },
+    {
+        "ID": "Start Time",
+        "English": "Start Time",
+        "zh_TW": "開始時間",
+        "ja_JP": "開始時間",
+        "ko_KR": "시작 시간"
+    },
+    {
+        "ID": "End Time",
+        "English": "End Time",
+        "zh_TW": "結束時間",
+        "ja_JP": "終了時間",
+        "ko_KR": "종료 시간"
+    },
+    {
+        "ID": "Start",
+        "English": "Start",
+        "zh_TW": "開始",
+        "ja_JP": "開始",
+        "ko_KR": "시작"
+    },
+    {
+        "ID": "End",
+        "English": "End",
+        "zh_TW": "結束",
+        "ja_JP": "終了",
+        "ko_KR": "종료"
+    },
+    {
+        "ID": "Room ID",
+        "English": "Room ID",
+        "zh_TW": "房號",
+        "ja_JP": "ルームID",
+        "ko_KR": "방 ID"
+    },
+    {
+        "ID": "Room rate",
+        "English": "Room rate",
+        "zh_TW": "房費",
+        "ja_JP": "ルーム料金",
+        "ko_KR": "방 요금"
+    },
+    {
+        "ID": "Bets",
+        "English": "Bets",
+        "zh_TW": "下注金額",
+        "ja_JP": "ベット",
+        "ko_KR": "베팅"
+    },
+    {
+        "ID": "Valid Bet",
+        "English": "Valid Bet",
+        "zh_TW": "有效投注",
+        "ja_JP": "有効ベット",
+        "ko_KR": "유효 베팅"
+    },
+    {
+        "ID": "Wins",
+        "English": "Wins",
+        "zh_TW": "獲勝金額",
+        "ja_JP": "勝利金額",
+        "ko_KR": "승리 금액"
+    },
+    {
+        "ID": "Profit",
+        "English": "Profit",
+        "zh_TW": "勝負",
+        "ja_JP": "利益",
+        "ko_KR": "수익"
+    },
+    {
+        "ID": "Transaction ID",
+        "English": "Transaction ID",
+        "zh_TW": "交易編號",
+        "ja_JP": "取引ID",
+        "ko_KR": "거래 ID"
+    },
+    {
+        "ID": "Time",
+        "English": "Time",
+        "zh_TW": "時間",
+        "ja_JP": "時間",
+        "ko_KR": "시간"
+    },
+    {
+        "ID": "Types",
+        "English": "Types",
+        "zh_TW": "類型",
+        "ja_JP": "タイプ",
+        "ko_KR": "유형"
+    },
+    {
+        "ID": "Amount",
+        "English": "Amount",
+        "zh_TW": "金額",
+        "ja_JP": "金額",
+        "ko_KR": "금액"
+    },
+    {
+        "ID": "Transfer In",
+        "English": "Transfer In",
+        "zh_TW": "轉入",
+        "ja_JP": "入金",
+        "ko_KR": "입금"
+    },
+    {
+        "ID": "Transfer Out",
+        "English": "Transfer Out",
+        "zh_TW": "轉出",
+        "ja_JP": "出金",
+        "ko_KR": "출금"
+    },
+    {
+        "ID": "All Type",
+        "English": "All Type",
+        "zh_TW": "所有類型",
+        "ja_JP": "すべてのタイプ",
+        "ko_KR": "모든 유형"
+    },
+    {
+        "ID": "BUY_IN",
+        "English": "BUY_IN",
+        "zh_TW": "買入",
+        "ja_JP": "バイイン",
+        "ko_KR": "바이인"
+    },
+    {
+        "ID": "ANTE",
+        "English": "ANTE",
+        "zh_TW": "賭注",
+        "ja_JP": "アンティ",
+        "ko_KR": "앤티"
+    },
+    {
+        "ID": "All",
+        "English": "All",
+        "zh_TW": "全部",
+        "ja_JP": "すべて",
+        "ko_KR": "모두"
+    },
+    {
+        "ID": "All Status",
+        "English": "All Status",
+        "zh_TW": "所有狀態",
+        "ja_JP": "すべてのステータス",
+        "ko_KR": "모든 상태"
+    },
+    {
+        "ID": "PROCESSING",
+        "English": "PROCESSING",
+        "zh_TW": "處理中",
+        "ja_JP": "処理中",
+        "ko_KR": "처리 중"
+    },
+    {
+        "ID": "SUCCESS",
+        "English": "SUCCESS",
+        "zh_TW": "成功",
+        "ja_JP": "成功",
+        "ko_KR": "성공"
+    },
+    {
+        "ID": "FAIL",
+        "English": "FAIL",
+        "zh_TW": "失敗",
+        "ja_JP": "失敗",
+        "ko_KR": "실패"
+    },
+    {
+        "ID": "Pledge",
+        "English": "Pledge",
+        "zh_TW": "質押",
+        "ja_JP": "質入れ",
+        "ko_KR": "질권"
+    },
+    {
+        "ID": "我的NFT",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+    },
+    {
+        "ID": "NFT is not owned yet.",
+        "English": "NFT is not owned yet.",
+        "zh_TW": "NFT 尚未擁有。",
+        "ja_JP": "NFTはまだ所有していません。",
+        "ko_KR": "NFT를 아직 소유하지 않았습니다."
+    },
+    {
+        "ID": "排名",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+    },
+    {
+        "ID": "SEASON",
+        "English": "SEASON",
+        "zh_TW": "季賽",
+        "ja_JP": "シーズン",
+        "ko_KR": "시즌"
+    },
+    {
+        "ID": "Previous",
+        "English": "Previous",
+        "zh_TW": "上個賽季",
+        "ja_JP": "前シーズン",
+        "ko_KR": "이전 시즌"
+    },
+    {
+        "ID": "Current",
+        "English": "Current",
+        "zh_TW": "當前賽季",
+        "ja_JP": "現在のシーズン",
+        "ko_KR": "현재 시즌"
+    },
+    {
+        "ID": "My Rank",
+        "English": "My Rank",
+        "zh_TW": "我的排名",
+        "ja_JP": "私のランク",
+        "ko_KR": "내 랭킹"
+    },
+    {
+        "ID": "Time Lest",
+        "English": "Time Lest",
+        "zh_TW": "賽季結束",
+        "ja_JP": "シーズン終了",
+        "ko_KR": "시즌 종료"
+    },
+    {
+        "ID": "D",
+        "English": "D",
+        "zh_TW": "天",
+        "ja_JP": "日",
+        "ko_KR": "일"
+    },
+    {
+        "ID": "H",
+        "English": "H",
+        "zh_TW": "時",
+        "ja_JP": "時間",
+        "ko_KR": "시간"
+    },
+    {
+        "ID": "M",
+        "English": "M",
+        "zh_TW": "分",
+        "ja_JP": "分",
+        "ko_KR": "분"
+    },
+    {
+        "ID": "個人主頁面",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+    },
+    {
+        "ID": "LINK NOW",
+        "English": "Link Now",
+        "zh_TW": "立即連結",
+        "ja_JP": "今すぐリンク",
+        "ko_KR": "지금 연결"
+    },
+    {
+        "ID": "LINKED",
+        "English": "LINKED",
+        "zh_TW": "已連接",
+        "ja_JP": "リンク済み",
+        "ko_KR": "연결됨"
+    },
+    {
+        "ID": "Not Yet Linked",
+        "English": "Not Yet Linked",
+        "zh_TW": "尚未連結",
+        "ja_JP": "まだリンクされていません",
+        "ko_KR": "아직 연결되지 않음"
+    },
+    {
+        "ID": "InviteCode",
+        "English": "INVITE CODE",
+        "zh_TW": "邀請碼",
+        "ja_JP": "招待コード",
+        "ko_KR": "초대 코드"
+    },
+    {
+        "ID": "Invite Friends",
+        "English": "Invite Friends",
+        "zh_TW": "邀請朋友",
+        "ja_JP": "友達を招待",
+        "ko_KR": "친구 초대"
+    },
+    {
+        "ID": "Bound Inviter",
+        "English": "Bound Inviter",
+        "zh_TW": "邀請人",
+        "ja_JP": "招待者",
+        "ko_KR": "초대한 사람"
+    },
+    {
+        "ID": "Enter Invitation Code",
+        "English": "Enter Invitation Code",
+        "zh_TW": "輸入邀請碼",
+        "ja_JP": "招待コードを入力",
+        "ko_KR": "초대 코드 입력"
+    },
+    {
+        "ID": "My Invitation Code",
+        "English": "My Invitation Code",
+        "zh_TW": "我的邀請碼",
+        "ja_JP": "私の招待コード",
+        "ko_KR": "내 초대 코드"
+    },
+    {
+        "ID": "Share",
+        "English": "Share",
+        "zh_TW": "分享",
+        "ja_JP": "共有",
+        "ko_KR": "공유"
+    },
+    {
+        "ID": "Binding Successful",
+        "English": "Binding Successful",
+        "zh_TW": "綁定成功",
+        "ja_JP": "バインディング成功",
+        "ko_KR": "바인딩 성공"
+    },
+    {
+        "ID": "Copy Success!",
+        "English": "Copy Successful",
+        "zh_TW": "複製成功！",
+        "ja_JP": "コピー成功！",
+        "ko_KR": "복사 성공!"
+    },
+    {
+        "ID": "Copy",
+        "English": "Copy",
+        "zh_TW": "複製",
+        "ja_JP": "コピー",
+        "ko_KR": "복사"
+    },
+    {
+        "ID": "Share QR Code",
+        "English": "Share QR Code!",
+        "zh_TW": "分享QRcode!",
+        "ja_JP": "QRコードを共有！",
+        "ko_KR": "QR 코드 공유!"
+    },
+    {
+        "ID": "Bring Friends",
+        "English": "Bring Friends, Play Texas Hold'em, Win Rewards!",
+        "zh_TW": "帶上朋友，玩德州撲克，贏取獎勵！",
+        "ja_JP": "友達を連れて、テキサスホールデムをプレイして報酬を獲得！",
+        "ko_KR": "친구를 데리고 텍사스 홀덤을 플레이하여 보상을 받으세요!"
+    },
+    {
+        "ID": "Please Enter Code",
+        "English": "Please Enter Code",
+        "zh_TW": "請輸入邀請碼",
+        "ja_JP": "コードを入力してください",
+        "ko_KR": "코드를 입력해 주세요"
+    },
+    {
+        "ID": "手牌紀錄",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+    },
+    {
+        "ID": "Show last 20 hands",
+        "English": "Show last 20 hands",
+        "zh_TW": "已顯示最近20局手牌",
+        "ja_JP": "過去20ハンドを表示",
+        "ko_KR": "최근 20 핸드 표시"
+    },
+    {
+        "ID": "德州撲克遊戲",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+    },
+    {
+        "ID": "Pot",
+        "English": "Pot",
+        "zh_TW": "底池",
+        "ja_JP": "ポット",
+        "ko_KR": "팟"
+    },
+    {
+        "ID": "Side",
+        "English": "Side",
+        "zh_TW": "邊池",
+        "ja_JP": "サイドポット",
+        "ko_KR": "사이드 팟"
+    },
+    {
+        "ID": "Blinds",
+        "English": "Blinds",
+        "zh_TW": "盲注",
+        "ja_JP": "ブラインド",
+        "ko_KR": "블라인드"
+    },
+    {
+        "ID": "Blind Bet",
+        "English": "Blinds",
+        "zh_TW": "盲注",
+        "ja_JP": "ブラインドベット",
+        "ko_KR": "블라인드 베팅"
+    },
+    {
+        "ID": "Check",
+        "English": "Check",
+        "zh_TW": "過牌",
+        "ja_JP": "チェック",
+        "ko_KR": "체크"
+    },
+    {
+        "ID": "Fold",
+        "English": "Fold",
+        "zh_TW": "棄牌",
+        "ja_JP": "フォールド",
+        "ko_KR": "폴드"
+    },
+    {
+        "ID": "Raise",
+        "English": "Raise",
+        "zh_TW": "加注",
+        "ja_JP": "レイズ",
+        "ko_KR": "레이즈"
+    },
+    {
+        "ID": "Bet",
+        "English": "Bet",
+        "zh_TW": "下注",
+        "ja_JP": "ベット",
+        "ko_KR": "베팅"
+    },
+    {
+        "ID": "Call",
+        "English": "Call",
+        "zh_TW": "跟注",
+        "ja_JP": "コール",
+        "ko_KR": "콜"
+    },
+    {
+        "ID": "AllIn",
+        "English": "All In",
+        "zh_TW": "All In",
+        "ja_JP": "オールイン",
+        "ko_KR": "올인"
+    },
+    {
+        "ID": "AddChip",
+        "English": "+ ",
+        "zh_TW": "+ ",
+        "ja_JP": "+ ",
+        "ko_KR": "+ "
+    },
+    {
+        "ID": "CallAny",
+        "English": "Auto Call",
+        "zh_TW": "自動跟注",
+        "ja_JP": "オートコール",
+        "ko_KR": "자동 콜"
+    },
+    {
+        "ID": "RaiseTo",
+        "English": "RaiseTo",
+        "zh_TW": "加注至",
+        "ja_JP": "レイズトゥ",
+        "ko_KR": "레이즈 투"
+    },
+    {
+        "ID": "BetTo",
+        "English": "BetTo",
+        "zh_TW": "下注至",
+        "ja_JP": "ベットトゥ",
+        "ko_KR": "베팅 투"
+    },
+    {
+        "ID": "CheckOrFold",
+        "English": "Fold / Check",
+        "zh_TW": "棄牌 / 過牌",
+        "ja_JP": "フォールド / チェック",
+        "ko_KR": "폴드 / 체크"
+    },
+    {
+        "ID": "Winner",
+        "English": "Winner",
+        "zh_TW": "贏家",
+        "ja_JP": "勝者",
+        "ko_KR": "승자"
+    },
+    {
+        "ID": "Waiting for the next round...",
+        "English": "Waiting for the next round...",
+        "zh_TW": "等待下一局...",
+        "ja_JP": "次のラウンドを待っています...",
+        "ko_KR": "다음 라운드를 기다리는 중..."
+    },
+    {
+        "ID": "Back To Sit",
+        "English": "Back To Sit",
+        "zh_TW": "回到座位",
+        "ja_JP": "席に戻る",
+        "ko_KR": "자리로 돌아가기"
+    },
+    {
+        "ID": "Sit out next hand",
+        "English": "Sit out next hand",
+        "zh_TW": "下一局留座離桌",
+        "ja_JP": "次のハンドをスキップ",
+        "ko_KR": "다음 핸드 앉아서 쉬기"
+    },
+    {
+        "ID": "Start replenishing chips for the next hand",
+        "English": "Start replenishing chips for the next hand",
+        "zh_TW": "籌碼將在下一手開始補充",
+        "ja_JP": "次のハンドのためにチップを補充開始",
+        "ko_KR": "다음 핸드를 위해 칩을 보충 시작"
+    },
+    {
+        "ID": "遊戲內選單",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+    },
+    {
+        "ID": "MENU",
+        "English": "MENU",
+        "zh_TW": "選單",
+        "ja_JP": "メニュー",
+        "ko_KR": "메뉴"
+    },
+    {
+        "ID": "Buy Chips",
+        "English": "Buy Chips",
+        "zh_TW": "購買籌碼",
+        "ja_JP": "チップを購入",
+        "ko_KR": "칩 구매"
+    },
+    {
+        "ID": "Log Out",
+        "English": "Log Out",
+        "zh_TW": "登出",
+        "ja_JP": "ログアウト",
+        "ko_KR": "로그아웃"
+    },
+    {
+        "ID": "Game Settings",
+        "English": "Game Settings",
+        "zh_TW": "遊戲設定",
+        "ja_JP": "ゲーム設定",
+        "ko_KR": "게임 설정"
+    },
+    {
+        "ID": "Exit the game after the countdown ends.",
+        "English": "Exit the game after the countdown ends.",
+        "zh_TW": "倒數結束後離開遊戲。",
+        "ja_JP": "カウントダウン終了後にゲームを終了します。",
+        "ko_KR": "카운트다운 종료 후 게임을 종료합니다."
+    },
+    {
+        "ID": "聊天",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+    },
+    {
+        "ID": "New Message",
+        "English": "New Message",
+        "zh_TW": "新訊息",
+        "ja_JP": "新着メッセージ",
+        "ko_KR": "새 메시지"
+    },
+    {
+        "ID": "牌型名稱",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+    },
+    {
+        "ID": "RoyalFlush",
+        "English": "Royal Flush",
+        "zh_TW": "皇家同花順",
+        "ja_JP": "ロイヤルフラッシュ",
+        "ko_KR": "로열 플러시"
+    },
+    {
+        "ID": "StraightFlush",
+        "English": "Straight Flush",
+        "zh_TW": "同花順",
+        "ja_JP": "ストレートフラッシュ",
+        "ko_KR": "스트레이트 플러시"
+    },
+    {
+        "ID": "FourOfKind",
+        "English": "Four of Kind",
+        "zh_TW": "四條",
+        "ja_JP": "フォーオブアカインド",
+        "ko_KR": "포 오브 어 카인드"
+    },
+    {
+        "ID": "FullHouse",
+        "English": "Full House",
+        "zh_TW": "葫蘆",
+        "ja_JP": "フルハウス",
+        "ko_KR": "풀 하우스"
+    },
+    {
+        "ID": "Flush",
+        "English": "Flush",
+        "zh_TW": "同花",
+        "ja_JP": "フラッシュ",
+        "ko_KR": "플러시"
+    },
+    {
+        "ID": "Straight",
+        "English": "Straight",
+        "zh_TW": "順子",
+        "ja_JP": "ストレート",
+        "ko_KR": "스트레이트"
+    },
+    {
+        "ID": "ThreeOfAKind",
+        "English": "Three of a Kind",
+        "zh_TW": "三條",
+        "ja_JP": "スリーオブアカインド",
+        "ko_KR": "쓰리 오브 어 카인드"
+    },
+      {
+        "ID": "TwoPairs",
+        "English": "Two Pairs",
+        "zh_TW": "兩對",
+        "ja_JP": "ツーペア",
+        "ko_KR": "투 페어"
+      },
+      {
+        "ID": "OnePair",
+        "English": "One Pair",
+        "zh_TW": "一對",
+        "ja_JP": "ワンペア",
+        "ko_KR": "원 페어"
+      },
+      {
+        "ID": "HightCard",
+        "English": "High Card",
+        "zh_TW": "高牌",
+        "ja_JP": "ハイカード",
+        "ko_KR": "하이 카드"
+      },
+      {
+        "ID": "商城",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+      },
+      {
+        "ID": "STAMINA",
+        "English": "STAMINA",
+        "zh_TW": "能量",
+        "ja_JP": "スタミナ",
+        "ko_KR": "스태미나"
+      },
+      {
+        "ID": "EXTRATIME",
+        "English": "EXTRA TIME",
+        "zh_TW": "延時",
+        "ja_JP": "延長時間",
+        "ko_KR": "연장 시간"
+      },
+      {
+        "ID": "ExtraTime",
+        "English": "ExtraTime",
+        "zh_TW": "延時",
+        "ja_JP": "延長時間",
+        "ko_KR": "연장 시간"
+      },
+      {
+        "ID": "Percentage",
+        "English": "Percentage",
+        "zh_TW": "百分比",
+        "ja_JP": "パーセンテージ",
+        "ko_KR": "퍼센티지"
+      },
+      {
+        "ID": "Second",
+        "English": "Second",
+        "zh_TW": "秒",
+        "ja_JP": "秒",
+        "ko_KR": "초"
+      },
+      {
+        "ID": "Mall Message",
+        "English": "Mall Message",
+        "zh_TW": "商城訊息",
+        "ja_JP": "ショップメッセージ",
+        "ko_KR": "상점 메시지"
+      },
+      {
+        "ID": "Purchase",
+        "English": "Purchase",
+        "zh_TW": "購買",
+        "ja_JP": "購入",
+        "ko_KR": "구매"
+      },
+      {
+        "ID": "CANCLE",
+        "English": "CANCEL",
+        "zh_TW": "取消",
+        "ja_JP": "キャンセル",
+        "ko_KR": "취소"
+      },
+      {
+        "ID": "PurchaseSuccess",
+        "English": "Purchase Success!!",
+        "zh_TW": "購買完成!!",
+        "ja_JP": "購入成功！！",
+        "ko_KR": "구매 완료!!"
+      },
+      {
+        "ID": "Insufficient balance",
+        "English": "Insufficient balance.",
+        "zh_TW": "餘額不足",
+        "ja_JP": "残高不足。",
+        "ko_KR": "잔액 부족."
+      },
+      {
+        "ID": "Please proceed with collateralization",
+        "English": "Please proceed with collateralization.",
+        "zh_TW": "請繼續抵押",
+        "ja_JP": "担保手続きを進めてください。",
+        "ko_KR": "담보 절차를 진행해 주세요."
+      },
+      {
+        "ID": "INTEGRAL RULE",
+        "English": "INTEGRAL RULE",
+        "zh_TW": "積分規則",
+        "ja_JP": "積分ルール",
+        "ko_KR": "포인트 규칙"
+      },
+      {
+        "ID": "Award",
+        "English": "Award",
+        "zh_TW": "獎勵",
+        "ja_JP": "報酬",
+        "ko_KR": "보상"
+      },
+      {
+        "ID": "Player",
+        "English": "Player",
+        "zh_TW": "玩家",
+        "ja_JP": "プレイヤー",
+        "ko_KR": "플레이어"
+      },
+      {
+        "ID": "Player ID",
+        "English": "PLAYER ID: ",
+        "zh_TW": "玩家暱稱：",
+        "ja_JP": "プレイヤーID：",
+        "ko_KR": "플레이어 ID:"
+      },
+      {
+        "ID": "Rank",
+        "English": "Rank",
+        "zh_TW": "積分",
+        "ja_JP": "ランク",
+        "ko_KR": "랭킹"
+      },
+      {
+        "ID": "AsiaPoker 隱私權政策",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+      },
+      {
+        "ID": "AsiaPoker 條款",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+      },
+      {
+        "ID": "遊戲規則",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+      },
+      {
+        "ID": "積分規則",
+        "English": null,
+        "zh_TW": null,
+        "ja_JP": null,
+        "ko_KR": null
+      },
+      {
+        "ID": "目前用不到",
+        "English": "Weighted Scoring: Based on the opponent’s MMR Adjust the gap. If defeated MMR Higher than your opponent, get more points; lose to MMR Lower than your opponent, more points will be deducted.",
+        "zh_TW": "加權計分：根據對手的 MMR 差距進行調整。若擊敗 MMR 高於自己 的對手，獲得更多積分；敗給 MMR 低於自己的對手，扣除 更多積分",
+        "ja_JP": "加重スコアリング：対戦相手のMMRに基づいて差を調整。MMRが自分より高い対戦相手を倒すとより多くのポイントを獲得、MMRが自分より低い対戦相手に負けるとより多くのポイントが差し引かれます。",
+        "ko_KR": "가중치 점수: 상대의 MMR에 따라 차이를 조정합니다. 자신보다 MMR이 높은 상대를 이기면 더 많은 포인트를 획득하고, 자신보다 MMR이 낮은 상대에게 지면 더 많은 포인트가 차감됩니다."
+      },
+      {
+        "ID": "目前用不到",
+        "English": "Hide Points (MMR）： \ninitialMMR: New players participate in several placement matches, determine the initial value based on the winning rate and opponent’s strengthMMR. \nDynamic adjustment: After each game, the result will be adjusted according to the outcome and opponent.MMR Adjust player'sMMR, the specific calculation formula is as follows: NewMMR=old MMR+K×(match result−expected results) \nAmong them, the result of the competition is1(win) or0(failure), the expected result depends on the player and opponentMMR Differencevaluecalculate.",
+        "zh_TW": "隱藏積分（MMR）： \n初始 MMR：新玩家進行若干定位賽，根據勝率和對手實力確定初始 MMR。 \n動態調整：每局比賽結束後根據勝負結果和對手 MMR 調整玩家的 MMR，\n具體計算公式如下： 新 MMR=舊 MMR+K×(比賽結果−預期結果) \n其中，比賽結果為1（勝利）或0（失敗），預期結果根據玩家和對手的 MMR 差值計算。",
+        "ja_JP": "隠しポイント（MMR）：\n初期MMR：新プレイヤーは複数の配置試合に参加し、勝率と対戦相手の強さに基づいて初期値を決定します。\n動的調整：各ゲーム終了後、結果と対戦相手のMMRに基づいてプレイヤーのMMRを調整します。具体的には以下の計算式：新MMR=旧MMR+K×(試合結果−期待結果)\n試合結果は1（勝利）または0（敗北）で、期待結果はプレイヤーと対戦相手のMMRの差に基づいて計算されます。",
+        "ko_KR": "숨겨진 포인트(MMR):\n초기 MMR: 신규 플레이어는 여러 배치 경기에 참여하여 승률과 상대의 강도에 따라 초기 값을 결정합니다.\n동적 조정: 각 게임 종료 후, 결과와 상대의 MMR에 따라 플레이어의 MMR을 조정합니다. 구체적인 계산 공식은 다음과 같습니다: 새 MMR=기존 MMR+K×(경기 결과−예상 결과)\n경기 결과는 1(승리) 또는 0(패배)이며, 예상 결과는 플레이어와 상대의 MMR 차이에 따라 계산됩니다."
+      },
+      {
+        "ID": "Royal Straight Flush",
+        "English": "ROYAL STRAIGHT FLUSH",
+        "zh_TW": "皇家同花順",
+        "ja_JP": "ロイヤルストレートフラッシュ",
+        "ko_KR": "로열 스트레이트 플러시"
+      },
+      {
+        "ID": "Straight Flush",
+        "English": "STRAIGHT FLUSH",
+        "zh_TW": "同花順",
+        "ja_JP": "ストレートフラッシュ",
+        "ko_KR": "스트레이트 플러시"
+      },
+      {
+        "ID": "Four of a kind",
+        "English": "FOUR OF A KIND",
+        "zh_TW": "鐵支",
+        "ja_JP": "フォーオブアカインド",
+        "ko_KR": "포 오브 어 카인드"
+      },
+      {
+        "ID": "Full House",
+        "English": "FULL HOUSE",
+        "zh_TW": "葫蘆",
+        "ja_JP": "フルハウス",
+        "ko_KR": "풀 하우스"
+      },
+      {
+        "ID": "Flush",
+        "English": "FLUSH",
+        "zh_TW": "同花",
+        "ja_JP": "フラッシュ",
+        "ko_KR": "플러시"
+      },
+      {
+        "ID": "Straight",
+        "English": "STRAIGHT",
+        "zh_TW": "同花",
+        "ja_JP": "ストレート",
+        "ko_KR": "스트레이트"
+      },
+      {
+        "ID": "Three of a kind",
+        "English": "THREE OF A KIND",
+        "zh_TW": "三條",
+        "ja_JP": "スリーオブアカインド",
+        "ko_KR": "쓰리 오브 어 카인드"
+      },
+      {
+        "ID": "Two Pair",
+        "English": "TWO PAIR",
+        "zh_TW": "兩對",
+        "ja_JP": "ツーペア",
+        "ko_KR": "투 페어"
+      },
+      {
+        "ID": "One Pair",
+        "English": "ONE PAIR",
+        "zh_TW": "一對",
+        "ja_JP": "ワンペア",
+        "ko_KR": "원 페어"
+      },
+      {
+        "ID": "High Card",
+        "English": "HIGH CARD",
+        "zh_TW": "高牌",
+        "ja_JP": "ハイカード",
+        "ko_KR": "하이 카드"
+      },
+      {
+        "ID": "Winnings",
+        "English": "Winnings",
+        "zh_TW": "贏分",
+        "ja_JP": "勝利金額",
+        "ko_KR": "승리 금액"
+      },
+      {
+        "ID": "DAILY",
+        "English": "DAILY",
+        "zh_TW": "每日",
+        "ja_JP": "デイリー",
+        "ko_KR": "매일"
+      },
+      {
+        "ID": "WEEKLY",
+        "English": "WEEKLY",
+        "zh_TW": "每周",
+        "ja_JP": "ウィークリー",
+        "ko_KR": "주간"
+      },
+      {
+        "ID": "Online",
+        "English": "Online",
+        "zh_TW": "在線",
+        "ja_JP": "オンライン",
+        "ko_KR": "온라인"
+      },
+      {
+        "ID": "Offline",
+        "English": "Offline",
+        "zh_TW": "離線",
+        "ja_JP": "オフライン",
+        "ko_KR": "오프라인"
+      },
+      {
+        "ID": "Sound",
+        "English": "Sound",
+        "zh_TW": "音樂",
+        "ja_JP": "サウンド",
+        "ko_KR": "사운드"
+      },
+      {
+        "ID": "Audio Settings",
+        "English": "Audio",
+        "zh_TW": "音效",
+        "ja_JP": "オーディオ設定",
+        "ko_KR": "오디오 설정"
+      },
+      {
+        "ID": "Report",
+        "English": "Report",
+        "zh_TW": "報表",
+        "ja_JP": "レポート",
+        "ko_KR": "보고서"
+      },
+      {
+        "ID": "MAINTENANCE",
+        "English": "MAINTENANCE",
+        "zh_TW": "維護",
+        "ja_JP": "メンテナンス",
+        "ko_KR": "유지보수"
+      },
+      {
+        "ID": "Maintenance content",
+        "English": "Dear players:\n\nOur Texas Hold'em poker tables are about to undergo routine maintenance to ensure the smoothest gaming experience for you! You can take a short break during the maintenance period, and we will prepare more exciting poker challenges for you later.\n\nThank you for your understanding and support! After the maintenance is over, we will invite you back to the battlefield immediately!\n\nASIA POKER TEAM",
+        "zh_TW": "緊急通知：\n各位玩家請注意，我們需要進行一次臨時維護，以確保您的撲克之旅始終保持最佳狀態。維護期間遊戲將暫時無法進行，但我們會盡快完成，讓您重返桌上風雲！\n\n感謝您的耐心等候，我們隨時為您準備好牌桌！\n\nASIA POKER 團隊",
+        "ja_JP": "親愛なるプレイヤーの皆様：\n\nテキサスホールデムのポーカーテーブルは、最高のゲーム体験をお届けするために定期メンテナンスを行います！メンテナンス期間中は少し休憩していただければ、後でさらにエキサイティングなポーカーチャレンジをご用意します。\n\nご理解とご支援に感謝いたします！メンテナンス終了後、すぐに戦場にお戻しします！\n\nアジアポーカーチーム",
+        "ko_KR": "친애하는 플레이어 여러분:\n\n저희 텍사스 홀덤 포커 테이블은 최상의 게임 경험을 보장하기 위해 정기 유지보수를 진행할 예정입니다! 유지보수 기간 동안 잠시 휴식을 취하시면, 이후 더 흥미진진한 포커 도전을 준비하겠습니다.\n\n이해와 지원에 감사드립니다! 유지보수가 끝난 후 즉시 여러분을 전장으로 초대하겠습니다!\n\n아시아 포커 팀"
+      },
+      {
+        "ID": "Session expired. Please log in again.",
+        "English": "Session expired. Please log in again.",
+        "zh_TW": "登入已過期，請重新登入",
+        "ja_JP": "セッションが期限切れです。もう一度ログインしてください。",
+        "ko_KR": "세션이 만료되었습니다. 다시 로그인해 주세요."
+      },
+      {
+        "ID": "Ok",
+        "English": "Ok",
+        "zh_TW": "確定",
+        "ja_JP": "OK",
+        "ko_KR": "확인"
+      },
+      {
+        "ID": "Lobby",
+        "English": "Lobby",
+        "zh_TW": "返回大廳",
+        "ja_JP": "ロビー",
+        "ko_KR": "로비"
+      },
+      {
+        "ID": "MakeTransaction",
+        "English": "Make Transaction",
+        "zh_TW": "進行交易",
+        "ja_JP": "取引を行う",
+        "ko_KR": "거래 진행"
+      },
+      {
+        "ID": "ConfirmTransaction",
+        "English": "Confirm Transaction",
+        "zh_TW": "確認交易",
+        "ja_JP": "取引を確認",
+        "ko_KR": "거래 확인"
+      },
+      {
+        "ID": "Other",
+        "English": "Other",
+        "zh_TW": "其他",
+        "ja_JP": "その他",
+        "ko_KR": "기타"
+      },
+      {
+        "ID": "InApp",
+        "English": "Please scan within the OKX or TrustWallet App",
+        "zh_TW": "請在OKX或TrustWallet App內掃描",
+        "ja_JP": "OKXまたはTrustWalletアプリ内でスキャンしてください",
+        "ko_KR": "OKX 또는 TrustWallet 앱에서 스캔해 주세요"
+      },
+      {
+        "ID": "TransactionTip",
+        "English": "After scanning and making the payment,\n please enter the hashkey and address on the\n <color=#6DF2AB>Confirm Transaction</color> page to complete the transaction.",
+        "zh_TW": "請務必在掃描且付款後\n於<color=#6DF2AB>確認交易</color>頁面輸入hashkey跟地址以完成交易",
+        "ja_JP": "スキャンして支払いを行った後、\n<color=#6DF2AB>取引確認</color>ページでハッシュキーとアドレスを入力して取引を完了してください。",
+        "ko_KR": "스캔하고 결제를 완료한 후,\n<color=#6DF2AB>거래 확인</color> 페이지에서 해시키와 주소를 입력하여 거래를 완료해 주세요."
+      },
+      {
+        "ID": "Address",
+        "English": "Address",
+        "zh_TW": "地址",
+        "ja_JP": "アドレス",
+        "ko_KR": "주소"
+      },
+      {
+        "ID": "AddressInput",
+        "English": "Your Wallet Address",
+        "zh_TW": "你的地址",
+        "ja_JP": "あなたのウォレットアドレス",
+        "ko_KR": "당신의 지갑 주소"
+      },
+      {
+        "ID": "Address",
+        "English": "Address",
+        "zh_TW": "地址",
+        "ja_JP": "アドレス",
+        "ko_KR": "주소"
+      },
+      {
+        "ID": "HashKeyInput",
+        "English": "Transaction Hash Key",
+        "zh_TW": "交易Hash Key",
+        "ja_JP": "取引ハッシュキー",
+        "ko_KR": "거래 해시키"
+      },
+      {
+        "ID": "CheckTransaction",
+        "English": "Transaction has been submitted.\nPlease go to <color=#6DF2AB>Report > TRANSACTION</color> LIST\nto check the verification status.",
+        "zh_TW": "交易已提交，請至<color=#6DF2AB>報表>交易紀錄</color>查看驗證狀態",
+        "ja_JP": "取引が送信されました。\n検証状況を確認するには<color=#6DF2AB>レポート > 取引リスト</color>にアクセスしてください。",
+        "ko_KR": "거래가 제출되었습니다.\n검증 상태를 확인하려면 <color=#6DF2AB>보고서 > 거래 목록</color>으로 이동해 주세요."
+      },
+      {
+        "ID": "Submit",
+        "English": "Submit",
+        "zh_TW": "送出",
+        "ja_JP": "送信",
+        "ko_KR": "제출"
+      },
+      {
+        "ID": "CommingSoon",
+        "English": "Comming Soon",
+        "zh_TW": "即將推出",
+        "ja_JP": "近日公開",
+        "ko_KR": "곧 출시"
+      },
+      {
+        "ID": "TRANSACION LIST",
+        "English": "TRANSACION LIST",
+        "zh_TW": "交易紀錄",
+        "ja_JP": "取引リスト",
+        "ko_KR": "거래 목록"
+      },
+      {
+        "ID": "State",
+        "English": "State",
+        "zh_TW": "狀態",
+        "ja_JP": "状態",
+        "ko_KR": "상태"
+      },
+      {
+        "ID": "Transaction Amount",
+        "English": "Transaction Amount",
+        "zh_TW": "交易金額",
+        "ja_JP": "取引金額",
+        "ko_KR": "거래 금액"
+      },
+      {
+        "ID": "Created",
+        "English": "Created",
+        "zh_TW": "已建立",
+        "ja_JP": "作成済み",
+        "ko_KR": "생성됨"
+      },
+      {
+        "ID": "Pending",
+        "English": "Pending",
+        "zh_TW": "確認中",
+        "ja_JP": "保留中",
+        "ko_KR": "대기 중"
+      },
+      {
+        "ID": "Completed",
+        "English": "Completed",
+        "zh_TW": "完成",
+        "ja_JP": "完了",
+        "ko_KR": "완료"
+      },
+      {
+        "ID": "Failed",
+        "English": "Failed",
+        "zh_TW": "失敗",
+        "ja_JP": "失敗",
+        "ko_KR": "실패"
+      },
+      {
+        "ID": "SystemFailed",
+        "English": "SystemFailed",
+        "zh_TW": "系統失敗",
+        "ja_JP": "システムエラー",
+        "ko_KR": "시스템 실패"
+      },
+      {
+        "ID": "CannotEmpty",
+        "English": "Cannot be empty.",
+        "zh_TW": "欄位不可為空",
+        "ja_JP": "空にすることはできません。",
+        "ko_KR": "비워둘 수 없습니다."
+      },
+      {
+        "ID": "HashKeyError",
+        "English": "HashKey format error.",
+        "zh_TW": "HashKey格式錯誤",
+        "ja_JP": "ハッシュキーの形式エラー。",
+        "ko_KR": "해시키 형식 오류."
+      },
+      {
+        "ID": "AmountError",
+        "English": "Amount format error.",
+        "zh_TW": "金額格式錯誤",
+        "ja_JP": "金額の形式エラー。",
+        "ko_KR": "금액 형식 오류."
+      },
+      {
+        "ID": "ValidationError",
+        "English": "Transaction validation error.",
+        "zh_TW": "交易驗證錯誤",
+        "ja_JP": "取引検証エラー。",
+        "ko_KR": "거래 검증 오류."
+      }
+    ]

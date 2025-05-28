@@ -17,7 +17,7 @@ public class SettingsView : MonoBehaviour
     [SerializeField]
     GameObject languageArea;
     [SerializeField]
-    Toggle en_Tog, zh_Tog;
+    Toggle en_Tog, zh_Tog, ja_Tog, ko_Tog;
     [SerializeField]
     TextMeshProUGUI LanguageTitle_Txt;
 
@@ -92,10 +92,26 @@ public class SettingsView : MonoBehaviour
             case 0:
                 en_Tog.isOn = true;
                 zh_Tog.isOn = false;
+                ja_Tog.isOn = false;
+                ko_Tog.isOn = false;
                 break;
             case 1:
                 en_Tog.isOn = false;
+                ja_Tog.isOn = false;
+                ko_Tog.isOn = false;
                 zh_Tog.isOn = true;
+                break;
+            case 2:
+                en_Tog.isOn = false;
+                ja_Tog.isOn = true;
+                ko_Tog.isOn = false;
+                zh_Tog.isOn = false;
+                break;
+            case 3:
+                en_Tog.isOn = false;
+                ja_Tog.isOn = false;
+                ko_Tog.isOn = true;
+                zh_Tog.isOn = false;
                 break;
         }
 
@@ -146,6 +162,18 @@ public class SettingsView : MonoBehaviour
             LanguageManager.Instance.ChangeLanguage(1);
             getSelect(LanguageManager.Instance.GetCurrLanguageIndex());
         });
+        ja_Tog.onValueChanged.AddListener((value) =>
+        {
+            ja_Tog.isOn = value;
+            LanguageManager.Instance.ChangeLanguage(2);
+            getSelect(LanguageManager.Instance.GetCurrLanguageIndex());
+        });
+        ko_Tog.onValueChanged.AddListener((value) =>
+        {
+            ko_Tog.isOn = value;
+            LanguageManager.Instance.ChangeLanguage(3);
+            getSelect(LanguageManager.Instance.GetCurrLanguageIndex());
+        });
     }
 
     //偵測當前選中語言
@@ -156,10 +184,26 @@ public class SettingsView : MonoBehaviour
             case 0:
                 en_Tog.OnSelect(null);
                 zh_Tog.OnDeselect(null);
+                ja_Tog.OnDeselect(null);
+                ko_Tog.OnDeselect(null);
                 break;
             case 1:
                 en_Tog.OnDeselect(null);
+                ja_Tog.OnDeselect(null);
+                ko_Tog.OnDeselect(null);
                 zh_Tog.OnSelect(null);
+                break;
+            case 2:
+                en_Tog.OnDeselect(null);
+                zh_Tog.OnDeselect(null);
+                ko_Tog.OnDeselect(null);
+                ja_Tog.OnSelect(null);
+                break;
+            case 3:
+                en_Tog.OnDeselect(null);
+                zh_Tog.OnDeselect(null);
+                ja_Tog.OnDeselect(null);
+                ko_Tog.OnSelect(null);
                 break;
         }
     }

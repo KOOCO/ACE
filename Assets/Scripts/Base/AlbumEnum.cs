@@ -20,7 +20,9 @@ public enum AlbumEnum
     HandRanksEnglishAlbum,
     HandRanksChineseAlbum,
     betSpriteEnglish,
-    betSpriteChinese
+    betSpriteChinese,
+    betSpriteJapanese,
+    betSpriteKorean,
 }
 
 public enum StringAlbumEnum
