@@ -3790,8 +3790,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: The game has been idle for a long time or a network interruption has been
-    detected, please log in again.
+  m_text: "\u5075\u6E2C\u5230\u60A8\u65BC\u4E0A\u4E00\u5C40\u904A\u6232\u5B58\u5728\u639B\u6A5F\u884C\u70BA\uFF0C\u56E0\u6B64\u7CFB\u7D71\u5C07\u60A8\u8E22\u51FA\u724C\u684C\uFF0C\u63D0\u9192\u60A8\uFF0C\u70BA\u4E86\u7DAD\u8B77\u5176\u4ED6\u73A9\u5BB6\u7684\u6B0A\u76CA\uFF0C\u82E5\u4E0B\u4E00\u5C40\u518D\u6709\u639B\u6A5F\u884C\u70BA\uFF0C\u6211\u5011\u5C07\u4E0D\u5F97\u4E0D\u8ACB\u4F60\u96E2\u7DDA\u3002"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}
   m_sharedMaterial: {fileID: 491667887584919328, guid: a69dc9cba6cff6c4cb6fd173dc87f4d7, type: 2}

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ede173b4f2d04194b8318a1957fdff40, type: 3}
+  m_Name: HandRanksJapaneseAlbum
+  m_EditorClassIdentifier: 
+  album:
+  - {fileID: 21300000, guid: 135324a9a6fd05c449302fa940871e2d, type: 3}
+  - {fileID: 21300000, guid: c4a09c41f53a9e244b3411779cd7997d, type: 3}
+  - {fileID: 21300000, guid: 21285448c38eab04d9addda397ebb68b, type: 3}
+  - {fileID: 21300000, guid: cbde26d61b7250f429f12b1405ec2cd2, type: 3}
+  - {fileID: 21300000, guid: e2b1603577c62b94c950f5131b0347ef, type: 3}
+  - {fileID: 21300000, guid: 1a4464598249dbf4780dee96dd302c00, type: 3}
+  - {fileID: 21300000, guid: 83a40f5c190ee004495eba84d0e924bd, type: 3}
+  - {fileID: 21300000, guid: b8248767b8109424eb1575d6e310edde, type: 3}
+  - {fileID: 21300000, guid: e610054b453b2764fabca172aad106e8, type: 3}
+  - {fileID: 21300000, guid: 01237867e5584fe4991947771e5569c7, type: 3}
+  - {fileID: 21300000, guid: 135324a9a6fd05c449302fa940871e2d, type: 3}

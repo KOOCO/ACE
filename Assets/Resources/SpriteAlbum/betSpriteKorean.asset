@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ede173b4f2d04194b8318a1957fdff40, type: 3}
+  m_Name: betSpriteKorean
+  m_EditorClassIdentifier: 
+  album:
+  - {fileID: 21300000, guid: 223c99fb3676e2441b4bbeb804e41fa1, type: 3}
+  - {fileID: 21300000, guid: 0f471e88846bc8947aee5f0fc7919181, type: 3}
+  - {fileID: 21300000, guid: d9da6497dc77e524f9f9a26ebaa82eb8, type: 3}
+  - {fileID: 21300000, guid: 2a5799e28547b164b9333760e3dbf3d7, type: 3}
+  - {fileID: 21300000, guid: 3d77c1e2523e11b4bb71cc777501220c, type: 3}
+  - {fileID: 21300000, guid: bb96d60b22e489c428162d63a7e76f42, type: 3}

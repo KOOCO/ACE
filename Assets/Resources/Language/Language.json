@@ -1760,8 +1760,8 @@
         "ID": "Sit out next hand",
         "English": "Sit out next hand",
         "zh_TW": "下一局留座離桌",
-        "ja_JP": "次のハンドをスキップ",
-        "ko_KR": "다음 핸드 앉아서 쉬기"
+        "ja_JP": "次ハンド休む",
+        "ko_KR": "다음 핸드 휴식"
     },
     {
         "ID": "Start replenishing chips for the next hand",
@@ -2180,8 +2180,8 @@
         "ID": "Audio Settings",
         "English": "Audio",
         "zh_TW": "音效",
-        "ja_JP": "オーディオ設定",
-        "ko_KR": "오디오 설정"
+        "ja_JP": "音声",
+        "ko_KR": "음향"
       },
       {
         "ID": "Report",
@@ -2392,5 +2392,33 @@
         "zh_TW": "交易驗證錯誤",
         "ja_JP": "取引検証エラー。",
         "ko_KR": "거래 검증 오류."
+      },
+      {
+        "ID": "ko-KR",
+        "English": "Korean",
+        "zh_TW": "韓文",
+        "ja_JP": "韓国語",
+        "ko_KR": "한국어"
+      },
+      {
+        "ID": "ja-JP",
+        "English": "Japanese",
+        "zh_TW": "日文",
+        "ja_JP": "日本語",
+        "ko_KR": "일본어"
+      },
+      {
+        "ID": "zh-TW",
+        "English": "Traditional Chinese",
+        "zh_TW": "繁體中文",
+        "ja_JP": "繁体字中国語",
+        "ko_KR": "중국어 번체"
+      },
+      {
+        "ID": "en-US",
+        "English": "English",
+        "zh_TW": "英文",
+        "ja_JP": "英語",
+        "ko_KR": "영어"
       }
     ]
