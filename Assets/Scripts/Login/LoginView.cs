@@ -2191,7 +2191,7 @@ public class LoginView : MonoBehaviour
 #endif
 
         ReadUserData(nameof(checkLogInData));
-
+        //LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
     }
 
     /// <summary>
@@ -2333,8 +2333,12 @@ public class LoginView : MonoBehaviour
                 {
                     PlayerPrefs.SetInt("idleCount", 0);
                     isLogin = true;
-                    LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
                     Debug.Log("用戶未登入，正常");
+#if UNITY_EDITOR
+                    LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
+#else
+                    return;
+#endif
                 }
                 else
                     print("Now is Maintenance");
@@ -2357,8 +2361,8 @@ public class LoginView : MonoBehaviour
             string sStatus = hb.serverStatus;
             PlayerPrefs.SetString("ServerStatus", sStatus);
             PlayerPrefs.Save();
+            checkIsMaintenance(sStatus);
         }
-        print($"SS: {PlayerPrefs.GetString("ServerStatus")}");
         JudgeLoggedIn(jsonCache);
     }
 
@@ -2366,16 +2370,16 @@ public class LoginView : MonoBehaviour
 
     public void checkIsMaintenance(string data)
     {
+        print($"SS: {data}");
         if (data == "normal") { }
         else if (data == serverStatus.maintenance.ToString())
         {
             isMaintenance = true;
+            LoadSceneManager.Instance.isMaintenance = true;
             LoadSceneManager.Instance.DoShowView();
         }
         else
             Debug.LogError("Error status!!! Please check dataBase");
-        if(!isLogin)
-            JudgeLoggedIn(jsonCache);
     }
 
     //外部調用

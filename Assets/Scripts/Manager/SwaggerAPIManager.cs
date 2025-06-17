@@ -24,7 +24,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         base.Awake();
         if (Entry.Instance.releaseType == ReleaseEnvironmentEnum.Demo)
             url = devBASE_URL;
-        else if (Entry.Instance.releaseType == ReleaseEnvironmentEnum.Prod)
+        else
             url = prodBASE_URL;
     }
 

@@ -46,6 +46,7 @@ public class GameControl : MonoBehaviour
     int currRoundCount;                                   //當前輪數
 
     bool isLIstened;
+    bool isSetted;
 
     //Test
     bool isCoroutineRunning;
@@ -1980,38 +1981,46 @@ public class GameControl : MonoBehaviour
                 UpdateBetAction(id, BetActingEnum.Fold, 0);
                 if (player.UserId == DataManager.UserId)
                     gameView.gameData.isOnFold = true;
+                isSetted = false;
             }
             else
             {
-                 //機器人動作
-                    if (player.UserId.StartsWith(FirebaseManager.ROBOT_ID) &&
-                        gameRoomData.actionCD == DataManager.RobotActionTime)
+                //機器人動作
+                if (!isSetted)
+                {
+                    DataManager.RobotActionTime = UnityEngine.Random.Range(13, 18);
+                    isSetted = true;
+                }
+                if (player.UserId.StartsWith(FirebaseManager.ROBOT_ID) &&
+                    gameRoomData.actionCD == DataManager.RobotActionTime)
+                {
+                    string RT = RobotControl.handConvert(gameRoomData.playerDataDic[gameRoomData.currActionerId].handPoker);
+                    if (gameRoomData.currGameFlow < 3)
                     {
-                        string RT = RobotControl.handConvert(gameRoomData.playerDataDic[gameRoomData.currActionerId].handPoker);
-                        if (gameRoomData.currGameFlow < 3)
+                        print("機器人手牌" + RT);
+                        AppApi.robotPreFlop(new robotHand(RT), (x) =>
                         {
-                            print("機器人手牌" + RT);
-                            AppApi.robotPreFlop(new robotHand(RT), (x) =>
-                            {
-                                print("機器人動作 " + x);
-                                RobotControl.RobotBet(gameRoomData, x);
-                            },
-                                (error) => Debug.LogError("機器人錯誤 " + error));
-                        }
-                        else
-                        {
-                            gameView.judgeRobotShape(player);
-                            print("機器人牌型" + player.pokerCurrShapeIndex);
-                            AppApi.robotAfterFlop(new robotShape(player.pokerCurrShapeIndex), (x) =>
-                            {
-                                print("機器人動作 " + x);
-                                RobotControl.RobotBet(gameRoomData, x);
-                            },
-                                (error) => Debug.LogError("機器人錯誤 " + error));
-                        }
-
-                        yield break;
+                            print("機器人動作 " + x);
+                            RobotControl.RobotBet(gameRoomData, x);
+                            isSetted = false;
+                        },
+                            (error) => Debug.LogError("機器人錯誤 " + error));
                     }
+                    else
+                    {
+                        gameView.judgeRobotShape(player);
+                        print("機器人牌型" + player.pokerCurrShapeIndex);
+                        AppApi.robotAfterFlop(new robotShape(player.pokerCurrShapeIndex), (x) =>
+                        {
+                            print("機器人動作 " + x);
+                            RobotControl.RobotBet(gameRoomData, x);
+                            isSetted = false;
+                        },
+                            (error) => Debug.LogError("機器人錯誤 " + error));
+                    }
+
+                    yield break;
+                }
 
                 //更新倒數
                 var data = new Dictionary<string, object>()

@@ -69,7 +69,7 @@ public class MusicSwitchBtn : MonoBehaviour
         int playsoundNum = PlayerPrefs.GetInt(nameof(isSoundOpen));
         if (playsoundNum == 0)
         {
-            AudioManager.Instance.setBGMValue(0.5f);
+            AudioManager.Instance.setBGMValue(0.35f);
         }
 
         if (playsoundNum==1)

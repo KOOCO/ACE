@@ -19,6 +19,8 @@ public enum AlbumEnum
     Shop_ExtraTimeAlbum,
     HandRanksEnglishAlbum,
     HandRanksChineseAlbum,
+    HandRanksJapaneseAlbum,
+    HandRanksKoreanAlbum,
     betSpriteEnglish,
     betSpriteChinese,
     betSpriteJapanese,

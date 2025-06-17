@@ -253,7 +253,7 @@ public class GameView : MonoBehaviour
         noticeText.text = DataManager.TipText;
 
         string callSprName = actionButtons.CallBtn_Img.sprite.name;
-        if (callSprName != "跟注" && callSprName != "caLL")
+        if (callSprName != "跟注" && callSprName != "caLL" && callSprName != "Frame 跟注" && callSprName != "caLL J")
             actionButtons.CallBtnText = "";
 
         //print("本地玩家是否遊戲中: " + gameData.thisData.LocalGamePlayerInfo.IsPlaying);
@@ -746,12 +746,24 @@ public class GameView : MonoBehaviour
             //print("跟注按鈕文字: " + betStringsE[keyC] + " " + gameData.strData.CallStr);
             actionButtons.SetCallFoldBetStr("Fold", keyF);
         }
-        else
+        else if (LanguageManager.Instance.GetCurrLanguageIndex() == 1)
         {
             keyF = gameData.betStringsC.FirstOrDefault(x => x.Value == gameData.strData.FoldStr).Key;
             keyC = gameData.betStringsC.FirstOrDefault(x => x.Value == gameData.strData.CallStr).Key;
             actionButtons.SetCallFoldBetStr("Call", keyC);
             print("跟注按鈕文字: " + gameData.betStringsC[keyC] + " " + gameData.strData.CallStr);
+            actionButtons.SetCallFoldBetStr("Fold", keyF);
+        }else if (LanguageManager.Instance.GetCurrLanguageIndex() == 2)
+        {
+            keyF = gameData.betStringsJ.FirstOrDefault(x => x.Value == gameData.strData.FoldStr).Key;
+            keyC = gameData.betStringsJ.FirstOrDefault(x => x.Value == gameData.strData.CallStr).Key;
+            actionButtons.SetCallFoldBetStr("Call", keyC);
+            actionButtons.SetCallFoldBetStr("Fold", keyF);
+        }else if (LanguageManager.Instance.GetCurrLanguageIndex() == 3)
+        {
+            keyF = gameData.betStringsK.FirstOrDefault(x => x.Value == gameData.strData.FoldStr).Key;
+            keyC = gameData.betStringsK.FirstOrDefault(x => x.Value == gameData.strData.CallStr).Key;
+            actionButtons.SetCallFoldBetStr("Call", keyC);
             actionButtons.SetCallFoldBetStr("Fold", keyF);
         }
 

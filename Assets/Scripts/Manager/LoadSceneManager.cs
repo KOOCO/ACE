@@ -25,6 +25,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
     TextMeshProUGUI version_Txt; //login場景要顯示的板號
 
     public bool isGetUserData { get; set; }
+    public bool isMaintenance { get; set; }
 
     DateTime startYieldTime;
     public Button closeBrowser_Btn;
@@ -58,6 +59,10 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
         {
             StartCoroutine(IEntryInToLogin(sceneEnum));
         }
+    }
+    public void LoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
     }
 
     /// <summary>
@@ -143,7 +148,7 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
                 yield return null;
             }
 
-            if (asyncLoad.progress >= 0.9f && Progress_Img.fillAmount >= 0.9f)
+            if (asyncLoad.progress >= 0.9f && Progress_Img.fillAmount >= 0.9f && !isMaintenance)
             {
                 asyncLoad.allowSceneActivation = true;
 
@@ -160,6 +165,10 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
 
                 ViewManager.Instance.Init();
                 JudgeIntoScene(sceneEnum);
+            }
+            else
+            {
+                DoShowView();
             }
 
             yield return null;

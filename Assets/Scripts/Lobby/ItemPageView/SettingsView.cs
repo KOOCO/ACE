@@ -24,7 +24,7 @@ public class SettingsView : MonoBehaviour
     [Header("隱私政策物件")]
     [SerializeField]
     GameObject Privacy_Obj, Privacy_text, Term_text, Privacy_obj_Scroll, Term_obj_Scroll,
-      Privacy_text_CH, Term_text_CH, Privacy_text_EN, Term_text_EN;
+      Privacy_text_CH, Term_text_CH, Privacy_text_EN, Term_text_EN, Privacy_text_JP, Term_text_JP, Privacy_text_KR, Term_text_KR;
     [SerializeField]
     ScrollRect Privacy_scroll, Term_scroll;
 
@@ -37,26 +37,59 @@ public class SettingsView : MonoBehaviour
         if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
         {
             Term_obj_Scroll.GetComponent<ScrollRect>().content = Term_text_EN.GetComponent<RectTransform>();
-
-
             Privacy_obj_Scroll.GetComponent<ScrollRect>().content = Privacy_text_EN.GetComponent<RectTransform>();
+
             Privacy_text_EN.SetActive(true);
             Privacy_text_CH.SetActive(false);
+            Privacy_text_JP.SetActive(false);
+            Privacy_text_KR.SetActive(false);
             Term_text_EN.SetActive(true);
             Term_text_CH.SetActive(false);
-
+            Term_text_JP.SetActive(false);
+            Term_text_KR.SetActive(false);
         }
         else if (LanguageManager.Instance.GetCurrLanguageIndex() == 1)
         {
 
             Term_obj_Scroll.GetComponent<ScrollRect>().content = Term_text_CH.GetComponent<RectTransform>();
-
             Privacy_obj_Scroll.GetComponent<ScrollRect>().content = Privacy_text_CH.GetComponent<RectTransform>();
+
             Term_text_CH.SetActive(true);
             Term_text_EN.SetActive(false);
+            Term_text_JP.SetActive(false);
+            Term_text_KR.SetActive(false);
             Privacy_text_CH.SetActive(true);
             Privacy_text_EN.SetActive(false);
+            Privacy_text_JP.SetActive(false);
+            Privacy_text_KR.SetActive(false);
+        }else if (LanguageManager.Instance.GetCurrLanguageIndex() == 2)
+        {
 
+            Term_obj_Scroll.GetComponent<ScrollRect>().content = Term_text_JP.GetComponent<RectTransform>();
+            Privacy_obj_Scroll.GetComponent<ScrollRect>().content = Privacy_text_JP.GetComponent<RectTransform>();
+
+            Term_text_JP.SetActive(true);
+            Term_text_EN.SetActive(false);
+            Term_text_CH.SetActive(false);
+            Term_text_KR.SetActive(false);
+            Privacy_text_JP.SetActive(true);
+            Privacy_text_CH.SetActive(false);
+            Privacy_text_EN.SetActive(false);
+            Privacy_text_KR.SetActive(false);
+        }else if (LanguageManager.Instance.GetCurrLanguageIndex() == 3)
+        {
+
+            Term_obj_Scroll.GetComponent<ScrollRect>().content = Term_text_KR.GetComponent<RectTransform>();
+            Privacy_obj_Scroll.GetComponent<ScrollRect>().content = Privacy_text_KR.GetComponent<RectTransform>();
+
+            Term_text_KR.SetActive(true);
+            Term_text_EN.SetActive(false);
+            Term_text_CH.SetActive(false);
+            Term_text_JP.SetActive(false);
+            Privacy_text_KR.SetActive(true);
+            Privacy_text_CH.SetActive(false);
+            Privacy_text_EN.SetActive(false);
+            Privacy_text_JP.SetActive(false);
         }
         #endregion
     }

@@ -240,7 +240,10 @@ public class ActionButtons : MonoBehaviour
             SetMenuBtn.Invoke(true);
             SetActionButton = false;
 
-            if (CallBtn_Img.sprite != AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteEnglish).album[1] || CallBtn_Img.sprite != AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteChinese).album[1])
+            if (CallBtn_Img.sprite != AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteEnglish).album[1] 
+            || CallBtn_Img.sprite != AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteChinese).album[1]
+            || CallBtn_Img.sprite != AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteJapanese).album[1]
+            || CallBtn_Img.sprite != AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteKorean).album[1])
             {
                 print(LanguageManager.Instance.GetText("Call"));
             }
@@ -689,26 +692,26 @@ public class ActionButtons : MonoBehaviour
             else
                 foldBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteChinese).album[shapeIndex];
         }
-        //else if (LanguageManager.Instance.GetCurrLanguageIndex() == 2)
-        //{
-        //    if (btnName == "Call")
-        //    {
-        //        SetCallBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteJapanese).album[shapeIndex];
-        //        CallBtn_Img.transform.localPosition = shapeIndex == 0 ? new Vector2(CallBtn_Img.transform.localPosition.x, 5.95f) : originCallPos;
-        //    }
-        //    else
-        //        foldBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteJapanese).album[shapeIndex];
-        //}
-        //else
-        //{
-        //    if (btnName == "Call")
-        //    {
-        //        SetCallBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteKorean).album[shapeIndex];
-        //        CallBtn_Img.transform.localPosition = shapeIndex == 0 ? new Vector2(CallBtn_Img.transform.localPosition.x, 5.95f) : originCallPos;
-        //    }
-        //    else
-        //        foldBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteKorean).album[shapeIndex];
-        //}
+        else if (LanguageManager.Instance.GetCurrLanguageIndex() == 2)
+        {
+            if (btnName == "Call")
+            {
+                SetCallBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteJapanese).album[shapeIndex];
+                CallBtn_Img.transform.localPosition = shapeIndex == 0 ? new Vector2(CallBtn_Img.transform.localPosition.x, 5.95f) : originCallPos;
+            }
+            else
+                foldBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteJapanese).album[shapeIndex];
+        }
+        else
+        {
+            if (btnName == "Call")
+            {
+                SetCallBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteKorean).album[shapeIndex];
+                CallBtn_Img.transform.localPosition = shapeIndex == 0 ? new Vector2(CallBtn_Img.transform.localPosition.x, 5.95f) : originCallPos;
+            }
+            else
+                foldBetImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.betSpriteKorean).album[shapeIndex];
+        }
     }
 
     /// <summary>

@@ -77,6 +77,7 @@ public class GameMenu : MonoBehaviour
             {
                 GameRoomManager.Instance.IsCanMoveSwitch = true;
             });
+            LanguageManager.Instance.ChangeFont();
         });
 
         //Ãö³¬¿ï³æ
@@ -180,11 +181,11 @@ public class GameMenu : MonoBehaviour
         if (isShow)
         {
             RuleView.SetActive(true);
+            foreach (var obj in RuleObjList)
+                obj.SetActive(false);
             int languageIndex = LanguageManager.Instance.GetCurrLanguageIndex();
-            int OtherIndex = (languageIndex - 1 < 0) ? 1 : languageIndex - 1;
             GameRules_ScrollView.GetComponent<ScrollRect>().content = RuleObjList[languageIndex].GetComponent<RectTransform>();
             RuleObjList[languageIndex].SetActive(true);
-            RuleObjList[OtherIndex].SetActive(false);
             ShowMenu(false);
         }
         else

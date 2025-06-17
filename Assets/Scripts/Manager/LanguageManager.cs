@@ -60,6 +60,8 @@ public class LanguageManager
     {
         "English",              //英文
         "zh_TW",                //繁體中文        
+        "ja_JP",                //日文        
+        "ko_KR",                //韓文        
     };
 
     /// <summary>
@@ -79,6 +81,8 @@ public class LanguageManager
         public string ID { get; set; }
         public string English { get; set; }
         public string zh_TW { get; set; }
+        public string ja_JP { get; set; }
+        public string ko_KR { get; set; }
 
         public string GetId(string language)
         {
@@ -91,6 +95,14 @@ public class LanguageManager
                 //繁體中文
                 case "zh_TW":
                     return zh_TW;
+
+                //日文
+                case "ja_JP":
+                    return ja_JP;
+                
+                //韓文
+                case "ko_KR":
+                    return ko_KR;
 
                 default:
                     return "";
@@ -141,7 +153,7 @@ public class LanguageManager
 
         //讀取紀錄語言資料
         if (!PlayerPrefs.HasKey(LanguagePlayerPrefsKey))
-            ChangeLanguage(1);
+            ChangeLanguage(0);
         else
             ChangeLanguage(PlayerPrefs.GetInt(LanguagePlayerPrefsKey));
     }
@@ -229,7 +241,7 @@ public class LanguageManager
         thisData.CurrLanguageIndex = index;
         PlayerPrefs.SetInt(LanguagePlayerPrefsKey, thisData.CurrLanguageIndex);
 
-        //ChangeFont();
+        ChangeFont();
         UpdateLanguage();
     }
 
@@ -238,10 +250,15 @@ public class LanguageManager
         return LanguagePlayerPrefsKey;
     }
 
+    public TMP_FontAsset getFont(int index)
+    {
+        return fontAssetList[index];
+    }
+
     /// <summary>
     /// 更換字體
     /// </summary>
-    private void ChangeFont()
+    public void ChangeFont()
     {
         TMP_Text[] tmpTexts = Resources.FindObjectsOfTypeAll<TMP_Text>();
         foreach (var item in tmpTexts)
@@ -250,17 +267,22 @@ public class LanguageManager
             {
                 //英文
                 case 0:
-                    item.font = fontAssetList[0];
+                    item.font = fontAssetList[4];
                     break;
 
                 //繁體中文
                 case 1:
-                    item.font = fontAssetList[0];
+                    item.font = fontAssetList[4];
+                    break;
+                    
+                //日文
+                case 2:
+                    item.font = fontAssetList[2];
                     break;
 
                 //預設
                 default:
-                    item.font = fontAssetList[0];
+                    item.font = fontAssetList[1];
                     break;
             }
         }

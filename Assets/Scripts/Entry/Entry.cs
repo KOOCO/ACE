@@ -4,13 +4,15 @@ using UnityEngine;
 using System;
 using UnityEngine.Networking;
 using UnityEngine.Events;
-using System.Linq;
-using Proyecto26;
+#if UNITY_ANDROID
+using GooglePlayGames;
+using GooglePlayGames.BasicApi;
+#endif
 using Newtonsoft.Json;
 
 public class Entry : UnitySingleton<Entry>
 {
-    #region 測試
+#region 測試
     public static GameServer CurrGameServer;
     public static class TestInfoData
     {
@@ -23,7 +25,7 @@ public class Entry : UnitySingleton<Entry>
 
         public static DateTime foldTimd = DateTime.Now;
     }
-    #endregion
+#endregion
 
     [Header("版本號")]
     public string version;
@@ -80,10 +82,14 @@ public class Entry : UnitySingleton<Entry>
         AudioManager.Instance.StartLoadAudioAssets();
 
         LoadSceneManager.Instance.LoadScene(SceneEnum.Login);
+
+#if UNITY_ANDROID
+        PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
+#endif
         //StartHeartbeat();
     }
 
-    #region Instagram登入
+#region Instagram登入
 
     /// <summary>
     /// 接收獲取IG用戶訊息
@@ -182,7 +188,51 @@ public class Entry : UnitySingleton<Entry>
 
     }
 
+#endregion
+
+#region 登入Google Play
+#if UNITY_ANDROID
+    internal void ProcessAuthentication(SignInStatus status)
+    {
+        if (status == SignInStatus.Success)
+        {
+            // 成功登录，继续处理游戏服务
+            print("登錄成功");
+        }
+        else
+        {
+            // 登录失败，禁用游戏服务相关功能或提示用户重新登录
+            Debug.LogError("登錄失敗");
+        }
+    }
+#endif
     #endregion
+
+    public void selectLan(string code)
+    {
+        print(code);
+        switch (code)
+        {
+            case "zh-TW":
+                LanguageManager.Instance.ChangeLanguage(1);
+                break;
+            case "en-GB":
+                LanguageManager.Instance.ChangeLanguage(0);
+                break;
+            case "en-US":
+                LanguageManager.Instance.ChangeLanguage(0);
+                break;
+            case "ja-JP":
+                LanguageManager.Instance.ChangeLanguage(2);
+                break;
+            case "ko-KR":
+                LanguageManager.Instance.ChangeLanguage(3);
+                break;
+            default:
+                LanguageManager.Instance.ChangeLanguage(0);
+                break;
+        }
+    }
 
     #region 邀請碼
 
@@ -204,9 +254,9 @@ public class Entry : UnitySingleton<Entry>
         DataManager.GetInviterId = data.inviterId;
     }
 
-    #endregion
+#endregion
 
-    #region 工具類 
+#region 工具類 
 
     /// <summary>
     /// 獲取IP地址回傳
@@ -221,6 +271,7 @@ public class Entry : UnitySingleton<Entry>
         {
             PlayerPrefs.SetInt("nullData", 3);
             PlayerPrefs.Save();
+            print("nullData: " + PlayerPrefs.GetInt("nullData"));
         }
     }
 
@@ -282,9 +333,9 @@ public class Entry : UnitySingleton<Entry>
         Debug.Log($"Browser Debug: {str}");
     }
 
-    #endregion
+#endregion
 
-    #region Get Session
+#region Get Session
 
     ///<summary>
     ///Get auhtorize Session
@@ -323,14 +374,17 @@ public class Entry : UnitySingleton<Entry>
 
             //Start get Lobby session
             yield return new WaitUntil(() => sessionValue != "");
-            if(sessionCallback!=null)
+            if (sessionCallback != null)
+            {
+                print(sessionValue);
                 sessionCallback?.Invoke(sessionValue);
+            }
         }
     }
 
-    #endregion
+#endregion
 
-    #region 心跳 in Web
+#region 心跳 in Web
 
 #if UNITY_WEBGL
     private bool isHeartbeatScheduled = false;
@@ -346,6 +400,7 @@ public class Entry : UnitySingleton<Entry>
                     gameObject.name,
                     nameof(delayCallHeartbeat));
             print("MenberID: " + userID);
+            LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
         }
     }
 
@@ -415,6 +470,7 @@ public class Entry : UnitySingleton<Entry>
             nullC++;
             PlayerPrefs.SetInt("nullData", nullC);
             PlayerPrefs.Save();
+            print("nullData: " + PlayerPrefs.GetInt("nullData"));
         }
         //print(nullC);
     }
@@ -426,5 +482,5 @@ public class Entry : UnitySingleton<Entry>
         isListenered = false;
     }
 #endif
-    #endregion
+#endregion
 }

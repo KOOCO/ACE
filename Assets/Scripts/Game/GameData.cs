@@ -1,41 +1,41 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 public class GameData
 {
-    //©³¦À­¿²v
+    //åº•æ± å€ç‡
     public readonly float[] PotPercentRate = new float[]
     {
         33, 50, 80, 100,
     };
 
-    //¥[µù¤jª¼­¿²v
+    //åŠ è¨»å¤§ç›²å€ç‡
     public readonly float[] PotBbRate = new float[]
     {
         2f, 3f, 4.0f, 4.0f,
     };
 
-    public float PageMoveTime = 0.25f;                           //·Æ°Ê­¶­±²¾°Ê®É¶¡
+    public float PageMoveTime = 0.25f;                           //æ»‘å‹•é é¢ç§»å‹•æ™‚é–“
 
-    public int MaxChatCount = 50;                                //«O¯d²á¤Ñ³Ì¤j°T®§¼Æ
-    public Vector2 InitPotPointPos { get; set; }                 //ªì©l©³¦À¦ì¸m
-    public List<GamePlayerInfo> gamePlayerInfoList = new();            //ª±®a¸ê®Æ
-    public bool isOnFold { get; set; }                           //¬O§_±óµP
+    public int MaxChatCount = 50;                                //ä¿ç•™èŠå¤©æœ€å¤§è¨Šæ¯æ•¸
+    public Vector2 InitPotPointPos { get; set; }                 //åˆå§‹åº•æ± ä½ç½®
+    public List<GamePlayerInfo> gamePlayerInfoList = new();            //ç©å®¶è³‡æ–™
+    public bool isOnFold { get; set; }                           //æ˜¯å¦æ£„ç‰Œ
 
-    public bool isDealed { get; set; }                           //¬O§_¼½©ñ¹LµoµP°Êµe
-    public TableTypeEnum RoomType { get; set; }                  //©Ğ¶¡Ãş«¬
+    public bool isDealed { get; set; }                           //æ˜¯å¦æ’­æ”¾éç™¼ç‰Œå‹•ç•«
+    public TableTypeEnum RoomType { get; set; }                  //æˆ¿é–“é¡å‹
 
     public Dictionary<string, double> playerWinValueList = new Dictionary<string, double>();
     public ThisData thisData;
 
-    public List<int> exitPlayerSeatList = new List<int>();              //ª±®aÂ÷¶}®y¦ì
-    public GameInitHistoryData gameInitHistoryData;                     //¹CÀ¸ªì©l¸ê®Æ¬ö¿ı
-    public ProcessHistoryData processHistoryData;                       //¹CÀ¸¹Lµ{¸ê®Æ¬ö¿ı
-    public ResultHistoryData saveResultData;                            //¹CÀ¸µ²ªG¸ê®Æ¬ö¿ı
+    public List<int> exitPlayerSeatList = new List<int>();              //ç©å®¶é›¢é–‹åº§ä½
+    public GameInitHistoryData gameInitHistoryData;                     //éŠæˆ²åˆå§‹è³‡æ–™ç´€éŒ„
+    public ProcessHistoryData processHistoryData;                       //éŠæˆ²éç¨‹è³‡æ–™ç´€éŒ„
+    public ResultHistoryData saveResultData;                            //éŠæˆ²çµæœè³‡æ–™ç´€éŒ„
 
     public StrData strData;
 
-    public GameRoomData gameRoomData;                                  //©Ğ¶¡¸ê®Æ
+    public GameRoomData gameRoomData;                                  //æˆ¿é–“è³‡æ–™
 
     public Dictionary<int, string> betStringsE = new Dictionary<int, string>
     {
@@ -48,11 +48,29 @@ public class GameData
     };
     public Dictionary<int, string> betStringsC = new Dictionary<int, string>
     {
-        {0, "¸òª`"},
-        {1, "¹LµP"},
-        {2, "±óµP"},
-        {3, "±óµP / ¹LµP"},
+        {0, "è·Ÿæ³¨"},
+        {1, "éç‰Œ"},
+        {2, "æ£„ç‰Œ"},
+        {3, "æ£„ç‰Œ / éç‰Œ"},
         {4, "All In"},
+        {5, ""}
+    };
+    public Dictionary<int, string> betStringsJ = new Dictionary<int, string>
+    {
+        {0, "ã‚³ãƒ¼ãƒ«"},
+        {1, "ãƒã‚§ãƒƒã‚¯"},
+        {2, "ãƒ•ã‚©ãƒ¼ãƒ«ãƒ‰"},
+        {3, "ãƒ•ã‚©ãƒ¼ãƒ«ãƒ‰ / ãƒã‚§ãƒƒã‚¯"},
+        {4, "ã‚ªãƒ¼ãƒ«ã‚¤ãƒ³"},
+        {5, ""}
+    };
+    public Dictionary<int, string> betStringsK = new Dictionary<int, string>
+    {
+        {0, "ì½œ"},
+        {1, "ì²´í¬"},
+        {2, "í´ë“œ"},
+        {3, "í´ë“œ / ì²´í¬"},
+        {4, "ì˜¬ì¸"},
         {5, ""}
     };
 }
@@ -60,30 +78,30 @@ public class GameData
 
 public class ThisData
 {
-    public GamePlayerInfo LocalGamePlayerInfo;         //¥»¦aª±®a
-    public int LocalPlayerSeat;                        //¥»¦aª±®a®y¦ì
-    public double LocalPlayerChips;                    //¥»¦aª±®a
+    public GamePlayerInfo LocalGamePlayerInfo;         //æœ¬åœ°ç©å®¶
+    public int LocalPlayerSeat;                        //æœ¬åœ°ç©å®¶åº§ä½
+    public double LocalPlayerChips;                    //æœ¬åœ°ç©å®¶
                                                        //
-    public double LocalPlayerCurrBetValue;             //¥»¦aª±®a·í«e¤Uª`­È
-    public double TotalPot;                            //·í«e©³¦À
-    public double CallDifference;                      //·í«e¸òª`®tÃB
-    public double CurrCallValue;                       //·í«e¸òª`­È
-    public double CurrRaiseValue;                      //·í«e¥[ª`­È
-    public double MinRaiseValue;                       //³Ì¤p¥[ª`­È
-    public double SmallBlindValue;                     //¤pª¼­È
-    public bool IsFirstRaisePlayer;                    //­º¦ì¥[ª`ª±®a
-    public bool IsUnableRaise;                         //µLªk¥[ª`
-    public bool IsPlaying;                             //¦³°Ñ»P¹CÀ¸
-    public bool IsSitOut;                              //¬O§_Â÷¶}®y¦ì
-    public bool isLocalPlayerTurn;                     //¥»¦aª±®a¦^¦X
-    public bool isFold;                                //¬O§_¤w±óµP
-    public bool isCanCall;                             //¬O§_¥i¥H¸òª`
-    public List<int> CurrCommunityPoker;               //·í«e¤½¦@µP
-    public List<string> PotWinnerList;                 //¥D¦ÀÄ¹®a
-    public double PowWinChips;                         //¥D¦ÀÄ¹±oÄw½X
-    public List<string> SideWinnerList;                //Ãä¦ÀÄ¹®a
-    public double SideWinChips;                        //Ãä¦ÀÄ¹±oÄw½X
-    public Dictionary<int, double> BackChipsDic;       //°h¦^Äw½X(®y¦ì,°h¦^Äw½X­È)
+    public double LocalPlayerCurrBetValue;             //æœ¬åœ°ç©å®¶ç•¶å‰ä¸‹æ³¨å€¼
+    public double TotalPot;                            //ç•¶å‰åº•æ± 
+    public double CallDifference;                      //ç•¶å‰è·Ÿæ³¨å·®é¡
+    public double CurrCallValue;                       //ç•¶å‰è·Ÿæ³¨å€¼
+    public double CurrRaiseValue;                      //ç•¶å‰åŠ æ³¨å€¼
+    public double MinRaiseValue;                       //æœ€å°åŠ æ³¨å€¼
+    public double SmallBlindValue;                     //å°ç›²å€¼
+    public bool IsFirstRaisePlayer;                    //é¦–ä½åŠ æ³¨ç©å®¶
+    public bool IsUnableRaise;                         //ç„¡æ³•åŠ æ³¨
+    public bool IsPlaying;                             //æœ‰åƒèˆ‡éŠæˆ²
+    public bool IsSitOut;                              //æ˜¯å¦é›¢é–‹åº§ä½
+    public bool isLocalPlayerTurn;                     //æœ¬åœ°ç©å®¶å›åˆ
+    public bool isFold;                                //æ˜¯å¦å·²æ£„ç‰Œ
+    public bool isCanCall;                             //æ˜¯å¦å¯ä»¥è·Ÿæ³¨
+    public List<int> CurrCommunityPoker;               //ç•¶å‰å…¬å…±ç‰Œ
+    public List<string> PotWinnerList;                 //ä¸»æ± è´å®¶
+    public double PowWinChips;                         //ä¸»æ± è´å¾—ç±Œç¢¼
+    public List<string> SideWinnerList;                //é‚Šæ± è´å®¶
+    public double SideWinChips;                        //é‚Šæ± è´å¾—ç±Œç¢¼
+    public Dictionary<int, double> BackChipsDic;       //é€€å›ç±Œç¢¼(åº§ä½,é€€å›ç±Œç¢¼å€¼)
 }
 
 public class StrData

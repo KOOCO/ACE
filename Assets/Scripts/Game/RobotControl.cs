@@ -37,6 +37,8 @@ public class RobotControl : MonoBehaviour
         //int foldRate = isTest ? 0 : new System.Random().Next(0, 100);
         int foldRate = new System.Random().Next(0, 100);
 
+        float randomWait = UnityEngine.Random.Range(3, 6);
+
         if (isTest)
         {
             //是否只能All In

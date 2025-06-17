@@ -137,6 +137,7 @@ public class ViewManager : UnitySingleton<ViewManager>
 
         TipMsgView tipMsgView = rt.GetComponent<TipMsgView>();
         tipMsgView.SetTipMsg(status, msg);
+        LanguageManager.Instance.ChangeFont();
     }
 
     #endregion

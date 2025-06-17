@@ -425,6 +425,7 @@ public class LobbyView : MonoBehaviour
     }
     void checkIsOffline()
     {
+        print("nullData: " + PlayerPrefs.GetInt("nullData"));
         if (PlayerPrefs.GetInt("nullData") >= 3)
         {
             DataManager.istipAppear=true;

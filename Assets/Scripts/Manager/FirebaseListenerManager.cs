@@ -53,7 +53,7 @@ public class FirebaseListenerManager : MonoBehaviour
                 return;
             }
 
-            string responseText = string.IsNullOrEmpty(args.Snapshot.GetRawJsonValue()) || args.Snapshot.GetRawJsonValue() == "null" ? "" : args.Snapshot.GetRawJsonValue(); 
+            string responseText = string.IsNullOrEmpty(args.Snapshot.GetRawJsonValue()) || args.Snapshot.GetRawJsonValue() == "null" ? "" : args.Snapshot.GetRawJsonValue();
             obj.SendMessage(callbackFunPtr, responseText, SendMessageOptions.DontRequireReceiver);
         };
 

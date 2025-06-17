@@ -23,7 +23,7 @@ public class GamePlayerInfo : MonoBehaviour
     [SerializeField]
     Image winRateBar, winRate_Img;
     [SerializeField]
-    Sprite winRateSpr_C, winRateSpr_E;
+    Sprite[] winRateSprs;
 
     [Header("手牌")]
     [SerializeField]
@@ -158,10 +158,16 @@ public class GamePlayerInfo : MonoBehaviour
         else if (LanguageManager.Instance.GetCurrLanguageIndex() == 1 && pokerCurrShapeIndex != 0)
         {
             SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksChineseAlbum).album[pokerCurrShapeIndex];
+        }else if (LanguageManager.Instance.GetCurrLanguageIndex() == 2 && pokerCurrShapeIndex != 0)
+        {
+            SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksJapaneseAlbum).album[pokerCurrShapeIndex];
+        }else if (LanguageManager.Instance.GetCurrLanguageIndex() == 3 && pokerCurrShapeIndex != 0)
+        {
+            SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksKoreanAlbum).album[pokerCurrShapeIndex];
         }
         // }
 
-        winRate_Img.sprite = (LanguageManager.Instance.GetCurrLanguageIndex() == 0) ? winRateSpr_E : winRateSpr_C;
+        winRate_Img.sprite = winRateSprs[LanguageManager.Instance.GetCurrLanguageIndex()];
     }
 
     private void Awake()
@@ -200,7 +206,6 @@ public class GamePlayerInfo : MonoBehaviour
         }
         if(IsFold && IsWinEffect)
         {
-            //print("非玩家棄牌結算");
             HandPokers[0].setFrameActive = false;
             HandPokers[1].setFrameActive = false;
         }
@@ -968,8 +973,12 @@ public class GamePlayerInfo : MonoBehaviour
 
         if (LanguageManager.Instance.GetCurrLanguageIndex() == 0)
             SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksEnglishAlbum).album[pokerCurrShapeIndex];
-        else
+        else if (LanguageManager.Instance.GetCurrLanguageIndex() == 1)
             SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksChineseAlbum).album[pokerCurrShapeIndex];
+        else if (LanguageManager.Instance.GetCurrLanguageIndex() == 2)
+            SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksJapaneseAlbum).album[pokerCurrShapeIndex];
+        else 
+            SetPokerShapeImage = AssetsManager.Instance.GetAlbumAsset(AlbumEnum.HandRanksKoreanAlbum).album[pokerCurrShapeIndex];
     }
 
     public void SetLead()
