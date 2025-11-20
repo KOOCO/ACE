@@ -52,7 +52,6 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
         }
         else if (SceneManager.GetActiveScene().name == "Login" || SceneManager.GetActiveScene().name == "Lobby")
         {
-
             StartCoroutine(IEntryInToLobby(sceneEnum));
         }
         else

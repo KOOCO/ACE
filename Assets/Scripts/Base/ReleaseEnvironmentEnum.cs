@@ -2,6 +2,7 @@ public enum ReleaseEnvironmentEnum
 {
     Test,                   //測試環境
     Demo,                   //Demo環境
+    Stage,                   //Stage環境
     Prod,
 }
 public enum ReleaseEnvironment

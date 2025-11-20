@@ -15,6 +15,7 @@ using System.Security.Cryptography;
 public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
 {
     private const string devBASE_URL = "https://admin-d.jf588.com";     //API Base Url
+    private const string stageBASE_URL = "https://admin-s.jf588.com";     //API Base Url
     private const string prodBASE_URL = "https://ace.ap88.io";     //API Base Url
 
     private string url;
@@ -24,6 +25,8 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
         base.Awake();
         if (Entry.Instance.releaseType == ReleaseEnvironmentEnum.Demo)
             url = devBASE_URL;
+        else if (Entry.Instance.releaseType == ReleaseEnvironmentEnum.Stage)
+            url = stageBASE_URL;
         else
             url = prodBASE_URL;
     }
@@ -122,7 +125,7 @@ public class SwaggerAPIManager : UnitySingleton<SwaggerAPIManager>
     IEnumerator ISendPostEncryptRequest<T1>(T1 data, UnityAction<string> callback = null, UnityAction<string> errCallback = null) 
     {
         // API 的 URL
-        string url = "https://ace-admin-devs.azurewebsites.net/api/app/games/ace/table-chips-transaction";
+        string url = GetBaseUrl() + "/api/app/games/ace/table-chips-transaction";
 
         WWWForm form = new WWWForm();
         string jsonData = JsonConvert.SerializeObject(data);

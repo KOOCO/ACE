@@ -400,7 +400,8 @@ public class Entry : UnitySingleton<Entry>
                     gameObject.name,
                     nameof(delayCallHeartbeat));
             print("MenberID: " + userID);
-            LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
+            if(!DataManager.isInRoom)
+                LoadSceneManager.Instance.LoadScene(SceneEnum.Lobby);
         }
     }
 

@@ -2289,9 +2289,11 @@ public class LoginView : MonoBehaviour
                 gameObject.name,
                 nameof(delayCallHeartbeat));
 #elif UNITY_WEBGL
-        Entry.Instance.initHeartBeat(DataManager.UserId);
+        Entry.Instance.initHeartBeat(DataManager.UserId);        
+        JudgeLoggedIn(jsonCache);
 #elif UNITY_ANDROID
         AndroidHB.Instance.initHeartBeat(DataManager.UserId);
+        JudgeLoggedIn(jsonCache);
 #endif
     }
     /// <summary>

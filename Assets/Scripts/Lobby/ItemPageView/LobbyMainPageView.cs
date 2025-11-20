@@ -376,7 +376,7 @@ public class LobbyMainPageView : MonoBehaviour
     private void CreateRoomBtn()
     {
         // Define each mode with their respective table index, title, sample button, and parent
-        SetupTable(0, tables[0], RankBattleBtnSample, RankTableParent);
+        //SetupTable(0, tables[0], RankBattleBtnSample, RankTableParent);
         SetupTable(1, tables[1], CryptoTableBtnSample, CryptoTableParent);
         SetupTable(2, tables[2], VCTableBtnSample, VCTableParent);
 
