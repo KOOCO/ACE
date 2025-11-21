@@ -666,46 +666,6 @@ public class LobbyView : MonoBehaviour
         Refresh_Btn.interactable = true;
     }
 
-    /// <summary>
-    /// 入金協程(暫放)
-    ///</summary>
-   public IEnumerator PostTransactionData(string authorSession, Transaction transacData)
-    {
-        // 建立 UnityWebRequest，設定請求的 URL
-        string url = $"https://noodle-dev.azurewebsites.net/api/transaction";
-        string jsonData = JsonConvert.SerializeObject(transacData);
-        byte[] jsonToSend = Encoding.UTF8.GetBytes(jsonData);
-
-        UnityWebRequest request = new UnityWebRequest(url, "POST");
-        request.downloadHandler = new DownloadHandlerBuffer();
-
-        // 設定請求頭
-        request.SetRequestHeader("accept", "application/json");
-        request.SetRequestHeader("Session", authorSession);
-        request.SetRequestHeader("Content-Type", "application/json");
-        request.SetRequestHeader("RequestVerificationToken", "CfDJ8GAhEUSluuBNskVi60eW89y5tH86uVPQpRg45s0KPLVrPy8Kh1GTpIJCVeJd1SI5RKJJX5qAOfP_g7cp7J4N0P8i2DWTVqvTlBtMoN5juBLkGB3NBDf10u5SjUpdGs5nKqx2DDZrFNOb0Mfvhtt9a6c");
-        request.SetRequestHeader("X-Requested-With", "XMLHttpRequest");
-
-        request.uploadHandler = new UploadHandlerRaw(jsonToSend);
-
-        // 發送請求並等待回應
-        yield return request.SendWebRequest();
-
-        // 檢查請求是否出現錯誤
-        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
-        {
-            Debug.LogError("Error: " + request.error);
-        }
-        else
-        {
-            // 輸出請求結果
-            //Debug.Log("Response: " + request.downloadHandler.text);
-
-            string jsonResponse = request.downloadHandler.text;
-            print(jsonResponse);
-        }
-    }
-
     public void testAddScene()
     {
         //LoadSceneManager.Instance.LoadScene("Game");

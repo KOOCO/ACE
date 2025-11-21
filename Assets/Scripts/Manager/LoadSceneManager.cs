@@ -273,10 +273,6 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
                 }
             });
         }
-        else
-        {
-            loginView.LoginWithUserName(loginString);
-        }
     }
 
 

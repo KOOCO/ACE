@@ -1,22 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-//using Thirdweb.Redcode.Awaiting;
-using System.Numerics;
+using Microsoft.AspNet.SignalR.Client.Http;
+using Newtonsoft.Json;
 //using Thirdweb;
 using System;
-using System.Threading.Tasks;
+using System.Collections;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using TMPro;
-using UnityEngine.EventSystems;
-using UnityEngine.Events;
+//using Thirdweb.Redcode.Awaiting;
+using System.Numerics;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-using Newtonsoft.Json;
+using System.Threading.Tasks;
+using TMPro;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 //using Nethereum.Contracts;
 using UnityEngine.Networking;
-using System.Runtime.InteropServices;
+using UnityEngine.UI;
 
 public class LoginView : MonoBehaviour
 {
@@ -179,7 +180,7 @@ public class LoginView : MonoBehaviour
 
     [Header("Session Account")]
     [SerializeField]
-    string userName;
+    string lobbyUrl;  //要去Swagger自己申請session，直接複製整串url就行
 
     [SerializeField]
     const int ErrorWalletConnectTime = 30;                                      //判定連接失敗等待時間
@@ -554,8 +555,8 @@ public class LoginView : MonoBehaviour
             //    Debug.Log("Noodle Login Failed: " + x);
             //});
             //StartCoroutine(GetLobbyData(loginWithURL.text));
-            StartCoroutine(Entry.Instance.GetAuthorData(getSessionCallback));
-            return;
+            //StartCoroutine(Entry.Instance.GetAuthorData(getSessionCallback));
+            //return;
 #endif
 
             ViewManager.Instance.OpenWaitingView(transform);
@@ -589,8 +590,8 @@ public class LoginView : MonoBehaviour
         {
             print("安卓登入");
             if(Ipt.text != "")
-                userName = Ipt.text;
-            StartCoroutine(Entry.Instance.GetAuthorData(getSessionCallback));
+                lobbyUrl = Ipt.text;
+            getSessionCallback(lobbyUrl);
         });
 
         #endregion
@@ -816,19 +817,20 @@ public class LoginView : MonoBehaviour
 #endif
     }
 
-    public void LoginWithUserName(string _userName)
-    {
-        if (_userName != "")
-        {
-            userName = _userName;
-        }
-        LoginInEditor();
-    }
+    //舊登入方法已禁用
+    //public void LoginWithUserName(string _userName)
+    //{
+    //    if (_userName != "")
+    //    {
+    //        userName = _userName;
+    //    }
+    //    LoginInEditor();
+    //}
 
     [EButton]
     public void LoginInEditor()
     {
-        StartCoroutine(Entry.Instance.GetAuthorData(getSessionCallback));        
+        getSessionCallback(lobbyUrl);   
     }
 
     private void Update()
@@ -2390,57 +2392,20 @@ public class LoginView : MonoBehaviour
         ViewManager.Instance.OpenTipMsgView(transform, status,
                                             LanguageManager.Instance.GetText(message));
     }
-#region Get all sesseion
-    public void getSessionCallback(string session)
+
+#region Send sesseion to login
+    public void getSessionCallback(string url)
     {
-        StartCoroutine(GetLobbyData(session));
-    }
+        // 提取 URL 中的 session 值
+        string sessionValue = ExtractSessionValue(url);
+        //Debug.Log("Session Value: " + sessionValue);
 
-    /// <summary>
-    /// Get Lobby Session
-    ///</summary>
-    IEnumerator GetLobbyData(string authorSession)
-    {
-        // 建立 UnityWebRequest，設定請求的 URL
-        string url = $"https://noodle-dev.azurewebsites.net/api/lobby/{userName}/1";
-        UnityWebRequest request = UnityWebRequest.Get(url);
-
-        // 設定請求頭
-        request.SetRequestHeader("accept", "application/json");
-        request.SetRequestHeader("Session", authorSession);
-        request.SetRequestHeader("RequestVerificationToken", "CfDJ8LFzIbsr735Dofa_0sFAIEosFVjQldc81reOa8sHc5iXtzrFEVMuypibJHs7pcsEnjsQM8WCuU9mQCzIWo17KmSKKzSvPU_SlvqeXTlAtpes7VZCCw6rQRz6sCfKI9tFFG8opdHZflZ2i2SMXfRKr9M");
-        request.SetRequestHeader("X-Requested-With", "XMLHttpRequest");
-
-        // 發送請求並等待回應
-        yield return request.SendWebRequest();
-
-        // 檢查請求是否出現錯誤
-        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        //Start LogIn
+        AppApi.DecryptSession(sessionValue, RegisterWithNoodle, (x) =>
         {
-            Debug.LogError("Error: " + request.error);
-        }
-        else
-        {
-            // 輸出請求結果
-            //Debug.Log("Response: " + request.downloadHandler.text);
-
-            string jsonResponse = request.downloadHandler.text;
-
-            // 使用 JsonUtility 解析 JSON
-            urlData response = JsonUtility.FromJson<urlData>(jsonResponse);
-            print(response.url);
-
-            // 提取 URL 中的 session 值
-            string sessionValue = ExtractSessionValue(response.url);
-            //Debug.Log("Session Value: " + sessionValue);
-
-            //Start LogIn
-            AppApi.DecryptSession(sessionValue, RegisterWithNoodle, (x) =>
-            {
-                Debug.Log("Noodle Login Failed: " + x);
-            });
-        }
-    }
+            Debug.Log("Noodle Login Failed: " + x);
+        });
+    }    
 
     // 提取 session 值的方法
     string ExtractSessionValue(string url)
